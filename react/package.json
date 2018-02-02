@@ -1,0 +1,10 @@
+{
+  "name": "vtex.pages-editor",
+  "version": null,
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vtex/styleguide": "^2.0.0-rc.2",
+    "exenv": "^1.2.2",
+    "react-jsonschema-form": "^1.0.0"
+  }
+}

@@ -1,0 +1,3 @@
+mutation SaveExtension($extensionName: String, $component: String, $props: String) {
+  saveExtension(extensionName: $extensionName, component: $component, props: $props)
+}
