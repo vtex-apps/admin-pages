@@ -4,6 +4,8 @@ import {graphql} from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 
+import {getImplementation} from '../utils/components'
+
 import SaveExtension from './SaveExtension.graphql'
 
 function ObjectFieldTemplate(props) {
@@ -35,7 +37,7 @@ const uiSchema = {
 
 class ComponentEditor extends Component {
   static propTypes = {
-    extensionName: PropTypes.any,
+    editTreePath: PropTypes.any,
     saveExtension: PropTypes.any,
   }
 
@@ -47,16 +49,16 @@ class ComponentEditor extends Component {
     super(props)
 
     this.state = {
-      extensionName: props.extensionName,
-      extension: global.__RUNTIME__.extensions[props.extensionName],
-      oldPropsJSON: JSON.stringify(global.__RUNTIME__.extensions[props.extensionName].props),
+      editTreePath: props.editTreePath,
+      extension: global.__RUNTIME__.extensions[props.editTreePath],
+      oldPropsJSON: JSON.stringify(global.__RUNTIME__.extensions[props.editTreePath].props),
     }
   }
 
   handleFormChange = (event) => {
     console.log('Updating props with formData...', event.formData)
-    global.__RUNTIME__.extensions[this.state.extensionName].props = event.formData
-    global.__RUNTIME__.eventEmitter.emit(`extension:${this.state.extensionName}:update`)
+    global.__RUNTIME__.extensions[this.state.editTreePath].props = event.formData
+    global.__RUNTIME__.emitter.emit(`extension:${this.state.editTreePath}:update`)
   }
 
   handleSave = (event) => {
@@ -64,7 +66,7 @@ class ComponentEditor extends Component {
     const {saveExtension} = this.props
     saveExtension({
       variables: {
-        extensionName: this.state.extensionName,
+        editTreePath: this.state.editTreePath,
         component: this.state.extension.component,
         props: JSON.stringify(this.state.extension.props),
       },
@@ -83,19 +85,19 @@ class ComponentEditor extends Component {
   handleCancel = () => {
     const oldProps = JSON.parse(this.state.oldPropsJSON)
     console.log('Updating props with old props...', oldProps)
-    global.__RUNTIME__.extensions[this.state.extensionName].props = oldProps
-    global.__RUNTIME__.eventEmitter.emit(`extension:${this.state.extensionName}:update`)
+    global.__RUNTIME__.extensions[this.state.editTreePath].props = oldProps
+    global.__RUNTIME__.emitter.emit(`extension:${this.state.editTreePath}:update`)
     this.context.editExtensionPoint(null)
   }
 
   render() {
     const {extension} = this.state
-    const component = global.__RENDER_6_COMPONENTS__[extension.component]
+    const Component = getImplementation(extension.component)
 
     return (
       <div className="mw6 ph5 dark-gray center mv5">
         <Form
-          schema={component.schema}
+          schema={Component.schema}
           formData={extension.props}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}

@@ -18,7 +18,7 @@ export default class EditBar extends Component {
         {editTreePath == null && <Button htmlProps={{onClick: toggleEditMode}} primary>
           Edit Mode {editMode ? 'On' : 'Off'}
         </Button>}
-        {editTreePath && <ComponentEditor extensionName={editTreePath} />}
+        {editTreePath && <ComponentEditor editTreePath={editTreePath} />}
       </div>
     )
   }
