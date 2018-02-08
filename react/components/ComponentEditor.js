@@ -8,6 +8,10 @@ import {getImplementation} from '../utils/components'
 
 import SaveExtension from './SaveExtension.graphql'
 
+function c(component) {
+  return Array.isArray(component) ? component[0] : component
+}
+
 function ObjectFieldTemplate(props) {
   return (
     <div className="f6 fw5">
@@ -68,8 +72,8 @@ class ComponentEditor extends Component {
     const {saveExtension} = this.props
     saveExtension({
       variables: {
-        editTreePath: this.state.editTreePath,
-        component: this.state.extension.component,
+        extensionName: this.state.editTreePath,
+        component: c(this.state.extension.component),
         props: JSON.stringify(this.state.extension.props),
       },
     })
@@ -94,7 +98,7 @@ class ComponentEditor extends Component {
 
   render() {
     const {extension} = this.state
-    const Component = getImplementation(Array.isArray(extension.component) ? extension.component[0] : extension.component)
+    const Component = getImplementation(c(extension.component))
 
     return (
       <div className="mw6 ph5 dark-gray center mv5">
