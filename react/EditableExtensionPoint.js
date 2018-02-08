@@ -1,32 +1,28 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
-import {getImplementation} from './utils/components'
-
 class EditableExtensionPoint extends Component {
   static contextTypes = {
     editExtensionPoint: PropTypes.func,
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
+    treePath: PropTypes.string,
   }
 
   static propTypes = {
-    __originalComponent: PropTypes.element.isRequired,
-    __treePath: PropTypes.string,
     children: PropTypes.node,
   }
 
   handleEditClick = (event) => {
     const {editExtensionPoint} = this.context
-    editExtensionPoint(this.props.__treePath)
+    editExtensionPoint(this.context.treePath)
     event.stopPropagation()
   }
 
   render() {
-    const {editMode, editTreePath} = this.context
-    const {__originalComponent: component, __treePath: treePath, children, ...parentProps} = this.props
+    const {editMode, editTreePath, treePath} = this.context
+    const {children, ...parentProps} = this.props
 
-    const OriginalComponent = getImplementation(component)
     const editable = !editTreePath && editMode
     const className = editable ? 'relative' : ''
     const zIndex = treePath.split('/').length + 1
@@ -35,14 +31,10 @@ class EditableExtensionPoint extends Component {
     return (
       <div className={className}>
         {editable && <div className={editableClasses} onClick={this.handleEditClick}></div>}
-        <OriginalComponent {...parentProps}>{children}</OriginalComponent>
+        {React.cloneElement(children, parentProps)}
       </div>
     )
   }
 }
-
-export const editableExtensionPointKey = '__EDITABLE_EXTENSION_POINT__'
-
-global.__RENDER_6_COMPONENTS__[editableExtensionPointKey] = EditableExtensionPoint
 
 export default EditableExtensionPoint

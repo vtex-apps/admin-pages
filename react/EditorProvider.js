@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import {ExtensionPoint} from 'render'
 
 import {getImplementation} from './utils/components'
-import {editableExtensionPointKey} from './EditableExtensionPoint'
 
 class EditorProvider extends Component {
   static childContextTypes = {
@@ -14,20 +13,23 @@ class EditorProvider extends Component {
   }
 
   static contextTypes = {
+    components: PropTypes.object,
+    extensions: PropTypes.object,
     emitter: PropTypes.object,
   }
 
   static propTypes = {
-    __originalComponent: PropTypes.element.isRequired,
     children: PropTypes.element.isRequired,
   }
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
     this.state = {
       editMode: false,
       editTreePath: null,
     }
+    console.log(context.components)
+    this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
   }
 
   getChildContext() {
@@ -46,12 +48,7 @@ class EditorProvider extends Component {
       if (Component && Component.schema) {
         acc[value] = {
           ...extension,
-          component: editableExtensionPointKey,
-          props: {
-            ...extension.props,
-            __originalComponent: extension.component,
-            __treePath: value,
-          },
+          component: [extension.component, this.editableExtensionPointComponent],
         }
       } else {
         acc[value] = extension
@@ -76,13 +73,12 @@ class EditorProvider extends Component {
   }
 
   render() {
-    const {__originalComponent: component, children, ...parentProps} = this.props
+    const {children, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
-    const OriginalComponent = getImplementation(component)
 
     return (
       <div>
-        <OriginalComponent {...parentProps}>{children}</OriginalComponent>
+        {React.cloneElement(children, parentProps)}
         <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />
       </div>
     )

@@ -43,22 +43,24 @@ class ComponentEditor extends Component {
 
   static contextTypes = {
     editExtensionPoint: PropTypes.func,
+    emitter: PropTypes.object,
+    extensions: PropTypes.object,
   }
 
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
 
     this.state = {
       editTreePath: props.editTreePath,
-      extension: global.__RUNTIME__.extensions[props.editTreePath],
-      oldPropsJSON: JSON.stringify(global.__RUNTIME__.extensions[props.editTreePath].props),
+      extension: context.extensions[props.editTreePath],
+      oldPropsJSON: JSON.stringify(context.extensions[props.editTreePath].props),
     }
   }
 
   handleFormChange = (event) => {
     console.log('Updating props with formData...', event.formData)
-    global.__RUNTIME__.extensions[this.state.editTreePath].props = event.formData
-    global.__RUNTIME__.emitter.emit(`extension:${this.state.editTreePath}:update`)
+    this.context.extensions[this.state.editTreePath].props = event.formData
+    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
   }
 
   handleSave = (event) => {
@@ -85,14 +87,14 @@ class ComponentEditor extends Component {
   handleCancel = () => {
     const oldProps = JSON.parse(this.state.oldPropsJSON)
     console.log('Updating props with old props...', oldProps)
-    global.__RUNTIME__.extensions[this.state.editTreePath].props = oldProps
-    global.__RUNTIME__.emitter.emit(`extension:${this.state.editTreePath}:update`)
+    this.context.extensions[this.state.editTreePath].props = oldProps
+    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
     this.context.editExtensionPoint(null)
   }
 
   render() {
     const {extension} = this.state
-    const Component = getImplementation(extension.component)
+    const Component = getImplementation(Array.isArray(extension.component) ? extension.component[0] : extension.component)
 
     return (
       <div className="mw6 ph5 dark-gray center mv5">
