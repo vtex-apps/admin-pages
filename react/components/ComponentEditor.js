@@ -47,6 +47,7 @@ class ComponentEditor extends Component {
 
   static contextTypes = {
     editExtensionPoint: PropTypes.func,
+    updateExtension: PropTypes.func,
     emitter: PropTypes.object,
     extensions: PropTypes.object,
   }
@@ -63,7 +64,9 @@ class ComponentEditor extends Component {
 
   handleFormChange = (event) => {
     console.log('Updating props with formData...', event.formData)
-    this.context.extensions[this.state.editTreePath].props = event.formData
+    const extension = this.context.extensions[this.state.editTreePath]
+    extension.props = event.formData
+    this.context.updateExtension(this.state.editTreePath, extension)
     this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
   }
 

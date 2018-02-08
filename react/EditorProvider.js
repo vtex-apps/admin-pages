@@ -28,7 +28,6 @@ class EditorProvider extends Component {
       editMode: false,
       editTreePath: null,
     }
-    console.log(context.components)
     this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
   }
 
