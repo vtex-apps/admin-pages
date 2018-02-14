@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {ExtensionPoint} from 'render'
 
+import EditableExtensionPoint from './EditableExtensionPoint'
 import {getImplementation} from './utils/components'
 
 class EditorProvider extends Component {
@@ -16,6 +17,7 @@ class EditorProvider extends Component {
     components: PropTypes.object,
     extensions: PropTypes.object,
     emitter: PropTypes.object,
+    treePath: PropTypes.string,
   }
 
   static propTypes = {
@@ -72,12 +74,20 @@ class EditorProvider extends Component {
   }
 
   render() {
+    const {treePath, extensions} = this.context
     const {children, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
 
+    const rootExtension = extensions[treePath]
+    const component = Array.isArray(rootExtension.component) ? rootExtension.component[0] : rootExtension.component
+    const Component = getImplementation(component)
+    const isEditable = Component && Component.schema
+    const clonedChildren = React.cloneElement(children, parentProps)
+    const editableChildren = isEditable && <EditableExtensionPoint>{clonedChildren}</EditableExtensionPoint>
+
     return (
       <div>
-        {React.cloneElement(children, parentProps)}
+        {editableChildren || clonedChildren}
         <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />
       </div>
     )
