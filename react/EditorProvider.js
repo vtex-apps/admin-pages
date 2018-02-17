@@ -31,6 +31,7 @@ class EditorProvider extends Component {
       editTreePath: null,
     }
     this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
+    this.emptyExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(c))
   }
 
   getChildContext() {
@@ -46,6 +47,16 @@ class EditorProvider extends Component {
     Object.keys(extensions).reduce((acc, value) => {
       const extension = extensions[value]
       const Component = getImplementation(extension.component)
+
+      if (extension.component === null) {
+        acc[value] = {
+          ...extension,
+          component: [this.emptyExtensionPointComponent, this.editableExtensionPointComponent],
+          props: {},
+        }
+        return acc
+      }
+
       if (Component && Component.schema) {
         acc[value] = {
           ...extension,
