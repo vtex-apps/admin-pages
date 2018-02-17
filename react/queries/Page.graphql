@@ -1,0 +1,7 @@
+query Page(page: String, locale: String){
+  page(page: $page, production: true, locale: $locale, query: "\"{}\"", params: "\"{}\"") {
+    componentsJSON
+    extensionsJSON
+    pagesJSON
+  }
+}

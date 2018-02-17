@@ -5,9 +5,11 @@
   "title": "VTEX Pages Editor",
   "description": "The VTEX Pages framework editor components",
   "builders": {
+    "pages": "0.x",
     "react": "1.x"
   },
   "dependencies": {
+    "vtex.admins-app": "1.x",
     "vtex.pages-graphql": "0.x"
   },
   "mustUpdateAt": "2018-09-05",
