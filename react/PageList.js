@@ -12,11 +12,18 @@ class PageList extends Component {
 
   render() {
     const {data: {loading, pages}, children} = this.props
-    return (
+
+    const pageList = !children && (
       <div>
         <h3>My Pages</h3>
         {loading && 'loading'}
-        {!loading && JSON.stringify(pages)}
+        {!loading && !children && JSON.stringify(pages)}
+      </div>
+    )
+
+    return (
+      <div>
+        {pageList}
         {children}
       </div>
     )
