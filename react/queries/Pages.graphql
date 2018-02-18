@@ -2,5 +2,9 @@ query Pages{
   pages {
     declarer
     name
+    path
+    auth
+    cname
+    theme
   }
 }
