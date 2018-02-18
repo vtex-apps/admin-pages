@@ -4,6 +4,7 @@ import {graphql} from 'react-apollo'
 import PagesQuery from './queries/Pages.graphql'
 
 import {Link} from 'render'
+import Button from '@vtex/styleguide/lib/Button'
 
 // eslint-disable-next-line
 class PageList extends Component {
@@ -38,7 +39,7 @@ class PageList extends Component {
                         {page.name}
                       </td>
                       <td className="pv2 ph3">
-                        <Link to={`pages/page${page.path}`} className="f4 fw6 db rebel-pink no-underline underline-hover">
+                        <Link to={`pages/page${page.path}`} className="rebel-pink no-underline underline-hover">
                           {page.path}
                         </Link>
                       </td>
@@ -49,6 +50,11 @@ class PageList extends Component {
               </table>
             : null
           }
+          <div className="pv4 pl50">
+            <Link to='pages/new'>
+              <Button>New page</Button>
+            </Link>
+          </div>
       </div>
     )
 
