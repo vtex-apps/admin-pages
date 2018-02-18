@@ -10,7 +10,7 @@ export function ObjectFieldTemplate(props) {
 }
 
 ObjectFieldTemplate.propTypes = {
-  properties: PropTypes.object,
+  properties: PropTypes.array,
 }
 
 export function CustomFieldTemplate(props) {
@@ -28,7 +28,7 @@ export function CustomFieldTemplate(props) {
 
 CustomFieldTemplate.propTypes = {
   id: PropTypes.string,
-  classNames: PropTypes.array,
+  classNames: PropTypes.string,
   label: PropTypes.string,
   help: PropTypes.element,
   required: PropTypes.bool,

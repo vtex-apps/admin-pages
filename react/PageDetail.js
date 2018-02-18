@@ -9,14 +9,25 @@ import PageEditor from './components/PageEditor'
 class PageDetail extends Component {
   static propTypes = {
     data: PropTypes.object,
+    params: PropTypes.object,
   }
 
   render() {
-    const {data: {loading, page} = {}} = this.props
+    const {data: {loading, page: pageData} = {}, params: {name}} = this.props
 
-    const form = <PageEditor page={page} />
+    const pagesJSON = pageData && pageData.pagesJSON
+    const extensionsJSON = pageData && pageData.extensionsJSON
+    const pages = name !== 'new' && pagesJSON && JSON.parse(pagesJSON)
+    const extensions = name !== 'new' && extensionsJSON && JSON.parse(extensionsJSON)
+    const page = pages && pages[name]
+    if (page) {
+      page.name = name
+      page.component = extensions[name].component
+    }
+    const form = !loading && <PageEditor page={page} />
+
     return (
-      <div>
+      <div className="mw9">
         <h3>{page ? 'Page Detail' : 'Create Page'}</h3>
         {loading && 'loading'}
         {!loading && form}

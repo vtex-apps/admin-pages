@@ -5,9 +5,7 @@ import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 import {Link} from 'render'
 
-import {getImplementation} from '../utils/components'
 import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
-
 import SavePage from '../queries/SavePage.graphql'
 
 const schema = {
@@ -33,6 +31,12 @@ const schema = {
     theme: {
       type: 'string',
       title: 'Tema',
+    },
+    component: {
+      enum: Object.keys(global.__RUNTIME__.components),
+      enumNames: Object.keys(global.__RUNTIME__.components),
+      title: 'Componente',
+      type: 'string',
     },
   },
 }
@@ -99,18 +103,11 @@ class PageEditor extends Component {
     })
   }
 
-  getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components).filter(component => {
-      const Component = getImplementation(component)
-      return Component && Component.schema
-    })
-  }
-
   render() {
     const {page} = this.state
 
     return (
-      <div className="mw6 ph5 dark-gray center mv5">
+      <div className="ph5 dark-gray center mv5">
         <Form
           schema={schema}
           formData={page}
