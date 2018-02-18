@@ -1,0 +1,3 @@
+mutation SavePage($pageName: String, $component: String, $path: String) {
+  savePage(pageName: $pageName, component: $component, path: $path)
+}

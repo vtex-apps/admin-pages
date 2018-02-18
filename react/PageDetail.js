@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {graphql} from 'react-apollo'
+
 import PageQuery from './queries/Page.graphql'
+import PageEditor from './components/PageEditor'
 
 // eslint-disable-next-line
 class PageDetail extends Component {
@@ -10,18 +12,21 @@ class PageDetail extends Component {
   }
 
   render() {
-    const {data: {loading, page}} = this.props
+    const {data: {loading, page} = {}} = this.props
+
+    const form = <PageEditor page={page} />
     return (
       <div>
-        <h3>Page Detail</h3>
+        <h3>{page ? 'Page Detail' : 'Create Page'}</h3>
         {loading && 'loading'}
-        {!loading && JSON.stringify(page)}
+        {!loading && form}
       </div>
     )
   }
 }
 
 export default graphql(PageQuery, {
+  skip: (props) => props.params.name === 'new',
   options: (props) => ({
     variables: {
       page: props.params.name,

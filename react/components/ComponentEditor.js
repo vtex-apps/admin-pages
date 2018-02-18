@@ -5,32 +5,12 @@ import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 
 import {getImplementation} from '../utils/components'
+import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 
-import SaveExtension from './SaveExtension.graphql'
+import SaveExtension from '../queries/SaveExtension.graphql'
 
 function c(component) {
   return Array.isArray(component) ? component[0] : component
-}
-
-function ObjectFieldTemplate(props) {
-  return (
-    <div className="f6 fw5">
-      {props.properties.map(prop => prop.content)}
-    </div>
-  )
-}
-
-function CustomFieldTemplate(props) {
-  const {id, classNames, label, help, required, description, errors, children} = props
-  return (
-    <div className={classNames + ' fw5'}>
-      <label className="mb3 mt5 fw7 db" htmlFor={id}>{label}{required ? '*' : null}</label>
-      {description}
-      {children}
-      {errors}
-      {help}
-    </div>
-  )
 }
 
 const uiSchema = {
@@ -66,7 +46,7 @@ class ComponentEditor extends Component {
     this.setState({
       editTreePath: nextProps.editTreePath,
       extension: this.context.extensions[nextProps.editTreePath],
-      oldPropsJSON: JSON.stringify(this.context.extensions[nextProps.editTreePath].props)
+      oldPropsJSON: JSON.stringify(this.context.extensions[nextProps.editTreePath].props),
     })
   }
 
