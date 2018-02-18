@@ -62,9 +62,25 @@ class ComponentEditor extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      editTreePath: nextProps.editTreePath,
+      extension: this.context.extensions[nextProps.editTreePath],
+      oldPropsJSON: JSON.stringify(this.context.extensions[nextProps.editTreePath].props)
+    })
+  }
+
   handleFormChange = (event) => {
     console.log('Updating props with formData...', event.formData)
     const extension = this.context.extensions[this.state.editTreePath]
+    const extensionComponent = c(extension.component)
+
+    const {component: propsComponent} = event.formData
+    if (propsComponent && (extensionComponent !== propsComponent)) {
+      extension.component = Array.isArray(extensionComponent)
+        ? [propsComponent, extensionComponent[1]] : propsComponent
+    }
+
     extension.props = event.formData
     this.context.updateExtension(this.state.editTreePath, extension)
     this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
@@ -99,15 +115,43 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
   }
 
+  getEditableComponents = () => {
+    return Object.keys(global.__RUNTIME__.components).filter(component => {
+      const Component = getImplementation(component)
+      if(Component && Component.schema) {
+        return component
+      }
+    })
+  }
+
   render() {
     const {extension} = this.state
     const Component = getImplementation(c(extension.component))
+    const editableComponents = this.getEditableComponents()
+
+    const schema = {
+      ...Component.schema,
+      properties: {
+        component: {
+          enum: editableComponents,
+          enumNames: editableComponents,
+          title: 'Componente',
+          type: 'string',
+        },
+        ...Component.schema.properties
+      }
+    }
+
+    const extensionProps = {
+      component: c(extension.component),
+      ...extension.props,
+    }
 
     return (
       <div className="mw6 ph5 dark-gray center mv5">
         <Form
-          schema={Component.schema}
-          formData={extension.props}
+          schema={schema}
+          formData={extensionProps}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
           FieldTemplate={CustomFieldTemplate}
