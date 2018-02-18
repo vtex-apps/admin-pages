@@ -118,9 +118,7 @@ class ComponentEditor extends Component {
   getEditableComponents = () => {
     return Object.keys(global.__RUNTIME__.components).filter(component => {
       const Component = getImplementation(component)
-      if(Component && Component.schema) {
-        return component
-      }
+      return Component && Component.schema
     })
   }
 
@@ -138,8 +136,8 @@ class ComponentEditor extends Component {
           title: 'Componente',
           type: 'string',
         },
-        ...Component.schema.properties
-      }
+        ...Component.schema.properties,
+      },
     }
 
     const extensionProps = {
