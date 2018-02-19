@@ -26,13 +26,15 @@ class EditorProvider extends Component {
 
   constructor(props, context) {
     super(props, context)
+
+    this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
+    this.emptyExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(c))
+
     this.state = {
       editMode: false,
       editTreePath: null,
       extensions: this.injectEditableExtensionPoints(context.extensions),
     }
-    this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
-    this.emptyExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(c))
   }
 
   getChildContext() {
