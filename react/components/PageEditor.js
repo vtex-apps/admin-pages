@@ -9,35 +9,36 @@ import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'
 
+const scriptComponents = Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
+
+const themes = Object.keys(global.__RUNTIME__.components).filter(c => c.endsWith('theme.css'))
+
 const schema = {
-  title: 'Pagina',
   type: 'object',
   properties: {
     name: {
       type: 'string',
-      title: 'Nome',
-    },
-    auth: {
-      type: 'boolean',
-      title: 'Admin only',
+      title: 'Name',
     },
     path: {
       type: 'string',
-      title: 'Caminho',
-    },
-    cname: {
-      type: 'string',
-      title: 'CNAME',
-    },
-    theme: {
-      type: 'string',
-      title: 'Tema',
+      title: 'Path',
     },
     component: {
-      enum: Object.keys(global.__RUNTIME__.components),
-      enumNames: Object.keys(global.__RUNTIME__.components),
-      title: 'Componente',
+      enum: scriptComponents,
+      enumNames: scriptComponents,
+      title: 'Component',
       type: 'string',
+    },
+    theme: {
+      enum: themes,
+      enumNames: themes,
+      type: 'string',
+      title: 'Theme',
+    },
+    auth: {
+      type: 'boolean',
+      title: 'Admins only',
     },
   },
 }
@@ -73,7 +74,7 @@ class PageEditor extends Component {
   }
 
   handleFormChange = (event) => {
-    console.log('Updating props with formData...', event.formData)
+    console.log('Updating props with formData...', event.formData, this.state.page)
     this.setState({
       page: {
         ...this.state.page,
@@ -85,14 +86,18 @@ class PageEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.state)
     const {savePage} = this.props
+    const {name: pageName, component, path, theme, auth, cname} = this.state.page
     savePage({
       refetchQueries: [
         {query: Pages},
       ],
       variables: {
-        pageName: this.state.page.name,
-        component: this.state.page.component,
-        path: this.state.page.path,
+        pageName,
+        component,
+        path,
+        theme,
+        auth,
+        cname,
       },
     })
     .then((data) => {
@@ -108,6 +113,9 @@ class PageEditor extends Component {
 
   render() {
     const {page} = this.state
+    if (typeof page.auth === 'string') {
+      page.auth = page.auth === 'true'
+    }
 
     return (
       <div className="ph5 dark-gray center mv5">
