@@ -65,10 +65,10 @@ class ComponentEditor extends Component {
         : selectedComponent
     const props = event.formData
 
-    this.context.updateExtension(this.state.editTreePath, {
-      component,
-      props,
-    })
+    extension.component = component
+    extension.props = props
+
+    this.context.updateExtension(this.state.editTreePath, extension)
 
     this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
   }
