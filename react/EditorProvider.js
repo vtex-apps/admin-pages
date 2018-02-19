@@ -43,6 +43,16 @@ class EditorProvider extends Component {
     }
   }
 
+  getEditableComponents = () => {
+    return Object.keys(global.__RUNTIME__.components).filter(component => {
+      if (/EmptyExtensionPoint/.test(component)) {
+        return false
+      }
+      const Component = getImplementation(component)
+      return Component && Component.schema
+    })
+  }
+
   injectEditableExtensionPoints = (extensions) =>
     Object.keys(extensions).reduce((acc, value) => {
       const extension = extensions[value]
@@ -88,6 +98,7 @@ class EditorProvider extends Component {
     const {treePath, extensions} = this.context
     const {children, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
+    const editableComponents = this.getEditableComponents()
 
     const rootExtension = extensions[treePath]
     const component = Array.isArray(rootExtension.component) ? rootExtension.component[0] : rootExtension.component
@@ -99,7 +110,7 @@ class EditorProvider extends Component {
     return (
       <div>
         {editableChildren || clonedChildren}
-        <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />
+        {editableComponents.length > 0 && <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />}
       </div>
     )
   }
