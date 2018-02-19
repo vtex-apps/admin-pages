@@ -130,8 +130,12 @@ class ComponentEditor extends Component {
       return <span>loading</span>
     }
 
+    const componentSchema = Component.schema ? Component.schema : {
+      type: 'object',
+      properties: {},
+    }
     const schema = {
-      ...Component.schema,
+      ...componentSchema,
       properties: {
         component: {
           enum: editableComponents,
@@ -139,7 +143,7 @@ class ComponentEditor extends Component {
           title: 'Componente',
           type: 'string',
         },
-        ...Component.schema.properties,
+        ...componentSchema.properties,
       },
     }
 
