@@ -29,6 +29,7 @@ class EditorProvider extends Component {
     this.state = {
       editMode: false,
       editTreePath: null,
+      extensions: this.injectEditableExtensionPoints(context.extensions),
     }
     this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
     this.emptyExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(c))
@@ -39,22 +40,23 @@ class EditorProvider extends Component {
       editExtensionPoint: this.editExtensionPoint,
       editMode: this.state.editMode,
       editTreePath: this.state.editTreePath,
-      extensions: this.injectEditableExtensionPoints(this.context.extensions),
+      extensions: this.state.extensions,
     }
   }
 
-  getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components).filter(component => {
-      if (/EmptyExtensionPoint/.test(component)) {
-        return false
-      }
-      const Component = getImplementation(component)
-      return Component && Component.schema
+  componentWillReceiveProps() {
+    this.setState({
+      extensions: this.injectEditableExtensionPoints(this.context.extensions),
     })
   }
 
-  injectEditableExtensionPoints = (extensions) =>
-    Object.keys(extensions).reduce((acc, value) => {
+  injectEditableExtensionPoints = (extensions) => {
+    this.hasEditableExtensionPoints = false
+    return Object.keys(extensions).reduce((acc, value) => {
+      // Skip internal extension points injected for asset loading (__extensible, __empty)
+      if (/.*\/__(empty|extensible)$/.test(value)) {
+        return acc
+      }
       const extension = extensions[value]
       const Component = getImplementation(extension.component)
 
@@ -64,31 +66,29 @@ class EditorProvider extends Component {
           component: [this.emptyExtensionPointComponent, this.editableExtensionPointComponent],
           props: {},
         }
-        return acc
-      }
-
-      if (Component && Component.schema) {
+        this.hasEditableExtensionPoints = true
+      } else if (Component && Component.schema) {
         acc[value] = {
           ...extension,
           component: [extension.component, this.editableExtensionPointComponent],
         }
+        this.hasEditableExtensionPoints = true
       } else {
         acc[value] = extension
       }
       return acc
     }, {})
+  }
 
   editExtensionPoint = (treePath) => {
-    this.setState((state) => ({
-      ...state,
+    this.setState({
       editTreePath: treePath,
-    }))
+    })
   }
 
   toggleEditMode = () => {
     const {emitter} = this.context
     this.setState({
-      ...this.state,
       editMode: !this.state.editMode,
     })
     emitter.emit('extension:*:update')
@@ -98,7 +98,6 @@ class EditorProvider extends Component {
     const {treePath, extensions} = this.context
     const {children, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
-    const editableComponents = this.getEditableComponents()
 
     const rootExtension = extensions[treePath]
     const component = Array.isArray(rootExtension.component) ? rootExtension.component[0] : rootExtension.component
@@ -110,7 +109,7 @@ class EditorProvider extends Component {
     return (
       <div>
         {editableChildren || clonedChildren}
-        {editableComponents.length > 0 && <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />}
+        {this.hasEditableExtensionPoints && <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />}
       </div>
     )
   }

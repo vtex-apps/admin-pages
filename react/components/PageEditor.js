@@ -103,7 +103,6 @@ class PageEditor extends Component {
     .catch(err => {
       alert('Error saving page configuration.')
       console.log(err)
-      this.handleCancel()
     })
   }
 
