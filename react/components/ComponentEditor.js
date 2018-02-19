@@ -9,7 +9,7 @@ import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 
-function c(component) {
+function head(component) {
   return Array.isArray(component) ? component[0] : component
 }
 
@@ -58,16 +58,18 @@ class ComponentEditor extends Component {
   handleFormChange = (event) => {
     console.log('Updating props with formData...', event.formData)
     const extension = this.context.extensions[this.state.editTreePath]
-    const extensionComponent = c(extension.component)
+    const {component: selectedComponent} = event.formData
 
-    const {component: propsComponent} = event.formData
-    if (propsComponent && (extensionComponent !== propsComponent)) {
-      extension.component = Array.isArray(extensionComponent)
-        ? [propsComponent, extensionComponent[1]] : propsComponent
-    }
+    const component = Array.isArray(extension.component)
+        ? [selectedComponent, extension.component[1]]
+        : selectedComponent
+    const props = event.formData
 
-    extension.props = event.formData
-    this.context.updateExtension(this.state.editTreePath, extension)
+    this.context.updateExtension(this.state.editTreePath, {
+      component,
+      props,
+    })
+
     this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
   }
 
@@ -77,7 +79,7 @@ class ComponentEditor extends Component {
     saveExtension({
       variables: {
         extensionName: this.state.editTreePath,
-        component: c(this.state.extension.component),
+        component: head(this.state.extension.component),
         props: JSON.stringify(this.state.extension.props),
       },
     })
@@ -123,7 +125,7 @@ class ComponentEditor extends Component {
 
   render() {
     const {extension} = this.state
-    const Component = getImplementation(c(extension.component))
+    const Component = getImplementation(head(extension.component))
     const editableComponents = this.getEditableComponents()
 
     if (!Component) {
@@ -148,7 +150,7 @@ class ComponentEditor extends Component {
     }
 
     const extensionProps = {
-      component: c(extension.component),
+      component: head(extension.component),
       ...extension.props,
     }
 

@@ -107,11 +107,12 @@ class EditorProvider extends Component {
     const isEditable = Component && Component.schema
     const clonedChildren = React.cloneElement(children, parentProps)
     const editableChildren = isEditable && <EditableExtensionPoint>{clonedChildren}</EditableExtensionPoint>
+    const showEditor = this.hasEditableExtensionPoints || isEditable
 
     return (
       <div>
         {editableChildren || clonedChildren}
-        {this.hasEditableExtensionPoints && <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />}
+        {showEditor && <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />}
       </div>
     )
   }
