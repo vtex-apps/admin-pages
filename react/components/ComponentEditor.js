@@ -101,7 +101,7 @@ class ComponentEditor extends Component {
   }
 
   getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components)
+    return Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
   }
 
   subscribe = (subscribe) => {
