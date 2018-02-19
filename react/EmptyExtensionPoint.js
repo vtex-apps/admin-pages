@@ -4,8 +4,9 @@ import React, {Component} from 'react'
 class EmptyExtensionPoint extends Component {
   render() {
     return (
-      <div>
-        <h1>Este é um componente vazio!</h1>
+      <div className="ba b--silver b--dashed mv6 pv6 tc">
+        <div className="fw3 f3">This is an empty component</div>
+        <div className="fw7 f6 pt4">Click to edit it</div>
       </div>
     )
   }
