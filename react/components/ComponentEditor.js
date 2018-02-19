@@ -96,10 +96,7 @@ class ComponentEditor extends Component {
   }
 
   getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components).filter(component => {
-      const Component = getImplementation(component)
-      return Component && Component.schema
-    })
+    return Object.keys(global.__RUNTIME__.components)
   }
 
   render() {
