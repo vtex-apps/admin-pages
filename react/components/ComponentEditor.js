@@ -42,12 +42,17 @@ class ComponentEditor extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  updateState = (props = this.props) => {
     this.setState({
-      editTreePath: nextProps.editTreePath,
-      extension: this.context.extensions[nextProps.editTreePath],
-      oldPropsJSON: JSON.stringify(this.context.extensions[nextProps.editTreePath].props),
+      editTreePath: props.editTreePath,
+      extension: this.context.extensions[props.editTreePath],
+      oldPropsJSON: JSON.stringify(this.context.extensions[props.editTreePath].props),
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.subscribe(true)
+    this.updateState(nextProps)
   }
 
   handleFormChange = (event) => {
@@ -99,10 +104,31 @@ class ComponentEditor extends Component {
     return Object.keys(global.__RUNTIME__.components)
   }
 
+  subscribe = (subscribe) => {
+    const {emitter} = this.context
+    const {editTreePath} = this.props
+
+    const events = [
+      `extension:${editTreePath}:update:complete`,
+    ]
+
+    events.forEach(e => {
+      if (subscribe) {
+        emitter.addListener(e, () => this.updateState())
+      } else {
+        emitter.removeListener(e, () => this.updateState())
+      }
+    })
+  }
+
   render() {
     const {extension} = this.state
     const Component = getImplementation(c(extension.component))
     const editableComponents = this.getEditableComponents()
+
+    if (!Component) {
+      return <span>loading</span>
+    }
 
     const schema = {
       ...Component.schema,
