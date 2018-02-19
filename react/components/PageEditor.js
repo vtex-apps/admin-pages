@@ -7,6 +7,7 @@ import {Link} from 'render'
 
 import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 import SavePage from '../queries/SavePage.graphql'
+import Pages from '../queries/Pages.graphql'
 
 const schema = {
   title: 'Pagina',
@@ -85,6 +86,9 @@ class PageEditor extends Component {
     console.log('save', event, this.state)
     const {savePage} = this.props
     savePage({
+      refetchQueries: [
+        {query: Pages},
+      ],
       variables: {
         pageName: this.state.page.name,
         component: this.state.page.component,
