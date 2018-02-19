@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 
 import ComponentEditor from './components/ComponentEditor'
 
+// eslint-disable-next-line
 export default class EditBar extends Component {
   static propTypes = {
     editTreePath: PropTypes.string,

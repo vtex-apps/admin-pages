@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 
+// eslint-disable-next-line
 class EmptyExtensionPoint extends Component {
   render() {
     return (
