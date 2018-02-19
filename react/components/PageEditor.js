@@ -14,6 +14,7 @@ const scriptComponents = Object.keys(global.__RUNTIME__.components).filter(c => 
 const themes = Object.keys(global.__RUNTIME__.components).filter(c => c.endsWith('theme.css'))
 
 const schema = {
+  title: '',
   type: 'object',
   properties: {
     name: {
@@ -118,7 +119,7 @@ class PageEditor extends Component {
     }
 
     return (
-      <div className="ph5 dark-gray center mv5">
+      <div className="dark-gray center mv5">
         <Form
           schema={schema}
           formData={page}
@@ -126,7 +127,7 @@ class PageEditor extends Component {
           onSubmit={this.handleSave}
           FieldTemplate={CustomFieldTemplate}
           ObjectFieldTemplate={ObjectFieldTemplate}>
-          <div className="mt5">
+          <div className="mt7">
             <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
               Salvar
             </Button>

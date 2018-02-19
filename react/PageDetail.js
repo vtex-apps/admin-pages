@@ -35,8 +35,8 @@ class PageDetail extends Component {
     const form = <PageEditor page={page} />
 
     return (
-      <div className="mw9">
-        <h3>{page ? 'Page Detail' : 'Create Page'}</h3>
+      <div className="ph5 mw7 mr-auto ml-auto pt6">
+        <h1>{page ? 'Page Detail' : 'Create Page'}</h1>
         {form}
       </div>
     )

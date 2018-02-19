@@ -24,11 +24,15 @@ class PageList extends Component {
       <td className="pv2 ph3">
         {page.path}
       </td>
-      {page.declarer && (
-        <td className="pv2 ph3">
-          {page.declarer}
-        </td>
-      )}
+      {page.declarer
+        ? (
+          <td className="pv2 ph4">
+            {page.declarer}
+          </td>
+        )
+        : <td className="pv2 ph4">
+          </td>
+      }
       <td><a href={page.path} className="rebel-pink no-underline underline-hover ph4"><div><img src={shareIcon} /></div></a></td>
     </tr>
   )
@@ -76,6 +80,8 @@ class PageList extends Component {
               </th>
               <th className="tl f6 ttu fw6 pv2 ph3">
               </th>
+              <th className="tl f6 ttu fw6 pv2 ph3">
+              </th>
             </tr>
             {
               customPages.map(this.renderPageListEntry)
@@ -87,8 +93,8 @@ class PageList extends Component {
 
     const appsPageList = (
       <div>
-        <div className="flex justify-between items-center mb4">
-          <h1>Pages declared by installed apps</h1>
+        <div className="flex justify-between items-center mb4 pt7">
+          <h3>Pages declared by installed apps</h3>
         </div>
         <table className="collapse w-100">
           <tbody>

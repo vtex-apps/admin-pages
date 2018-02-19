@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export function ObjectFieldTemplate(props) {
   return (
-    <div className="f6 fw5">
+    <div>
       {props.properties.map(prop => prop.content)}
     </div>
   )
@@ -14,10 +14,10 @@ ObjectFieldTemplate.propTypes = {
 }
 
 export function CustomFieldTemplate(props) {
-  const {id, classNames, label, help, required, description, errors, children} = props
+  const {id, classNames, label, help, required, description, errors, children, input} = props
   return (
     <div className={classNames + ' fw5'}>
-      <label className="mb3 mt5 fw7 db" htmlFor={id}>{label}{required ? '*' : null}</label>
+      <label className="mb3 mt5 fw3 f5 db" htmlFor={id}>{label}{required ? '*' : null}</label>
       {description}
       {children}
       {errors}
