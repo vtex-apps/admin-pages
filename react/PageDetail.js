@@ -15,22 +15,29 @@ class PageDetail extends Component {
   render() {
     const {data: {loading, page: pageData} = {}, params: {name}} = this.props
 
+    if (loading) {
+      return (
+        <span>Loading...</span>
+      )
+    }
+
     const pagesJSON = pageData && pageData.pagesJSON
     const extensionsJSON = pageData && pageData.extensionsJSON
     const pages = name !== 'new' && pagesJSON && JSON.parse(pagesJSON)
     const extensions = name !== 'new' && extensionsJSON && JSON.parse(extensionsJSON)
     const page = pages && pages[name]
+
     if (page) {
       page.name = name
       page.component = extensions[name].component
     }
-    const form = !loading && <PageEditor page={page} />
+
+    const form = <PageEditor page={page} />
 
     return (
       <div className="mw9">
         <h3>{page ? 'Page Detail' : 'Create Page'}</h3>
-        {loading && 'loading'}
-        {!loading && form}
+        {form}
       </div>
     )
   }
