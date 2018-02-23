@@ -9,10 +9,6 @@ import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 
-function head(component) {
-  return Array.isArray(component) ? component[0] : component
-}
-
 const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
@@ -21,66 +17,46 @@ const uiSchema = {
 
 class ComponentEditor extends Component {
   static propTypes = {
-    editTreePath: PropTypes.any,
     saveExtension: PropTypes.any,
+    treePath: PropTypes.string,
+    component: PropTypes.string,
+    props: PropTypes.object,
   }
 
   static contextTypes = {
     editExtensionPoint: PropTypes.func,
     updateExtension: PropTypes.func,
     emitter: PropTypes.object,
-    extensions: PropTypes.object,
   }
 
   constructor(props, context) {
     super(props, context)
 
-    this.state = {
-      editTreePath: props.editTreePath,
-      extension: context.extensions[props.editTreePath],
-      oldPropsJSON: JSON.stringify(context.extensions[props.editTreePath].props),
-    }
-  }
-
-  updateState = (props = this.props) => {
-    this.setState({
-      editTreePath: props.editTreePath,
-      extension: this.context.extensions[props.editTreePath],
-      oldPropsJSON: JSON.stringify(this.context.extensions[props.editTreePath].props),
+    this.old = JSON.stringify({
+      component: props.component,
+      props: props.props,
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.subscribe(true)
-    this.updateState(nextProps)
-  }
-
   handleFormChange = (event) => {
-    console.log('Updating props with formData...', event.formData)
-    const extension = this.context.extensions[this.state.editTreePath]
-    const {component: selectedComponent} = event.formData
-
-    const component = Array.isArray(extension.component)
-        ? [selectedComponent, extension.component[1]]
-        : selectedComponent
+    console.log('Updating extension with formData...', event.formData)
+    const {component} = event.formData
     const props = event.formData
 
-    extension.component = component
-    extension.props = props
-
-    this.context.updateExtension(this.state.editTreePath, extension)
-
-    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
+    this.context.updateExtension(this.props.treePath, {
+      component,
+      props,
+    })
   }
 
   handleSave = (event) => {
-    console.log('save', event, this.state)
-    const {saveExtension} = this.props
+    console.log('save', event, this.props)
+    const {saveExtension, component, props} = this.props
     saveExtension({
       variables: {
-        extensionName: this.state.editTreePath,
-        component: head(this.state.extension.component),
-        props: JSON.stringify(this.state.extension.props),
+        extensionName: this.props.treePath,
+        component,
+        props: JSON.stringify(props),
       },
     })
     .then((data) => {
@@ -95,47 +71,30 @@ class ComponentEditor extends Component {
   }
 
   handleCancel = () => {
-    const oldProps = JSON.parse(this.state.oldPropsJSON)
-    console.log('Updating props with old props...', oldProps)
-    this.context.extensions[this.state.editTreePath].props = oldProps
-    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
+    console.log('Updating extension with saved information', this.old)
+    this.context.updateExtension(this.props.treePath, JSON.parse(this.old))
     this.context.editExtensionPoint(null)
+    delete this.old
   }
 
   getEditableComponents = () => {
     return Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
   }
 
-  subscribe = (subscribe) => {
-    const {emitter} = this.context
-    const {editTreePath} = this.props
-
-    const events = [
-      `extension:${editTreePath}:update:complete`,
-    ]
-
-    events.forEach(e => {
-      if (subscribe) {
-        emitter.addListener(e, () => this.updateState())
-      } else {
-        emitter.removeListener(e, () => this.updateState())
-      }
-    })
-  }
-
   render() {
-    const {extension} = this.state
-    const Component = getImplementation(head(extension.component))
+    const {component, props} = this.props
+    const Component = getImplementation(component)
     const editableComponents = this.getEditableComponents()
 
     if (!Component) {
-      return <span>loading</span>
+      return <span>loading...</span>
     }
 
     const componentSchema = Component.schema ? Component.schema : {
       type: 'object',
       properties: {},
     }
+
     const schema = {
       ...componentSchema,
       properties: {
@@ -150,12 +109,12 @@ class ComponentEditor extends Component {
     }
 
     const extensionProps = {
-      component: head(extension.component),
-      ...extension.props,
+      component,
+      ...props,
     }
 
     return (
-      <div className="mw6 ph5 dark-gray center mv5">
+      <div className="mw6 pa5 dark-gray center fixed z-999 bg-white" style={{top: '30px', right: '30px'}}>
         <Form
           schema={schema}
           formData={extensionProps}
