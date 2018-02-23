@@ -86,11 +86,7 @@ class ComponentEditor extends Component {
     const Component = getImplementation(component)
     const editableComponents = this.getEditableComponents()
 
-    if (!Component) {
-      return <span>loading...</span>
-    }
-
-    const componentSchema = Component.schema ? Component.schema : {
+    const componentSchema = Component && Component.schema ? Component.schema : {
       type: 'object',
       properties: {},
     }

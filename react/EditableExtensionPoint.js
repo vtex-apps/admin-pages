@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
-import {getImplementation} from './utils/components'
-
 import ComponentEditor from './components/ComponentEditor'
 
 class EditableExtensionPoint extends Component {
@@ -61,18 +59,12 @@ class EditableExtensionPoint extends Component {
     const {children, component, props, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
 
-    const Component = getImplementation(component)
-
-    if (!Component) {
-      return children || null
-    }
-
     const zIndex = treePath.split('/').length + 1
     const editableClasses = `absolute w-100 h-100 bg-blue z-${zIndex} br2 o-20 dim pointer`
     const withOverlay = (
       <div key="editable" className="relative">
         <div className={editableClasses} onClick={this.handleEditClick}></div>
-        {React.cloneElement(children, parentProps)}
+        {children && React.cloneElement(children, parentProps)}
       </div>
     )
 

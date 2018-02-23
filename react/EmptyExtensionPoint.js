@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 class EmptyExtensionPoint extends Component {
   static contextTypes = {
     editMode: PropTypes.bool,
+    emitter: PropTypes.object,
   }
 
   constructor(props, context) {
