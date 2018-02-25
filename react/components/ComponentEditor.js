@@ -70,11 +70,12 @@ class ComponentEditor extends Component {
     })
   }
 
-  handleCancel = () => {
+  handleCancel = (event) => {
     console.log('Updating extension with saved information', this.old)
     this.context.updateExtension(this.props.treePath, JSON.parse(this.old))
     this.context.editExtensionPoint(null)
     delete this.old
+    event && event.stopPropagation()
   }
 
   getEditableComponents = () => {
@@ -123,7 +124,7 @@ class ComponentEditor extends Component {
             <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
               Salvar
             </Button>
-            <Button htmlProps={{onClick: this.handleCancel}}>
+            <Button onClick={this.handleCancel}>
               Cancelar
             </Button>
           </div>
