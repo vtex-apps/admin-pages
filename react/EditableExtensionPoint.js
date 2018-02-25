@@ -9,7 +9,9 @@ class EditableExtensionPoint extends Component {
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
+    mouseOverExtensionPoint: PropTypes.func,
     treePath: PropTypes.string,
+    mouseOverTreePath: PropTypes.string,
   }
 
   static propTypes = {
@@ -23,6 +25,7 @@ class EditableExtensionPoint extends Component {
     this.state = {
       editMode: context.editMode,
       editTreePath: context.editTreePath,
+      mouseOverTreePath: context.mouseOverTreePath,
     }
   }
 
@@ -54,16 +57,22 @@ class EditableExtensionPoint extends Component {
     event.stopPropagation()
   }
 
+  handleMouseOver = (event) => {
+    this.context.mouseOverExtensionPoint(this.context.treePath)
+    event.stopPropagation()
+  }
+
   render() {
     const {treePath} = this.context
     const {children, component, props, ...parentProps} = this.props
-    const {editMode, editTreePath} = this.state
+    const {editMode, editTreePath, mouseOverTreePath} = this.state
 
     const zIndex = treePath.split('/').length + 1
-    const editableClasses = `absolute w-100 h-100 bg-blue z-${zIndex} br2 o-20 dim pointer`
+    const editableClasses = mouseOverTreePath === treePath ? 'bg-blue br2 o-20 pointer' : ''
+    const overlayClasses = `absolute w-100 h-100 z-${zIndex} ${editableClasses}`
     const withOverlay = (
-      <div key="editable" className="relative">
-        <div className={editableClasses} onClick={this.handleEditClick}></div>
+      <div key="editable" className="relative" onMouseOver={this.handleMouseOver}>
+        <div className={overlayClasses} onClick={this.handleEditClick}></div>
         {children && React.cloneElement(children, parentProps)}
       </div>
     )

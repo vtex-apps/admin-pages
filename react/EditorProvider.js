@@ -9,6 +9,7 @@ class EditorProvider extends Component {
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
+    mouseOverExtensionPoint: PropTypes.func,
   }
 
   static contextTypes = {
@@ -27,6 +28,7 @@ class EditorProvider extends Component {
     this.state = {
       editMode: false,
       editTreePath: null,
+      mouseOverTreePath: null,
     }
   }
 
@@ -34,6 +36,7 @@ class EditorProvider extends Component {
     const {emitter} = this.context
     this.setState({
       editTreePath: treePath,
+      mouseOverTreePath: null,
     }, () => emitter.emit('editor:update', this.state))
   }
 
@@ -41,6 +44,14 @@ class EditorProvider extends Component {
     const {emitter} = this.context
     this.setState({
       editMode: !this.state.editMode,
+      mouseOverTreePath: this.state.editMode ? null : this.state.mouseOverTreePath,
+    }, () => emitter.emit('editor:update', this.state))
+  }
+
+  mouseOverExtensionPoint = (treePath) => {
+    const {emitter} = this.context
+    this.setState({
+      mouseOverTreePath: treePath,
     }, () => emitter.emit('editor:update', this.state))
   }
 
@@ -64,6 +75,7 @@ class EditorProvider extends Component {
       editMode,
       editTreePath,
       editExtensionPoint: this.editExtensionPoint,
+      mouseOverExtensionPoint: this.mouseOverExtensionPoint,
     }
   }
 
