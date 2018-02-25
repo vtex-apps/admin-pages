@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 import EditToggle from './components/EditToggle'
+import {getImplementation} from './utils/components'
 
 class EditorProvider extends Component {
   static childContextTypes = {
@@ -44,8 +45,16 @@ class EditorProvider extends Component {
   }
 
   hasEditableExtensionPoints = (extensions) => {
-    console.log('TODO: implement hasEditableExtensionPoints', extensions)
-    return true
+    return Object.keys(extensions).find((k) => {
+      // Skip internal extension points injected for asset loading
+      if (/.*\/__(empty|editable|provider)$/.test(k)) {
+        return false
+      }
+      const extension = extensions[k]
+      const Component = getImplementation(extension.component)
+      return (extension.component === null) ||
+        (Component && Component.schema)
+    }) !== undefined
   }
 
   getChildContext() {
