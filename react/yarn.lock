@@ -2,9 +2,11 @@
 # yarn lockfile v1
 
 
-"@vtex/styleguide@^2.0.0-rc.2":
-  version "2.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/@vtex/styleguide/-/styleguide-2.0.0-rc.2.tgz#6d8ed814857b60ffb07852f2c4188afc18b55ea3"
+"@vtex/styleguide@^2.0.0-rc.13":
+  version "2.0.0-rc.13"
+  resolved "https://registry.yarnpkg.com/@vtex/styleguide/-/styleguide-2.0.0-rc.13.tgz#d32de1645f6f33bc2139194a7f7c91de88717177"
+  dependencies:
+    vtex-tachyons "^1.0.3"
 
 ajv@^5.2.3:
   version "5.5.2"
@@ -131,6 +133,10 @@ setimmediate@^1.0.5:
 ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
+
+vtex-tachyons@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/vtex-tachyons/-/vtex-tachyons-1.0.3.tgz#470eccd93335ee19470e606ef2469d071fb45475"
 
 whatwg-fetch@>=0.10.0:
   version "2.0.3"
