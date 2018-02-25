@@ -4,15 +4,21 @@ import {graphql} from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 
-import {getImplementation} from '../utils/components'
-import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
-
 import SaveExtension from '../queries/SaveExtension.graphql'
+import {getImplementation} from '../utils/components'
+
+import BaseInput from './form/BaseInput'
+import FieldTemplate from './form/FieldTemplate'
+import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
 const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
   },
+}
+
+const widgets = {
+  BaseInput,
 }
 
 class ComponentEditor extends Component {
@@ -117,9 +123,10 @@ class ComponentEditor extends Component {
           formData={extensionProps}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
-          FieldTemplate={CustomFieldTemplate}
+          FieldTemplate={FieldTemplate}
           ObjectFieldTemplate={ObjectFieldTemplate}
-          uiSchema={uiSchema}>
+          uiSchema={uiSchema}
+          widgets={widgets}>
           <div className="mt5">
             <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
               Salvar

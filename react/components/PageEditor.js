@@ -5,13 +5,20 @@ import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 import {Link} from 'render'
 
-import {ObjectFieldTemplate, CustomFieldTemplate} from '../utils/formExtensions'
 import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'
+
+import BaseInput from './form/BaseInput'
+import FieldTemplate from './form/FieldTemplate'
+import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
 const scriptComponents = Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
 
 const themes = Object.keys(global.__RUNTIME__.components).filter(c => c.endsWith('theme.css'))
+
+const widgets = {
+  BaseInput,
+}
 
 const schema = {
   title: '',
@@ -125,8 +132,9 @@ class PageEditor extends Component {
           formData={page}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
-          FieldTemplate={CustomFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}>
+          FieldTemplate={FieldTemplate}
+          ObjectFieldTemplate={ObjectFieldTemplate}
+          widgets={widgets}>
           <div className="mt7">
             <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
               Salvar

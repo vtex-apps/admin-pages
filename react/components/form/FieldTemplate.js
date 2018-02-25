@@ -1,20 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-export function ObjectFieldTemplate(props) {
-  return (
-    <div>
-      {props.properties.map(prop => prop.content)}
-    </div>
-  )
-}
-
-ObjectFieldTemplate.propTypes = {
-  properties: PropTypes.array,
-}
-
-export function CustomFieldTemplate(props) {
-  const {id, classNames, label, help, required, description, errors, children, input} = props
+export default function FieldTemplate(props) {
+  const {id, classNames, label, help, required, description, errors, children} = props
   return (
     <div className={classNames + ' fw5'}>
       <label className="mb3 mt5 fw3 f5 db" htmlFor={id}>{label}{required ? '*' : null}</label>
@@ -26,7 +14,7 @@ export function CustomFieldTemplate(props) {
   )
 }
 
-CustomFieldTemplate.propTypes = {
+FieldTemplate.propTypes = {
   id: PropTypes.string,
   classNames: PropTypes.string,
   label: PropTypes.string,
