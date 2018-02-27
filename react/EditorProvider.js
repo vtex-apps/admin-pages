@@ -1,8 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {ExtensionPoint} from 'render'
 
-import EditableExtensionPoint from './EditableExtensionPoint'
+import EditToggle from './components/EditToggle'
 import {getImplementation} from './utils/components'
 
 class EditorProvider extends Component {
@@ -10,98 +9,88 @@ class EditorProvider extends Component {
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
-    extensions: PropTypes.object,
+    mouseOverExtensionPoint: PropTypes.func,
   }
 
   static contextTypes = {
     components: PropTypes.object,
-    extensions: PropTypes.object,
     emitter: PropTypes.object,
-    treePath: PropTypes.string,
   }
 
   static propTypes = {
     children: PropTypes.element.isRequired,
+    extensions: PropTypes.object,
   }
 
   constructor(props, context) {
     super(props, context)
+
     this.state = {
       editMode: false,
       editTreePath: null,
-    }
-    this.editableExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EditableExtensionPoint/.test(c))
-    this.emptyExtensionPointComponent = Object.keys(context.components).find(c => /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(c))
-  }
-
-  getChildContext() {
-    return {
-      editExtensionPoint: this.editExtensionPoint,
-      editMode: this.state.editMode,
-      editTreePath: this.state.editTreePath,
-      extensions: this.injectEditableExtensionPoints(this.context.extensions),
+      mouseOverTreePath: null,
     }
   }
-
-  injectEditableExtensionPoints = (extensions) =>
-    Object.keys(extensions).reduce((acc, value) => {
-      const extension = extensions[value]
-      const Component = getImplementation(extension.component)
-
-      if (extension.component === null) {
-        acc[value] = {
-          ...extension,
-          component: [this.emptyExtensionPointComponent, this.editableExtensionPointComponent],
-          props: {},
-        }
-        return acc
-      }
-
-      if (Component && Component.schema) {
-        acc[value] = {
-          ...extension,
-          component: [extension.component, this.editableExtensionPointComponent],
-        }
-      } else {
-        acc[value] = extension
-      }
-      return acc
-    }, {})
 
   editExtensionPoint = (treePath) => {
-    this.setState((state) => ({
-      ...state,
+    const {emitter} = this.context
+    this.setState({
       editTreePath: treePath,
-    }))
+      mouseOverTreePath: null,
+    }, () => emitter.emit('editor:update', this.state))
   }
 
   toggleEditMode = () => {
     const {emitter} = this.context
     this.setState({
-      ...this.state,
       editMode: !this.state.editMode,
-    })
-    emitter.emit('extension:*:update')
+      mouseOverTreePath: this.state.editMode ? null : this.state.mouseOverTreePath,
+    }, () => emitter.emit('editor:update', this.state))
+  }
+
+  mouseOverExtensionPoint = (treePath) => {
+    const {emitter} = this.context
+    this.setState({
+      mouseOverTreePath: treePath,
+    }, () => emitter.emit('editor:update', this.state))
+  }
+
+  hasEditableExtensionPoints = (extensions) => {
+    return Object.keys(extensions).find((k) => {
+      // Skip internal extension points injected for asset loading
+      if (/.*\/__(empty|editable|provider)$/.test(k)) {
+        return false
+      }
+      const extension = extensions[k]
+      const Component = getImplementation(extension.component)
+      return (extension.component === null) ||
+        (Component && Component.schema)
+    }) !== undefined
+  }
+
+  getChildContext() {
+    const {editMode, editTreePath} = this.state
+
+    return {
+      editMode,
+      editTreePath,
+      editExtensionPoint: this.editExtensionPoint,
+      mouseOverExtensionPoint: this.mouseOverExtensionPoint,
+    }
   }
 
   render() {
-    const {treePath, extensions} = this.context
-    const {children, ...parentProps} = this.props
+    const {children, extensions, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
 
-    const rootExtension = extensions[treePath]
-    const component = Array.isArray(rootExtension.component) ? rootExtension.component[0] : rootExtension.component
-    const Component = getImplementation(component)
-    const isEditable = Component && Component.schema
-    const clonedChildren = React.cloneElement(children, parentProps)
-    const editableChildren = isEditable && <EditableExtensionPoint>{clonedChildren}</EditableExtensionPoint>
+    const clonedChildren = React.cloneElement(children, {key: 'editor-provider-children', ...parentProps})
+    const showEditor = this.hasEditableExtensionPoints(extensions)
+    const elements = [clonedChildren]
+    if (showEditor) {
+      elements.push(<EditToggle key="toggle" editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} />)
+    }
 
-    return (
-      <div>
-        {editableChildren || clonedChildren}
-        <ExtensionPoint id="editor" toggleEditMode={this.toggleEditMode} editMode={editMode} editTreePath={editTreePath} />
-      </div>
-    )
+    return elements
   }
 }
 

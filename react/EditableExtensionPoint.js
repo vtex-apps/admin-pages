@@ -1,16 +1,54 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
+import ComponentEditor from './components/ComponentEditor'
+
 class EditableExtensionPoint extends Component {
   static contextTypes = {
-    editExtensionPoint: PropTypes.func,
+    emitter: PropTypes.object,
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
+    editExtensionPoint: PropTypes.func,
+    mouseOverExtensionPoint: PropTypes.func,
     treePath: PropTypes.string,
+    mouseOverTreePath: PropTypes.string,
   }
 
   static propTypes = {
     children: PropTypes.node,
+    component: PropTypes.string,
+    props: PropTypes.object,
+  }
+
+  constructor(props, context) {
+    super(props, context)
+    this.state = {
+      editMode: context.editMode,
+      editTreePath: context.editTreePath,
+      mouseOverTreePath: context.mouseOverTreePath,
+    }
+  }
+
+  update = (state) => {
+    this.setState(state)
+  }
+
+  subscribeToEditor = () => {
+    const {emitter} = this.context
+    emitter.addListener('editor:update', this.update)
+  }
+
+  unsubscribeToEditor = () => {
+    const {emitter} = this.context
+    emitter.removeListener('editor:update', this.update)
+  }
+
+  componentDidMount() {
+    this.subscribeToEditor()
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeToEditor()
   }
 
   handleEditClick = (event) => {
@@ -19,21 +57,30 @@ class EditableExtensionPoint extends Component {
     event.stopPropagation()
   }
 
+  handleMouseOver = (event) => {
+    this.context.mouseOverExtensionPoint(this.context.treePath)
+    event.stopPropagation()
+  }
+
   render() {
-    const {editMode, editTreePath, treePath} = this.context
-    const {children, ...parentProps} = this.props
+    const {treePath} = this.context
+    const {children, component, props, ...parentProps} = this.props
+    const {editMode, editTreePath, mouseOverTreePath} = this.state
 
-    const editable = !editTreePath && editMode
-    const className = editable ? 'relative' : ''
     const zIndex = treePath.split('/').length + 1
-    const editableClasses = `absolute w-100 h-100 bg-blue z-${zIndex} br2 o-20 dim pointer`
-
-    return (
-      <div className={className}>
-        {editable && <div className={editableClasses} onClick={this.handleEditClick}></div>}
-        {React.cloneElement(children, parentProps)}
+    const editableClasses = mouseOverTreePath === treePath ? 'bg-blue br2 o-20 pointer' : ''
+    const overlayClasses = `absolute w-100 h-100 z-${zIndex} ${editableClasses}`
+    const withOverlay = (
+      <div key="editable" className="relative" onMouseOver={this.handleMouseOver}>
+        <div className={overlayClasses} onClick={this.handleEditClick}></div>
+        {children && React.cloneElement(children, parentProps)}
       </div>
     )
+
+    return [
+      ...(editMode && !editTreePath ? [withOverlay] : [children]),
+      ...(editTreePath === treePath ? [<ComponentEditor key="editor" component={component} props={props} treePath={treePath} />] : []),
+    ]
   }
 }
 

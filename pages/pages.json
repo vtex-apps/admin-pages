@@ -1,0 +1,18 @@
+{
+  "pages": {
+    "admin/pages": {
+      "path": "/admin/pages"
+    },
+    "admin/pages/detail": {
+      "path": "/admin/pages/page/*name"
+    }
+  },
+  "extensions": {
+    "admin/pages": {
+      "component": "PageList"
+    },
+    "admin/pages/detail": {
+      "component": "PageDetail"
+    }
+  }
+}

@@ -4,34 +4,12 @@ import {graphql} from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 
+import SaveExtension from '../queries/SaveExtension.graphql'
 import {getImplementation} from '../utils/components'
 
-import SaveExtension from './SaveExtension.graphql'
-
-function c(component) {
-  return Array.isArray(component) ? component[0] : component
-}
-
-function ObjectFieldTemplate(props) {
-  return (
-    <div className="f6 fw5">
-      {props.properties.map(prop => prop.content)}
-    </div>
-  )
-}
-
-function CustomFieldTemplate(props) {
-  const {id, classNames, label, help, required, description, errors, children} = props
-  return (
-    <div className={classNames + ' fw5'}>
-      <label className="mb3 mt5 fw7 db" htmlFor={id}>{label}{required ? '*' : null}</label>
-      {description}
-      {children}
-      {errors}
-      {help}
-    </div>
-  )
-}
+import BaseInput from './form/BaseInput'
+import FieldTemplate from './form/FieldTemplate'
+import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
 const uiSchema = {
   'titleColor': {
@@ -39,45 +17,52 @@ const uiSchema = {
   },
 }
 
+const widgets = {
+  BaseInput,
+}
+
 class ComponentEditor extends Component {
   static propTypes = {
-    editTreePath: PropTypes.any,
     saveExtension: PropTypes.any,
+    treePath: PropTypes.string,
+    component: PropTypes.string,
+    props: PropTypes.object,
   }
 
   static contextTypes = {
     editExtensionPoint: PropTypes.func,
     updateExtension: PropTypes.func,
     emitter: PropTypes.object,
-    extensions: PropTypes.object,
   }
 
   constructor(props, context) {
     super(props, context)
 
-    this.state = {
-      editTreePath: props.editTreePath,
-      extension: context.extensions[props.editTreePath],
-      oldPropsJSON: JSON.stringify(context.extensions[props.editTreePath].props),
-    }
+    this.old = JSON.stringify({
+      component: props.component,
+      props: props.props,
+    })
   }
 
   handleFormChange = (event) => {
-    console.log('Updating props with formData...', event.formData)
-    const extension = this.context.extensions[this.state.editTreePath]
-    extension.props = event.formData
-    this.context.updateExtension(this.state.editTreePath, extension)
-    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
+    console.log('Updating extension with formData...', event.formData)
+    const {component} = event.formData
+    const props = event.formData
+
+    this.context.updateExtension(this.props.treePath, {
+      component,
+      props,
+    })
   }
 
   handleSave = (event) => {
-    console.log('save', event, this.state)
-    const {saveExtension} = this.props
+    console.log('save', event, this.props)
+    const {saveExtension, component, props} = this.props
     saveExtension({
       variables: {
-        extensionName: this.state.editTreePath,
-        component: c(this.state.extension.component),
-        props: JSON.stringify(this.state.extension.props),
+        extensionName: this.props.treePath,
+        component,
+        props: JSON.stringify(props),
       },
     })
     .then((data) => {
@@ -91,33 +76,62 @@ class ComponentEditor extends Component {
     })
   }
 
-  handleCancel = () => {
-    const oldProps = JSON.parse(this.state.oldPropsJSON)
-    console.log('Updating props with old props...', oldProps)
-    this.context.extensions[this.state.editTreePath].props = oldProps
-    this.context.emitter.emit(`extension:${this.state.editTreePath}:update`)
+  handleCancel = (event) => {
+    console.log('Updating extension with saved information', this.old)
+    this.context.updateExtension(this.props.treePath, JSON.parse(this.old))
     this.context.editExtensionPoint(null)
+    delete this.old
+    event && event.stopPropagation()
+  }
+
+  getEditableComponents = () => {
+    return Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
   }
 
   render() {
-    const {extension} = this.state
-    const Component = getImplementation(c(extension.component))
+    const {component, props} = this.props
+    const Component = getImplementation(component)
+    const editableComponents = this.getEditableComponents()
+
+    const componentSchema = Component && Component.schema ? Component.schema : {
+      type: 'object',
+      properties: {},
+    }
+
+    const schema = {
+      ...componentSchema,
+      properties: {
+        component: {
+          enum: editableComponents,
+          enumNames: editableComponents,
+          title: 'Componente',
+          type: 'string',
+        },
+        ...componentSchema.properties,
+      },
+    }
+
+    const extensionProps = {
+      component,
+      ...props,
+    }
 
     return (
-      <div className="mw6 ph5 dark-gray center mv5">
+      <div className="mw6 pa5 dark-gray center fixed z-999 bg-white" style={{top: '30px', right: '30px'}}>
         <Form
-          schema={Component.schema}
-          formData={extension.props}
+          schema={schema}
+          formData={extensionProps}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
-          FieldTemplate={CustomFieldTemplate}
+          FieldTemplate={FieldTemplate}
           ObjectFieldTemplate={ObjectFieldTemplate}
-          uiSchema={uiSchema}>
+          uiSchema={uiSchema}
+          widgets={widgets}>
           <div className="mt5">
             <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
               Salvar
             </Button>
-            <Button htmlProps={{onClick: this.handleCancel}}>
+            <Button onClick={this.handleCancel}>
               Cancelar
             </Button>
           </div>
