@@ -20,6 +20,8 @@ class EditorProvider extends Component {
   static propTypes = {
     children: PropTypes.element.isRequired,
     extensions: PropTypes.object,
+    pages: PropTypes.object,
+    page: PropTypes.string,
   }
 
   constructor(props, context) {
@@ -80,14 +82,14 @@ class EditorProvider extends Component {
   }
 
   render() {
-    const {children, extensions, ...parentProps} = this.props
+    const {children, extensions, page, ...parentProps} = this.props
     const {editMode, editTreePath} = this.state
 
     const clonedChildren = React.cloneElement(children, {key: 'editor-provider-children', ...parentProps})
     const showEditor = this.hasEditableExtensionPoints(extensions)
     const elements = [clonedChildren]
     if (showEditor) {
-      elements.push(<EditToggle key="toggle" editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} />)
+      elements.push(<EditToggle key="toggle" editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} page={page} />)
     }
 
     return elements
