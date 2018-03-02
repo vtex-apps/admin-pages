@@ -21,8 +21,13 @@ export default class EditToggle extends Component {
     const {editTreePath, editMode, page} = this.props
     return (
       <div className="fixed z-999 shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0">
-        <div className="f5 self-center">
-          page: {page} {editTreePath ? `editing: ${editTreePath}` : ''}
+        <div>
+          <div className="f5 fw5 self-center ttu">
+            {page}
+          </div>
+          <div className="f7 fw3 ttu pt2">
+            {editTreePath ? `editing: ${editTreePath}` : 'click a component to start editing it'}
+          </div>
         </div>
         <div className="flex items-center">
           <label htmlFor="toggle1" className="pr4 pl2">Edit Mode</label>
