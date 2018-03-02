@@ -11,14 +11,14 @@ import BaseInput from './form/BaseInput'
 import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
-import Draggable from 'react-draggable';
+import Draggable from 'react-draggable'
 
 const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
   },
   'description': {
-    classNames: "bg-blue",
+    classNames: 'bg-blue',
   },
 }
 
@@ -147,7 +147,7 @@ class ComponentEditor extends Component {
             </Form>
           </div>
         </div>
-        <Draggable>
+        <Draggable handle=".form-group>label">
           <div className="dn di-ns mw6 pa5 center fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move">
             <Form
               schema={schema}

@@ -13,7 +13,7 @@ body,button,input,optgroup,select,textarea,span,h1,h2,h3,h4,p1 {
   border: 1px solid #c4c8cc;
 }
 
-.move {
+.form-group>label {
   cursor: move;
 }
 
