@@ -11,6 +11,7 @@ export default class EditToggle extends Component {
     editMode: PropTypes.bool,
     toggleEditMode: PropTypes.func,
     page: PropTypes.string,
+    hasEditableExtensionPoints: PropTypes.bool,
   }
 
   handleClick = () => {
@@ -18,7 +19,7 @@ export default class EditToggle extends Component {
   }
 
   render() {
-    const {editTreePath, editMode, page} = this.props
+    const {editTreePath, editMode, page, hasEditableExtensionPoints} = this.props
     return (
       <div className="fixed z-999 shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0">
         <div>
@@ -26,12 +27,16 @@ export default class EditToggle extends Component {
             {page}
           </div>
           <div className="f7 fw3 ttu pt2">
-            {editTreePath ? `editing: ${editTreePath}` : 'click a component to start editing it'}
+            {editTreePath
+              ? `editing: ${editTreePath}`
+              : editMode
+                ? 'click a component to start editing it'
+                : ''}
           </div>
         </div>
         <div className="flex items-center">
           <label htmlFor="toggle1" className="pr4 pl2">Edit Mode</label>
-          <Toggle id="toggle1" checked={editMode} onClick={this.handleClick} />
+          <Toggle id="toggle1" disabled={!hasEditableExtensionPoints} checked={editMode} onClick={this.handleClick} />
         </div>
       </div>
     )
