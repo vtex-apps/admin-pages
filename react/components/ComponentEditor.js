@@ -11,9 +11,14 @@ import BaseInput from './form/BaseInput'
 import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
+import Draggable from 'react-draggable'
+
 const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
+  },
+  'description': {
+    classNames: 'bg-blue',
   },
 }
 
@@ -117,25 +122,55 @@ class ComponentEditor extends Component {
     }
 
     return (
-      <div className="mw6 pa5 dark-gray center fixed z-999 bg-white" style={{top: '30px', right: '30px'}}>
-        <Form
-          schema={schema}
-          formData={extensionProps}
-          onChange={this.handleFormChange}
-          onSubmit={this.handleSave}
-          FieldTemplate={FieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          uiSchema={uiSchema}
-          widgets={widgets}>
-          <div className="mt5">
-            <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
-              Salvar
-            </Button>
-            <Button onClick={this.handleCancel}>
-              Cancelar
-            </Button>
+      <div className="w-100">
+        <div className="ph5 pb5 center fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns vh-50 overflow-scroll bt b--light-silver">
+          <div className="pt4 pb9">
+            <Form
+              schema={schema}
+              formData={extensionProps}
+              onChange={this.handleFormChange}
+              onSubmit={this.handleSave}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              uiSchema={uiSchema}
+              widgets={widgets}>
+              <div className="fixed bg-near-white w-100 pv4 bottom-0 left-0 pl5 flex bt b--light-silver">
+                <div className="mr4">
+                  <Button htmlProps={{type: 'submit'}} primary>
+                    Salvar
+                  </Button>
+                </div>
+                <button className="fw5 ttu br2 fw4 f7 pv3 ph5 blue bg-near-white pointer bn" onClick={this.handleCancel}>
+                  Cancelar
+                </button>
+              </div>
+            </Form>
           </div>
-        </Form>
+        </div>
+        <Draggable handle=".form-group>label">
+          <div className="dn di-ns mw6 pa5 center br3 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated fadeIn" style={{animationDuration: '0.2s'}}>
+            <Form
+              schema={schema}
+              formData={extensionProps}
+              onChange={this.handleFormChange}
+              onSubmit={this.handleSave}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              uiSchema={uiSchema}
+              widgets={widgets}>
+              <div className="flex mt5">
+                <div className="mr4">
+                  <Button htmlProps={{type: 'submit'}} primary>
+                    Salvar
+                  </Button>
+                </div>
+                <Button onClick={this.handleCancel}>
+                  Cancelar
+                </Button>
+              </div>
+            </Form>
+          </div>
+        </Draggable>
       </div>
     )
   }
