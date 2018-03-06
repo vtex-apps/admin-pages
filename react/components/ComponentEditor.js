@@ -49,6 +49,14 @@ class ComponentEditor extends Component {
     })
   }
 
+  componentDidMount() {
+    this._isMounted = true
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
     const {component} = event.formData
@@ -148,7 +156,7 @@ class ComponentEditor extends Component {
           </div>
         </div>
         <Draggable handle=".form-group>label">
-          <div className="dn di-ns mw6 pa5 center br3 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated fadeIn" style={{animationDuration: '0.2s'}}>
+          <div className={`dn di-ns mw6 pa5 center br3 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated ${this._isMounted ? '' : 'fadeIn'}`} style={{animationDuration: '0.2s'}}>
             <Form
               schema={schema}
               formData={extensionProps}
