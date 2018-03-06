@@ -22,3 +22,8 @@ body,button,input,optgroup,select,textarea,span,h1,h2,h3,h4,p1 {
     padding-top: 64px;
   }
 }
+
+.build-status {
+  top: 2rem !important;
+  margin-top: 4rem !important;
+}
