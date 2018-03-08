@@ -82,16 +82,15 @@ class EditorProvider extends Component {
   }
 
   render() {
-    const {children, extensions, page, ...parentProps} = this.props
+    const {children, extensions, page} = this.props
     const {editMode, editTreePath} = this.state
 
-    const clonedChildren = React.cloneElement(children, {key: 'editor-provider-children', ...parentProps})
     const hasEditableExtensionPoints = this.hasEditableExtensionPoints(extensions)
 
     return (
       <Fragment>
         <EditToggle hasEditableExtensionPoints={hasEditableExtensionPoints} editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} page={page} />
-        {clonedChildren}
+        {children}
       </Fragment>
     )
   }
