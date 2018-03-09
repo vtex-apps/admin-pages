@@ -130,8 +130,8 @@ class ComponentEditor extends Component {
     }
 
     return (
-      <div className="w-100">
-        <div className="ph5 pb5 center fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns vh-50 overflow-scroll bt b--light-silver">
+      <div className="w-100 near-black">
+        <div className="ph5 pb5 center fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns vh-50 overflow-scroll bt b--light-silver animated slideInUp" style={{animationDuration: '0.2s'}}>
           <div className="pt4 pb9">
             <Form
               schema={schema}

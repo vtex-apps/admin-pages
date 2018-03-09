@@ -1,6 +1,7 @@
 import Toggle from '@vtex/styleguide/lib/Toggle'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import pageIcon from '../images/single.svg'
 
 import '../theme.css'
 
@@ -21,17 +22,22 @@ export default class EditToggle extends Component {
   render() {
     const {editTreePath, editMode, page, hasEditableExtensionPoints} = this.props
     return (
-      <div className="fixed shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0">
-        <div>
-          <div className="f5 fw5 self-center ttu">
-            {page}
+      <div className="fixed shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0 z-max near-black">
+        <div className="flex">
+          <div className="flex items-center pr3">
+            <img width={28} src={pageIcon} />
           </div>
-          <div className="f7 fw3 ttu pt2">
-            {editTreePath
-              ? `editing: ${editTreePath}`
-              : editMode
-                ? 'click a component to start editing it'
-                : ''}
+          <div className="flex items-center di-ns">
+            <div className="f5-ns f7 fw5 ttu">
+              {page}
+            </div>
+            <div className="f7 fw3 ttu pt2 truncate dn di-ns">
+              {editTreePath
+                ? `editing: ${editTreePath}`
+                : editMode
+                  ? 'click a component to edit it'
+                  : 'Enable edit mode to start editing'}
+            </div>
           </div>
         </div>
         <div className="flex items-center">
