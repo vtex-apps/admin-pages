@@ -117,7 +117,7 @@ class ComponentEditor extends Component {
         component: {
           enum: editableComponents,
           enumNames: editableComponents,
-          title: 'Componente',
+          title: 'Component',
           type: 'string',
         },
         ...componentSchema.properties,
@@ -145,11 +145,11 @@ class ComponentEditor extends Component {
               <div className="fixed bg-near-white w-100 pv4 bottom-0 left-0 pl5 flex bt b--light-silver">
                 <div className="mr4">
                   <Button htmlProps={{type: 'submit'}} primary>
-                    Salvar
+                    Save
                   </Button>
                 </div>
                 <button className="fw5 ttu br2 fw4 f7 pv3 ph5 blue bg-near-white pointer bn" onClick={this.handleCancel}>
-                  Cancelar
+                  Cancel
                 </button>
               </div>
             </Form>
@@ -169,11 +169,11 @@ class ComponentEditor extends Component {
               <div className="flex mt5">
                 <div className="mr4">
                   <Button htmlProps={{type: 'submit'}} primary>
-                    Salvar
+                    Save
                   </Button>
                 </div>
                 <Button onClick={this.handleCancel}>
-                  Cancelar
+                  Cancel
                 </Button>
               </div>
             </Form>
