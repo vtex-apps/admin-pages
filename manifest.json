@@ -9,7 +9,6 @@
     "react": "2.x"
   },
   "dependencies": {
-    "vtex.admins-app": "1.x",
     "vtex.pages-graphql": "1.x"
   },
   "mustUpdateAt": "2018-09-05",

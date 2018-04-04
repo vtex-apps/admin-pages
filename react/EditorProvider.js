@@ -1,8 +1,8 @@
-import React, {Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
-import EditToggle from './components/EditToggle'
-import {getImplementation} from './utils/components'
+import { ExtensionPoint } from 'render'
+import { getImplementation } from './utils/components'
 
 class EditorProvider extends Component {
   static childContextTypes = {
@@ -35,7 +35,7 @@ class EditorProvider extends Component {
   }
 
   editExtensionPoint = (treePath) => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     this.setState({
       editTreePath: treePath,
       mouseOverTreePath: null,
@@ -43,7 +43,7 @@ class EditorProvider extends Component {
   }
 
   toggleEditMode = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     this.setState({
       editMode: !this.state.editMode,
       mouseOverTreePath: this.state.editMode ? null : this.state.mouseOverTreePath,
@@ -51,7 +51,7 @@ class EditorProvider extends Component {
   }
 
   mouseOverExtensionPoint = (treePath) => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     this.setState({
       mouseOverTreePath: treePath,
     }, () => emitter.emit('editor:update', this.state))
@@ -71,7 +71,7 @@ class EditorProvider extends Component {
   }
 
   getChildContext() {
-    const {editMode, editTreePath} = this.state
+    const { editMode, editTreePath } = this.state
 
     return {
       editMode,
@@ -82,14 +82,22 @@ class EditorProvider extends Component {
   }
 
   render() {
-    const {children, extensions, page} = this.props
-    const {editMode, editTreePath} = this.state
+    const { children, extensions, page } = this.props
+    const { editMode, editTreePath } = this.state
+    const root = page.split('/')[0]
 
     const hasEditableExtensionPoints = this.hasEditableExtensionPoints(extensions)
+    const isAdmin = root === 'admin'
 
     return (
       <Fragment>
-        <EditToggle hasEditableExtensionPoints={hasEditableExtensionPoints} editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} page={page} />
+        {!isAdmin && <ExtensionPoint
+          id={`${root}/__topbar`}
+          hasEditableExtensionPoints={hasEditableExtensionPoints}
+          editMode={editMode}
+          editTreePath={editTreePath}
+          toggleEditMode={this.toggleEditMode}
+          page={page} />}
         {children}
       </Fragment>
     )
