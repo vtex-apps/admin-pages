@@ -22,7 +22,7 @@ export default class EditToggle extends Component {
   render() {
     const {editTreePath, editMode, page, hasEditableExtensionPoints} = this.props
     return (
-      <div className="fixed shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0 z-max near-black">
+      <div className="fixed shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0 left-0 z-max near-black">
         <div className="flex">
           <div className="flex items-center pr3">
             <img width={28} src={pageIcon} />

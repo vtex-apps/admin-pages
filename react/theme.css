@@ -4,7 +4,13 @@ body,button,input,optgroup,select,textarea,span,h1,h2,h3,h4,p1 {
 }
 
 #render-container {
-  padding-top: 48px;
+  padding: 54px 5px 5px 5px;
+  background-color: #F7F9FA;
+}
+
+#render-provider {
+  border: 2px solid #E3E4E6;
+  background-color: white;
 }
 
 .form-control {
