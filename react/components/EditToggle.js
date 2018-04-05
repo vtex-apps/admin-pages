@@ -1,7 +1,7 @@
-import Toggle from '@vtex/styleguide/lib/Toggle'
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import pageIcon from '../images/single.svg'
+import editIcon from '../images/pen-01.svg'
 
 import '../theme.css'
 
@@ -22,28 +22,36 @@ export default class EditToggle extends Component {
   render() {
     const {editTreePath, editMode, page, hasEditableExtensionPoints} = this.props
     return (
-      <div className="fixed shadow-4 bg-white flex justify-between w-100 pv3 ph3 pv5-ns ph5-ns top-0 left-0 z-max near-black">
-        <div className="flex">
-          <div className="flex items-center pr3">
-            <img width={28} src={pageIcon} />
-          </div>
-          <div className="flex items-center di-ns">
-            <div className="f5-ns f7 fw5 ttu">
-              {page}
+      <div className="fixed top-0 left-0 z-max shadow-5 w-100 bg-white">
+        {editMode
+          ?
+          <div className="flex items-center justify-between pv3 ph5">
+            <div className="flex items-center">
+              <div className="flex items-center">
+                <img src={pageIcon} width={23} />
+              </div>
+              <div className="pl3">
+                <div className="f7 fw5 ttu pt1">
+                  {page}
+                </div>
+                <div className="f7 fw3 truncate pt1 pb1">
+                  {editTreePath
+                    ? `editing: ${editTreePath}`
+                    : editMode
+                      ? 'Click a component to edit it'
+                      : ''}
+                </div>
+              </div>
             </div>
-            <div className="f7 fw3 ttu pt2 truncate dn di-ns">
-              {editTreePath
-                ? `editing: ${editTreePath}`
-                : editMode
-                  ? 'click a component to edit it'
-                  : 'Enable edit mode to start editing'}
-            </div>
+            <button onClick={this.handleClick} className="blue pr0">
+              DONE
+            </button>
           </div>
-        </div>
-        <div className="flex items-center">
-          <label htmlFor="toggle1" className="pr4 pl2">Edit Mode</label>
-          <Toggle id="toggle1" disabled={!hasEditableExtensionPoints} checked={editMode} onClick={this.handleClick} />
-        </div>
+          :
+          <button onClick={this.handleClick} className="bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns" style={{ height: '56px', width: '56px' }}>
+            <img src={editIcon} />
+          </button>
+        }
       </div>
     )
   }
