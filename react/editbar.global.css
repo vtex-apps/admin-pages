@@ -1,14 +1,9 @@
-@import url(//io.vtex.com.br/fonts/fabriga/stylesheet.css);
-body,button,input,optgroup,select,textarea,span,h1,h2,h3,h4,p1 {
-  font-family: Fabriga,-apple-system,BlinkMacSystemFont,avenir next,avenir,helvetica neue,helvetica,ubuntu,roboto,noto,segoe ui,arial,sans-serif
-}
-
-#render-container {
+#render-container.edit-mode {
   padding: 54px 5px 5px 5px;
   background-color: #F7F9FA;
 }
 
-#render-provider {
+#render-container.edit-mode #render-provider {
   border: 2px solid #E3E4E6;
   background-color: white;
 }

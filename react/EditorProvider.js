@@ -1,8 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-
 import { ExtensionPoint } from 'render'
+
+import editIcon from './images/pen-01.svg'
+
 import { getImplementation } from './utils/components'
+import EditBar from './components/EditBar'
 
 class EditorProvider extends Component {
   static childContextTypes = {
@@ -42,7 +45,7 @@ class EditorProvider extends Component {
     }, () => emitter.emit('editor:update', this.state))
   }
 
-  toggleEditMode = () => {
+  handleToggleEditMode = () => {
     const { emitter } = this.context
     this.setState({
       editMode: !this.state.editMode,
@@ -82,22 +85,39 @@ class EditorProvider extends Component {
   }
 
   render() {
-    const { children, extensions, page } = this.props
+    const { children, page } = this.props
     const { editMode, editTreePath } = this.state
     const root = page.split('/')[0]
 
-    const hasEditableExtensionPoints = this.hasEditableExtensionPoints(extensions)
     const isAdmin = root === 'admin'
+
+    if (isAdmin) {
+      return children
+    }
+
+    const topbar = editMode
+      ? (
+        <EditBar
+          editMode={editMode}
+          editTreePath={editTreePath}
+          onToggleEditMode={this.handleToggleEditMode}
+          page={page} />
+      ) : (
+        <ExtensionPoint id={`${root}/__topbar`} />
+      )
+
+    const editToggle = editMode
+      ? null
+      : (
+        <button onClick={this.handleToggleEditMode} className="bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns" style={{ height: '56px', width: '56px' }}>
+          <img src={editIcon} />
+        </button>
+      )
 
     return (
       <Fragment>
-        {!isAdmin && <ExtensionPoint
-          id={`${root}/__topbar`}
-          hasEditableExtensionPoints={hasEditableExtensionPoints}
-          editMode={editMode}
-          editTreePath={editTreePath}
-          toggleEditMode={this.toggleEditMode}
-          page={page} />}
+        {topbar}
+        {editToggle}
         {children}
       </Fragment>
     )
