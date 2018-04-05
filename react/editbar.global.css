@@ -43,9 +43,17 @@
   cursor: move;
 }
 
+.h-3em {
+  height: 3.4em;
+}
+
+.bg-rebel-pink {
+  height: 0px !important;
+}
+
 @media screen and (min-width: 30em) {
   #render-container {
-    padding-top: 64px;
+    padding-top: 3em;
   }
 }
 
