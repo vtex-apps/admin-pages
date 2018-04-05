@@ -3,7 +3,7 @@
   "version": null,
   "license": "UNLICENSED",
   "dependencies": {
-    "@vtex/styleguide": "2.0.0-rc.18",
+    "@vtex/styleguide": "2.0.0-rc.34",
     "exenv": "^1.2.2",
     "react-draggable": "^3.0.5",
     "react-jsonschema-form": "^1.0.0"

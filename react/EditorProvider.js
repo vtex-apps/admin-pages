@@ -109,7 +109,7 @@ class EditorProvider extends Component {
     const editToggle = editMode
       ? null
       : (
-        <button onClick={this.handleToggleEditMode} className="bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns" style={{ height: '56px', width: '56px' }}>
+        <button onClick={this.handleToggleEditMode} className="bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns pointer grow hover-bg-heavy-blue" style={{ height: '56px', width: '56px' }}>
           <img src={editIcon} />
         </button>
       )

@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import pageIcon from '../images/single.svg'
+import checkIcon from '../images/check-2.svg'
+
+import Button from '@vtex/styleguide/lib/Button'
 
 import '../editbar.global.css'
 
@@ -28,17 +31,18 @@ export default class EditBar extends Component {
   render() {
     const { editTreePath, editMode, page } = this.props
     return (
-      <div className="fixed top-0 left-0 z-max shadow-5 w-100 bg-white">
-        <div className="flex items-center justify-between pv3 ph5">
+      <div className="w-100 fixed z-2 top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
+        <div className="flex items-center justify-between ph5 w-100">
           <div className="flex items-center">
-            <div className="flex items-center">
+            <div className="flex items-center br b--light-silver bw1 h-3em pr5">
               <img src={pageIcon} width={23} />
             </div>
-            <div className="pl3">
-              <div className="f7 fw5 ttu pt1">
+            <div className="pl3 flex-ns items-center pl5">
+              <div className="f6 ttu fw7 pt1 pr5-ns">
                 {page}
               </div>
-              <div className="f7 fw3 truncate pt1 pb1">
+              <div className="dn di-ns h-3em bl bw1 b--light-silver"></div>
+              <div className="f7 f5-ns fw3 truncate pt1 pb1 pl5-ns">
                 {editTreePath
                   ? `editing: ${editTreePath}`
                   : editMode
@@ -47,9 +51,14 @@ export default class EditBar extends Component {
               </div>
             </div>
           </div>
-          <button onClick={this.handleClick} className="blue pr0">
-            DONE
-          </button>
+          <div className="h-3em nr5 bl b--light-silver bw1 flex items-center">
+            <Button onClick={this.handleClick}>
+              <div className="flex items-center">
+                DONE
+                <img src={checkIcon} className="pl3"/>
+              </div>
+            </Button>
+          </div>
         </div>
       </div>
     )
