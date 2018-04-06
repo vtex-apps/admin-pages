@@ -1,9 +1,9 @@
 import Button from '@vtex/styleguide/lib/Button'
-import React, {Component} from 'react'
-import {graphql} from 'react-apollo'
+import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import {Link} from 'render'
+import { Link } from 'render'
 
 import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'
@@ -53,8 +53,8 @@ const schema = {
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
-  state: {renderRouting: true},
-  ...(query && {search: query}),
+  state: { renderRouting: true },
+  ...(query && { search: query }),
 })
 
 class PageEditor extends Component {
@@ -93,11 +93,11 @@ class PageEditor extends Component {
 
   handleSave = (event) => {
     console.log('save', event, this.state)
-    const {savePage} = this.props
-    const {name: pageName, component, path, theme, auth, cname} = this.state.page
+    const { savePage } = this.props
+    const { name: pageName, component, path, theme, auth, cname } = this.state.page
     savePage({
       refetchQueries: [
-        {query: Pages},
+        { query: Pages },
       ],
       variables: {
         pageName,
@@ -108,19 +108,19 @@ class PageEditor extends Component {
         cname,
       },
     })
-    .then((data) => {
-      console.log('OK!', data)
-      const location = createLocationDescriptor('/admin/pages')
-      this.context.history.push(location)
-    })
-    .catch(err => {
-      alert('Error saving page configuration.')
-      console.log(err)
-    })
+      .then((data) => {
+        console.log('OK!', data)
+        const location = createLocationDescriptor('/admin/pages')
+        this.context.history.push(location)
+      })
+      .catch(err => {
+        alert('Error saving page configuration.')
+        console.log(err)
+      })
   }
 
   render() {
-    const {page} = this.state
+    const { page } = this.state
     if (typeof page.auth === 'string') {
       page.auth = page.auth === 'true'
     }
@@ -136,7 +136,7 @@ class PageEditor extends Component {
           ObjectFieldTemplate={ObjectFieldTemplate}
           widgets={widgets}>
           <div className="mt7">
-            <Button htmlProps={{type: 'submit', className: 'fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5'}} primary>
+            <Button type="submit" className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5" primary>
               Salvar
             </Button>
             <Link to="/admin/pages">
@@ -151,4 +151,4 @@ class PageEditor extends Component {
   }
 }
 
-export default graphql(SavePage, {name: 'savePage'})(PageEditor)
+export default graphql(SavePage, { name: 'savePage' })(PageEditor)

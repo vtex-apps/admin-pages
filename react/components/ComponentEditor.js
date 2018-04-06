@@ -1,11 +1,11 @@
 import Button from '@vtex/styleguide/lib/Button'
-import React, {Component} from 'react'
-import {graphql} from 'react-apollo'
+import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
-import {getImplementation} from '../utils/components'
+import { getImplementation } from '../utils/components'
 
 import BaseInput from './form/BaseInput'
 import FieldTemplate from './form/FieldTemplate'
@@ -60,7 +60,7 @@ class ComponentEditor extends Component {
 
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
-    const {component} = event.formData
+    const { component } = event.formData
     const props = event.formData
 
     this.context.updateExtension(this.props.treePath, {
@@ -71,7 +71,7 @@ class ComponentEditor extends Component {
 
   handleSave = (event) => {
     console.log('save', event, this.props)
-    const {saveExtension, component, props} = this.props
+    const { saveExtension, component, props } = this.props
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
@@ -79,15 +79,15 @@ class ComponentEditor extends Component {
         props: JSON.stringify(props),
       },
     })
-    .then((data) => {
-      console.log('OK!', data)
-      this.context.editExtensionPoint(null)
-    })
-    .catch(err => {
-      alert('Error saving extension point configuration.')
-      console.log(err)
-      this.handleCancel()
-    })
+      .then((data) => {
+        console.log('OK!', data)
+        this.context.editExtensionPoint(null)
+      })
+      .catch(err => {
+        alert('Error saving extension point configuration.')
+        console.log(err)
+        this.handleCancel()
+      })
   }
 
   handleCancel = (event) => {
@@ -103,7 +103,7 @@ class ComponentEditor extends Component {
   }
 
   render() {
-    const {component, props} = this.props
+    const { component, props } = this.props
     const Component = getImplementation(component)
     const editableComponents = this.getEditableComponents()
 
@@ -111,6 +111,8 @@ class ComponentEditor extends Component {
       type: 'object',
       properties: {},
     }
+
+    const displayName = componentSchema.component
 
     const schema = {
       ...componentSchema,
@@ -132,10 +134,10 @@ class ComponentEditor extends Component {
 
     return (
       <div className="w-100 near-black">
-        <div className="fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns overflow-scroll animated shadow-editor" style={{height: '60vh', minHeight:'300px'}} >
+        <div className="fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns overflow-scroll animated shadow-editor" style={{ height: '60vh', minHeight: '300px' }} >
           <div className="bg-serious-black white fw5 f5 ph5 pv5 lh-title w-100 fixed flex justify-between items-center">
             <div>
-              Nome do componente
+              {displayName}
             </div>
             <div onClick={this.handleCancel} className="flex items-center">
               <CloseIcon />
@@ -153,7 +155,7 @@ class ComponentEditor extends Component {
               widgets={widgets}>
               <div className="fixed bg-near-white w-100 pv4 bottom-0 left-0 pl5 flex bt b--light-silver">
                 <div className="mr4">
-                  <Button htmlProps={{type: 'submit'}} primary>
+                  <Button type="submit" primary>
                     Save
                   </Button>
                 </div>
@@ -165,10 +167,10 @@ class ComponentEditor extends Component {
           </div>
         </div>
         <Draggable handle=".draggable">
-          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated ${this._isMounted ? '' : 'fadeIn'}`} style={{animationDuration: '0.2s'}}>
+          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
             <div className="bg-serious-black white fw5 f5 ph5 pv5 lh-title w-100 fixed flex justify-between br2 br--top draggable">
               <div>
-                Nome do componente
+                {displayName}
               </div>
             </div>
             <div className="pt8">
@@ -183,7 +185,7 @@ class ComponentEditor extends Component {
                 widgets={widgets}>
                 <div className="flex mt5 pb5 pl5">
                   <div className="mr4">
-                    <Button htmlProps={{type: 'submit'}} primary>
+                    <Button type="submit" primary>
                       Save
                     </Button>
                   </div>
@@ -200,4 +202,4 @@ class ComponentEditor extends Component {
   }
 }
 
-export default graphql(SaveExtension, {name: 'saveExtension'})(ComponentEditor)
+export default graphql(SaveExtension, { name: 'saveExtension' })(ComponentEditor)
