@@ -167,7 +167,7 @@ class ComponentEditor extends Component {
           </div>
         </div>
         <Draggable handle=".draggable">
-          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move overflow-scroll animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s', maxHeight: '80%'}}>
             <div className="bg-serious-black white fw5 f5 ph5 pv5 lh-title w-100 fixed flex justify-between br2 br--top draggable">
               <div>
                 {displayName}
