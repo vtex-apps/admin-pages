@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import pageIcon from '../images/single.svg'
-import checkIcon from '../images/check-2.svg'
+import PageIcon from '../images/PageIcon.js'
+import CheckIcon from '../images/check-2.js'
 
 import Button from '@vtex/styleguide/lib/Button'
 
@@ -35,7 +35,7 @@ export default class EditBar extends Component {
         <div className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn" style={{animationDuration: '0.2s'}}>
           <div className="flex items-center">
             <div className="flex items-center br b--light-silver bw1 h-3em pr5">
-              <img src={pageIcon} width={23} />
+              <PageIcon />
             </div>
             <div className="pl3 flex-ns items-center pl5">
               <div className="f6 ttu fw7 pt1 pr5-ns">
@@ -55,7 +55,9 @@ export default class EditBar extends Component {
             <Button onClick={this.handleClick}>
               <div className="flex items-center">
                 DONE
-                <img src={checkIcon} className="pl3"/>
+                <div className="pl4">
+                  <CheckIcon />
+                </div>
               </div>
             </Button>
           </div>

@@ -5,7 +5,7 @@ import PagesQuery from './queries/Pages.graphql'
 
 import {Link} from 'render'
 import Button from '@vtex/styleguide/lib/Button'
-import shareIcon from './images/share-26.svg'
+import ShareIcon from './images/ShareIcon'
 
 // eslint-disable-next-line
 class PageList extends Component {
@@ -33,7 +33,7 @@ class PageList extends Component {
         : <td className="pv2 w-10">
           </td>
       }
-      <td><a href={page.path} className="rebel-pink no-underline underline-hover tr"><div className="mr4"><img width={16} src={shareIcon} /></div></a></td>
+      <td><a href={page.path} className="rebel-pink no-underline underline-hover tr"><div className="mr4"><ShareIcon /></div></a></td>
     </tr>
   )
 

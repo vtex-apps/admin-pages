@@ -12,7 +12,7 @@ import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
 import Draggable from 'react-draggable'
-import collapseIcon from '../images/simple-remove.svg'
+import CloseIcon from '../images/CloseIcon.js'
 
 const uiSchema = {
   'titleColor': {
@@ -138,7 +138,7 @@ class ComponentEditor extends Component {
               Nome do componente
             </div>
             <div onClick={this.handleCancel} className="flex items-center">
-              <img width={16} height={16} src={collapseIcon} />
+              <CloseIcon />
             </div>
           </div>
           <div className="pt8 pb8 mb3 center">

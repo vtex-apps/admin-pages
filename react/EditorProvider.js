@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { ExtensionPoint } from 'render'
 
-import editIcon from './images/pen-01.svg'
+import EditIcon from './images/EditIcon.js'
 
 import { getImplementation } from './utils/components'
 import EditBar from './components/EditBar'
@@ -84,6 +84,18 @@ class EditorProvider extends Component {
     }
   }
 
+  componentDidMount() {
+    const { children, page } = this.props
+    const root = page.split('/')[0]
+    if (root !== 'admin') {
+      document.getElementById('render-container').classList.add('editor-provider')
+    }
+  }
+
+  componentWillUnmount() {
+    document.getElementById('render-container').classList.remove('editor-provider')
+  }
+
   render() {
     const { children, page } = this.props
     const { editMode, editTreePath } = this.state
@@ -110,7 +122,7 @@ class EditorProvider extends Component {
       ? null
       : (
         <button onClick={this.handleToggleEditMode} className={`bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns pointer grow hover-bg-heavy-blue animated fadeIn`} style={{ height: '56px', width: '56px', animationDuration: '0.2s'}}>
-          <img src={editIcon} />
+          <EditIcon />
         </button>
       )
 
