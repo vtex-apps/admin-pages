@@ -33,20 +33,10 @@ const schema = {
       title: 'Path',
     },
     component: {
-      enum: scriptComponents,
-      enumNames: scriptComponents,
+      enum: ['vtex.dreamstore@0.0.2/HomePage', 'vtex.dreamstore@0.0.2/ProductPage'],
+      enumNames: ['vtex.dreamstore@0.0.2/HomePage', 'vtex.dreamstore@0.0.2/ProductPage'],
       title: 'Component',
       type: 'string',
-    },
-    theme: {
-      enum: themes,
-      enumNames: themes,
-      type: 'string',
-      title: 'Theme',
-    },
-    auth: {
-      type: 'boolean',
-      title: 'Admins only',
     },
   },
 }
