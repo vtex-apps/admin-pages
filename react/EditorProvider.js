@@ -1,8 +1,11 @@
-import React, {Component, Fragment} from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { ExtensionPoint } from 'render'
 
-import EditToggle from './components/EditToggle'
-import {getImplementation} from './utils/components'
+import EditIcon from './images/EditIcon.js'
+
+import { getImplementation } from './utils/components'
+import EditBar from './components/EditBar'
 
 class EditorProvider extends Component {
   static childContextTypes = {
@@ -35,15 +38,15 @@ class EditorProvider extends Component {
   }
 
   editExtensionPoint = (treePath) => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     this.setState({
       editTreePath: treePath,
       mouseOverTreePath: null,
     }, () => emitter.emit('editor:update', this.state))
   }
 
-  toggleEditMode = () => {
-    const {emitter} = this.context
+  handleToggleEditMode = () => {
+    const { emitter } = this.context
     this.setState({
       editMode: !this.state.editMode,
       mouseOverTreePath: this.state.editMode ? null : this.state.mouseOverTreePath,
@@ -51,7 +54,7 @@ class EditorProvider extends Component {
   }
 
   mouseOverExtensionPoint = (treePath) => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     this.setState({
       mouseOverTreePath: treePath,
     }, () => emitter.emit('editor:update', this.state))
@@ -71,7 +74,7 @@ class EditorProvider extends Component {
   }
 
   getChildContext() {
-    const {editMode, editTreePath} = this.state
+    const { editMode, editTreePath } = this.state
 
     return {
       editMode,
@@ -81,15 +84,52 @@ class EditorProvider extends Component {
     }
   }
 
-  render() {
-    const {children, extensions, page} = this.props
-    const {editMode, editTreePath} = this.state
+  componentDidMount() {
+    const { children, page } = this.props
+    const root = page.split('/')[0]
+    if (root !== 'admin') {
+      document.getElementById('render-container').classList.add('editor-provider')
+    }
+  }
 
-    const hasEditableExtensionPoints = this.hasEditableExtensionPoints(extensions)
+  componentWillUnmount() {
+    document.getElementById('render-container').classList.remove('editor-provider')
+  }
+
+  render() {
+    const { children, page } = this.props
+    const { editMode, editTreePath } = this.state
+    const root = page.split('/')[0]
+
+    const isAdmin = root === 'admin'
+
+    if (isAdmin) {
+      return children
+    }
+
+    const topbar = editMode
+      ? (
+        <EditBar
+          editMode={editMode}
+          editTreePath={editTreePath}
+          onToggleEditMode={this.handleToggleEditMode}
+          page={page} />
+      ) : (
+        <ExtensionPoint id={`${root}/__topbar`} />
+      )
+
+    const editToggle = editMode
+      ? null
+      : (
+        <button onClick={this.handleToggleEditMode} className={`bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns pointer grow hover-bg-heavy-blue animated fadeIn`} style={{ height: '56px', width: '56px', animationDuration: '0.2s'}}>
+          <EditIcon />
+        </button>
+      )
 
     return (
       <Fragment>
-        <EditToggle hasEditableExtensionPoints={hasEditableExtensionPoints} editMode={editMode} editTreePath={editTreePath} toggleEditMode={this.toggleEditMode} page={page} />
+        {topbar}
+        {editToggle}
         {children}
       </Fragment>
     )

@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "pages-editor",
-  "version": "1.0.3",
+  "version": "1.1.1",
   "title": "VTEX Pages Editor",
   "description": "The VTEX Pages framework editor components",
   "builders": {
@@ -9,7 +9,6 @@
     "react": "2.x"
   },
   "dependencies": {
-    "vtex.admins-app": "1.x",
     "vtex.pages-graphql": "1.x"
   },
   "mustUpdateAt": "2018-09-05",
