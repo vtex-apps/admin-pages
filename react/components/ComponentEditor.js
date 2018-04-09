@@ -167,13 +167,13 @@ class ComponentEditor extends Component {
           </div>
         </div>
         <Draggable handle=".draggable">
-          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move overflow-scroll animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s', maxHeight: '80%'}}>
-            <div className="bg-serious-black white fw5 f5 ph5 pv5 lh-title w-100 fixed flex justify-between br2 br--top draggable">
+          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move overflow-scroll animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+            <div className="bg-serious-black white fw5 f4 ph5 pv5 lh-title w-100 fixed flex justify-between br2 br--top draggable">
               <div>
                 {displayName}
               </div>
             </div>
-            <div className="pt8">
+            <div className="pt9 overflow-scroll" style={{ maxHeight: '80vh', paddingBottom: '68px' }}>
               <Form
                 schema={schema}
                 formData={extensionProps}
@@ -183,7 +183,7 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                <div className="flex mt5 pb5 pl5">
+                <div className="flex mt5 pv5 pl5 fixed bottom-0 w-100 bg-white bt bw1 b--light-silver">
                   <div className="mr4">
                     <Button type="submit" primary>
                       Save
