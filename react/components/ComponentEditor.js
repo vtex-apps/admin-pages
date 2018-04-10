@@ -139,7 +139,7 @@ class ComponentEditor extends Component {
             <div>
               {displayName}
             </div>
-            <div onClick={this.handleCancel} className="flex items-center">
+            <div onClick={this.handleCancel} className="flex items-center pointer">
               <CloseIcon />
             </div>
           </div>
@@ -172,8 +172,11 @@ class ComponentEditor extends Component {
               <div>
                 {displayName}
               </div>
+              <div onClick={this.handleCancel} className="flex items-center pointer dim">
+                <CloseIcon />
+              </div>
             </div>
-            <div className="overflow-scroll" style={{ maxHeight: '80vh', paddingBottom: '70px', paddingTop: '22px' }}>
+            <div className="overflow-scroll" style={{ maxHeight: '80vh', paddingBottom: '66px', paddingTop: '22px' }}>
               <Form
                 schema={schema}
                 formData={extensionProps}
@@ -183,14 +186,14 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                <div className="flex pv3 pl5 fixed bottom-0 w-100 bg-near-white bt bw2 b--light-silver">
-                  <div className="w-50 tc">
-                    <Button onClick={this.handleCancel}>
+                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
+                    <Button block size="large" onClick={this.handleCancel}>
                       Cancel
                     </Button>
                   </div>
-                  <div className="w-50 tc">
-                    <Button type="submit">
+                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
+                    <Button block size="large" type="submit">
                       Save
                     </Button>
                   </div>
