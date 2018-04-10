@@ -16,45 +16,32 @@
   background-color: #F7F9FA;
   margin: 0;
   padding: 20px 24px;
+  margin-bottom: 10px;
   font-size: 14px;
   color: #142032;
 }
 
 .form-group {
-  padding: 0px 24px;
+  padding: 10px 24px;
 }
 
-.form-group.field.field-object {
-  border-top: 2px solid #F0F2F4;
-  margin-top: 20px;
-}
-
-.form-group.field.field-object label {
-  text-transform: uppercase;
-  padding: 20px 24px 0px 24px;
-  font-weight: 700;
-  color: #C3C4C5;
-}
-
-.form-group.field.field-string label {
-  text-transform: none;
+.form-group label {
   padding: 0px 0px 10px 0px;
-  margin-top: 15px;
-  font-weight: normal;
   color: #141E2C;
 }
 
-.form-group.field input {
-  width: 100%;
-  border: 2px solid #E1E3E5;
+.form-group.field.field-object > label {
+  color: #C3C4C5;
+  text-transform: uppercase;
+  font-weight: 700;
+  padding: 20px 24px 5px;
+  margin-top: 10px;
+  border-top: 2px solid #F0F2F4;
 }
 
-.form-group.field select {
-  width: 100%;
-  border: 2px solid #E1E3E5;
-  border-radius: 4px;
-  padding-left: 8px;
-  background-color: #fff;
+.banana > label {
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 .form-group.field.field-object {
@@ -62,17 +49,21 @@
 }
 
 .form-control {
-  color: #676768;
-  font-size: 14px;
+  border: 2px solid #E1E3E5;
   height: 40px;
+  width: 100%;
+  font-size: 14px;
   padding-left: 12px;
+  background-color: #FFFFFF;
 }
 
-.shadow-editor-desktop {
-  -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
-  -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
-  box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+.form-schema {
+  max-height: 800px;
+  height: 60vh;
+  padding-top: 55px;
+  padding-bottom: 60px;
 }
+
 .draggable {
   cursor: move;
 }
@@ -81,17 +72,38 @@
   height: 48px;
 }
 
-.bg-rebel-pink {
-  height: 0px !important;
-}
-
-@media only screen and (min-width: 30em) {
-  #render-container {
-    padding-top: 48px;
-  }
+.form-schema {
+  min-height: 300px;
+  max-height: 70vh;
 }
 
 .build-status {
   top: 2rem !important;
   margin-top: 4rem !important;
+}
+
+@media only screen and (max-width: 40em) {
+  .size-editor {
+    bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 40em) {
+  #render-container {
+    padding-top: 48px;
+  }
+  .size-editor {
+    max-width: 450px;
+  }
+  .shadow-editor-desktop {
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+    box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+  }
+  .form-schema {
+    max-height: 800px;
+    height: 80vh;
+    padding-top: 64px;
+    padding-bottom: 66px;
+  }
 }
