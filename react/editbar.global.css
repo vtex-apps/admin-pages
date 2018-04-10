@@ -12,26 +12,46 @@
   box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.25);
 }
 
-.field-object p {
-  padding: 0 16px 0 16px;
+.field-description {
+  background-color: #F7F9FA;
+  margin: 0;
+  padding: 20px 24px;
+  font-size: 14px;
+  color: #142032;
 }
 
-.form-group.field {
-  padding-bottom: 20px;
-  border-bottom: 2px solid #F2F4F5;
-  padding: 0 16px 20px 16px;
+.form-group {
+  padding: 0px 24px;
+}
+
+.form-group.field.field-object {
+  border-top: 2px solid #F0F2F4;
+  margin-top: 20px;
+}
+
+.form-group.field.field-object label {
+  text-transform: uppercase;
+  padding: 20px 24px 0px 24px;
+  font-weight: 700;
+  color: #C3C4C5;
+}
+
+.form-group.field.field-string label {
+  text-transform: none;
+  padding: 0px 0px 10px 0px;
+  margin-top: 15px;
+  font-weight: normal;
+  color: #141E2C;
 }
 
 .form-group.field input {
   width: 100%;
-  height: 34px;
-  border: 1px solid #c4c8cc;
+  border: 2px solid #E1E3E5;
 }
 
 .form-group.field select {
   width: 100%;
-  height: 36px;
-  border: 2px solid #c4c8cc;
+  border: 2px solid #E1E3E5;
   border-radius: 4px;
   padding-left: 8px;
   background-color: #fff;
@@ -41,6 +61,18 @@
   padding: 0;
 }
 
+.form-control {
+  color: #676768;
+  font-size: 14px;
+  height: 40px;
+  padding-left: 12px;
+}
+
+.shadow-editor-desktop {
+  -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+  -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+  box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+}
 .draggable {
   cursor: move;
 }
