@@ -50,7 +50,10 @@ class EditorProvider extends Component {
     this.setState({
       editMode: !this.state.editMode,
       mouseOverTreePath: this.state.editMode ? null : this.state.mouseOverTreePath,
-    }, () => emitter.emit('editor:update', this.state))
+    }, () => {
+      emitter.emit('editor:update', this.state);
+      window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+    })
   }
 
   mouseOverExtensionPoint = (treePath) => {
@@ -90,7 +93,9 @@ class EditorProvider extends Component {
     if (root !== 'admin') {
       document.getElementById('render-container').classList.add('editor-provider')
     }
+    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
+
 
   componentWillUnmount() {
     document.getElementById('render-container').classList.remove('editor-provider')
