@@ -5,7 +5,7 @@ export default function FieldTemplate(props) {
   const { id, classNames, label, help, required, description, errors, children } = props
   return (
     <div className={`${classNames} w-100`}>
-      <label className="mb3 mt5 f6 db gray" htmlFor={id}>{label}{required ? '*' : null}</label>
+      <label className="f6 db gray" htmlFor={id}>{label}{required ? '*' : null}</label>
       {description}
       {children}
       {errors}

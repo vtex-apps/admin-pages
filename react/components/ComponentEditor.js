@@ -18,6 +18,7 @@ const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
   },
+  'classNames': 'editor-form',
   'description': {
     classNames: 'bg-blue',
   },
@@ -114,6 +115,9 @@ class ComponentEditor extends Component {
 
     const displayName = componentSchema.component
 
+    const mobile = window.innerWidth < 600
+    const animation = mobile ? 'slideInUp' : 'fadeIn'
+
     const schema = {
       ...componentSchema,
       properties: {
@@ -134,46 +138,17 @@ class ComponentEditor extends Component {
 
     return (
       <div className="w-100 near-black">
-        <div className="fixed z-999 bg-white shadow-4 w-100 bottom-0 left-0 dn-ns overflow-scroll animated shadow-editor" style={{ height: '60vh', minHeight: '300px' }} >
-          <div className="bg-serious-black white fw5 f5 ph5 pv5 lh-title w-100 fixed flex justify-between items-center">
-            <div>
-              {displayName}
-            </div>
-            <div onClick={this.handleCancel} className="flex items-center">
-              <CloseIcon />
-            </div>
-          </div>
-          <div className="pt8 pb8 mb3 center">
-            <Form
-              schema={schema}
-              formData={extensionProps}
-              onChange={this.handleFormChange}
-              onSubmit={this.handleSave}
-              FieldTemplate={FieldTemplate}
-              ObjectFieldTemplate={ObjectFieldTemplate}
-              uiSchema={uiSchema}
-              widgets={widgets}>
-              <div className="fixed bg-near-white w-100 pv4 bottom-0 left-0 pl5 flex bt b--light-silver">
-                <div className="mr4">
-                  <Button type="submit" primary>
-                    Save
-                  </Button>
-                </div>
-                <button className="fw5 ttu br2 fw4 f7 pv3 ph5 blue bg-near-white pointer bn" onClick={this.handleCancel}>
-                  Cancel
-                </button>
-              </div>
-            </Form>
-          </div>
-        </div>
-        <Draggable handle=".draggable">
-          <div className={`dn di-ns mw6 center br2 fixed-ns z-999 bg-white shadow-4 w-100 top-2-ns right-2-ns mt9 move overflow-scroll animated ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
-            <div className="bg-serious-black white fw5 f4 ph5 pv5 lh-title w-100 fixed flex justify-between br2 br--top draggable">
+        <Draggable bounds="body" handle=".draggable">
+          <div className={`br2-ns fixed z-999 bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+            <div className="bg-serious-black white fw7 f5 f4-ns ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable">
               <div>
                 {displayName}
               </div>
+              <div onClick={this.handleCancel} className="flex items-center pointer dim">
+                <CloseIcon />
+              </div>
             </div>
-            <div className="pt9 overflow-scroll" style={{ maxHeight: '80vh', paddingBottom: '68px' }}>
+            <div className="overflow-scroll form-schema">
               <Form
                 schema={schema}
                 formData={extensionProps}
@@ -183,15 +158,17 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                <div className="flex mt5 pv5 pl5 fixed bottom-0 w-100 bg-white bt bw1 b--light-silver">
-                  <div className="mr4">
-                    <Button type="submit" primary>
+                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
+                    <Button block size="large" onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
+                  </div>
+                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
+                    <Button block size="large" type="submit">
                       Save
                     </Button>
                   </div>
-                  <Button onClick={this.handleCancel}>
-                    Cancel
-                  </Button>
                 </div>
               </Form>
             </div>
