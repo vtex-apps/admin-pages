@@ -18,7 +18,7 @@ const uiSchema = {
   'titleColor': {
     'ui:widget': 'color',
   },
-  'classNames': 'banana',
+  'classNames': 'editor-form',
   'description': {
     classNames: 'bg-blue',
   },

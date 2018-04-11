@@ -39,7 +39,7 @@
   border-top: 2px solid #F0F2F4;
 }
 
-.banana > label {
+.editor-form > label {
   padding: 0px !important;
   margin: 0px !important;
 }
