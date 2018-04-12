@@ -103,19 +103,19 @@ class EditorProvider extends Component {
     const { page } = this.props
     const root = page.split('/')[0]
     if (root !== 'admin') {
-      document.getElementById('render-container') &&
-        document
-          .getElementById('render-container')
-          .classList.add('editor-provider')
+      const el = document.getElementById('render-container')
+      if (el) {
+        el.classList.add('edit-mode')
+      }
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   componentWillUnmount() {
-    document.getElementById('render-container') &&
-      document
-        .getElementById('render-container')
-        .classList.remove('editor-provider')
+    const el = document.getElementById('render-container')
+    if (el) {
+      el.classList.remove('edit-mode')
+    }
   }
 
   render() {
@@ -142,6 +142,7 @@ class EditorProvider extends Component {
 
     const editToggle = editMode ? null : (
       <button
+        type="button"
         onClick={this.handleToggleEditMode}
         className={
           'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns pointer grow hover-bg-heavy-blue animated fadeIn'
