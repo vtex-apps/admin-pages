@@ -30,6 +30,10 @@
   color: #141E2C;
 }
 
+.form-group p {
+  margin: 0px;
+}
+
 .form-group.field.field-object > label {
   color: #C3C4C5;
   text-transform: uppercase;
@@ -37,6 +41,10 @@
   padding: 20px 24px 5px;
   margin-top: 10px;
   border-top: 2px solid #F0F2F4;
+}
+
+.checkbox span {
+  padding-left: 5px;
 }
 
 .editor-form > label {
@@ -58,10 +66,10 @@
 }
 
 .form-schema {
+  min-height: 300px;
   max-height: 800px;
-  height: 60vh;
-  padding-top: 55px;
-  padding-bottom: 60px;
+  padding-bottom: 66px;
+  padding-top: 62px;
 }
 
 .draggable {
@@ -72,24 +80,53 @@
   height: 48px;
 }
 
-.form-schema {
-  min-height: 300px;
-  max-height: 70vh;
-}
-
 .build-status {
   top: 2rem !important;
   margin-top: 4rem !important;
 }
 
+.errors {
+  padding: 16px 24px 11px;
+  background-color: #FFE6E6;
+}
+
+.errors h3 {
+  margin: 0px;
+  font-size: 16px;
+}
+
+.errors ul {
+  list-style: none;
+  padding: 10px 0px 0px 0px;
+  margin: 0px;
+  font-size: 14px;
+}
+
+.errors li {
+  padding: 0px 0px 5px 0px;
+}
+
+.error-detail {
+  list-style: none;
+  padding: 5px 0px 0px 0px;
+  margin: 0px;
+  font-size: 14px;
+  color: #FF4C4C;
+}
+
+.has-error input {
+  border: 2px solid #FF4C4C;
+}
+
 @media only screen and (max-width: 40em) {
   .size-editor {
     bottom: 0;
+    height: 100vh;
   }
 }
 
 @media only screen and (min-width: 40em) {
-  #render-container {
+  .render-container {
     padding-top: 48px;
   }
   .size-editor {
@@ -99,11 +136,5 @@
     -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
     -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
     box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
-  }
-  .form-schema {
-    max-height: 800px;
-    height: 80vh;
-    padding-top: 64px;
-    padding-bottom: 66px;
   }
 }
