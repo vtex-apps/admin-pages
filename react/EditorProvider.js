@@ -91,7 +91,7 @@ class EditorProvider extends Component {
     const { children, page } = this.props
     const root = page.split('/')[0]
     if (root !== 'admin') {
-      document.getElementById('render-container').classList.add('editor-provider')
+      document.getElementById('render-container') && document.getElementById('render-container').classList.add('editor-provider')
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
