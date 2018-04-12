@@ -17,12 +17,17 @@ export default class EditBar extends Component {
   }
 
   componentDidMount() {
-    document.getElementById('render-container') &&
-      document.getElementById('render-container').classList.add('edit-mode')
+    const el = document.getElementById('render-container')
+    if (el) {
+      el.classList.add('edit-mode')
+    }
   }
 
   componentWillUnmount() {
-    document.getElementById('render-container').classList.remove('edit-mode')
+    const el = document.getElementById('render-container')
+    if (el) {
+      el.classList.remove('edit-mode')
+    }
   }
 
   handleClick = () => {
