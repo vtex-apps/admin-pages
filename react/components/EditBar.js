@@ -17,17 +17,17 @@ export default class EditBar extends Component {
   }
 
   componentDidMount() {
-    const el = document.getElementById('render-container')
-    if (el) {
-      el.classList.add('edit-mode')
-    }
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('render-container'),
+      e => e.classList.add('edit-mode'),
+    )
   }
 
   componentWillUnmount() {
-    const el = document.getElementById('render-container')
-    if (el) {
-      el.classList.remove('edit-mode')
-    }
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('render-container'),
+      e => e.classList.remove('edit-mode'),
+    )
   }
 
   handleClick = () => {
@@ -37,11 +37,8 @@ export default class EditBar extends Component {
   render() {
     const { editTreePath, editMode, page } = this.props
     return (
-      <div className="w-100 fixed z-max top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
-        <div
-          className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn"
-          style={{ animationDuration: '0.2s' }}
-        >
+      <div className="w-100 fixed z-999 top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
+        <div className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn" style={{ animationDuration: '0.2s' }}>
           <div className="flex items-center">
             <div className="flex items-center br b--light-silver bw1 h-3em pr5">
               <PageIcon />
