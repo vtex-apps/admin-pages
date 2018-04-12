@@ -17,7 +17,8 @@ export default class EditBar extends Component {
   }
 
   componentDidMount() {
-    document.getElementById('render-container').classList.add('edit-mode')
+    document.getElementById('render-container') &&
+      document.getElementById('render-container').classList.add('edit-mode')
   }
 
   componentWillUnmount() {
@@ -32,22 +33,21 @@ export default class EditBar extends Component {
     const { editTreePath, editMode, page } = this.props
     return (
       <div className="w-100 fixed z-max top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
-        <div className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn" style={{ animationDuration: '0.2s' }}>
+        <div
+          className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn"
+          style={{ animationDuration: '0.2s' }}
+        >
           <div className="flex items-center">
             <div className="flex items-center br b--light-silver bw1 h-3em pr5">
               <PageIcon />
             </div>
             <div className="pl3 flex-ns items-center pl5">
-              <div className="f6 ttu fw7 pt1 pr5-ns">
-                {page}
-              </div>
-              <div className="dn di-ns h-3em bl bw1 b--light-silver"></div>
+              <div className="f6 ttu fw7 pt1 pr5-ns">{page}</div>
+              <div className="dn di-ns h-3em bl bw1 b--light-silver" />
               <div className="f7 f5-ns fw3 truncate pt1 pb1 pl5-ns">
                 {editTreePath
                   ? `editing: ${editTreePath}`
-                  : editMode
-                    ? 'Click a component to edit it'
-                    : ''}
+                  : editMode ? 'Click a component to edit it' : ''}
               </div>
             </div>
           </div>
