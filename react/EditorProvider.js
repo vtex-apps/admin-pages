@@ -103,19 +103,19 @@ class EditorProvider extends Component {
     const { page } = this.props
     const root = page.split('/')[0]
     if (root !== 'admin') {
-      const el = document.getElementById('render-container')
-      if (el) {
-        el.classList.add('edit-mode')
-      }
+      Array.prototype.forEach.call(
+        document.getElementsByClassName('render-container'),
+        e => e.classList.add('editor-provider'),
+      )
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   componentWillUnmount() {
-    const el = document.getElementById('render-container')
-    if (el) {
-      el.classList.remove('edit-mode')
-    }
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('render-container'),
+      e => e.classList.remove('editor-provider'),
+    )
   }
 
   render() {
