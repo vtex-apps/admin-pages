@@ -22,7 +22,8 @@ export default class EditBar extends Component {
   }
 
   componentWillUnmount() {
-    document.getElementById('render-container').classList.remove('edit-mode')
+    document.getElementById('render-container') &&
+      document.getElementById('render-container').classList.remove('edit-mode')
   }
 
   handleClick = () => {
