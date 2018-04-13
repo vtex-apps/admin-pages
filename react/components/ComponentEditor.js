@@ -1,5 +1,6 @@
 import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
+import { createPortal } from 'react-dom'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
@@ -137,7 +138,7 @@ class ComponentEditor extends Component {
       ...props,
     }
 
-    return (
+    const editor = (
       <div className="w-100 near-black">
         <Draggable handle=".draggable">
           <div className={`br2-ns fixed z-max bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
@@ -177,6 +178,8 @@ class ComponentEditor extends Component {
         </Draggable>
       </div>
     )
+
+    return createPortal(editor, document.body)
   }
 }
 
