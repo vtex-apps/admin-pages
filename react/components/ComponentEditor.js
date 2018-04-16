@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
+import { pick } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
@@ -68,11 +69,15 @@ class ComponentEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
+    const Component = getImplementation(component)
+    const componentSchema = Component && Component.schema
+    const propsToSave = Object.keys(componentSchema.properties)
+    const pickedProps = pick(propsToSave, props)
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
         component,
-        props: JSON.stringify(props),
+        props: JSON.stringify(pickedProps),
       },
     })
       .then((data) => {
