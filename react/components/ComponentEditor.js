@@ -126,7 +126,7 @@ class ComponentEditor extends Component {
 
     const schema = {
       ...componentSchema,
-      title: null,
+      title: undefined,
       properties: {
         component: {
           enum: editableComponents,
