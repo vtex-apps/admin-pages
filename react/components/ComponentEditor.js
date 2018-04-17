@@ -115,7 +115,11 @@ class ComponentEditor extends Component {
 
     const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
 
-    const displayName = componentSchema.component
+    const displayName = componentSchema.component || componentSchema.title
+
+    if (componentSchema.title) {
+      delete componentSchema.title
+    }
 
     const mobile = window.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
