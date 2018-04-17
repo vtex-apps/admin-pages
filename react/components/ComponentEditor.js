@@ -43,7 +43,7 @@ class ComponentEditor extends Component {
 
     this.old = JSON.stringify({
       component: props.component,
-      props: props.props,
+      props: this.getSchemaProps(props.component, props.props),
     })
   }
 
@@ -53,6 +53,13 @@ class ComponentEditor extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
+  }
+
+  getSchemaProps = (component, props) => {
+    const Component = getImplementation(component)
+    const componentSchema = Component && Component.schema
+    const propsToSave = Object.keys(componentSchema.properties)
+    return pick(propsToSave, props)
   }
 
   handleFormChange = (event) => {
@@ -69,10 +76,7 @@ class ComponentEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
-    const Component = getImplementation(component)
-    const componentSchema = Component && Component.schema
-    const propsToSave = Object.keys(componentSchema.properties)
-    const pickedProps = pick(propsToSave, props)
+    const pickedProps = this.getSchemaProps(component, props)
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
