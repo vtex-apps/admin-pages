@@ -1,3 +1,7 @@
+html, body {
+  height: 100%;
+}
+
 .editor-provider {
   padding-top: 48px;
 }
@@ -67,7 +71,7 @@
 
 .form-schema {
   min-height: 300px;
-  max-height: 800px;
+  max-height: 80vh;
   padding-bottom: 66px;
   padding-top: 62px;
 }
