@@ -117,15 +117,12 @@ class ComponentEditor extends Component {
 
     const displayName = componentSchema.component || componentSchema.title
 
-    if (componentSchema.title) {
-      delete componentSchema.title
-    }
-
     const mobile = window.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
 
     const schema = {
       ...componentSchema,
+      title: null,
       properties: {
         component: {
           enum: editableComponents,
