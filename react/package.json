@@ -5,6 +5,7 @@
   "dependencies": {
     "@vtex/styleguide": "2.0.0-rc.34",
     "exenv": "^1.2.2",
+    "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",
     "react-jsonschema-form": "^1.0.0"
   }

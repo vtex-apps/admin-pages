@@ -1,8 +1,10 @@
 import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
+import { createPortal } from 'react-dom'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
+import { pick } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
@@ -14,14 +16,8 @@ import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
 
-const uiSchema = {
-  'titleColor': {
-    'ui:widget': 'color',
-  },
+const defaultUiSchema = {
   'classNames': 'editor-form',
-  'description': {
-    classNames: 'bg-blue',
-  },
 }
 
 const widgets = {
@@ -47,7 +43,7 @@ class ComponentEditor extends Component {
 
     this.old = JSON.stringify({
       component: props.component,
-      props: props.props,
+      props: this.getSchemaProps(props.component, props.props),
     })
   }
 
@@ -57,6 +53,13 @@ class ComponentEditor extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
+  }
+
+  getSchemaProps = (component, props) => {
+    const Component = getImplementation(component)
+    const componentSchema = Component && Component.schema
+    const propsToSave = Object.keys(componentSchema.properties)
+    return pick(propsToSave, props)
   }
 
   handleFormChange = (event) => {
@@ -73,11 +76,12 @@ class ComponentEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
+    const pickedProps = this.getSchemaProps(component, props)
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
         component,
-        props: JSON.stringify(props),
+        props: JSON.stringify(pickedProps),
       },
     })
       .then((data) => {
@@ -113,13 +117,16 @@ class ComponentEditor extends Component {
       properties: {},
     }
 
-    const displayName = componentSchema.component
+    const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
+
+    const displayName = componentSchema.component || componentSchema.title
 
     const mobile = window.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
 
     const schema = {
       ...componentSchema,
+      title: null,
       properties: {
         component: {
           enum: editableComponents,
@@ -131,16 +138,21 @@ class ComponentEditor extends Component {
       },
     }
 
+    const uiSchema = {
+      ...defaultUiSchema,
+      ...componentUiSchema,
+    }
+
     const extensionProps = {
       component,
       ...props,
     }
 
-    return (
+    const editor = (
       <div className="w-100 near-black">
-        <Draggable bounds="body" handle=".draggable">
-          <div className={`br2-ns fixed z-999 bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
-            <div className="bg-serious-black white fw7 f5 f4-ns ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable">
+        <Draggable handle=".draggable" bounds="body">
+          <div className={`br2-ns fixed z-max bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+            <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable">
               <div>
                 {displayName}
               </div>
@@ -176,6 +188,8 @@ class ComponentEditor extends Component {
         </Draggable>
       </div>
     )
+
+    return createPortal(editor, document.body)
   }
 }
 
