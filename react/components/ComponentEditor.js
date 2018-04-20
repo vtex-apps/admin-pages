@@ -59,7 +59,7 @@ class ComponentEditor extends Component {
 
   getSchemaProps = (component, props) => {
     const Component = getImplementation(component)
-    const componentSchema = Component && Component.schema
+    const componentSchema = this.getComponentSchema(Component, props)
     const propsToSave = Object.keys(componentSchema.properties)
     return pick(propsToSave, props)
   }
@@ -117,6 +117,13 @@ class ComponentEditor extends Component {
   isEmptyExtensionPoint = (component) =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
+  getComponentSchema = (component, props) => {
+    return component ? (component.schema || component.getSchema(props)) : {
+      type: 'object',
+      properties: {},
+    }
+  }
+
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
@@ -126,10 +133,7 @@ class ComponentEditor extends Component {
 
     const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
 
-    const componentSchema = Component && Component.schema ? Component.schema : {
-      type: 'object',
-      properties: {},
-    }
+    const componentSchema = this.getComponentSchema(Component, props)
 
     const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
 
@@ -186,6 +190,7 @@ class ComponentEditor extends Component {
                 uiSchema={uiSchema}
                 widgets={widgets}>
                 <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                  <hr />
                   <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
                     <Button block size="large" onClick={this.handleCancel}>
                       Cancel
