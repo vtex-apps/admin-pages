@@ -68,7 +68,7 @@ class ComponentEditor extends Component {
     console.log('Updating extension with formData...', event.formData)
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
-    const props = component ? event.formData : null
+    const pickedProps = component ? this.getSchemaProps(component, event.formData) : null
 
     if (component) {
       const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
@@ -78,7 +78,7 @@ class ComponentEditor extends Component {
 
     this.context.updateExtension(this.props.treePath, {
       component,
-      props,
+      props: pickedProps,
     })
   }
 

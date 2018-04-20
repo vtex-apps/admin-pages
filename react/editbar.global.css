@@ -87,8 +87,25 @@ html, body {
 }
 
 .build-status {
-  top: 2rem !important;
-  margin-top: 4rem !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: #fff !important;
+  margin: 11px !important;
+  padding: 0 !important;
+}
+
+.build-status.reload {
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
+}
+
+.build-status.fail {
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
 }
 
 .errors {
