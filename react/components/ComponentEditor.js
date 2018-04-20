@@ -67,11 +67,13 @@ class ComponentEditor extends Component {
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
     const { component } = event.formData
-    const props = event.formData
+    const props = component ? event.formData : undefined
 
-    const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
-    // TODO add updateComponentAssets in runtime context and call that
-    global.__RUNTIME__.components[component] = available.assets
+    if (component) {
+      const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
+      // TODO add updateComponentAssets in runtime context and call that
+      global.__RUNTIME__.components[component] = available.assets
+    }
 
     this.context.updateExtension(this.props.treePath, {
       component,
@@ -109,12 +111,18 @@ class ComponentEditor extends Component {
     event && event.stopPropagation()
   }
 
+  isEmptyExtensionPoint = (component) => {
+    /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
+  }
+
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
       ? map(prop('name'), this.props.availableComponents.availableComponents)
       : []
+
+    const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
 
     const componentSchema = Component && Component.schema ? Component.schema : {
       type: 'object',
@@ -148,7 +156,7 @@ class ComponentEditor extends Component {
     }
 
     const extensionProps = {
-      component,
+      component: selectedComponent,
       ...props,
     }
 
