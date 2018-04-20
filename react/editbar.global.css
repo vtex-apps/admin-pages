@@ -73,7 +73,7 @@ html, body {
 
 .form-schema {
   min-height: 300px;
-  max-height: 80vh;
+  max-height: 100vh;
   padding-bottom: 66px;
   padding-top: 62px;
 }
@@ -149,6 +149,10 @@ html, body {
 }
 
 @media only screen and (min-width: 40em) {
+  .form-schema {
+    min-height: 300px;
+    max-height: 80vh;
+  }
   .render-container {
     padding-top: 48px;
   }
