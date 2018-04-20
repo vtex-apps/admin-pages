@@ -66,8 +66,9 @@ class ComponentEditor extends Component {
 
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
-    const { component } = event.formData
-    const props = component ? event.formData : undefined
+    const { component: enumComponent } = event.formData
+    const component = enumComponent && enumComponent !== '' ? enumComponent : null
+    const props = component ? event.formData : null
 
     if (component) {
       const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
@@ -84,12 +85,14 @@ class ComponentEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
-    const pickedProps = this.getSchemaProps(component, props)
+    const isEmpty = this.isEmptyExtensionPoint(component)
+    const pickedProps = isEmpty ? null : this.getSchemaProps(component, props)
+    const selectedComponent = isEmpty ? null : component
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
-        component,
-        props: JSON.stringify(pickedProps),
+        component: selectedComponent,
+        props: isEmpty ? null : JSON.stringify(pickedProps),
       },
     })
       .then((data) => {
@@ -111,9 +114,8 @@ class ComponentEditor extends Component {
     event && event.stopPropagation()
   }
 
-  isEmptyExtensionPoint = (component) => {
+  isEmptyExtensionPoint = (component) =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
-  }
 
   render() {
     const { component, props } = this.props
@@ -145,6 +147,7 @@ class ComponentEditor extends Component {
           enumNames: editableComponents,
           title: 'Component',
           type: 'string',
+          default: '',
         },
         ...componentSchema.properties,
       },
