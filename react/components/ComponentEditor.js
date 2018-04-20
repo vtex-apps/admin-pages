@@ -1,12 +1,13 @@
 import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { pick } from 'ramda'
+import { find, pick, map, prop } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
+import AvailableComponents from '../queries/AvailableComponents.graphql'
 import { getImplementation } from '../utils/components'
 
 import BaseInput from './form/BaseInput'
@@ -26,6 +27,7 @@ const widgets = {
 
 class ComponentEditor extends Component {
   static propTypes = {
+    availableComponents: PropTypes.object,
     saveExtension: PropTypes.any,
     treePath: PropTypes.string,
     component: PropTypes.string,
@@ -67,6 +69,10 @@ class ComponentEditor extends Component {
     const { component } = event.formData
     const props = event.formData
 
+    const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
+    // TODO add updateComponentAssets in runtime context and call that
+    global.__RUNTIME__.components[component] = available.assets
+
     this.context.updateExtension(this.props.treePath, {
       component,
       props,
@@ -103,14 +109,12 @@ class ComponentEditor extends Component {
     event && event.stopPropagation()
   }
 
-  getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
-  }
-
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
-    const editableComponents = this.getEditableComponents()
+    const editableComponents = this.props.availableComponents.availableComponents
+      ? map(prop('name'), this.props.availableComponents.availableComponents)
+      : []
 
     const componentSchema = Component && Component.schema ? Component.schema : {
       type: 'object',
@@ -193,4 +197,16 @@ class ComponentEditor extends Component {
   }
 }
 
-export default graphql(SaveExtension, { name: 'saveExtension' })(ComponentEditor)
+export default compose(
+  graphql(SaveExtension, { name: 'saveExtension' }),
+  graphql(AvailableComponents, {
+    name: 'availableComponents',
+    options: (props) => ({
+      variables: {
+        extensionName: props.treePath,
+        renderMajor: 7,
+        production: false,
+      },
+    }),
+  }),
+)(ComponentEditor)
