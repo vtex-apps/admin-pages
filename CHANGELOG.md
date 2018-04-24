@@ -9,4 +9,4 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-* **Editor** Added to the `ComponentEditor` the possible to edit static or dynamic component schemas.
+* **Editor** Added to the `ComponentEditor` support for dynamic component schemas.
