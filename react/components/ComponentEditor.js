@@ -119,7 +119,7 @@ class ComponentEditor extends Component {
 
   /**
    * It receives a component implementation and decide which type of schema
-   * will use, an static structure (schema) or a dynamic function (getSchema).
+   * will use, an static (schema) or a dynamic (getSchema) schema.
    * If none, returns a JSON specifying a simple static schema.
    * 
    * @component The component implementation
