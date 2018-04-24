@@ -10,10 +10,13 @@ function BaseInput(props) {
     onBlur,
     onFocus,
     options,
+    schema,
     ...inputProps
   } = props
 
-  inputProps.type = options.inputType || inputProps.type || 'text'
+  const type = schema.type === 'number' ? 'number' : 'text'
+
+  inputProps.type = options.inputType || inputProps.type || type
   const _onChange = ({ target: { value } }) => {
     return props.onChange(value === '' ? options.emptyValue : value)
   }
@@ -39,7 +42,6 @@ function BaseInput(props) {
 }
 
 BaseInput.defaultProps = {
-  type: 'text',
   required: false,
   disabled: false,
   readonly: false,

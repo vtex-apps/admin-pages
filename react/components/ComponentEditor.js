@@ -59,7 +59,7 @@ class ComponentEditor extends Component {
 
   getSchemaProps = (component, props) => {
     const Component = getImplementation(component)
-    const componentSchema = Component && Component.schema
+    const componentSchema = this.getComponentSchema(Component, props)
     const propsToSave = Object.keys(componentSchema.properties)
     return pick(propsToSave, props)
   }
@@ -117,6 +117,21 @@ class ComponentEditor extends Component {
   isEmptyExtensionPoint = (component) =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
+  /**
+   * It receives a component implementation and decide which type of schema
+   * will use, an static (schema) or a dynamic (getSchema) schema.
+   * If none, returns a JSON specifying a simple static schema.
+   * 
+   * @component The component implementation
+   * @props The react props to be passed to the getSchema, if it's the case
+   */
+  getComponentSchema = (component, props) => {
+    return component ? (component.schema || component.getSchema(props)) : {
+      type: 'object',
+      properties: {},
+    }
+  }
+
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
@@ -126,10 +141,7 @@ class ComponentEditor extends Component {
 
     const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
 
-    const componentSchema = Component && Component.schema ? Component.schema : {
-      type: 'object',
-      properties: {},
-    }
+    const componentSchema = this.getComponentSchema(Component, props)
 
     const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
 
