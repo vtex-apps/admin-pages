@@ -2,6 +2,11 @@
 
 The Pages editor it's platform to dynamically edit a VTEX Store, making possible to select editable components and change its configurations adding or removing content in a straightforward away.
 
+## Continuous Integrations
+
+### Travis CI
+[![Build Status](https://travis-ci.org/vtex-apps/pages-editor.svg?branch=master)](https://travis-ci.org/vtex-apps/pages-editor)
+
 ## How to make your Component editable
 
 The editor supports two ways of defining an editable component, thought a static schema structure or a dynamic function, that receives data and create the schema to be displayed.
