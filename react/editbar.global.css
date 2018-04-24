@@ -26,7 +26,8 @@ html, body {
 }
 
 .form-group {
-  padding: 10px 24px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .form-group label {
@@ -49,15 +50,16 @@ html, body {
 
 .checkbox span {
   padding-left: 5px;
+  font-size: 0.875rem;
+}
+
+.editor-form {
+  padding: 15px 24px 0px;
 }
 
 .editor-form > label {
   padding: 0px !important;
   margin: 0px !important;
-}
-
-.form-group.field.field-object {
-  padding: 0;
 }
 
 .form-control {
@@ -85,8 +87,25 @@ html, body {
 }
 
 .build-status {
-  top: 2rem !important;
-  margin-top: 4rem !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background-color: #fff !important;
+  margin: 11px !important;
+  padding: 0 !important;
+}
+
+.build-status.reload {
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
+}
+
+.build-status.fail {
+  margin-top: 0 !important;
+  width: 100% !important;
+  height: 46px !important;
 }
 
 .errors {

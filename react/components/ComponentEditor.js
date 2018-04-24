@@ -1,12 +1,13 @@
 import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { pick } from 'ramda'
+import { find, pick, map, prop } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
+import AvailableComponents from '../queries/AvailableComponents.graphql'
 import { getImplementation } from '../utils/components'
 
 import BaseInput from './form/BaseInput'
@@ -26,6 +27,7 @@ const widgets = {
 
 class ComponentEditor extends Component {
   static propTypes = {
+    availableComponents: PropTypes.object,
     saveExtension: PropTypes.any,
     treePath: PropTypes.string,
     component: PropTypes.string,
@@ -64,24 +66,33 @@ class ComponentEditor extends Component {
 
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
-    const { component } = event.formData
-    const props = event.formData
+    const { component: enumComponent } = event.formData
+    const component = enumComponent && enumComponent !== '' ? enumComponent : null
+    const pickedProps = component ? this.getSchemaProps(component, event.formData) : null
+
+    if (component) {
+      const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
+      // TODO add updateComponentAssets in runtime context and call that
+      global.__RUNTIME__.components[component] = available.assets
+    }
 
     this.context.updateExtension(this.props.treePath, {
       component,
-      props,
+      props: pickedProps,
     })
   }
 
   handleSave = (event) => {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
-    const pickedProps = this.getSchemaProps(component, props)
+    const isEmpty = this.isEmptyExtensionPoint(component)
+    const pickedProps = isEmpty ? null : this.getSchemaProps(component, props)
+    const selectedComponent = isEmpty ? null : component
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
-        component,
-        props: JSON.stringify(pickedProps),
+        component: selectedComponent,
+        props: isEmpty ? null : JSON.stringify(pickedProps),
       },
     })
       .then((data) => {
@@ -103,14 +114,17 @@ class ComponentEditor extends Component {
     event && event.stopPropagation()
   }
 
-  getEditableComponents = () => {
-    return Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
-  }
+  isEmptyExtensionPoint = (component) =>
+    /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
-    const editableComponents = this.getEditableComponents()
+    const editableComponents = this.props.availableComponents.availableComponents
+      ? map(prop('name'), this.props.availableComponents.availableComponents)
+      : []
+
+    const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
 
     const componentSchema = Component && Component.schema ? Component.schema : {
       type: 'object',
@@ -133,6 +147,7 @@ class ComponentEditor extends Component {
           enumNames: editableComponents,
           title: 'Component',
           type: 'string',
+          default: '',
         },
         ...componentSchema.properties,
       },
@@ -144,7 +159,7 @@ class ComponentEditor extends Component {
     }
 
     const extensionProps = {
-      component,
+      component: selectedComponent,
       ...props,
     }
 
@@ -193,4 +208,16 @@ class ComponentEditor extends Component {
   }
 }
 
-export default graphql(SaveExtension, { name: 'saveExtension' })(ComponentEditor)
+export default compose(
+  graphql(SaveExtension, { name: 'saveExtension' }),
+  graphql(AvailableComponents, {
+    name: 'availableComponents',
+    options: (props) => ({
+      variables: {
+        extensionName: props.treePath,
+        renderMajor: 7,
+        production: false,
+      },
+    }),
+  }),
+)(ComponentEditor)

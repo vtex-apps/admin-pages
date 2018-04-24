@@ -38,9 +38,9 @@ export default class EditBar extends Component {
     const { editTreePath, editMode, page } = this.props
     return (
       <div className="w-100 fixed z-999 top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
-        <div className="flex items-center justify-between ph5 w-100 bg-white animated fadeIn" style={{ animationDuration: '0.2s' }}>
+        <div className="flex items-center justify-between w-100 bg-white animated fadeIn" style={{ animationDuration: '0.2s' }}>
           <div className="flex items-center">
-            <div className="flex items-center br b--light-silver bw1 h-3em pr5">
+            <div className="flex items-center br b--light-silver bw1 h-3em ph4">
               <PageIcon />
             </div>
             <div className="pl3 flex-ns items-center pl5">
@@ -53,7 +53,7 @@ export default class EditBar extends Component {
               </div>
             </div>
           </div>
-          <div className="h-3em nr5 bl b--light-silver bw1 flex items-center">
+          <div className="h-3em nr5 bl b--light-silver bw1 flex items-center pr4">
             <Button onClick={this.handleClick}>
               <div className="flex items-center">
                 DONE
