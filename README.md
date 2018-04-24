@@ -1,6 +1,6 @@
 # VTEX Pages editor
 
-The Pages editor it's platform to dynamically edit a VTEX Store, making possible to select editable components and change its configurations adding or removing content in a simple and straightforward away.
+The Pages editor it's platform to dynamically edit a VTEX Store, making possible to select editable components and change its configurations adding or removing content in a straightforward away.
 
 ## How to make your Component editable
 
@@ -28,7 +28,7 @@ The property type can be: `String`, `Object` or `Number`, if `Object` it will ha
 
 ### Dynamic Schema
 
-Add to your component a function `getSchema`, that will have the logic to dynamically create the schema need to build your component structure. The Page Editor will call that function each time that the page form has a change to its state, that enables to add and remove fields from the schema, like the example bellow.
+Add to your component a function `getSchema`, that will have the logic to dynamically create the schema need to build your component structure. The Page Editor will call that function each time that the page form has a change to its state, which enables to add and remove fields from the schema, like the example below.
 
 ```
 import { range, map, clone, indexBy, prop } from 'ramda'
