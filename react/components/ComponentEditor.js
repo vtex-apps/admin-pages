@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { pick, contains, keys } from 'ramda'
+import { pick } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
@@ -65,12 +65,7 @@ class ComponentEditor extends Component {
     const schemaPropsKeys = Object.keys(this.getSchemaProps(component, props))
     const defaultPropsKeys = ['component', 'query', 'params', 'treePath']
     const propsToUpdate = schemaPropsKeys.concat(defaultPropsKeys)
-    keys(props).map((prop) => {
-      if (!contains(prop, propsToUpdate)) {
-        delete props[prop]
-      }
-    })
-    return props
+    return pick(propsToUpdate, props)
   }
 
   handleFormChange = (event) => {
