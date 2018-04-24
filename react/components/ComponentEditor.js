@@ -117,6 +117,14 @@ class ComponentEditor extends Component {
   isEmptyExtensionPoint = (component) =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
+  /**
+   * It receives a component implementation and decide which type of schema
+   * will use, an static structure (schema) or a dynamic function (getSchema).
+   * If none, returns a JSON specifying a simple static schema.
+   * 
+   * @component The component implementation
+   * @props The react props to be passed to the getSchema, if it's the case
+   */
   getComponentSchema = (component, props) => {
     return component ? (component.schema || component.getSchema(props)) : {
       type: 'object',
@@ -190,7 +198,6 @@ class ComponentEditor extends Component {
                 uiSchema={uiSchema}
                 widgets={widgets}>
                 <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
-                  <hr />
                   <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
                     <Button block size="large" onClick={this.handleCancel}>
                       Cancel
