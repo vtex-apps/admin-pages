@@ -40,7 +40,6 @@ class ComponentEditor extends Component {
 
   constructor(props, context) {
     super(props, context)
-
     this.old = JSON.stringify({
       component: props.component,
       props: this.getSchemaProps(props.component, props.props),
@@ -61,15 +60,22 @@ class ComponentEditor extends Component {
     const propsToSave = Object.keys(componentSchema.properties)
     return pick(propsToSave, props)
   }
+  
+  getUpdateExtensionProps(props, component) {
+    const schemaPropsKeys = Object.keys(this.getSchemaProps(component, props))
+    const defaultPropsKeys = ['component', 'query', 'params', 'treePath']
+    const propsToUpdate = schemaPropsKeys.concat(defaultPropsKeys)
+    return pick(propsToUpdate, props)
+  }
 
   handleFormChange = (event) => {
     console.log('Updating extension with formData...', event.formData)
     const { component } = event.formData
     const props = event.formData
-
+    
     this.context.updateExtension(this.props.treePath, {
       component,
-      props,
+      props: this.getUpdateExtensionProps(props, component),
     })
   }
 
