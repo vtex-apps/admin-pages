@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import ComponentEditor from './components/ComponentEditor'
@@ -34,12 +34,12 @@ class EditableExtensionPoint extends Component {
   }
 
   subscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.addListener('editor:update', this.update)
   }
 
   unsubscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.removeListener('editor:update', this.update)
   }
 
@@ -52,7 +52,7 @@ class EditableExtensionPoint extends Component {
   }
 
   handleEditClick = (event) => {
-    const {editExtensionPoint} = this.context
+    const { editExtensionPoint } = this.context
     editExtensionPoint(this.context.treePath)
     event.stopPropagation()
   }
@@ -62,16 +62,21 @@ class EditableExtensionPoint extends Component {
     event.stopPropagation()
   }
 
+  handleMouseOut = (event) => {
+    this.context.mouseOverExtensionPoint(null)
+    event.stopPropagation()
+  }
+
   render() {
-    const {treePath} = this.context
-    const {children, component, props, ...parentProps} = this.props
-    const {editMode, editTreePath, mouseOverTreePath} = this.state
+    const { treePath } = this.context
+    const { children, component, props, ...parentProps } = this.props
+    const { editMode, editTreePath, mouseOverTreePath } = this.state
 
     const zIndex = treePath.split('/').length + 1
     const editableClasses = mouseOverTreePath === treePath ? 'bg-blue br2 o-20 pointer' : ''
     const overlayClasses = `absolute w-100 h-100 z-${zIndex} ${editableClasses}`
     const withOverlay = (
-      <div key="editable" className="relative" onMouseOver={this.handleMouseOver}>
+      <div key="editable" className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
         <div className={overlayClasses} onClick={this.handleEditClick}></div>
         {children && React.cloneElement(children, parentProps)}
       </div>
