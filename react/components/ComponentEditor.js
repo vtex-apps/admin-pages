@@ -17,6 +17,9 @@ import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
 
+import Spinner from '@vtex/styleguide/lib/Spinner'
+import spinnerStyle from './spinner.css'
+
 const defaultUiSchema = {
   'classNames': 'editor-form',
 }
@@ -96,7 +99,7 @@ class ComponentEditor extends Component {
 
     const componentImplementation = component && getImplementation(component)
     const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props)
-    
+
     const selectedComponent = isEmpty ? null : component
 
     this.setState({
@@ -236,6 +239,7 @@ class ComponentEditor extends Component {
                     <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
                       <Button block size="large" type="submit">
                         Save
+                        <Spinner size={10} style={spinnerStyle} />
                       </Button>
                     </div>
                   </div>
