@@ -39,12 +39,15 @@ class EmptyExtensionPoint extends Component {
 
   render() {
     const {editMode} = this.state
-    const className = `${editMode ? 'ba b--silver b--dashed mv6 pv6 tc' : 'dn'}`
+    const className = `${editMode ? 'w-100 flex items-center ph4 ph6-ns absolute pointer w2 h2 z-999' : 'dn'}`
 
     return (
       <div className={className}>
-        <div className="fw3 f3">This is an empty extension point</div>
-        <div className="fw7 f6 pt4">Click to add a component</div>
+        <div className="br-100 bg-blue w2 h2 f4 white flex items-center justify-center flex-none">
+          +
+        </div>
+        <div className="bb b--blue bw1 w-100 empty-line bw2 br-pill nl5">
+        </div>
       </div>
     )
   }

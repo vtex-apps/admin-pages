@@ -73,8 +73,8 @@ class EditableExtensionPoint extends Component {
     const { editMode, editTreePath, mouseOverTreePath } = this.state
 
     const zIndex = treePath.split('/').length + 1
-    const editableClasses = mouseOverTreePath === treePath ? 'bg-blue br2 o-20 pointer' : ''
-    const overlayClasses = `absolute w-100 h-100 z-${zIndex} ${editableClasses}`
+    const editableClasses = mouseOverTreePath === treePath ? 'bg-white br2 o-70 pointer' : ''
+    const overlayClasses = `w-100 h-100 min-h-2 z-${zIndex} absolute ${editableClasses}`
     const withOverlay = (
       <div key="editable" className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
         <div className={overlayClasses} onClick={this.handleEditClick}></div>
