@@ -45,7 +45,7 @@ class ComponentEditor extends Component {
 
     this.old = JSON.stringify({
       component: props.component,
-      props: this.getSchemaProps(props.component, props.props),
+      props: this.getSchemaProps(getImplementation(props.component), props.props),
     })
   }
 
@@ -58,8 +58,11 @@ class ComponentEditor extends Component {
   }
 
   getSchemaProps = (component, props) => {
-    const Component = getImplementation(component)
-    const componentSchema = this.getComponentSchema(Component, props)
+    if (!component) {
+      return null
+    }
+
+    const componentSchema = this.getComponentSchema(component, props)
     const propsToSave = Object.keys(componentSchema.properties)
     return pick(propsToSave, props)
   }
@@ -68,9 +71,9 @@ class ComponentEditor extends Component {
     console.log('Updating extension with formData...', event.formData)
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
-    const pickedProps = component ? this.getSchemaProps(component, event.formData) : null
+    const Component = component && getImplementation(component)
 
-    if (component) {
+    if (component && !Component) {
       const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
       // TODO add updateComponentAssets in runtime context and call that
       global.__RUNTIME__.components[component] = available.assets
@@ -78,7 +81,7 @@ class ComponentEditor extends Component {
 
     this.context.updateExtension(this.props.treePath, {
       component,
-      props: pickedProps,
+      props: this.getSchemaProps(Component, event.formData),
     })
   }
 
@@ -121,12 +124,12 @@ class ComponentEditor extends Component {
    * It receives a component implementation and decide which type of schema
    * will use, an static (schema) or a dynamic (getSchema) schema.
    * If none, returns a JSON specifying a simple static schema.
-   * 
+   *
    * @component The component implementation
    * @props The react props to be passed to the getSchema, if it's the case
    */
   getComponentSchema = (component, props) => {
-    return component ? (component.schema || component.getSchema(props)) : {
+    return component && (component.schema || (component.getSchema && component.getSchema(props))) || {
       type: 'object',
       properties: {},
     }
