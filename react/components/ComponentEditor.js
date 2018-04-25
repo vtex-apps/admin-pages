@@ -43,6 +43,10 @@ class ComponentEditor extends Component {
   constructor(props, context) {
     super(props, context)
 
+    this.state = {
+      saving: false
+    }
+
     this.old = JSON.stringify({
       component: props.component,
       props: this.getSchemaProps(getImplementation(props.component), props.props),
@@ -89,8 +93,16 @@ class ComponentEditor extends Component {
     console.log('save', event, this.props)
     const { saveExtension, component, props } = this.props
     const isEmpty = this.isEmptyExtensionPoint(component)
-    const pickedProps = isEmpty ? null : this.getSchemaProps(component, props)
+
+    const componentImplementation = component && getImplementation(component)
+    const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props)
+    
     const selectedComponent = isEmpty ? null : component
+
+    this.setState({
+      saving: true
+    })
+
     saveExtension({
       variables: {
         extensionName: this.props.treePath,
@@ -100,9 +112,15 @@ class ComponentEditor extends Component {
     })
       .then((data) => {
         console.log('OK!', data)
+        this.setState({
+          saving: false
+        })
         this.context.editExtensionPoint(null)
       })
       .catch(err => {
+        this.setState({
+          saving: false
+        })
         alert('Error saving extension point configuration.')
         console.log(err)
         this.handleCancel()
@@ -200,18 +218,28 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
-                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
-                    <Button block size="large" onClick={this.handleCancel}>
-                      Cancel
-                    </Button>
+                {this.state.saving ? (
+                  <div className="flex fixed bottom-0 w-100 bt bw2 near-black">
+                    <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 flex">
+                      <div>
+                        Saving...
+                      </div>
+                    </div>
                   </div>
-                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
-                    <Button block size="large" type="submit">
-                      Save
-                    </Button>
+                ) : (
+                  <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                    <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
+                      <Button block size="large" onClick={this.handleCancel}>
+                        Cancel
+                      </Button>
+                    </div>
+                    <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
+                      <Button block size="large" type="submit">
+                        Save
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                )}
               </Form>
             </div>
           </div>
