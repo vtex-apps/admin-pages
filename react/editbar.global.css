@@ -145,14 +145,36 @@ html, body {
 
 .error-detail {
   list-style: none;
-  padding: 5px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   margin: 0px;
   font-size: 14px;
   color: #FF4C4C;
 }
 
+.radio-inline > span > span {
+  padding-left: 5px;
+  padding-right: 15px;
+}
+
 .has-error input {
   border: 2px solid #FF4C4C;
+}
+
+.field-range-wrapper > input {
+  width: 80%;
+}
+
+.field-range-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.field-range-wrapper > span {
+  font-size: 16px;
+  font-weight: 700;
+  padding-right: 3px;
+  color: #368df7;
 }
 
 @media only screen and (max-width: 40em) {
@@ -163,6 +185,9 @@ html, body {
 }
 
 @media only screen and (min-width: 40em) {
+  .field-range-wrapper > input {
+    width: 85%;
+  }
   .form-schema {
     min-height: 300px;
     max-height: 80vh;
