@@ -18,7 +18,6 @@ import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
 
 import Spinner from '@vtex/styleguide/lib/Spinner'
-import spinnerStyle from './spinner.css'
 
 const defaultUiSchema = {
   'classNames': 'editor-form',
@@ -221,29 +220,22 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                {this.state.saving ? (
-                  <div className="flex fixed bottom-0 w-100 bt bw2 near-black">
-                    <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 flex">
-                      <div>
-                        Saving...
-                      </div>
-                    </div>
+                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
+                    <Button block size="large" onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
                   </div>
-                ) : (
-                  <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
-                    <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
-                      <Button block size="large" onClick={this.handleCancel}>
-                        Cancel
-                      </Button>
-                    </div>
-                    <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
+                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue flex items-center justify-center">
+                    {this.state.saving ? (
+                      <Spinner size={28} />
+                    ) : (
                       <Button block size="large" type="submit">
                         Save
-                        <Spinner size={10} style={spinnerStyle} />
                       </Button>
-                    </div>
+                    )}
                   </div>
-                )}
+                </div>
               </Form>
             </div>
           </div>
