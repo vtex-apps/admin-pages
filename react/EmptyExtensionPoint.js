@@ -41,12 +41,12 @@ class EmptyExtensionPoint extends Component {
 
   render() {
     const {editMode} = this.state
-    const className = `${editMode ? 'flex items-center ph4 ph6-ns absolute pointer z-999 grow' : 'dn'}`
+    const className = `${editMode ? 'ma7-ns ma4' : 'dn'}`
 
     return (
       <div className={className}>
-        <div>
-          <EmptyPoint />
+        <div className="w-100 ba b--blue br9 b--dashed pa6-ns pa4 blue w7">
+          Isso é um empty extension point
         </div>
       </div>
     )
