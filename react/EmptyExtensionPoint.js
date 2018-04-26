@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
+import EmptyPoint from './images/EmptyPoint.js'
+
 // eslint-disable-next-line
 class EmptyExtensionPoint extends Component {
   static contextTypes = {
@@ -39,14 +41,12 @@ class EmptyExtensionPoint extends Component {
 
   render() {
     const {editMode} = this.state
-    const className = `${editMode ? 'w-100 flex items-center ph4 ph6-ns absolute pointer w2 h2 z-999' : 'dn'}`
+    const className = `${editMode ? 'flex items-center ph4 ph6-ns absolute pointer z-999 grow' : 'dn'}`
 
     return (
       <div className={className}>
-        <div className="br-100 bg-blue w2 h2 f4 white flex items-center justify-center flex-none">
-          +
-        </div>
-        <div className="bb b--blue bw1 w-100 empty-line bw2 br-pill nl5">
+        <div>
+          <EmptyPoint />
         </div>
       </div>
     )
