@@ -27,6 +27,8 @@ const widgets = {
   BaseInput,
 }
 
+let openInstance = null
+
 class ComponentEditor extends Component {
   static propTypes = {
     availableComponents: PropTypes.object,
@@ -46,7 +48,7 @@ class ComponentEditor extends Component {
     super(props, context)
 
     this.state = {
-      saving: false
+      saving: false,
     }
 
     this.old = JSON.stringify({
@@ -102,7 +104,7 @@ class ComponentEditor extends Component {
     const selectedComponent = isEmpty ? null : component
 
     this.setState({
-      saving: true
+      saving: true,
     })
 
     saveExtension({
@@ -115,13 +117,14 @@ class ComponentEditor extends Component {
       .then((data) => {
         console.log('OK!', data)
         this.setState({
-          saving: false
+          saving: false,
         })
         this.context.editExtensionPoint(null)
+        openInstance = null
       })
       .catch(err => {
         this.setState({
-          saving: false
+          saving: false,
         })
         alert('Error saving extension point configuration.')
         console.log(err)
@@ -135,6 +138,7 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
     delete this.old
     event && event.stopPropagation()
+    openInstance = null
   }
 
   isEmptyExtensionPoint = (component) =>
@@ -156,6 +160,12 @@ class ComponentEditor extends Component {
   }
 
   render() {
+    if (openInstance && openInstance !== this) {
+      console.log('another open instance', this)
+      return null
+    }
+    openInstance = this
+
     const { component, props } = this.props
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
