@@ -1,7 +1,5 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
-import EmptyPoint from './images/EmptyPoint.js'
 
 // eslint-disable-next-line
 class EmptyExtensionPoint extends Component {
@@ -22,12 +20,12 @@ class EmptyExtensionPoint extends Component {
   }
 
   subscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.addListener('editor:update', this.update)
   }
 
   unsubscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.removeListener('editor:update', this.update)
   }
 
@@ -40,7 +38,7 @@ class EmptyExtensionPoint extends Component {
   }
 
   render() {
-    const {editMode} = this.state
+    const { editMode } = this.state
     const className = `${editMode ? 'pa7-ns pa5 mw7 center' : 'dn'}`
 
     return (
