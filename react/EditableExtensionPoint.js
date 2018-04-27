@@ -53,6 +53,7 @@ class EditableExtensionPoint extends Component {
   handleEditClick = (event) => {
     const { editExtensionPoint } = this.context
     editExtensionPoint(this.context.treePath)
+    this.setState({ mouseOver: false })
     event.stopPropagation()
   }
 
