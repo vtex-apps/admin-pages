@@ -31,7 +31,6 @@ export default function FieldTemplate(props) {
     description,
     hidden,
     required,
-    displayLabel,
   } = props
 
   if (hidden) {
@@ -40,8 +39,8 @@ export default function FieldTemplate(props) {
 
   return (
     <div className={`${classNames} w-100`}>
-      {displayLabel && <Label label={label} required={required} id={id} />}
-      {displayLabel && description ? description : null}
+      <Label label={label} required={required} id={id} />
+      {description && description}
       {children}
       {errors}
       {help}

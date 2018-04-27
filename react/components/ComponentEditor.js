@@ -17,6 +17,8 @@ import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
 
+import Spinner from '@vtex/styleguide/lib/Spinner'
+
 const defaultUiSchema = {
   'classNames': 'editor-form',
 }
@@ -24,6 +26,8 @@ const defaultUiSchema = {
 const widgets = {
   BaseInput,
 }
+
+let openInstance = null
 
 class ComponentEditor extends Component {
   static propTypes = {
@@ -44,7 +48,7 @@ class ComponentEditor extends Component {
     super(props, context)
 
     this.state = {
-      saving: false
+      saving: false,
     }
 
     this.old = JSON.stringify({
@@ -96,11 +100,11 @@ class ComponentEditor extends Component {
 
     const componentImplementation = component && getImplementation(component)
     const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props)
-    
+
     const selectedComponent = isEmpty ? null : component
 
     this.setState({
-      saving: true
+      saving: true,
     })
 
     saveExtension({
@@ -113,13 +117,14 @@ class ComponentEditor extends Component {
       .then((data) => {
         console.log('OK!', data)
         this.setState({
-          saving: false
+          saving: false,
         })
         this.context.editExtensionPoint(null)
+        openInstance = null
       })
       .catch(err => {
         this.setState({
-          saving: false
+          saving: false,
         })
         alert('Error saving extension point configuration.')
         console.log(err)
@@ -133,6 +138,7 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
     delete this.old
     event && event.stopPropagation()
+    openInstance = null
   }
 
   isEmptyExtensionPoint = (component) =>
@@ -154,6 +160,12 @@ class ComponentEditor extends Component {
   }
 
   render() {
+    if (openInstance && openInstance !== this) {
+      console.log('another open instance', this)
+      return null
+    }
+    openInstance = this
+
     const { component, props } = this.props
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
@@ -198,7 +210,7 @@ class ComponentEditor extends Component {
 
     const editor = (
       <div className="w-100 near-black">
-        <Draggable handle=".draggable" bounds="body">
+        <Draggable handle=".draggable">
           <div className={`br2-ns fixed z-max bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
             <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable">
               <div>
@@ -218,28 +230,22 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}>
-                {this.state.saving ? (
-                  <div className="flex fixed bottom-0 w-100 bt bw2 near-black">
-                    <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 flex">
-                      <div>
-                        Saving...
-                      </div>
-                    </div>
+                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
+                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
+                    <Button block size="large" onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
                   </div>
-                ) : (
-                  <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
-                    <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
-                      <Button block size="large" onClick={this.handleCancel}>
-                        Cancel
-                      </Button>
-                    </div>
-                    <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue">
+                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue flex items-center justify-center">
+                    {this.state.saving ? (
+                      <Spinner size={28} />
+                    ) : (
                       <Button block size="large" type="submit">
                         Save
                       </Button>
-                    </div>
+                    )}
                   </div>
-                )}
+                </div>
               </Form>
             </div>
           </div>
