@@ -210,7 +210,7 @@ class ComponentEditor extends Component {
 
     const editor = (
       <div className="w-100 near-black">
-        <Draggable handle=".draggable" bounds="body">
+        <Draggable handle=".draggable">
           <div className={`br2-ns fixed z-max bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
             <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable">
               <div>
