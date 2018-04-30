@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { find, pick, map, prop } from 'ramda'
+import { has, hasIn, filter, find, pick, map, prop, pickBy } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -153,6 +153,28 @@ class ComponentEditor extends Component {
     }
   }
 
+  getInnerWidgets = properties => {
+    const extractWidget = properties => {
+      const deepProperties = pickBy(property => has('properties', property), properties)
+      return {
+        ...map((value, key) => value.widget, pickBy(property => has('widget', property), properties)),
+        ...deepProperties && map(property => extractWidget(property.properties),deepProperties)
+      }
+    }
+
+    return {
+      ...map((value, key) => value.widget, pickBy(property => has('widget',property), properties)),
+      ...map(property => extractWidget(property.properties), pickBy(property => has('properties', property), properties))
+    }
+  }
+
+  getUiSchema = (componentUiSchema, componentSchema) => {
+    return {
+      ...this.getInnerWidgets(componentSchema.properties),
+      ...componentUiSchema
+    }
+  }
+
   render() {
     const { component, props } = this.props
     const Component = getImplementation(component)
@@ -188,8 +210,10 @@ class ComponentEditor extends Component {
 
     const uiSchema = {
       ...defaultUiSchema,
-      ...componentUiSchema,
+      ...this.getUiSchema(componentUiSchema, componentSchema),
     }
+
+    // console.log(uiSchema)
 
     const extensionProps = {
       component: selectedComponent,
