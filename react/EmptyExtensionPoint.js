@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 // eslint-disable-next-line
@@ -20,12 +20,12 @@ class EmptyExtensionPoint extends Component {
   }
 
   subscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.addListener('editor:update', this.update)
   }
 
   unsubscribeToEditor = () => {
-    const {emitter} = this.context
+    const { emitter } = this.context
     emitter.removeListener('editor:update', this.update)
   }
 
@@ -38,13 +38,15 @@ class EmptyExtensionPoint extends Component {
   }
 
   render() {
-    const {editMode} = this.state
-    const className = `${editMode ? 'ba b--silver b--dashed mv6 pv6 tc' : 'dn'}`
+    const { editMode } = this.state
+    const className = `${editMode ? 'pa7-ns pa5 mw7 center' : 'dn'}`
 
     return (
       <div className={className}>
-        <div className="fw3 f3">This is an empty extension point</div>
-        <div className="fw7 f6 pt4">Click to add a component</div>
+        <div className="w-100 ba b--blue br2 b--dashed pa6-ns pa6 blue tc bg-washed-blue bw1">
+          This is an empty extension point
+          <div className="fw7 pt2">CLICK TO EDIT</div>
+        </div>
       </div>
     )
   }

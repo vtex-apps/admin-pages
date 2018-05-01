@@ -11,7 +11,6 @@ class EditableExtensionPoint extends Component {
     editExtensionPoint: PropTypes.func,
     mouseOverExtensionPoint: PropTypes.func,
     treePath: PropTypes.string,
-    mouseOverTreePath: PropTypes.string,
   }
 
   static propTypes = {
@@ -25,7 +24,7 @@ class EditableExtensionPoint extends Component {
     this.state = {
       editMode: context.editMode,
       editTreePath: context.editTreePath,
-      mouseOverTreePath: context.mouseOverTreePath,
+      mouseOverTreePath: false,
     }
   }
 
@@ -54,27 +53,32 @@ class EditableExtensionPoint extends Component {
   handleEditClick = (event) => {
     const { editExtensionPoint } = this.context
     editExtensionPoint(this.context.treePath)
+    this.setState({ mouseOver: false })
     event.stopPropagation()
   }
 
   handleMouseOver = (event) => {
-    this.context.mouseOverExtensionPoint(this.context.treePath)
+    this.setState({ mouseOver: true })
     event.stopPropagation()
   }
 
   handleMouseOut = (event) => {
-    this.context.mouseOverExtensionPoint(null)
+    this.setState({ mouseOver: false })
     event.stopPropagation()
   }
+
+  isEmptyExtensionPoint = (component) =>
+    /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
   render() {
     const { treePath } = this.context
     const { children, component, props, ...parentProps } = this.props
-    const { editMode, editTreePath, mouseOverTreePath } = this.state
+    const { editMode, editTreePath, mouseOver } = this.state
 
+    const isEmpty = this.isEmptyExtensionPoint(component)
     const zIndex = treePath.split('/').length + 1
-    const editableClasses = mouseOverTreePath === treePath ? 'bg-blue br2 o-20 pointer' : ''
-    const overlayClasses = `absolute w-100 h-100 z-${zIndex} ${editableClasses}`
+    const editableClasses = mouseOver ? `br2 pointer ${!isEmpty ? 'b--blue b--dashed ba bg-white o-50' : ''}` : ''
+    const overlayClasses = `w-100 h-100 min-h-2 z-${zIndex} absolute ${editableClasses}`
     const withOverlay = (
       <div key="editable" className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
         <div className={overlayClasses} onClick={this.handleEditClick}></div>
