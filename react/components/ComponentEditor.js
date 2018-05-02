@@ -185,7 +185,7 @@ class ComponentEditor extends Component {
      * 
      * @argument properties The schema properties to be analysed.
      */
-    getDeepUiSchema = properties => {
+    const getDeepUiSchema = properties => {
       const deepProperties = pickBy(property => has('properties', property), properties)
       return {
         ...map((value, key) => value.widget, pickBy(property => has('widget', property), properties)),
