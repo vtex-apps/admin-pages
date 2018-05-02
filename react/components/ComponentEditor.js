@@ -159,31 +159,58 @@ class ComponentEditor extends Component {
     }
   }
 
-  getInnerWidgets = properties => {
-    const extractWidget = properties => {
+  /**
+   * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
+   * Each schema property can define an widget especifying how to display it.
+   * @argument componentUiSchema The default static `UiSchema` definition
+   * @argument componentSchema The full `Component Schema` (already 
+   *  applyed the `getSchema`, if its the case)
+   * @returns A object defining the complete `UiSchema` that matches all the schema
+   *  properties.
+   */
+  getUiSchema = (componentUiSchema, componentSchema) => {
+    /**
+     * It goes deep into the schema tree to find widget definitions, generating
+     * the correct path to the property.
+     * e.g: 
+     * {
+     *   banner1: {
+     *     numberOfLines: {
+     *       value: {
+     *         'ui:widget': 'range'
+     *       }
+     *     }
+     *   }
+     * }
+     * 
+     * @argument properties The schema properties to be analysed.
+     */
+    getDeepUiSchema = properties => {
       const deepProperties = pickBy(property => has('properties', property), properties)
       return {
         ...map((value, key) => value.widget, pickBy(property => has('widget', property), properties)),
-        ...deepProperties && map(property => extractWidget(property.properties),deepProperties)
+        ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties)
       }
     }
 
-    return {
-      ...map((value, key) => value.widget, pickBy(property => has('widget',property), properties)),
-      ...map(property => extractWidget(property.properties), pickBy(property => has('properties', property), properties))
+    const uiSchema = {
+      ...map((value, key) => value.widget, pickBy(
+        property => has('widget',property), componentSchema.properties
+      )),
+      ...map(property => getDeepUiSchema(property.properties), pickBy(
+        property => has('properties', property), componentSchema.properties
+      ))
     }
-  }
 
-  getUiSchema = (componentUiSchema, componentSchema) => {
     return {
-      ...this.getInnerWidgets(componentSchema.properties),
+      ...uiSchema,
       ...componentUiSchema
     }
   }
 
   render() {
     if (openInstance && openInstance !== this) {
-      console.log('another open instance', this)
+      console.log('another open instance: ', this.props.component)
       return null
     }
     openInstance = this
@@ -224,8 +251,6 @@ class ComponentEditor extends Component {
       ...defaultUiSchema,
       ...this.getUiSchema(componentUiSchema, componentSchema),
     }
-
-    // console.log(uiSchema)
 
     const extensionProps = {
       component: selectedComponent,
