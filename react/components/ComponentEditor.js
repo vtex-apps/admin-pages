@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { find, pick, map, prop } from 'ramda'
+import { has, hasIn, filter, find, pick, map, prop, pickBy } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -159,9 +159,58 @@ class ComponentEditor extends Component {
     }
   }
 
+  /**
+   * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
+   * Each schema property can define an widget especifying how to display it.
+   * @argument componentUiSchema The default static `UiSchema` definition
+   * @argument componentSchema The full `Component Schema` (already 
+   *  applyed the `getSchema`, if its the case)
+   * @returns A object defining the complete `UiSchema` that matches all the schema
+   *  properties.
+   */
+  getUiSchema = (componentUiSchema, componentSchema) => {
+    /**
+     * It goes deep into the schema tree to find widget definitions, generating
+     * the correct path to the property.
+     * e.g: 
+     * {
+     *   banner1: {
+     *     numberOfLines: {
+     *       value: {
+     *         'ui:widget': 'range'
+     *       }
+     *     }
+     *   }
+     * }
+     * 
+     * @argument properties The schema properties to be analysed.
+     */
+    const getDeepUiSchema = properties => {
+      const deepProperties = pickBy(property => has('properties', property), properties)
+      return {
+        ...map((value, key) => value.widget, pickBy(property => has('widget', property), properties)),
+        ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties)
+      }
+    }
+
+    const uiSchema = {
+      ...map((value, key) => value.widget, pickBy(
+        property => has('widget',property), componentSchema.properties
+      )),
+      ...map(property => getDeepUiSchema(property.properties), pickBy(
+        property => has('properties', property), componentSchema.properties
+      ))
+    }
+
+    return {
+      ...uiSchema,
+      ...componentUiSchema
+    }
+  }
+
   render() {
     if (openInstance && openInstance !== this) {
-      console.log('another open instance', this)
+      console.log('another open instance: ', this.props.component)
       return null
     }
     openInstance = this
@@ -200,7 +249,7 @@ class ComponentEditor extends Component {
 
     const uiSchema = {
       ...defaultUiSchema,
-      ...componentUiSchema,
+      ...this.getUiSchema(componentUiSchema, componentSchema),
     }
 
     const extensionProps = {
