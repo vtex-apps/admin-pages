@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { find, pick, map, prop } from 'ramda'
+import { find, pick, map, prop, pickBy } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -28,6 +28,8 @@ const widgets = {
 }
 
 let openInstance = null
+
+const pickDefined = pickBy(v => v !== undefined)
 
 class ComponentEditor extends Component {
   static propTypes = {
@@ -72,11 +74,10 @@ class ComponentEditor extends Component {
 
     const componentSchema = this.getComponentSchema(component, props)
     const propsToSave = Object.keys(componentSchema.properties)
-    return pick(propsToSave, props)
+    return pickDefined(pick(propsToSave, props))
   }
 
   handleFormChange = (event) => {
-    console.log('Updating extension with formData...', event.formData)
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
@@ -87,9 +88,12 @@ class ComponentEditor extends Component {
       global.__RUNTIME__.components[component] = available.assets
     }
 
+    const props = this.getSchemaProps(Component, event.formData)
+    console.log('Updating extension with props', props)
+
     this.context.updateExtension(this.props.treePath, {
       component,
-      props: this.getSchemaProps(Component, event.formData),
+      props,
     })
   }
 
