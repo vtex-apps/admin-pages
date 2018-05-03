@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
 * **Editor** Added to the `ComponentEditor` support for `UiSchema` to be defined with the `Component Schema`
+
+### Fix
+
+* **Editor** Fix implementation of singleton `ComponentEditor` instance that affected the test environment
 
 ## [1.4.0] - 2018-04-24
 
