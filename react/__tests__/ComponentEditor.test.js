@@ -14,6 +14,7 @@ describe('<ComponentEditor /> component', () => {
   const staticComponent = 'static_component'  
   const dynamicComponent = 'dynamic_component'
 
+  
   /* Set up the list of components retrieved by the graphQL api */ 
   global.__RUNTIME__ = {
     components: {
@@ -25,20 +26,22 @@ describe('<ComponentEditor /> component', () => {
       ]
     }
   }
-
+  
   function renderComponent(componentName, props={}) {
     const treePath = ''
-
+    
     const component = mount(
       <MockedProvider>
         <ComponentEditor key="editor" component={componentName} props={props} treePath={treePath}/>
       </MockedProvider>
     )
-
+    
     return { component }
   }
-
+  
   describe('with static schema', () => {
+    let component
+
     const schema = {
       component: 'Carousel',
       description: 'A simple component',
@@ -57,29 +60,25 @@ describe('<ComponentEditor /> component', () => {
         [staticComponent]: { schema }
       }
     })
-  
-    it('should render the correct component', () => {
-      const { component } = renderComponent(staticComponent)
-      expect(component).toBeTruthy()
-      expect(component.props().children.props).toBeTruthy()
-      expect(component.props().children.props.component).toBe(staticComponent)
+
+    afterEach(() => {
       component.find('ComponentEditor').instance().unmountInstance()
       component.unmount()
     })
   
-    /**  
-     * FIXME: Test commented because of the ComponentEditor singleton implementation
-     * of instances.
-     * @author Andre Abrantes - 02-MAY-2018
-     */
+    it('should render the correct component', () => {
+      component = renderComponent(staticComponent).component
+      expect(component).toBeTruthy()
+      expect(component.props().children.props).toBeTruthy()
+      expect(component.props().children.props.component).toBe(staticComponent)
+    })
+
     it('should be consistent to the schema definition', () => {
-      const { component } = renderComponent(staticComponent)
+      component = renderComponent(staticComponent).component
       const { properties: {example} } = schema
       const exampleInput = component.find('input').props()
       expect(exampleInput.label).toBe(example.title)
       expect(exampleInput.type).toBe('text')
-      component.find('ComponentEditor').instance().unmountInstance()
-      component.unmount()
     })
   
     it('should render a number input', () => {
@@ -89,13 +88,11 @@ describe('<ComponentEditor /> component', () => {
           title: 'Quantity'
         }
       }
-      const { component } = renderComponent(staticComponent)
+      component = renderComponent(staticComponent).component
       const { properties: {quantity} } = schema
       const quantityInput = component.find('input').props()
       expect(quantityInput.label).toBe(quantity.title)
       expect(quantityInput.type).toBe('number')
-      component.find('ComponentEditor').instance().unmountInstance()
-      component.unmount()
     })
   })
 
@@ -131,6 +128,8 @@ describe('<ComponentEditor /> component', () => {
         }
       }
     }
+
+    let component
     
     beforeEach(() => {
       /* Set up the component, mocking the retrieve implementation from graphQL api */
@@ -139,23 +138,24 @@ describe('<ComponentEditor /> component', () => {
       }
     })
 
+    afterEach(() => {
+      component.find('ComponentEditor').instance().unmountInstance()
+      component.unmount()
+    })
+
     it('should render the correct component', () => {
-      const { component } = renderComponent(dynamicComponent)
+      component = renderComponent(dynamicComponent).component
       expect(component).toBeTruthy()
       expect(component.props().children.props).toBeTruthy()
       expect(component.props().children.props.component).toBe(dynamicComponent)
-      component.find('ComponentEditor').instance().unmountInstance()
-      component.unmount()
     })  
-    
-    /**  
-     * FIXME: Test commented because of the ComponentEditor singleton implementation
-     * of instances.
-     * @author Andre Abrantes - 02-MAY-2018
-     */
+
     it('should be consistent to the schema definition', () => {
       const NUMBER_OF_BANNERS = 2
-      const { component } = renderComponent(dynamicComponent, {numberOfBanners: NUMBER_OF_BANNERS})
+      component = renderComponent(dynamicComponent, {
+        numberOfBanners: NUMBER_OF_BANNERS
+      }).component
+
       const { properties } = getSchema({numberOfBanners: NUMBER_OF_BANNERS})
       
       const renderedInputs = component.find('input')
@@ -172,8 +172,6 @@ describe('<ComponentEditor /> component', () => {
       
       const banner2 = renderedInputs.find({id: 'root_banner2_image'}).props()
       expect(banner2.label).toBe(properties.banner2.properties.image.title)
-      component.find('ComponentEditor').instance().unmountInstance()
-      component.unmount()
     })
   })
 })
