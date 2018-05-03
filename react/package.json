@@ -1,6 +1,5 @@
 {
   "name": "vtex.pages-editor",
-  "version": null,
   "license": "UNLICENSED",
   "scripts": {
     "pretest": "yarn",

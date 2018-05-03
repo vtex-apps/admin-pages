@@ -32,9 +32,9 @@
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.3.tgz#91b728599544efbb7386d8b6633693a3c2e7ade5"
 
-"@vtex/styleguide@2.0.0-rc.34":
-  version "2.0.0-rc.34"
-  resolved "https://registry.yarnpkg.com/@vtex/styleguide/-/styleguide-2.0.0-rc.34.tgz#def960cf4c9de0a2fbe5a2c8cad122c7e3b5f7d8"
+"@vtex/styleguide@2.0.0-rc.39":
+  version "2.0.0-rc.39"
+  resolved "https://registry.yarnpkg.com/@vtex/styleguide/-/styleguide-2.0.0-rc.39.tgz#24b9a19b89094ccc23ad93ea545c454704ee943c"
   dependencies:
     react-responsive-modal "^2.0.1"
     vtex-tachyons "^2.3.0"

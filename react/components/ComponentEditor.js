@@ -27,6 +27,8 @@ const widgets = {
   BaseInput,
 }
 
+const pickDefined = pickBy(v => v !== undefined)
+
 class ComponentEditor extends Component {
   static propTypes = {
     availableComponents: PropTypes.object,
@@ -46,19 +48,19 @@ class ComponentEditor extends Component {
 
   constructor(props, context) {
     super(props, context)
-    
+
     this.state = {
       saving: false,
     }
-    
+
     this.old = JSON.stringify({
       component: props.component,
       props: this.getSchemaProps(getImplementation(props.component), props.props),
     })
   }
- 
+
   unmountInstance = () => ComponentEditor.openInstance = null
-  
+
   componentDidMount() {
     this._isMounted = true
   }
@@ -74,11 +76,10 @@ class ComponentEditor extends Component {
 
     const componentSchema = this.getComponentSchema(component, props)
     const propsToSave = Object.keys(componentSchema.properties)
-    return pick(propsToSave, props)
+    return pickDefined(pick(propsToSave, props))
   }
 
   handleFormChange = (event) => {
-    console.log('Updating extension with formData...', event.formData)
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
@@ -89,9 +90,12 @@ class ComponentEditor extends Component {
       global.__RUNTIME__.components[component] = available.assets
     }
 
+    const props = this.getSchemaProps(Component, event.formData)
+    console.log('Updating extension with props', props)
+
     this.context.updateExtension(this.props.treePath, {
       component,
-      props: this.getSchemaProps(Component, event.formData),
+      props,
     })
   }
 
@@ -165,7 +169,7 @@ class ComponentEditor extends Component {
    * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
    * Each schema property can define an widget especifying how to display it.
    * @argument componentUiSchema The default static `UiSchema` definition
-   * @argument componentSchema The full `Component Schema` (already 
+   * @argument componentSchema The full `Component Schema` (already
    *  applyed the `getSchema`, if its the case)
    * @returns A object defining the complete `UiSchema` that matches all the schema
    *  properties.
@@ -174,7 +178,7 @@ class ComponentEditor extends Component {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
      * the correct path to the property.
-     * e.g: 
+     * e.g:
      * {
      *   banner1: {
      *     numberOfLines: {
@@ -184,29 +188,29 @@ class ComponentEditor extends Component {
      *     }
      *   }
      * }
-     * 
+     *
      * @argument properties The schema properties to be analysed.
      */
     const getDeepUiSchema = properties => {
       const deepProperties = pickBy(property => has('properties', property), properties)
       return {
-        ...map((value, key) => value.widget, pickBy(property => has('widget', property), properties)),
-        ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties)
+        ...map(value => value.widget, pickBy(property => has('widget', property), properties)),
+        ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties),
       }
     }
 
     const uiSchema = {
-      ...map((value, key) => value.widget, pickBy(
-        property => has('widget',property), componentSchema.properties
+      ...map(value => value.widget, pickBy(
+        property => has('widget', property), componentSchema.properties
       )),
       ...map(property => getDeepUiSchema(property.properties), pickBy(
         property => has('properties', property), componentSchema.properties
-      ))
+      )),
     }
 
     return {
       ...uiSchema,
-      ...componentUiSchema
+      ...componentUiSchema,
     }
   }
 
@@ -291,7 +295,7 @@ class ComponentEditor extends Component {
                       <Spinner size={28} />
                     ) : (
                       <Button block size="large" type="submit">
-                        Save
+                          Save
                       </Button>
                     )}
                   </div>
