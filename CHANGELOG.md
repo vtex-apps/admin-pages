@@ -7,10 +7,23 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Added
-
-* **Editor** Added to the `ComponentEditor` support for dynamic component schemas.
+## [1.5.1] - 2018-05-03
 
 ### Fixed
 
-* **Editor** Fixed the `ComponentEditor` to save extension
+* Avoid setting everything as undefined
+* Fix implementation of singleton `ComponentEditor` instance that affected the test environment
+
+## [1.5.0] - 2018-05-03
+
+* Added to the `ComponentEditor` support for `UiSchema` to be defined with the `Component Schema`
+
+## [1.4.0] - 2018-04-24
+
+### Added
+
+* Added to the `ComponentEditor` support for dynamic component schemas.
+
+### Fixed
+
+* Fixed the `ComponentEditor` to save extension
