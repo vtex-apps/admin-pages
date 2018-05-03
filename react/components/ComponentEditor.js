@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { has, hasIn, filter, find, pick, map, prop, pickBy } from 'ramda'
+import { has, find, pick, map, prop, pickBy } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -27,8 +27,6 @@ const widgets = {
   BaseInput,
 }
 
-let openInstance = null
-
 class ComponentEditor extends Component {
   static propTypes = {
     availableComponents: PropTypes.object,
@@ -44,19 +42,23 @@ class ComponentEditor extends Component {
     emitter: PropTypes.object,
   }
 
+  static openInstance = null
+
   constructor(props, context) {
     super(props, context)
-
+    
     this.state = {
       saving: false,
     }
-
+    
     this.old = JSON.stringify({
       component: props.component,
       props: this.getSchemaProps(getImplementation(props.component), props.props),
     })
   }
-
+ 
+  unmountInstance = () => ComponentEditor.openInstance = null
+  
   componentDidMount() {
     this._isMounted = true
   }
@@ -120,7 +122,7 @@ class ComponentEditor extends Component {
           saving: false,
         })
         this.context.editExtensionPoint(null)
-        openInstance = null
+        this.unmountInstance()
       })
       .catch(err => {
         this.setState({
@@ -138,7 +140,7 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
     delete this.old
     event && event.stopPropagation()
-    openInstance = null
+    this.unmountInstance()
   }
 
   isEmptyExtensionPoint = (component) =>
@@ -209,11 +211,10 @@ class ComponentEditor extends Component {
   }
 
   render() {
-    if (openInstance && openInstance !== this) {
-      console.log('another open instance: ', this.props.component)
+    if (ComponentEditor.openInstance && ComponentEditor.openInstance !== this) {
       return null
     }
-    openInstance = this
+    ComponentEditor.openInstance = this
 
     const { component, props } = this.props
     const Component = getImplementation(component)
