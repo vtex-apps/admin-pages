@@ -44,8 +44,6 @@ class ComponentEditor extends Component {
     emitter: PropTypes.object,
   }
 
-  static openInstance = null
-
   constructor(props, context) {
     super(props, context)
 
@@ -58,8 +56,6 @@ class ComponentEditor extends Component {
       props: this.getSchemaProps(getImplementation(props.component), props.props),
     })
   }
-
-  unmountInstance = () => ComponentEditor.openInstance = null
 
   componentDidMount() {
     this._isMounted = true
@@ -126,7 +122,6 @@ class ComponentEditor extends Component {
           saving: false,
         })
         this.context.editExtensionPoint(null)
-        this.unmountInstance()
       })
       .catch(err => {
         this.setState({
@@ -144,7 +139,6 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
     delete this.old
     event && event.stopPropagation()
-    this.unmountInstance()
   }
 
   isEmptyExtensionPoint = (component) =>
@@ -215,11 +209,6 @@ class ComponentEditor extends Component {
   }
 
   render() {
-    if (ComponentEditor.openInstance && ComponentEditor.openInstance !== this) {
-      return null
-    }
-    ComponentEditor.openInstance = this
-
     const { component, props } = this.props
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
