@@ -62,7 +62,6 @@ describe('<ComponentEditor /> component', () => {
     })
 
     afterEach(() => {
-      component.find('ComponentEditor').instance().unmountInstance()
       component.unmount()
     })
   
@@ -139,7 +138,6 @@ describe('<ComponentEditor /> component', () => {
     })
 
     afterEach(() => {
-      component.find('ComponentEditor').instance().unmountInstance()
       component.unmount()
     })
 
