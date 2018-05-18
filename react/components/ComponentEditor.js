@@ -70,11 +70,11 @@ class ComponentEditor extends Component {
 
     const getDeepProps = (properties = {}, prevProps) =>
       reduce(
-        (nextProps, k) =>
+        (nextProps, key) =>
           merge(nextProps, {
-            [k]: properties[k].type === 'object'
-              ? getDeepProps(properties[k].properties, prevProps[k])
-              : prevProps[k],
+            [key]: properties[key].type === 'object'
+              ? getDeepProps(properties[key].properties, prevProps[key])
+              : prevProps[key],
           }),
         {},
         filter(v => prevProps[v] !== undefined, keys(properties))
