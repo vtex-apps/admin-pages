@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { has, find, pick, map, prop, pickBy } from 'ramda'
+import { has, find, pick, map, prop, pickBy, reduce, filter, keys, merge } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -26,8 +26,6 @@ const defaultUiSchema = {
 const widgets = {
   BaseInput,
 }
-
-const pickDefined = pickBy(v => v !== undefined)
 
 class ComponentEditor extends Component {
   static propTypes = {
@@ -70,9 +68,21 @@ class ComponentEditor extends Component {
       return null
     }
 
+    const getDeepProps = (properties = {}, prevProps) =>
+      reduce(
+        (nextProps, k) =>
+          merge(nextProps, {
+            [k]: properties[k].type === 'object'
+              ? getDeepProps(properties[k].properties, prevProps[k])
+              : prevProps[k],
+          }),
+        {},
+        filter(v => prevProps[v] !== undefined, keys(properties))
+      )
+
     const componentSchema = this.getComponentSchema(component, props)
-    const propsToSave = Object.keys(componentSchema.properties)
-    return pickDefined(pick(propsToSave, props))
+
+    return getDeepProps(componentSchema.properties, props)
   }
 
   handleFormChange = (event) => {
