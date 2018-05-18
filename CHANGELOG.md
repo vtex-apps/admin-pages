@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Hide the input label when it's a checkbox.
 
+### Added
+
+- Support for deep schema objects
+
 ## [1.5.1] - 2018-05-03
 ### Fixed
 - Avoid setting everything as undefined
