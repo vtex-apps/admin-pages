@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import ComponentEditor from './components/ComponentEditor'
@@ -80,16 +80,18 @@ class EditableExtensionPoint extends Component {
     const editableClasses = mouseOver ? `br2 pointer ${!isEmpty ? 'b--blue b--dashed ba bg-white o-50' : ''}` : ''
     const overlayClasses = `w-100 h-100 min-h-2 z-${zIndex} absolute ${editableClasses}`
     const withOverlay = (
-      <div key="editable" className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
+      <div className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
         <div className={overlayClasses} onClick={this.handleEditClick}></div>
         {children && React.cloneElement(children, parentProps)}
       </div>
     )
 
-    return [
-      ...(editMode && !editTreePath ? [withOverlay] : [children]),
-      ...(editTreePath === treePath ? [<ComponentEditor key="editor" component={component} props={props} treePath={treePath} />] : []),
-    ]
+    return (
+      <Fragment>
+        {editMode && !editTreePath ? withOverlay : children}
+        {editTreePath === treePath && <ComponentEditor component={component} props={props} treePath={treePath} />}
+      </Fragment>
+    )
   }
 }
 
