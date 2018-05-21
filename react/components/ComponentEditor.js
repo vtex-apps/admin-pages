@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { has, find, pick, map, prop, pickBy, reduce, filter, keys, merge } from 'ramda'
+import { has, find, map, prop, pickBy, reduce, filter, keys, merge } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
