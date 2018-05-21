@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 function Label(props) {
-  const { label, required, id } = props
+  const { label, required, id, type } = props
   if (!label) {
     return <div />
   }
@@ -31,6 +31,7 @@ export default function FieldTemplate(props) {
     description,
     hidden,
     required,
+    schema
   } = props
 
   if (hidden) {
@@ -39,7 +40,9 @@ export default function FieldTemplate(props) {
 
   return (
     <div className={`${classNames} w-100`}>
-      <Label label={label} required={required} id={id} />
+      {schema.type != 'boolean' && (
+        <Label label={label} required={required} id={id} />
+      )}
       {description && description}
       {children}
       {errors}
