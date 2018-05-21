@@ -68,12 +68,19 @@ class ComponentEditor extends Component {
       return null
     }
 
-    const getDeepProps = (properties = {}, prevProps) =>
+    /**
+     * Recursively get the props defined in the properties.
+     *
+     * @param {object} properties The schema properties
+     * @param {object} prevProps The previous props passed to the component
+     * @return {object} Actual component props
+     */
+    const getPropsFromSchema = (properties = {}, prevProps) =>
       reduce(
         (nextProps, key) =>
           merge(nextProps, {
             [key]: properties[key].type === 'object'
-              ? getDeepProps(properties[key].properties, prevProps[key])
+              ? getPropsFromSchema(properties[key].properties, prevProps[key])
               : prevProps[key],
           }),
         {},
@@ -82,7 +89,7 @@ class ComponentEditor extends Component {
 
     const componentSchema = this.getComponentSchema(component, props)
 
-    return getDeepProps(componentSchema.properties, props)
+    return getPropsFromSchema(componentSchema.properties, props)
   }
 
   handleFormChange = (event) => {
