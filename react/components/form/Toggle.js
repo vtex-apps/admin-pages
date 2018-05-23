@@ -1,0 +1,41 @@
+import React from 'react'
+import PropTypes from 'prop-types'
+import StyleguideToggle from '@vtex/styleguide/lib/Toggle'
+
+const Toggle = ({
+  autofocus,
+  disabled,
+  id,
+  label,
+  onChange,
+  options,
+  readonly,
+  value,
+}) => (
+  <StyleguideToggle
+    autoFocus={autofocus}
+    checked={value}
+    disabled={disabled || readonly}
+    id={id}
+    label={label}
+    onChange={event => onChange(event.target.checked)}
+  />
+)
+
+Toggle.defaultProps = {
+  autofocus: false,
+  disabled: false,
+  readonly: false,
+}
+
+Toggle.propTypes = {
+  autofocus: PropTypes.bool,
+  disabled: PropTypes.bool,
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func,
+  options: PropTypes.object,
+  readonly: PropTypes.bool,
+  value: PropTypes.bool,
+}
+
+export default Toggle
