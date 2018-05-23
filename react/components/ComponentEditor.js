@@ -12,6 +12,7 @@ import AvailableComponents from '../queries/AvailableComponents.graphql'
 import { getImplementation } from '../utils/components'
 
 import BaseInput from './form/BaseInput'
+import Dropdown from './form/Dropdown'
 import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
@@ -26,6 +27,7 @@ const defaultUiSchema = {
 
 const widgets = {
   BaseInput,
+  SelectWidget: Dropdown,
 }
 
 class ComponentEditor extends Component {
