@@ -28,22 +28,19 @@ function BaseInput(props) {
   delete cleanProps.schema
   delete cleanProps.formContext
 
-  const commonProps = {
-    ...cleanProps,
-    autoFocus: autofocus,
-    disabled,
-    onBlur: onBlur && (event => onBlur(inputProps.id, event.target.value)),
-    onChange: _onChange,
-    onFocus: onFocus && (event => onFocus(inputProps.id, event.target.value)),
-    readOnly: readonly,
-    required,
-    value: value || '',
-  }
-
-  return type === 'text' ? (
-    <Input {...commonProps} label="" />
-  ) : (
-    <input {...commonProps} />
+  return (
+    <Input
+      {...cleanProps}
+      autoFocus={autofocus}
+      disabled={disabled}
+      label=""
+      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+      onChange={_onChange}
+      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
+      readOnly={readonly}
+      required={required}
+      value={value || ''}
+    />
   )
 }
 
