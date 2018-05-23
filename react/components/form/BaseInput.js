@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Input from '@vtex/styleguide/lib/Input'
 
 function BaseInput(props) {
   const {
@@ -10,6 +11,7 @@ function BaseInput(props) {
     onBlur,
     onFocus,
     options,
+    required,
     schema,
     ...inputProps
   } = props
@@ -26,18 +28,22 @@ function BaseInput(props) {
   delete cleanProps.schema
   delete cleanProps.formContext
 
-  return (
-    <input
-      className="form-control w-100 br2 ba b--light-gray pa2"
-      readOnly={readonly}
-      disabled={disabled}
-      autoFocus={autofocus}
-      value={value == null ? '' : value}
-      {...cleanProps}
-      onChange={_onChange}
-      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
-    />
+  const commonProps = {
+    ...cleanProps,
+    autoFocus: autofocus,
+    disabled,
+    onBlur: onBlur && (event => onBlur(inputProps.id, event.target.value)),
+    onChange: _onChange,
+    onFocus: onFocus && (event => onFocus(inputProps.id, event.target.value)),
+    readOnly: readonly,
+    required,
+    value: value || '',
+  }
+
+  return type === 'text' ? (
+    <Input {...commonProps} label="" />
+  ) : (
+    <input {...commonProps} />
   )
 }
 
