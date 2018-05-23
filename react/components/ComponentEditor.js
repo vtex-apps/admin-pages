@@ -15,6 +15,7 @@ import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
+import Toggle from './form/Toggle'
 
 import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
@@ -27,6 +28,7 @@ const defaultUiSchema = {
 
 const widgets = {
   BaseInput,
+  CheckboxWidget: Toggle,
   SelectWidget: Dropdown,
 }
 
