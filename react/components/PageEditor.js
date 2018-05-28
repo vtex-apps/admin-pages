@@ -126,11 +126,15 @@ class PageEditor extends Component {
           ObjectFieldTemplate={ObjectFieldTemplate}
           widgets={widgets}>
           <div className="mt7">
-            <Button type="submit" className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5" primary>
+            <Button
+              size="small"
+              type="submit"
+              className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5"
+              variation="primary">
               Salvar
             </Button>
             <Link to="/admin/pages">
-              <Button>
+              <Button size="small" variation="tertiary">
                 Cancelar
               </Button>
             </Link>

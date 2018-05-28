@@ -54,7 +54,7 @@ export default class EditBar extends Component {
             </div>
           </div>
           <div className="h-3em nr5 bl b--light-silver bw1 flex items-center pr4">
-            <Button onClick={this.handleClick}>
+            <Button size="small" variation="tertiary" onClick={this.handleClick}>
               <div className="flex items-center">
                 DONE
                 <div className="pl4">

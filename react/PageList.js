@@ -65,7 +65,7 @@ class PageList extends Component {
           <h1>My Pages</h1>
           <div>
             <Link to="pages/page/new">
-              <Button primary>New page</Button>
+              <Button size="small" variation="primary">New page</Button>
             </Link>
           </div>
         </div>
