@@ -338,7 +338,7 @@ class ComponentEditor extends Component {
                 widgets={widgets}>
                 <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
                   <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
-                    <Button block size="large" onClick={this.handleCancel}>
+                    <Button variation="tertiary" block size="regular" onClick={this.handleCancel}>
                       Cancel
                     </Button>
                   </div>
@@ -346,7 +346,7 @@ class ComponentEditor extends Component {
                     {this.state.saving ? (
                       <Spinner size={28} />
                     ) : (
-                      <Button block size="large" type="submit">
+                      <Button variation="tertiary" block size="regular" type="submit">
                           Save
                       </Button>
                     )}
