@@ -19,6 +19,7 @@ const Toggle = ({
     id={id}
     label={label}
     onChange={event => onChange(event.target.checked)}
+    size="small"
   />
 )
 
