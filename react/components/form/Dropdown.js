@@ -9,6 +9,7 @@ const Dropdown = ({
   autofocus,
   disabled,
   id,
+  label,
   onChange,
   onClose,
   onOpen,
@@ -16,23 +17,21 @@ const Dropdown = ({
   placeholder,
   readonly,
   value,
-}) => {
-  return (
-    <StyleguideDropdown
-      autoFocus={autofocus}
-      disabled={disabled}
-      id={id}
-      label=""
-      onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
-      onClose={onClose}
-      onOpen={onOpen}
-      options={options.enumOptions}
-      placeholder={placeholder}
-      readOnly={readonly}
-      value={value || ''}
-    />
-  )
-}
+}) => (
+  <StyleguideDropdown
+    autoFocus={autofocus}
+    disabled={disabled}
+    id={id}
+    label={label}
+    onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
+    onClose={onClose}
+    onOpen={onOpen}
+    options={options.enumOptions}
+    placeholder={placeholder}
+    readOnly={readonly}
+    value={value || ''}
+  />
+)
 
 Dropdown.defaultProps = {
   autofocus: false,
@@ -45,6 +44,7 @@ Dropdown.propTypes = {
   autofocus: PropTypes.bool,
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
