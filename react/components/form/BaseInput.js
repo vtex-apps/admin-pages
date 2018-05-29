@@ -8,6 +8,7 @@ function BaseInput(props) {
     readonly,
     disabled,
     autofocus,
+    label,
     onBlur,
     onFocus,
     options,
@@ -25,7 +26,6 @@ function BaseInput(props) {
 
   const { ...cleanProps } = inputProps
   delete cleanProps.rawErrors
-  delete cleanProps.schema
   delete cleanProps.formContext
 
   return (
@@ -33,7 +33,8 @@ function BaseInput(props) {
       {...cleanProps}
       autoFocus={autofocus}
       disabled={disabled}
-      label=""
+      helpText={schema.description}
+      label={label}
       onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
@@ -63,6 +64,8 @@ BaseInput.propTypes = {
   onChange: PropTypes.func,
   onBlur: PropTypes.func,
   onFocus: PropTypes.func,
+  label: PropTypes.string.isRequired,
+  schema: PropTypes.object.isRequired,
 }
 
 export default BaseInput

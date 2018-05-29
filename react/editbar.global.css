@@ -41,11 +41,6 @@ html, body {
   padding-bottom: 10px;
 }
 
-.form-group label {
-  padding: 0px 0px 10px 0px;
-  color: #141E2C;
-}
-
 .form-group.field.field-object > label {
   color: #C3C4C5;
   text-transform: uppercase;

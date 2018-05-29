@@ -40,10 +40,7 @@ export default function FieldTemplate(props) {
 
   return (
     <div className={`${classNames} w-100`}>
-      {schema.type != 'boolean' && (
-        <Label label={label} required={required} id={id} />
-      )}
-      {description && description}
+      {schema.type === 'object' && <Label label={label} required={required} id={id} />}
       {children}
       {errors}
       {help}
