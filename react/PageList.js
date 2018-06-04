@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {graphql} from 'react-apollo'
-import PagesQuery from './queries/Pages.graphql'
+import React, { Component } from 'react'
+import { graphql } from 'react-apollo'
+import { Link } from 'render'
+import { Button } from 'vtex.styleguide'
 
-import {Link} from 'render'
-import Button from '@vtex/styleguide/lib/Button'
 import ShareIcon from './images/ShareIcon'
+import PagesQuery from './queries/Pages.graphql'
 
 // eslint-disable-next-line
 class PageList extends Component {

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import StyleguideRadio from '@vtex/styleguide/lib/Radio'
+import { Radio as StyleguideRadio } from 'vtex.styleguide'
 
 class Radio extends Component {
   constructor(props) {

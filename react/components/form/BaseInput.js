@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import Input from '@vtex/styleguide/lib/Input'
+import { Input } from 'vtex.styleguide'
 
 function BaseInput(props) {
   const {

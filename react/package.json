@@ -6,7 +6,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@vtex/styleguide": "4.0.0",
     "exenv": "^1.2.2",
     "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",

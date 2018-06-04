@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from 'vtex.styleguide'
+
 import PageIcon from '../images/PageIcon.js'
 import CheckIcon from '../images/check-2.js'
-
-import Button from '@vtex/styleguide/lib/Button'
 
 import '../editbar.global.css'
 

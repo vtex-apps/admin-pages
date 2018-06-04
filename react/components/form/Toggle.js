@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StyleguideToggle from '@vtex/styleguide/lib/Toggle'
+import { Toggle as StyleguideToggle } from 'vtex.styleguide'
 
 const Toggle = ({
   autofocus,
