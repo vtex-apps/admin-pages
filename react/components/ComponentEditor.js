@@ -1,4 +1,3 @@
-import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
@@ -6,6 +5,7 @@ import { injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
 import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge } from 'ramda'
+import { Button, Spinner } from 'vtex.styleguide'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -20,8 +20,6 @@ import Toggle from './form/Toggle'
 
 import Draggable from 'react-draggable'
 import CloseIcon from '../images/CloseIcon.js'
-
-import Spinner from '@vtex/styleguide/lib/Spinner'
 
 const defaultUiSchema = {
   'classNames': 'editor-form',

@@ -1,9 +1,9 @@
-import Button from '@vtex/styleguide/lib/Button'
+import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
-import PropTypes from 'prop-types'
 import { Link } from 'render'
+import { Button } from 'vtex.styleguide'
 
 import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'

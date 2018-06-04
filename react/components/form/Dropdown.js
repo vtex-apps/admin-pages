@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import StyleguideDropdown from '@vtex/styleguide/lib/Dropdown'
+import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
 const getChangeHandler = (onChange, emptyValue) => ({ target: { value } }) =>
   onChange(!value ? emptyValue : value)
