@@ -5,7 +5,7 @@ import { compose, graphql } from 'react-apollo'
 import { injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge, mergeAll } from 'ramda'
+import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -187,22 +187,30 @@ class ComponentEditor extends Component {
     const traverseAndTranslate = schema => {
       const translate = value => this.props.intl.formatMessage({ id: value })
 
-      const translatedShallow = map(
+      const translatedSchema = map(
         value => Array.isArray(value) ? map(translate, value) : translate(value),
         pick(['title', 'description', 'enumNames'], schema)
       )
 
+      if (has('widget', schema)) {
+        translatedSchema.widget = merge(
+          schema.widget,
+          map(
+            translate,
+            pick(['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'], schema.widget)
+          )
+        )
+      }
+
       if (schema.type === 'object') {
-        const translatedProperties = reduce(
+        translatedSchema.properties = reduce(
           (properties, key) => merge(properties, { [key]: traverseAndTranslate(schema.properties[key]) }),
           {},
           keys(schema.properties),
         )
-
-        return mergeAll([schema, translatedShallow, { properties: translatedProperties }])
       }
 
-      return merge(schema, translatedShallow)
+      return merge(schema, translatedSchema)
     }
 
     return traverseAndTranslate(schema)
@@ -211,10 +219,10 @@ class ComponentEditor extends Component {
   /**
    * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
    * Each schema property can define an widget especifying how to display it.
-   * @argument componentUiSchema The default static `UiSchema` definition
-   * @argument componentSchema The full `Component Schema` (already
+   * @param {object} componentUiSchema The default static `UiSchema` definition
+   * @param {object} componentSchema The full `Component Schema` (already
    *  applyed the `getSchema`, if its the case)
-   * @returns A object defining the complete `UiSchema` that matches all the schema
+   * @return {object} A object defining the complete `UiSchema` that matches all the schema
    *  properties.
    */
   getUiSchema = (componentUiSchema, componentSchema) => {
@@ -232,7 +240,7 @@ class ComponentEditor extends Component {
      *   }
      * }
      *
-     * @argument properties The schema properties to be analysed.
+     * @param {object} properties The schema properties to be analysed.
      */
     const getDeepUiSchema = properties => {
       const deepProperties = pickBy(property => has('properties', property), properties)
