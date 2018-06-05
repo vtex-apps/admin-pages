@@ -2,9 +2,10 @@ import Button from '@vtex/styleguide/lib/Button'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
 import { compose, graphql } from 'react-apollo'
+import { injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import PropTypes from 'prop-types'
-import { has, find, map, prop, pickBy, reduce, filter, keys, merge } from 'ramda'
+import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge, mergeAll } from 'ramda'
 
 import SaveExtension from '../queries/SaveExtension.graphql'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
@@ -33,6 +34,7 @@ class ComponentEditor extends Component {
     saveExtension: PropTypes.any,
     treePath: PropTypes.string,
     component: PropTypes.string,
+    intl: intlShape.isRequired,
     props: PropTypes.object,
   }
 
@@ -163,17 +165,47 @@ class ComponentEditor extends Component {
 
   /**
    * It receives a component implementation and decide which type of schema
-   * will use, an static (schema) or a dynamic (getSchema) schema.
+   * will use, a static (schema) or a dynamic (getSchema) schema.
    * If none, returns a JSON specifying a simple static schema.
    *
-   * @component The component implementation
-   * @props The react props to be passed to the getSchema, if it's the case
+   * @param {object} component The component implementation
+   * @param {object} props The component props to be passed to the getSchema
    */
   getComponentSchema = (component, props) => {
-    return component && (component.schema || (component.getSchema && component.getSchema(props))) || {
+    const schema = component && (component.schema || (component.getSchema && component.getSchema(props))) || {
       type: 'object',
       properties: {},
     }
+
+    /**
+     * Traverse the schema properties searching for the title, description and enum
+     * properties and translate their value using the messages from the intl context
+     *
+     * @param {object} schema Schema to be translated
+     * @return {object} Schema with title, description and enumNames properties translated
+     */
+    const traverseAndTranslate = schema => {
+      const translate = value => this.props.intl.formatMessage({ id: value })
+
+      const translatedShallow = map(
+        value => Array.isArray(value) ? map(translate, value) : translate(value),
+        pick(['title', 'description', 'enumNames'], schema)
+      )
+
+      if (schema.type === 'object') {
+        const translatedProperties = reduce(
+          (properties, key) => merge(properties, { [key]: traverseAndTranslate(schema.properties[key]) }),
+          {},
+          keys(schema.properties),
+        )
+
+        return mergeAll([schema, translatedShallow, { properties: translatedProperties }])
+      }
+
+      return merge(schema, translatedShallow)
+    }
+
+    return traverseAndTranslate(schema)
   }
 
   /**
@@ -318,6 +350,7 @@ class ComponentEditor extends Component {
 }
 
 export default compose(
+  injectIntl,
   graphql(SaveExtension, { name: 'saveExtension' }),
   graphql(AvailableComponents, {
     name: 'availableComponents',
