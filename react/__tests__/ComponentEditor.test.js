@@ -1,10 +1,13 @@
 import React from 'react'
+import { IntlProvider } from 'react-intl'
 import { MockedProvider } from 'react-apollo/test-utils'
 import ComponentEditor from '../components/ComponentEditor'
 
 import { mount } from 'enzyme'
 
 import { range, map, clone, indexBy, prop } from 'ramda'
+
+process.env.NODE_ENV = 'production' // avoid react-intl warnings
 
 describe('<ComponentEditor /> component', () => {
   const staticComponent = 'static_component'
@@ -22,13 +25,19 @@ describe('<ComponentEditor /> component', () => {
     },
   }
 
+  const localeMessages = {
+    'editor.category-menu.title': 'Category Menu',
+  }
+
   function renderComponent(componentName, props = {}) {
     const treePath = ''
 
     const component = mount(
-      <MockedProvider>
-        <ComponentEditor key="editor" component={componentName} props={props} treePath={treePath} />
-      </MockedProvider>
+      <IntlProvider locale="en-US" messages={localeMessages}>
+        <MockedProvider>
+          <ComponentEditor key="editor" component={componentName} props={props} treePath={treePath} />
+        </MockedProvider>
+      </IntlProvider>
     )
 
     return { component }
@@ -63,8 +72,8 @@ describe('<ComponentEditor /> component', () => {
     it('should render the correct component', () => {
       component = renderComponent(staticComponent).component
       expect(component).toBeTruthy()
-      expect(component.props().children.props).toBeTruthy()
-      expect(component.props().children.props.component).toBe(staticComponent)
+      expect(component.props().children.props.children.props).toBeTruthy()
+      expect(component.props().children.props.children.props.component).toBe(staticComponent)
     })
 
     it('should be consistent to the schema definition', () => {
@@ -139,8 +148,8 @@ describe('<ComponentEditor /> component', () => {
     it('should render the correct component', () => {
       component = renderComponent(dynamicComponent).component
       expect(component).toBeTruthy()
-      expect(component.props().children.props).toBeTruthy()
-      expect(component.props().children.props.component).toBe(dynamicComponent)
+      expect(component.props().children.props.children.props).toBeTruthy()
+      expect(component.props().children.props.children.props.component).toBe(dynamicComponent)
     })
 
     it('should be consistent to the schema definition', () => {
@@ -165,6 +174,33 @@ describe('<ComponentEditor /> component', () => {
 
       const banner2 = renderedInputs.find({ id: 'root_banner2_image' }).props()
       expect(banner2.label).toBe(properties.banner2.properties.image.title)
+    })
+  })
+
+  describe('i18l', () => {
+    let component
+
+    const schema = {
+      title: 'editor.category-menu.title',
+      type: 'object',
+    }
+
+    beforeEach(() => {
+      global.__RENDER_7_COMPONENTS__ = {
+        [staticComponent]: {
+          schema,
+        },
+      }
+    })
+
+    afterEach(() => {
+      component.unmount()
+    })
+
+    it('should correctly translate the schema title', () => {
+      component = renderComponent(staticComponent).component
+      expect(component.containsMatchingElement(<div>Category Menu</div>)).toBe(true)
+      expect(component.containsMatchingElement(<div>editor.category-menu.title</div>)).toBe(false)
     })
   })
 })
