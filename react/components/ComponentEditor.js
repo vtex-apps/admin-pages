@@ -185,7 +185,9 @@ class ComponentEditor extends Component {
      * @return {object} Schema with title, description and enumNames properties translated
      */
     const traverseAndTranslate = schema => {
-      const translate = value => this.props.intl.formatMessage({ id: value })
+      const translate = value => typeof value === 'string'
+        ? this.props.intl.formatMessage({ id: value })
+        : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
       const translatedSchema = map(
         value => Array.isArray(value) ? map(translate, value) : translate(value),
