@@ -78,10 +78,10 @@ class EditableExtensionPoint extends Component {
     const isEmpty = this.isEmptyExtensionPoint(component)
     const zIndex = treePath.split('/').length + 1
     const editableClasses = mouseOver ? `br2 pointer ${!isEmpty ? 'b--blue b--dashed ba bg-white o-50' : ''}` : ''
-    const overlayClasses = `w-100 h-100 min-h-2 z-${zIndex} absolute ${editableClasses}`
+    const overlayClasses = `w-100 h-100 min-h-2 absolute ${editableClasses}`
     const withOverlay = (
       <div className="relative" onMouseOver={this.handleMouseOver} onMouseOut={this.handleMouseOut}>
-        <div className={overlayClasses} onClick={this.handleEditClick}></div>
+        <div className={overlayClasses} onClick={this.handleEditClick} style={{ zIndex }}></div>
         {children && React.cloneElement(children, parentProps)}
       </div>
     )
