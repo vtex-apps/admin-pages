@@ -110,42 +110,9 @@ html, body {
   height: 46px !important;
 }
 
-.errors {
-  padding: 16px 24px 11px;
-  background-color: #FFE6E6;
-}
-
-.errors h3 {
-  margin: 0px;
-  font-size: 16px;
-}
-
-.errors ul {
-  list-style: none;
-  padding: 10px 0px 0px 0px;
-  margin: 0px;
-  font-size: 14px;
-}
-
-.errors li {
-  padding: 0px 0px 5px 0px;
-}
-
-.error-detail {
-  list-style: none;
-  padding: 0px 0px 0px 0px;
-  margin: 0px;
-  font-size: 14px;
-  color: #FF4C4C;
-}
-
 .radio-inline > span > span {
   padding-left: 5px;
   padding-right: 15px;
-}
-
-.has-error input {
-  border: 2px solid #FF4C4C;
 }
 
 .field-range-wrapper > input {
