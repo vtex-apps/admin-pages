@@ -322,9 +322,9 @@ class ComponentEditor extends Component {
               <div>
                 {displayName}
               </div>
-              <div onClick={this.handleCancel} className="flex items-center pointer dim">
+              <button onClick={this.handleCancel} className="flex items-center pointer dim bg-transparent bn">
                 <CloseIcon />
-              </div>
+              </button>
             </div>
             <div className="flex-auto overflow-y-scroll form-schema">
               <Form
