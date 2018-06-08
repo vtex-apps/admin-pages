@@ -80,13 +80,6 @@ html, body {
   background-color: #FFFFFF;
 }
 
-.form-schema {
-  min-height: 300px;
-  max-height: 100vh;
-  padding-bottom: 66px;
-  padding-top: 62px;
-}
-
 .draggable {
   cursor: move;
 }
@@ -190,7 +183,7 @@ html, body {
   }
   .form-schema {
     min-height: 300px;
-    max-height: 80vh;
+    max-height: 60vh;
   }
   .render-container {
     padding-top: 48px;
@@ -202,5 +195,8 @@ html, body {
     -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
     -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
     box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+  }
+  .pages-editor {
+    max-height: 70vh;
   }
 }

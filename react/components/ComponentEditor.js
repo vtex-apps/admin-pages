@@ -317,8 +317,8 @@ class ComponentEditor extends Component {
     const editor = (
       <div className="w-100 near-black">
         <Draggable handle=".draggable">
-          <div className={`br2-ns fixed z-max bg-white shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
-            <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 fixed flex justify-between br2-ns br--top-ns draggable z-max">
+          <div className={`br2-ns fixed z-max bg-white flex flex-column shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
+            <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 flex justify-between br2-ns br--top-ns draggable z-max">
               <div>
                 {displayName}
               </div>
@@ -326,7 +326,7 @@ class ComponentEditor extends Component {
                 <CloseIcon />
               </div>
             </div>
-            <div className="overflow-scroll form-schema">
+            <div className="flex-auto overflow-y-scroll form-schema">
               <Form
                 schema={schema}
                 formData={extensionProps}
@@ -335,25 +335,32 @@ class ComponentEditor extends Component {
                 FieldTemplate={FieldTemplate}
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
-                widgets={widgets}>
-                <div className="flex fixed bottom-0 w-100 bt bw2 b--light-silver">
-                  <div className="w-50 tc br b--light-silver bw2 h-100 bg-near-white pointer hover-bg-light-silver hover-heavy-blue lh-copy">
-                    <Button variation="tertiary" block size="regular" onClick={this.handleCancel}>
+                widgets={widgets}
+              >
+                <button className="dn" type="submit" />
+              </Form>
+            </div>
+            <div className="flex static-ns w-100 bt bw2 b--light-silver">
+              <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
+                <Button
+                  block
+                  onClick={this.handleCancel}
+                  size="regular"
+                  variation="tertiary"
+                >
                       Cancel
                     </Button>
                   </div>
-                  <div className="w-50 tc bg-near-white hover-bg-light-silver pointer hover-heavy-blue flex items-center justify-center">
+              <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue">
                     {this.state.saving ? (
                       <Spinner size={28} />
                     ) : (
-                      <Button variation="tertiary" block size="regular" type="submit">
+                    <Button block onClick={this.handleSave} size="regular" variation="tertiary">
                           Save
                       </Button>
                     )}
                   </div>
                 </div>
-              </Form>
-            </div>
           </div>
         </Draggable>
       </div>
