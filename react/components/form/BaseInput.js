@@ -2,70 +2,67 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Input } from 'vtex.styleguide'
 
-function BaseInput(props) {
+const BaseInput = props => {
   const {
-    value,
-    readonly,
-    disabled,
     autofocus,
+    disabled,
+    id,
     label,
     onBlur,
     onFocus,
     options,
+    readonly,
     required,
     schema,
-    ...inputProps
+    value,
   } = props
 
-  const type = schema.type === 'number' ? 'number' : 'text'
+  const schemaType = schema.type === 'number' ? 'number' : 'text'
 
-  inputProps.type = options.inputType || inputProps.type || type
-  const _onChange = ({ target: { value } }) => {
-    return props.onChange(value === '' ? options.emptyValue : value)
-  }
+  const type = options.inputType || props.type || schemaType
 
-  const { ...cleanProps } = inputProps
-  delete cleanProps.rawErrors
-  delete cleanProps.formContext
+  const _onChange = ({ target: { value } }) =>
+    props.onChange(value || '')
 
   return (
     <Input
-      {...cleanProps}
       autoFocus={autofocus}
       disabled={disabled}
       helpText={schema.description}
       label={label}
-      onBlur={onBlur && (event => onBlur(inputProps.id, event.target.value))}
+      onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
-      onFocus={onFocus && (event => onFocus(inputProps.id, event.target.value))}
+      onFocus={onFocus && (event => onFocus(id, event.target.value))}
       readOnly={readonly}
       required={required}
-      value={value || ''}
+      type={type}
+      value={value}
     />
   )
 }
 
 BaseInput.defaultProps = {
-  required: false,
+  autofocus: false,
   disabled: false,
   readonly: false,
-  autofocus: false,
+  required: false,
 }
 
 BaseInput.propTypes = {
-  id: PropTypes.string.isRequired,
-  placeholder: PropTypes.string,
-  value: PropTypes.any,
-  options: PropTypes.object,
-  required: PropTypes.bool,
-  disabled: PropTypes.bool,
-  readonly: PropTypes.bool,
   autofocus: PropTypes.bool,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  onFocus: PropTypes.func,
+  disabled: PropTypes.bool,
+  id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  onBlur: PropTypes.func,
+  onChange: PropTypes.func,
+  onFocus: PropTypes.func,
+  options: PropTypes.object,
+  placeholder: PropTypes.string,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
   schema: PropTypes.object.isRequired,
+  type: PropTypes.string,
+  value: PropTypes.any,
 }
 
 export default BaseInput
