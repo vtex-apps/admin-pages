@@ -9,7 +9,7 @@
     "exenv": "^1.2.2",
     "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",
-    "react-jsonschema-form": "^1.0.0"
+    "react-jsonschema-form": "^1.0.1"
   },
   "devDependencies": {
     "apollo-client-preset": "^1.0.8",
