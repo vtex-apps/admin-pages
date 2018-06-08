@@ -11,6 +11,7 @@ const BaseInput = props => {
     onBlur,
     onFocus,
     options,
+    rawErrors,
     readonly,
     required,
     schema,
@@ -21,6 +22,8 @@ const BaseInput = props => {
 
   const type = options.inputType || props.type || schemaType
 
+  const currentError = rawErrors[0]
+
   const _onChange = ({ target: { value } }) =>
     props.onChange(value || '')
 
@@ -28,6 +31,8 @@ const BaseInput = props => {
     <Input
       autoFocus={autofocus}
       disabled={disabled}
+      error={!!currentError}
+      errorMessage={currentError}
       helpText={schema.description}
       label={label}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
@@ -44,6 +49,7 @@ const BaseInput = props => {
 BaseInput.defaultProps = {
   autofocus: false,
   disabled: false,
+  rawErrors: [],
   readonly: false,
   required: false,
 }
@@ -58,6 +64,7 @@ BaseInput.propTypes = {
   onFocus: PropTypes.func,
   options: PropTypes.object,
   placeholder: PropTypes.string,
+  rawErrors: PropTypes.arrayOf(PropTypes.string),
   readonly: PropTypes.bool,
   required: PropTypes.bool,
   schema: PropTypes.object.isRequired,

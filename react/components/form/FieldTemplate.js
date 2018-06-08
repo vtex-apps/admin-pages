@@ -31,7 +31,8 @@ export default function FieldTemplate(props) {
     description,
     hidden,
     required,
-    schema
+    schema,
+    rawErrors,
   } = props
 
   if (hidden) {
@@ -43,7 +44,6 @@ export default function FieldTemplate(props) {
       {schema.type === 'object' && <Label label={label} required={required} id={id} />}
       {schema.type === 'object' && description}
       {children}
-      {errors}
       {help}
     </div>
   )
@@ -60,4 +60,5 @@ FieldTemplate.propTypes = {
   children: PropTypes.element,
   displayLabel: PropTypes.bool,
   hidden: PropTypes.bool,
+  rawErrors: PropTypes.arrayOf(PropTypes.string),
 }
