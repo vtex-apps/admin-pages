@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Create wrappers for Styleguide components and replace some of RJSF's default widgets with them;
+- Create custom `ErrorListTemplate`.
+
+### Changed
+- Restructure label logic;
+- Move `ComponentEditor`'s top bar and buttons out of form;
+- Make `ComponentEditor`'s close icon a button;
+- Refactor `BaseInput`;
+- Move error messages and handling to widgets.
+
+### Fixed
+- Fix `ComponentEditor`'s internal z-index;
+- Fix `FieldTemplate`'s description logic;
+- Fix `BaseInput`'s `onChange` edge case bug.
 
 ## [1.7.1] - 2018-6-11
 ### Fixed
