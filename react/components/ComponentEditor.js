@@ -13,6 +13,7 @@ import { getImplementation } from '../utils/components'
 
 import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
+import ErrorListTemplate from './form/ErrorListTemplate'
 import FieldTemplate from './form/FieldTemplate'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
@@ -326,6 +327,7 @@ class ComponentEditor extends Component {
                 <CloseIcon />
               </button>
             </div>
+            <div id="form__error-list-template___alert" />
             <div className="flex-auto overflow-y-scroll form-schema">
               <Form
                 schema={schema}
@@ -336,6 +338,8 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}
+                showErrorList={true}
+                ErrorList={ErrorListTemplate}
               >
                 <button className="dn" type="submit" />
               </Form>
