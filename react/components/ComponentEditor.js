@@ -344,7 +344,7 @@ class ComponentEditor extends Component {
                 <button className="dn" type="submit" />
               </Form>
             </div>
-            <div className="flex static-ns w-100 bt bw2 b--light-silver">
+            <div className="flex w-100 bt bw2 b--light-silver">
               <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
                 <Button
                   block
