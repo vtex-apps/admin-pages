@@ -352,19 +352,19 @@ class ComponentEditor extends Component {
                   size="regular"
                   variation="tertiary"
                 >
-                      Cancel
-                    </Button>
-                  </div>
+                  Cancel
+                </Button>
+              </div>
               <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue">
-                    {this.state.saving ? (
-                      <Spinner size={28} />
-                    ) : (
-                    <Button block onClick={this.handleSave} size="regular" variation="tertiary">
-                          Save
-                      </Button>
-                    )}
-                  </div>
-                </div>
+                {this.state.saving ? (
+                  <Spinner size={28} />
+                ) : (
+                  <Button block onClick={this.handleSave} size="regular" variation="tertiary">
+                    Save
+                  </Button>
+                )}
+              </div>
+            </div>
           </div>
         </Draggable>
       </div>
