@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- Move remaining `object` field logic from `FieldTemplate` to `ObjectFieldTemplate`.
+
+### Fixed
+- `ComponentEditor`'s top bar height @ mobile.
+- `ComponentEditor`'s Save & Cancel buttons height @ mobile.
+
+### Removed
+- Description from `object` fields.
 
 ## [1.8.0] - 2018-6-12
 ### Added
