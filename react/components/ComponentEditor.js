@@ -319,7 +319,7 @@ class ComponentEditor extends Component {
       <div className="w-100 near-black">
         <Draggable handle=".draggable">
           <div className={`br2-ns fixed z-max bg-white flex flex-column shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
-            <div className="bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 flex justify-between br2-ns br--top-ns draggable z-max">
+            <div className="flex flex-none justify-between bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 br2-ns br--top-ns draggable z-max">
               <div>
                 {displayName}
               </div>
@@ -344,7 +344,7 @@ class ComponentEditor extends Component {
                 <button className="dn" type="submit" />
               </Form>
             </div>
-            <div className="flex w-100 bt bw2 b--light-silver">
+            <div className="w-100 flex flex-none bt bw2 b--light-silver">
               <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
                 <Button
                   block
