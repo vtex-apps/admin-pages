@@ -20,7 +20,9 @@ import AvailableComponents from '../../queries/AvailableComponents.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
 import { getImplementation } from '../../utils/components'
 
+import ModeSwitcher from './ModeSwitcher'
 
+const MODES = ['layout', 'content']
 
 const defaultUiSchema = {
   'classNames': 'editor-form',
@@ -53,6 +55,7 @@ class ComponentEditor extends Component {
     super(props, context)
 
     this.state = {
+      mode: 'layout',
       saving: false,
     }
 
@@ -163,6 +166,12 @@ class ComponentEditor extends Component {
     this.context.editExtensionPoint(null)
     delete this.old
     event && event.stopPropagation()
+  }
+
+  handleModeSwitch = newMode => {
+    if (newMode !== this.state.mode) {
+      this.setState({ mode: newMode })
+    }
   }
 
   isEmptyExtensionPoint = (component) =>
@@ -328,6 +337,11 @@ class ComponentEditor extends Component {
               </button>
             </div>
             <div id="form__error-list-template___alert" />
+            <ModeSwitcher
+              activeMode={this.state.mode}
+              modes={MODES}
+              onSwitch={this.handleModeSwitch}
+            />
             <div className="flex-auto overflow-y-scroll form-schema">
               <Form
                 schema={schema}
