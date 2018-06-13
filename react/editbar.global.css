@@ -25,17 +25,6 @@ html, body {
   box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.25);
 }
 
-.editor-form > .field-description {
-  background-color: #F7F9FA;
-  margin: 0;
-  padding: 20px 24px;
-  margin: -14px -24px 14px;
-  font-size: 14px;
-  color: #142032;
-  line-height: 1.5rem;
-  font-style: normal;
-}
-
 .form-group {
   padding-top: 10px;
   padding-bottom: 10px;
