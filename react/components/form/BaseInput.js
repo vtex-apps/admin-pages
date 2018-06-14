@@ -11,6 +11,7 @@ const BaseInput = props => {
     onBlur,
     onFocus,
     options,
+    placeholder,
     rawErrors,
     readonly,
     required,
@@ -38,6 +39,7 @@ const BaseInput = props => {
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
+      placeholder={placeholder}
       readOnly={readonly}
       required={required}
       type={type}
@@ -49,6 +51,7 @@ const BaseInput = props => {
 BaseInput.defaultProps = {
   autofocus: false,
   disabled: false,
+  placeholder: '',
   rawErrors: [],
   readonly: false,
   required: false,

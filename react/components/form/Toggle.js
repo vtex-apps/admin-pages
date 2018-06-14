@@ -8,7 +8,6 @@ const Toggle = ({
   id,
   label,
   onChange,
-  options,
   readonly,
   value,
 }) => (
@@ -34,7 +33,6 @@ Toggle.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func,
-  options: PropTypes.object,
   readonly: PropTypes.bool,
   value: PropTypes.bool,
 }

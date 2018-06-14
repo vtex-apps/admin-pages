@@ -12,7 +12,7 @@ class ErrorListTemplate extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps) {
     const { errors: prevErrors } = prevProps
     const { errors: currErrors } = this.props
     const { isVisible } = this.state
