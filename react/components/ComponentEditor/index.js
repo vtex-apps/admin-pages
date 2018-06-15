@@ -354,6 +354,7 @@ class ComponentEditor extends Component {
                 widgets={widgets}
                 showErrorList={true}
                 ErrorList={ErrorListTemplate}
+                formContext={{ isLayoutMode: this.state.mode === 'layout' }}
               >
                 <button className="dn" type="submit" />
               </Form>
