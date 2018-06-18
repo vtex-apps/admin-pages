@@ -88,7 +88,7 @@ class EditableExtensionPoint extends Component {
 
     return (
       <Fragment>
-        {editMode && !editTreePath ? withOverlay : children}
+        {editMode ? withOverlay : children}
         {editTreePath === treePath && <ComponentEditor component={component} props={props} treePath={treePath} />}
       </Fragment>
     )
