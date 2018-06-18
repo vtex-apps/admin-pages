@@ -22,7 +22,7 @@ import { getImplementation } from '../../utils/components'
 
 import ModeSwitcher from './ModeSwitcher'
 
-const MODES = ['layout', 'content']
+const MODES = ['content', 'layout']
 
 const defaultUiSchema = {
   'classNames': 'editor-form',
@@ -55,7 +55,7 @@ class ComponentEditor extends Component {
     super(props, context)
 
     this.state = {
-      mode: 'layout',
+      mode: MODES[0],
       saving: false,
     }
 
