@@ -8,6 +8,8 @@ const BaseInput = props => {
     disabled,
     id,
     label,
+    max,
+    min,
     onBlur,
     onFocus,
     options,
@@ -36,6 +38,8 @@ const BaseInput = props => {
       errorMessage={currentError}
       helpText={schema.description}
       label={label}
+      max={max}
+      min={min}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
@@ -62,6 +66,8 @@ BaseInput.propTypes = {
   disabled: PropTypes.bool,
   id: PropTypes.string.isRequired,
   label: PropTypes.string.isRequired,
+  max: PropTypes.number,
+  min: PropTypes.number,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,
   onFocus: PropTypes.func,
