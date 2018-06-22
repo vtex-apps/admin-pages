@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {graphql} from 'react-apollo'
+import { graphql } from 'react-apollo'
 
 import PageQuery from './queries/Page.graphql'
 import PageEditor from './components/PageEditor'
@@ -13,7 +13,7 @@ class PageDetail extends Component {
   }
 
   render() {
-    const {data: {loading, page: pageData} = {}, params: {name}} = this.props
+    const { data: { loading, page: pageData } = {}, params: { name } } = this.props
 
     if (loading) {
       return (

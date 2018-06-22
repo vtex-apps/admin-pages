@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { graphql } from 'react-apollo'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
@@ -30,36 +30,19 @@ class PageList extends Component {
             {page.declarer}
           </td>
         )
-        : <td className="pv2 w-10">
-          </td>
+        : <td className="pv2 w-10"></td>
       }
       <td><a href={page.path} className="rebel-pink no-underline underline-hover tr"><div className="mr4"><ShareIcon /></div></a></td>
     </tr>
   )
 
   render() {
-    const {data: {loading, pages}, children} = this.props
+    const { data: { loading, pages }, children } = this.props
 
-    if (children) {
-      return (
-        <div className="mw8 mr-auto ml-auto mv6">
-          {children}
-        </div>
-      )
-    }
+    const customPages = pages && pages.filter(({ declarer }) => !declarer)
+    const appsPages = pages && pages.filter(({ declarer }) => !!declarer)
 
-    if (loading) {
-      return (
-        <div className="mw8 mr-auto ml-auto mv6">
-          <span>Loading...</span>
-        </div>
-      )
-    }
-
-    const customPages = pages && pages.filter(({declarer}) => !declarer)
-    const appsPages = pages && pages.filter(({declarer}) => !!declarer)
-
-    const customPageList = (
+    const customPageList = pages && (
       <div>
         <div className="flex justify-between items-center mb4">
           <h1>My Pages</h1>
@@ -91,7 +74,7 @@ class PageList extends Component {
       </div>
     )
 
-    const appsPageList = (
+    const appsPageList = pages && (
       <div>
         <div className="flex justify-between items-center mb4 pt7">
           <h3>Pages declared by installed apps</h3>
@@ -119,10 +102,18 @@ class PageList extends Component {
       </div>
     )
 
-    return (
-      <div className="mw8 mr-auto ml-auto mv6">
+    const list = (
+      <Fragment>
         {customPageList}
         {appsPageList}
+      </Fragment>
+    )
+
+    const spinner = loading && <span>Loading...</span>
+
+    return (
+      <div className="mw8 mr-auto ml-auto mv6 ph6">
+        {spinner || children || list}
       </div>
     )
   }
