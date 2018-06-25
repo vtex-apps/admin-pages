@@ -40,7 +40,9 @@ class PageList extends Component {
     const { data: { loading, pages }, children } = this.props
 
     const customPages = pages && pages.filter(({ declarer }) => !declarer)
-    const appsPages = pages && pages.filter(({ declarer }) => !!declarer)
+    const appsPages = pages && pages.filter((page) => {
+      return !!page.declarer && page.name.startsWith('store')
+    })
 
     const customPageList = pages && (
       <div>

@@ -13,6 +13,14 @@
     },
     "admin/pages/detail": {
       "component": "PageDetail"
+    },
+    "admin/navigation/storefront/pages": {
+      "component": "vtex.admin/NavItem",
+      "props": {
+        "icon": "extensions-ic",
+        "path": "/admin/pages",
+        "titleId": "pages.admin-menu-button"
+      }
     }
   }
 }
