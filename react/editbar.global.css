@@ -31,12 +31,18 @@ html, body {
 }
 
 .form-group.field.field-object > label {
-  color: #C3C4C5;
-  text-transform: uppercase;
-  font-weight: 700;
-  padding: 20px 0px 5px;
-  margin-top: 10px;
   border-top: 2px solid #F0F2F4;
+  color: #C3C4C5;
+  font-weight: 700;
+  margin-top: 10px;
+  padding: 20px 0px 5px;
+  text-transform: uppercase;
+}
+
+.form-group.field.field-object:first-child > label {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 .checkbox span {
