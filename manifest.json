@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vtex.pages-graphql": "1.x",
-    "vtex.styleguide": "4.x"
+    "vtex.styleguide": "5.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
