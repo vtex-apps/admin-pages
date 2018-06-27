@@ -19,6 +19,7 @@
       "props": {
         "icon": "extensions-ic",
         "path": "/admin/pages",
+        "tag": "appframe.new",
         "titleId": "pages.admin-menu-button"
       }
     }
