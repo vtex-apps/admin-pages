@@ -9,8 +9,6 @@ import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'
 
 import BaseInput from './form/BaseInput'
-import FieldTemplate from './form/FieldTemplate'
-import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 
 const scriptComponents = Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
 
@@ -40,6 +38,12 @@ const schema = {
     },
   },
 }
+
+const FieldTemplate = ({ children, schema }) =>
+  <React.Fragment>
+    {schema.enum && <div className="mb3">{schema.title}</div>}
+    <div className="w-100 mt4 mb5">{children}</div>
+  </React.Fragment>
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
@@ -118,12 +122,11 @@ class PageEditor extends Component {
     return (
       <div className="dark-gray center mv5">
         <Form
-          schema={schema}
+          FieldTemplate={FieldTemplate}
           formData={page}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
-          FieldTemplate={FieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
+          schema={schema}
           widgets={widgets}>
           <div className="mt7">
             <Button
