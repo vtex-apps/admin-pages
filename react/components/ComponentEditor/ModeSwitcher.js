@@ -1,22 +1,18 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { Tabs, Tab } from 'vtex.styleguide'
 
 const ModeSwitcher = ({ activeMode, modes, onSwitch }) => (
-  <div className="h3 flex justify-center bt bb bw1 b--light-gray">
+  <Tabs>
     {modes.map(mode => (
-      <div
-        className={`w-50 flex items-center justify-center bg-near-white hover-bg-light-silver pointer bb bw2 ${
-          activeMode === mode
-            ? 'b--blue'
-            : 'b--near-white hover-b--light-silver'
-          }`}
+      <Tab
+        active={mode === activeMode}
         key={mode}
+        label={mode.toUpperCase()}
         onClick={() => onSwitch(mode)}
-      >
-        {mode.charAt(0).toUpperCase() + mode.slice(1)}
-      </div>
+      />
     ))}
-  </div>
+  </Tabs>
 )
 
 ModeSwitcher.defaultProps = {
