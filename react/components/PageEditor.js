@@ -53,19 +53,27 @@ const createLocationDescriptor = (to, query) => ({
 class PageEditor extends Component {
   static propTypes = {
     availableTemplates: PropTypes.object,
-    page: PropTypes.any,
     savePage: PropTypes.any,
+    name: PropTypes.string,
+    path: PropTypes.string,
+    component: PropTypes.string,
+    editable: PropTypes.bool,
   }
 
   static contextTypes = {
     history: PropTypes.object,
   }
 
-  constructor(props, context) {
-    super(props, context)
+  constructor(props) {
+    super(props)
 
     this.state = {
-      page: props.page || {},
+      page: {
+        name: props.name === 'new' ? 'store/' : props.name,
+        path: props.path || '/',
+        component: props.component,
+        editable: props.editable,
+      },
     }
   }
 
@@ -76,6 +84,15 @@ class PageEditor extends Component {
         ...event.formData,
       },
     }
+
+    if (!newState.page.name.startsWith('store/')) {
+      newState.page.name = 'store/'
+    }
+
+    if (!newState.page.path.startsWith('/')) {
+      newState.page.path = '/'
+    }
+
     console.log('Updating props with formData...', event.formData, newState)
     this.setState(newState)
   }
@@ -83,7 +100,7 @@ class PageEditor extends Component {
   handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name: pageName, component, path, theme, auth, cname } = this.state.page
+    const { name: pageName, component, path } = this.state.page
     savePage({
       refetchQueries: [
         { query: Pages },
@@ -92,9 +109,6 @@ class PageEditor extends Component {
         pageName,
         component,
         path,
-        theme,
-        auth,
-        cname,
       },
     })
       .then((data) => {
@@ -126,6 +140,11 @@ class PageEditor extends Component {
           default: '',
         },
       },
+    }
+
+    if (!page.editable) {
+      schema.properties.name.readonly = true
+      schema.properties.path.readonly = true
     }
 
     if (typeof page.login === 'string') {
@@ -166,12 +185,12 @@ class PageEditor extends Component {
 }
 
 export default compose(
-  graphql(SavePage, { name: 'savePage' }),
+  graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } }),
   graphql(AvailableTemplates, {
     name: 'availableTemplates',
     options: (props) => ({
       variables: {
-        pageName: props.page.name,
+        pageName: props.name,
         renderMajor: 7,
         production: false,
       },

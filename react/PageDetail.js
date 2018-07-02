@@ -26,13 +26,16 @@ class PageDetail extends Component {
     const pages = name !== 'new' && pagesJSON && JSON.parse(pagesJSON)
     const extensions = name !== 'new' && extensionsJSON && JSON.parse(extensionsJSON)
     const page = pages && pages[name]
+    const component = extensions[name] && extensions[name].component
 
-    if (page) {
-      page.name = name
-      page.component = extensions[name].component
-    }
-
-    const form = <PageEditor page={page} />
+    const form = (
+      <PageEditor
+        editable={!page.declarer}
+        name={name}
+        path={page.path}
+        component={component}
+      />
+    )
 
     return (
       <div className="ph5 mw7 mr-auto ml-auto pt6">
