@@ -1,24 +1,31 @@
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 
-const hasFieldToBeDisplayed = (field, isLayoutMode) =>
-  field.type === 'object'
+const hasFieldToBeDisplayed = (field, formContext) => {
+  if (!formContext.isLayoutMode) {
+    return true
+  }
+
+  const isLayoutMode = formContext.isLayoutMode
+
+  return field.type === 'object'
     ? Object.keys(field.properties).reduce(
       (acc, currKey) =>
         hasFieldToBeDisplayed(field.properties[currKey], isLayoutMode) || acc,
       false
     )
     : !!field.isLayout === isLayoutMode
+}
 
 const ObjectFieldTemplate = ({
-  formContext: { isLayoutMode },
+  formContext,
   idSchema: { $id: id },
   properties,
   required,
   schema,
   title,
 }) =>
-  hasFieldToBeDisplayed(schema, isLayoutMode) && (
+  hasFieldToBeDisplayed(schema, formContext) && (
     <Fragment>
       {title && (
         <label className="db f6 gray" htmlFor={id}>
@@ -38,8 +45,8 @@ ObjectFieldTemplate.defaultProps = {
 
 ObjectFieldTemplate.propTypes = {
   formContext: PropTypes.shape({
-    isLayoutMode: PropTypes.bool.isRequired,
-  }).isRequired,
+    isLayoutMode: PropTypes.bool,
+  }),
   idSchema: PropTypes.object.isRequired,
   properties: PropTypes.array,
   required: PropTypes.bool,

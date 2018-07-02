@@ -14,6 +14,23 @@ class PageList extends Component {
     data: PropTypes.object,
   }
 
+  static contextTypes = {
+    startLoading: PropTypes.func,
+    stopLoading: PropTypes.func,
+  }
+
+  componentDidMount() {
+    this.toggleLoading()
+  }
+
+  componentDidUpdate() {
+    this.toggleLoading()
+  }
+
+  toggleLoading = () => {
+    this.props.data.loading ? this.context.startLoading() : this.context.stopLoading()
+  }
+
   renderPageListEntry = page => (
     <tr className="striped--near-white" key={page.name}>
       <td className="pv5 w-20 pl4" >
@@ -58,7 +75,7 @@ class PageList extends Component {
           <tbody>
             <tr className="striped--near-white">
               <th className="pv4 w-20 tl f6 fw6 ttu pl4">
-                Name
+                ID
               </th>
               <th className="tl f6 ttu fw6 w-40">
                 Path
@@ -85,7 +102,7 @@ class PageList extends Component {
           <tbody>
             <tr className="striped--near-white">
               <th className="pv4 w-20 tl f6 fw6 ttu pl4">
-                Name
+                ID
               </th>
               <th className="tl f6 ttu fw6 pv2 w-40">
                 Path

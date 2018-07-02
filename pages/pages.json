@@ -15,12 +15,13 @@
       "component": "PageDetail"
     },
     "admin/navigation/storefront/pages": {
-      "component": "vtex.admin/NavItem",
+      "component": "vtex.admin/InjectNavigationData",
       "props": {
         "icon": "extensions-ic",
         "path": "/admin/pages",
         "tag": "appframe.new",
-        "titleId": "pages.admin-menu-button"
+        "titleId": "pages.admin-menu-button",
+        "id": "38"
       }
     }
   }

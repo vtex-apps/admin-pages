@@ -1,49 +1,48 @@
 import PropTypes from 'prop-types'
+import { map, prop } from 'ramda'
 import React, { Component } from 'react'
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
 import SavePage from '../queries/SavePage.graphql'
 import Pages from '../queries/Pages.graphql'
+import AvailableTemplates from '../queries/AvailableTemplates.graphql'
 
 import BaseInput from './form/BaseInput'
+import Dropdown from './form/Dropdown'
+import ErrorListTemplate from './form/ErrorListTemplate'
+import FieldTemplate from './form/FieldTemplate'
+import ObjectFieldTemplate from './form/ObjectFieldTemplate'
+import Radio from './form/Radio'
+import Toggle from './form/Toggle'
 
-const scriptComponents = Object.keys(global.__RUNTIME__.components).filter(c => !c.endsWith('.css'))
-
-const themes = Object.keys(global.__RUNTIME__.components).filter(c => c.endsWith('theme.css'))
+const defaultUiSchema = {
+  'classNames': 'pages-editor-form',
+}
 
 const widgets = {
   BaseInput,
+  CheckboxWidget: Toggle,
+  RadioWidget: Radio,
+  SelectWidget: Dropdown,
 }
 
-const schema = {
+const partialSchema = {
   title: '',
   type: 'object',
   properties: {
     name: {
       type: 'string',
-      title: 'Name',
+      title: 'ID',
     },
     path: {
       type: 'string',
       title: 'Path',
     },
-    component: {
-      enum: ['vtex.dreamstore@0.0.2/HomePage', 'vtex.dreamstore@0.0.2/ProductPage'],
-      enumNames: ['vtex.dreamstore@0.0.2/HomePage', 'vtex.dreamstore@0.0.2/ProductPage'],
-      title: 'Component',
-      type: 'string',
-    },
   },
 }
-
-const FieldTemplate = ({ children, schema }) =>
-  <React.Fragment>
-    {schema.enum && <div className="mb3">{schema.title}</div>}
-    <div className="w-100 mt4 mb5">{children}</div>
-  </React.Fragment>
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
@@ -53,6 +52,7 @@ const createLocationDescriptor = (to, query) => ({
 
 class PageEditor extends Component {
   static propTypes = {
+    availableTemplates: PropTypes.object,
     page: PropTypes.any,
     savePage: PropTypes.any,
   }
@@ -69,20 +69,15 @@ class PageEditor extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
-    this.setState({
-      page: nextProps.page || {},
-    })
-  }
-
   handleFormChange = (event) => {
-    console.log('Updating props with formData...', event.formData, this.state.page)
-    this.setState({
+    const newState = {
       page: {
         ...this.state.page,
         ...event.formData,
       },
-    })
+    }
+    console.log('Updating props with formData...', event.formData, newState)
+    this.setState(newState)
   }
 
   handleSave = (event) => {
@@ -115,18 +110,40 @@ class PageEditor extends Component {
 
   render() {
     const { page } = this.state
-    if (typeof page.auth === 'string') {
-      page.auth = page.auth === 'true'
+    const templateComponents = this.props.availableTemplates.availableTemplates
+      ? map(prop('name'), this.props.availableTemplates.availableTemplates)
+      : []
+
+    const schema = {
+      ...partialSchema,
+      properties: {
+        ...partialSchema.properties,
+        component: {
+          enum: templateComponents,
+          enumNames: templateComponents,
+          title: 'Template',
+          type: 'string',
+          default: '',
+        },
+      },
+    }
+
+    if (typeof page.login === 'string') {
+      page.login = page.login === 'true'
     }
 
     return (
-      <div className="dark-gray center mv5">
+      <div className="dark-gray center">
         <Form
           FieldTemplate={FieldTemplate}
           formData={page}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
+          ObjectFieldTemplate={ObjectFieldTemplate}
           schema={schema}
+          uiSchema={defaultUiSchema}
+          showErrorList
+          ErrorList={ErrorListTemplate}
           widgets={widgets}>
           <div className="mt7">
             <Link to="/admin/pages">
@@ -140,7 +157,7 @@ class PageEditor extends Component {
               className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5"
               variation="primary">
               Save
-              </Button>
+            </Button>
           </div>
         </Form>
       </div>
@@ -148,4 +165,16 @@ class PageEditor extends Component {
   }
 }
 
-export default graphql(SavePage, { name: 'savePage' })(PageEditor)
+export default compose(
+  graphql(SavePage, { name: 'savePage' }),
+  graphql(AvailableTemplates, {
+    name: 'availableTemplates',
+    options: (props) => ({
+      variables: {
+        pageName: props.page.name,
+        renderMajor: 7,
+        production: false,
+      },
+    }),
+  })
+)(PageEditor)

@@ -352,7 +352,7 @@ class ComponentEditor extends Component {
                 ObjectFieldTemplate={ObjectFieldTemplate}
                 uiSchema={uiSchema}
                 widgets={widgets}
-                showErrorList={true}
+                showErrorList
                 ErrorList={ErrorListTemplate}
                 formContext={{ isLayoutMode: this.state.mode === 'layout' }}
               >
