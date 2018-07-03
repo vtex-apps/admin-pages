@@ -6,6 +6,7 @@ class EmptyExtensionPoint extends Component {
   static contextTypes = {
     editMode: PropTypes.bool,
     emitter: PropTypes.object,
+    getEditMode: PropTypes.func,
   }
 
   constructor(props, context) {
@@ -38,7 +39,8 @@ class EmptyExtensionPoint extends Component {
   }
 
   render() {
-    const { editMode } = this.state
+    const { getEditMode } = this.context
+    const editMode = getEditMode()
     const className = `${editMode ? 'pa7-ns pa5 mw7 center' : 'dn'}`
 
     return (

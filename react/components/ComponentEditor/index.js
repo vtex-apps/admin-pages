@@ -110,7 +110,7 @@ class ComponentEditor extends Component {
     if (component && !Component) {
       const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
       // TODO add updateComponentAssets in runtime context and call that
-      global.__RUNTIME__.components[component] = available.assets
+      global.__RUNTIME__.components[component] = available
     }
 
     const props = this.getSchemaProps(Component, event.formData)

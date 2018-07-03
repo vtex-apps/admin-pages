@@ -12,6 +12,7 @@ class EditorProvider extends Component {
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
+    getEditMode: PropTypes.func,
   }
 
   static contextTypes = {
@@ -72,6 +73,10 @@ class EditorProvider extends Component {
     )
   }
 
+  getEditMode = () => {
+    return this.state.editMode
+  }
+
   getChildContext() {
     const { editMode, editTreePath } = this.state
 
@@ -79,6 +84,7 @@ class EditorProvider extends Component {
       editMode,
       editTreePath,
       editExtensionPoint: this.editExtensionPoint,
+      getEditMode: this.getEditMode,
     }
   }
 

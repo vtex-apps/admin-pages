@@ -7,6 +7,7 @@ class EditableExtensionPoint extends Component {
   static contextTypes = {
     emitter: PropTypes.object,
     editMode: PropTypes.bool,
+    getEditMode: PropTypes.func,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
     mouseOverExtensionPoint: PropTypes.func,
@@ -71,9 +72,10 @@ class EditableExtensionPoint extends Component {
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
   render() {
-    const { treePath } = this.context
+    const { treePath, getEditMode } = this.context
     const { children, component, props, ...parentProps } = this.props
-    const { editMode, editTreePath, mouseOver } = this.state
+    const { editTreePath, mouseOver } = this.state
+    const editMode = getEditMode()
 
     const isEmpty = this.isEmptyExtensionPoint(component)
     const zIndex = treePath.split('/').length + 1
