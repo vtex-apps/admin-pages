@@ -33,13 +33,9 @@ const partialSchema = {
   title: '',
   type: 'object',
   properties: {
-    name: {
-      type: 'string',
-      title: 'ID',
-    },
     path: {
       type: 'string',
-      title: 'Path',
+      title: 'Path Template',
     },
   },
 }
@@ -143,7 +139,6 @@ class PageEditor extends Component {
     }
 
     if (!page.editable) {
-      schema.properties.name.readonly = true
       schema.properties.path.readonly = true
     }
 

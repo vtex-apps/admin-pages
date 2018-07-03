@@ -39,7 +39,7 @@ class PageDetail extends Component {
 
     return (
       <div className="ph5 mw7 mr-auto ml-auto pt6">
-        <h1>{page ? 'Page Detail' : 'Create Page'}</h1>
+        <h1>{page ? 'Route Detail' : 'Create Route'}</h1>
         {form}
       </div>
     )

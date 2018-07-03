@@ -2,7 +2,6 @@ import PropTypes from 'prop-types'
 import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { createPortal } from 'react-dom'
 import Draggable from 'react-draggable'
 import { injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
@@ -46,9 +45,10 @@ class ComponentEditor extends Component {
   }
 
   static contextTypes = {
+    activeCondition: PropTypes.object,
     editExtensionPoint: PropTypes.func,
-    updateExtension: PropTypes.func,
     emitter: PropTypes.object,
+    updateExtension: PropTypes.func,
   }
 
   constructor(props, context) {
@@ -124,6 +124,7 @@ class ComponentEditor extends Component {
 
   handleSave = (event) => {
     console.log('save', event, this.props)
+    const { activeCondition } = this.context
     const { saveExtension, component, props } = this.props
     const isEmpty = this.isEmptyExtensionPoint(component)
 
@@ -138,6 +139,8 @@ class ComponentEditor extends Component {
 
     saveExtension({
       variables: {
+        conditionName: activeCondition.name,
+        conditionParams: JSON.stringify(activeCondition.params),
         extensionName: this.props.treePath,
         component: selectedComponent,
         props: isEmpty ? null : JSON.stringify(pickedProps),
@@ -326,66 +329,56 @@ class ComponentEditor extends Component {
 
     const editor = (
       <div className="w-100 near-black">
-        <Draggable handle=".draggable">
-          <div className={`br2-ns fixed z-max bg-white flex flex-column shadow-editor-desktop size-editor w-100 top-2-ns right-2-ns mt9-ns mh5-ns move animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
-            <div className="flex flex-none justify-between bg-serious-black white fw7 f4 ph6 pv5 lh-copy w-100 br2-ns br--top-ns draggable z-max">
-              <div>
-                {displayName}
-              </div>
-              <button onClick={this.handleCancel} className="flex items-center pointer dim bg-transparent bn">
-                <CloseIcon />
-              </button>
-            </div>
-            <div id="form__error-list-template___alert" />
-            <ModeSwitcher
-              activeMode={this.state.mode}
-              modes={MODES}
-              onSwitch={this.handleModeSwitch}
-            />
-            <div className="flex-auto overflow-y-scroll form-schema">
-              <Form
-                schema={schema}
-                formData={extensionProps}
-                onChange={this.handleFormChange}
-                onSubmit={this.handleSave}
-                FieldTemplate={FieldTemplate}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                uiSchema={uiSchema}
-                widgets={widgets}
-                showErrorList
-                ErrorList={ErrorListTemplate}
-                formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+        <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
+          <div id="form__error-list-template___alert" />
+          <ModeSwitcher
+            activeMode={this.state.mode}
+            modes={MODES}
+            onSwitch={this.handleModeSwitch}
+          />
+          <div className="flex-auto overflow-y-scroll form-schema">
+            <Form
+              schema={schema}
+              formData={extensionProps}
+              onChange={this.handleFormChange}
+              onSubmit={this.handleSave}
+              FieldTemplate={FieldTemplate}
+              ObjectFieldTemplate={ObjectFieldTemplate}
+              uiSchema={uiSchema}
+              widgets={widgets}
+              showErrorList
+              ErrorList={ErrorListTemplate}
+              formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+            >
+              <button className="dn" type="submit" />
+            </Form>
+          </div>
+          <div className="w-100 flex flex-none bt bw2 b--light-silver">
+            <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
+              <Button
+                block
+                onClick={this.handleCancel}
+                size="regular"
+                variation="tertiary"
               >
-                <button className="dn" type="submit" />
-              </Form>
+                Cancel
+              </Button>
             </div>
-            <div className="w-100 flex flex-none bt bw2 b--light-silver">
-              <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
-                <Button
-                  block
-                  onClick={this.handleCancel}
-                  size="regular"
-                  variation="tertiary"
-                >
-                  Cancel
+            <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue">
+              {this.state.saving ? (
+                <Spinner size={28} />
+              ) : (
+                <Button block onClick={this.handleSave} size="regular" variation="tertiary">
+                  Save
                 </Button>
-              </div>
-              <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue">
-                {this.state.saving ? (
-                  <Spinner size={28} />
-                ) : (
-                  <Button block onClick={this.handleSave} size="regular" variation="tertiary">
-                    Save
-                  </Button>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        </Draggable>
+        </div>
       </div>
     )
 
-    return createPortal(editor, document.body)
+    return editor
   }
 }
 

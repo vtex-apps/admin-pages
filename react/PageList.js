@@ -35,11 +35,8 @@ class PageList extends Component {
     <tr className="striped--near-white" key={page.name}>
       <td className="pv5 w-20 pl4" >
         <Link to={`/admin/pages/page/${page.name}`} className="rebel-pink no-underline underline-hover">
-          {page.name}
+          {page.path}
         </Link>
-      </td>
-      <td className="pv2 w-40">
-        {page.path}
       </td>
       {page.declarer
         ? (
@@ -64,7 +61,7 @@ class PageList extends Component {
     const customPageList = pages && (
       <div>
         <div className="flex justify-between items-center mb4">
-          <h1>My Pages</h1>
+          <h1>My Routes</h1>
           <div>
             <Link to="pages/page/new">
               <Button size="small" variation="primary">New page</Button>
@@ -74,13 +71,11 @@ class PageList extends Component {
         <table className="collapse w-100">
           <tbody>
             <tr className="striped--near-white">
-              <th className="pv4 w-20 tl f6 fw6 ttu pl4">
-                ID
-              </th>
               <th className="tl f6 ttu fw6 w-40">
-                Path
+                Path Template
               </th>
               <th className="tl f6 ttu fw6 w-30">
+                Context Provider
               </th>
               <th className="tl f6 ttu fw6 w-10">
               </th>
@@ -96,19 +91,16 @@ class PageList extends Component {
     const appsPageList = pages && (
       <div>
         <div className="flex justify-between items-center mb4 pt7">
-          <h3>Pages declared by installed apps</h3>
+          <h3>Routes declared by installed apps</h3>
         </div>
         <table className="collapse w-100">
           <tbody>
             <tr className="striped--near-white">
-              <th className="pv4 w-20 tl f6 fw6 ttu pl4">
-                ID
-              </th>
               <th className="tl f6 ttu fw6 pv2 w-40">
-                Path
+                Path Template
               </th>
               <th className="tl f6 ttu fw6 pv2 w-30">
-                App
+                Context Provider
               </th>
               <th className="tl f6 ttu fw6 pv2 w-10">
               </th>

@@ -1,19 +1,40 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from 'vtex.styleguide'
+import { RenderContextConsumer } from 'render'
 
-import PageIcon from '../images/PageIcon.js'
-import CheckIcon from '../images/check-2.js'
+import EditIcon from '../images/EditIcon.js'
+import CloseIcon from '../images/CloseIcon.js'
+
+import ComponentEditor from '../components/ComponentEditor'
+
+import ConditionSelector from '../ConditionSelector'
 
 import '../editbar.global.css'
 
-// eslint-disable-next-line
+const getContainerClasses = layout => {
+  switch (layout) {
+    case 'full':
+      return 'w-100'
+    case 'mobile':
+      return 'mw4 center'
+  }
+}
+
 export default class EditBar extends Component {
   static propTypes = {
     editTreePath: PropTypes.string,
     editMode: PropTypes.bool,
     onToggleEditMode: PropTypes.func,
     page: PropTypes.string,
+    children: PropTypes.node,
+  }
+
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      layout: 'full',
+    }
   }
 
   componentDidMount() {
@@ -30,39 +51,73 @@ export default class EditBar extends Component {
     )
   }
 
-  handleClick = () => {
-    this.props.onToggleEditMode()
+  renderSideBarContent() {
+    const { editTreePath, editMode } = this.props
+
+    const editToggle = (
+      <button
+        type="button"
+        onClick={this.props.onToggleEditMode}
+        className={
+          'bg-blue br3 pa4 bn shadow-1 flex mv4 items-center justify-center pointer hover-bg-heavy-blue animated fadeIn'
+        }
+        style={{ animationDuration: '0.2s' }}
+      >
+        {editMode ? <CloseIcon /> : <EditIcon />}
+        <span className="white pl4">
+          {editMode ? 'Stop editing' : 'Start editing'}
+        </span>
+      </button>
+    )
+
+    return (<RenderContextConsumer>
+      {runtime => {
+        const extension = runtime.extensions[editTreePath]
+        const { component, props = {} } = extension || {}
+        const componentEditor = extension && <ComponentEditor component={component} props={props} treePath={editTreePath} />
+
+        return (
+          <Fragment>
+            <ConditionSelector />
+            { editTreePath == null
+              ? editToggle
+              : componentEditor
+            }
+          </Fragment>
+        )
+      }}
+    </RenderContextConsumer>
+    )
+  }
+
+  renderSideBar() {
+    return (
+      <div
+        id="sidebar-vtex"
+        className="left-0 z-1 h-100-s calc--height-ns w-18em-ns fixed">
+        <nav
+          id="admin-sidebar"
+          style={{ animationDuration: '0.333s' }}
+          className="transition animated fadeIn b--light-silver bw1 pa4 fixed z-2 h-100-s calc--height-ns overflow-x-hidden fixed absolute-m top-3em w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
+          {this.renderSideBarContent()}
+        </nav>
+      </div>
+    )
   }
 
   render() {
-    const { editTreePath, editMode, page } = this.props
+    const { layout } = this.state
     return (
-      <div className="w-100 fixed z-999 top-0 left-0 right-0 bg-white h-3em bb bw1 flex justify-between-m items-center b--light-silver shadow-solid-y">
-        <div className="flex items-center justify-between w-100 bg-white animated fadeIn" style={{ animationDuration: '0.2s' }}>
-          <div className="flex items-center">
-            <div className="flex items-center br b--light-silver bw1 h-3em ph4">
-              <PageIcon />
-            </div>
-            <div className="pl3 flex-ns items-center pl5">
-              <div className="f6 ttu fw7 pt1 pr5-ns">{page}</div>
-              <div className="dn di-ns h-3em bl bw1 b--light-silver" />
-              <div className="f7 f5-ns fw3 truncate pt1 pb1 pl5-ns">
-                {editTreePath
-                  ? `editing: ${editTreePath}`
-                  : editMode ? 'Click a component to edit it' : ''}
-              </div>
-            </div>
-          </div>
-          <div className="h-3em nr5 bl b--light-silver bw1 flex items-center pr4">
-            <Button size="small" variation="tertiary" onClick={this.handleClick}>
-              <div className="flex items-center">
-                DONE
-                <div className="pl4">
-                  <CheckIcon />
-                </div>
-              </div>
-            </Button>
-          </div>
+      <div className="w-100 flex flex-column flex-row-l flex-wrap-l pt8-s pt0-ns bg-white bb bw1 b--light-silver">
+        {this.renderSideBar()}
+        <div
+          id="app-content"
+          className="calc--height z-0 top-3em-ns center-m right-0-m absolute-m overflow-x-auto-m calc--width-ns calc--width-m calc--width-l">
+          <main
+            className={getContainerClasses(layout)}
+            role="main">
+            {this.props.children}
+          </main>
         </div>
       </div>
     )

@@ -1,18 +1,23 @@
-import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component, Fragment } from 'react'
+import { graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
-import EditIcon from './images/EditIcon.js'
+import ShowIcon from './images/ShowIcon.js'
 
 import { getImplementation } from './utils/components'
 import EditBar from './components/EditBar'
+import Conditions from './queries/Conditions.graphql'
 
 class EditorProvider extends Component {
   static childContextTypes = {
+    activeCondition: PropTypes.object,
+    conditions: PropTypes.object,
     editMode: PropTypes.bool,
     editTreePath: PropTypes.string,
     editExtensionPoint: PropTypes.func,
     getEditMode: PropTypes.func,
+    onConditionSelection: PropTypes.func,
   }
 
   static contextTypes = {
@@ -31,7 +36,9 @@ class EditorProvider extends Component {
     super(props, context)
 
     this.state = {
+      activeCondition: { name: '', params: {} },
       editMode: false,
+      showAdminControls: true,
       editTreePath: null,
     }
   }
@@ -59,6 +66,30 @@ class EditorProvider extends Component {
     )
   }
 
+  handleToggleShowAdminControls = () => {
+    this.setState(
+      {
+        showAdminControls: !this.state.showAdminControls,
+      }, () => {
+        const { page } = this.props
+        const root = page.split('/')[0]
+        if (root !== 'admin') {
+          if (this.state.showAdminControls) {
+            Array.prototype.forEach.call(
+              document.getElementsByClassName('render-container'),
+              e => e.classList.add('editor-provider'),
+            )
+          } else {
+            Array.prototype.forEach.call(
+              document.getElementsByClassName('render-container'),
+              e => e.classList.remove('editor-provider'),
+            )
+          }
+        }
+      }
+    )
+  }
+
   hasEditableExtensionPoints = extensions => {
     return (
       Object.keys(extensions).find(k => {
@@ -77,14 +108,24 @@ class EditorProvider extends Component {
     return this.state.editMode
   }
 
+  handleConditionSelection = selectedCondition => {
+    if (selectedCondition.name !== this.state.activeCondition.name) {
+      this.setState({ activeCondition: selectedCondition })
+    }
+  }
+
   getChildContext() {
-    const { editMode, editTreePath } = this.state
+    const { conditions } = this.props.data
+    const { activeCondition, editMode, editTreePath } = this.state
 
     return {
+      activeCondition,
+      conditions,
       editMode,
       editTreePath,
       editExtensionPoint: this.editExtensionPoint,
       getEditMode: this.getEditMode,
+      onConditionSelection: this.handleConditionSelection,
     }
   }
 
@@ -109,7 +150,7 @@ class EditorProvider extends Component {
 
   render() {
     const { children, page } = this.props
-    const { editMode, editTreePath } = this.state
+    const { editMode, editTreePath, showAdminControls } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -118,38 +159,60 @@ class EditorProvider extends Component {
       return children
     }
 
-    const topbar = editMode ? (
-      <EditBar
-        editMode={editMode}
-        editTreePath={editTreePath}
-        onToggleEditMode={this.handleToggleEditMode}
-        page={page}
-      />
-    ) : (
-      <ExtensionPoint id={`${root}/__topbar`} />
-    )
-
-    const editToggle = editMode ? null : (
+    const adminControlsToggle = showAdminControls ? null : (
       <button
         type="button"
-        onClick={this.handleToggleEditMode}
+        onClick={this.handleToggleShowAdminControls}
         className={
-          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed bottom-1 bottom-2-ns right-1 right-2-ns pointer grow hover-bg-heavy-blue animated fadeIn'
+          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn'
         }
         style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
       >
-        <EditIcon />
+        <ShowIcon />
       </button>
     )
 
     return (
       <Fragment>
-        {topbar}
-        {editToggle}
-        {children}
+        {adminControlsToggle}
+        {showAdminControls
+          ? (
+            <Fragment>
+              <ExtensionPoint id={`${root}/__topbar`}>
+                <button
+                  type="button"
+                  onClick={this.handleToggleShowAdminControls}
+                  className={
+                    'bg-blue br3 bn lh-title f6 fw5 link bn br2 mh2 pl3 pv3 pl4-l ph4-xl flex items-center justify-center z-max pointer hover-bg-heavy-blue animated fadeIn'
+                  }
+                  style={{ animationDuration: '0.2s' }}
+                >
+                  <span className="near-white ph4">HIDE</span>
+                </button>
+              </ExtensionPoint>
+              <EditBar
+                editMode={editMode}
+                editTreePath={editTreePath}
+                onToggleEditMode={this.handleToggleEditMode}
+                page={page}
+              >
+                {children}
+              </EditBar>
+            </Fragment>
+          )
+          : children
+        }
       </Fragment>
     )
   }
 }
 
-export default EditorProvider
+export default graphql(Conditions, {
+  options: ({ page }) => ({
+    variables: {
+      locale: 'en',
+      page,
+      renderMajor: 7,
+    },
+  }),
+})(EditorProvider)

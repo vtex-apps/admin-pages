@@ -73,7 +73,7 @@ class EditableExtensionPoint extends Component {
 
   render() {
     const { treePath, getEditMode } = this.context
-    const { children, component, props, ...parentProps } = this.props
+    const { children, component, ...parentProps } = this.props
     const { editTreePath, mouseOver } = this.state
     const editMode = getEditMode()
 
@@ -89,10 +89,7 @@ class EditableExtensionPoint extends Component {
     )
 
     return (
-      <Fragment>
-        {editMode && !editTreePath ? withOverlay : children}
-        {editTreePath === treePath && <ComponentEditor component={component} props={props} treePath={treePath} />}
-      </Fragment>
+      editMode && !editTreePath ? withOverlay : children
     )
   }
 }

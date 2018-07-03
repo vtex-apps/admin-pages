@@ -1,3 +1,15 @@
-mutation SaveExtension($extensionName: String, $component: String, $props: String) {
-  saveExtension(extensionName: $extensionName, component: $component, props: $props)
+mutation SaveExtension(
+  $component: String,
+  $conditionName: String,
+  $conditionParams: String,
+  $extensionName: String,
+  $props: String
+) {
+  saveExtension(
+    component: $component,
+    conditionName: $conditionName,
+    conditionParams: $conditionParams,
+    extensionName: $extensionName,
+    props: $props
+  )
 }
