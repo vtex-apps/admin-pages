@@ -9,14 +9,15 @@ import { Button, Spinner } from 'vtex.styleguide'
 import AvailableComponents from '../queries/AvailableComponents.graphql'
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
+
 import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import ErrorListTemplate from './form/ErrorListTemplate'
 import FieldTemplate from './form/FieldTemplate'
+import ImageUploader from './form/ImageUploader'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
 import Toggle from './form/Toggle'
-
 import ModeSwitcher from './ModeSwitcher'
 
 const defaultUiSchema = {
@@ -28,6 +29,7 @@ const widgets = {
   CheckboxWidget: Toggle,
   RadioWidget: Radio,
   SelectWidget: Dropdown,
+  'image-uploader': ImageUploader,
 }
 
 const MODES  = ['content', 'layout']
