@@ -63,9 +63,11 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       mode: 'content',
     }
 
+    const {component, props: extensionProps = {}} = this.getExtension()
+
     this.old = JSON.stringify({
-      component: props.component,
-      props: this.getSchemaProps(getImplementation(props.component), props.props),
+      component,
+      props: this.getSchemaProps(getImplementation(component), extensionProps),
     })
   }
 
