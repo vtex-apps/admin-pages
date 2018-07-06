@@ -1,14 +1,14 @@
 mutation SaveExtension(
   $component: String,
-  $conditionName: String,
-  $conditionParams: String,
+  $conditions: [String],
+  $conditionMode: String,
   $extensionName: String,
   $props: String
 ) {
   saveExtension(
     component: $component,
-    conditionName: $conditionName,
-    conditionParams: $conditionParams,
+    conditions: $conditions,
+    conditionMode: $conditionMode,
     extensionName: $extensionName,
     props: $props
   )

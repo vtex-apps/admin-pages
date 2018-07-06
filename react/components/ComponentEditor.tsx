@@ -1,27 +1,23 @@
 import PropTypes from 'prop-types'
-import { has, find, map, prop, pick, pickBy, reduce, filter, keys, merge } from 'ramda'
+import { filter, find, has, keys, map, merge, pick, pickBy, prop, reduce } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
-import Draggable from 'react-draggable'
 import { injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { Button, Spinner } from 'vtex.styleguide'
 
-import BaseInput from '../form/BaseInput'
-import Dropdown from '../form/Dropdown'
-import ErrorListTemplate from '../form/ErrorListTemplate'
-import FieldTemplate from '../form/FieldTemplate'
-import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
-import Radio from '../form/Radio'
-import Toggle from '../form/Toggle'
-import CloseIcon from '../../images/CloseIcon.js'
-import AvailableComponents from '../../queries/AvailableComponents.graphql'
-import SaveExtension from '../../queries/SaveExtension.graphql'
-import { getImplementation } from '../../utils/components'
+import AvailableComponents from '../queries/AvailableComponents.graphql'
+import SaveExtension from '../queries/SaveExtension.graphql'
+import { getImplementation } from '../utils/components'
+import BaseInput from './form/BaseInput'
+import Dropdown from './form/Dropdown'
+import ErrorListTemplate from './form/ErrorListTemplate'
+import FieldTemplate from './form/FieldTemplate'
+import ObjectFieldTemplate from './form/ObjectFieldTemplate'
+import Radio from './form/Radio'
+import Toggle from './form/Toggle'
 
 import ModeSwitcher from './ModeSwitcher'
-
-const MODES = ['content', 'layout']
 
 const defaultUiSchema = {
   'classNames': 'editor-form',
@@ -34,29 +30,37 @@ const widgets = {
   SelectWidget: Dropdown,
 }
 
-class ComponentEditor extends Component {
-  static propTypes = {
+const MODES  = ['content', 'layout']
+type ComponentEditorMode = 'content' | 'layout'
+
+interface ComponentEditorProps {
+  availableComponents: any
+  saveExtension: any
+}
+
+interface ComponentEditorState {
+  loading: boolean
+  mode: ComponentEditorMode
+}
+
+class ComponentEditor extends Component<ComponentEditorProps & RenderContextProps & EditorContextProps, ComponentEditorState> {
+  public static propTypes = {
     availableComponents: PropTypes.object,
-    saveExtension: PropTypes.any,
-    treePath: PropTypes.string,
-    component: PropTypes.string,
     intl: intlShape.isRequired,
-    props: PropTypes.object,
+    saveExtension: PropTypes.any,
+
   }
 
-  static contextTypes = {
-    activeCondition: PropTypes.object,
-    editExtensionPoint: PropTypes.func,
-    emitter: PropTypes.object,
-    updateExtension: PropTypes.func,
-  }
+  // tslint:disable-next-line
+  private _isMounted: boolean = false
+  private old: string
 
-  constructor(props, context) {
-    super(props, context)
+  constructor(props: any) {
+    super(props)
 
     this.state = {
-      mode: MODES[0],
-      saving: false,
+      loading: false,
+      mode: 'content',
     }
 
     this.old = JSON.stringify({
@@ -65,15 +69,15 @@ class ComponentEditor extends Component {
     })
   }
 
-  componentDidMount() {
+  public componentDidMount() {
     this._isMounted = true
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     this._isMounted = false
   }
 
-  getSchemaProps = (component, props) => {
+  public getSchemaProps = (component, props) => {
     if (!component) {
       return null
     }
@@ -102,7 +106,8 @@ class ComponentEditor extends Component {
     return getPropsFromSchema(componentSchema.properties, props)
   }
 
-  handleFormChange = (event) => {
+  public handleFormChange = (event: any) => {
+    const { runtime: { updateExtension }, editor: { editTreePath } } = this.props
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
@@ -116,16 +121,16 @@ class ComponentEditor extends Component {
     const props = this.getSchemaProps(Component, event.formData)
     console.log('Updating extension with props', props)
 
-    this.context.updateExtension(this.props.treePath, {
+    updateExtension(editTreePath as string, {
       component,
       props,
     })
   }
 
-  handleSave = (event) => {
+  public handleSave = (event: any) => {
     console.log('save', event, this.props)
-    const { activeCondition } = this.context
-    const { saveExtension, component, props } = this.props
+    const { saveExtension, editor: { activeConditions, conditionMode, editTreePath, editExtensionPoint } } = this.props
+    const { component, props = {} } = this.getExtension()
     const isEmpty = this.isEmptyExtensionPoint(component)
 
     const componentImplementation = component && getImplementation(component)
@@ -134,50 +139,53 @@ class ComponentEditor extends Component {
     const selectedComponent = isEmpty ? null : component
 
     this.setState({
-      saving: true,
+      loading: true,
     })
 
     saveExtension({
       variables: {
-        conditionName: activeCondition.name,
-        conditionParams: JSON.stringify(activeCondition.params),
-        extensionName: this.props.treePath,
         component: selectedComponent,
+        conditionMode,
+        conditions: activeConditions,
+        extensionName: editTreePath,
         props: isEmpty ? null : JSON.stringify(pickedProps),
       },
     })
       .then((data) => {
         console.log('OK!', data)
         this.setState({
-          saving: false,
+          loading: false,
         })
-        this.context.editExtensionPoint(null)
+        editExtensionPoint(null)
       })
       .catch(err => {
         this.setState({
-          saving: false,
+          loading: false,
         })
-        alert('Error saving extension point configuration.')
+        alert('Error loading extension point configuration.')
         console.log(err)
         this.handleCancel()
       })
   }
 
-  handleCancel = (event) => {
+  public handleCancel = (event?: any) => {
     console.log('Updating extension with saved information', this.old)
-    this.context.updateExtension(this.props.treePath, JSON.parse(this.old))
-    this.context.editExtensionPoint(null)
+    const { editor: { editExtensionPoint, editTreePath }, runtime: { updateExtension }} = this.props
+    updateExtension(editTreePath as string, JSON.parse(this.old))
+    editExtensionPoint(null)
     delete this.old
-    event && event.stopPropagation()
+    if (event) {
+      event.stopPropagation()
+    }
   }
 
-  handleModeSwitch = newMode => {
+  public handleModeSwitch = (newMode: ComponentEditorMode) => {
     if (newMode !== this.state.mode) {
       this.setState({ mode: newMode })
     }
   }
 
-  isEmptyExtensionPoint = (component) =>
+  public isEmptyExtensionPoint = (component) =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
   /**
@@ -188,7 +196,7 @@ class ComponentEditor extends Component {
    * @param {object} component The component implementation
    * @param {object} props The component props to be passed to the getSchema
    */
-  getComponentSchema = (component, props) => {
+  public getComponentSchema = (component, props) => {
     const schema = component && (component.schema || (component.getSchema && component.getSchema(props))) || {
       type: 'object',
       properties: {},
@@ -244,7 +252,7 @@ class ComponentEditor extends Component {
    * @return {object} A object defining the complete `UiSchema` that matches all the schema
    *  properties.
    */
-  getUiSchema = (componentUiSchema, componentSchema) => {
+  public getUiSchema = (componentUiSchema, componentSchema) => {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
      * the correct path to the property.
@@ -284,8 +292,8 @@ class ComponentEditor extends Component {
     }
   }
 
-  render() {
-    const { component, props } = this.props
+  public render() {
+    const { component, props = {} } = this.getExtension()
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
       ? map(prop('name'), this.props.availableComponents.availableComponents)
@@ -365,7 +373,7 @@ class ComponentEditor extends Component {
               </Button>
             </div>
             <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue">
-              {this.state.saving ? (
+              {this.state.loading ? (
                 <Spinner size={28} />
               ) : (
                 <Button block onClick={this.handleSave} size="regular" variation="tertiary">
@@ -380,6 +388,11 @@ class ComponentEditor extends Component {
 
     return editor
   }
+
+  private getExtension = (): Extension => {
+    const { editor: { editTreePath }, runtime: { extensions } } = this.props
+    return extensions[editTreePath as string]
+  }
 }
 
 export default compose(
@@ -387,11 +400,11 @@ export default compose(
   graphql(SaveExtension, { name: 'saveExtension' }),
   graphql(AvailableComponents, {
     name: 'availableComponents',
-    options: (props) => ({
+    options: (props: ComponentEditorProps & RenderContextProps & EditorContextProps) => ({
       variables: {
-        extensionName: props.treePath,
-        renderMajor: 7,
+        extensionName: props.editor.editTreePath,
         production: false,
+        renderMajor: 7,
       },
     }),
   }),
