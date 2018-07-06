@@ -3,7 +3,7 @@ import React from 'react'
 import { Tabs, Tab } from 'vtex.styleguide'
 
 const ModeSwitcher = ({ activeMode, modes, onSwitch }) => (
-  <Tabs>
+  <Tabs fullWidth>
     {modes.map(mode => (
       <Tab
         active={mode === activeMode}
