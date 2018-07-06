@@ -5,6 +5,7 @@ import { ExtensionPoint } from 'render'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
+import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 
 const nativeConditions: Condition[] = [
@@ -134,7 +135,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
         }
         style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
       >
-        <ShowIcon />
+        <EditIcon />
       </button>
     )
 
@@ -149,7 +150,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
             }
             style={{ animationDuration: '0.2s' }}
           >
-            <span className="near-white ph4">HIDE</span>
+            <span className="near-white ph1"><ShowIcon /></span>
           </button>
         </ExtensionPoint>
         <EditBar editor={editor} runtime={runtime}>
