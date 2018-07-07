@@ -48,8 +48,10 @@ export default class EditBar extends Component<{} & RenderContextProps & EditorC
 
     return (
       <Fragment>
-        <PageInfo editor={editor} runtime={runtime} />
-        <ConditionSelector editor={editor} runtime={runtime} />
+        <div className={`${editTreePath ? 'vh-25': 'vh-50'} overflow-y-scroll`}>
+          <PageInfo editor={editor} runtime={runtime} />
+          <ConditionSelector editor={editor} runtime={runtime} />
+        </div>
         { editTreePath == null
           ? <ComponentList editor={editor} runtime={runtime} />
           : <ComponentEditor editor={editor} runtime={runtime} />
