@@ -70,16 +70,19 @@ declare global {
 
   type EditorLayout = 'desktop' | 'mobile'
 
-  interface EditorContext {
+  interface EditorConditionSection {
     conditions: Condition[]
     activeConditions: string[]
+    addCondition: (conditionId: string) => void
+    removeCondition: (conditionId: string) => void
+  }
+
+  interface EditorContext extends EditorConditionSection {
     conditionMode: ConditionMode
     editMode: boolean
     editTreePath: string | null
     layout: EditorLayout
     editExtensionPoint: (treePath: string | null) => void
-    addCondition: (conditionId: string) => void
-    removeCondition: (conditionId: string) => void
     toggleEditMode: () => void
   }
 

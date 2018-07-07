@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 
 import ComponentEditor from './ComponentEditor'
 import ComponentList from './ComponentList'
-import ConditionSelector from './ConditionSelector'
+import ConditionSelector from './conditions/ConditionSelector'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
@@ -52,6 +52,7 @@ export default class EditBar extends Component<{} & RenderContextProps & EditorC
           <PageInfo editor={editor} runtime={runtime} />
           <ConditionSelector editor={editor} runtime={runtime} />
         </div>
+        <hr/>
         { editTreePath == null
           ? <ComponentList editor={editor} runtime={runtime} />
           : <ComponentEditor editor={editor} runtime={runtime} />

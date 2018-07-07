@@ -13,7 +13,7 @@ class PageInfo extends Component<{} & RenderContextProps & EditorContextProps> {
 
     return (
       <div>
-        <h1><FormattedMessage id="pages.editor.info.title"/></h1>
+        <h3><FormattedMessage id="pages.editor.info.title"/></h3>
         <FormattedMessage id="pages.editor.info.page"/>: <span>{page}</span>
       </div>
     )
