@@ -29,14 +29,14 @@ class ImageUploader extends Component {
 
         const imageName = acceptedFiles[0].name
 
-        const options = {
-          body: acceptedFiles[0],
-          method: 'put',
-        }
-
         const response = await fetch(
-          `${BASE_URL}/_v/save/${imageName}`,
-          options,
+          `${BASE_URL}/_v/save/${imageName}`, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            },
+            method: 'PUT',
+            body: acceptedFiles[0],
+          }
         )
 
         const { fileUrl } = await response.json()
@@ -65,7 +65,7 @@ class ImageUploader extends Component {
         <Fragment>
           <FieldTitle />
           <img src={imageUrl} />
-          <div className="absolute right-1 top-0 fill-near-black" onClick={() => { this.setState({ imageUrl: '' })}}>
+          <div className="fill-near-black" onClick={() => { this.setState({ imageUrl: '' })}}>
             <CloseIcon />
           </div>
         </Fragment>
@@ -75,10 +75,10 @@ class ImageUploader extends Component {
     return (
       <RenderContextConsumer>
         {({ account, workspace }) => (
-          <Fragment className="cursor">
+          <Fragment>
             <FieldTitle />
             <Dropzone
-              className="w-100 h4 ba bw1 br3 b--dashed b--light-gray"
+              className="w-100 h4 ba bw1 br3 b--dashed b--light-gray cursor"
               disableClick
               disabled={disabled}
               multiple={false}
