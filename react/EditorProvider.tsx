@@ -204,7 +204,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     const childrenWithSidebar = (
       <Fragment>
         <div
-          className="fixed z-9999 h-3em"
+          className="fixed left-0 right-0 z-9999 h-3em"
           style={{
             animationDuration: '0.2s',
             transform: `translate(0,${showAdminControls?0:'-100%'})`,
