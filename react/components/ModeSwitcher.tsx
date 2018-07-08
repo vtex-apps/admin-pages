@@ -1,8 +1,13 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { Tabs, Tab } from 'vtex.styleguide'
 
-const ModeSwitcher = ({ activeMode, modes, onSwitch }) => (
+interface ModeSwitcherProps {
+  activeMode: string
+  modes: string[]
+  onSwitch: (mode: string) => void
+}
+
+const ModeSwitcher = ({ activeMode, modes = [], onSwitch }: ModeSwitcherProps) => (
   <Tabs fullWidth>
     {modes.map(mode => (
       <Tab
@@ -14,15 +19,5 @@ const ModeSwitcher = ({ activeMode, modes, onSwitch }) => (
     ))}
   </Tabs>
 )
-
-ModeSwitcher.defaultProps = {
-  modes: [],
-}
-
-ModeSwitcher.propTypes = {
-  activeMode: PropTypes.string.isRequired,
-  modes: PropTypes.arrayOf(PropTypes.string),
-  onSwitch: PropTypes.func.isRequired,
-}
 
 export default ModeSwitcher

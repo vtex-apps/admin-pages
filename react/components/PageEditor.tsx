@@ -6,10 +6,9 @@ import Form from 'react-jsonschema-form'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
-import SavePage from '../queries/SavePage.graphql'
-import Pages from '../queries/Pages.graphql'
 import AvailableTemplates from '../queries/AvailableTemplates.graphql'
-
+import Pages from '../queries/Pages.graphql'
+import SavePage from '../queries/SavePage.graphql'
 import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import ErrorListTemplate from './form/ErrorListTemplate'
@@ -47,16 +46,16 @@ const createLocationDescriptor = (to, query) => ({
 })
 
 class PageEditor extends Component {
-  static propTypes = {
+  public static propTypes = {
     availableTemplates: PropTypes.object,
-    savePage: PropTypes.any,
-    name: PropTypes.string,
-    path: PropTypes.string,
     component: PropTypes.string,
     editable: PropTypes.bool,
+    name: PropTypes.string,
+    path: PropTypes.string,
+    savePage: PropTypes.any,
   }
 
-  static contextTypes = {
+  public static contextTypes = {
     history: PropTypes.object,
   }
 
@@ -65,15 +64,15 @@ class PageEditor extends Component {
 
     this.state = {
       page: {
-        name: props.name === 'new' ? 'store/' : props.name,
-        path: props.path || '/',
         component: props.component,
         editable: props.editable,
+        name: props.name === 'new' ? 'store/' : props.name,
+        path: props.path || '/',
       },
     }
   }
 
-  handleFormChange = (event) => {
+  public handleFormChange = (event) => {
     const newState = {
       page: {
         ...this.state.page,
@@ -93,7 +92,7 @@ class PageEditor extends Component {
     this.setState(newState)
   }
 
-  handleSave = (event) => {
+  public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
     const { name: pageName, component, path } = this.state.page
@@ -102,8 +101,8 @@ class PageEditor extends Component {
         { query: Pages },
       ],
       variables: {
-        pageName,
         component,
+        pageName,
         path,
       },
     })
@@ -118,7 +117,7 @@ class PageEditor extends Component {
       })
   }
 
-  render() {
+  public render() {
     const { page } = this.state
     const templateComponents = this.props.availableTemplates.availableTemplates
       ? map(prop('name'), this.props.availableTemplates.availableTemplates)
@@ -129,11 +128,11 @@ class PageEditor extends Component {
       properties: {
         ...partialSchema.properties,
         component: {
+          default: '',
           enum: templateComponents,
           enumNames: templateComponents,
           title: 'Template',
           type: 'string',
-          default: '',
         },
       },
     }
@@ -149,16 +148,17 @@ class PageEditor extends Component {
     return (
       <div className="dark-gray center">
         <Form
+          ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={page}
+          ObjectFieldTemplate={ObjectFieldTemplate}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
-          ObjectFieldTemplate={ObjectFieldTemplate}
           schema={schema}
-          uiSchema={defaultUiSchema}
           showErrorList
-          ErrorList={ErrorListTemplate}
-          widgets={widgets}>
+          uiSchema={defaultUiSchema}
+          widgets={widgets}
+        >
           <div className="mt7">
             <Link to="/admin/pages">
               <Button size="small" variation="tertiary">
@@ -186,8 +186,8 @@ export default compose(
     options: (props) => ({
       variables: {
         pageName: props.name,
-        renderMajor: 7,
         production: false,
+        renderMajor: 7,
       },
     }),
   })

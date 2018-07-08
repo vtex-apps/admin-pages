@@ -1,18 +1,18 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 
-import PageQuery from './queries/Page.graphql'
 import PageEditor from './components/PageEditor'
+import PageQuery from './queries/Page.graphql'
 
 // eslint-disable-next-line
 class PageDetail extends Component {
-  static propTypes = {
+  public static propTypes = {
     data: PropTypes.object,
     params: PropTypes.object,
   }
 
-  render() {
+  public render() {
     const { data: { loading, page: pageData } = {}, params: { name } } = this.props
 
     if (loading) {
@@ -39,7 +39,7 @@ class PageDetail extends Component {
 
     return (
       <div className="ph5 mw7 mr-auto ml-auto pt6">
-        <h1>{page ? 'Route Detail' : 'Create Route'}</h1>
+        <h1>{page ? 'Page detail' : 'Create new page'}</h1>
         {form}
       </div>
     )
@@ -47,11 +47,11 @@ class PageDetail extends Component {
 }
 
 export default graphql(PageQuery, {
-  skip: (props) => props.params.name === 'new',
   options: (props) => ({
     variables: {
       page: props.params.name,
       locale: global.__RUNTIME__.culture.locale,
     },
   }),
+  skip: (props) => props.params.name === 'new',
 })(PageDetail)

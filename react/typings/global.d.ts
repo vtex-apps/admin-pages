@@ -25,8 +25,8 @@ declare global {
     params?: any
     theme?: string
     disableExternals?: string[]
-    declarer?: string
-    name?: string
+    declarer: string
+    name: string
     title?: string
   }
 
