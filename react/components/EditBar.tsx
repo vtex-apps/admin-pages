@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { canUseDOM } from 'render'
 
 import ComponentEditor from './ComponentEditor'
 import ComponentList from './ComponentList'
@@ -28,20 +27,6 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     editor: PropTypes.object,
     runtime: PropTypes.object,
     visible: PropTypes.bool,
-  }
-
-  public static getDerivedStateFromProps = (props: EditBarProps & RenderContextProps & EditorContextProps) => {
-    const { runtime: { page }, visible } = props
-    const root = page.split('/')[0]
-
-    if (!canUseDOM || root === 'admin') {
-      return
-    }
-
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('render-container'),
-      (e: any) => visible ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
-    )
   }
 
   public componentDidMount() {

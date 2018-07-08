@@ -38,7 +38,7 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   public renderConditions () {
     const { conditions, activeConditions, multiple} = this.props
     return conditions.map((c: Condition) => (
-      <div>
+      <div key={c.id}>
         <input type={multiple ? 'checkbox' : 'radio'}
           id={`condition-${c.id}`}
           value={c.id}

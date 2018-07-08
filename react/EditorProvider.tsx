@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { concat, difference, groupBy, prop, toPairs, uniq } from 'ramda'
+import { difference, groupBy, prop, toPairs, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { ExtensionPoint } from 'render'
 
@@ -81,6 +81,18 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     }
   }
 
+  public componentDidMount() {
+    const { runtime: { page } } = this.props
+    const root = page.split('/')[0]
+    if (root !== 'admin') {
+      Array.prototype.forEach.call(
+        document.getElementsByClassName('render-container'),
+        (e: any) => e.classList.add('editor-provider'),
+      )
+    }
+    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+  }
+
   public editExtensionPoint = (treePath: string | null) => {
     this.setState({ editTreePath: treePath, highlightTreePath: null })
   }
@@ -101,7 +113,14 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public handleToggleShowAdminControls = () => {
-    this.setState({ showAdminControls: !this.state.showAdminControls })
+    const showAdminControls = !this.state.showAdminControls
+
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('render-container'),
+      (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
+    )
+
+    this.setState({ showAdminControls })
   }
 
   public getConditionsGroups = () => {
