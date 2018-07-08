@@ -64,7 +64,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     super(props)
 
     this.state = {
-      activeConditions: [],
+      activeConditions: this.getDefaultActiveConditions(),
       conditionMode: 'AND',
       editMode: false,
       editTreePath: null,
@@ -94,6 +94,15 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
 
   public getConditionsGroups = () => {
     return groupBy<Condition>(prop('type'), nativeConditions)
+  }
+
+  public getDefaultActiveConditions = () => {
+    const conditionsGroups = this.getConditionsGroups()
+    return toPairs(conditionsGroups)
+      // get the value from the key/value pairs (i.e. the group itself)
+      .map(pair => pair[1])
+      // get the id of the first item of each group
+      .map(group => group[0].id)
   }
 
   public handleAddCondition = (conditionId: string) => {
