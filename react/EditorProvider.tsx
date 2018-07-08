@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { concat, difference, uniq } from 'ramda'
+import { concat, difference, groupBy, prop, toPairs, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { ExtensionPoint } from 'render'
 
@@ -90,6 +90,10 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
 
   public handleToggleShowAdminControls = () => {
     this.setState({ showAdminControls: !this.state.showAdminControls })
+  }
+
+  public getConditionsGroups = () => {
+    return groupBy<Condition>(prop('type'), nativeConditions)
   }
 
   public handleAddCondition = (conditionId: string) => {
