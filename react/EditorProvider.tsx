@@ -107,8 +107,12 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     return toPairs(conditionsGroups)
       // get the value from the key/value pairs (i.e. the group itself)
       .map(pair => pair[1])
-      // get the id of the first item of each group
-      .map(group => group[0].id)
+      // get the first item of each group
+      .map(group => group[0])
+      // excludes multiples
+      .filter(item => !item.multiple)
+      // returns the id of the first item of each remaining group
+      .map(item => item.id)
   }
 
   public findConditionsGroup = (conditionId: string) => {
