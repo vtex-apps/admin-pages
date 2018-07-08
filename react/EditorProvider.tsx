@@ -12,31 +12,37 @@ const nativeConditions: Condition[] = [
   {
     id: 'PAGES_SCOPE_URL',
     message: 'pages.conditions.scope.url',
+    multiple: false,
     type: 'scope',
   },
   {
     id: 'PAGES_SCOPE_ROUTE',
     message: 'pages.conditions.scope.route',
+    multiple: false,
     type: 'scope',
   },
   {
     id: 'PAGES_SCOPE_TEMPLATE',
     message: 'pages.conditions.scope.template',
+    multiple: false,
     type: 'scope',
   },
   {
     id: 'PAGES_DEVICE_ANY',
     message: 'pages.conditions.device.any',
+    multiple: false,
     type: 'device',
   },
   {
     id: 'PAGES_DEVICE_MOBILE',
     message: 'pages.conditions.device.mobile',
+    multiple: false,
     type: 'device',
   },
   {
     id: 'PAGES_DEVICE_DESKTOP',
     message: 'pages.conditions.device.desktop',
+    multiple: false,
     type: 'device',
   },
 ]
@@ -116,11 +122,32 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public handleAddCondition = (conditionId: string) => {
-    const activeConditions = uniq(concat(this.state.activeConditions, [conditionId]))
-    this.setState({ activeConditions })
+    const currentGroup = this.findConditionsGroup(conditionId)
+    const isMultiple = currentGroup ? currentGroup[0].multiple : false
+
+    let activeConditions
+
+    if(!isMultiple){
+      const externalConditions = difference(
+        this.state.activeConditions,
+        currentGroup ? currentGroup.map(condition=>condition.id) : []
+      )
+      activeConditions = externalConditions.concat(conditionId)
+    }else{
+      activeConditions = this.state.activeConditions.concat(conditionId)
+    }
+
+    this.setState({ activeConditions: uniq(activeConditions) })
   }
 
   public handleRemoveCondition = (conditionId: string) => {
+    const currentGroup = this.findConditionsGroup(conditionId)
+    const isMultiple = currentGroup ? currentGroup[0].multiple : false
+
+    if(!isMultiple){
+      return
+    }
+
     const activeConditions = difference(this.state.activeConditions, [conditionId])
     this.setState({ activeConditions })
   }
