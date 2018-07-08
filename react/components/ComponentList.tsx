@@ -74,8 +74,8 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
     const { runtime: { extensions } } = this.props
 
     return (
-      <div>
-        <h4><FormattedMessage id="pages.editor.components.title"/></h4>
+      <div className="pa4">
+        <h3><FormattedMessage id="pages.editor.components.title"/></h3>
         {Object.keys(extensions).map(this.renderComponentButton)}
 
         <button

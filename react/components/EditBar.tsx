@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { canUseDOM } from 'render'
 
 import ComponentEditor from './ComponentEditor'
 import ComponentList from './ComponentList'
@@ -29,23 +30,22 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     visible: PropTypes.bool,
   }
 
-  public componentDidMount() {
-    const { runtime: { page } } = this.props
+  public static getDerivedStateFromProps = (props: EditBarProps & RenderContextProps & EditorContextProps) => {
+    const { runtime: { page }, visible } = props
     const root = page.split('/')[0]
-    if (root !== 'admin') {
-      Array.prototype.forEach.call(
-        document.getElementsByClassName('render-container'),
-        (e: any) => e.classList.add('editor-provider'),
-      )
-    }
-    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-  }
 
-  public componentWillUnmount() {
+    if (!canUseDOM || root === 'admin') {
+      return
+    }
+
     Array.prototype.forEach.call(
       document.getElementsByClassName('render-container'),
-      (e: any) => e.classList.remove('editor-provider'),
+      (e: any) => visible ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
     )
+  }
+
+  public componentDidMount() {
+    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   public renderSideBarContent() {
@@ -81,8 +81,8 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
             transform: `translate(${visible?'0%':'-100%'}, 0)`,
             transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
           }}
-          className="transition animated fadeIn b--light-silver bw1 pa4 fixed z-2 h-100-s calc--height-ns overflow-x-hidden fixed absolute-m top-3em w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
-          <div className="h-100 pa4 overflow-y-scroll">
+          className="transition animated fadeIn b--light-silver bw1 fixed z-2 h-100-s calc--height-ns overflow-x-hidden fixed absolute-m top-3em w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
+          <div className="h-100 overflow-y-scroll">
             {this.renderSideBarContent()}
           </div>
         </nav>

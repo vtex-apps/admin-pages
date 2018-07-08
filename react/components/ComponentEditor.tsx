@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { filter, find, has, keys, map, merge, pick, pickBy, prop, reduce } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { injectIntl, intlShape } from 'react-intl'
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { Button, Spinner } from 'vtex.styleguide'
 
@@ -337,8 +337,9 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       ...props,
     }
 
-    const editor = (
+    return (
       <div className="w-100 near-black">
+        <h3 className="pa4"><FormattedMessage id="pages.editor.components.title"/></h3>
         <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
           <div id="form__error-list-template___alert" />
           <ModeSwitcher
@@ -387,8 +388,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         </div>
       </div>
     )
-
-    return editor
   }
 
   private getExtension = (): Extension => {

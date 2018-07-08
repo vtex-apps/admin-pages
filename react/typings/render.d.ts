@@ -4,8 +4,10 @@ declare module 'render' {
   var ExtensionPoint: ReactElement
   var NoSSR: ReactElement
   var RenderContextConsumer: ReactElement
+  var canUseDOM: boolean
 
   export {
+    canUseDOM,
     ExtensionPoint,
     NoSSR,
     RenderContextConsumer,

@@ -12,7 +12,7 @@ class PageInfo extends Component<{} & RenderContextProps & EditorContextProps> {
     const { runtime: { page } } = this.props
 
     return (
-      <div>
+      <div className="pa4">
         <h3><FormattedMessage id="pages.editor.info.title"/></h3>
         <FormattedMessage id="pages.editor.info.page"/>: <span>{page}</span>
       </div>

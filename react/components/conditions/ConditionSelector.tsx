@@ -18,7 +18,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
     const deviceConditions = conditionsByType.device
 
     return (
-      <Fragment>
+      <div className="pa4">
         <h3><FormattedMessage id="pages.editor.conditions.title"/></h3>
         <ConditionSection type="scope"
           conditions={scopeConditions}
@@ -31,10 +31,10 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
           conditions={deviceConditions}
           activeConditions={activeConditions}
           addCondition={addCondition}
-          removeCondition={removeCondition} 
+          removeCondition={removeCondition}
           multiple={deviceConditions[0].multiple}
           />
-      </Fragment>
+      </div>
     )
   }
 }
