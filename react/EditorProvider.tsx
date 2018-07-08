@@ -105,6 +105,16 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       .map(group => group[0].id)
   }
 
+  public findConditionsGroup = (conditionId: string) => {
+    const conditionsGroups = this.getConditionsGroups()
+    const group = toPairs(conditionsGroups)
+      .find(pair =>
+        pair[1].some(condition => condition.id === conditionId)
+      )
+
+    return group && group[1]
+  }
+
   public handleAddCondition = (conditionId: string) => {
     const activeConditions = uniq(concat(this.state.activeConditions, [conditionId]))
     this.setState({ activeConditions })
