@@ -195,19 +195,27 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
 
     const childrenWithSidebar = (
       <Fragment>
-        <ExtensionPoint id={`${root}/__topbar`}>
-          <button
-            type="button"
-            onClick={this.handleToggleShowAdminControls}
-            className={
-              'bg-blue br3 bn lh-title f6 fw5 link bn br2 mh2 pl3 pv3 pl4-l ph4-xl flex items-center justify-center z-max pointer hover-bg-heavy-blue animated fadeIn'
-            }
-            style={{ animationDuration: '0.2s' }}
-          >
-            <span className="near-white ph1"><ShowIcon /></span>
-          </button>
-        </ExtensionPoint>
-        <EditBar editor={editor} runtime={runtime}>
+        <div
+          className="relative z-9999 h-3em"
+          style={{
+            animationDuration: '0.2s',
+            transform: `translate(0,${showAdminControls?0:'-100%'})`,
+            transition: `transform 300ms ease-in-out ${!showAdminControls?'300ms':''}`,
+          }}
+        >
+          <ExtensionPoint id={`${root}/__topbar`}>
+            <button
+              type="button"
+              onClick={this.handleToggleShowAdminControls}
+              className={
+                'bg-blue br3 bn lh-title f6 fw5 link bn br2 mh2 pl3 pv3 pl4-l ph4-xl flex items-center justify-center z-max pointer hover-bg-heavy-blue animated fadeIn'
+              }
+            >
+              <span className="near-white ph1"><ShowIcon /></span>
+            </button>
+          </ExtensionPoint>
+        </div>
+        <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
           {children}
         </EditBar>
       </Fragment>
@@ -216,10 +224,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     return (
       <EditorContext.Provider value={editor}>
         {adminControlsToggle}
-        {showAdminControls
-          ? childrenWithSidebar
-          : children
-        }
+        {childrenWithSidebar}
       </EditorContext.Provider>
     )
   }
