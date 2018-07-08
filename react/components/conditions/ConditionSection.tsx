@@ -24,9 +24,15 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   }
 
   public handleInputChange = (event: any) => {
+    const {addCondition, removeCondition} = this.props
     const target = event.target
     const {checked, value} = target
-    console.log(checked, value)
+
+    if(checked){
+      addCondition(value)
+    }else{
+      removeCondition(value)
+    }
   }
 
   public renderConditions () {
