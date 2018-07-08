@@ -346,7 +346,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             modes={MODES}
             onSwitch={this.handleModeSwitch}
           />
-          <div className="flex-auto overflow-y-scroll vh-50">
+          <div>
             <Form
               schema={schema}
               formData={extensionProps}
