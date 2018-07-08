@@ -10,6 +10,7 @@ import AvailableComponents from '../queries/AvailableComponents.graphql'
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
 
+import ArrayFieldTemplate from './form/ArrayFieldTemplate'
 import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import ErrorListTemplate from './form/ErrorListTemplate'
@@ -50,7 +51,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     availableComponents: PropTypes.object,
     intl: intlShape.isRequired,
     saveExtension: PropTypes.any,
-
   }
 
   // tslint:disable-next-line
@@ -356,6 +356,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
               onChange={this.handleFormChange}
               onSubmit={this.handleSave}
               FieldTemplate={FieldTemplate}
+              ArrayFieldTemplate={ArrayFieldTemplate}
               ObjectFieldTemplate={ObjectFieldTemplate}
               uiSchema={uiSchema}
               widgets={widgets}
