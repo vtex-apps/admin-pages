@@ -13,6 +13,16 @@
     },
     "admin/pages/detail": {
       "component": "PageDetail"
+    },
+    "admin/navigation/storefront/pages": {
+      "component": "vtex.admin/InjectNavigationData",
+      "props": {
+        "icon": "extensions-ic",
+        "path": "/admin/pages",
+        "tag": "appframe.new",
+        "titleId": "pages.admin-menu-button",
+        "id": "38"
+      }
     }
   }
 }

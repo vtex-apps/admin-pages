@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import {graphql} from 'react-apollo'
+import { graphql } from 'react-apollo'
 
 import PageQuery from './queries/Page.graphql'
 import PageEditor from './components/PageEditor'
@@ -13,7 +13,7 @@ class PageDetail extends Component {
   }
 
   render() {
-    const {data: {loading, page: pageData} = {}, params: {name}} = this.props
+    const { data: { loading, page: pageData } = {}, params: { name } } = this.props
 
     if (loading) {
       return (
@@ -26,17 +26,20 @@ class PageDetail extends Component {
     const pages = name !== 'new' && pagesJSON && JSON.parse(pagesJSON)
     const extensions = name !== 'new' && extensionsJSON && JSON.parse(extensionsJSON)
     const page = pages && pages[name]
+    const component = extensions[name] && extensions[name].component
 
-    if (page) {
-      page.name = name
-      page.component = extensions[name].component
-    }
-
-    const form = <PageEditor page={page} />
+    const form = (
+      <PageEditor
+        editable={!page.declarer}
+        name={name}
+        path={page.path}
+        component={component}
+      />
+    )
 
     return (
       <div className="ph5 mw7 mr-auto ml-auto pt6">
-        <h1>{page ? 'Page Detail' : 'Create Page'}</h1>
+        <h1>{page ? 'Route Detail' : 'Create Route'}</h1>
         {form}
       </div>
     )
