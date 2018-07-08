@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { Radio as StyleguideRadio } from 'vtex.styleguide'
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
 class Radio extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class Radio extends Component {
 
     return (
       <Fragment>
-        <span className="dib mb3 w-100">{label}</span>
+        <span className="dib mb3 w-100"><FormattedMessage id={label}/></span>
         {schema.enum &&
           schema.enum.map((item, index) => (
             <StyleguideRadio
@@ -49,6 +50,7 @@ Radio.propTypes = {
   onChange: PropTypes.func.isRequired,
   schema: PropTypes.object.isRequired,
   value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  intl: intlShape.isRequired,
 }
 
-export default Radio
+export default injectIntl(Radio)

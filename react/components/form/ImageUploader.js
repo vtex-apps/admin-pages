@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import Dropzone from 'react-dropzone'
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import { RenderContextConsumer } from 'render'
 import { Button, Spinner } from 'vtex.styleguide'
 
@@ -58,7 +59,7 @@ class ImageUploader extends Component {
     } = this.props
     const { isLoading, imageUrl } = this.state
 
-    const FieldTitle = () => <span className="w-100 db mb3">{title}</span>
+    const FieldTitle = () => <span className="w-100 db mb3"><FormattedMessage id={title} /></span>
 
     if (imageUrl) {
       return (
@@ -122,6 +123,7 @@ ImageUploader.propTypes = {
     title: PropTypes.string.isRequired,
   }).isRequired,
   value: PropTypes.string,
+  intl: intlShape.isRequired,
 }
 
-export default ImageUploader
+export default injectIntl(ImageUploader)

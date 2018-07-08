@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
 const getChangeHandler = (onChange, emptyValue) => ({ target: { value } }) =>
   onChange(!value ? emptyValue : value)
@@ -17,16 +18,22 @@ const Dropdown = ({
   placeholder,
   readonly,
   value,
+  intl,
 }) => (
   <StyleguideDropdown
     autoFocus={autofocus}
     disabled={disabled}
     id={id}
-    label={label}
+    label={<FormattedMessage id={label} />}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
-    options={options.enumOptions}
+    options={
+      options.enumOptions.map(option=>({
+        ...option,
+        label: intl.formatMessage({id: option.label}),
+      }))
+    }
     placeholder={placeholder}
     readOnly={readonly}
     value={value || ''}
@@ -52,6 +59,7 @@ Dropdown.propTypes = {
   readonly: PropTypes.bool,
   required: PropTypes.bool,
   value: PropTypes.any,
+  intl: intlShape.isRequired,
 }
 
-export default Dropdown
+export default injectIntl(Dropdown)
