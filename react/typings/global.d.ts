@@ -64,6 +64,7 @@ declare global {
     id: string
     type: ConditionType
     message: string
+    multiple: boolean,
   }
 
   type ConditionMode = 'AND' | 'OR'
