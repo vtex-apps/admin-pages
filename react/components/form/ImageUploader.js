@@ -65,8 +65,8 @@ class ImageUploader extends Component {
         <Fragment>
           <FieldTitle />
           <img src={imageUrl} />
-          <div className="fill-near-black" onClick={() => { this.setState({ imageUrl: '' })}}>
-            <CloseIcon />
+          <div onClick={() => { this.setState({ imageUrl: '' })}}>
+            <CloseIcon fill="#000"/>
           </div>
         </Fragment>
       )
@@ -79,8 +79,6 @@ class ImageUploader extends Component {
             <FieldTitle />
             <Dropzone
               className="w-100 h4 ba bw1 br3 b--dashed b--light-gray cursor"
-              disableClick
-              disabled={disabled}
               multiple={false}
               onDrop={(acceptedFiles, rejectedFiles) =>
                 this.handleImageDrop(acceptedFiles, rejectedFiles, {
