@@ -24,12 +24,16 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
           conditions={scopeConditions}
           activeConditions={activeConditions}
           addCondition={addCondition}
-          removeCondition={removeCondition} />
+          removeCondition={removeCondition}
+          multiple={scopeConditions[0].multiple}
+          />
         <ConditionSection type="device"
           conditions={deviceConditions}
           activeConditions={activeConditions}
           addCondition={addCondition}
-          removeCondition={removeCondition} />
+          removeCondition={removeCondition} 
+          multiple={deviceConditions[0].multiple}
+          />
       </Fragment>
     )
   }
