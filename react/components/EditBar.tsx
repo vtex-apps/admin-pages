@@ -17,7 +17,11 @@ const getContainerClasses = (layout: EditorLayout) => {
   }
 }
 
-export default class EditBar extends Component<{} & RenderContextProps & EditorContextProps> {
+interface EditBarProps {
+  visible: boolean
+}
+
+export default class EditBar extends Component<EditBarProps & RenderContextProps & EditorContextProps> {
   public static propTypes = {
     children: PropTypes.node,
     editor: PropTypes.object,
@@ -49,11 +53,8 @@ export default class EditBar extends Component<{} & RenderContextProps & EditorC
 
     return (
       <Fragment>
-        <div className={`${editTreePath ? 'vh-25': 'vh-50'} overflow-y-scroll`}>
-          <PageInfo editor={editor} runtime={runtime} />
-          <ConditionSelector editor={editor} runtime={runtime} />
-        </div>
-        <hr/>
+        <PageInfo editor={editor} runtime={runtime} />
+        <ConditionSelector editor={editor} runtime={runtime} />
         { editTreePath == null
           ? <ComponentList editor={editor} runtime={runtime} />
           : <ComponentEditor editor={editor} runtime={runtime} />
@@ -63,7 +64,7 @@ export default class EditBar extends Component<{} & RenderContextProps & EditorC
   }
 
   public renderSideBar() {
-    const { visible }=this.props
+    const { visible } = this.props
 
     return (
       <div
@@ -75,13 +76,15 @@ export default class EditBar extends Component<{} & RenderContextProps & EditorC
         >
         <nav
           id="admin-sidebar"
-          style={{ 
+          style={{
             animationDuration: '0.333s',
             transform: `translate(${visible?'0%':'-100%'}, 0)`,
             transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
           }}
           className="transition animated fadeIn b--light-silver bw1 pa4 fixed z-2 h-100-s calc--height-ns overflow-x-hidden fixed absolute-m top-3em w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
-          {this.renderSideBarContent()}
+          <div className="h-100 pa4 overflow-y-scroll">
+            {this.renderSideBarContent()}
+          </div>
         </nav>
       </div>
     )

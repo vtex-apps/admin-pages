@@ -52,6 +52,7 @@ interface EditorProviderState {
   conditionMode: ConditionMode
   editMode: boolean
   editTreePath: string | null
+  highlightTreePath: string | null
   showAdminControls: boolean
   layout: EditorLayout
 }
@@ -74,13 +75,18 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       conditionMode: 'AND',
       editMode: false,
       editTreePath: null,
+      highlightTreePath: null,
       layout: 'desktop',
       showAdminControls: true,
     }
   }
 
   public editExtensionPoint = (treePath: string | null) => {
-    this.setState({ editTreePath: treePath })
+    this.setState({ editTreePath: treePath, highlightTreePath: null })
+  }
+
+  public mouseOverExtensionPoint = (treePath: string | null) => {
+    this.setState({ highlightTreePath: treePath })
   }
 
   public handleToggleEditMode = () => {
@@ -158,7 +164,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
 
   public render() {
     const { children, runtime, runtime: { page } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, conditionMode, layout } = this.state
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, conditionMode, layout } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -175,7 +181,9 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
+      highlightTreePath,
       layout,
+      mouseOverExtensionPoint: this.mouseOverExtensionPoint,
       removeCondition: this.handleRemoveCondition,
       toggleEditMode: this.handleToggleEditMode,
     }
@@ -196,7 +204,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     const childrenWithSidebar = (
       <Fragment>
         <div
-          className="relative z-9999 h-3em"
+          className="fixed z-9999 h-3em"
           style={{
             animationDuration: '0.2s',
             transform: `translate(0,${showAdminControls?0:'-100%'})`,

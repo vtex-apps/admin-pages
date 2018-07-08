@@ -8,6 +8,8 @@
   "pages.conditions.scope.template": "This Template",
   "pages.conditions.scope.title": "Scope",
   "pages.conditions.scope.url": "This URL",
+  "pages.editor.components.title": "Components",
+  "pages.editor.components.select": "Select component",
   "pages.editor.conditions.title": "Edit context",
   "pages.editor.empty-extension.edit": "Click here to edit it",
   "pages.editor.empty-extension.title": "This is an empty extension point",

@@ -82,8 +82,10 @@ declare global {
     conditionMode: ConditionMode
     editMode: boolean
     editTreePath: string | null
+    highlightTreePath: string | null
     layout: EditorLayout
     editExtensionPoint: (treePath: string | null) => void
+    mouseOverExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
   }
 
