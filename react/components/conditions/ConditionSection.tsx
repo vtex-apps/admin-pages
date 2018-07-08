@@ -18,6 +18,11 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
     type: PropTypes.string,
   }
 
+  public static defaultProps = {
+    conditions: [],
+    multiple: false,
+  }
+
   public handleInputChange = (event: any) => {
     const target = event.target
     const {checked, value} = target
@@ -25,7 +30,7 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   }
 
   public renderConditions () {
-    const { conditions = [], activeConditions, multiple = false } = this.props
+    const { conditions, activeConditions, multiple} = this.props
     return conditions.map((c: Condition) => (
       <div>
         <input type={multiple ? 'checkbox' : 'radio'}
