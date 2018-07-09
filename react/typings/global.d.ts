@@ -9,7 +9,7 @@ declare global {
   }
 
   interface Extension {
-    component: string
+    component: string | null
     props?: any
     shouldRender?: boolean
   }

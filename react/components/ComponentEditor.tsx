@@ -63,7 +63,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       mode: 'content',
     }
 
-    const {component, props: extensionProps = {}} = this.getExtension()
+    const {component, props: extensionProps} = this.getExtension()
 
     this.old = JSON.stringify({
       component,
@@ -295,7 +295,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   public render() {
-    const { component, props = {} } = this.getExtension()
+    const { component, props } = this.getExtension()
     const Component = getImplementation(component)
     const editableComponents = this.props.availableComponents.availableComponents
       ? map(prop('name'), this.props.availableComponents.availableComponents)
@@ -392,7 +392,8 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   private getExtension = (): Extension => {
     const { editor: { editTreePath }, runtime: { extensions } } = this.props
-    return extensions[editTreePath as string]
+    const { component = null, props = {} } = extensions[editTreePath as string] || {}
+    return { component, props: props || {} }
   }
 }
 
