@@ -29,7 +29,7 @@ class Radio extends Component {
         {schema.enum &&
           schema.enum.map((item, index) => (
             <StyleguideRadio
-              checked={this.state.value === item}
+              checked={this.props.value === item}
               id={`${id}-${index}`}
               key={`${id}-${index}`}
               label={item && item.toString()}
