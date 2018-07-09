@@ -198,3 +198,24 @@ html, body {
     border-radius: 2px;
   }
 }
+
+.mobile-preview {
+  width: 360px;
+}
+
+
+.stroke-blue {
+  stroke: #368DF7
+}
+
+.stroke-mid-gray {
+  stroke: #727273
+}
+
+.fill-blue {
+  fill: #368DF7
+}
+
+.fill-mid-gray {
+  fill: #727273
+}

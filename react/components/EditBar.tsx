@@ -7,14 +7,14 @@ import ConditionSelector from './conditions/ConditionSelector'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
+import LayoutSwitcher from './LayoutSwitcher';
 
 const getContainerClasses = (layout: ConfigurationDevice) => {
   switch (layout) {
-    case 'mobile':
-      return 'mw6 center'
-    case 'desktop':
     default:
       return 'w-100'
+    case 'mobile':
+      return 'mobile-preview center'
   }
 }
 
@@ -41,6 +41,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
       <Fragment>
         <PageInfo editor={editor} runtime={runtime} />
         <ConditionSelector editor={editor} runtime={runtime} />
+        <LayoutSwitcher />
         { editTreePath == null
           ? <ComponentList editor={editor} runtime={runtime} />
           : <ComponentEditor editor={editor} runtime={runtime} />
