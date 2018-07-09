@@ -1,38 +1,47 @@
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
+import { Button, IconArrowUp, IconArrowDown, IconPlus, } from 'vtex.styleguide'
 
-const ArrayFieldTemplate = (props)=>( 
+const ArrayFieldTemplate = (props) => ( 
     <div>
-      {console.log(props)}
       {props.items.map(element => (
         <React.Fragment>
           {element.children}
-          {element.hasMoveDown && (
-            <button
-              onClick={element.onReorderClick(
-                element.index,
-                element.index + 1
-              )}>
-              Down
-            </button>
-          )}
-          {element.hasMoveUp && (
-            <button
-              onClick={element.onReorderClick(
-                element.index,
-                element.index - 1
-              )}>
-              Up
-            </button>
-          )}
-          {element.hasRemove && (
-            <button type="button" onClick={element.onDropIndexClick(element.index)}>
-              Remover
-            </button>)}
+          <div className="flex justify-between">
+            <div className="flex">
+              <div className="mr1">
+                <Button
+                  size="small"
+                  variation="secondary"
+                  disabled={!element.hasMoveDown}
+                  onClick={element.onReorderClick(
+                    element.index,
+                    element.index + 1
+                  )}>
+                  <IconArrowDown color="currentColor" />
+                </Button>
+              </div>
+              <Button
+                size="small"
+                variation="secondary"
+                disabled={!element.hasMoveUp}
+                onClick={element.onReorderClick(
+                  element.index,
+                  element.index - 1
+                )}>
+                <IconArrowUp color="currentColor" />
+              </Button>
+            </div>
+            {element.hasRemove && (
+              <Button size="small" variation="danger" onClick={element.onDropIndexClick(element.index)}>
+                Remove
+              </Button>
+            )}
+          </div>
           <hr/>
         </React.Fragment>
       ))}
-      {props.canAdd && <button type="button" onClick={props.onAddClick}>Add banner</button>}
+      {props.canAdd && <Button variation="primary" onClick={props.onAddClick}><IconPlus color="currentColor" /> Add banner</Button>}
     </div>
 )
 
