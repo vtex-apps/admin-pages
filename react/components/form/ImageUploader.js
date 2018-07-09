@@ -62,8 +62,9 @@ class ImageUploader extends Component {
     const {
       disabled,
       schema: { title },
+      imageUrl,
     } = this.props
-    const { isLoading, imageUrl } = this.state
+    const { isLoading } = this.state
 
     const FieldTitle = () => <span className="w-100 db mb3"><FormattedMessage id={title} /></span>
 
