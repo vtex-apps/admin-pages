@@ -14,7 +14,7 @@ const icons = (id, collorFill): IconsProps => {
           <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
               <g transform="translate(1.000000, 10.000000)">
                   <g>
-                      <rect className={`stroke-${collorFill}`} strokeWidth="1.4" stroke-linecap="round" strokeLinejoin="round" x="0.5" y="0.5" width="11" height="15" rx="1"></rect>
+                      <rect className={`stroke-${collorFill}`} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" x="0.5" y="0.5" width="11" height="15" rx="1"></rect>
                       <circle className={`fill-${collorFill}`} fillRule="nonzero" cx="6" cy="12" r="1"></circle>
                   </g>
                   <g id="tv-2" transform="translate(18.000000, 0.000000)" className={`stroke-${collorFill}`} strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.4">
