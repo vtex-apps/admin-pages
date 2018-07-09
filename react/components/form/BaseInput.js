@@ -33,7 +33,7 @@ const BaseInput = props => {
   return (
     <Input
       autoFocus={autofocus}
-      disabled={disabled}
+      disabled={disabled || schema.disabled}
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
@@ -44,7 +44,7 @@ const BaseInput = props => {
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
       placeholder={placeholder}
-      readOnly={readonly}
+      readOnly={readonly || schema.readonly}
       required={required}
       type={type}
       value={value}

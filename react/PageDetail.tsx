@@ -12,6 +12,23 @@ class PageDetail extends Component {
     params: PropTypes.object,
   }
 
+  public static contextTypes = {
+    startLoading: PropTypes.func,
+    stopLoading: PropTypes.func,
+  }
+
+  public componentDidMount() {
+    this.toggleLoading()
+  }
+
+  public componentDidUpdate() {
+    this.toggleLoading()
+  }
+
+  public toggleLoading = () => {
+    this.props.data && this.props.data.loading ? this.context.startLoading() : this.context.stopLoading()
+  }
+
   public render() {
     const { data: { loading, page: pageData } = {}, params: { name } } = this.props
 
@@ -30,7 +47,7 @@ class PageDetail extends Component {
 
     const form = (
       <PageEditor
-        editable={!page.declarer}
+        declarer={page.declarer}
         name={name}
         path={page.path}
         component={component}

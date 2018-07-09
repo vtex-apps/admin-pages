@@ -29,14 +29,18 @@ const widgets = {
 }
 
 const partialSchema = {
-  title: '',
-  type: 'object',
   properties: {
-    path: {
+    name: {
+      title: 'Route ID',
       type: 'string',
+    },
+    path: {
       title: 'Path Template',
+      type: 'string',
     },
   },
+  title: '',
+  type: 'object',
 }
 
 const createLocationDescriptor = (to, query) => ({
@@ -49,7 +53,6 @@ class PageEditor extends Component {
   public static propTypes = {
     availableTemplates: PropTypes.object,
     component: PropTypes.string,
-    editable: PropTypes.bool,
     name: PropTypes.string,
     path: PropTypes.string,
     savePage: PropTypes.any,
@@ -59,13 +62,22 @@ class PageEditor extends Component {
     history: PropTypes.object,
   }
 
-  constructor(props) {
+  public static getDerivedStateFromProps = (props: any) => ({
+    page: {
+      component: props.component,
+      declarer: props.declarer,
+      name: props.name === 'new' ? 'store/' : props.name,
+      path: props.path || '/',
+    },
+  })
+
+  constructor(props: any) {
     super(props)
 
     this.state = {
       page: {
         component: props.component,
-        editable: props.editable,
+        declarer: props.declarer,
         name: props.name === 'new' ? 'store/' : props.name,
         path: props.path || '/',
       },
@@ -137,16 +149,27 @@ class PageEditor extends Component {
       },
     }
 
-    if (!page.editable) {
-      schema.properties.path.readonly = true
-    }
+    schema.properties.name.disabled = !!page.declarer
+    schema.properties.path.disabled = !!page.declarer
 
     if (typeof page.login === 'string') {
       page.login = page.login === 'true'
     }
 
+    const declarer = (
+      <div className="form-group field field-string w-100">
+        <label className="vtex-input w-100">
+          <span className="vtex-input__label db mb3 w-100">Declarer</span>
+          <div className="flex vtex-input-prefix__group relative">
+            <input className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5" disabled type="text" value={page.declarer} />
+          </div>
+        </label>
+      </div>
+    )
+
     return (
       <div className="dark-gray center">
+        {page.declarer && declarer}
         <Form
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}

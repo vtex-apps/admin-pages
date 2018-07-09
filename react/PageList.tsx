@@ -20,11 +20,13 @@ class PageList extends Component<DataProps<PageData>> {
   }
 
   public static contextTypes = {
+    prefetchPage: PropTypes.func,
     startLoading: PropTypes.func,
     stopLoading: PropTypes.func,
   }
 
   public componentDidMount() {
+    this.context.prefetchPage('admin/pages/detail')
     this.toggleLoading()
   }
 
@@ -40,12 +42,12 @@ class PageList extends Component<DataProps<PageData>> {
     <tr className="striped--near-white" key={page.name}>
       <td className="pv4 ph3 w-10">{page.name}</td>
       <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{page.path}</td>
-      <td className="pv4 ph3 w-20" >
+      <td className="pv4 ph3 w-10" >
         Default
       </td>
       <td className="pv4 ph3 w-10 gray">(none)</td>
       <td className="pa4 w-10 v-align-center">
-        <div className="flex">
+        <div className="flex justify-between">
           <Link to={`/admin/pages/page/${page.name}`}>
             <Button variation="primary" size="small">
               <div className="flex">Settings</div>
@@ -84,16 +86,16 @@ class PageList extends Component<DataProps<PageData>> {
         <table className="collapse w-100">
           <tbody>
             <tr className="striped--near-white pv4">
-              <th className="tl f6 ttu fw6 w-10 pv6">
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
                 Route ID
               </th>
-              <th className="tl f6 ttu fw6 w-20 pv6">
+              <th className="tl f6 ttu fw6 w-20 ph3 pv6">
                 Path Template
               </th>
-              <th className="tl f6 ttu fw6 w-20 pv6">
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
                 Name
               </th>
-              <th className="tl f6 ttu fw6 w-10 pv6">
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
                 Conditions
               </th>
               <th className="tl f6 ttu fw6 w-10 pv6">
