@@ -14,7 +14,7 @@
     "admin/pages/detail": {
       "component": "PageDetail"
     },
-    "admin/navigation/storefront/pages": {
+    "admin/navigation/storeSetup/pages": {
       "component": "vtex.admin/InjectNavigationData",
       "props": {
         "icon": "extensions-ic",
