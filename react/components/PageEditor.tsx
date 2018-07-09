@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
-import { map, prop } from 'ramda'
+import { filter, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import { Link } from 'render'
-import { Button } from 'vtex.styleguide'
+import { Button, Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
 import AvailableTemplates from '../queries/AvailableTemplates.graphql'
 import Pages from '../queries/Pages.graphql'
@@ -62,38 +62,30 @@ class PageEditor extends Component {
     history: PropTypes.object,
   }
 
-  public static getDerivedStateFromProps = (props: any) => ({
-    page: {
-      component: props.component,
-      declarer: props.declarer,
-      name: props.name === 'new' ? 'store/' : props.name,
-      path: props.path || '/',
-    },
-  })
+  public routesToOptions = map((p: Page) => ({
+    label: `${p.name} (${p.path})`,
+    value: p.name,
+  }))
 
   constructor(props: any) {
     super(props)
 
     this.state = {
-      page: {
-        component: props.component,
-        declarer: props.declarer,
-        name: props.name === 'new' ? 'store/' : props.name,
-        path: props.path || '/',
-      },
+      component: props.component,
+      declarer: props.declarer,
+      name: props.name,
+      path: props.path,
     }
   }
 
   public handleFormChange = (event) => {
     const newState = {
-      page: {
-        ...this.state.page,
-        ...event.formData,
-      },
+      ...this.state.page,
+      ...event.formData,
     }
 
     if (!newState.page.name.startsWith('store/')) {
-      newState.page.name = 'store/'
+      newState.page.name = 'store'
     }
 
     if (!newState.page.path.startsWith('/')) {
@@ -107,7 +99,7 @@ class PageEditor extends Component {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name: pageName, component, path } = this.state.page
+    const { name: pageName, component, path } = this.state
     savePage({
       refetchQueries: [
         { query: Pages },
@@ -129,16 +121,41 @@ class PageEditor extends Component {
       })
   }
 
+  public handleRouteChange = (e, value) => {
+    const page = this.props.pages.pages.find((p: Page) => p.name === value)
+    this.setState({
+      name: page.name,
+      path: page.path,
+    })
+  }
+
   public render() {
-    const { page } = this.state
-    const templateComponents = this.props.availableTemplates.availableTemplates
-      ? map(prop('name'), this.props.availableTemplates.availableTemplates)
+    const { pages: { pages }, availableTemplates: { availableTemplates } } = this.props
+    const page = this.state
+    const templateComponents = availableTemplates
+      ? map(prop('name'), availableTemplates)
       : []
+
+    const isStore = ({name, declarer}: Page) => name.startsWith('store') && declarer
+
+    const storePages = filter(isStore, pages)
+    const sortedPages = sort<Page>((a: Page, b: Page) => {
+      return a.name.localeCompare(b.name)
+    }, storePages)
+
+    console.log(page)
+
+    partialSchema.properties.name.disabled = !!page.declarer
+    partialSchema.properties.path.disabled = !!page.declarer
+
+    const schemaProperties = page.name
+      ? partialSchema.properties
+      : omit(['name', 'path'], partialSchema.properties)
 
     const schema = {
       ...partialSchema,
       properties: {
-        ...partialSchema.properties,
+        ...schemaProperties,
         component: {
           default: '',
           enum: templateComponents,
@@ -149,12 +166,19 @@ class PageEditor extends Component {
       },
     }
 
-    schema.properties.name.disabled = !!page.declarer
-    schema.properties.path.disabled = !!page.declarer
-
     if (typeof page.login === 'string') {
       page.login = page.login === 'true'
     }
+
+    const availableRoutes = (
+      <StyleguideDropdown
+        label="Route type"
+        placeholder="Select a route"
+        options={this.routesToOptions(sortedPages)}
+        value={page.name}
+        onChange={this.handleRouteChange}
+      />
+    )
 
     const declarer = (
       <div className="form-group field field-string w-100">
@@ -169,7 +193,7 @@ class PageEditor extends Component {
 
     return (
       <div className="dark-gray center">
-        {page.declarer && declarer}
+        {page.declarer && declarer || availableRoutes}
         <Form
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
@@ -203,6 +227,7 @@ class PageEditor extends Component {
 }
 
 export default compose(
+  graphql(Pages, { name: 'pages' }),
   graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } }),
   graphql(AvailableTemplates, {
     name: 'availableTemplates',

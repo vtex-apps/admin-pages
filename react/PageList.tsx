@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
-import { filter, prop, sort } from 'ramda'
-import React, { Component, Fragment } from 'react'
+import { filter, sort } from 'ramda'
+import React, { Component } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
 import ShareIcon from './images/ShareIcon'
-import PagesQuery from './queries/Pages.graphql'
+import Pages from './queries/Pages.graphql'
 
 interface PageData {
   pages: Page[]
@@ -119,4 +119,4 @@ class PageList extends Component<DataProps<PageData>> {
   }
 }
 
-export default graphql(PagesQuery)(PageList)
+export default graphql(Pages)(PageList)
