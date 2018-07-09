@@ -8,7 +8,7 @@ interface IconProps {
 
 const icons = (id, collorFill): IconsProps => {
   switch (id) {
-    case 'all':
+    case 'any':
       return (
         <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1">
           <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -51,7 +51,7 @@ const icons = (id, collorFill): IconsProps => {
 }
 
 class LayoutComponent extends Component {
-  public static PropTypes = {
+  public static propTypes = {
     id: PropTypes.oneOf(['all', 'desktop', 'mobile']),
     selected: PropTypes.bool,
     onClick: PropTypes.func
@@ -87,25 +87,33 @@ class LayoutComponent extends Component {
 
 class LayoutSwitcher extends Component {
   public static propTypes = {
-    activeLayout: PropTypes.string,
-    onSwitch: PropTypes.func,
+    editor: PropTypes.object
   }
 
   state = {
-    selectedDevice: 'desktop',
+    selectedDevice: this.props.editor.layout,
   }
 
   public handleClick = ({ currentTarget: { id } }) => {
+    const { editor: { addCondition, handleLayoutChange }, conditions } = this.props
     this.setState({ selectedDevice: id })
+    handleLayoutChange(id)
+    addCondition(conditions.find(condition => condition.value === id).id)
   }
 
   public render() {
     const { selectedDevice } = this.state
+    const { conditions } = this.props
     return (
       <div className="flex justify-around w-100 bt b--light-silver">
-        <LayoutComponent id="all" selected={selectedDevice === 'all'} onClick={this.handleClick}/>
-        <LayoutComponent id="mobile" selected={selectedDevice === 'mobile'} onClick={this.handleClick}/>
-        <LayoutComponent id="desktop" selected={selectedDevice === 'desktop'} onClick={this.handleClick}/>
+        {conditions.map(({ value }) => (
+          <LayoutComponent 
+            id={value}
+            key={value}
+            selected={selectedDevice === value}
+            onClick={this.handleClick}
+          />
+        ))}
       </div>
     )
   }

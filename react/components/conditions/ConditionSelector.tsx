@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import ConditionSection from './ConditionSection'
+import LayoutSwitcher from '../LayoutSwitcher';
 
 const scopeConditions = [
   {
@@ -70,6 +71,9 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
           removeCondition={removeCondition}
           multiple={true}
           />
+        <div className="mt6">
+          <LayoutSwitcher editor={this.props.editor} conditions={deviceConditions} />
+        </div>
       </div>
     )
   }

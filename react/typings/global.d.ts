@@ -65,6 +65,7 @@ declare global {
     type: ConditionType
     message: string
     multiple: boolean,
+    value: EditorLayout,
   }
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
