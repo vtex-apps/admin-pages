@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types'
-import { filter, map, omit, prop, sort } from 'ramda'
+import { filter, find, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
 import { Link } from 'render'
 import { Button, Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
-import AvailableTemplates from '../queries/AvailableTemplates.graphql'
 import Pages from '../queries/Pages.graphql'
 import SavePage from '../queries/SavePage.graphql'
 import BaseInput from './form/BaseInput'
@@ -38,10 +37,19 @@ const partialSchema = {
       title: 'Path Template',
       type: 'string',
     },
+    pageName: {
+      title: 'Name',
+      type: 'string',
+    },
   },
   title: '',
   type: 'object',
 }
+
+const CUSTOM_ROUTE = [{
+  label: 'Create new route...',
+  value: 'store/',
+}]
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
@@ -49,12 +57,15 @@ const createLocationDescriptor = (to, query) => ({
   ...(query && { search: query }),
 })
 
-class PageEditor extends Component {
+class PageEditor extends Component<any, any> {
   public static propTypes = {
-    availableTemplates: PropTypes.object,
+    availableTemplates: PropTypes.arrayOf(PropTypes.object),
     component: PropTypes.string,
+    declarer: PropTypes.string,
     name: PropTypes.string,
+    pageName: PropTypes.string,
     path: PropTypes.string,
+    routes: PropTypes.arrayOf(PropTypes.object),
     savePage: PropTypes.any,
   }
 
@@ -74,22 +85,23 @@ class PageEditor extends Component {
       component: props.component,
       declarer: props.declarer,
       name: props.name,
+      pageName: props.pageName,
       path: props.path,
+      selectedRouteId: props.name,
     }
   }
 
   public handleFormChange = (event) => {
     const newState = {
-      ...this.state.page,
       ...event.formData,
     }
 
-    if (!newState.page.name.startsWith('store/')) {
-      newState.page.name = 'store'
+    if (!newState.name.startsWith('store/')) {
+      newState.name = 'store'
     }
 
-    if (!newState.page.path.startsWith('/')) {
-      newState.page.path = '/'
+    if (!newState.path.startsWith('/')) {
+      newState.path = '/'
     }
 
     console.log('Updating props with formData...', event.formData, newState)
@@ -110,45 +122,52 @@ class PageEditor extends Component {
         path,
       },
     })
-      .then((data) => {
-        console.log('OK!', data)
-        const location = createLocationDescriptor('/admin/pages')
-        this.context.history.push(location)
-      })
-      .catch(err => {
-        alert('Error saving page configuration.')
-        console.log(err)
-      })
+    .then((data) => {
+      console.log('OK!', data)
+      const location = createLocationDescriptor('/admin/pages')
+      this.context.history.push(location)
+    })
+    .catch(err => {
+      alert('Error saving page configuration.')
+      console.log(err)
+    })
   }
 
   public handleRouteChange = (e, value) => {
-    const page = this.props.pages.pages.find((p: Page) => p.name === value)
+    const page = this.props.routes.find((p: Page) => p.name === value) || {
+      name: value,
+      pageName: 'Default',
+      path: '/',
+    }
     this.setState({
       name: page.name,
+      pageName: page.pageName,
       path: page.path,
+      selectedRouteId: page.name,
     })
   }
 
   public render() {
-    const { pages: { pages }, availableTemplates: { availableTemplates } } = this.props
-    const page = this.state
+    const { routes, availableTemplates } = this.props
+    const { component, declarer, path, name, selectedRouteId, pageName } = this.state
     const templateComponents = availableTemplates
       ? map(prop('name'), availableTemplates)
       : []
 
-    const isStore = ({name, declarer}: Page) => name.startsWith('store') && declarer
+    const isStore = ({name: routeId, declarer: routeDeclarer}: Page) => routeId.startsWith('store') && !!routeDeclarer
 
-    const storePages = filter(isStore, pages)
-    const sortedPages = sort<Page>((a: Page, b: Page) => {
+    const storeRoutes: Page[] | null = routes && filter(isStore, routes)
+    const sortedRoutes = storeRoutes && sort<Page>((a: Page, b: Page) => {
       return a.name.localeCompare(b.name)
-    }, storePages)
+    }, storeRoutes)
 
-    console.log(page)
+    const isDisabledRoute = !!declarer || !!(storeRoutes && find((p: Page) => p.name === name, storeRoutes))
 
-    partialSchema.properties.name.disabled = !!page.declarer
-    partialSchema.properties.path.disabled = !!page.declarer
+    partialSchema.properties.name.disabled = isDisabledRoute
+    partialSchema.properties.pageName.disabled = isDisabledRoute
+    partialSchema.properties.path.disabled = isDisabledRoute
 
-    const schemaProperties = page.name
+    const schemaProperties = selectedRouteId
       ? partialSchema.properties
       : omit(['name', 'path'], partialSchema.properties)
 
@@ -166,26 +185,25 @@ class PageEditor extends Component {
       },
     }
 
-    if (typeof page.login === 'string') {
-      page.login = page.login === 'true'
-    }
-
-    const availableRoutes = (
+    const availableRoutes = sortedRoutes && (
       <StyleguideDropdown
         label="Route type"
         placeholder="Select a route"
-        options={this.routesToOptions(sortedPages)}
-        value={page.name}
+        options={this.routesToOptions(sortedRoutes).concat(CUSTOM_ROUTE)}
+        value={selectedRouteId}
         onChange={this.handleRouteChange}
       />
     )
 
-    const declarer = (
+    const declarerField = (
       <div className="form-group field field-string w-100">
         <label className="vtex-input w-100">
           <span className="vtex-input__label db mb3 w-100">Declarer</span>
           <div className="flex vtex-input-prefix__group relative">
-            <input className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5" disabled type="text" value={page.declarer} />
+            <input className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5"
+              disabled
+              type="text"
+              value={declarer} />
           </div>
         </label>
       </div>
@@ -193,11 +211,17 @@ class PageEditor extends Component {
 
     return (
       <div className="dark-gray center">
-        {page.declarer && declarer || availableRoutes}
+        {declarer && declarerField}
+        {availableRoutes}
         <Form
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
-          formData={page}
+          formData={{
+            component,
+            name,
+            pageName: declarer ? 'Default' : pageName,
+            path,
+          }}
           ObjectFieldTemplate={ObjectFieldTemplate}
           onChange={this.handleFormChange}
           onSubmit={this.handleSave}
@@ -226,17 +250,4 @@ class PageEditor extends Component {
   }
 }
 
-export default compose(
-  graphql(Pages, { name: 'pages' }),
-  graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } }),
-  graphql(AvailableTemplates, {
-    name: 'availableTemplates',
-    options: (props) => ({
-      variables: {
-        pageName: props.name,
-        production: false,
-        renderMajor: 7,
-      },
-    }),
-  })
-)(PageEditor)
+export default graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } })(PageEditor)
