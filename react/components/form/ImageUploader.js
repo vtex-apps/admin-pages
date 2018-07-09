@@ -62,17 +62,17 @@ class ImageUploader extends Component {
     const {
       disabled,
       schema: { title },
-      imageUrl,
+      value,
     } = this.props
-    const { isLoading } = this.state
+    const { isLoading, imageUrl } = this.state
 
     const FieldTitle = () => <span className="w-100 db mb3"><FormattedMessage id={title} /></span>
 
-    if (imageUrl) {
+    if (value) {
       return (
         <Fragment>
           <FieldTitle />
-          <img src={imageUrl} />
+          <img src={value} />
           <div onClick={this.handleImageRemove}>
             <CloseIcon fill="#000" />
           </div>
