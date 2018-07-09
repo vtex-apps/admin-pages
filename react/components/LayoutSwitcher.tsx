@@ -25,7 +25,6 @@ const icons = (id, collorFill): IconsProps => {
           </g>
         </svg>
       )
-      break
     case 'mobile':
       return (
         <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1">
@@ -37,7 +36,6 @@ const icons = (id, collorFill): IconsProps => {
           </g>
         </svg>
       )
-      break
     case 'desktop':
       return (
         <svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1">
@@ -49,7 +47,6 @@ const icons = (id, collorFill): IconsProps => {
           </g>
         </svg>
       )
-      break
   }
 }
 
