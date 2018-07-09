@@ -17,6 +17,11 @@ class ImageUploader extends Component {
     }
   }
 
+  handleImageRemove = () => {
+    this.props.onChange('')
+    this.setState({ imageUrl: '' })
+  }
+
   handleImageDrop = async (
     acceptedFiles,
     rejectedFiles,
@@ -42,6 +47,7 @@ class ImageUploader extends Component {
 
         const { fileUrl } = await response.json()
 
+        this.props.onChange(fileUrl)
         this.setState({ imageUrl: fileUrl, isLoading: false })
         this.setState({ isLoading: false })
       } catch (err) {
@@ -66,8 +72,8 @@ class ImageUploader extends Component {
         <Fragment>
           <FieldTitle />
           <img src={imageUrl} />
-          <div onClick={() => { this.setState({ imageUrl: '' })}}>
-            <CloseIcon fill="#000"/>
+          <div onClick={this.handleImageRemove}>
+            <CloseIcon fill="#000" />
           </div>
         </Fragment>
       )
@@ -119,11 +125,11 @@ ImageUploader.defaultProps = {
 
 ImageUploader.propTypes = {
   disabled: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
   schema: PropTypes.shape({
     title: PropTypes.string.isRequired,
   }).isRequired,
   value: PropTypes.string,
-  intl: intlShape.isRequired,
 }
 
 export default injectIntl(ImageUploader)
