@@ -55,6 +55,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       editTreePath: null,
       highlightTreePath: null,
       scope: 'url',
+      layout: 'tablet',
       showAdminControls: true,
     }
   }
@@ -166,6 +167,10 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   public handleSetDevice = (device: ConfigurationDevice) => {
     this.setState({device})
   }
+  
+  public handleLayoutChange = (layout: string) => {
+    this.setState({ layout })
+  }
 
   public render() {
     const { children, runtime, runtime: { page } } = this.props
@@ -194,6 +199,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       setDevice: this.handleSetDevice,
       setScope: this.handleSetScope,
       toggleEditMode: this.handleToggleEditMode,
+      handleLayoutChange: this.handleLayoutChange
     }
 
     const adminControlsToggle = showAdminControls ? null : (

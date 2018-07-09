@@ -71,6 +71,8 @@ declare global {
 
   type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
 
+  type EditorLayout = 'desktop' | 'mobile' | 'any'
+
   interface EditorConditionSection {
     conditions: Condition[]
     activeConditions: string[]
