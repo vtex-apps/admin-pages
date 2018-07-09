@@ -92,6 +92,7 @@ declare global {
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
+    handleLayoutChange: (layout: string) => void
   }
 
   interface EditorContextProps {
