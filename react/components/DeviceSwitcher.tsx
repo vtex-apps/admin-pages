@@ -161,7 +161,7 @@ class DeviceSwitcher extends Component {
     const { selectedDevice } = this.state
     const { deviceConditions } = this.props
     return (
-      <div className="flex justify-around w-100 bt bb b--light-silver">
+      <div className="flex justify-around w-100 bt b--light-silver">
         {deviceConditions.map(({ id }) => (
           <DeviceComponent
             id={id}

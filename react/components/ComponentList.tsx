@@ -93,7 +93,7 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
 
     return (
       <div>
-        <h3 className="near-black mt5 mb0 bt bw1 b--light-silver pa5"><FormattedMessage id="pages.editor.components.title"/></h3>
+        <h3 className="near-black mv0 bt bw1 b--light-silver pa5"><FormattedMessage id="pages.editor.components.title"/></h3>
         <div className="bb b--light-silver"></div>
         {Object.keys(extensions).map(this.renderComponentButton)}
 
