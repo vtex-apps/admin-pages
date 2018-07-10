@@ -5,6 +5,7 @@
   "pages.conditions.device.mobile": "Mobile",
   "pages.conditions.device.title": "Device",
   "pages.conditions.scope.route": "This Route",
+  "pages.conditions.scope.site": "Entire Site",
   "pages.conditions.scope.template": "This Template",
   "pages.conditions.scope.title": "Scope",
   "pages.conditions.scope.url": "This URL",

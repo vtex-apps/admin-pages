@@ -34,6 +34,7 @@ const widgets = {
 }
 
 const MODES  = ['content', 'layout']
+
 type ComponentEditorMode = 'content' | 'layout'
 
 interface ComponentEditorProps {
@@ -133,7 +134,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   public handleSave = (event: any) => {
     console.log('save', event, this.props)
-    const { saveExtension, editor: { activeConditions, conditionMode, editTreePath, editExtensionPoint } } = this.props
+    const { saveExtension, editor: { activeConditions, anyMatch, editTreePath, editExtensionPoint, scope, device }, runtime: {page} } = this.props
     const { component, props = {} } = this.getExtension()
     const isEmpty = this.isEmptyExtensionPoint(component)
 
@@ -148,11 +149,16 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     saveExtension({
       variables: {
+        anyMatch,
         component: selectedComponent,
-        conditionMode,
         conditions: activeConditions,
+        device,
         extensionName: editTreePath,
-        props: isEmpty ? null : JSON.stringify(pickedProps),
+        path: window.location.pathname,
+        propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
+        routeId: page,
+        scope,
+        template: null,
       },
     })
       .then((data) => {

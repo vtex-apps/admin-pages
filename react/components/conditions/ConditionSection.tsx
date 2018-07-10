@@ -28,9 +28,9 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
     const target = event.target
     const {checked, value} = target
 
-    if(checked){
+    if (checked) {
       addCondition(value)
-    }else{
+    } else if (removeCondition) {
       removeCondition(value)
     }
   }

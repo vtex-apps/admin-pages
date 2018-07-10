@@ -10,51 +10,28 @@ import ShowIcon from './images/ShowIcon.js'
 
 const nativeConditions: Condition[] = [
   {
-    id: 'PAGES_SCOPE_URL',
-    message: 'pages.conditions.scope.url',
-    multiple: false,
-    type: 'scope',
+    id: 'CONDITIONS_DIA_DOS_NAMORADOS',
+    message: 'Dia dos Namorados',
+    multiple: true,
+    type: 'custom',
   },
   {
-    id: 'PAGES_SCOPE_ROUTE',
-    message: 'pages.conditions.scope.route',
-    multiple: false,
-    type: 'scope',
-  },
-  {
-    id: 'PAGES_SCOPE_TEMPLATE',
-    message: 'pages.conditions.scope.template',
-    multiple: false,
-    type: 'scope',
-  },
-  {
-    id: 'PAGES_DEVICE_ANY',
-    message: 'pages.conditions.device.any',
-    multiple: false,
-    type: 'device',
-  },
-  {
-    id: 'PAGES_DEVICE_MOBILE',
-    message: 'pages.conditions.device.mobile',
-    multiple: false,
-    type: 'device',
-  },
-  {
-    id: 'PAGES_DEVICE_DESKTOP',
-    message: 'pages.conditions.device.desktop',
-    multiple: false,
-    type: 'device',
+    id: 'CONDITIONS_DIA_DOS_NAMORADOS',
+    message: 'Dia dos Pais',
+    multiple: true,
+    type: 'custom',
   },
 ]
 
 interface EditorProviderState {
   activeConditions: string[]
-  conditionMode: ConditionMode
+  anyMatch: boolean
   editMode: boolean
   editTreePath: string | null
   highlightTreePath: string | null
   showAdminControls: boolean
-  layout: EditorLayout
+  scope: ConfigurationScope
+  device: ConfigurationDevice
 }
 
 class EditorProvider extends Component<{} & RenderContextProps, EditorProviderState> {
@@ -72,11 +49,12 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
 
     this.state = {
       activeConditions: this.getDefaultActiveConditions(),
-      conditionMode: 'AND',
+      anyMatch: false,
+      device: 'desktop',
       editMode: false,
       editTreePath: null,
       highlightTreePath: null,
-      layout: 'desktop',
+      scope: 'url',
       showAdminControls: true,
     }
   }
@@ -181,9 +159,17 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     this.setState({ activeConditions })
   }
 
+  public handleSetScope = (scope: ConfigurationScope) => {
+    this.setState({scope})
+  }
+
+  public handleSetDevice = (device: ConfigurationDevice) => {
+    this.setState({device})
+  }
+
   public render() {
     const { children, runtime, runtime: { page } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, conditionMode, layout } = this.state
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, device, scope } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -195,15 +181,18 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     const editor: EditorContext = {
       activeConditions,
       addCondition: this.handleAddCondition,
-      conditionMode,
+      anyMatch,
       conditions: nativeConditions,
+      device,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
       highlightTreePath,
-      layout,
       mouseOverExtensionPoint: this.mouseOverExtensionPoint,
       removeCondition: this.handleRemoveCondition,
+      scope,
+      setDevice: this.handleSetDevice,
+      setScope: this.handleSetScope,
       toggleEditMode: this.handleToggleEditMode,
     }
 

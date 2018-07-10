@@ -8,12 +8,13 @@ import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
 
-const getContainerClasses = (layout: EditorLayout) => {
+const getContainerClasses = (layout: ConfigurationDevice) => {
   switch (layout) {
-    case 'desktop':
-      return 'w-100'
     case 'mobile':
-      return 'mw4 center'
+      return 'mw6 center'
+    case 'desktop':
+    default:
+      return 'w-100'
   }
 }
 
@@ -76,7 +77,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   }
 
   public render() {
-    const { editor: { layout }, visible } = this.props
+    const { editor: { device }, visible } = this.props
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l pt8-s pt0-ns bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
@@ -84,7 +85,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
           id="app-content"
           className={`z-0 center-m right-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
           <main
-            className={getContainerClasses(layout)}
+            className={getContainerClasses(device)}
             role="main">
             {this.props.children}
           </main>

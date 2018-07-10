@@ -58,7 +58,7 @@ declare global {
     runtime: RenderContext
   }
 
-  type ConditionType = 'scope' | 'device' | 'campaign'
+  type ConditionType = 'scope' | 'device' | 'custom'
 
   interface Condition {
     id: string
@@ -67,23 +67,26 @@ declare global {
     multiple: boolean,
   }
 
-  type ConditionMode = 'AND' | 'OR'
+  type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type EditorLayout = 'desktop' | 'mobile'
+  type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
 
   interface EditorConditionSection {
     conditions: Condition[]
     activeConditions: string[]
     addCondition: (conditionId: string) => void
-    removeCondition: (conditionId: string) => void
+    removeCondition?: (conditionId: string) => void
   }
 
   interface EditorContext extends EditorConditionSection {
-    conditionMode: ConditionMode
+    anyMatch: boolean
     editMode: boolean
     editTreePath: string | null
     highlightTreePath: string | null
-    layout: EditorLayout
+    device: ConfigurationDevice
+    scope: ConfigurationScope
+    setDevice: (device: ConfigurationDevice) => void
+    setScope: (scope: ConfigurationScope) => void
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void

@@ -1,11 +1,25 @@
 mutation SaveExtension(
   $component: String,
   $extensionName: String,
-  $props: String
+  $propsJSON: String,
+  $device: String,
+  $scope: String,
+  $path: String,
+  $template: String,
+  $routeId: String,
+  $conditions: [String],
+  $anyMatch: Boolean
 ) {
   saveExtension(
     component: $component,
     extensionName: $extensionName,
-    props: $props
+    propsJSON: $propsJSON,
+    device: $device,
+    scope: $scope,
+    path: $path,
+    template: $template,
+    routeId: $routeId,
+    conditions: $conditions,
+    anyMatch: $anyMatch
   )
 }
