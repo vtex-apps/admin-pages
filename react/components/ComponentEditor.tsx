@@ -207,9 +207,9 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
    * @param {object} props The component props to be passed to the getSchema
    */
   public getComponentSchema = (component, props) => {
-    const schema = component && (component.schema || (component.getSchema && component.getSchema(props))) || {
-      type: 'object',
+    const componentSchema = component && (component.schema || (component.getSchema && component.getSchema(props))) || {
       properties: {},
+      type: 'object',
     }
 
     /**
@@ -219,10 +219,11 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
-    const traverseAndTranslate = schema => {
-      const translate = value => typeof value === 'string'
-        ? this.props.intl.formatMessage({ id: value })
-        : this.props.intl.formatMessage({ id: value.id }, value.values || {})
+    const traverseAndTranslate: (schema: object) => object = schema => {
+      const translate: (value: string | {id: string, values: object}) => string =
+        value => typeof value === 'string'
+          ? this.props.intl.formatMessage({ id: value })
+          : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
       const translatedSchema = map(
         value => Array.isArray(value) ? map(translate, value) : translate(value),
@@ -247,10 +248,14 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         )
       }
 
+      if (schema.type === 'array') {
+        translatedSchema.items = traverseAndTranslate(schema.items)
+      }
+
       return merge(schema, translatedSchema)
     }
 
-    return traverseAndTranslate(schema)
+    return traverseAndTranslate(componentSchema)
   }
 
   /**
