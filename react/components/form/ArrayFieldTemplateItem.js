@@ -12,8 +12,6 @@ export default class ArrayFieldTemplateItem extends React.Component {
   render(){
     const { element } = this.props
 
-    console.log(">>>>>>>>>>>>>> ", this.props)
-
     return (
       <div 
         ref={this.container}

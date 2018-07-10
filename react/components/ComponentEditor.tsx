@@ -330,13 +330,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       ...componentSchema,
       title: undefined,
       properties: {
-        component: {
-          enum: editableComponents,
-          enumNames: editableComponents,
-          title: 'Component',
-          type: 'string',
-          default: '',
-        },
         ...componentSchema.properties,
       },
     }
