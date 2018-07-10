@@ -12,19 +12,25 @@ export default class ArrayFieldTemplateItem extends Component {
     hasRemove: PropTypes.bool,
     onDropIndexClick: PropTypes.func,
     schema: PropTypes.object,
+    isOpen: PropTypes.bool,
+    onOpen: PropTypes.func,
+    onClose: PropTypes.func,
   }
 
   state = {
-    isOpen: false,
     isHovering: false,
   }
 
   container = React.createRef()
 
   handleLabelClick = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    })
+    const { isOpen, onOpen, onClose } = this.props
+
+    if (isOpen) {
+      onClose()
+    } else {
+      onOpen()
+    }
   }
 
   handleMouseEnter = () => {
@@ -48,8 +54,9 @@ export default class ArrayFieldTemplateItem extends Component {
       onReorderClick,
       hasRemove,
       onDropIndexClick,
+      isOpen,
     } = this.props
-    const { isOpen, isHovering } = this.state
+    const { isHovering } = this.state
 
     return (
       <div
