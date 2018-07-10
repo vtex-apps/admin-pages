@@ -38,8 +38,8 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   public renderConditions () {
     const { conditions, activeConditions, multiple} = this.props
     return conditions.map((c: Condition) => (
-      <div className="ph4" key={c.id}>
-        <input type={multiple ? 'checkbox' : 'radio'}
+      <div className="near-black mb3" key={c.id}>
+        <input className="mr3" type={multiple ? 'checkbox' : 'radio'}
           id={`condition-${c.id}`}
           value={c.id}
           checked={contains(c.id, activeConditions)}
@@ -57,7 +57,7 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
 
     return (
       <Fragment>
-        <h4 className="ph4"><FormattedMessage id={`pages.conditions.${type}.title`}/></h4>
+        <h4 className="near-black f5 fw5 mt0 mb5"><FormattedMessage id={`pages.conditions.${type}.title`}/></h4>
         {this.renderConditions()}
       </Fragment>
     )
