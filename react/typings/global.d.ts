@@ -65,14 +65,12 @@ declare global {
     type: ConditionType
     message: string
     multiple: boolean,
-    value: EditorLayout,
+    value: ConfigurationDevice,
   }
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
   type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
-
-  type EditorLayout = 'desktop' | 'mobile' | 'any'
 
   interface EditorConditionSection {
     conditions: Condition[]
@@ -93,7 +91,6 @@ declare global {
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
-    handleLayoutChange: (layout: string) => void
   }
 
   interface EditorContextProps {
