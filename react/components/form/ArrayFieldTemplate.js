@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { Fragment, Component } from 'react'
-import { Button } from 'vtex.styleguide'
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
 function truncate(str) {
   const MAX_LENGTH = 7
-  return str <= MAX_LENGTH ? str : str.substring(0, MAX_LENGTH).concat('...')
+  return str.length <= MAX_LENGTH ? str : str.substring(0, MAX_LENGTH).concat('...')
 }
 
 class ArrayFieldTemplate extends Component {
@@ -54,13 +53,13 @@ class ArrayFieldTemplate extends Component {
         ))}
         <div className="pt4">
           {canAdd && (
-            <Button
-              variation="secondary"
-              size="small"
+            <button
+              className="vtex-button bw1 ba fw5 ttu br2 fw4 v-mid relative pv3 ph5 f6 bg-washed-blue b--washed-blue blue hover-bg-light-blue hover-b--light-blue hover-heavy-blue pointer"
               onClick={onAddClick}
+              title={schema.items.title}
             >
               + Add {truncate(schema.items.title)}
-            </Button>
+            </button>
           )}
         </div>
       </div>
