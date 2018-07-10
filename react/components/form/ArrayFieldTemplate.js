@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
+import React, { Fragment, Component } from 'react'
 import { Button } from 'vtex.styleguide'
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
-class ArrayFieldTemplate extends React.Component{
+class ArrayFieldTemplate extends Component {
   static propTypes = {
     items: PropTypes.array,
     onAddClick: PropTypes.func.isRequired,
@@ -21,7 +21,7 @@ class ArrayFieldTemplate extends React.Component{
             key={element.index}
           >
             <ArrayFieldTemplateItem schema={schema} {...element} />
-            <hr />
+            <hr style={{ height: 1, backgroundColor: '#D8D8D8', border: 'none' }} />
           </Fragment>
         ))}
         <div className="pt4">

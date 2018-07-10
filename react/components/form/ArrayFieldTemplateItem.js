@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
-import React from 'react'
-import { Button, IconArrowUp, IconArrowDown, IconDelete } from 'vtex.styleguide'
+import React, { Component } from 'react'
+import { Button, IconArrowUp, IconArrowDown, IconDelete, IconCaretUp, IconCaretDown } from 'vtex.styleguide'
 
-export default class ArrayFieldTemplateItem extends React.Component {
+export default class ArrayFieldTemplateItem extends Component {
   static propTypes = {
     children: PropTypes.node,
     index: PropTypes.number,
@@ -20,6 +20,12 @@ export default class ArrayFieldTemplateItem extends React.Component {
 
   container = React.createRef()
 
+  handleLabelClick = () => {
+    this.setState({
+      isOpen: !this.state.isOpen,
+    })
+  }
+
   render() {
     const {
       children,
@@ -30,6 +36,7 @@ export default class ArrayFieldTemplateItem extends React.Component {
       hasRemove,
       onDropIndexClick,
     } = this.props
+    const { isOpen } = this.state
 
     return (
       <div
@@ -40,49 +47,55 @@ export default class ArrayFieldTemplateItem extends React.Component {
       >
         <div className="flex justify-between">
           <div className="flex items-center">
-            <span style={{
-              'border': '2px solid #f2f2f2',
-              'border-radius': '5px',
-              'padding': '3px 8px 3px 8px',
-              'font': '8px #bfbfbf',
-              'font-weight': 'bold',
-            }}>
+            <span
+              className="f6"
+              style={{
+                border: '2px solid #D8D8D8',
+                borderRadius: '5px',
+                padding: '3px 8px 3px 8px',
+                fontColor: '#727273',
+                fontWeight: 'bold',
+              }}
+            >
               {index + 1}
             </span>
-            <label style={{
-              'padding': '3px 8px 3px 8px',
-              'font': '8px #bfbfbf',
-              'font-weight': 'bold',
-            }}>
+            <label
+              className="f6"
+              style={{
+                padding: '3px 8px 3px 8px',
+                font: '8px #727273',
+                fontWeight: 'bold',
+              }}
+            >
               {children.props.schema.title}
             </label>
           </div>
-          <div className="flex">
+          <div className="flex items-center">
             {hasMoveDown && <button
               style={{
-                'padding': '3px',
-                'background': 'none',
-                'border': 'none',
-                'cursor': 'pointer',
+                padding: '3px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
               }}
               onClick={onReorderClick(
                 index,
                 index + 1
               )}>
-              <IconArrowDown size="12" />
+              <IconArrowDown size="12" color="#969799" />
             </button>}
             {hasMoveUp && <button
               style={{
-                'padding': '3px',
-                'background': 'none',
-                'border': 'none',
-                'cursor': 'pointer',
+                padding: '3px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
               }}
               onClick={onReorderClick(
                 index,
                 index - 1
               )}>
-              <IconArrowUp size="12" />
+              <IconArrowUp size="12" color="#969799" />
             </button>}
             {hasRemove && (
               <Button
@@ -90,12 +103,27 @@ export default class ArrayFieldTemplateItem extends React.Component {
                 variation="tertiary"
                 onClick={onDropIndexClick(index)}
               >
-                <IconDelete size="15" />
+                <IconDelete size="15" color="#969799" />
               </Button>
             )}
+            <span
+              onClick={this.handleLabelClick}
+              style={{
+                padding: '3px',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+              }}
+            >
+              {isOpen ? (
+                <IconCaretUp size="12" color="#D8D8D8" />
+              ) : (
+                <IconCaretDown size="12" color="#D8D8D8" />
+              )}
+            </span>
           </div>
         </div>
-        {children}
+        {isOpen && children}
       </div>
     )
   }
