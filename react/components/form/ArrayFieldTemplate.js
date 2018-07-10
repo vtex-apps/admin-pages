@@ -1,27 +1,37 @@
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
-import { Button, IconPlus, } from 'vtex.styleguide'
+import { Button } from 'vtex.styleguide'
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
 class ArrayFieldTemplate extends React.Component{
-  render(){
+  static propTypes = {
+    items: PropTypes.array,
+    onAddClick: PropTypes.func.isRequired,
+    canAdd: PropTypes.bool,
+    schema: PropTypes.object,
+  }
+
+  render() {
+    const { items, onAddClick, canAdd, schema } = this.props
+
     return (
-    <div>
-      {this.props.items.map(element => (
-        <React.Fragment>
-          <ArrayFieldTemplateItem element={element} />
-          <hr />
-        </React.Fragment>
-      ))}
-      <div className="pt4">
-        {
-          this.props.canAdd && 
-          <Button variation="secondary" size="small" onClick={this.props.onAddClick}>
-            + Add More
-          </Button>
-        }
+      <div>
+        {items.map(element => (
+          <Fragment
+            key={element.index}
+          >
+            <ArrayFieldTemplateItem schema={schema} {...element} />
+            <hr />
+          </Fragment>
+        ))}
+        <div className="pt4">
+          {canAdd && (
+            <Button variation="secondary" size="small" onClick={onAddClick}>
+              + Add More
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
     )
   }
 }

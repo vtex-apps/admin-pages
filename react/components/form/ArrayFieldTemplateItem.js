@@ -1,78 +1,101 @@
 import PropTypes from 'prop-types'
-import React, { Fragment } from 'react'
-import { Button, IconArrowUp, IconArrowDown, IconPlus, IconDelete, Badge } from 'vtex.styleguide'
+import React from 'react'
+import { Button, IconArrowUp, IconArrowDown, IconDelete } from 'vtex.styleguide'
 
 export default class ArrayFieldTemplateItem extends React.Component {
-  constructor(props){
-    super(props)
-
-    this.container=React.createRef()
+  static propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number,
+    hasMoveUp: PropTypes.bool,
+    hasMoveDown: PropTypes.bool,
+    onReorderClick: PropTypes.func,
+    hasRemove: PropTypes.bool,
+    onDropIndexClick: PropTypes.func,
+    schema: PropTypes.object,
   }
 
-  render(){
-    const { element } = this.props
+  state = {
+    isOpen: false,
+  }
+
+  container = React.createRef()
+
+  render() {
+    const {
+      children,
+      index,
+      hasMoveUp,
+      hasMoveDown,
+      onReorderClick,
+      hasRemove,
+      onDropIndexClick,
+    } = this.props
 
     return (
-      <div 
+      <div
         ref={this.container}
         style={{
-          transition:'height 300ms ease-in-out, opacity 150ms ease-in-out',
-        }}>
+          transition: 'height 300ms ease-in-out, opacity 150ms ease-in-out',
+        }}
+      >
         <div className="flex justify-between">
           <div className="flex items-center">
             <span style={{
-              "border":"2px solid #f2f2f2",
-              "border-radius": "5px",
-              "padding":"3px 8px 3px 8px",
-              "font": "8px #bfbfbf",
-              "font-weight": "bold"
+              'border': '2px solid #f2f2f2',
+              'border-radius': '5px',
+              'padding': '3px 8px 3px 8px',
+              'font': '8px #bfbfbf',
+              'font-weight': 'bold',
             }}>
-              {element.index + 1}
+              {index + 1}
             </span>
             <label style={{
-              "padding":"3px 8px 3px 8px",
-              "font": "8px #bfbfbf",
-              "font-weight": "bold"
+              'padding': '3px 8px 3px 8px',
+              'font': '8px #bfbfbf',
+              'font-weight': 'bold',
             }}>
-                {element.children.props.schema.title}
+              {children.props.schema.title}
             </label>
           </div>
           <div className="flex">
-            {element.hasMoveDown && <button
+            {hasMoveDown && <button
               style={{
-                "padding":"3px",
-                "background": "none",
-                "border": "none",
-                "cursor": "pointer"
+                'padding': '3px',
+                'background': 'none',
+                'border': 'none',
+                'cursor': 'pointer',
               }}
-              onClick={element.onReorderClick(
-                element.index,
-                element.index + 1
+              onClick={onReorderClick(
+                index,
+                index + 1
               )}>
-              <IconArrowDown size="12"/>
+              <IconArrowDown size="12" />
             </button>}
-            {element.hasMoveUp && <button
+            {hasMoveUp && <button
               style={{
-                "padding":"3px",
-                "background": "none",
-                "border": "none",
-                "cursor": "pointer"
+                'padding': '3px',
+                'background': 'none',
+                'border': 'none',
+                'cursor': 'pointer',
               }}
-              onClick={element.onReorderClick(
-                element.index,
-                element.index - 1
+              onClick={onReorderClick(
+                index,
+                index - 1
               )}>
               <IconArrowUp size="12" />
             </button>}
-            {element.hasRemove && (
-              <Button size="small" variation="tertiary" 
-                onClick={element.onDropIndexClick(element.index)}>
+            {hasRemove && (
+              <Button
+                size="small"
+                variation="tertiary"
+                onClick={onDropIndexClick(index)}
+              >
                 <IconDelete size="15" />
               </Button>
             )}
           </div>
         </div>
-        {element.children}
+        {children}
       </div>
     )
   }
