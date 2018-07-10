@@ -50,9 +50,9 @@ const icons = (id, collorFill): IconsProps => {
   }
 }
 
-class LayoutComponent extends Component {
+class DeviceComponent extends Component {
   public static propTypes = {
-    id: PropTypes.oneOf(['all', 'desktop', 'mobile']),
+    id: PropTypes.oneOf(['any', 'desktop', 'mobile']),
     selected: PropTypes.bool,
     onClick: PropTypes.func
   }
@@ -85,32 +85,34 @@ class LayoutComponent extends Component {
   }
 }
 
-class LayoutSwitcher extends Component {
+class DeviceSwitcher extends Component {
   public static propTypes = {
-    editor: PropTypes.object
+    editor: PropTypes.object,
+    deviceConditions: PropTypes.object,
   }
 
   state = {
-    selectedDevice: this.props.editor.layout,
+    selectedDevice: this.props.editor.device,
   }
 
   public handleClick = ({ currentTarget: { id } }) => {
-    const { editor: { addCondition, handleLayoutChange }, conditions } = this.props
+    const { editor: { setDevice, addCondition, conditions } } = this.props
     this.setState({ selectedDevice: id })
-    handleLayoutChange(id)
+    setDevice(id)
     addCondition(conditions.find(condition => condition.value === id).id)
   }
 
   public render() {
+    console.log(this.props)
     const { selectedDevice } = this.state
-    const { conditions } = this.props
+    const { deviceConditions } = this.props
     return (
       <div className="flex justify-around w-100 bt b--light-silver">
-        {conditions.map(({ value }) => (
-          <LayoutComponent 
-            id={value}
-            key={value}
-            selected={selectedDevice === value}
+        {deviceConditions.map(({ id }) => (
+          <DeviceComponent 
+            id={id}
+            key={id}
+            selected={selectedDevice === id}
             onClick={this.handleClick}
           />
         ))}
@@ -119,4 +121,4 @@ class LayoutSwitcher extends Component {
   }
 }
 
-export default LayoutSwitcher
+export default DeviceSwitcher

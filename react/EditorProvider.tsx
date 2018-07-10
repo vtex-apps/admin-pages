@@ -83,12 +83,11 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     this.state = {
       activeConditions: this.getDefaultActiveConditions(),
       anyMatch: false,
-      device: 'desktop',
+      device: 'any',
       editMode: false,
       editTreePath: null,
       highlightTreePath: null,
       scope: 'url',
-      layout: 'any',
       showAdminControls: true,
     }
   }
@@ -194,15 +193,11 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public handleSetScope = (scope: ConfigurationScope) => {
-    this.setState({scope})
+    this.setState({ scope })
   }
 
   public handleSetDevice = (device: ConfigurationDevice) => {
-    this.setState({device})
-  }
-
-  public handleLayoutChange = (layout: string) => {
-    this.setState({ layout })
+    this.setState({ device })
   }
 
   public render() {
@@ -232,7 +227,6 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       setDevice: this.handleSetDevice,
       setScope: this.handleSetScope,
       toggleEditMode: this.handleToggleEditMode,
-      handleLayoutChange: this.handleLayoutChange
     }
 
     const adminControlsToggle = showAdminControls ? null : (
