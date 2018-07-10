@@ -220,15 +220,17 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
           }}
         >
           <ExtensionPoint id={`${root}/__topbar`}>
+            
             <button
               type="button"
               onClick={this.handleToggleShowAdminControls}
               className={
-                'bg-blue br3 bn lh-title f6 fw5 link bn br2 mh2 pl3 pv3 pl4-l ph4-xl flex items-center justify-center z-max pointer hover-bg-heavy-blue animated fadeIn'
+                'bg-white bn link mh5 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
               }
             >
-              <span className="near-white ph1"><ShowIcon /></span>
+              <span className="pr5 br b--light-gray"><ShowIcon /></span>
             </button>
+            
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
