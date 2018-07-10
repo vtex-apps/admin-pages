@@ -16,8 +16,8 @@ class ArrayFieldTemplate extends React.Component{
       <div className="pt4">
         {
           this.props.canAdd && 
-          <Button variation="primary" onClick={this.props.onAddClick}>
-            <IconPlus color="currentColor" /> Add banner
+          <Button variation="secondary" size="small" onClick={this.props.onAddClick}>
+            + Add banner
           </Button>
         }
       </div>
