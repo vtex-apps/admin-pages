@@ -207,7 +207,9 @@ html, body {
 .mobile-preview {
   width: 360px;
   height: 640px;
+  margin-top: 32px;
   overflow-x: hidden;
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
 }
 
 .stroke-blue {

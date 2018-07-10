@@ -85,7 +85,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
         {this.renderSideBar()}
         <div
           id="app-content"
-          className={`bg-light-silver w-100 pa3 z-0 center-m right-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
+          className={`bg-light-silver w-100 h-100 pa3 z-0 center-m right-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
           <main
             className={getContainerClasses(device)}
             role="main">
