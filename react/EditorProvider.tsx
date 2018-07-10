@@ -16,7 +16,7 @@ const nativeConditions: Condition[] = [
     type: 'custom',
   },
   {
-    id: 'CONDITIONS_DIA_DOS_NAMORADOS',
+    id: 'CONDITIONS_DIA_DOS_PAIS',
     message: 'Dia dos Pais',
     multiple: true,
     type: 'custom',
