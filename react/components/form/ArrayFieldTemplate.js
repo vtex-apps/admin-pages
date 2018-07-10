@@ -17,7 +17,7 @@ class ArrayFieldTemplate extends React.Component{
         {
           this.props.canAdd && 
           <Button variation="secondary" size="small" onClick={this.props.onAddClick}>
-            + Add banner
+            + Add More
           </Button>
         }
       </div>
