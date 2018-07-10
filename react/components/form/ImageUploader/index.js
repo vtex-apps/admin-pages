@@ -4,6 +4,9 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import { RenderContextConsumer } from 'render'
 import { Button, Spinner } from 'vtex.styleguide'
 
+import UploadFile from '../../../queries/UpdateFile.gql'
+import { graphql } from 'react-apollo'
+
 import ImageIcon from '../../../images/ImageIcon'
 
 import Dropzone from './Dropzone'
@@ -32,40 +35,21 @@ class ImageUploader extends Component {
     this.dropzoneRef = null
   }
 
-  handleImageDrop = async (
-    acceptedFiles,
-    rejectedFiles,
-    { account, workspace },
-  ) => {
-    if (rejectedFiles && rejectedFiles[0]) {
-      console.log(
-        'Error: one or more files are not valid and, therefore, have not been uploaded.',
-      )
-    }
+  handleImageDrop = async (acceptedFiles) => {
+    const { uploadFile } = this.props
     if (acceptedFiles && acceptedFiles[0]) {
       this.setState({ isLoading: true })
-
       try {
-        const BASE_URL = `https://${workspace}--${account}.myvtex.com`
-
-        const imageName = acceptedFiles[0].name
-
-        const response = await fetch(`${BASE_URL}/_v/save/${imageName}`, {
-          body: acceptedFiles[0],
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          method: 'PUT',
+        const { data: { uploadFile: { fileUrl } } } = await uploadFile({
+          variables: { file: acceptedFiles[0] },
         })
 
-        const { fileUrl } = await response.json()
-
         this.props.onChange(fileUrl)
-      } catch (err) {
-        console.log('Error: ', err)
+        this.setState({ imageUrl: fileUrl, isLoading: false })
+      } catch (e) {
+        console.log('Error: ', e)
+        this.setState({ isLoading: false })
       }
-
-      this.setState({ isLoading: false })
     }
   }
 
@@ -174,7 +158,8 @@ ImageUploader.propTypes = {
   schema: PropTypes.shape({
     title: PropTypes.string.isRequired,
   }).isRequired,
+  uploadFile: PropTypes.any,
   value: PropTypes.string,
 }
 
-export default injectIntl(ImageUploader)
+export default injectIntl(graphql(UploadFile, { name: 'uploadFile' })(ImageUploader))
