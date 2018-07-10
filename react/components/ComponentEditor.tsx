@@ -72,7 +72,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     this.old = JSON.stringify({
       component,
-      props: this.getSchemaProps(getImplementation(component), extensionProps),
+      props: this.getSchemaProps(getImplementation(component), extensionProps, props.runtime),
     })
   }
 
@@ -84,7 +84,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     this._isMounted = false
   }
 
-  public getSchemaProps = (component, props) => {
+  public getSchemaProps = (component, props, runtime) => {
     if (!component) {
       return null
     }
@@ -108,13 +108,13 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         filter(v => prevProps[v] !== undefined, keys(properties))
       )
 
-    const componentSchema = this.getComponentSchema(component, props)
+    const componentSchema = this.getComponentSchema(component, props, runtime)
 
     return getPropsFromSchema(componentSchema.properties, props)
   }
 
   public handleFormChange = (event: any) => {
-    const { runtime: { updateExtension, updateComponentAssets }, editor: { editTreePath } } = this.props
+    const { runtime: { updateExtension, updateComponentAssets }, runtime, editor: { editTreePath } } = this.props
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
@@ -132,7 +132,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       updateComponentAssets(allComponents)
     }
 
-    const props = this.getSchemaProps(Component, event.formData)
+    const props = this.getSchemaProps(Component, event.formData, runtime)
     console.log('Updating extension with props', props)
 
     updateExtension(editTreePath as string, {
@@ -143,12 +143,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   public handleSave = (event: any) => {
     console.log('save', event, this.props)
-    const { saveExtension, editor: { activeConditions, anyMatch, editTreePath, editExtensionPoint, scope, device }, runtime: {page} } = this.props
+    const { saveExtension, runtime, editor: { activeConditions, anyMatch, editTreePath, editExtensionPoint, scope, device }, runtime: {page} } = this.props
     const { component, props = {} } = this.getExtension()
     const isEmpty = this.isEmptyExtensionPoint(component)
 
     const componentImplementation = component && getImplementation(component)
-    const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props)
+    const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props, runtime)
 
     const selectedComponent = isEmpty ? null : component
 
@@ -215,9 +215,9 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
    * @param {object} component The component implementation
    * @param {object} props The component props to be passed to the getSchema
    */
-  public getComponentSchema = (component, props) => {
+  public getComponentSchema = (component, props, runtime) => {
     const componentSchema =
-      component && (component.schema || (component.getSchema && component.getSchema(props))) || {
+      component && (component.schema || (component.getSchema && component.getSchema(props, {routes: runtime.pages}))) || {
         properties: {},
         type: 'object',
       }
@@ -326,7 +326,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
 
-    const componentSchema = this.getComponentSchema(Component, props)
+    const componentSchema = this.getComponentSchema(Component, props, this.props.runtime)
 
     const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
 
