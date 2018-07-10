@@ -65,7 +65,6 @@ declare global {
     type: ConditionType
     message: string
     multiple: boolean,
-    value: ConfigurationDevice,
   }
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
