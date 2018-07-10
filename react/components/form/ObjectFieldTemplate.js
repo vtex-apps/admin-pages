@@ -27,12 +27,6 @@ const ObjectFieldTemplate = ({
 }) =>
   hasFieldToBeDisplayed(schema, formContext) && (
     <Fragment>
-      {title && (
-        <label className="db f6 gray" htmlFor={id}>
-          {title}
-          {required && '*'}
-        </label>
-      )}
       {properties.map(property => property.content)}
     </Fragment>
   )
