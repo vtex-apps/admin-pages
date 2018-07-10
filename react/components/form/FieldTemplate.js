@@ -10,7 +10,7 @@ const FieldTemplate = ({
 }) => {
   const isHidden =
     hidden ||
-    (schema.type !== 'object' && !!schema.isLayout !== formContext.isLayoutMode)
+    (schema.type !== 'object' && formContext.isLayoutMode != null && !!schema.isLayout !== formContext.isLayoutMode)
 
   if (isHidden) {
     return null
@@ -28,8 +28,8 @@ FieldTemplate.propTypes = {
   children: PropTypes.element,
   classNames: PropTypes.string,
   formContext: PropTypes.shape({
-    isLayoutMode: PropTypes.bool.isRequired,
-  }).isRequired,
+    isLayoutMode: PropTypes.bool,
+  }),
   hidden: PropTypes.bool,
   schema: PropTypes.object.isRequired,
 }

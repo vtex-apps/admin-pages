@@ -1,0 +1,19 @@
+{
+  "pages.admin-menu-button": "Pages",
+  "pages.conditions.device.any": "Any",
+  "pages.conditions.device.desktop": "Desktop",
+  "pages.conditions.device.mobile": "Mobile",
+  "pages.conditions.device.title": "Device",
+  "pages.conditions.scope.route": "This Route",
+  "pages.conditions.scope.site": "Entire Site",
+  "pages.conditions.scope.template": "This Template",
+  "pages.conditions.scope.title": "Scope",
+  "pages.conditions.scope.url": "This URL",
+  "pages.editor.components.title": "Component editor",
+  "pages.editor.components.select": "Select component",
+  "pages.editor.conditions.title": "Edit context",
+  "pages.editor.empty-extension.edit": "Click here to edit it",
+  "pages.editor.empty-extension.title": "This is an empty extension point",
+  "pages.editor.info.page": "Page",
+  "pages.editor.info.title": "Page Info"
+}
