@@ -36,7 +36,7 @@ class ArrayFieldTemplate extends Component {
     const { openedItem } = this.state
 
     return (
-      <div>
+      <Fragment>
         {items.map(element => (
           <Fragment
             key={element.index}
@@ -48,7 +48,7 @@ class ArrayFieldTemplate extends Component {
               onClose={this.handleClose}
               {...element}
             />
-            <hr style={{ height: 1, backgroundColor: '#D8D8D8', border: 'none' }} />
+            <hr className="accordion-item-divider" />
           </Fragment>
         ))}
         <div className="pt4">
@@ -62,7 +62,7 @@ class ArrayFieldTemplate extends Component {
             </button>
           )}
         </div>
-      </div>
+      </Fragment>
     )
   }
 }
