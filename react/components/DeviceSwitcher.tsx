@@ -103,7 +103,6 @@ class DeviceSwitcher extends Component {
   }
 
   public render() {
-    console.log(this.props)
     const { selectedDevice } = this.state
     const { deviceConditions } = this.props
     return (
