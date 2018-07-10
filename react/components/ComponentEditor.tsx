@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { filter, find, has, keys, map, merge, pick, pickBy, prop, reduce } from 'ramda'
+import { filter, find, has, keys, map, merge, pick, pickBy, prop, reduce, mergeDeepLeft } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
@@ -207,10 +207,11 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
    * @param {object} props The component props to be passed to the getSchema
    */
   public getComponentSchema = (component, props) => {
-    const componentSchema = component && (component.schema || (component.getSchema && component.getSchema(props))) || {
-      properties: {},
-      type: 'object',
-    }
+    const componentSchema =
+      component && (component.schema || (component.getSchema && component.getSchema(props))) || {
+        properties: {},
+        type: 'object',
+      }
 
     /**
      * Traverse the schema properties searching for the title, description and enum
@@ -286,9 +287,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
      */
     const getDeepUiSchema = properties => {
       const deepProperties = pickBy(property => has('properties', property), properties)
+      const itemsProperties = pickBy(property => has('items', property), properties)
+
       return {
         ...map(value => value.widget, pickBy(property => has('widget', property), properties)),
         ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties),
+        ...itemsProperties && map(item => getDeepUiSchema(item), itemsProperties),
       }
     }
 
@@ -301,10 +305,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       )),
     }
 
-    return {
-      ...uiSchema,
-      ...componentUiSchema,
-    }
+    return mergeDeepLeft(uiSchema, componentUiSchema)
   }
 
   public render() {
