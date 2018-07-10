@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { graphql } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
@@ -68,7 +69,11 @@ class ImageUploader extends Component {
     } = this.props
     const { isLoading } = this.state
 
-    const FieldTitle = () => <span className="w-100 db mb3">{title}</span>
+    const FieldTitle = () => (
+      <FormattedMessage id={title}>
+        {text => <span className="w-100 db mb3">{text}</span>}
+      </FormattedMessage>
+    )
 
     const backgroundImageStyle = {
       backgroundImage: `url(${value})`,
@@ -80,7 +85,9 @@ class ImageUploader extends Component {
           <FieldTitle />
           <Dropzone
             disabled={disabled || isLoading}
-            extraClasses={!isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'}
+            extraClasses={
+              !isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'
+            }
             onDrop={this.handleImageDrop}
           >
             {isLoading ? (
@@ -115,7 +122,9 @@ class ImageUploader extends Component {
         <FieldTitle />
         <Dropzone
           disabled={disabled || isLoading}
-          extraClasses={`ba bw1 b--dashed b--light-gray ${!isLoading ? 'cursor' : ''}`}
+          extraClasses={`ba bw1 b--dashed b--light-gray ${
+            !isLoading ? 'cursor' : ''
+          }`}
           onDrop={this.handleImageDrop}
         >
           <div className="h-100 flex flex-column justify-center items-center">
