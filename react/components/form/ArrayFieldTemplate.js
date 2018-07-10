@@ -13,7 +13,7 @@ class ArrayFieldTemplate extends Component {
 
   render() {
     const { items, onAddClick, canAdd, schema } = this.props
-
+    
     return (
       <div>
         {items.map(element => (

@@ -6,6 +6,8 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { Button, Spinner, IconArrowBack } from 'vtex.styleguide'
 
+import PathMinus from '../images/PathMinus'
+
 import AvailableComponents from '../queries/AvailableComponents.graphql'
 import SaveExtension from '../queries/SaveExtension.graphql'
 import { getImplementation } from '../utils/components'
@@ -357,16 +359,19 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           <span className="pointer" onClick={this.handleCancel}>
             <IconArrowBack size={15} color="#979899" />
           </span>
-          <h3 className="pa4 mv0 gray">{componentSchema.title}</h3>
+          <span className="ml5">
+            <PathMinus size={15} color="#979899" />
+          </span>
+          <h4 className="pa4 mv0 gray">{componentSchema.title}</h4>
         </div>
         <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
           <div id="form__error-list-template___alert" />
-          <ModeSwitcher
-            activeMode={this.state.mode}
-            modes={MODES}
-            onSwitch={this.handleModeSwitch}
-          />
           <div>
+            <ModeSwitcher
+              activeMode={this.state.mode}
+              modes={MODES}
+              onSwitch={this.handleModeSwitch}
+            />
             <Form
               schema={schema}
               formData={extensionProps}
