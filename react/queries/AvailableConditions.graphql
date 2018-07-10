@@ -1,0 +1,8 @@
+query AvailableComponents {
+  availableConditions {
+    id
+    message
+    multiple
+    type
+  }
+}

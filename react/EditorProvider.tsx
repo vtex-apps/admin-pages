@@ -1,27 +1,21 @@
 import PropTypes from 'prop-types'
 import { difference, groupBy, prop, toPairs, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
+import { compose, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
 import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
+import AvailableConditions from './queries/AvailableConditions.graphql'
 
-const nativeConditions: Condition[] = [
-  {
-    id: 'CONDITIONS_DIA_DOS_NAMORADOS',
-    message: 'Dia dos Namorados',
-    multiple: true,
-    type: 'custom',
-  },
-  {
-    id: 'CONDITIONS_DIA_DOS_PAIS',
-    message: 'Dia dos Pais',
-    multiple: true,
-    type: 'custom',
-  }
-]
+interface Condition {
+  id: string
+  message: string
+  multiple: boolean
+  type: string
+}
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -42,6 +36,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   public static propTypes = {
     children: PropTypes.element.isRequired,
     runtime: PropTypes.object,
+    availableConditions: PropTypes.object
   }
 
   constructor(props: any) {
@@ -102,7 +97,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public getConditionsGroups = () => {
-    return groupBy<Condition>(prop('type'), nativeConditions)
+    return groupBy<Condition>(prop('type'), this.props.availableConditions.availableConditions)
   }
 
   public getDefaultActiveConditions = () => {
@@ -182,7 +177,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       activeConditions,
       addCondition: this.handleAddCondition,
       anyMatch,
-      conditions: nativeConditions,
+      conditions: this.props.availableConditions.availableConditions,
       device,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
@@ -248,4 +243,4 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 }
 
-export default EditorProvider
+export default graphql(AvailableConditions, {name: "availableConditions"})(EditorProvider)
