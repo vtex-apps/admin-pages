@@ -201,8 +201,9 @@ html, body {
 
 .mobile-preview {
   width: 360px;
+  height: 640px;
+  overflow-x: hidden;
 }
-
 
 .stroke-blue {
   stroke: #368DF7
