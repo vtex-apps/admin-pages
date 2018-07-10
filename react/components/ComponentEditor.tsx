@@ -312,7 +312,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       )),
     }
 
-    return mergeDeepLeft(uiSchema, componentUiSchema)
+    return mergeDeepLeft(uiSchema, componentUiSchema || {})
   }
 
   public render() {
