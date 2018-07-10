@@ -53,7 +53,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
       <div className="near-black">
         <h3 className="bt bw1 b--light-silver pa5 mv0"><FormattedMessage id="pages.editor.conditions.title"/></h3>
         <div className="bt b--light-silver mb5"></div>
-        <div className="">
+        <div className="dark-gray">
           <div className="pl5 mb5">
             <ConditionSection type="scope"
               conditions={scopeConditions as any}

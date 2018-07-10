@@ -354,15 +354,15 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     }
 
     return (
-      <div className="w-100 near-black">
-        <div className="flex items-center pl5 pt4">
+      <div className="w-100 dark-gray">
+        <div className="flex items-center pl5 pt5 bt b--light-silver">
           <span className="pointer" onClick={this.handleCancel}>
-            <IconArrowBack size={15} color="#979899" />
+            <IconArrowBack size={16} color="#585959" />
           </span>
           <span className="ml5">
-            <PathMinus size={15} color="#979899" />
+            <PathMinus size={16} color="#585959" />
           </span>
-          <h4 className="pa4 mv0 gray">{componentSchema.title}</h4>
+          <h4 className="f6 fw5 pl5 track-1 ttu mv0 dark-gray">{componentSchema.title}</h4>
         </div>
         <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
           <div id="form__error-list-template___alert" />
