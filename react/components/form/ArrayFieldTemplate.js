@@ -3,6 +3,11 @@ import React, { Fragment, Component } from 'react'
 import { Button } from 'vtex.styleguide'
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
+function truncate(str) {
+  const MAX_LENGTH = 7
+  return str <= MAX_LENGTH ? str : str.substring(0, MAX_LENGTH).concat('...')
+}
+
 class ArrayFieldTemplate extends Component {
   static propTypes = {
     items: PropTypes.array,
@@ -54,7 +59,7 @@ class ArrayFieldTemplate extends Component {
               size="small"
               onClick={onAddClick}
             >
-              + Add {schema.items.title}
+              + Add {truncate(schema.items.title)}
             </Button>
           )}
         </div>
