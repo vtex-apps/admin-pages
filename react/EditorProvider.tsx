@@ -20,40 +20,7 @@ const nativeConditions: Condition[] = [
     message: 'Dia dos Pais',
     multiple: true,
     type: 'custom',
-  },
-  {
-    id: 'PAGES_SCOPE_ROUTE',
-    message: 'pages.conditions.scope.route',
-    multiple: false,
-    type: 'scope',
-  },
-  {
-    id: 'PAGES_SCOPE_TEMPLATE',
-    message: 'pages.conditions.scope.template',
-    multiple: false,
-    type: 'scope',
-  },
-  {
-    id: 'PAGES_DEVICE_ANY',
-    message: 'pages.conditions.device.any',
-    multiple: false,
-    value: 'any',
-    type: 'device',
-  },
-  {
-    id: 'PAGES_DEVICE_MOBILE',
-    message: 'pages.conditions.device.mobile',
-    multiple: false,
-    value: 'mobile',
-    type: 'device',
-  },
-  {
-    id: 'PAGES_DEVICE_DESKTOP',
-    message: 'pages.conditions.device.desktop',
-    multiple: false,
-    value: 'desktop',
-    type: 'device',
-  },
+  }
 ]
 
 interface EditorProviderState {

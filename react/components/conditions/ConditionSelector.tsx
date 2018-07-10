@@ -50,18 +50,12 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
     const { editor: { conditions, activeConditions, addCondition, removeCondition, setScope, scope, setDevice, device} } = this.props
 
     return (
-      <div className="pa4">
-        <h3><FormattedMessage id="pages.editor.conditions.title"/></h3>
+      <div className="pv4">
+        <h3 className="ph4"><FormattedMessage id="pages.editor.conditions.title"/></h3>
         <ConditionSection type="scope"
           conditions={scopeConditions as any}
           activeConditions={[scope]}
           addCondition={setScope as any}
-          multiple={false}
-          />
-        <ConditionSection type="device"
-          conditions={deviceConditions as any}
-          activeConditions={[device]}
-          addCondition={setDevice as any}
           multiple={false}
           />
         <ConditionSection type="custom"
@@ -71,7 +65,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
           removeCondition={removeCondition}
           multiple={true}
           />
-        <div className="mt6">
+        <div className="w-100 mt6">
           <DeviceSwitcher editor={this.props.editor} deviceConditions={deviceConditions as any} />
         </div>
       </div>
