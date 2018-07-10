@@ -11,16 +11,39 @@ class ArrayFieldTemplate extends Component {
     schema: PropTypes.object,
   }
 
+  state = {
+    openedItem: -1,
+  }
+
+  handleOpen = index => () => {
+    this.setState({
+      openedItem: index,
+    })
+  }
+
+  handleClose = () => {
+    this.setState({
+      openedItem: -1,
+    })
+  }
+
   render() {
     const { items, onAddClick, canAdd, schema } = this.props
-    
+    const { openedItem } = this.state
+
     return (
       <div>
         {items.map(element => (
           <Fragment
             key={element.index}
           >
-            <ArrayFieldTemplateItem schema={schema} {...element} />
+            <ArrayFieldTemplateItem
+              schema={schema}
+              isOpen={openedItem === element.index}
+              onOpen={this.handleOpen(element.index)}
+              onClose={this.handleClose}
+              {...element}
+            />
             <hr style={{ height: 1, backgroundColor: '#D8D8D8', border: 'none' }} />
           </Fragment>
         ))}
