@@ -12,7 +12,7 @@ class ArrayFieldTemplate extends Component {
   }
 
   state = {
-    openedItem: -1,
+    openedItem: 0,
   }
 
   handleOpen = index => () => {
