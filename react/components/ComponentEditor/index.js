@@ -85,7 +85,7 @@ class ComponentEditor extends Component {
      * @param {object} prevProps The previous props passed to the component
      * @return {object} Actual component props
      */
-    const getPropsFromSchema = (properties = {}, prevProps) =>
+    const getPropsFromSchema = (properties = {}, prevProps = {}) =>
       reduce(
         (nextProps, key) =>
           merge(nextProps, {
