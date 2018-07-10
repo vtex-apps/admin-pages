@@ -260,6 +260,10 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
       if (schema.type === 'array') {
         translatedSchema.items = traverseAndTranslate(schema.items)
+
+        if (!schema.minItems || schema.minItems < 1) {
+          translatedSchema.minItems = 1
+        }
       }
 
       return merge(schema, translatedSchema)
