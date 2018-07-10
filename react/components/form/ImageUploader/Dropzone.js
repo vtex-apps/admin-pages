@@ -2,14 +2,13 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDropzone from 'react-dropzone'
 
-const Dropzone = ({ disabled, children, extraClasses, refHandler, onDrop }) => (
+const Dropzone = ({ disabled, children, extraClasses, onDrop }) => (
   <ReactDropzone
     accept="image/*"
     className={`w-100 h4 br2 ${extraClasses}`}
     disabled={disabled}
     multiple={false}
     onDrop={onDrop}
-    ref={refHandler}
   >
     {children}
   </ReactDropzone>
@@ -24,7 +23,6 @@ Dropzone.propTypes = {
   children: PropTypes.element,
   extraClasses: PropTypes.string,
   onDrop: PropTypes.func.isRequired,
-  refHandler: PropTypes.func.isRequired,
 }
 
 export default Dropzone
