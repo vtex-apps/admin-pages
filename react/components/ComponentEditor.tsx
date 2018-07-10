@@ -112,15 +112,22 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   public handleFormChange = (event: any) => {
-    const { runtime: { updateExtension }, editor: { editTreePath } } = this.props
+    const { runtime: { updateExtension, updateComponentAssets }, editor: { editTreePath } } = this.props
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
 
+
     if (component && !Component) {
-      const available = find((c) => c.name === component, this.props.availableComponents.availableComponents)
-      // TODO add updateComponentAssets in runtime context and call that
-      global.__RUNTIME__.components[component] = available
+      const allComponents = reduce((acc, component) => {
+        acc[component.name] = {
+          assets: component.assets,
+          dependencies: component.dependencies
+        }
+        return acc
+      }, {}, this.props.availableComponents.availableComponents)
+
+      updateComponentAssets(allComponents)
     }
 
     const props = this.getSchemaProps(Component, event.formData)
