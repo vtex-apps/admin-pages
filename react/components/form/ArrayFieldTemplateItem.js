@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Button, IconArrowUp, IconArrowDown, IconDelete, IconCaretUp, IconCaretDown } from 'vtex.styleguide'
 
 export default class ArrayFieldTemplateItem extends Component {
@@ -16,6 +16,7 @@ export default class ArrayFieldTemplateItem extends Component {
 
   state = {
     isOpen: false,
+    isHovering: false,
   }
 
   container = React.createRef()
@@ -23,6 +24,18 @@ export default class ArrayFieldTemplateItem extends Component {
   handleLabelClick = () => {
     this.setState({
       isOpen: !this.state.isOpen,
+    })
+  }
+
+  handleMouseEnter = () => {
+    this.setState({
+      isHovering: true,
+    })
+  }
+
+  handleMouseLeave = () => {
+    this.setState({
+      isHovering: false,
     })
   }
 
@@ -36,7 +49,7 @@ export default class ArrayFieldTemplateItem extends Component {
       hasRemove,
       onDropIndexClick,
     } = this.props
-    const { isOpen } = this.state
+    const { isOpen, isHovering } = this.state
 
     return (
       <div
@@ -44,14 +57,14 @@ export default class ArrayFieldTemplateItem extends Component {
         style={{
           transition: 'height 300ms ease-in-out, opacity 150ms ease-in-out',
         }}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
       >
-        <div className="flex justify-between">
+        <div className="flex justify-between" style={{ minHeight: '40px' }}>
           <div className="flex items-center">
             <span
               className="f6"
               style={{
-                border: '2px solid #D8D8D8',
-                borderRadius: '5px',
                 padding: '3px 8px 3px 8px',
                 fontColor: '#727273',
                 fontWeight: 'bold',
@@ -71,40 +84,44 @@ export default class ArrayFieldTemplateItem extends Component {
             </label>
           </div>
           <div className="flex items-center">
-            {hasMoveDown && <button
-              style={{
-                padding: '3px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-              onClick={onReorderClick(
-                index,
-                index + 1
-              )}>
-              <IconArrowDown size="12" color="#969799" />
-            </button>}
-            {hasMoveUp && <button
-              style={{
-                padding: '3px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-              onClick={onReorderClick(
-                index,
-                index - 1
-              )}>
-              <IconArrowUp size="12" color="#969799" />
-            </button>}
-            {hasRemove && (
-              <Button
-                size="small"
-                variation="tertiary"
-                onClick={onDropIndexClick(index)}
-              >
-                <IconDelete size="15" color="#969799" />
-              </Button>
+            {isHovering && (
+              <Fragment>
+                {hasMoveDown && <button
+                  style={{
+                    padding: '3px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                  onClick={onReorderClick(
+                    index,
+                    index + 1
+                  )}>
+                  <IconArrowDown size="12" color="#969799" />
+                </button>}
+                {hasMoveUp && <button
+                  style={{
+                    padding: '3px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                  }}
+                  onClick={onReorderClick(
+                    index,
+                    index - 1
+                  )}>
+                  <IconArrowUp size="12" color="#969799" />
+                </button>}
+                {hasRemove && (
+                  <Button
+                    size="small"
+                    variation="tertiary"
+                    onClick={onDropIndexClick(index)}
+                  >
+                    <IconDelete size="15" color="#969799" />
+                  </Button>
+                )}
+              </Fragment>
             )}
             <span
               onClick={this.handleLabelClick}

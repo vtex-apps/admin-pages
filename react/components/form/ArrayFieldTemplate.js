@@ -24,9 +24,13 @@ class ArrayFieldTemplate extends Component {
             <hr style={{ height: 1, backgroundColor: '#D8D8D8', border: 'none' }} />
           </Fragment>
         ))}
-        <div className="pt4">
+        <div className="pt4 tc">
           {canAdd && (
-            <Button variation="secondary" size="small" onClick={onAddClick}>
+            <Button
+              variation="secondary"
+              size="small"
+              onClick={onAddClick}
+            >
               + Add More
             </Button>
           )}
