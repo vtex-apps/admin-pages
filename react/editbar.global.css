@@ -2,6 +2,10 @@ html, body {
   height: 100%;
 }
 
+.track-1{
+  letter-spacing: 0.2px;
+}
+
 .min-h-2 {
   min-height: 2rem;
 }
@@ -11,7 +15,6 @@ html, body {
 }
 
 .editor-provider {
-  padding-top: 48px;
   height: 100%;
 }
 
@@ -52,6 +55,7 @@ html, body {
 
 .editor-form {
   padding: 15px 24px 0px;
+  overflow-x: hidden;
 }
 
 .field-description {
@@ -147,9 +151,6 @@ html, body {
     min-height: 300px;
     max-height: 60vh;
   }
-  .render-container {
-    padding-top: 48px;
-  }
   .size-editor {
     max-width: 450px;
   }
@@ -158,7 +159,123 @@ html, body {
     -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
     box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
   }
-  .pages-editor {
-    max-height: 70vh;
+}
+
+/* Non small */
+@media screen and (min-width: 30em) {
+  .h-3em-ns {
+    height: 3em;
   }
+  .calc--height-ns {
+    height: calc(100vh - 3em);
+  }
+  .top-3em-ns {
+    top: 3em;
+  }
+  .calc--width-ns {
+    width: calc(100% - 18em);
+  }
+  .calc--minified-width-ns {
+    width: calc(100% - 3em);
+  }
+  .w-3em-ns {
+    width: 3em;
+  }
+  .w-18em-ns {
+    width: 18em;
+  }
+
+  .admin-sidebar {
+    border-right: 2px solid #f2f4f5;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+
+  .admin-sidebar::-webkit-scrollbar,
+  .admin-sidebar::-webkit-scrollbar-track {
+    width: 2px;
+    background: #f2f4f5;
+  }
+
+  .admin-sidebar::-webkit-scrollbar-thumb {
+    width: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+}
+
+.mobile-preview {
+  width: 360px;
+  height: 640px;
+  overflow-x: hidden;
+}
+
+.stroke-blue {
+  stroke: #368DF7
+}
+
+.stroke-mid-gray {
+  stroke: #727273
+}
+
+.fill-blue {
+  fill: #368DF7
+}
+
+.fill-mid-gray {
+  fill: #727273
+}
+
+.accordion-label {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 -24px 0;
+  height: 57px;
+  padding: 19px 16.5px 14px 24px;
+  cursor: pointer;
+}
+
+.accordion-label:hover {
+  background-color: #F2F4F5;
+}
+
+.accordion-label-buttons {
+  display: none;
+}
+
+.accordion-label:hover .accordion-label-buttons {
+  display: flex;
+}
+
+.accordion-label-title {
+  padding: 3px 8px;
+  font-color: #727273;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.accordion-label-title--index {
+  padding-left: 0;
+}
+
+.accordion-item-divider {
+  margin: 0;
+  height: 1px;
+  background-color: #D8D8D8;
+  border: none;
+}
+
+.accordion-icon-button {
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.accordion-icon-button--remove {
+  margin-left: 17px;
+}
+
+.accordion-icon-button--down {
+  margin-left: 8px;
 }
