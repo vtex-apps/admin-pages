@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
-import { Button, Spinner } from 'vtex.styleguide'
+import { Button, Spinner, IconArrowBack } from 'vtex.styleguide'
 
 import AvailableComponents from '../queries/AvailableComponents.graphql'
 import SaveExtension from '../queries/SaveExtension.graphql'
@@ -352,7 +352,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     return (
       <div className="w-100 near-black">
-        <h3 className="pa4"><FormattedMessage id="pages.editor.components.title"/></h3>
+        <div className="flex items-center pl5 pt4">
+          <span className="pointer" onClick={this.handleCancel}>
+            <IconArrowBack size={15} color="#979899" />
+          </span>
+          <h3 className="pa4 mv0 gray">{componentSchema.title}</h3>
+        </div>
         <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
           <div id="form__error-list-template___alert" />
           <ModeSwitcher
