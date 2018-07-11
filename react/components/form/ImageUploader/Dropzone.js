@@ -2,12 +2,15 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDropzone from 'react-dropzone'
 
+// 4MB
+const MAX_SIZE = 4194304
+
 const Dropzone = ({ disabled, children, extraClasses, onDrop }) => (
   <ReactDropzone
     accept="image/*"
     className={`w-100 h4 br2 ${extraClasses}`}
     disabled={disabled}
-    maxSize={4096}
+    maxSize={MAX_SIZE}
     multiple={false}
     onDrop={onDrop}
   >
