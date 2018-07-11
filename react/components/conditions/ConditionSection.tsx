@@ -36,11 +36,12 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   }
 
   public renderConditions () {
-    const { conditions, activeConditions, multiple} = this.props
+    const { conditions, activeConditions, multiple, type } = this.props
     return conditions.map((c: Condition) => (
       <div className="dark-gray mb3" key={c.id}>
         <input className="mr3" type={multiple ? 'checkbox' : 'radio'}
           id={`condition-${c.id}`}
+          name={type}
           value={c.id}
           checked={contains(c.id, activeConditions)}
           onChange={this.handleInputChange}
