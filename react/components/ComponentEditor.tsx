@@ -264,6 +264,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         if (!schema.minItems || schema.minItems < 1) {
           translatedSchema.minItems = 1
         }
+
+        translatedSchema.items.properties.__editorItemTitle = {
+          default: translatedSchema.items.title,
+          title: 'Item title',
+          type: 'string',
+        }
       }
 
       return merge(schema, translatedSchema)
