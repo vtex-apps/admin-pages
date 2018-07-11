@@ -62,7 +62,6 @@ class ArrayFieldTemplateItem extends Component {
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
                 onClick={stopPropagation(onDropIndexClick(formIndex))}
-                title="Delete"
               >
                 <TrashSimple size="15" />
               </button>
