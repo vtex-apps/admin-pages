@@ -280,13 +280,6 @@ html, body {
   cursor: pointer;
 }
 
-.accordion-item-divider {
-  margin: 0;
-  height: 1px;
-  background-color: #D8D8D8;
-  border: none;
-}
-
 .accordion-icon-button {
   padding: 0;
   background: none;

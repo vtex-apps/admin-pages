@@ -21,19 +21,15 @@ function getHelperDimensions({ node }) {
 const ArrayList = SortableContainer(({ items, schema, openedItem, onOpen, onClose, sorting }) => (
   <div className={`accordion-list-container ${sorting ? 'accordion-list-container--sorting' : ''}`}>
     {items.map(element => (
-      <Fragment
+      <ArrayFieldTemplateItem
         key={element.index}
-      >
-        <ArrayFieldTemplateItem
-          schema={schema}
-          isOpen={openedItem === element.index}
-          onOpen={onOpen(element.index)}
-          onClose={onClose}
-          formIndex={element.index}
-          {...element}
-        />
-        <hr className="accordion-item-divider" />
-      </Fragment>
+        schema={schema}
+        isOpen={openedItem === element.index}
+        onOpen={onOpen(element.index)}
+        onClose={onClose}
+        formIndex={element.index}
+        {...element}
+      />
     ))}
   </div>
 ))
