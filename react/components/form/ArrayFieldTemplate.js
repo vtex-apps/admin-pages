@@ -5,11 +5,6 @@ import { Button } from 'vtex.styleguide'
 
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
-function truncate(str) {
-  const MAX_LENGTH = 7
-  return str.length <= MAX_LENGTH ? str : str.substring(0, MAX_LENGTH).concat('...')
-}
-
 function getHelperDimensions({ node }) {
   const label = node.querySelector('.accordion-label')
 
@@ -107,9 +102,8 @@ class ArrayFieldTemplate extends Component {
               variation="secondary"
               size="small"
               onClick={onAddClick}
-              title={schema.items.title}
             >
-              + Add {truncate(schema.items.title)}
+              + Add More
             </Button>
           )}
         </div>
