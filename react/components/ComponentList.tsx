@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import CloseIcon from '../images/CloseIcon.js'
-import EditIcon from '../images/EditIcon.js'
 import { getImplementation } from '../utils/components'
 
 const getComponentSchema = (component: string, props: any) => {
