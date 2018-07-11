@@ -47,8 +47,9 @@ declare global {
     pages: RenderRuntime['pages'],
     prefetchPage: (name: string) => Promise<void>,
     production: RenderRuntime['production'],
+    updateComponentAssets: (availableComponents: Components) => void,
     updateExtension: (name: string, extension: Extension) => void,
-    updateRuntime: () => Promise<void>,
+    updateRuntime: (options?: PageContextOptions) => Promise<void>,
     workspace: RenderRuntime['workspace'],
   }
 
@@ -123,5 +124,12 @@ declare global {
       [app: string]: any;
     }
     cacheHints: CacheHints
+  }
+
+  interface PageContextOptions {
+    scope?: ConfigurationScope
+    device?: ConfigurationDevice
+    conditions?: string[]
+    template?: string
   }
 }
