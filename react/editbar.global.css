@@ -230,6 +230,7 @@ html, body {
 
 .accordion-label {
   display: flex;
+  position: relative;
   justify-content: space-between;
   margin: 0 -24px 0;
   height: 57px;
@@ -254,6 +255,11 @@ html, body {
   font-color: #727273;
   font-weight: bold;
   cursor: pointer;
+}
+
+.accordion-label-title:not(.accordion-label-title--index) {
+  position: absolute;
+  left: 41px;
 }
 
 .accordion-label-title--index {
