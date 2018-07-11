@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Fragment, Component } from 'react'
 import { SortableContainer } from 'react-sortable-hoc'
+import { Button } from 'vtex.styleguide'
 
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
@@ -102,13 +103,14 @@ class ArrayFieldTemplate extends Component {
         />
         <div className="pt4">
           {canAdd && (
-            <button
-              className="vtex-button bw1 ba fw5 ttu br2 fw4 v-mid relative pv3 ph5 f6 bg-washed-blue b--washed-blue blue hover-bg-light-blue hover-b--light-blue hover-heavy-blue pointer"
+            <Button
+              variation="secondary"
+              size="small"
               onClick={onAddClick}
               title={schema.items.title}
             >
               + Add {truncate(schema.items.title)}
-            </button>
+            </Button>
           )}
         </div>
       </Fragment>
