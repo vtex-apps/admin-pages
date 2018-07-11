@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
-import { difference, groupBy, prop, toPairs, uniq } from 'ramda'
+import { difference, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
 import EditBar from './components/EditBar'
@@ -21,7 +21,7 @@ interface EditorProviderState {
   device: ConfigurationDevice
 }
 
-class EditorProvider extends Component<{} & RenderContextProps, EditorProviderState> {
+class EditorProvider extends Component<{} & RenderContextProps & DataProps<{availableConditions: [Condition]}>, EditorProviderState> {
   public static contextTypes = {
     components: PropTypes.object,
   }
@@ -36,7 +36,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     super(props)
 
     this.state = {
-      activeConditions: this.getDefaultActiveConditions(),
+      activeConditions: [],
       anyMatch: false,
       device: 'any',
       editMode: false,
@@ -89,60 +89,11 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     this.setState({ showAdminControls })
   }
 
-  public getConditionsGroups = () => {
-    return groupBy<Condition>(prop('type'), this.props.data.availableConditions)
-  }
-
-  public getDefaultActiveConditions = () => {
-    const conditionsGroups = this.getConditionsGroups()
-    return toPairs(conditionsGroups)
-      // get the value from the key/value pairs (i.e. the group itself)
-      .map(pair => pair[1])
-      // get the first item of each group
-      .map(group => group[0])
-      // excludes multiples
-      .filter(item => !item.multiple)
-      // returns the id of the first item of each remaining group
-      .map(item => item.id)
-  }
-
-  public findConditionsGroup = (conditionId: string) => {
-    const conditionsGroups = this.getConditionsGroups()
-    const group = toPairs(conditionsGroups)
-      .find(pair =>
-        pair[1].some(condition => condition.id === conditionId)
-      )
-
-    return group && group[1]
-  }
-
   public handleAddCondition = (conditionId: string) => {
-    const currentGroup = this.findConditionsGroup(conditionId)
-    const isMultiple = currentGroup ? currentGroup[0].multiple : false
-
-    let activeConditions
-
-    if(!isMultiple){
-      const externalConditions = difference(
-        this.state.activeConditions,
-        currentGroup ? currentGroup.map(condition=>condition.id) : []
-      )
-      activeConditions = externalConditions.concat(conditionId)
-    }else{
-      activeConditions = this.state.activeConditions.concat(conditionId)
-    }
-
-    this.setState({ activeConditions: uniq(activeConditions) })
+    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) })
   }
 
   public handleRemoveCondition = (conditionId: string) => {
-    const currentGroup = this.findConditionsGroup(conditionId)
-    const isMultiple = currentGroup ? currentGroup[0].multiple : false
-
-    if(!isMultiple){
-      return
-    }
-
     const activeConditions = difference(this.state.activeConditions, [conditionId])
     this.setState({ activeConditions })
   }
@@ -170,7 +121,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       activeConditions,
       addCondition: this.handleAddCondition,
       anyMatch,
-      conditions: this.props.data.availableConditions,
+      conditions: this.props.data.availableConditions || [],
       device,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
