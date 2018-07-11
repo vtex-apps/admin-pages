@@ -49,7 +49,7 @@ class ArrayFieldTemplateItem extends Component {
     const title = children.props.formData.__editorItemTitle || schema.items.properties.__editorItemTitle.default
 
     return (
-      <div className="accordion-item">
+      <div className="accordion-item bb b--light-silver">
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
             <Handle />
