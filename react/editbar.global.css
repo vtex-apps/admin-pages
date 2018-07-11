@@ -227,18 +227,42 @@ html, body {
   fill: #727273;
 }
 
+.accordion-list-container--sorting .accordion-item {
+  pointer-events: none;
+}
+
+.accordion-item {
+  transition: height 300ms ease-in-out, opacity 150ms ease-in-out;
+  background-color: white;
+}
+
+.accordion-item--dragged {
+  z-index: 999;
+}
+
 .accordion-label {
   display: flex;
   position: relative;
   justify-content: space-between;
   margin: 0 -24px 0;
   height: 57px;
-  padding: 19px 16.5px 14px 24px;
+  padding: 19px 16.5px 14px 16px;
   cursor: pointer;
+  user-select: none;
 }
 
+.accordion-item--dragged .accordion-label,
 .accordion-label:hover {
   background-color: #F2F4F5;
+  padding-left: 26px;
+}
+
+.accordion-item--dragged .accordion-label {
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, .2);
+}
+
+.accordion-item--dragged .accordion-content {
+  display: none;
 }
 
 .accordion-label-buttons {
@@ -250,19 +274,9 @@ html, body {
 }
 
 .accordion-label-title {
-  padding: 3px 8px;
-  font-color: #727273;
+  color: #727273;
   font-weight: bold;
   cursor: pointer;
-}
-
-.accordion-label-title:not(.accordion-label-title--index) {
-  position: absolute;
-  left: 41px;
-}
-
-.accordion-label-title--index {
-  padding-left: 0;
 }
 
 .accordion-item-divider {
@@ -287,11 +301,33 @@ html, body {
   margin-left: 8px;
 }
 
-.editor-icon path {
+.editor-icon--stroke path,
+.editor-icon--stroke circle {
   stroke: #727273;
 }
 
-.accordion-icon-button:hover .editor-icon path {
+.editor-icon--fill path,
+.editor-icon--fill circle {
+  fill: #727273;
+}
+
+.accordion-icon-button:hover .editor-icon--stroke path,
+.accordion-icon-button:hover .editor-icon--stroke circle {
   stroke: #368DF7;
 }
 
+.accordion-icon-button:hover .editor-icon--fill path,
+.accordion-icon-button:hover .editor-icon--fill circle {
+  fill: #368DF7;
+}
+
+.accordion-handle {
+  display: none;
+  position: absolute;
+  left: 8px;
+}
+
+.accordion-item--dragged .accordion-handle,
+.accordion-label:hover .accordion-handle {
+  display: block;
+}
