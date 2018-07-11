@@ -3,10 +3,10 @@ import { difference, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
+import { IconEdit } from 'vtex.styleguide'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
-import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 import TopbarButton from './TopbarButton'
@@ -160,11 +160,11 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
         type="button"
         onClick={this.handleToggleShowAdminControls}
         className={
-          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn'
+          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn white'
         }
         style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
       >
-        <EditIcon />
+        <IconEdit color="currentColor" solid />
       </button>
     )
 
