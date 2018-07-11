@@ -1,19 +1,25 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import { SortableElement, SortableHandle } from 'react-sortable-hoc'
 
 import HitUp from '../icons/HitUp'
 import HitDown from '../icons/HitDown'
 import TrashSimple from '../icons/TrashSimple'
+import DragHandle from '../icons/DragHandle'
 
 const stopPropagation = fn => e => {
   e.stopPropagation()
   return fn(e)
 }
 
-export default class ArrayFieldTemplateItem extends Component {
+const Handle = SortableHandle(() => (
+  <DragHandle size={12} className="accordion-handle" />
+))
+
+class ArrayFieldTemplateItem extends Component {
   static propTypes = {
     children: PropTypes.node,
-    index: PropTypes.number,
+    formIndex: PropTypes.number,
     hasMoveUp: PropTypes.bool,
     hasMoveDown: PropTypes.bool,
     onReorderClick: PropTypes.func,
@@ -25,22 +31,20 @@ export default class ArrayFieldTemplateItem extends Component {
     onClose: PropTypes.func,
   }
 
-  container = React.createRef()
-
-  handleLabelClick = () => {
+  handleLabelClick = e => {
     const { isOpen, onOpen, onClose } = this.props
 
     if (isOpen) {
-      onClose()
+      onClose(e)
     } else {
-      onOpen()
+      onOpen(e)
     }
   }
 
   render() {
     const {
       children,
-      index,
+      formIndex,
       hasMoveUp,
       hasMoveDown,
       onReorderClick,
@@ -50,17 +54,10 @@ export default class ArrayFieldTemplateItem extends Component {
     } = this.props
 
     return (
-      <div
-        ref={this.container}
-        style={{
-          transition: 'height 300ms ease-in-out, opacity 150ms ease-in-out',
-        }}
-      >
+      <div className="accordion-item">
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
-            <span className="f6 accordion-label-title accordion-label-title--index">
-              {index + 1}
-            </span>
+            <Handle />
             <label className="f6 accordion-label-title">
               {children.props.schema.title}
             </label>
@@ -69,7 +66,7 @@ export default class ArrayFieldTemplateItem extends Component {
             {hasMoveUp && (
               <button
                 className="accordion-icon-button accordion-icon-button--up"
-                onClick={stopPropagation(onReorderClick(index, index - 1))}
+                onClick={stopPropagation(onReorderClick(formIndex, formIndex - 1))}
               >
                 <HitUp size="12" />
               </button>
@@ -77,7 +74,7 @@ export default class ArrayFieldTemplateItem extends Component {
             {hasMoveDown && (
               <button
                 className="accordion-icon-button accordion-icon-button--down"
-                onClick={stopPropagation(onReorderClick(index, index + 1))}
+                onClick={stopPropagation(onReorderClick(formIndex, formIndex + 1))}
               >
                 <HitDown size="12" />
               </button>
@@ -85,7 +82,7 @@ export default class ArrayFieldTemplateItem extends Component {
             {hasRemove && (
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
-                onClick={stopPropagation(onDropIndexClick(index))}
+                onClick={stopPropagation(onDropIndexClick(formIndex))}
                 title="Delete"
               >
                 <TrashSimple size="15" />
@@ -93,8 +90,12 @@ export default class ArrayFieldTemplateItem extends Component {
             )}
           </div>
         </div>
-        {isOpen && children}
+        <div className="accordion-content">
+          {isOpen && children}
+        </div>
       </div>
     )
   }
 }
+
+export default SortableElement(ArrayFieldTemplateItem)

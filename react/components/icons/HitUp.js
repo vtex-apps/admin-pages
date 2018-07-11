@@ -23,7 +23,7 @@ export default class HitUp extends React.Component {
 
     return (
       <svg
-        className="editor-icon"
+        className="editor-icon editor-icon--stroke"
         width={newSize.width}
         height={newSize.height}
         viewBox="0 0 13 14"
