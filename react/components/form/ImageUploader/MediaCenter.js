@@ -70,22 +70,21 @@ class MediaCenter extends React.Component {
 
     const backgroundImageStyle = {
       backgroundImage: `url(${value})`,
+      backgroundPosition: 'center',
+      height: '35vh',
     }
 
     return (
       <div className="vtex-images-modal">
         <Modal isOpen={this.props.isModalOpen} onClose={this.props.closeModal}>
-          <div style={{ minWidth: '700px' }}>
+          <div style={{ width: '45vw', height: '45vh' }}>
             <Tabs>
               <Tab
                 label="Media upload"
                 active={this.state.currentTab === 1}
                 onClick={() => this.handleTabChange(1)}
               >
-                <div
-                  className="w-100 mt4 center ph3-ns overflow-y-auto"
-                  style={{ maxHeight: '300px' }}
-                >
+                <div className="w-100 h-100 mt4 center ph3-ns">
                   {value ? (
                     <Dropzone
                       disabled={disabled || isLoading}
