@@ -10,17 +10,26 @@ class TopbarButton extends Component {
   }
 
   public render() {
-    const { editor: { toggleEditMode, editMode} } = this.props
+    const {
+      editor: { toggleEditMode, editMode },
+    } = this.props
     return (
       <Button
-          onClick={toggleEditMode}
-          variation={`${editMode ? 'secondary' : 'primary'}`} size="small"
-        >
-          {editMode ? <IconCheck color="currentColor" /> : <IconEdit color="currentColor" />}
-          <span className="pl3">
-            <FormattedMessage id={`pages.editor.components.${editMode ? 'done' : 'select'}`}/>
-          </span>
-        </Button>
+        onClick={toggleEditMode}
+        variation={`${editMode ? 'secondary' : 'primary'}`}
+        size="small"
+      >
+        {editMode ? (
+          <IconCheck size={11} color="currentColor" />
+        ) : (
+          <IconEdit size={12} color="currentColor" />
+        )}
+        <span className="pl3">
+          <FormattedMessage
+            id={`pages.editor.components.${editMode ? 'done' : 'edit'}`}
+          />
+        </span>
+      </Button>
     )
   }
 }
