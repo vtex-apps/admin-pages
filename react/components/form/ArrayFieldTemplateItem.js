@@ -1,6 +1,9 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { IconArrowUp, IconArrowDown, IconDelete } from 'vtex.styleguide'
+
+import HitUp from '../icons/HitUp'
+import HitDown from '../icons/HitDown'
+import TrashSimple from '../icons/TrashSimple'
 
 const stopPropagation = fn => e => {
   e.stopPropagation()
@@ -63,27 +66,29 @@ export default class ArrayFieldTemplateItem extends Component {
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">
-            {hasMoveUp && <button
-              className="accordion-icon-button accordion-icon-button--up"
-              onClick={stopPropagation(onReorderClick(
-                index,
-                index - 1
-              ))}>
-              <IconArrowUp size="12" color="#969799" />
-            </button>}
-            {hasMoveDown && <button
-              className="accordion-icon-button accordion-icon-button--down"
-              onClick={stopPropagation(
-                onReorderClick(index, index + 1)
-              )}>
-              <IconArrowDown size="12" color="#969799" />
-            </button>}
+            {hasMoveUp && (
+              <button
+                className="accordion-icon-button accordion-icon-button--up"
+                onClick={stopPropagation(onReorderClick(index, index - 1))}
+              >
+                <HitUp size="12" />
+              </button>
+            )}
+            {hasMoveDown && (
+              <button
+                className="accordion-icon-button accordion-icon-button--down"
+                onClick={stopPropagation(onReorderClick(index, index + 1))}
+              >
+                <HitDown size="12" />
+              </button>
+            )}
             {hasRemove && (
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
                 onClick={stopPropagation(onDropIndexClick(index))}
+                title="Delete"
               >
-                <IconDelete size="15" color="#969799" />
+                <TrashSimple size="15" />
               </button>
             )}
           </div>
