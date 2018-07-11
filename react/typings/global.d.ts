@@ -67,12 +67,16 @@ declare global {
     multiple: boolean,
   }
 
+  interface ConditionsCondition {
+    conditionId: string
+  }
+
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
   type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
 
   interface EditorConditionSection {
-    conditions: Condition[]
+    conditions: Condition[] | ConditionsCondition[]
     activeConditions: string[]
     addCondition: (conditionId: string) => void
     removeCondition?: (conditionId: string) => void

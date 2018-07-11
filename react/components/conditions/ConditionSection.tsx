@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { contains } from 'ramda'
+import { contains, map } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
@@ -36,21 +36,27 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
   }
 
   public renderConditions () {
-    const { conditions, activeConditions, multiple, type } = this.props
-    return conditions.map((c: Condition) => (
-      <div className="dark-gray mb3" key={c.id}>
-        <input className="mr3" type={multiple ? 'checkbox' : 'radio'}
-          id={`condition-${c.id}`}
-          name={type}
-          value={c.id}
-          checked={contains(c.id, activeConditions)}
-          onChange={this.handleInputChange}
-           />
-        <label htmlFor={`condition-${c.id}`}>
-          <FormattedMessage id={c.message} />
-        </label>
-      </div>
-    ))
+    const { conditions, activeConditions, multiple, type} = this.props
+
+    return map(c => {
+      const message = c.message || c.conditionId
+      const id = c.id || c.conditionId
+
+      return (
+        <div className="dark-gray mb3" key={id}>
+          <input className="mr3" type={multiple ? 'checkbox' : 'radio'}
+            checked={contains(id, activeConditions)}
+            id={`condition-${id}`}
+            name={type}
+            onChange={this.handleInputChange}
+            value={id}
+              />
+          <label htmlFor={`condition-${id}`}>
+            <FormattedMessage id={message} />
+          </label>
+        </div>
+      )
+    }, conditions)
   }
 
   public render() {

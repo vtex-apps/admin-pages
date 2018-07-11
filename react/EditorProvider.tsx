@@ -10,13 +10,6 @@ import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 
-interface Condition {
-  id: string
-  message: string
-  multiple: boolean
-  type: string
-}
-
 interface EditorProviderState {
   activeConditions: string[]
   anyMatch: boolean
@@ -34,9 +27,9 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public static propTypes = {
+    availableConditions: PropTypes.object,
     children: PropTypes.element.isRequired,
     runtime: PropTypes.object,
-    availableConditions: PropTypes.object
   }
 
   constructor(props: any) {
@@ -97,7 +90,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public getConditionsGroups = () => {
-    return groupBy<Condition>(prop('type'), this.props.availableConditions.availableConditions)
+    return groupBy<Condition>(prop('type'), this.props.data.availableConditions)
   }
 
   public getDefaultActiveConditions = () => {
@@ -177,7 +170,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       activeConditions,
       addCondition: this.handleAddCondition,
       anyMatch,
-      conditions: this.props.availableConditions.availableConditions,
+      conditions: this.props.data.availableConditions,
       device,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
@@ -215,7 +208,6 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
           }}
         >
           <ExtensionPoint id={`${root}/__topbar`}>
-            
             <button
               type="button"
               onClick={this.handleToggleShowAdminControls}
@@ -225,7 +217,6 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
             >
               <span className="pr5 br b--light-gray"><ShowIcon /></span>
             </button>
-            
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
@@ -243,4 +234,4 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 }
 
-export default graphql(AvailableConditions, {name: "availableConditions"})(EditorProvider)
+export default graphql(AvailableConditions)(EditorProvider)

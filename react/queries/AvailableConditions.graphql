@@ -1,8 +1,5 @@
-query AvailableComponents {
+query AvailableConditions {
   availableConditions {
-    id
-    message
-    multiple
-    type
+    conditionId
   }
 }
