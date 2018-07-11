@@ -213,19 +213,19 @@ html, body {
 }
 
 .stroke-blue {
-  stroke: #368DF7
+  stroke: #368DF7;
 }
 
 .stroke-mid-gray {
-  stroke: #727273
+  stroke: #727273;
 }
 
 .fill-blue {
-  fill: #368DF7
+  fill: #368DF7;
 }
 
 .fill-mid-gray {
-  fill: #727273
+  fill: #727273;
 }
 
 .accordion-label {
@@ -286,5 +286,13 @@ html, body {
 
 .accordion-icon-button--down {
   margin-left: 8px;
+}
+
+.editor-icon path {
+  stroke: #727273;
+}
+
+.accordion-icon-button:hover .editor-icon path {
+  stroke: #368DF7;
 }
 
