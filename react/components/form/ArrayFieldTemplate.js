@@ -60,8 +60,7 @@ class ArrayFieldTemplate extends Component {
     })
   }
 
-  handleSortStart = ({ node }) => {
-    console.log(node)
+  handleSortStart = () => {
     this.setState({
       openedItem: -1,
       sorting: true,
