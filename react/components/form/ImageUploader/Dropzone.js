@@ -7,6 +7,7 @@ const Dropzone = ({ disabled, children, extraClasses, onDrop }) => (
     accept="image/*"
     className={`w-100 h4 br2 ${extraClasses}`}
     disabled={disabled}
+    maxSize={4096}
     multiple={false}
     onDrop={onDrop}
   >
