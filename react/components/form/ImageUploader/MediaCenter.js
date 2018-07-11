@@ -65,8 +65,6 @@ class MediaCenter extends React.Component {
   }
 
   render() {
-    console.log('console - Media props', this.props)
-
     const { value, disabled } = this.props
     const { isLoading } = this.state
 
@@ -157,12 +155,9 @@ class MediaCenter extends React.Component {
                 active={this.state.currentTab === 2}
                 onClick={() => this.handleTabChange(2)}
               >
-                <div
-                  className="w-100 mt4 center ph3-ns overflow-y-auto"
-                  style={{ maxHeight: '300px' }}
-                >
-                  <Gallery />
-                </div>
+                <Gallery
+                  onImageSelect={image => this.handleGallerySelect(image)}
+                />
               </Tab>
             </Tabs>
           </div>
