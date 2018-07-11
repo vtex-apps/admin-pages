@@ -9,6 +9,7 @@ import { EditorContext } from './components/EditorContext'
 import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
+import TopbarButton from './TopbarButton'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -187,6 +188,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
             >
               <span className="pr5 br b--light-gray"><ShowIcon /></span>
             </button>
+            <TopbarButton editor={editor} />
+
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
