@@ -36,6 +36,7 @@ declare global {
     account: RenderRuntime['account'],
     components: RenderRuntime['components'],
     culture: RenderRuntime['culture'],
+    device: ConfigurationDevice,
     emitter: RenderRuntime['emitter'],
     extensions: RenderRuntime['extensions'],
     fetchComponent: (component: string) => Promise<void>,
@@ -47,6 +48,7 @@ declare global {
     pages: RenderRuntime['pages'],
     prefetchPage: (name: string) => Promise<void>,
     production: RenderRuntime['production'],
+    setDevice: (device: ConfigurationDevice) => void,
     updateComponentAssets: (availableComponents: Components) => void,
     updateExtension: (name: string, extension: Extension) => void,
     updateRuntime: (options?: PageContextOptions) => Promise<void>,
@@ -86,9 +88,8 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     highlightTreePath: string | null
-    device: ConfigurationDevice
     scope: ConfigurationScope
-    setDevice: (device: ConfigurationDevice) => void
+    setDevice: (device: ConfigurationDevice) => void,
     setScope: (scope: ConfigurationScope) => void
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void

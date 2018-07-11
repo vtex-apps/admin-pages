@@ -18,7 +18,7 @@ interface EditorProviderState {
   highlightTreePath: string | null
   showAdminControls: boolean
   scope: ConfigurationScope
-  device: ConfigurationDevice
+  template: string | null
 }
 
 class EditorProvider extends Component<{} & RenderContextProps & DataProps<{availableConditions: [Condition]}>, EditorProviderState> {
@@ -38,12 +38,12 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     this.state = {
       activeConditions: [],
       anyMatch: false,
-      device: 'any',
       editMode: false,
       editTreePath: null,
       highlightTreePath: null,
       scope: 'url',
       showAdminControls: true,
+      template: null,
     }
   }
 
@@ -90,12 +90,26 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
   }
 
   public handleAddCondition = (conditionId: string) => {
-    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) })
+    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device: this.props.runtime.device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
+    })
   }
 
   public handleRemoveCondition = (conditionId: string) => {
     const activeConditions = difference(this.state.activeConditions, [conditionId])
-    this.setState({ activeConditions })
+    this.setState({ activeConditions }, () => {
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device: this.props.runtime.device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
+    })
   }
 
   public handleSetScope = (scope: ConfigurationScope) => {
@@ -103,7 +117,13 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
   }
 
   public handleSetDevice = (device: ConfigurationDevice) => {
-    this.setState({ device })
+    this.props.runtime.setDevice(device)
+    this.props.runtime.updateRuntime({
+      conditions: this.state.activeConditions,
+      device,
+      scope: this.state.scope,
+      template: this.state.template,
+    })
   }
 
   public render() {
@@ -122,7 +142,6 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       addCondition: this.handleAddCondition,
       anyMatch,
       conditions: this.props.data.availableConditions || [],
-      device,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,

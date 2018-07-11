@@ -91,7 +91,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   }
 
   public render() {
-    const { editor: { device }, visible } = this.props
+    const { runtime: { device }, visible } = this.props
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l pt8-s pt0-ns bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}

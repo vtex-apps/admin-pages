@@ -139,34 +139,29 @@ class DeviceComponent extends Component {
   }
 }
 
-class DeviceSwitcher extends Component {
+// tslint:disable-next-line:max-classes-per-file
+class DeviceSwitcher extends Component<RenderContextProps & EditorContextProps & {deviceConditions: Condition[]}> {
   public static propTypes = {
-    editor: PropTypes.object,
     deviceConditions: PropTypes.array,
-  }
-
-  state = {
-    selectedDevice: this.props.editor.device,
+    runtime: PropTypes.object,
   }
 
   public handleClick = ({ currentTarget: { id } }) => {
     const {
       editor: { setDevice },
     } = this.props
-    this.setState({ selectedDevice: id })
     setDevice(id)
   }
 
   public render() {
-    const { selectedDevice } = this.state
-    const { deviceConditions } = this.props
+    const { deviceConditions, runtime: { device } } = this.props
     return (
       <div className="flex justify-around w-100 bt b--light-silver">
         {deviceConditions.map(({ id }) => (
           <DeviceComponent
             id={id}
             key={id}
-            selected={selectedDevice === id}
+            selected={device === id}
             onClick={this.handleClick}
           />
         ))}
