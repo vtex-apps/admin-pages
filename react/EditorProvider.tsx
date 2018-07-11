@@ -183,7 +183,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
               type="button"
               onClick={this.handleToggleShowAdminControls}
               className={
-                'bg-white bn link mh5 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
+                'bg-white bn link mr4 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
               }
             >
               <span className="pr5 br b--light-gray"><ShowIcon /></span>
