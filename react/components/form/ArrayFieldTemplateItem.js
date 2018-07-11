@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { SortableElement, SortableHandle } from 'react-sortable-hoc'
 
-import HitUp from '../icons/HitUp'
-import HitDown from '../icons/HitDown'
 import TrashSimple from '../icons/TrashSimple'
 import DragHandle from '../icons/DragHandle'
 
@@ -20,9 +18,6 @@ class ArrayFieldTemplateItem extends Component {
   static propTypes = {
     children: PropTypes.node,
     formIndex: PropTypes.number,
-    hasMoveUp: PropTypes.bool,
-    hasMoveDown: PropTypes.bool,
-    onReorderClick: PropTypes.func,
     hasRemove: PropTypes.bool,
     onDropIndexClick: PropTypes.func,
     schema: PropTypes.object,
@@ -45,9 +40,6 @@ class ArrayFieldTemplateItem extends Component {
     const {
       children,
       formIndex,
-      hasMoveUp,
-      hasMoveDown,
-      onReorderClick,
       hasRemove,
       onDropIndexClick,
       isOpen,
@@ -63,22 +55,6 @@ class ArrayFieldTemplateItem extends Component {
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">
-            {hasMoveUp && (
-              <button
-                className="accordion-icon-button accordion-icon-button--up"
-                onClick={stopPropagation(onReorderClick(formIndex, formIndex - 1))}
-              >
-                <HitUp size="12" />
-              </button>
-            )}
-            {hasMoveDown && (
-              <button
-                className="accordion-icon-button accordion-icon-button--down"
-                onClick={stopPropagation(onReorderClick(formIndex, formIndex + 1))}
-              >
-                <HitDown size="12" />
-              </button>
-            )}
             {hasRemove && (
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
