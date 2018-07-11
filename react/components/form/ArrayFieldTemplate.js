@@ -67,11 +67,11 @@ class ArrayFieldTemplate extends Component {
     })
   }
 
-  handleSortEnd = ({ oldIndex, newIndex }) => {
+  handleSortEnd = ({ oldIndex, newIndex }, e) => {
     const { items } = this.props
-    const [{ onReorderClick }] = items
+    const { onReorderClick } = items[oldIndex]
 
-    onReorderClick(oldIndex, newIndex)
+    onReorderClick(oldIndex, newIndex)(e)
 
     this.setState({
       sorting: false,
