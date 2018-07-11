@@ -364,8 +364,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           </span>
           <h4 className="f6 fw5 pl5 track-1 ttu mv0 dark-gray">{componentSchema.title}</h4>
         </div>
-        <div className={`bg-white flex flex-column size-editor w-100 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
-          <div id="form__error-list-template___alert" />
+        <div className={`bg-white flex flex-column justify-between size-editor w-100 pb9 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }} >
           <div>
             <ModeSwitcher
               activeMode={this.state.mode}
@@ -389,7 +388,8 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
               <button className="dn" type="submit" />
             </Form>
           </div>
-          <div className="w-100 flex flex-none bt bw2 b--light-silver">
+          <div id="form__error-list-template___alert" />
+          <div className="w-100 flex flex-none bt bw2 b--light-silver absolute bottom-0">
             <div className="w-50 flex items-center justify-center bg-near-white hover-bg-light-silver hover-heavy-blue br bw2 b--light-silver">
               <Button
                 block
