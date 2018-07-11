@@ -6,7 +6,7 @@ import Form from 'react-jsonschema-form'
 import { Link } from 'render'
 import { Button, Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
-import Pages from '../queries/Pages.graphql'
+import Routes from '../queries/Routes.graphql'
 import SavePage from '../queries/SavePage.graphql'
 import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
@@ -73,9 +73,9 @@ class PageEditor extends Component<any, any> {
     history: PropTypes.object,
   }
 
-  public routesToOptions = map((p: Page) => ({
-    label: `${p.name} (${p.path})`,
-    value: p.name,
+  public routesToOptions = map((r: Route) => ({
+    label: `${r.name} (${r.path})`,
+    value: r.name,
   }))
 
   constructor(props: any) {
@@ -114,7 +114,7 @@ class PageEditor extends Component<any, any> {
     const { name: pageName, component, path } = this.state
     savePage({
       refetchQueries: [
-        { query: Pages },
+        { query: Routes },
       ],
       variables: {
         component,
@@ -134,34 +134,35 @@ class PageEditor extends Component<any, any> {
   }
 
   public handleRouteChange = (e, value) => {
-    const page = this.props.routes.find((p: Page) => p.name === value) || {
+    const route = this.props.routes.find((p: Route) => p.name === value) || {
       name: value,
       pageName: 'Default',
       path: '/',
     }
     this.setState({
-      name: page.name,
-      pageName: page.pageName,
-      path: page.path,
-      selectedRouteId: page.name,
+      context: route.context,
+      name: route.name,
+      pageName: route.pageName,
+      path: route.path,
+      selectedRouteId: route.name,
     })
   }
 
   public render() {
     const { routes, availableTemplates } = this.props
-    const { component, declarer, path, name, selectedRouteId, pageName } = this.state
+    const { component, context, declarer, path, name, selectedRouteId, pageName } = this.state
     const templateComponents = availableTemplates
-      ? map(prop('name'), availableTemplates)
+      ? map(prop('name'), filter(template => context ? template.context === context : true, availableTemplates)
       : []
 
-    const isStore = ({name: routeId, declarer: routeDeclarer}: Page) => routeId.startsWith('store') && !!routeDeclarer
+    const isStore = ({name: routeId, declarer: routeDeclarer}: Route) => routeId.startsWith('store') && !!routeDeclarer
 
-    const storeRoutes: Page[] | null = routes && filter(isStore, routes)
-    const sortedRoutes = storeRoutes && sort<Page>((a: Page, b: Page) => {
+    const storeRoutes: Route[] | null = routes && filter(isStore, routes)
+    const sortedRoutes = storeRoutes && sort<Route>((a: Route, b: Route) => {
       return a.name.localeCompare(b.name)
     }, storeRoutes)
 
-    const isDisabledRoute = !!declarer || !!(storeRoutes && find((p: Page) => p.name === name, storeRoutes))
+    const isDisabledRoute = !!declarer || !!(storeRoutes && find((p: Route) => p.name === name, storeRoutes))
 
     partialSchema.properties.name.disabled = isDisabledRoute
     partialSchema.properties.pageName.disabled = isDisabledRoute

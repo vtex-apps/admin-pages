@@ -18,20 +18,18 @@ declare global {
     [name: string]: Extension
   }
 
-  interface Page {
+  interface Route {
     cname?: string
     path: string
-    auth?: boolean
     params?: any
-    theme?: string
     disableExternals?: string[]
     declarer: string
     name: string
     title?: string
   }
 
-  interface Pages {
-    [name: string]: Page
+  interface Routes {
+    [name: string]: Route
   }
 
   interface RenderContext {
@@ -112,7 +110,7 @@ declare global {
     page: string
     version: string
     culture: Culture
-    pages: Pages
+    pages: Routes
     extensions: Extensions
     production: boolean
     publicEndpoint: string

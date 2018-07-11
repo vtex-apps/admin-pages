@@ -6,10 +6,10 @@ import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
 import ShareIcon from './images/ShareIcon'
-import Pages from './queries/Pages.graphql'
+import Routes from './queries/Routes.graphql'
 
 interface PageData {
-  pages: Page[]
+  routes: Route[]
 }
 
 // eslint-disable-next-line
@@ -38,22 +38,22 @@ class PageList extends Component<DataProps<PageData>> {
     this.props.data.loading ? this.context.startLoading() : this.context.stopLoading()
   }
 
-  public renderPageListEntry = (page: Page) => (
-    <tr className="striped--near-white" key={page.name}>
-      <td className="pv4 ph3 w-10">{page.name}</td>
-      <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{page.path}</td>
+  public renderPageListEntry = (route: Route) => (
+    <tr className="striped--near-white" key={route.name}>
+      <td className="pv4 ph3 w-10">{route.name}</td>
+      <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{route.path}</td>
       <td className="pv4 ph3 w-10" >
         Default
       </td>
       <td className="pv4 ph3 w-10 gray">(none)</td>
       <td className="pa4 w-10 v-align-center">
         <div className="flex justify-between">
-          <Link to={`/admin/pages/page/${page.name}`}>
+          <Link to={`/admin/pages/page/${route.name}`}>
             <Button variation="primary" size="small">
               <div className="flex">Settings</div>
             </Button>
           </Link>
-          <a href={page.path} target="_blank">
+          <a href={route.path} target="_blank">
             <Button variation="secondary" size="small">
               <div className="flex"><ShareIcon /> <span className="pl4">View</span></div>
             </Button>
@@ -64,12 +64,12 @@ class PageList extends Component<DataProps<PageData>> {
   )
 
   public render() {
-    const { data: { loading, pages = [] }, children } = this.props
+    const { data: { loading, routes = [] }, children } = this.props
 
-    const isStore = (page: Page) => page.name.startsWith('store')
+    const isStore = (page: Route) => page.name.startsWith('store')
 
-    const storePages = filter(isStore, pages)
-    const sortedPages = sort<Page>((a: Page, b: Page) => {
+    const storePages = filter(isStore, routes)
+    const sortedPages = sort<Route>((a: Route, b: Route) => {
       return a.name.localeCompare(b.name)
     }, storePages)
 
@@ -119,4 +119,4 @@ class PageList extends Component<DataProps<PageData>> {
   }
 }
 
-export default graphql(Pages)(PageList)
+export default graphql(Routes)(PageList)

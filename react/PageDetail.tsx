@@ -5,10 +5,10 @@ import { compose, graphql } from 'react-apollo'
 import PageEditor from './components/PageEditor'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Page from './queries/Page.graphql'
-import Pages from './queries/Pages.graphql'
+import Routes from './queries/Routes.graphql'
 
 // eslint-disable-next-line
-class PageDetail extends Component {
+class PageDetail extends Component<any> {
   public static propTypes = {
     data: PropTypes.object,
     params: PropTypes.object,
@@ -33,8 +33,8 @@ class PageDetail extends Component {
 
   public render() {
     const {
-      page: { loading: loadingPage, page: pageData } = {},
-      routes: { loading: loadingRoutes, pages: routes } = {},
+      page: { loading: loadingPage, page: pageData } = {loading: false, page: null},
+      routes: { loading: loadingRoutes, routes } = {loading: false, routes: null},
       availableTemplates: { loading: loadingTemplates, availableTemplates },
       params: { name },
     } = this.props
@@ -74,25 +74,24 @@ class PageDetail extends Component {
 export default compose(
   graphql(Page, {
     name: 'page',
-    options: (props) => ({
+    options: (props: any) => ({
       variables: {
         locale: global.__RUNTIME__.culture.locale,
         page: props.params.name,
       },
     }),
-    skip: (props) => props.params.name === 'new',
+    skip: (props: any) => props.params.name === 'new',
   }),
   graphql(AvailableTemplates, {
     name: 'availableTemplates',
-    options: (props) => ({
+    options: (props: any) => ({
       variables: {
-        pageName: props.params.name,
-        production: false,
         renderMajor: 7,
+        routeId: null,
       },
     }),
   }),
-  graphql(Pages, {
+  graphql(Routes, {
     name: 'routes',
     skip: (props) => props.params.name !== 'new'
   }),
