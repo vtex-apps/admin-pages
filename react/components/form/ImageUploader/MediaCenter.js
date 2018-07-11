@@ -21,9 +21,13 @@ class MediaCenter extends React.Component {
     isLoading: false,
   }
 
+  handleClearImage = () => {
+    this.props.onChange(null)
+  }
+
   handleGallerySelect = image => {
     this.props.onChange(image)
-    this.handleTabChange(1)
+    this.props.closeModal()
   }
 
   handleImageDrop = async (acceptedFiles, rejectedFiles) => {
@@ -71,8 +75,9 @@ class MediaCenter extends React.Component {
     const backgroundImageStyle = {
       backgroundImage: `url(${value})`,
       backgroundPosition: 'center',
-      height: '35vh',
     }
+
+    const isButtonDisabled = value == null
 
     return (
       <div className="vtex-images-modal">
@@ -88,11 +93,9 @@ class MediaCenter extends React.Component {
                   {value ? (
                     <Dropzone
                       disabled={disabled || isLoading}
-                      extraClasses={
-                        !isLoading
-                          ? 'bg-light-gray pointer'
-                          : 'ba bw1 b--light-gray'
-                      }
+                      extraClasses={`bg-light-gray vtex-page-editor__media-center ${
+                        !isLoading ? 'pointer' : ''
+                      }`}
                       onDrop={this.handleImageDrop}
                     >
                       {isLoading ? (
@@ -103,26 +106,14 @@ class MediaCenter extends React.Component {
                         <div
                           className="w-100 h-100 relative bg-center contain"
                           style={backgroundImageStyle}
-                        >
-                          <div
-                            className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-                            style={GRADIENT_STYLES}
-                          >
-                            <Fragment>
-                              <div className="flex justify-center mb3">
-                                <ImageIcon stroke="#FFF" />
-                              </div>
-                              <span className="white">Change image</span>
-                            </Fragment>
-                          </div>
-                        </div>
+                        />
                       )}
                     </Dropzone>
                   ) : (
                     <Fragment>
                       <Dropzone
                         disabled={disabled || isLoading}
-                        extraClasses={`ba bw1 b--dashed b--light-gray ${
+                        extraClasses={`vtex-page-editor__media-center ba bw1 b--dashed b--light-gray ${
                           !isLoading ? 'cursor' : ''
                         }`}
                         onDrop={this.handleImageDrop}
@@ -136,10 +127,10 @@ class MediaCenter extends React.Component {
                                 <ImageIcon stroke="#979899" />
                               </div>
                               <div className="mb5 f6 gray">
-                                Drag your image here
+                                Drag your image here or
                               </div>
-                              <Button size="small" variation="secondary">
-                                Upload
+                              <Button size="small" variation="primary">
+                                Upload a file
                               </Button>
                             </Fragment>
                           )}
@@ -147,6 +138,28 @@ class MediaCenter extends React.Component {
                       </Dropzone>
                     </Fragment>
                   )}
+                  <div className="flex mt4 fr">
+                    <div className="pa2">
+                      <Button
+                        size="small"
+                        variation="secondary"
+                        disabled={isButtonDisabled}
+                        onClick={() => this.handleClearImage()}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                    <div className="pa2">
+                      <Button
+                        size="small"
+                        variation="primary"
+                        disabled={isButtonDisabled}
+                        onClick={() => this.props.closeModal()}
+                      >
+                        Insert
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </Tab>
               <Tab
