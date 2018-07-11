@@ -8,6 +8,7 @@ import ImageIcon from '../../../images/ImageIcon'
 import UploadFile from '../../../queries/UpdateFile.gql'
 
 import Dropzone from './Dropzone'
+import ErrorAlert from './ErrorAlert'
 
 const GRADIENT_STYLES = {
   background:
@@ -25,15 +26,16 @@ class ImageUploader extends Component {
     super(props)
 
     this.state = {
+      error: null,
       isLoading: false,
     }
   }
 
-  handleImageDrop = async (acceptedFiles, rejectedFiles) => {
+  handleImageDrop = async acceptedFiles => {
     const { uploadFile } = this.props
 
     if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ isLoading: true })
+      this.setState({ error: null, isLoading: true })
 
       try {
         const {
@@ -46,18 +48,19 @@ class ImageUploader extends Component {
 
         if (fileUrl) {
           this.props.onChange(fileUrl)
+          this.setState({ isLoading: false })
         }
       } catch (e) {
-        console.log('Error: ', e)
+        this.setState({
+          error: 'Something went wrong. Please try again.',
+          isLoading: false,
+        })
       }
-
-      this.setState({ isLoading: false })
-    }
-
-    if (rejectedFiles && rejectedFiles[0]) {
-      console.log(
-        'Error: one or more files are not valid and, therefore, have not been uploaded.',
-      )
+    } else {
+      this.setState({
+        error:
+          'File exceeds the size limit of 4MB. Please choose a smaller one.',
+      })
     }
   }
 
@@ -67,7 +70,7 @@ class ImageUploader extends Component {
       schema: { title },
       value,
     } = this.props
-    const { isLoading } = this.state
+    const { error, isLoading } = this.state
 
     const FieldTitle = () => (
       <FormattedMessage id={title}>
@@ -95,24 +98,25 @@ class ImageUploader extends Component {
                 <Spinner />
               </div>
             ) : (
-              <div
-                className="w-100 h-100 relative bg-center contain"
-                style={backgroundImageStyle}
-              >
                 <div
-                  className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-                  style={GRADIENT_STYLES}
+                  className="w-100 h-100 relative bg-center contain"
+                  style={backgroundImageStyle}
                 >
-                  <Fragment>
-                    <div className="flex justify-center mb3">
-                      <ImageIcon stroke="#FFF" />
-                    </div>
-                    <span className="white">Change image</span>
-                  </Fragment>
+                  <div
+                    className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
+                    style={GRADIENT_STYLES}
+                  >
+                    <Fragment>
+                      <div className="flex justify-center mb3">
+                        <ImageIcon stroke="#fff" />
+                      </div>
+                      <span className="white">Change image</span>
+                    </Fragment>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
           </Dropzone>
+          {error && <ErrorAlert message={error} />}
         </Fragment>
       )
     }
@@ -124,25 +128,26 @@ class ImageUploader extends Component {
           disabled={disabled || isLoading}
           extraClasses={`ba bw1 b--dashed b--light-gray ${
             !isLoading ? 'cursor' : ''
-          }`}
+            }`}
           onDrop={this.handleImageDrop}
         >
           <div className="h-100 flex flex-column justify-center items-center">
             {isLoading ? (
               <Spinner />
             ) : (
-              <Fragment>
-                <div className="mb3">
-                  <ImageIcon stroke="#979899" />
-                </div>
-                <div className="mb5 f6 gray">Drag your image here</div>
-                <Button size="small" variation="secondary">
-                  Upload
+                <Fragment>
+                  <div className="mb3">
+                    <ImageIcon />
+                  </div>
+                  <div className="mb5 f6 tc gray">Drag your image here</div>
+                  <Button size="small" variation="secondary">
+                    Upload
                 </Button>
-              </Fragment>
-            )}
+                </Fragment>
+              )}
           </div>
         </Dropzone>
+        {error && <ErrorAlert message={error} />}
       </Fragment>
     )
   }

@@ -2,8 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import ReactDropzone from 'react-dropzone'
 
-// 4MB
-const MAX_SIZE = 4194304
+const MAX_SIZE = 4 * 1024 * 1024
 
 const Dropzone = ({ disabled, children, extraClasses, onDrop }) => (
   <ReactDropzone

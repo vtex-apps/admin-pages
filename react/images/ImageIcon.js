@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const ImageIcon = ({ stroke }) => (
+const ImageIcon = ({ size, stroke }) => (
   <svg
-    width="24px"
-    height="24px"
+    width={`${size}px`}
+    height={`${size}px`}
     viewBox="0 0 24 24"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +40,13 @@ const ImageIcon = ({ stroke }) => (
   </svg>
 )
 
+ImageIcon.defaultProps = {
+  size: 16,
+  stroke: '#979899'
+}
+
 ImageIcon.propTypes = {
+  size: PropTypes.integer,
   stroke: PropTypes.string,
 }
 
