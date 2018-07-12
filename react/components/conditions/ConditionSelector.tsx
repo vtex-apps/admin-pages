@@ -47,7 +47,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
   }
 
   public render() {
-    const { editor: { conditions, activeConditions, addCondition, removeCondition, setScope, scope}, editor, runtime } = this.props
+    const { editor: { conditions, activeConditions, addCondition, removeCondition, setScope, scope, setDevice}, runtime: { device } } = this.props
 
     return (
       <div className="near-black">
@@ -63,6 +63,14 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
               />
           </div>
           <div className="pl5 mb5">
+            <ConditionSection type="device"
+                conditions={deviceConditions as any}
+                activeConditions={[device]}
+                addCondition={setDevice as any}
+                multiple={false}
+                />
+          </div>
+          <div className="pl5 mb5">
             <ConditionSection type="custom"
               conditions={conditions}
               activeConditions={activeConditions}
@@ -70,9 +78,6 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
               removeCondition={removeCondition}
               multiple={true}
               />
-          </div>
-          <div className="w-100 mt7">
-            <DeviceSwitcher runtime={runtime} editor={editor} deviceConditions={deviceConditions as any} />
           </div>
         </div>
       </div>
