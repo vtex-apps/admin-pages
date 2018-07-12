@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react'
 import { Button } from 'vtex.styleguide'
+import CheckIcon from '../../../images/check-2'
 
 const IMAGES = [
   'https://raw.githubusercontent.com/vtex-apps/carousel/master/images/banners-mobile-01.png',
@@ -30,8 +31,8 @@ export default class Gallery extends Component {
   }
 
   render() {
-    const regularItemClass = 'fl w-100 w-25-ns pa2'
-    const selectedItemClass = 'fl w-100 w-25-ns ba bw1 b--light-blue'
+    const regularItemClass = 'pa2'
+    const selectedItemClass = 'ba bw2 b--blue relative'
 
     const isButtonDisabled = this.state.selectedI == null
 
@@ -43,16 +44,26 @@ export default class Gallery extends Component {
         >
           {IMAGES.map((el, i) => {
             return (
-              <div
-                className={
-                  i === this.state.selectedI
-                    ? selectedItemClass
-                    : regularItemClass
-                }
-                key={`${i}-im`}
-                onClick={() => this.handleSelection(i)}
-              >
-                <img src={el} />
+              <div className="fl w-100 w-25-ns relative">
+                <div
+                  className={
+                    i === this.state.selectedI
+                      ? selectedItemClass
+                      : regularItemClass
+                  }
+                  key={`${i}-im`}
+                  onClick={() => this.handleSelection(i)}
+                >
+                  {i === this.state.selectedI && (
+                    <div
+                      className="absolute bg-blue bl bw2 b--blue"
+                      style={{ right: '0' }}
+                    >
+                      <CheckIcon fill="#EEEEEE" />
+                    </div>
+                  )}
+                  <img src={el} />
+                </div>
               </div>
             )
           })}
