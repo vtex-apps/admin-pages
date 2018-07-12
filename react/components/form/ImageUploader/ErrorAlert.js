@@ -11,16 +11,6 @@ class ErrorAlert extends Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { message: prevMessage } = prevProps
-    const { message: currMessage } = this.props
-    const { isVisible } = this.state
-
-    if (!isVisible && prevMessage !== currMessage) {
-      this.setState({ isVisible: true })
-    }
-  }
-
   handleHide = () => {
     this.setState({ isVisible: false })
   }

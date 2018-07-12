@@ -35,7 +35,7 @@ class ImageUploader extends Component {
     const { uploadFile } = this.props
 
     if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ error: null, isLoading: true })
+      this.setState({ isLoading: true })
 
       try {
         const {
@@ -62,6 +62,10 @@ class ImageUploader extends Component {
           'File exceeds the size limit of 4MB. Please choose a smaller one.',
       })
     }
+  }
+
+  handleErrorReset = () => {
+    this.setState({ error: null })
   }
 
   render() {
@@ -91,6 +95,7 @@ class ImageUploader extends Component {
             extraClasses={
               !isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'
             }
+            onClick={this.handleErrorReset}
             onDrop={this.handleImageDrop}
           >
             {isLoading ? (
@@ -98,23 +103,23 @@ class ImageUploader extends Component {
                 <Spinner />
               </div>
             ) : (
+              <div
+                className="w-100 h-100 relative bg-center contain"
+                style={backgroundImageStyle}
+              >
                 <div
-                  className="w-100 h-100 relative bg-center contain"
-                  style={backgroundImageStyle}
+                  className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
+                  style={GRADIENT_STYLES}
                 >
-                  <div
-                    className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-                    style={GRADIENT_STYLES}
-                  >
-                    <Fragment>
-                      <div className="flex justify-center mb3">
-                        <ImageIcon stroke="#fff" />
-                      </div>
-                      <span className="white">Change image</span>
-                    </Fragment>
-                  </div>
+                  <Fragment>
+                    <div className="flex justify-center mb3">
+                      <ImageIcon stroke="#fff" />
+                    </div>
+                    <span className="white">Change image</span>
+                  </Fragment>
                 </div>
-              )}
+              </div>
+            )}
           </Dropzone>
           {error && <ErrorAlert message={error} />}
         </Fragment>
@@ -129,22 +134,23 @@ class ImageUploader extends Component {
           extraClasses={`ba bw1 b--dashed b--light-gray ${
             !isLoading ? 'cursor' : ''
             }`}
+          onClick={this.handleErrorReset}
           onDrop={this.handleImageDrop}
         >
           <div className="h-100 flex flex-column justify-center items-center">
             {isLoading ? (
               <Spinner />
             ) : (
-                <Fragment>
-                  <div className="mb3">
-                    <ImageIcon />
-                  </div>
-                  <div className="mb5 f6 tc gray">Drag your image here</div>
-                  <Button size="small" variation="secondary">
-                    Upload
-                </Button>
-                </Fragment>
-              )}
+              <Fragment>
+                <div className="mb3">
+                  <ImageIcon />
+                </div>
+                <div className="mb5 f6 tc gray">Drag your image here</div>
+                <Button size="small" variation="secondary">
+                  Upload
+              </Button>
+              </Fragment>
+            )}
           </div>
         </Dropzone>
         {error && <ErrorAlert message={error} />}
