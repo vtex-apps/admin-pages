@@ -26,7 +26,7 @@ class TopbarButton extends Component {
         ) : (
           <IconEdit size={12} color="currentColor" solid />
         )}
-        <span className="pl3">
+        <span className="pl3 dn di-ns">
           {intl.formatMessage({ id: `pages.editor.components.${editMode ? 'done' : 'edit'}` })}
         </span>
       </Button>
