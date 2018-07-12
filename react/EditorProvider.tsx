@@ -8,8 +8,8 @@ import { IconEdit } from 'vtex.styleguide'
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
 import ShowIcon from './images/ShowIcon.js'
+import SelectionIcon from './images/SelectionIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
-import TopbarButton from './TopbarButton'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -181,15 +181,22 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
           <ExtensionPoint id={`${root}/__topbar`}>
             <button
               type="button"
-              onClick={this.handleToggleShowAdminControls}
+              onClick={this.handleToggleEditMode}
               className={
-                'bg-white bn link mr4 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
+                'bg-white bn link pl3 pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
               }
             >
-              <span className="pr5 br b--light-gray"><ShowIcon /></span>
+              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? "#368df7" : "#979899"}/></span>
             </button>
-            <TopbarButton editor={editor} />
-
+            <button
+              type="button"
+              onClick={this.handleToggleShowAdminControls}
+              className={
+                'bg-white bn link pl3 pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
+              }
+            >
+              <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
+            </button>
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
