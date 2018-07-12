@@ -81,13 +81,14 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public handleToggleShowAdminControls = () => {
     const showAdminControls = !this.state.showAdminControls
+    const editMode = false
 
     Array.prototype.forEach.call(
       document.getElementsByClassName('render-container'),
       (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
     )
 
-    this.setState({ showAdminControls })
+    this.setState({ showAdminControls, editMode })
   }
 
   public handleAddCondition = (conditionId: string) => {
