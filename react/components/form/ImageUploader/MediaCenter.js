@@ -4,17 +4,6 @@ import ImageIcon from '../../../images/ImageIcon'
 import Dropzone from './Dropzone'
 import Gallery from './Gallery'
 
-const GRADIENT_STYLES = {
-  background:
-    '-moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  background:
-    '-webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  background:
-    'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  filter:
-    "progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#d4000000', GradientType=0)",
-}
-
 class MediaCenter extends React.Component {
   state = {
     currentTab: 1,
@@ -114,40 +103,38 @@ class MediaCenter extends React.Component {
                       )}
                     </Dropzone>
                   ) : (
-                    <Fragment>
-                      <Dropzone
-                        disabled={disabled || isLoading}
-                        extraClasses={`vtex-page-editor__media-center ba bw1 b--dashed b--light-gray ${
-                          !isLoading ? 'cursor' : ''
-                        }`}
-                        onDrop={this.handleImageDrop}
-                      >
-                        <div className="h-100 flex flex-column justify-center items-center">
-                          {isLoading ? (
-                            <Spinner />
-                          ) : (
-                            <Fragment>
-                              {error ? (
-                                <div className="mb3 f4 fw5">
-                                  Something went wrong, please try again.
-                                </div>
-                              ) : (
-                                <div className="mb3">
-                                  <ImageIcon stroke="#979899" />
-                                </div>
-                              )}
-
-                              <div className="mb5 f6 mid-gray">
-                                Drag your image here or
+                    <Dropzone
+                      disabled={disabled || isLoading}
+                      extraClasses={`vtex-page-editor__media-center ba bw1 b--dashed b--light-gray ${
+                        !isLoading ? 'cursor' : ''
+                      }`}
+                      onDrop={this.handleImageDrop}
+                    >
+                      <div className="h-100 flex flex-column justify-center items-center">
+                        {isLoading ? (
+                          <Spinner />
+                        ) : (
+                          <Fragment>
+                            {error ? (
+                              <div className="mb3 f4 fw5">
+                                Something went wrong, please try again.
                               </div>
-                              <Button size="small" variation="primary">
-                                Upload a file
-                              </Button>
-                            </Fragment>
-                          )}
-                        </div>
-                      </Dropzone>
-                    </Fragment>
+                            ) : (
+                              <div className="mb3">
+                                <ImageIcon stroke="#979899" />
+                              </div>
+                            )}
+
+                            <div className="mb5 f6 mid-gray">
+                              Drag your image here or
+                            </div>
+                            <Button size="small" variation="primary">
+                              Upload a file
+                            </Button>
+                          </Fragment>
+                        )}
+                      </div>
+                    </Dropzone>
                   )}
                   <div className="flex mt4 fr">
                     <div className="pa2">

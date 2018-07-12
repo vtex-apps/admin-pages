@@ -51,7 +51,7 @@ export default class Gallery extends Component {
                       ? selectedItemClass
                       : regularItemClass
                   }
-                  key={`${i}-im`}
+                  key={`${i}`}
                   onClick={() => this.handleSelection(i)}
                 >
                   {i === this.state.selectedI && (
