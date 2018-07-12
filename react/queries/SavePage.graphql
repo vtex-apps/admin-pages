@@ -1,3 +1,3 @@
-mutation SavePage($pageName: String, $component: String, $path: String, $theme: String, $auth: Boolean, $cname: String) {
-  savePage(pageName: $pageName, component: $component, path: $path, theme: $theme, auth: $auth, cname: $cname)
+mutation SavePage($pageName: String, $template: String, $routeId: String, $pathTemplate: String, $paramsJSON: String, $device: String, $conditions: [String] = [], $anyMatch: Boolean = false) {
+  savePage(pageName: $pageName, template: $template, routeId: $routeId, pathTemplate: $pathTemplate, paramsJSON: $paramsJSON, device: $device, conditions: $conditions, anyMatch: $anyMatch)
 }

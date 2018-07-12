@@ -2,8 +2,6 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import CloseIcon from '../images/CloseIcon.js'
-import EditIcon from '../images/EditIcon.js'
 import { getImplementation } from '../utils/components'
 
 const getComponentSchema = (component: string, props: any) => {
@@ -93,23 +91,8 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
 
     return (
       <div>
-        
         <div className="bb b--light-silver"></div>
         {Object.keys(extensions).map(this.renderComponentButton)}
-
-        <button
-          type="button"
-          onClick={this.props.editor.toggleEditMode}
-          className={
-            'bg-blue br3 pa5 bn shadow-1 flex mv4 items-center justify-center pointer hover-bg-heavy-blue animated fadeIn'
-          }
-          style={{ animationDuration: '0.2s' }}
-        >
-          {this.props.editor.editMode ? <CloseIcon /> : <EditIcon />}
-          <span className="white pl5">
-            <FormattedMessage id="pages.editor.components.select"/>
-          </span>
-        </button>
       </div>
     )
   }

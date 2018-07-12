@@ -18,26 +18,25 @@ declare global {
     [name: string]: Extension
   }
 
-  interface Page {
+  interface Route {
     cname?: string
     path: string
-    auth?: boolean
     params?: any
-    theme?: string
     disableExternals?: string[]
     declarer: string
     name: string
     title?: string
   }
 
-  interface Pages {
-    [name: string]: Page
+  interface Routes {
+    [name: string]: Route
   }
 
   interface RenderContext {
     account: RenderRuntime['account'],
     components: RenderRuntime['components'],
     culture: RenderRuntime['culture'],
+    device: ConfigurationDevice,
     emitter: RenderRuntime['emitter'],
     extensions: RenderRuntime['extensions'],
     fetchComponent: (component: string) => Promise<void>,
@@ -49,8 +48,10 @@ declare global {
     pages: RenderRuntime['pages'],
     prefetchPage: (name: string) => Promise<void>,
     production: RenderRuntime['production'],
+    setDevice: (device: ConfigurationDevice) => void,
+    updateComponentAssets: (availableComponents: Components) => void,
     updateExtension: (name: string, extension: Extension) => void,
-    updateRuntime: () => Promise<void>,
+    updateRuntime: (options?: PageContextOptions) => Promise<void>,
     workspace: RenderRuntime['workspace'],
   }
 
@@ -67,12 +68,16 @@ declare global {
     multiple: boolean,
   }
 
+  interface ConditionsCondition {
+    conditionId: string
+  }
+
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
   type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
 
   interface EditorConditionSection {
-    conditions: Condition[]
+    conditions: Condition[] | ConditionsCondition[]
     activeConditions: string[]
     addCondition: (conditionId: string) => void
     removeCondition?: (conditionId: string) => void
@@ -83,9 +88,8 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     highlightTreePath: string | null
-    device: ConfigurationDevice
     scope: ConfigurationScope
-    setDevice: (device: ConfigurationDevice) => void
+    setDevice: (device: ConfigurationDevice) => void,
     setScope: (scope: ConfigurationScope) => void
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void
@@ -108,7 +112,7 @@ declare global {
     page: string
     version: string
     culture: Culture
-    pages: Pages
+    pages: Routes
     extensions: Extensions
     production: boolean
     publicEndpoint: string
@@ -121,5 +125,12 @@ declare global {
       [app: string]: any;
     }
     cacheHints: CacheHints
+  }
+
+  interface PageContextOptions {
+    scope?: ConfigurationScope
+    device?: ConfigurationDevice
+    conditions?: string[]
+    template?: string
   }
 }

@@ -1,6 +1,6 @@
-query AvailableTemplates($pageName: String, $renderMajor: Int){
-  availableTemplates(pageName: $pageName, renderMajor: $renderMajor, production: false) {
+query AvailableTemplates($routeId: String, $renderMajor: Int){
+  availableTemplates(routeId: $routeId, renderMajor: $renderMajor, production: false) {
     name,
-    assets,
+    context,
   }
 }

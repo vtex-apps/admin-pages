@@ -1,7 +1,34 @@
 import PropTypes from 'prop-types'
 import React, { Fragment, Component } from 'react'
+import { SortableContainer } from 'react-sortable-hoc'
 import { Button } from 'vtex.styleguide'
+
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
+
+function getHelperDimensions({ node }) {
+  const label = node.querySelector('.accordion-label')
+
+  return {
+    width: node.offsetWidth,
+    height: label.offsetHeight,
+  }
+}
+
+const ArrayList = SortableContainer(({ items, schema, openedItem, onOpen, onClose, sorting }) => (
+  <div className={`accordion-list-container ${sorting ? 'accordion-list-container--sorting' : ''}`}>
+    {items.map(element => (
+      <ArrayFieldTemplateItem
+        key={element.index}
+        schema={schema}
+        isOpen={openedItem === element.index}
+        onOpen={onOpen(element.index)}
+        onClose={onClose}
+        formIndex={element.index}
+        {...element}
+      />
+    ))}
+  </div>
+))
 
 class ArrayFieldTemplate extends Component {
   static propTypes = {
@@ -15,7 +42,9 @@ class ArrayFieldTemplate extends Component {
     openedItem: 0,
   }
 
-  handleOpen = index => () => {
+  handleOpen = index => e => {
+    e.stopPropagation()
+
     this.setState({
       openedItem: index,
     })
@@ -27,27 +56,47 @@ class ArrayFieldTemplate extends Component {
     })
   }
 
+  handleSortStart = () => {
+    this.setState({
+      openedItem: -1,
+      sorting: true,
+    })
+  }
+
+  handleSortEnd = ({ oldIndex, newIndex }, e) => {
+    const { items } = this.props
+    const { onReorderClick } = items[oldIndex]
+
+    onReorderClick(oldIndex, newIndex)(e)
+
+    this.setState({
+      sorting: false,
+    })
+  }
+
   render() {
     const { items, onAddClick, canAdd, schema } = this.props
-    const { openedItem } = this.state
+    const { openedItem, sorting } = this.state
 
     return (
-      <div>
-        {items.map(element => (
-          <Fragment
-            key={element.index}
-          >
-            <ArrayFieldTemplateItem
-              schema={schema}
-              isOpen={openedItem === element.index}
-              onOpen={this.handleOpen(element.index)}
-              onClose={this.handleClose}
-              {...element}
-            />
-            <hr style={{ height: 1, backgroundColor: '#D8D8D8', border: 'none' }} />
-          </Fragment>
-        ))}
-        <div className="pt4 tc">
+      <Fragment>
+        <ArrayList
+          items={items}
+          sorting={sorting}
+          schema={schema}
+          openedItem={openedItem}
+          onOpen={this.handleOpen}
+          onClose={this.handleClose}
+          onSortStart={this.handleSortStart}
+          onSortEnd={this.handleSortEnd}
+          helperClass="accordion-item--dragged"
+          distance={5}
+          lockAxis="y"
+          lockToContainerEdges
+          getHelperDimensions={getHelperDimensions}
+          useDragHandle
+        />
+        <div className="pt4">
           {canAdd && (
             <Button
               variation="secondary"
@@ -58,7 +107,7 @@ class ArrayFieldTemplate extends Component {
             </Button>
           )}
         </div>
-      </div>
+      </Fragment>
     )
   }
 }

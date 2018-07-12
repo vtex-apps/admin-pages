@@ -1,14 +1,23 @@
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
-import { Button, IconArrowUp, IconArrowDown, IconDelete, IconCaretUp, IconCaretDown } from 'vtex.styleguide'
+import React, { Component } from 'react'
+import { SortableElement, SortableHandle } from 'react-sortable-hoc'
 
-export default class ArrayFieldTemplateItem extends Component {
+import TrashSimple from '../icons/TrashSimple'
+import DragHandle from '../icons/DragHandle'
+
+const stopPropagation = fn => e => {
+  e.stopPropagation()
+  return fn(e)
+}
+
+const Handle = SortableHandle(() => (
+  <DragHandle size={12} className="accordion-handle" />
+))
+
+class ArrayFieldTemplateItem extends Component {
   static propTypes = {
     children: PropTypes.node,
-    index: PropTypes.number,
-    hasMoveUp: PropTypes.bool,
-    hasMoveDown: PropTypes.bool,
-    onReorderClick: PropTypes.func,
+    formIndex: PropTypes.number,
     hasRemove: PropTypes.bool,
     onDropIndexClick: PropTypes.func,
     schema: PropTypes.object,
@@ -17,138 +26,54 @@ export default class ArrayFieldTemplateItem extends Component {
     onClose: PropTypes.func,
   }
 
-  state = {
-    isHovering: false,
-  }
-
-  container = React.createRef()
-
-  handleLabelClick = () => {
+  handleLabelClick = e => {
     const { isOpen, onOpen, onClose } = this.props
 
     if (isOpen) {
-      onClose()
+      onClose(e)
     } else {
-      onOpen()
+      onOpen(e)
     }
-  }
-
-  handleMouseEnter = () => {
-    this.setState({
-      isHovering: true,
-    })
-  }
-
-  handleMouseLeave = () => {
-    this.setState({
-      isHovering: false,
-    })
   }
 
   render() {
     const {
       children,
-      index,
-      hasMoveUp,
-      hasMoveDown,
-      onReorderClick,
+      schema,
+      formIndex,
       hasRemove,
       onDropIndexClick,
       isOpen,
     } = this.props
-    const { isHovering } = this.state
+
+    const title = children.props.formData.__editorItemTitle || schema.items.properties.__editorItemTitle.default
 
     return (
-      <div
-        ref={this.container}
-        style={{
-          transition: 'height 300ms ease-in-out, opacity 150ms ease-in-out',
-        }}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-      >
-        <div className="flex justify-between" style={{ minHeight: '40px' }}>
+      <div className="accordion-item bb b--light-silver">
+        <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
-            <span
-              className="f6"
-              style={{
-                padding: '3px 8px 3px 8px',
-                fontColor: '#727273',
-                fontWeight: 'bold',
-              }}
-            >
-              {index + 1}
-            </span>
-            <label
-              className="f6"
-              style={{
-                padding: '3px 8px 3px 8px',
-                font: '8px #727273',
-                fontWeight: 'bold',
-              }}
-            >
-              {children.props.schema.title}
+            <Handle />
+            <label className="f6 accordion-label-title">
+              {title}
             </label>
           </div>
-          <div className="flex items-center">
-            {isHovering && (
-              <Fragment>
-                {hasMoveDown && <button
-                  style={{
-                    padding: '3px',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                  onClick={onReorderClick(
-                    index,
-                    index + 1
-                  )}>
-                  <IconArrowDown size="12" color="#969799" />
-                </button>}
-                {hasMoveUp && <button
-                  style={{
-                    padding: '3px',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                  }}
-                  onClick={onReorderClick(
-                    index,
-                    index - 1
-                  )}>
-                  <IconArrowUp size="12" color="#969799" />
-                </button>}
-                {hasRemove && (
-                  <Button
-                    size="small"
-                    variation="tertiary"
-                    onClick={onDropIndexClick(index)}
-                  >
-                    <IconDelete size="15" color="#969799" />
-                  </Button>
-                )}
-              </Fragment>
+          <div className="flex items-center accordion-label-buttons">
+            {hasRemove && (
+              <button
+                className="accordion-icon-button accordion-icon-button--remove"
+                onClick={stopPropagation(onDropIndexClick(formIndex))}
+              >
+                <TrashSimple size="15" />
+              </button>
             )}
-            <span
-              onClick={this.handleLabelClick}
-              style={{
-                padding: '3px',
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              {isOpen ? (
-                <IconCaretUp size="12" color="#D8D8D8" />
-              ) : (
-                <IconCaretDown size="12" color="#D8D8D8" />
-              )}
-            </span>
           </div>
         </div>
-        {isOpen && children}
+        <div className="accordion-content">
+          {isOpen && children}
+        </div>
       </div>
     )
   }
 }
+
+export default SortableElement(ArrayFieldTemplateItem)

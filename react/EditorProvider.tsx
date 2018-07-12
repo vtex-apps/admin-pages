@@ -1,27 +1,15 @@
 import PropTypes from 'prop-types'
-import { difference, groupBy, prop, toPairs, uniq } from 'ramda'
+import { difference, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
+import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
+import { IconEdit } from 'vtex.styleguide'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
-import EditIcon from './images/EditIcon.js'
 import ShowIcon from './images/ShowIcon.js'
-
-const nativeConditions: Condition[] = [
-  {
-    id: 'CONDITIONS_DIA_DOS_NAMORADOS',
-    message: 'Dia dos Namorados',
-    multiple: true,
-    type: 'custom',
-  },
-  {
-    id: 'CONDITIONS_DIA_DOS_PAIS',
-    message: 'Dia dos Pais',
-    multiple: true,
-    type: 'custom',
-  }
-]
+import AvailableConditions from './queries/AvailableConditions.graphql'
+import TopbarButton from './TopbarButton'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -31,15 +19,16 @@ interface EditorProviderState {
   highlightTreePath: string | null
   showAdminControls: boolean
   scope: ConfigurationScope
-  device: ConfigurationDevice
+  template: string | null
 }
 
-class EditorProvider extends Component<{} & RenderContextProps, EditorProviderState> {
+class EditorProvider extends Component<{} & RenderContextProps & DataProps<{availableConditions: [Condition]}>, EditorProviderState> {
   public static contextTypes = {
     components: PropTypes.object,
   }
 
   public static propTypes = {
+    availableConditions: PropTypes.object,
     children: PropTypes.element.isRequired,
     runtime: PropTypes.object,
   }
@@ -48,14 +37,14 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     super(props)
 
     this.state = {
-      activeConditions: this.getDefaultActiveConditions(),
+      activeConditions: [],
       anyMatch: false,
-      device: 'any',
       editMode: false,
       editTreePath: null,
       highlightTreePath: null,
       scope: 'url',
       showAdminControls: true,
+      template: null,
     }
   }
 
@@ -101,62 +90,27 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
     this.setState({ showAdminControls })
   }
 
-  public getConditionsGroups = () => {
-    return groupBy<Condition>(prop('type'), nativeConditions)
-  }
-
-  public getDefaultActiveConditions = () => {
-    const conditionsGroups = this.getConditionsGroups()
-    return toPairs(conditionsGroups)
-      // get the value from the key/value pairs (i.e. the group itself)
-      .map(pair => pair[1])
-      // get the first item of each group
-      .map(group => group[0])
-      // excludes multiples
-      .filter(item => !item.multiple)
-      // returns the id of the first item of each remaining group
-      .map(item => item.id)
-  }
-
-  public findConditionsGroup = (conditionId: string) => {
-    const conditionsGroups = this.getConditionsGroups()
-    const group = toPairs(conditionsGroups)
-      .find(pair =>
-        pair[1].some(condition => condition.id === conditionId)
-      )
-
-    return group && group[1]
-  }
-
   public handleAddCondition = (conditionId: string) => {
-    const currentGroup = this.findConditionsGroup(conditionId)
-    const isMultiple = currentGroup ? currentGroup[0].multiple : false
-
-    let activeConditions
-
-    if(!isMultiple){
-      const externalConditions = difference(
-        this.state.activeConditions,
-        currentGroup ? currentGroup.map(condition=>condition.id) : []
-      )
-      activeConditions = externalConditions.concat(conditionId)
-    }else{
-      activeConditions = this.state.activeConditions.concat(conditionId)
-    }
-
-    this.setState({ activeConditions: uniq(activeConditions) })
+    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device: this.props.runtime.device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
+    })
   }
 
   public handleRemoveCondition = (conditionId: string) => {
-    const currentGroup = this.findConditionsGroup(conditionId)
-    const isMultiple = currentGroup ? currentGroup[0].multiple : false
-
-    if(!isMultiple){
-      return
-    }
-
     const activeConditions = difference(this.state.activeConditions, [conditionId])
-    this.setState({ activeConditions })
+    this.setState({ activeConditions }, () => {
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device: this.props.runtime.device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
+    })
   }
 
   public handleSetScope = (scope: ConfigurationScope) => {
@@ -164,7 +118,13 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 
   public handleSetDevice = (device: ConfigurationDevice) => {
-    this.setState({ device })
+    this.props.runtime.setDevice(device)
+    this.props.runtime.updateRuntime({
+      conditions: this.state.activeConditions,
+      device,
+      scope: this.state.scope,
+      template: this.state.template,
+    })
   }
 
   public render() {
@@ -182,8 +142,7 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
       activeConditions,
       addCondition: this.handleAddCondition,
       anyMatch,
-      conditions: nativeConditions,
-      device,
+      conditions: this.props.data.availableConditions || [],
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
@@ -201,11 +160,11 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
         type="button"
         onClick={this.handleToggleShowAdminControls}
         className={
-          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn'
+          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn white'
         }
         style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
       >
-        <EditIcon />
+        <IconEdit color="currentColor" solid />
       </button>
     )
 
@@ -220,17 +179,17 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
           }}
         >
           <ExtensionPoint id={`${root}/__topbar`}>
-            
             <button
               type="button"
               onClick={this.handleToggleShowAdminControls}
               className={
-                'bg-white bn link mh5 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
+                'bg-white bn link mr4 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
               }
             >
               <span className="pr5 br b--light-gray"><ShowIcon /></span>
             </button>
-            
+            <TopbarButton editor={editor} />
+
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
@@ -248,4 +207,4 @@ class EditorProvider extends Component<{} & RenderContextProps, EditorProviderSt
   }
 }
 
-export default EditorProvider
+export default graphql(AvailableConditions)(EditorProvider)
