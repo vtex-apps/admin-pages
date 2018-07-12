@@ -69,10 +69,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     return (
       <div
         id="sidebar-vtex"
-        className="left-0 z-1 h-100-s calc--height-ns w-18em-ns fixed"
-        style={{
-          paddingTop: 48,
-        }}
+        className="left-0 z-1 h-100-s pt8 calc--height-ns w-18em-ns fixed"
         >
         <nav
           id="admin-sidebar"
@@ -93,7 +90,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   public render() {
     const { runtime: { device }, visible } = this.props
     return (
-      <div className="w-100 flex flex-column flex-row-l flex-wrap-l pt8-s pt0-ns bg-white bb bw1 b--light-silver">
+      <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
         <div
           id="app-content"
