@@ -19,6 +19,7 @@ class MediaCenter extends React.Component {
   state = {
     currentTab: 1,
     isLoading: false,
+    error: false,
   }
 
   handleClearImage = () => {
@@ -34,7 +35,7 @@ class MediaCenter extends React.Component {
     const { uploadFile } = this.props
 
     if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ isLoading: true })
+      this.setState({ isLoading: true, error: false })
 
       try {
         const {
@@ -49,6 +50,7 @@ class MediaCenter extends React.Component {
           this.props.onChange(fileUrl)
         }
       } catch (e) {
+        this.setState({ error: true })
         console.log('Error: ', e)
       }
 
@@ -56,6 +58,7 @@ class MediaCenter extends React.Component {
     }
 
     if (rejectedFiles && rejectedFiles[0]) {
+      this.setState({ error: true })
       console.log(
         'Error: one or more files are not valid and, therefore, have not been uploaded.'
       )
@@ -65,12 +68,13 @@ class MediaCenter extends React.Component {
   handleTabChange = tabIndex => {
     this.setState({
       currentTab: tabIndex,
+      error: false,
     })
   }
 
   render() {
     const { value, disabled } = this.props
-    const { isLoading } = this.state
+    const { isLoading, error } = this.state
 
     const backgroundImageStyle = {
       backgroundImage: `url(${value})`,
@@ -123,10 +127,17 @@ class MediaCenter extends React.Component {
                             <Spinner />
                           ) : (
                             <Fragment>
-                              <div className="mb3">
-                                <ImageIcon stroke="#979899" />
-                              </div>
-                              <div className="mb5 f6 gray">
+                              {error ? (
+                                <div className="mb3 f4 fw5">
+                                  Something went wrong, please try again.
+                                </div>
+                              ) : (
+                                <div className="mb3">
+                                  <ImageIcon stroke="#979899" />
+                                </div>
+                              )}
+
+                              <div className="mb5 f6 mid-gray">
                                 Drag your image here or
                               </div>
                               <Button size="small" variation="primary">
