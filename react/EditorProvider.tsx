@@ -190,7 +190,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
               type="button"
               onClick={this.handleToggleEditMode}
               className={
-                'bg-white bn link pl3 pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
+                'bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn'
               }
             >
               <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? "#368df7" : "#979899"}/></span>
@@ -199,7 +199,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
               type="button"
               onClick={this.handleToggleShowAdminControls}
               className={
-                'bg-white bn link pl3 pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
+                'bg-white bn link pl3-ns pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
               }
             >
               <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>

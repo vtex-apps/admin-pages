@@ -77,7 +77,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     return (
       <div
         id="sidebar-vtex"
-        className="right-0 z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
+        className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
         >
         <nav
           id="admin-sidebar"
