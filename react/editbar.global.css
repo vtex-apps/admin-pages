@@ -257,6 +257,10 @@ html, body {
   padding-left: 26px;
 }
 
+.accordion-item--handle-hidden .accordion-label {
+  padding-left: 16px;
+}
+
 .accordion-item--dragged .accordion-label {
   box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, .2);
 }

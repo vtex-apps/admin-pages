@@ -24,6 +24,7 @@ const ArrayList = SortableContainer(({ items, schema, openedItem, onOpen, onClos
         onOpen={onOpen(element.index)}
         onClose={onClose}
         formIndex={element.index}
+        showDragHandle={items.length > 1}
         {...element}
       />
     ))}
@@ -74,8 +75,17 @@ class ArrayFieldTemplate extends Component {
     })
   }
 
+  handleAddItem = e => {
+    const { onAddClick, items } = this.props
+
+    onAddClick(e)
+    this.setState({
+      openedItem: items.length,
+    })
+  }
+
   render() {
-    const { items, onAddClick, canAdd, schema } = this.props
+    const { items, canAdd, schema } = this.props
     const { openedItem, sorting } = this.state
 
     return (
@@ -101,7 +111,7 @@ class ArrayFieldTemplate extends Component {
             <Button
               variation="secondary"
               size="small"
-              onClick={onAddClick}
+              onClick={this.handleAddItem}
             >
               + Add More
             </Button>

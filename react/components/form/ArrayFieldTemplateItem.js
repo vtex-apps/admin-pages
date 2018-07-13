@@ -24,6 +24,7 @@ class ArrayFieldTemplateItem extends Component {
     isOpen: PropTypes.bool,
     onOpen: PropTypes.func,
     onClose: PropTypes.func,
+    showDragHandle: PropTypes.bool,
   }
 
   handleLabelClick = e => {
@@ -44,15 +45,16 @@ class ArrayFieldTemplateItem extends Component {
       hasRemove,
       onDropIndexClick,
       isOpen,
+      showDragHandle,
     } = this.props
 
     const title = children.props.formData.__editorItemTitle || schema.items.properties.__editorItemTitle.default
 
     return (
-      <div className="accordion-item bb b--light-silver">
+      <div className={`accordion-item bb b--light-silver ${showDragHandle ? '' : 'accordion-item--handle-hidden'}`}>
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
-            <Handle />
+            {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
               {title}
             </label>
