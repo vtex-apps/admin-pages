@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { SortableElement, SortableHandle } from 'react-sortable-hoc'
+import { Transition } from 'react-spring'
 
 import TrashSimple from '../icons/TrashSimple'
 import DragHandle from '../icons/DragHandle'
@@ -37,6 +38,16 @@ class ArrayFieldTemplateItem extends Component {
     }
   }
 
+  renderChildren = styles => {
+    const { children } = this.props
+
+    return (
+      <div style={styles}>
+        {children}
+      </div>
+    )
+  }
+
   render() {
     const {
       children,
@@ -65,13 +76,22 @@ class ArrayFieldTemplateItem extends Component {
                 className="accordion-icon-button accordion-icon-button--remove"
                 onClick={stopPropagation(onDropIndexClick(formIndex))}
               >
-                <TrashSimple size="15" />
+                <TrashSimple size={15} />
               </button>
             )}
           </div>
         </div>
-        <div className="accordion-content">
-          {isOpen && children}
+        <div
+          className={`accordion-content ${isOpen ? 'accordion-content--open' : ''}`}
+        >
+          {isOpen && (
+            <Transition
+              from={{ opacity: 0, height: 0 }}
+              enter={{ opacity: 1, height: 'auto' }}
+              leave={{ opacity: 0, height: 0 }}
+              render={this.renderChildren}
+            />
+          )}
         </div>
       </div>
     )
