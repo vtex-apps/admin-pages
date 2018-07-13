@@ -211,6 +211,12 @@ html, body {
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
 }
 
+.tablet-preview {
+  width: 768px;
+  overflow-x: hidden;
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
+}
+
 .stroke-blue {
   stroke: #368DF7;
 }

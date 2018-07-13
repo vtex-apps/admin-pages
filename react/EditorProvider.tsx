@@ -10,6 +10,8 @@ import { EditorContext } from './components/EditorContext'
 import ShowIcon from './images/ShowIcon.js'
 import SelectionIcon from './images/SelectionIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
+import DeviceSwitcher from './components/DeviceSwitcher'
+import Draggable from 'react-draggable'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -156,17 +158,21 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       toggleEditMode: this.handleToggleEditMode,
     }
 
-    const adminControlsToggle = showAdminControls ? null : (
-      <button
-        type="button"
-        onClick={this.handleToggleShowAdminControls}
-        className={
-          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn white'
-        }
-        style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
-      >
-        <IconEdit color="currentColor" solid />
-      </button>
+    const adminControlsToggle =
+      <Draggable bounds='body'>
+        <div className="draggable animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns"
+          style={
+            {
+              width: '350px',
+              animationDuration: '0.633s',
+              visibility: `${showAdminControls?'hidden':'visible'}`,
+              transition: `visibility 600ms step-start ${showAdminControls?'':'600ms'}`
+            }
+          }
+          >
+          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} runtime={runtime} editor={editor} devices={['mobile', 'tablet', 'desktop'] as any} />
+        </div>
+      </Draggable>
     )
 
     const childrenWithSidebar = (

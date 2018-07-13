@@ -19,6 +19,14 @@ const getContainerProps = (layout: ConfigurationDevice) => {
           transition: `width 660ms`,
         },
       }
+    case 'tablet':
+      return {
+        className: 'tablet-preview center',
+        style: {
+          animationDuration: '0.2s',
+          transition: `width 660ms`,
+        },
+      }
     default:
       return {
         className: 'w-100 center',
