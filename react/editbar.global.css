@@ -331,6 +331,10 @@ html, body {
   display: block;
 }
 
+.accordion-content {
+  overflow: hidden;
+}
+
 .accordion-item--dragged .accordion-content {
   display: none;
 }
