@@ -1,0 +1,6 @@
+query AvailableTemplates($routeId: String, $renderMajor: Int){
+  availableTemplates(routeId: $routeId, renderMajor: $renderMajor, production: false) {
+    name,
+    context,
+  }
+}

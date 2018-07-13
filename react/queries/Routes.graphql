@@ -1,10 +1,9 @@
-query Pages{
-  pages {
+query Routes{
+  routes {
     declarer
     name
     path
-    auth
     cname
-    theme
+    context
   }
 }

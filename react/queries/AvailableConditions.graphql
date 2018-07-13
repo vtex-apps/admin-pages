@@ -1,0 +1,5 @@
+query AvailableConditions {
+  availableConditions {
+    conditionId
+  }
+}
