@@ -84,14 +84,14 @@ class ArrayFieldTemplateItem extends Component {
         <div
           className={`accordion-content ${isOpen ? 'accordion-content--open' : ''}`}
         >
-          {isOpen && (
-            <Transition
-              from={{ opacity: 0, height: 0 }}
-              enter={{ opacity: 1, height: 'auto' }}
-              leave={{ opacity: 0, height: 0 }}
-              render={this.renderChildren}
-            />
-          )}
+          <Transition
+            keys={isOpen ? ['children'] : []}
+            from={{ opacity: 0, height: 0 }}
+            enter={{ opacity: 1, height: 'auto' }}
+            leave={{ opacity: 0, height: 0 }}
+          >
+            {isOpen ? [this.renderChildren] : []}
+          </Transition>
         </div>
       </div>
     )
