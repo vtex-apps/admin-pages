@@ -3,7 +3,6 @@ import { difference, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
-import { IconEdit } from 'vtex.styleguide'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
@@ -47,6 +46,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       scope: 'url',
       showAdminControls: true,
       template: null,
+      viewport: 'desktop'
     }
   }
 
@@ -120,8 +120,18 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     this.setState({ scope })
   }
 
+  public getViewport = (device: ConfigurationDevice) => {
+    switch (device) {
+      case 'any':
+        return 'desktop'
+      default:
+        return device
+    }
+  }
+
   public handleSetDevice = (device: ConfigurationDevice) => {
     this.props.runtime.setDevice(device)
+    this.handleSetViewport(this.getViewport(device))
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
@@ -130,9 +140,13 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     })
   }
 
+  public handleSetViewport = (viewport: Viewport) => {
+    this.setState({ viewport })
+  }
+
   public render() {
-    const { children, runtime, runtime: { page } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, device, scope } = this.state
+    const { children, runtime, runtime: { page, device } } = this.props
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, scope, viewport} = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -153,24 +167,36 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       mouseOverExtensionPoint: this.mouseOverExtensionPoint,
       removeCondition: this.handleRemoveCondition,
       scope,
+      viewport,
       setDevice: this.handleSetDevice,
+      setViewport: this.handleSetViewport,
       setScope: this.handleSetScope,
       toggleEditMode: this.handleToggleEditMode,
     }
 
-    const adminControlsToggle =
+    const getAvailableViewports = (device: ConfigurationDevice) => {
+      switch (device) {
+        case 'mobile':
+          return ['mobile', 'tablet']
+        case 'desktop':
+          return []
+        default:
+          return ['mobile', 'tablet', 'desktop']
+      }
+    }
+
+    const adminControlsToggle = (
       <Draggable bounds='body'>
-        <div className="draggable animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns"
+        <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns"
           style={
             {
-              width: '350px',
-              animationDuration: '0.633s',
+              animationDuration: '0.6s',
               visibility: `${showAdminControls?'hidden':'visible'}`,
               transition: `visibility 600ms step-start ${showAdminControls?'':'600ms'}`
             }
           }
           >
-          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} runtime={runtime} editor={editor} devices={['mobile', 'tablet', 'desktop'] as any} />
+          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} />
         </div>
       </Draggable>
     )
