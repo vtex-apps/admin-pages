@@ -69,10 +69,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     return (
       <div
         id="sidebar-vtex"
-        className="left-0 z-1 h-100-s calc--height-ns w-18em-ns fixed"
-        style={{
-          paddingTop: 48,
-        }}
+        className="left-0 z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
         >
         <nav
           id="admin-sidebar"
@@ -81,7 +78,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
             transform: `translate(${visible?'0%':'-100%'}, 0)`,
             transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
           }}
-          className="transition animated fadeIn b--light-silver bw1 fixed z-2 h-100-s calc--height-ns overflow-x-hidden fixed absolute-m top-3em w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
+          className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
           <div className="h-100 overflow-y-scroll">
             {this.renderSideBarContent()}
           </div>
@@ -93,7 +90,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   public render() {
     const { runtime: { device }, visible } = this.props
     return (
-      <div className="w-100 flex flex-column flex-row-l flex-wrap-l pt8-s pt0-ns bg-white bb bw1 b--light-silver">
+      <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
         <div
           id="app-content"
