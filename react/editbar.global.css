@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
   height: 100%;
 }
 
-.track-1{
+.track-1 {
   letter-spacing: 0.2px;
 }
 
@@ -24,9 +25,9 @@ html, body {
 }
 
 .shadow-editor {
-  -webkit-box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.25);
-  -moz-box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.25);
-  box-shadow: 0px -2px 1px 0px rgba(0,0,0,0.25);
+  -webkit-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.25);
 }
 
 .form-group {
@@ -35,8 +36,8 @@ html, body {
 }
 
 .form-group.field.field-object > label {
-  border-top: 2px solid #F0F2F4;
-  color: #C3C4C5;
+  border-top: 2px solid #f0f2f4;
+  color: #c3c4c5;
   font-weight: 700;
   margin-top: 10px;
   padding: 20px 0px 5px;
@@ -72,12 +73,12 @@ html, body {
 }
 
 .form-control {
-  border: 2px solid #E1E3E5;
+  border: 2px solid #e1e3e5;
   height: 40px;
   width: 100%;
   font-size: 14px;
   padding-left: 12px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 
 .draggable {
@@ -156,9 +157,9 @@ html, body {
     max-width: 450px;
   }
   .shadow-editor-desktop {
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
-    box-shadow: 0px 4px 10px 0px rgba(86,88,107,0.5);
+    -webkit-box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
+    -moz-box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
+    box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
   }
 }
 
@@ -208,17 +209,17 @@ html, body {
 .mobile-preview {
   width: 360px;
   overflow-x: hidden;
-  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .tablet-preview {
   width: 768px;
   overflow-x: hidden;
-  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .stroke-blue {
-  stroke: #368DF7;
+  stroke: #368df7;
 }
 
 .stroke-mid-gray {
@@ -226,11 +227,15 @@ html, body {
 }
 
 .fill-blue {
-  fill: #368DF7;
+  fill: #368df7;
 }
 
 .fill-mid-gray {
   fill: #727273;
+}
+
+.vtex-page-editor__media-center {
+  height: 35vh;
 }
 
 .accordion-list-container--sorting .accordion-item {
@@ -259,7 +264,7 @@ html, body {
 
 .accordion-item--dragged .accordion-label,
 .accordion-label:hover {
-  background-color: #F2F4F5;
+  background-color: #f2f4f5;
   padding-left: 26px;
 }
 
@@ -268,11 +273,7 @@ html, body {
 }
 
 .accordion-item--dragged .accordion-label {
-  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, .2);
-}
-
-.accordion-item--dragged .accordion-content {
-  display: none;
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .accordion-label-buttons {
@@ -316,21 +317,30 @@ html, body {
 
 .accordion-icon-button:hover .editor-icon--stroke path,
 .accordion-icon-button:hover .editor-icon--stroke circle {
-  stroke: #368DF7;
+  stroke: #368df7;
 }
 
 .accordion-icon-button:hover .editor-icon--fill path,
 .accordion-icon-button:hover .editor-icon--fill circle {
-  fill: #368DF7;
+  fill: #368df7;
 }
 
 .accordion-handle {
   display: none;
   position: absolute;
-  left: 8px;
+  left: 5px;
+  padding: 3px;
 }
 
 .accordion-item--dragged .accordion-handle,
 .accordion-label:hover .accordion-handle {
   display: block;
+}
+
+.accordion-content {
+  overflow: hidden;
+}
+
+.accordion-item--dragged .accordion-content {
+  display: none;
 }

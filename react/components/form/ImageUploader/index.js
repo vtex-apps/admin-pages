@@ -2,13 +2,10 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import { Button, Spinner } from 'vtex.styleguide'
-
-import ImageIcon from '../../../images/ImageIcon'
+import { Button } from 'vtex.styleguide'
+import MediaCenter from './MediaCenter'
 import UploadFile from '../../../queries/UpdateFile.gql'
-
-import Dropzone from './Dropzone'
-import ErrorAlert from './ErrorAlert'
+import ImageIcon from '../../../images/ImageIcon'
 
 const GRADIENT_STYLES = {
   background:
@@ -22,59 +19,24 @@ const GRADIENT_STYLES = {
 }
 
 class ImageUploader extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      error: null,
-      isLoading: false,
-    }
+  state = {
+    isLoading: false,
+    isModalOpen: false,
   }
 
-  handleImageDrop = async acceptedFiles => {
-    const { uploadFile } = this.props
-
-    if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ isLoading: true })
-
-      try {
-        const {
-          data: {
-            uploadFile: { fileUrl },
-          },
-        } = await uploadFile({
-          variables: { file: acceptedFiles[0] },
-        })
-
-        if (fileUrl) {
-          this.props.onChange(fileUrl)
-          this.setState({ isLoading: false })
-        }
-      } catch (e) {
-        this.setState({
-          error: 'Something went wrong. Please try again.',
-          isLoading: false,
-        })
-      }
-    } else {
-      this.setState({
-        error:
-          'File exceeds the size limit of 4MB. Please choose a smaller one.',
-      })
-    }
+  handleOpenModal = () => {
+    this.setState({ isModalOpen: true })
   }
 
-  handleErrorReset = () => {
-    this.setState({ error: null })
+  handleCloseModal = () => {
+    this.setState({ isModalOpen: false })
   }
 
   render() {
     const {
-      disabled,
       schema: { title },
       value,
     } = this.props
-    const { error, isLoading } = this.state
 
     const FieldTitle = () => (
       <FormattedMessage id={title}>
@@ -83,77 +45,52 @@ class ImageUploader extends Component {
     )
 
     const backgroundImageStyle = {
+      minHeight: '200px',
       backgroundImage: `url(${value})`,
-    }
-
-    if (value) {
-      return (
-        <Fragment>
-          <FieldTitle />
-          <Dropzone
-            disabled={disabled || isLoading}
-            extraClasses={
-              !isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'
-            }
-            onClick={this.handleErrorReset}
-            onDrop={this.handleImageDrop}
-          >
-            {isLoading ? (
-              <div className="w-100 h-100 flex justify-center items-center">
-                <Spinner />
-              </div>
-            ) : (
-              <div
-                className="w-100 h-100 relative bg-center contain"
-                style={backgroundImageStyle}
-              >
-                <div
-                  className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-                  style={GRADIENT_STYLES}
-                >
-                  <Fragment>
-                    <div className="flex justify-center mb3">
-                      <ImageIcon stroke="#fff" />
-                    </div>
-                    <span className="white">Change image</span>
-                  </Fragment>
-                </div>
-              </div>
-            )}
-          </Dropzone>
-          {error && <ErrorAlert message={error} />}
-        </Fragment>
-      )
+      backgroundPosition: 'center',
     }
 
     return (
       <Fragment>
         <FieldTitle />
-        <Dropzone
-          disabled={disabled || isLoading}
-          extraClasses={`ba bw1 b--dashed b--light-gray ${
-            !isLoading ? 'cursor' : ''
-            }`}
-          onClick={this.handleErrorReset}
-          onDrop={this.handleImageDrop}
-        >
-          <div className="h-100 flex flex-column justify-center items-center">
-            {isLoading ? (
-              <Spinner />
-            ) : (
+        {value ? (
+          <div
+            className="flex flex-column justify-center items-center border-box bw1 br2 b--solid outline-0 near-black b--light-gray hover-b--silver bg-white relative bg-center contain"
+            style={backgroundImageStyle}
+            onClick={() => this.handleOpenModal()}
+          >
+            <div
+              className="w-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
+              style={GRADIENT_STYLES}
+            >
               <Fragment>
-                <div className="mb3">
-                  <ImageIcon />
+                <div className="flex justify-center mb3">
+                  <ImageIcon stroke="#FFF" />
                 </div>
-                <div className="mb5 f6 tc gray">Drag your image here</div>
-                <Button size="small" variation="secondary">
-                  Upload
-              </Button>
+                <span className="white">Change image</span>
               </Fragment>
-            )}
+            </div>
           </div>
-        </Dropzone>
-        {error && <ErrorAlert message={error} />}
+        ) : (
+          <div
+            className="flex flex-column justify-center items-center border-box bw1 br2 b--solid outline-0 near-black b--light-gray hover-b--silver bg-white"
+            style={backgroundImageStyle}
+          >
+            <Button
+              size="small"
+              variation="secondary"
+              onClick={() => this.handleOpenModal()}
+            >
+              Add Image
+            </Button>
+          </div>
+        )}
+
+        <MediaCenter
+          isModalOpen={this.state.isModalOpen}
+          closeModal={() => this.handleCloseModal()}
+          {...this.props}
+        />
       </Fragment>
     )
   }
