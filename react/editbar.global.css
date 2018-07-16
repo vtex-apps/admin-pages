@@ -323,7 +323,8 @@ html, body {
 .accordion-handle {
   display: none;
   position: absolute;
-  left: 8px;
+  left: 5px;
+  padding: 3px;
 }
 
 .accordion-item--dragged .accordion-handle,
