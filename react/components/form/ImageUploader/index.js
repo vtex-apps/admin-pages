@@ -8,6 +8,7 @@ import UploadFile from '../../../queries/UpdateFile.gql'
 import ImageIcon from '../../../images/ImageIcon'
 
 const GRADIENT_STYLES = {
+  minHeight: '50px',
   background:
     '-moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
   background:
@@ -59,17 +60,18 @@ class ImageUploader extends Component {
             style={backgroundImageStyle}
             onClick={() => this.handleOpenModal()}
           >
-            <div
-              className="w-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-              style={GRADIENT_STYLES}
-            >
-              <Fragment>
+            <div className="w-100 absolute br2 flex flex-column items-center justify-center">
+              <div className="relative">
                 <div className="flex justify-center mb3">
                   <ImageIcon stroke="#FFF" />
                 </div>
                 <span className="white">Change image</span>
-              </Fragment>
+              </div>
             </div>
+            <div
+              className="w-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
+              style={GRADIENT_STYLES}
+            />
           </div>
         ) : (
           <div
