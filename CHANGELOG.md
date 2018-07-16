@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
-- MediaCenter to the image upload on `ComponentEditor`
+- Media Center to the image upload on `ComponentEditor`
 ### Changed
 - Accordion behavior on the array fields.
 - Animation on accordion items.
