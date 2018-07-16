@@ -72,6 +72,8 @@ declare global {
     conditionId: string
   }
 
+  type Viewport = 'desktop' | 'mobile' | 'tablet'
+
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
   type ConfigurationScope = 'url' | 'route' | 'template' | 'site'
@@ -89,8 +91,10 @@ declare global {
     editTreePath: string | null
     highlightTreePath: string | null
     scope: ConfigurationScope
-    setDevice: (device: ConfigurationDevice) => void,
+    viewport: Viewport
+    setDevice: (device: ConfigurationDevice) => void
     setScope: (scope: ConfigurationScope) => void
+    setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
     mouseOverExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void

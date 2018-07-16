@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - MediaCenter to the image upload on `ComponentEditor`
 ### Changed
 - Accordion behavior on the array fields.
+- Animation on accordion items.
 
 ## [1.10.0] - 2018-6-28
 ### Changed

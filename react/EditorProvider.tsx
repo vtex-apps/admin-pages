@@ -3,13 +3,14 @@ import { difference, uniq } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
-import { IconEdit } from 'vtex.styleguide'
 
 import EditBar from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
 import ShowIcon from './images/ShowIcon.js'
+import SelectionIcon from './images/SelectionIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
-import TopbarButton from './TopbarButton'
+import DeviceSwitcher from './components/DeviceSwitcher'
+import Draggable from 'react-draggable'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -45,6 +46,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       scope: 'url',
       showAdminControls: true,
       template: null,
+      viewport: 'desktop'
     }
   }
 
@@ -81,13 +83,14 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public handleToggleShowAdminControls = () => {
     const showAdminControls = !this.state.showAdminControls
+    const editMode = false
 
     Array.prototype.forEach.call(
       document.getElementsByClassName('render-container'),
       (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
     )
 
-    this.setState({ showAdminControls })
+    this.setState({ showAdminControls, editMode })
   }
 
   public handleAddCondition = (conditionId: string) => {
@@ -117,8 +120,18 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     this.setState({ scope })
   }
 
+  public getViewport = (device: ConfigurationDevice) => {
+    switch (device) {
+      case 'any':
+        return 'desktop'
+      default:
+        return device
+    }
+  }
+
   public handleSetDevice = (device: ConfigurationDevice) => {
     this.props.runtime.setDevice(device)
+    this.handleSetViewport(this.getViewport(device))
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
@@ -127,9 +140,13 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     })
   }
 
+  public handleSetViewport = (viewport: Viewport) => {
+    this.setState({ viewport })
+  }
+
   public render() {
-    const { children, runtime, runtime: { page } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, device, scope } = this.state
+    const { children, runtime, runtime: { page, device } } = this.props
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, scope, viewport} = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -150,22 +167,38 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       mouseOverExtensionPoint: this.mouseOverExtensionPoint,
       removeCondition: this.handleRemoveCondition,
       scope,
+      viewport,
       setDevice: this.handleSetDevice,
+      setViewport: this.handleSetViewport,
       setScope: this.handleSetScope,
       toggleEditMode: this.handleToggleEditMode,
     }
 
-    const adminControlsToggle = showAdminControls ? null : (
-      <button
-        type="button"
-        onClick={this.handleToggleShowAdminControls}
-        className={
-          'bg-blue br-100 bn shadow-1 flex items-center justify-center z-max fixed top-1 top-2-ns left-1 left-2-ns pointer grow hover-bg-heavy-blue animated fadeIn white'
-        }
-        style={{ height: '56px', width: '56px', animationDuration: '0.2s' }}
-      >
-        <IconEdit color="currentColor" solid />
-      </button>
+    const getAvailableViewports = (device: ConfigurationDevice) => {
+      switch (device) {
+        case 'mobile':
+          return ['mobile', 'tablet']
+        case 'desktop':
+          return []
+        default:
+          return ['mobile', 'tablet', 'desktop']
+      }
+    }
+
+    const adminControlsToggle = (
+      <Draggable bounds='body'>
+        <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns"
+          style={
+            {
+              animationDuration: '0.6s',
+              visibility: `${showAdminControls?'hidden':'visible'}`,
+              transition: `visibility 600ms step-start ${showAdminControls?'':'600ms'}`
+            }
+          }
+          >
+          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} />
+        </div>
+      </Draggable>
     )
 
     const childrenWithSidebar = (
@@ -181,15 +214,22 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
           <ExtensionPoint id={`${root}/__topbar`}>
             <button
               type="button"
-              onClick={this.handleToggleShowAdminControls}
+              onClick={this.handleToggleEditMode}
               className={
-                'bg-white bn link mr4 pl3 pv3 flex items-center justify-center z-max pointer animated fadeIn'
+                'bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn'
               }
             >
-              <span className="pr5 br b--light-gray"><ShowIcon /></span>
+              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? "#368df7" : "#979899"}/></span>
             </button>
-            <TopbarButton editor={editor} />
-
+            <button
+              type="button"
+              onClick={this.handleToggleShowAdminControls}
+              className={
+                'bg-white bn link pl3-ns pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
+              }
+            >
+              <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
+            </button>
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>

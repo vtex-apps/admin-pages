@@ -188,7 +188,7 @@ body {
   }
 
   .admin-sidebar {
-    border-right: 2px solid #f2f4f5;
+    border-left: 2px solid #f2f4f5;
     overflow-y: hidden;
     overflow-x: hidden;
   }
@@ -208,6 +208,12 @@ body {
 
 .mobile-preview {
   width: 360px;
+  overflow-x: hidden;
+  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.tablet-preview {
+  width: 768px;
   overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -262,12 +268,12 @@ body {
   padding-left: 26px;
 }
 
-.accordion-item--dragged .accordion-label {
-  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
+.accordion-item--handle-hidden .accordion-label {
+  padding-left: 16px;
 }
 
-.accordion-item--dragged .accordion-content {
-  display: none;
+.accordion-item--dragged .accordion-label {
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
 }
 
 .accordion-label-buttons {
@@ -322,10 +328,19 @@ body {
 .accordion-handle {
   display: none;
   position: absolute;
-  left: 8px;
+  left: 5px;
+  padding: 3px;
 }
 
 .accordion-item--dragged .accordion-handle,
 .accordion-label:hover .accordion-handle {
   display: block;
+}
+
+.accordion-content {
+  overflow: hidden;
+}
+
+.accordion-item--dragged .accordion-content {
+  display: none;
 }

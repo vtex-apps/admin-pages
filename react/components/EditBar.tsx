@@ -19,6 +19,14 @@ const getContainerProps = (layout: ConfigurationDevice) => {
           transition: `width 660ms`,
         },
       }
+    case 'tablet':
+      return {
+        className: 'tablet-preview center',
+        style: {
+          animationDuration: '0.2s',
+          transition: `width 660ms`,
+        },
+      }
     default:
       return {
         className: 'w-100 center',
@@ -69,13 +77,13 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     return (
       <div
         id="sidebar-vtex"
-        className="left-0 z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
+        className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
         >
         <nav
           id="admin-sidebar"
           style={{
             animationDuration: '0.333s',
-            transform: `translate(${visible?'0%':'-100%'}, 0)`,
+            transform: `translate(${visible?'0%':'+100%'}, 0)`,
             transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
           }}
           className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
@@ -88,15 +96,15 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   }
 
   public render() {
-    const { runtime: { device }, visible } = this.props
+    const { editor: { viewport }, visible } = this.props
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
         <div
           id="app-content"
-          className={`bg-light-silver h-100 z-0 center-m right-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
+          className={`bg-light-silver h-100 z-0 center-m left-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
           <main
-            {...getContainerProps(device)}
+            {...getContainerProps(viewport)}
             role="main">
             {this.props.children}
           </main>
