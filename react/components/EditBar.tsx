@@ -81,7 +81,6 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
         style={{
           animationDuration: '0.333s',
           transform: `translate(${visible?'0%':'+100%'}, 0)`
-          visibility: `${visible?'visible':'hidden'}`
           transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
         }}
         >
