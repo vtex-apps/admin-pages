@@ -265,10 +265,13 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           translatedSchema.minItems = 1
         }
 
-        translatedSchema.items.properties.__editorItemTitle = {
-          default: translatedSchema.items.title,
-          title: 'Item title',
-          type: 'string',
+        translatedSchema.items.properties = {
+          __editorItemTitle: {
+            default: translatedSchema.items.title,
+            title: 'Item title',
+            type: 'string',
+          },
+          ...translatedSchema.items.properties,
         }
       }
 
