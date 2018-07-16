@@ -72,7 +72,7 @@ class MediaCenter extends React.Component {
     return (
       <div className="vtex-images-modal">
         <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <div style={{ width: '45vw', height: '45vh' }}>
+          <div style={{ width: '45vw', height: '45vh', maxWidth: '100%' }}>
             <Tabs>
               <Tab
                 label="Media upload"
