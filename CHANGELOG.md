@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Incorrect type of the max, min and value attibutes passed to the `Input`.
+
 ### Changed
 - Accordion behavior on the array fields.
 - Animation on accordion items.
