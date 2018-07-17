@@ -39,9 +39,9 @@ const BaseInput = props => {
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
-      label={<FormattedMessage id={label}/>}
-      max={max}
-      min={min}
+      label={<FormattedMessage id={label} />}
+      max={`${max}`}
+      min={`${min}`}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
@@ -49,7 +49,7 @@ const BaseInput = props => {
       readOnly={readonly || schema.readonly}
       required={required}
       type={type}
-      value={value}
+      value={value ? `${value}` : value}
     />
   )
 }
