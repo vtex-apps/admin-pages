@@ -1,6 +1,0 @@
-query Page($page: String, $locale: String){
-  page(page: $page, production: false, locale: $locale, query: "{}", params: "{}", renderMajor: 7) {
-    pagesJSON,
-    extensionsJSON,
-  }
-}

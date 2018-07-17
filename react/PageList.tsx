@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
-import { filter, sort } from 'ramda'
+import { filter, flatten, init, last, sort } from 'ramda'
 import React, { Component } from 'react'
-import { DataProps, graphql } from 'react-apollo'
+import { compose, DataProps, graphql } from 'react-apollo'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
+import PageEditor from './components/PageEditor'
 import ShareIcon from './images/ShareIcon'
+import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Routes from './queries/Routes.graphql'
 
 interface PageData {
@@ -26,7 +28,6 @@ class PageList extends Component<DataProps<PageData>> {
   }
 
   public componentDidMount() {
-    this.context.prefetchPage('admin/pages/detail')
     this.toggleLoading()
   }
 
@@ -35,12 +36,12 @@ class PageList extends Component<DataProps<PageData>> {
   }
 
   public toggleLoading = () => {
-    this.props.data.loading ? this.context.startLoading() : this.context.stopLoading()
+    this.props.templates.loading || this.props.routes.loading ? this.context.startLoading() : this.context.stopLoading()
   }
 
   public renderPageListEntry = (route: Route) => (
-    <tr className="striped--near-white" key={route.name}>
-      <td className="pv4 ph3 w-10">{route.name}</td>
+    <tr className="striped--near-white" key={route.id}>
+      <td className="pv4 ph3 w-10">{route.id}</td>
       <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{route.path}</td>
       <td className="pv4 ph3 w-10" >
         Default
@@ -48,7 +49,7 @@ class PageList extends Component<DataProps<PageData>> {
       <td className="pv4 ph3 w-10 gray">(none)</td>
       <td className="pa4 w-10 v-align-center">
         <div className="flex justify-between">
-          <Link to={`/admin/pages/page/${route.name}`}>
+          <Link to={`/admin/pages/page/${route.id}/Default`}>
             <Button variation="primary" size="small">
               <div className="flex">Settings</div>
             </Button>
@@ -63,22 +64,13 @@ class PageList extends Component<DataProps<PageData>> {
     </tr>
   )
 
-  public render() {
-    const { data: { loading, routes = [] }, children } = this.props
-
-    const isStore = (page: Route) => page.name.startsWith('store')
-
-    const storePages = filter(isStore, routes)
-    const sortedPages = sort<Route>((a: Route, b: Route) => {
-      return a.name.localeCompare(b.name)
-    }, storePages)
-
-    const pageList = (
+  public renderPageList(routes: Route[]) {
+    return (
       <div>
         <div className="flex justify-between items-center mb4">
           <h1>Pages</h1>
           <div>
-            <Link to="pages/page/new">
+            <Link to="page/new">
               <Button size="small" variation="primary">New page</Button>
             </Link>
           </div>
@@ -102,21 +94,73 @@ class PageList extends Component<DataProps<PageData>> {
               </th>
             </tr>
             {
-              sortedPages.map(this.renderPageListEntry)
+              flatten(routes.map(this.renderPageListEntry))
             }
           </tbody>
         </table>
       </div>
     )
+  }
 
-    const spinner = loading && <span>Loading...</span>
+  public renderPageDetail(routeId: string, name: string, routes: Route[], templates: Template[]) {
+    return (
+      <PageEditor
+        routes={routes}
+        templates={templates}
+        routeId={name === 'new' ? null : routeId}
+        name={name === 'new' ? null : name}
+      />
+    )
+  }
+
+  public render() {
+    const {
+      templates: { loading: loadingTemplates, availableTemplates: templates = [] },
+      routes: { loading: loadingRoutes, routes = [] },
+      params: { pageId },
+    } = this.props
+
+    const segments: string[] = pageId && pageId.split('/')
+    const routeId = pageId && init(segments).join('/')
+    const name = pageId && last(segments)
+
+    console.log('render', routeId, name, routes, templates)
+
+    const isStore = (route: Route) => route.id.startsWith('store')
+
+    const storeRoutes = filter(isStore, routes)
+
+    const sortedRoutes = sort<Route>((a: Route, b: Route) => {
+      return a.id.localeCompare(b.id)
+    }, storeRoutes)
+
+    const isViewingPage = !!pageId
+
+    const pageDetail = isViewingPage && this.renderPageDetail(routeId, name!, routes, templates)
+
+    const pageList = !isViewingPage && this.renderPageList(sortedRoutes)
+
+    const spinner = (loadingTemplates || loadingRoutes) && <span>Loading...</span>
 
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">
-        {spinner || children || pageList}
+        {spinner || pageDetail || pageList}
       </div>
     )
   }
 }
 
-export default graphql(Routes)(PageList)
+export default compose(
+  graphql(AvailableTemplates, {
+    name: 'templates',
+    options: () => ({
+      variables: {
+        renderMajor: 7,
+        routeId: null,
+      },
+    }),
+  }),
+  graphql(Routes, {
+    name: 'routes',
+  })
+)(PageList)
