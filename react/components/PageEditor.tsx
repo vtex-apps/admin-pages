@@ -153,11 +153,13 @@ class PageEditor extends Component<any, any> {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name, template, path, routeId, device, context, slug } = this.state
+    const { name, template, path, routeId, device, context, slug, department, category, subcategory } = this.state
     let paramsJSON
 
     if (slug) {
       paramsJSON = JSON.stringify({slug})
+    } else if (department || category || subcategory) {
+      paramsJSON = JSON.stringify({department, category, subcategory})
     }
 
     savePage({
@@ -206,14 +208,17 @@ class PageEditor extends Component<any, any> {
   public render() {
     const { routes, templates } = this.props
     const {
+      category,
       context,
       declarer,
+      department,
       name,
       path,
       routeId,
       selectedRouteId,
-      template,
       slug,
+      subcategory,
+      template,
     } = this.state
 
     const templateIds = templates
@@ -258,6 +263,23 @@ class PageEditor extends Component<any, any> {
       }
     }
 
+    if (context === 'vtex.store@1.x/ProductSearchContextProvider' && !declarer) {
+      schema.properties.department = {
+        title: 'Department',
+        type: 'string',
+      }
+
+      schema.properties.category = {
+        title: 'Category',
+        type: 'string',
+      }
+
+      schema.properties.subcategory = {
+        title: 'Subcategory',
+        type: 'string',
+      }
+    }
+
     const availableRoutes = sortedRoutes && (
       <StyleguideDropdown
         label="Route type"
@@ -291,11 +313,14 @@ class PageEditor extends Component<any, any> {
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={{
+            category,
             context,
+            department,
             name,
             path,
             routeId,
             slug,
+            subcategory,
             template,
           }}
           ObjectFieldTemplate={ObjectFieldTemplate}
