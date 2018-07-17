@@ -49,6 +49,12 @@ interface ComponentEditorState {
   mode: ComponentEditorMode
 }
 
+interface OldComponents {
+  [treePath: string]: string
+}
+
+const olds: OldComponents = {}
+
 class ComponentEditor extends Component<ComponentEditorProps & RenderContextProps & EditorContextProps, ComponentEditorState> {
   public static propTypes = {
     availableComponents: PropTypes.object,
@@ -58,7 +64,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   // tslint:disable-next-line
   private _isMounted: boolean = false
-  private old: string
 
   constructor(props: any) {
     super(props)
@@ -69,11 +74,10 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     }
 
     const {component, props: extensionProps} = this.getExtension()
+    const editTreePath = props.editor.editTreePath
+    const componentProps = this.getSchemaProps(getImplementation(component), extensionProps, props.runtime)
 
-    this.old = JSON.stringify({
-      component,
-      props: this.getSchemaProps(getImplementation(component), extensionProps, props.runtime),
-    })
+    this.insertComponentAtOlds(editTreePath, component, componentProps)
   }
 
   public componentDidMount() {
@@ -118,7 +122,10 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const { component: enumComponent } = event.formData
     const component = enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
-
+    const { props: extensionProps } = this.getExtension()
+    const componentProps = this.getSchemaProps(getImplementation(component), extensionProps, runtime)
+    
+    this.insertComponentAtOlds(editTreePath, component, componentProps)
 
     if (component && !Component) {
       const allComponents = reduce((acc, component) => {
@@ -188,11 +195,15 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   public handleCancel = (event?: any) => {
-    console.log('Updating extension with saved information', this.old)
     const { editor: { editExtensionPoint, editTreePath }, runtime: { updateExtension }} = this.props
-    updateExtension(editTreePath as string, JSON.parse(this.old))
+
+    if (has(editTreePath, olds)) {
+      console.log('Updating extension with saved information', olds[editTreePath])
+      updateExtension(editTreePath as string, JSON.parse(olds[editTreePath]))  
+      delete olds[editTreePath] 
+    }
     editExtensionPoint(null)
-    delete this.old
+
     if (event) {
       event.stopPropagation()
     }
@@ -432,6 +443,15 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const { editor: { editTreePath }, runtime: { extensions } } = this.props
     const { component = null, props = {} } = extensions[editTreePath as string] || {}
     return { component, props: props || {} }
+  }
+  
+  private insertComponentAtOlds = (treePath, component, props) => {
+    if (!has(treePath, olds)) {
+      olds[treePath] = JSON.stringify({
+        component,
+        props,
+      })
+    }
   }
 }
 
