@@ -39,7 +39,7 @@ const BaseInput = props => {
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
-      label={<FormattedMessage id={label} />}
+      label={label}
       max={max ? `${max}` : max}
       min={min ? `${min}` : min}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
