@@ -27,10 +27,30 @@ const widgets = {
   SelectWidget: Dropdown,
 }
 
+const availableDevices = [
+  '',
+  'mobile',
+  'desktop',
+]
+
+const availableDevicesNames = [
+  'All devices',
+  'Mobile devices',
+  'Desktop devices',
+]
+
 const availableContexts = [
+  '',
   'vtex.store/StoreContextProvider',
   'vtex.store/ProductContextProvider',
   'vtex.store/ProductSearchContextProvider',
+]
+
+const availableContextsNames = [
+  'No context',
+  'Store context',
+  'Product context',
+  'Product search context',
 ]
 
 const partialSchema = {
@@ -41,7 +61,7 @@ const partialSchema = {
     },
     context: {
       enum: availableContexts,
-      enumNames: availableContexts,
+      enumNames: availableContextsNames,
       title: 'Context',
       type: 'string',
     },
@@ -51,6 +71,13 @@ const partialSchema = {
     },
     name: {
       title: 'Name',
+      type: 'string',
+    },
+    device: {
+      default: '',
+      enum: availableDevices,
+      enumNames: availableDevicesNames,
+      title: 'Device',
       type: 'string',
     },
   },
@@ -109,7 +136,7 @@ class PageEditor extends Component<any, any> {
       ...event.formData,
     }
 
-    if (!newState.id.startsWith('store/')) {
+    if (!newState.routeId.startsWith('store/')) {
       newState.id = 'store'
     }
 
@@ -124,14 +151,19 @@ class PageEditor extends Component<any, any> {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name: pageName, component: template, path } = this.state
+    const { name, template, path, routeId, device, context } = this.state
     savePage({
       refetchQueries: [
         { query: Routes },
       ],
       variables: {
-        pageName,
+        anyMatch: false,
+        conditions: [],
+        context,
+        device,
+        name,
         path,
+        routeId,
         template,
       },
     })
@@ -148,7 +180,7 @@ class PageEditor extends Component<any, any> {
 
   public handleRouteChange = (e, value) => {
     const route = this.props.routes.find((p: Route) => p.id === value) || {
-      name: value,
+      id: value,
       path: '/',
     }
 

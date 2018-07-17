@@ -70,7 +70,7 @@ class PageList extends Component<DataProps<PageData>> {
         <div className="flex justify-between items-center mb4">
           <h1>Pages</h1>
           <div>
-            <Link to="page/new">
+            <Link page="admin/pages-detail" params={{pageId: 'new'}}>
               <Button size="small" variation="primary">New page</Button>
             </Link>
           </div>
