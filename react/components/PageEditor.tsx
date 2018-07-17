@@ -210,7 +210,7 @@ class PageEditor extends Component<any, any> {
       ? map(prop('id'), filter(template => context ? template.context === context : true, templates))
       : []
 
-    const isStore = ({id, declarer: routeDeclarer}: Route) => id.startsWith('store') && !!routeDeclarer
+    const isStore = ({id, declarer: routeDeclarer}: Route) => id.startsWith('store')
 
     const storeRoutes: Route[] | null = routes && filter(isStore, routes)
     const sortedRoutes = storeRoutes && sort<Route>((a: Route, b: Route) => {
