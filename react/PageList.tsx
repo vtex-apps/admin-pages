@@ -44,7 +44,7 @@ class PageList extends Component<DataProps<PageData>> {
       <td className="pv4 ph3 w-10">{route.id}</td>
       <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{route.path}</td>
       <td className="pv4 ph3 w-10" >
-        Default
+        {page.name}
       </td>
       <td className="pv4 ph3 w-10 gray">(none)</td>
       <td className="pa4 w-10 v-align-center">
