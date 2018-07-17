@@ -3,16 +3,16 @@
     "admin/pages": {
       "path": "/admin/pages"
     },
-    "admin/pages/detail": {
-      "path": "/admin/pages/page/*name"
+    "admin/pages-detail": {
+      "path": "/admin/pages/page/*pageId"
     }
   },
   "extensions": {
     "admin/pages": {
       "component": "PageList"
     },
-    "admin/pages/detail": {
-      "component": "PageDetail"
+    "admin/pages-detail": {
+      "component": "PageList"
     },
     "admin/navigation/storeSetup/pages": {
       "component": "vtex.admin/InjectNavigationData",

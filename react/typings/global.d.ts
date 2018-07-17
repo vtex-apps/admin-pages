@@ -18,14 +18,29 @@ declare global {
     [name: string]: Extension
   }
 
+  interface Template {
+    id: string
+    context: string
+  }
+
+  interface Page {
+    name: string
+    conditions: string[]
+    template: string
+    device: string
+    params: Record<string, any>
+  }
+
   interface Route {
-    cname?: string
+    id: string
     path: string
+    context: string
+    cname?: string
     params?: any
     disableExternals?: string[]
     declarer: string
-    name: string
     title?: string
+    pages: Page[]
   }
 
   interface Routes {
@@ -117,6 +132,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
+    routes: Routes
     extensions: Extensions
     production: boolean
     publicEndpoint: string
