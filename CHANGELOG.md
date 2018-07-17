@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Site scope option when the component being edited is not defined only to the current page.
 
+### Fixed
+- Incorrect type of the max, min and value attibutes passed to the `Input`.
+
 ## [1.12.5] - 2018-07-19
 ### Fixed
 - Remove `template` and `site` scope conditions.
