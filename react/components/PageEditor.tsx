@@ -41,9 +41,9 @@ const availableDevicesNames = [
 
 const availableContexts = [
   '',
-  'vtex.store/StoreContextProvider',
-  'vtex.store/ProductContextProvider',
-  'vtex.store/ProductSearchContextProvider',
+  'vtex.store@1.x/StoreContextProvider',
+  'vtex.store@1.x/ProductContextProvider',
+  'vtex.store@1.x/ProductSearchContextProvider',
 ]
 
 const availableContextsNames = [
@@ -119,8 +119,10 @@ class PageEditor extends Component<any, any> {
 
     const route = props.routeId && props.routes.find((r => r.id === props.routeId))
     const page = route && route.pages.find(p => p.name === props.name)
+    const params = page && page.paramsJSON && JSON.parse(page.paramsJSON)
 
     this.state = {
+      ...params,
       context: route && route.context,
       declarer: route && route.declarer,
       name: props.name,
@@ -151,7 +153,13 @@ class PageEditor extends Component<any, any> {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name, template, path, routeId, device, context } = this.state
+    const { name, template, path, routeId, device, context, slug } = this.state
+    let paramsJSON
+
+    if (slug) {
+      paramsJSON = JSON.stringify({slug})
+    }
+
     savePage({
       refetchQueries: [
         { query: Routes },
@@ -162,6 +170,7 @@ class PageEditor extends Component<any, any> {
         context,
         device,
         name,
+        paramsJSON,
         path,
         routeId,
         template,
@@ -204,6 +213,7 @@ class PageEditor extends Component<any, any> {
       routeId,
       selectedRouteId,
       template,
+      slug,
     } = this.state
 
     const templateIds = templates
@@ -239,6 +249,13 @@ class PageEditor extends Component<any, any> {
           type: 'string',
         },
       },
+    }
+
+    if (context === 'vtex.store@1.x/ProductContextProvider' && !declarer) {
+      schema.properties.slug = {
+        title: 'Product Slug',
+        type: 'string',
+      }
     }
 
     const availableRoutes = sortedRoutes && (
@@ -278,6 +295,7 @@ class PageEditor extends Component<any, any> {
             name,
             path,
             routeId,
+            slug,
             template,
           }}
           ObjectFieldTemplate={ObjectFieldTemplate}
