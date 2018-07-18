@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Attributes name in the svg icon.
 
+## [1.12.2] - 2018-07-17
+### Fixed
+- Fix cancel bug in edit mode
+
 ## [1.12.1] - 2018-07-17
 ### Changed
 - Accordion behavior on the array fields.
