@@ -27,18 +27,57 @@ const widgets = {
   SelectWidget: Dropdown,
 }
 
+const availableDevices = [
+  '',
+  'mobile',
+  'desktop',
+]
+
+const availableDevicesNames = [
+  'All devices',
+  'Mobile devices',
+  'Desktop devices',
+]
+
+const availableContexts = [
+  '',
+  'vtex.store@1.x/StoreContextProvider',
+  'vtex.store@1.x/ProductContextProvider',
+  'vtex.store@1.x/ProductSearchContextProvider',
+]
+
+const availableContextsNames = [
+  'No context',
+  'Store context',
+  'Product context',
+  'Product search context',
+]
+
 const partialSchema = {
   properties: {
-    name: {
+    routeId: {
       title: 'Route ID',
+      type: 'string',
+    },
+    context: {
+      enum: availableContexts,
+      enumNames: availableContextsNames,
+      title: 'Context',
       type: 'string',
     },
     path: {
       title: 'Path Template',
       type: 'string',
     },
-    pageName: {
+    name: {
       title: 'Name',
+      type: 'string',
+    },
+    device: {
+      default: '',
+      enum: availableDevices,
+      enumNames: availableDevicesNames,
+      title: 'Device',
       type: 'string',
     },
   },
@@ -59,14 +98,11 @@ const createLocationDescriptor = (to, query) => ({
 
 class PageEditor extends Component<any, any> {
   public static propTypes = {
-    availableTemplates: PropTypes.arrayOf(PropTypes.object),
-    component: PropTypes.string,
-    declarer: PropTypes.string,
     name: PropTypes.string,
-    pageName: PropTypes.string,
-    path: PropTypes.string,
+    routeId: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
-    savePage: PropTypes.any,
+    savePage: PropTypes.func,
+    templates: PropTypes.arrayOf(PropTypes.object),
   }
 
   public static contextTypes = {
@@ -74,20 +110,26 @@ class PageEditor extends Component<any, any> {
   }
 
   public routesToOptions = map((r: Route) => ({
-    label: `${r.name} (${r.path})`,
-    value: r.name,
+    label: `${r.id} (${r.path})`,
+    value: r.id,
   }))
 
   constructor(props: any) {
     super(props)
 
+    const route = props.routeId && props.routes.find((r => r.id === props.routeId))
+    const page = route && route.pages.find(p => p.name === props.name)
+    const params = page && page.paramsJSON && JSON.parse(page.paramsJSON)
+
     this.state = {
-      component: props.component,
-      declarer: props.declarer,
+      ...params,
+      context: route && route.context,
+      declarer: route && route.declarer,
       name: props.name,
-      pageName: props.pageName,
-      path: props.path,
-      selectedRouteId: props.name,
+      path: route && route.path,
+      routeId: props.routeId,
+      selectedRouteId: props.routeId,
+      template: page && page.template,
     }
   }
 
@@ -96,8 +138,8 @@ class PageEditor extends Component<any, any> {
       ...event.formData,
     }
 
-    if (!newState.name.startsWith('store/')) {
-      newState.name = 'store'
+    if (!newState.routeId.startsWith('store/')) {
+      newState.id = 'store'
     }
 
     if (!newState.path.startsWith('/')) {
@@ -111,15 +153,29 @@ class PageEditor extends Component<any, any> {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name: pageName, component, path } = this.state
+    const { name, template, path, routeId, device, context, slug, department, category, subcategory } = this.state
+    let paramsJSON
+
+    if (slug) {
+      paramsJSON = JSON.stringify({slug})
+    } else if (department || category || subcategory) {
+      paramsJSON = JSON.stringify({department, category, subcategory})
+    }
+
     savePage({
       refetchQueries: [
         { query: Routes },
       ],
       variables: {
-        component,
-        pageName,
+        anyMatch: false,
+        conditions: [],
+        context,
+        device,
+        name,
+        paramsJSON,
         path,
+        routeId,
+        template,
       },
     })
     .then((data) => {
@@ -134,56 +190,94 @@ class PageEditor extends Component<any, any> {
   }
 
   public handleRouteChange = (e, value) => {
-    const route = this.props.routes.find((p: Route) => p.name === value) || {
-      name: value,
-      pageName: 'Default',
+    const route = this.props.routes.find((p: Route) => p.id === value) || {
+      id: value,
       path: '/',
     }
+
     this.setState({
       context: route.context,
-      name: route.name,
-      pageName: route.pageName,
+      declarer: route.declarer,
+      name: '',
       path: route.path,
-      selectedRouteId: route.name,
+      routeId: route.id,
+      selectedRouteId: route.id,
     })
   }
 
   public render() {
-    const { routes, availableTemplates } = this.props
-    const { component, context, declarer, path, name, selectedRouteId, pageName } = this.state
-    const templateComponents = availableTemplates
-      ? map(prop('name'), filter(template => context ? template.context === context : true, availableTemplates)
+    const { routes, templates } = this.props
+    const {
+      category,
+      context,
+      declarer,
+      department,
+      name,
+      path,
+      routeId,
+      selectedRouteId,
+      slug,
+      subcategory,
+      template,
+    } = this.state
+
+    const templateIds = templates
+      ? map(prop('id'), filter(template => context ? template.context === context : true, templates))
       : []
 
-    const isStore = ({name: routeId, declarer: routeDeclarer}: Route) => routeId.startsWith('store') && !!routeDeclarer
+    const isStore = ({id, declarer: routeDeclarer}: Route) => id.startsWith('store')
 
     const storeRoutes: Route[] | null = routes && filter(isStore, routes)
     const sortedRoutes = storeRoutes && sort<Route>((a: Route, b: Route) => {
-      return a.name.localeCompare(b.name)
+      return a.id.localeCompare(b.id)
     }, storeRoutes)
 
-    const isDisabledRoute = !!declarer || !!(storeRoutes && find((p: Route) => p.name === name, storeRoutes))
+    const isEditableRoute = !declarer
 
-    partialSchema.properties.name.disabled = isDisabledRoute
-    partialSchema.properties.pageName.disabled = isDisabledRoute
-    partialSchema.properties.path.disabled = isDisabledRoute
+    partialSchema.properties.routeId.disabled = !isEditableRoute
+    partialSchema.properties.path.disabled = !isEditableRoute
+    partialSchema.properties.context.disabled = !isEditableRoute
 
     const schemaProperties = selectedRouteId
       ? partialSchema.properties
-      : omit(['name', 'path'], partialSchema.properties)
+      : omit(['routeId', 'path', 'context'], partialSchema.properties)
 
     const schema = {
       ...partialSchema,
       properties: {
         ...schemaProperties,
-        component: {
+        template: {
           default: '',
-          enum: templateComponents,
-          enumNames: templateComponents,
+          enum: templateIds,
+          enumNames: templateIds,
           title: 'Template',
           type: 'string',
         },
       },
+    }
+
+    if (context === 'vtex.store@1.x/ProductContextProvider' && !declarer) {
+      schema.properties.slug = {
+        title: 'Product Slug',
+        type: 'string',
+      }
+    }
+
+    if (context === 'vtex.store@1.x/ProductSearchContextProvider' && !declarer) {
+      schema.properties.department = {
+        title: 'Department',
+        type: 'string',
+      }
+
+      schema.properties.category = {
+        title: 'Category',
+        type: 'string',
+      }
+
+      schema.properties.subcategory = {
+        title: 'Subcategory',
+        type: 'string',
+      }
     }
 
     const availableRoutes = sortedRoutes && (
@@ -212,16 +306,22 @@ class PageEditor extends Component<any, any> {
 
     return (
       <div className="dark-gray center">
+        <h1>{this.props.name === null ? 'Create Page' : 'Edit Page'}</h1>
         {declarer && declarerField}
         {availableRoutes}
         <Form
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={{
-            component,
+            category,
+            context,
+            department,
             name,
-            pageName: declarer ? 'Default' : pageName,
             path,
+            routeId,
+            slug,
+            subcategory,
+            template,
           }}
           ObjectFieldTemplate={ObjectFieldTemplate}
           onChange={this.handleFormChange}

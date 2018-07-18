@@ -1,9 +1,16 @@
-query Routes{
+query Routes {
   routes {
+    id
     declarer
-    name
     path
     cname
     context
+    pages {
+      name
+      template
+      device
+      conditions
+      paramsJSON
+    }
   }
 }

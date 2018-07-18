@@ -15,10 +15,11 @@ const scopeConditions = [
     id: 'route',
     message: 'pages.conditions.scope.route',
   },
+  /* hidding scope template until it is implemented
   {
     id: 'template',
     message: 'pages.conditions.scope.template',
-  },
+  }, */
   {
     id: 'site',
     message: 'pages.conditions.scope.site',
