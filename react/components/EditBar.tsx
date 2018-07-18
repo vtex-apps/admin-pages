@@ -77,15 +77,15 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     return (
       <div
         id="sidebar-vtex"
-        className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed"
+        className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
+        style={{
+          animationDuration: '0.333s',
+          transform: `translate(${visible?'0%':'+100%'}, 0)`
+          transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
+        }}
         >
         <nav
           id="admin-sidebar"
-          style={{
-            animationDuration: '0.333s',
-            transform: `translate(${visible?'0%':'+100%'}, 0)`,
-            transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
-          }}
           className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar">
           <div className="h-100 overflow-y-scroll">
             {this.renderSideBarContent()}
