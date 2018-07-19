@@ -91,7 +91,7 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type ConfigurationScope = 'url' | 'route'
+  type ConfigurationScope = 'url' | 'route' | 'site'
 
   interface EditorConditionSection {
     conditions: Condition[] | ConditionsCondition[]
