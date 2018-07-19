@@ -1,14 +1,15 @@
 import PropTypes from 'prop-types'
 import { contains, map } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, injectIntl, intlShape  } from 'react-intl'
+import { Radio, Checkbox } from 'vtex.styleguide'
 
 interface ConditionSectionProps {
   multiple?: boolean
   type: string
 }
 
-export default class ConditionSection extends Component<ConditionSectionProps & EditorConditionSection> {
+class ConditionSection extends Component<ConditionSectionProps & EditorConditionSection> {
   public static propTypes = {
     activeConditions: PropTypes.arrayOf(PropTypes.string),
     addCondition: PropTypes.func,
@@ -16,6 +17,8 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
     multiple: PropTypes.bool,
     removeCondition: PropTypes.func,
     type: PropTypes.string,
+    intl: intlShape.isRequired,
+    shouldEnable: PropTypes.bool
   }
 
   public static defaultProps = {
@@ -44,17 +47,26 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
 
       return (
         <div className="dark-gray mb3" key={id}>
-          <input className="mr3" type={multiple ? 'checkbox' : 'radio'}
-            checked={contains(id, activeConditions)}
-            disabled={(!shouldEnable && id==='site')?true:false}
-            id={`condition-${id}`}
-            name={type}
-            onChange={this.handleInputChange}
-            value={id}
+          {
+            multiple
+            ? <Checkbox
+                checked={contains(id, activeConditions)}
+                id={`condition-${id}`}
+                name={type}
+                onChange={this.handleInputChange}
+                value={id}
+                label={this.props.intl.formatMessage({id: message})}
               />
-          <label htmlFor={`condition-${id}`}>
-            <FormattedMessage id={message} />
-          </label>
+            : <Radio
+                checked={contains(id, activeConditions)}
+                disabled={!shouldEnable && id === 'site'}
+                id={`condition-${id}`}
+                name={type}
+                onChange={this.handleInputChange}
+                value={id}
+                label={this.props.intl.formatMessage({id: message})}
+              />
+          }
         </div>
       )
     }, conditions)
@@ -71,3 +83,5 @@ export default class ConditionSection extends Component<ConditionSectionProps & 
     )
   }
 }
+
+export default injectIntl(ConditionSection)
