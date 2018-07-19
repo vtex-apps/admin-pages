@@ -19,7 +19,7 @@ html, body {
   height: 100%;
 }
 
-.editor-provider .preview-button {
+.preview-button {
   display: none;
 }
 
