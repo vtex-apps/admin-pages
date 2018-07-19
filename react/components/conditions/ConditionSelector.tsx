@@ -57,7 +57,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
         <div className="dark-gray">
           <div className="pl5 mb5">
             <ConditionSection type="scope"
-              shouldEnable={shouldEnableSite}
+              shouldEnableSite={shouldEnableSite}
               conditions={scopeConditions as any}
               activeConditions={[scope]}
               addCondition={setScope as any}
