@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [1.12.5] - 2018-07-19
+### Fixed
+- Remove `template` and `site` scope conditions
+
 ## [1.12.4] - 2018-07-18
 ### Fixed
 - Sidebar visibility bug on preview mode.
