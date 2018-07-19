@@ -63,7 +63,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
   }
 
   public editExtensionPoint = (treePath: string | null) => {
-    this.setState({ editTreePath: treePath, highlightTreePath: null })
+    this.setState({ editTreePath: treePath, highlightTreePath: null, editMode: false })
   }
 
   public mouseOverExtensionPoint = (treePath: string | null) => {
