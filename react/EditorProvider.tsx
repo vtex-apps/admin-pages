@@ -212,24 +212,25 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
           }}
         >
           <ExtensionPoint id={`${root}/__topbar`}>
-            <button
-              type="button"
-              onClick={this.handleToggleEditMode}
-              className={
-                'bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn'
-              }
-            >
-              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? "#368df7" : "#979899"}/></span>
-            </button>
-            <button
-              type="button"
-              onClick={this.handleToggleShowAdminControls}
-              className={
-                'bg-white bn link pl3-ns pv3 flex items-center justify-center self-right z-max pointer animated fadeIn'
-              }
-            >
-              <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
-            </button>
+            <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} onTopbar/>
+            <div className={'br-s bl-s b--light-gray ph3-ns flex'}>
+              <div
+                onClick={this.handleToggleEditMode}
+                className={
+                  'bg-white bn link ph4 flex items-center justify-center self-right z-max pointer animated fadeIn'
+                }
+              >
+                <span className="flex items-center"><SelectionIcon stroke={this.state.editMode ? "#368df7" : "#979899"}/></span>
+              </div>
+              <div
+                onClick={this.handleToggleShowAdminControls}
+                className={
+                  'bg-white bn link ph4 flex items-center justify-center self-right z-max pointer animated fadeIn'
+                }
+              >
+                <span className="flex items-center"><ShowIcon /></span>
+              </div>
+            </div>
           </ExtensionPoint>
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>

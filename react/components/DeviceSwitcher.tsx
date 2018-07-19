@@ -95,7 +95,8 @@ class DeviceComponent extends Component {
     id: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
     key: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
     selected: PropTypes.bool,
-    onClick: PropTypes.func
+    onClick: PropTypes.func,
+    onTopbar: PropTypes.bool
   }
 
   state = {
@@ -111,13 +112,13 @@ class DeviceComponent extends Component {
   }
 
   public render() {
-    const { id, selected, onClick } = this.props
+    const { id, selected, onClick, onTopbar } = this.props
     const { hover } = this.state
 
     return (
       <div
         id={id}
-        className={`pointer flex justify-center pv3 mh4 w-20 bw1 bt ${
+        className={`pointer flex justify-center items-center pb2 mh4 ${onTopbar?'w-third':'w-20'} bw1 bt ${
           selected ? 'b--blue' : 'b--transparent'
         }`}
         onClick={onClick}
@@ -135,7 +136,8 @@ class DeviceSwitcher extends Component<EditorContextProps & {viewports: Viewport
   public static propTypes = {
     viewports: PropTypes.array,
     editor: PropTypes.object,
-    toggleEditMode: PropTypes.func
+    toggleEditMode: PropTypes.func,
+    onTopbar: PropTypes.bool
   }
 
   public handleClick = ({ currentTarget: { id } }) => {
@@ -146,36 +148,44 @@ class DeviceSwitcher extends Component<EditorContextProps & {viewports: Viewport
   }
 
   public render() {
-    const { editor: { viewport }, viewports, toggleEditMode} = this.props
+    const { editor: { viewport }, viewports, toggleEditMode, onTopbar} = this.props
+
     return (
       <div className="flex justify-around w-100 bt-0 b--light-silver" style={
         {
-          width: `${100 + 70*viewports.length}px`
-          height: '54px';
+          width: `${onTopbar?60*viewports.length:100+70*viewports.length}px`
+          height: `${onTopbar?'100%':'54px'}`;
         }
       }>
-        <div className="flex justify-center items-center ph3 w-5 draggable">
-          <svg width="14" height="36" viewBox="0 0 14 36" fill="none">
-            <rect width="14" height="36" fill="white"/>
-            <circle cx="1" cy="1" r="1" transform="translate(8 12)" fill="#727273"/>
-            <circle cx="1" cy="1" r="1" transform="translate(8 17)" fill="#727273"/>
-            <circle cx="1" cy="1" r="1" transform="translate(8 22)" fill="#727273"/>
-            <circle cx="1" cy="1" r="1" transform="translate(4 12)" fill="#727273"/>
-            <circle cx="1" cy="1" r="1" transform="translate(4 17)" fill="#727273"/>
-            <circle cx="1" cy="1" r="1" transform="translate(4 22)" fill="#727273"/>
-          </svg>
-        </div>
+        { onTopbar
+          ? null
+          : <div className={`flex justify-center items-center ph3 w-5 draggable ${onTopbar?'':'dn'}`}>
+            <svg width="14" height="36" viewBox="0 0 14 36" fill="none">
+              <rect width="14" height="36" fill="white"/>
+              <circle cx="1" cy="1" r="1" transform="translate(8 12)" fill="#727273"/>
+              <circle cx="1" cy="1" r="1" transform="translate(8 17)" fill="#727273"/>
+              <circle cx="1" cy="1" r="1" transform="translate(8 22)" fill="#727273"/>
+              <circle cx="1" cy="1" r="1" transform="translate(4 12)" fill="#727273"/>
+              <circle cx="1" cy="1" r="1" transform="translate(4 17)" fill="#727273"/>
+              <circle cx="1" cy="1" r="1" transform="translate(4 22)" fill="#727273"/>
+            </svg>
+          </div>
+        }
         {viewports.map(id => (
           <DeviceComponent
             id={id}
             key={id}
             selected={id === viewport}
             onClick={this.handleClick}
+            onTopbar={onTopbar}
           />
         ))}
-        <div className={`${viewports.length > 0?'bl-s b--light-gray':''} flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`} onClick={toggleEditMode}>
-          <IconEdit size={16} color="currentColor" solid/>
-        </div>
+        { onTopbar
+          ? null
+          : <div className={`${onTopbar?'':'dn'} ${viewports.length > 0?'bl-s b--light-gray':''} flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`} onClick={toggleEditMode}>
+              <IconEdit size={16} color="currentColor" solid/>
+            </div>
+        }
       </div>
     )
   }
