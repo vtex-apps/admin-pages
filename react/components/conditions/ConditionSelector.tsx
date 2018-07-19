@@ -14,6 +14,10 @@ const scopeConditions = [
   {
     id: 'route',
     message: 'pages.conditions.scope.route',
+  },
+  {
+    id: 'site',
+    message: 'pages.conditions.scope.site',
   }
 ]
 
@@ -39,7 +43,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
   }
 
   public render() {
-    const { editor: { conditions, activeConditions, addCondition, removeCondition, setScope, scope, setDevice}, runtime: { device } } = this.props
+    const { editor: { conditions, activeConditions, addCondition, removeCondition, setScope, scope, setDevice, editTreePath }, runtime: { device, page } } = this.props
 
     return (
       <div className="near-black">
@@ -48,6 +52,7 @@ class ConditionSelector extends Component<{} & RenderContextProps & EditorContex
         <div className="dark-gray">
           <div className="pl5 mb5">
             <ConditionSection type="scope"
+              shouldEnable={editTreePath && !editTreePath.startsWith(page)}
               conditions={scopeConditions as any}
               activeConditions={[scope]}
               addCondition={setScope as any}
