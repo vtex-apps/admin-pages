@@ -18,7 +18,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
     removeCondition: PropTypes.func,
     type: PropTypes.string,
     intl: intlShape.isRequired,
-    shouldEnable: PropTypes.bool
+    shouldEnableSite: PropTypes.bool
   }
 
   public static defaultProps = {
@@ -39,7 +39,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
   }
 
   public renderConditions () {
-    const { conditions, activeConditions, multiple, type, shouldEnable } = this.props
+    const { conditions, activeConditions, multiple, type, shouldEnableSite } = this.props
 
     return map(c => {
       const message = c.message || c.conditionId
@@ -59,7 +59,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
               />
             : <Radio
                 checked={contains(id, activeConditions)}
-                disabled={!shouldEnable && id === 'site'}
+                disabled={!shouldEnableSite && id === 'site'}
                 id={`condition-${id}`}
                 name={type}
                 onChange={this.handleInputChange}
