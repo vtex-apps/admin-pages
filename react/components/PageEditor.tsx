@@ -194,7 +194,6 @@ class PageEditor extends Component<any, any> {
       id: value,
       path: '/',
     }
-    console.log(route.context)
     this.setState({
       context: route.context,
       declarer: route.declarer,
