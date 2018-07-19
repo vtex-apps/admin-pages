@@ -194,7 +194,7 @@ class PageEditor extends Component<any, any> {
       id: value,
       path: '/',
     }
-
+    console.log(route.context)
     this.setState({
       context: route.context,
       declarer: route.declarer,
@@ -238,9 +238,8 @@ class PageEditor extends Component<any, any> {
     partialSchema.properties.path.disabled = !isEditableRoute
     partialSchema.properties.context.disabled = !isEditableRoute
 
-    const schemaProperties = selectedRouteId
-      ? partialSchema.properties
-      : omit(['routeId', 'path', 'context'], partialSchema.properties)
+    const omittedProperties = selectedRouteId ? ['context'] : ['routeId', 'path', 'context']
+    const schemaProperties = omit(omittedProperties, partialSchema.properties)
 
     const schema = {
       ...partialSchema,
