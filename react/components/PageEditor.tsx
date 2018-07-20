@@ -59,6 +59,7 @@ const availableContextsNames = [
 ]
 
 const partialSchema = {
+  required: ['routeId', 'path', 'name'],
   properties: {
     routeId: {
       title: 'Route ID',
@@ -271,6 +272,7 @@ class PageEditor extends Component<any, any> {
 
     const schema = {
       ...partialSchema,
+      required: partialSchema.required.concat(['template']),
       properties: {
         ...schemaProperties,
         template: {
@@ -347,6 +349,7 @@ class PageEditor extends Component<any, any> {
 
     return (
       <div className="dark-gray center">
+        <div id="form__error-list-template___alert" />
         <h1>{this.props.name === null ? 'Create Page' : 'Edit Page'}</h1>
         {declarer && declarerField}
         {availableRoutes}
