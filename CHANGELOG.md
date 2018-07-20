@@ -6,10 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Site scope option when the component being edited is not defined only to the current page.
 
 ## [1.12.5] - 2018-07-19
 ### Fixed
-- Remove `template` and `site` scope conditions
+- Remove `template` and `site` scope conditions.
 
 ## [1.12.4] - 2018-07-18
 ### Fixed
@@ -39,7 +41,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.9.1] - 2018-6-20
 ### Fixed
-- Fix `BaseInput` not passing min and max props to `Input` component
+- Fix `BaseInput` not passing min and max props to `Input` component.
 
 ## [1.9.0] - 2018-6-18
 ### Added
