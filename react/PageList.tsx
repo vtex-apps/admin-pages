@@ -40,8 +40,8 @@ class PageList extends Component<DataProps<PageData>> {
     this.props.templates.loading || this.props.routes.loading ? this.context.startLoading() : this.context.stopLoading()
   }
 
-  public renderPageListEntry = (route: Route) => route.pages.map((page: Page) => (
-    <tr className="striped--near-white" key={route.id}>
+  public renderPageListEntry = (route: Route) => route.pages.map((page: Page, index: Number) => (
+    <tr className="striped--near-white" key={`${route.id}-${index}`}>
       <td className="pv4 ph3 w-10">{route.id}</td>
       <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{route.path}</td>
       <td className="pv4 ph3 w-10" >
