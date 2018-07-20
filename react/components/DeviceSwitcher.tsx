@@ -118,7 +118,7 @@ class DeviceComponent extends Component {
     return (
       <div
         id={id}
-        className={`pointer flex justify-center items-center pb2 mh4 ${onTopbar?'w-third':'w-20'} bw1 bt ${
+        className={`pointer flex justify-center items-center pb2 mh3 ${onTopbar?'w-third':'w-20'} bw1 bt ${
           selected ? 'b--blue' : 'b--transparent'
         }`}
         onClick={onClick}
@@ -151,10 +151,10 @@ class DeviceSwitcher extends Component<EditorContextProps & {viewports: Viewport
     const { editor: { viewport }, viewports, toggleEditMode, onTopbar} = this.props
 
     return (
-      <div className="flex justify-around w-100 bt-0 b--light-silver" style={
+      <div className={`${onTopbar?'mr4 mt1':''} flex justify-around w-100 bt-0 b--light-silver`} style={
         {
-          width: `${onTopbar?60*viewports.length:100+70*viewports.length}px`
-          height: `${onTopbar?'100%':'54px'}`;
+          width: `${onTopbar?50*viewports.length:100+70*viewports.length}px`
+          height: `${onTopbar?'100%':'54px'}`
         }
       }>
         { onTopbar
