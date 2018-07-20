@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { filter, find, map, omit, prop, sort } from 'ramda'
+import { filter, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
@@ -12,12 +12,16 @@ import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import ErrorListTemplate from './form/ErrorListTemplate'
 import FieldTemplate from './form/FieldTemplate'
+import MultiSelect from './form/MultiSelect'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
 import Toggle from './form/Toggle'
 
 const defaultUiSchema = {
   'classNames': 'pages-editor-form',
+  conditions: {
+    'ui:widget': 'multi-select',
+  },
 }
 
 const widgets = {
@@ -25,6 +29,7 @@ const widgets = {
   CheckboxWidget: Toggle,
   RadioWidget: Radio,
   SelectWidget: Dropdown,
+  ['multi-select']: MultiSelect,
 }
 
 const availableDevices = [
@@ -98,6 +103,7 @@ const createLocationDescriptor = (to, query) => ({
 
 class PageEditor extends Component<any, any> {
   public static propTypes = {
+    availableConditions: PropTypes.arrayOf(PropTypes.string).isRequired,
     name: PropTypes.string,
     routeId: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
@@ -123,6 +129,10 @@ class PageEditor extends Component<any, any> {
 
     this.state = {
       ...params,
+      // TODO (pages-graphql dep) - Replace with anyMatch: page && page.anyMatch
+      anyMatch: false,
+      availableConditions: props.availableConditions,
+      conditions: page && page.conditions,
       context: route && route.context,
       declarer: route && route.declarer,
       name: props.name,
@@ -153,7 +163,21 @@ class PageEditor extends Component<any, any> {
   public handleSave = (event) => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name, template, path, routeId, device, context, slug, department, category, subcategory } = this.state
+    const {
+      anyMatch,
+      category,
+      conditions,
+      context,
+      department,
+      device,
+      name,
+      path,
+      routeId,
+      slug,
+      subcategory,
+      template,
+    } = this.state
+
     let paramsJSON
 
     if (slug) {
@@ -167,8 +191,8 @@ class PageEditor extends Component<any, any> {
         { query: Routes },
       ],
       variables: {
-        anyMatch: false,
-        conditions: [],
+          anyMatch,
+          conditions,
         context,
         device,
         name,
@@ -195,6 +219,8 @@ class PageEditor extends Component<any, any> {
       path: '/',
     }
     this.setState({
+      anyMatch: false,
+      conditions: [],
       context: route.context,
       declarer: route.declarer,
       name: '',
@@ -207,7 +233,10 @@ class PageEditor extends Component<any, any> {
   public render() {
     const { routes, templates } = this.props
     const {
+      anyMatch,
+      availableConditions,
       category,
+      conditions,
       context,
       declarer,
       department,
@@ -245,11 +274,25 @@ class PageEditor extends Component<any, any> {
       properties: {
         ...schemaProperties,
         template: {
-          default: '',
+          default: template,
           enum: templateIds,
           enumNames: templateIds,
           title: 'Template',
           type: 'string',
+        },
+        conditions: {
+          items: {
+            enum: availableConditions,
+            enumNames: availableConditions,
+            type: 'string',
+        },
+          title: 'Conditions',
+          type: 'array',
+          uniqueItems: true
+        },
+        anyMatch: {
+          title: 'Must match all conditions',
+          type: 'boolean',
         },
       },
     }
@@ -311,7 +354,9 @@ class PageEditor extends Component<any, any> {
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={{
+            anyMatch,
             category,
+            conditions,
             context,
             department,
             name,
