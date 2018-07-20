@@ -12,8 +12,20 @@ export default class Radio extends Component {
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   }
 
-  state = {
-    value: this.props.value || null,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: props.value,
+    }
+  }
+
+  getLabel = (item, index) => {
+    const { schema: { enumNames } } = this.props
+
+    return enumNames && enumNames.length >= index
+      ? enumNames[index]
+      : item && item.toString()
   }
 
   handleSelection = (event, value) => {
@@ -31,30 +43,18 @@ export default class Radio extends Component {
       <Fragment>
         <span className="dib mb3 w-100">{label}</span>
         {schema.enum &&
-            schema.enum.map((item, index) => {
-              let itemLabel
-
-              if (schema.enumNames && schema.enumNames.length > 0) {
-                itemLabel = schema.enumNames[index]
-              } else {
-                itemLabel = item && item.toString()
-              }
-
-              return (
-                <StyleguideRadio
-                  checked={this.props.value === item}
-                  id={`${id}-${index}`}
-                  key={`${id}-${index}`}
-                  label={itemLabel}
-                  name={name || `${id}-group`}
-                  onChange={event => this.handleSelection(event, item)}
-                  value={item}
-                />
-              )
-            })
-        }
+          schema.enum.map((item, index) => (
+            <StyleguideRadio
+              checked={this.props.value === item}
+              id={`${id}-${index}`}
+              key={`${id}-${index}`}
+              label={this.getLabel(item, index)}
+              name={name || `${id}-group`}
+              onChange={event => this.handleSelection(event, item)}
+              value={item}
+            />
+          ))}
       </Fragment>
     )
   }
 }
-
