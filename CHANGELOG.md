@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Added
+- Viewport selector at topbar.
+
+### Added
 - Site scope option when the component being edited is not defined only to the current page.
 
 ## [1.12.5] - 2018-07-19
