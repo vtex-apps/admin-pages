@@ -14,7 +14,7 @@ import Draggable from 'react-draggable'
 
 interface EditorProviderState {
   activeConditions: string[]
-  anyMatch: boolean
+  allMatches: boolean
   editMode: boolean
   editTreePath: string | null
   highlightTreePath: string | null
@@ -39,7 +39,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
     this.state = {
       activeConditions: [],
-      anyMatch: false,
+      allMatches: true,
       editMode: false,
       editTreePath: null,
       highlightTreePath: null,
@@ -146,7 +146,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public render() {
     const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, anyMatch, scope, viewport} = this.state
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, allMatches, scope, viewport} = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -158,7 +158,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     const editor: EditorContext = {
       activeConditions,
       addCondition: this.handleAddCondition,
-      anyMatch,
+      allMatches,
       conditions: this.props.data.availableConditions || [],
       editExtensionPoint: this.editExtensionPoint,
       editMode,

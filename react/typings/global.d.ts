@@ -101,7 +101,7 @@ declare global {
   }
 
   interface EditorContext extends EditorConditionSection {
-    anyMatch: boolean
+    allMatches: boolean
     editMode: boolean
     editTreePath: string | null
     highlightTreePath: string | null

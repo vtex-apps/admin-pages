@@ -11,6 +11,7 @@ query Routes {
       device
       conditions
       paramsJSON
+      allMatches
     }
   }
 }
