@@ -7,6 +7,7 @@ import { Button } from 'vtex.styleguide'
 
 import PageEditor from './components/PageEditor'
 import ShareIcon from './images/ShareIcon'
+import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Routes from './queries/Routes.graphql'
 
@@ -46,7 +47,9 @@ class PageList extends Component<DataProps<PageData>> {
       <td className="pv4 ph3 w-10" >
         {page.name}
       </td>
-      <td className="pv4 ph3 w-10 gray">(none)</td>
+      <td className={`pv4 ph3 w-10 ${page.conditions.length === 0 ? 'gray' : ''}`}>
+        {page.conditions.length > 0 ? `${page.conditions.length}` : '(none)'}
+      </td>
       <td className="pa4 w-10 v-align-center">
         <div className="flex justify-between">
           <Link to={`/admin/pages/page/${route.id}/${page.name}`}>
@@ -102,29 +105,35 @@ class PageList extends Component<DataProps<PageData>> {
     )
   }
 
-  public renderPageDetail(routeId: string, name: string, routes: Route[], templates: Template[]) {
+  public renderPageDetail(routeId: string, name: string, routes: Route[], templates: Template[], availableConditions: String[]) {
     return (
       <PageEditor
         routes={routes}
         templates={templates}
         routeId={name === 'new' ? null : routeId}
         name={name === 'new' ? null : name}
+        availableConditions={availableConditions}
       />
     )
   }
 
   public render() {
     const {
+      conditions: { loading: loadingAvailableConditions },
       templates: { loading: loadingTemplates, availableTemplates: templates = [] },
       routes: { loading: loadingRoutes, routes = [] },
       params: { pageId },
     } = this.props
 
+    const availableConditions =
+      this.props.conditions &&
+      this.props.conditions.availableConditions.map(
+        condition => condition.conditionId
+      )
+
     const segments: string[] = pageId && pageId.split('/')
     const routeId = pageId && init(segments).join('/')
     const name = pageId && last(segments)
-
-    console.log('render', routeId, name, routes, templates)
 
     const isStore = (route: Route) => route.id.startsWith('store')
 
@@ -136,11 +145,11 @@ class PageList extends Component<DataProps<PageData>> {
 
     const isViewingPage = !!pageId
 
-    const pageDetail = isViewingPage && this.renderPageDetail(routeId, name!, routes, templates)
+    const pageDetail = isViewingPage && this.renderPageDetail(routeId, name!, routes, templates, availableConditions)
 
     const pageList = !isViewingPage && this.renderPageList(sortedRoutes)
 
-    const spinner = (loadingTemplates || loadingRoutes) && <span>Loading...</span>
+    const spinner = (loadingAvailableConditions || loadingTemplates || loadingRoutes) && <span>Loading...</span>
 
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">
@@ -151,6 +160,9 @@ class PageList extends Component<DataProps<PageData>> {
 }
 
 export default compose(
+  graphql(AvailableConditions, {
+    name: 'conditions',
+  }),
   graphql(AvailableTemplates, {
     name: 'templates',
     options: () => ({
