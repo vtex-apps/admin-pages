@@ -8,7 +8,7 @@ mutation SaveExtension(
   $template: String,
   $routeId: String,
   $conditions: [String],
-  $anyMatch: Boolean
+  $allMatches: Boolean
 ) {
   saveExtension(
     component: $component,
@@ -20,6 +20,6 @@ mutation SaveExtension(
     template: $template,
     routeId: $routeId,
     conditions: $conditions,
-    anyMatch: $anyMatch
+    allMatches: $allMatches
   )
 }

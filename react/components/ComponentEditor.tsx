@@ -152,7 +152,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   public handleSave = (event: any) => {
     console.log('save', event, this.props)
-    const { saveExtension, runtime, editor: { activeConditions, anyMatch, editTreePath, editExtensionPoint, scope }, runtime: {page, device} } = this.props
+    const { saveExtension, runtime, editor: { activeConditions, allMatches, editTreePath, editExtensionPoint, scope }, runtime: {page, device} } = this.props
     const { component, props = {} } = this.getExtension()
     const isEmpty = this.isEmptyExtensionPoint(component)
 
@@ -167,7 +167,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     saveExtension({
       variables: {
-        anyMatch,
+        allMatches,
         component: selectedComponent,
         conditions: activeConditions,
         device,

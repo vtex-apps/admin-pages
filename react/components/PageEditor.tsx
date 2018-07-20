@@ -130,8 +130,7 @@ class PageEditor extends Component<any, any> {
 
     this.state = {
       ...params,
-      // TODO (pages-graphql dep) - Replace with anyMatch: page && page.anyMatch
-      anyMatch: false,
+      allMatches: page && page.allMatches,
       availableConditions: props.availableConditions,
       conditions: page && page.conditions,
       context: route && route.context,
@@ -165,7 +164,7 @@ class PageEditor extends Component<any, any> {
     console.log('save', event, this.state)
     const { savePage } = this.props
     const {
-      anyMatch,
+      allMatches,
       category,
       conditions,
       context,
@@ -192,8 +191,8 @@ class PageEditor extends Component<any, any> {
         { query: Routes },
       ],
       variables: {
-          anyMatch,
-          conditions,
+        allMatches,
+        conditions,
         context,
         device,
         name,
@@ -220,7 +219,6 @@ class PageEditor extends Component<any, any> {
       path: '/',
     }
     this.setState({
-      anyMatch: false,
       conditions: [],
       context: route.context,
       declarer: route.declarer,
@@ -234,7 +232,7 @@ class PageEditor extends Component<any, any> {
   public render() {
     const { routes, templates } = this.props
     const {
-      anyMatch,
+      allMatches,
       availableConditions,
       category,
       conditions,
@@ -287,12 +285,12 @@ class PageEditor extends Component<any, any> {
             enum: availableConditions,
             enumNames: availableConditions,
             type: 'string',
-        },
+          },
           title: 'Conditions',
           type: 'array',
           uniqueItems: true
         },
-        anyMatch: {
+        allMatches: {
           title: 'Must match all conditions',
           type: 'boolean',
         },
@@ -357,7 +355,7 @@ class PageEditor extends Component<any, any> {
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={{
-            anyMatch,
+            allMatches,
             category,
             conditions,
             context,
@@ -379,7 +377,10 @@ class PageEditor extends Component<any, any> {
         >
           <div className="mt7">
             <Link to="/admin/pages">
-              <Button size="small" variation="tertiary">
+              <Button
+                size="small"
+                variation="tertiary"
+              >
                 Cancel
               </Button>
             </Link>
@@ -387,7 +388,8 @@ class PageEditor extends Component<any, any> {
               size="small"
               type="submit"
               className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5"
-              variation="primary">
+              variation="primary"
+            >
               Save
             </Button>
           </div>
