@@ -40,8 +40,8 @@ const BaseInput = props => {
       errorMessage={currentError}
       helpText={schema.description}
       label={label}
-      max={max ? `${max}` : max}
-      min={min ? `${min}` : min}
+      max={max && `${max}`}
+      min={min && `${min}`}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
@@ -49,7 +49,7 @@ const BaseInput = props => {
       readOnly={readonly || schema.readonly}
       required={required}
       type={type}
-      value={value ? `${value}` : value}
+      value={value && `${value}`}
     />
   )
 }
