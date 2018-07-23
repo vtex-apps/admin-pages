@@ -124,7 +124,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const Component = component && getImplementation(component)
     const { props: extensionProps } = this.getExtension()
     const componentProps = this.getSchemaProps(getImplementation(component), extensionProps, runtime)
-    
+
     this.insertComponentAtOlds(editTreePath, component, componentProps)
 
     if (component && !Component) {
@@ -157,24 +157,30 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const componentImplementation = component && getImplementation(component)
     const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props, runtime)
 
-    const selectedComponent = isEmpty ? null : component
-
     this.setState({
       loading: true,
     })
 
+    const configurationIdHashComponents = [page, device, ...activeConditions]
+    if (scope === 'url') {
+      configurationIdHashComponents.unshift(scope + window.location.pathname)
+    } else {
+      configurationIdHashComponents.unshift(scope)
+    }
+
+    const configurationId = configurationIdHashComponents.join('::')
+
     saveExtension({
       variables: {
         allMatches,
-        component: selectedComponent,
         conditions: activeConditions,
+        configurationId,
         device,
         extensionName: editTreePath,
         path: window.location.pathname,
         propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
         routeId: page,
         scope,
-        template: null,
       },
     })
       .then((data) => {
@@ -199,8 +205,8 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     if (has(editTreePath, olds)) {
       console.log('Updating extension with saved information', olds[editTreePath])
-      updateExtension(editTreePath as string, JSON.parse(olds[editTreePath]))  
-      delete olds[editTreePath] 
+      updateExtension(editTreePath as string, JSON.parse(olds[editTreePath]))
+      delete olds[editTreePath]
     }
     editExtensionPoint(null)
 
@@ -444,7 +450,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const { component = null, props = {} } = extensions[editTreePath as string] || {}
     return { component, props: props || {} }
   }
-  
+
   private insertComponentAtOlds = (treePath, component, props) => {
     if (!has(treePath, olds)) {
       olds[treePath] = JSON.stringify({
