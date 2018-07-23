@@ -11,8 +11,8 @@ query Routes {
       template
       device
       conditions
-      paramsJSON
       allMatches
+      configurationId
     }
   }
 }

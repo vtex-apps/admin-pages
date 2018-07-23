@@ -4,7 +4,6 @@ mutation SavePage(
   $template: String,
   $routeId: String,
   $path: String,
-  $paramsJSON: String,
   $device: String,
   $context: String,
   $conditions: [String] = [],
@@ -15,7 +14,6 @@ mutation SavePage(
     template: $template
     routeId: $routeId
     path: $path
-    paramsJSON: $paramsJSON
     device: $device
     context: $context
     conditions: $conditions

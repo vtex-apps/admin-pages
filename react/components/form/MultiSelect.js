@@ -15,7 +15,7 @@ const MultiSelect = ({
   onChange,
   options: { enumOptions },
   placeholder,
-  schema: { title },
+  schema: { disabled: disabledBySchema, title },
   value,
 }) => (
   <Fragment>
@@ -26,7 +26,7 @@ const MultiSelect = ({
     </label>
     <ReactSelect
       autoFocus={autofocus}
-      disabled={disabled || enumOptions.length === 0}
+      disabled={disabled || disabledBySchema || enumOptions.length === 0}
       id={id}
       multi
       onChange={getChangeHandler(onChange)}
@@ -59,6 +59,7 @@ MultiSelect.propTypes = {
   }).isRequired,
   placeholder: PropTypes.string,
   schema: PropTypes.shape({
+    disabled: PropTypes.bool,
     title: PropTypes.string.isRequired
   }).isRequired,
   value: PropTypes.arrayOf(PropTypes.string),
