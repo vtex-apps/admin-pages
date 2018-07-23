@@ -29,6 +29,7 @@ declare global {
     template: string
     device: string
     params: Record<string, any>
+    configurationId: string
   }
 
   interface Route {

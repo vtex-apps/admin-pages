@@ -52,7 +52,7 @@ class PageList extends Component<DataProps<PageData>> {
       </td>
       <td className="pa4 w-10 v-align-center">
         <div className="flex justify-between">
-          <Link to={`/admin/pages/page/${route.id}/${page.name}`}>
+          <Link to={`/admin/pages/page/${page.configurationId}`}>
             <Button variation="primary" size="small">
               <div className="flex">Settings</div>
             </Button>
@@ -105,13 +105,12 @@ class PageList extends Component<DataProps<PageData>> {
     )
   }
 
-  public renderPageDetail(routeId: string, name: string, routes: Route[], templates: Template[], availableConditions: String[]) {
+  public renderPageDetail(configurationId: string, routes: Route[], templates: Template[], availableConditions: String[]) {
     return (
       <PageEditor
         routes={routes}
         templates={templates}
-        routeId={name === 'new' ? null : routeId}
-        name={name === 'new' ? null : name}
+        configurationId={configurationId === 'new' ? null : configurationId}
         availableConditions={availableConditions}
       />
     )
@@ -122,7 +121,7 @@ class PageList extends Component<DataProps<PageData>> {
       conditions: { loading: loadingAvailableConditions },
       templates: { loading: loadingTemplates, availableTemplates: templates = [] },
       routes: { loading: loadingRoutes, routes = [] },
-      params: { pageId },
+      params: { pageId: configurationId },
     } = this.props
 
     const availableConditions =
@@ -130,10 +129,6 @@ class PageList extends Component<DataProps<PageData>> {
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId
       )
-
-    const segments: string[] = pageId && pageId.split('/')
-    const routeId = pageId && init(segments).join('/')
-    const name = pageId && last(segments)
 
     const isStore = (route: Route) => route.id.startsWith('store')
 
@@ -143,9 +138,9 @@ class PageList extends Component<DataProps<PageData>> {
       return a.id.localeCompare(b.id)
     }, storeRoutes)
 
-    const isViewingPage = !!pageId
+    const isViewingPage = !!configurationId
 
-    const pageDetail = isViewingPage && this.renderPageDetail(routeId, name!, routes, templates, availableConditions)
+    const pageDetail = isViewingPage && this.renderPageDetail(configurationId, routes, templates, availableConditions)
 
     const pageList = !isViewingPage && this.renderPageList(sortedRoutes)
 
