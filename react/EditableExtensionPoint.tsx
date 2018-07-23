@@ -63,7 +63,7 @@ class EditableExtensionPoint extends Component<EditableExtensionPointProps, Edit
           const editableClasses = isHighlight ? `br2 pointer ${!isEmpty ? 'b--blue b--dashed ba bg-white o-50' : ''}` : ''
           const overlayClasses = editMode && !editTreePath || isHighlight ? `w-100 h-100 min-h-2 absolute ${editableClasses}` : ''
           return (
-            <div className="relative" onMouseOver={editMode ? this.handleMouseOver : undefined} onMouseOut={editMode ? this.handleMouseOut : undefined}>
+            <div className={editMode ? 'relative' : ''} onMouseOver={editMode ? this.handleMouseOver : undefined} onMouseOut={editMode ? this.handleMouseOut : undefined}>
               <div className={overlayClasses} onClick={this.handleEditClick(context)} style={{ zIndex }}></div>
               {children}
             </div>
