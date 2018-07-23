@@ -354,7 +354,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       ? map(prop('name'), this.props.availableComponents.availableComponents)
       : []
 
-    const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
+    const selectedComponent = component || null
 
     const componentSchema = this.getComponentSchema(Component, props, this.props.runtime)
 
@@ -365,10 +365,21 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const mobile = window.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
 
+    const maybeComponent = !selectedComponent ? {
+      component: {
+        enum: editableComponents,
+        enumNames: editableComponents,
+        title: 'Component',
+        type: 'string',
+        default: '',
+      },
+    } : null
+
     const schema = {
       ...componentSchema,
       title: undefined,
       properties: {
+        ...maybeComponent,
         ...componentSchema.properties,
       },
     }
