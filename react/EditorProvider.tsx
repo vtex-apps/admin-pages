@@ -6,7 +6,7 @@ import { ExtensionPoint } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
-import EditBar from './components/EditBar'
+import EditBar, {APP_CONTENT_ELEMENT_ID} from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
@@ -76,6 +76,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
     document.onmousemove = updateDefaultHighlightRect
+    // Forward scroll events to window so code doesn't have to hook into #app-content
+    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => {setTimeout(() => window.dispatchEvent(e), 0)}, {passive: true})
   }
 
   public updateExtensionPointDOMElements = (editMode: boolean) => {

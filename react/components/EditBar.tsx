@@ -9,6 +9,8 @@ import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
 
+export const APP_CONTENT_ELEMENT_ID = 'app-content'
+
 const getContainerProps = (layout: ConfigurationDevice) => {
   switch (layout) {
     case 'mobile':
@@ -101,7 +103,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
         <div
-          id="app-content"
+          id={APP_CONTENT_ELEMENT_ID}
           className={`bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
           <main
             {...getContainerProps(viewport)}
