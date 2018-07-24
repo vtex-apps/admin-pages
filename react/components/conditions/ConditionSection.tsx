@@ -42,7 +42,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
     const { conditions, activeConditions, multiple, type, shouldEnableSite } = this.props
 
     return map(c => {
-      const message = c.message || c.conditionId
+      const label = c.message ? this.props.intl.formatMessage({id: c.message}) : c.conditionId
       const id = c.id || c.conditionId
 
       return (
@@ -55,7 +55,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
                 name={type}
                 onChange={this.handleInputChange}
                 value={id}
-                label={this.props.intl.formatMessage({id: message})}
+                label={label}
               />
             : <Radio
                 checked={contains(id, activeConditions)}
@@ -64,7 +64,7 @@ class ConditionSection extends Component<ConditionSectionProps & EditorCondition
                 name={type}
                 onChange={this.handleInputChange}
                 value={id}
-                label={this.props.intl.formatMessage({id: message})}
+                label={label}
               />
           }
         </div>

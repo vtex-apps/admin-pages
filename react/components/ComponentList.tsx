@@ -48,13 +48,13 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
     this.props.editor.editExtensionPoint(treePath as string)
   }
 
-  public handleMouseOver = (event: any) => {
+  public handleMouseEnter = (event: any) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
-    this.props.editor.mouseOverExtensionPoint(treePath as string)
+    this.props.editor.highlightExtensionPoint(treePath as string)
   }
 
-  public handleMouseOut = (event: any) => {
-    this.props.editor.mouseOverExtensionPoint(null)
+  public handleMouseLeave = (event: any) => {
+    this.props.editor.highlightExtensionPoint(null)
   }
 
   public renderComponentButton = (treePath: string) => {
@@ -72,8 +72,8 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
         type="button"
         data-tree-path={treePath}
         onClick={this.onEdit}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
         className={
           'dark-gray bg-white pt5 pointer hover-bg-light-silver w-100 tl bn ph0 pb0'
         }
