@@ -29,6 +29,7 @@ declare global {
     template: string
     device: string
     params: Record<string, any>
+    configurationId: string
   }
 
   interface Route {
@@ -101,17 +102,16 @@ declare global {
   }
 
   interface EditorContext extends EditorConditionSection {
-    anyMatch: boolean
+    allMatches: boolean
     editMode: boolean
     editTreePath: string | null
-    highlightTreePath: string | null
     scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
     setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
-    mouseOverExtensionPoint: (treePath: string | null) => void
+    highlightExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
   }
 

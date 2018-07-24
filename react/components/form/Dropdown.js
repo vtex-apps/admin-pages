@@ -17,12 +17,13 @@ const Dropdown = ({
   options,
   placeholder,
   readonly,
+  schema: { disabled: disabledBySchema },
   value,
   intl,
 }) => (
   <StyleguideDropdown
     autoFocus={autofocus}
-    disabled={disabled}
+    disabled={disabled || disabledBySchema}
     id={id}
     label={<FormattedMessage id={label} />}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
@@ -58,6 +59,9 @@ Dropdown.propTypes = {
   options: PropTypes.object,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
+  schema: PropTypes.shape({
+    disabled: PropTypes.bool,
+  }).isRequired,
   value: PropTypes.any,
   intl: intlShape.isRequired,
 }

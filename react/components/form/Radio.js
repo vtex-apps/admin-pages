@@ -8,8 +8,16 @@ class Radio extends Component {
     super(props)
 
     this.state = {
-      value: props.value || null,
+      value: props.value,
     }
+  }
+
+  getLabel = (item, index) => {
+    const { schema: { enumNames } } = this.props
+
+    return enumNames && enumNames.length >= index
+      ? enumNames[index]
+      : item && item.toString()
   }
 
   handleSelection = (event, value) => {
@@ -25,14 +33,16 @@ class Radio extends Component {
 
     return (
       <Fragment>
-        <span className="dib mb3 w-100"><FormattedMessage id={label}/></span>
+        <span className="dib mb3 w-100">
+          <FormattedMessage id={label} />
+        </span>
         {schema.enum &&
           schema.enum.map((item, index) => (
             <StyleguideRadio
               checked={this.props.value === item}
               id={`${id}-${index}`}
               key={`${id}-${index}`}
-              label={item && item.toString()}
+              label={this.getLabel(item, index)}
               name={name || `${id}-group`}
               onChange={event => this.handleSelection(event, item)}
               value={item}
@@ -49,7 +59,7 @@ Radio.propTypes = {
   name: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   schema: PropTypes.object.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
   intl: intlShape.isRequired,
 }
 

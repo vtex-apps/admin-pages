@@ -124,7 +124,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const Component = component && getImplementation(component)
     const { props: extensionProps } = this.getExtension()
     const componentProps = this.getSchemaProps(getImplementation(component), extensionProps, runtime)
-    
+
     this.insertComponentAtOlds(editTreePath, component, componentProps)
 
     if (component && !Component) {
@@ -150,31 +150,37 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
   public handleSave = (event: any) => {
     console.log('save', event, this.props)
-    const { saveExtension, runtime, editor: { activeConditions, anyMatch, editTreePath, editExtensionPoint, scope }, runtime: {page, device} } = this.props
+    const { saveExtension, runtime, editor: { activeConditions, allMatches, editTreePath, editExtensionPoint, scope }, runtime: {page, device} } = this.props
     const { component, props = {} } = this.getExtension()
     const isEmpty = this.isEmptyExtensionPoint(component)
 
     const componentImplementation = component && getImplementation(component)
     const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props, runtime)
 
-    const selectedComponent = isEmpty ? null : component
-
     this.setState({
       loading: true,
     })
 
+    const configurationIdHashComponents = [page, device, ...activeConditions]
+    if (scope === 'url') {
+      configurationIdHashComponents.unshift(scope + window.location.pathname)
+    } else {
+      configurationIdHashComponents.unshift(scope)
+    }
+
+    const configurationId = configurationIdHashComponents.join('::')
+
     saveExtension({
       variables: {
-        anyMatch,
-        component: selectedComponent,
+        allMatches,
         conditions: activeConditions,
+        configurationId,
         device,
         extensionName: editTreePath,
         path: window.location.pathname,
         propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
         routeId: page,
         scope,
-        template: null,
       },
     })
       .then((data) => {
@@ -199,8 +205,8 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     if (has(editTreePath, olds)) {
       console.log('Updating extension with saved information', olds[editTreePath])
-      updateExtension(editTreePath as string, JSON.parse(olds[editTreePath]))  
-      delete olds[editTreePath] 
+      updateExtension(editTreePath as string, JSON.parse(olds[editTreePath]))
+      delete olds[editTreePath]
     }
     editExtensionPoint(null)
 
@@ -348,7 +354,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       ? map(prop('name'), this.props.availableComponents.availableComponents)
       : []
 
-    const selectedComponent = this.isEmptyExtensionPoint(component) ? undefined : component
+    const selectedComponent = component || null
 
     const componentSchema = this.getComponentSchema(Component, props, this.props.runtime)
 
@@ -359,10 +365,21 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const mobile = window.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
 
+    const maybeComponent = !selectedComponent ? {
+      component: {
+        enum: editableComponents,
+        enumNames: editableComponents,
+        title: 'Component',
+        type: 'string',
+        default: '',
+      },
+    } : null
+
     const schema = {
       ...componentSchema,
       title: undefined,
       properties: {
+        ...maybeComponent,
         ...componentSchema.properties,
       },
     }
@@ -444,7 +461,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     const { component = null, props = {} } = extensions[editTreePath as string] || {}
     return { component, props: props || {} }
   }
-  
+
   private insertComponentAtOlds = (treePath, component, props) => {
     if (!has(treePath, olds)) {
       olds[treePath] = JSON.stringify({
