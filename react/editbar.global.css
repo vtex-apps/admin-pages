@@ -115,6 +115,11 @@ html, body {
   padding-right: 15px;
 }
 
+.editor-form .vtex-textarea textarea {
+  max-width: 100%;
+  min-width: 100%;
+}
+
 .field-range-wrapper > input {
   width: 80%;
 }
