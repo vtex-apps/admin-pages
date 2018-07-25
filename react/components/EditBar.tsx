@@ -80,7 +80,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
         className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
         style={{
           animationDuration: '0.333s',
-          transform: `translate(${visible?'0%':'+100%'}, 0)`
+          transform: `translate(${visible?'0%':'+100%'}, 0)`,
           transition: `transform 300ms ease-in-out ${visible?'300ms':''}`,
         }}
         >
@@ -102,7 +102,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
         {this.renderSideBar()}
         <div
           id="app-content"
-          className={`bg-light-silver h-100 z-0 center-m left-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
+          className={`bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${visible?'top-3em-ns calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l':'top-0 w-100'}`} style={{transition:`width 300ms ease-in-out ${visible?'300ms':''}, top 300ms ease-in-out ${!visible?'300ms':''}`}}>
           <main
             {...getContainerProps(viewport)}
             role="main">
