@@ -6,15 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-
-## [1.12.6] - 2018-07-25
 ### Added
-- Site scope option when the component being edited is not defined only to the current page.
 - Textarea widget.
 
 ### Fixed
 - Use `enumNames` in a enum field when it exists, instead of only the name.
 - `BaseInput` label being translated with `FormattedMessage`.
+
+## [1.12.6] - 2018-07-25
+### Added
+- Site scope option when the component being edited is not defined only to the current page.
 
 ### Fixed
 - Incorrect type of the max, min and value attibutes passed to the `Input`.
