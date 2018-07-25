@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { Radio as StyleguideRadio } from 'vtex.styleguide'
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
-class Radio extends Component {
-  constructor(props) {
-    super(props)
+export default class Radio extends Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    label: PropTypes.string,
+    name: PropTypes.string,
+    onChange: PropTypes.func.isRequired,
+    schema: PropTypes.object.isRequired,
+    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  }
 
-    this.state = {
-      value: props.value || null,
-    }
+  state = {
+    value: this.props.value || null,
   }
 
   handleSelection = (event, value) => {
@@ -25,32 +29,32 @@ class Radio extends Component {
 
     return (
       <Fragment>
-        <span className="dib mb3 w-100"><FormattedMessage id={label}/></span>
+        <span className="dib mb3 w-100">{label}</span>
         {schema.enum &&
-          schema.enum.map((item, index) => (
-            <StyleguideRadio
-              checked={this.props.value === item}
-              id={`${id}-${index}`}
-              key={`${id}-${index}`}
-              label={item && item.toString()}
-              name={name || `${id}-group`}
-              onChange={event => this.handleSelection(event, item)}
-              value={item}
-            />
-          ))}
+            schema.enum.map((item, index) => {
+              let itemLabel
+
+              if (schema.enumNames && schema.enumNames.length > 0) {
+                itemLabel = schema.enumNames[index]
+              } else {
+                itemLabel = item && item.toString()
+              }
+
+              return (
+                <StyleguideRadio
+                  checked={this.props.value === item}
+                  id={`${id}-${index}`}
+                  key={`${id}-${index}`}
+                  label={itemLabel}
+                  name={name || `${id}-group`}
+                  onChange={event => this.handleSelection(event, item)}
+                  value={item}
+                />
+              )
+            })
+        }
       </Fragment>
     )
   }
 }
 
-Radio.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  name: PropTypes.string,
-  onChange: PropTypes.func.isRequired,
-  schema: PropTypes.object.isRequired,
-  value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  intl: intlShape.isRequired,
-}
-
-export default injectIntl(Radio)
