@@ -78,13 +78,6 @@ declare global {
   type ConditionType = 'scope' | 'device' | 'custom'
 
   interface Condition {
-    id: string
-    type: ConditionType
-    message: string
-    multiple: boolean,
-  }
-
-  interface ConditionsCondition {
     conditionId: string
   }
 
@@ -95,8 +88,8 @@ declare global {
   type ConfigurationScope = 'url' | 'route' | 'site'
 
   interface EditorConditionSection {
-    conditions: Condition[] | ConditionsCondition[]
     activeConditions: string[]
+    conditions: Condition[]
     addCondition: (conditionId: string) => void
     removeCondition?: (conditionId: string) => void
   }

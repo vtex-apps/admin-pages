@@ -17,15 +17,15 @@ const Dropdown = ({
   options,
   placeholder,
   readonly,
-  schema: { disabled: disabledBySchema },
+  schema,
   value,
   intl,
 }) => (
   <StyleguideDropdown
     autoFocus={autofocus}
-    disabled={disabled || disabledBySchema}
+    disabled={disabled || (schema && schema.disabled)}
     id={id}
-    label={<FormattedMessage id={label} />}
+    label={label && intl.formatMessage({ id: label })}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
@@ -51,8 +51,8 @@ Dropdown.defaultProps = {
 Dropdown.propTypes = {
   autofocus: PropTypes.bool,
   disabled: PropTypes.bool,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  label: PropTypes.string,
   onChange: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
@@ -61,7 +61,7 @@ Dropdown.propTypes = {
   required: PropTypes.bool,
   schema: PropTypes.shape({
     disabled: PropTypes.bool,
-  }).isRequired,
+  }),
   value: PropTypes.any,
   intl: intlShape.isRequired,
 }
