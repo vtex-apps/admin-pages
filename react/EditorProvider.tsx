@@ -11,6 +11,7 @@ import { EditorContext } from './components/EditorContext'
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
+import HighlightOverlay from './components/HighlightOverlay'
 
 interface EditorProviderState {
   activeConditions: string[]
@@ -75,94 +76,24 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       )
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-    document.onmousemove = updateDefaultHighlightRect
     // Forward scroll events to window so code doesn't have to hook into #app-content
     document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => {setTimeout(() => window.dispatchEvent(e), 0)}, {passive: true})
   }
 
-  public updateExtensionPointDOMElements = (editMode: boolean) => {
-    const elements = document.querySelectorAll(`[data-extension-point]`)
-    elements.forEach((e: Element) => {
-      if (editMode) {
-        e.addEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.addEventListener('click', this.handleClickHighlight)
-        e.style.cursor = 'pointer'
-      } else {
-        e.removeEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.removeEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.removeEventListener('click', this.handleClickHighlight)
-        e.style.cursor = null
-      }
-    })
-  }
-
   public editExtensionPoint = (treePath: string | null) => {
-    this.setState({ editTreePath: treePath, highlight: null, editMode: false },
-      () => this.updateExtensionPointDOMElements(false))
+    this.setState({ editTreePath: treePath, editMode: false, highlightTreePath: null })
   }
 
   public highlightExtensionPoint = (treePath: string | null) => {
-    if (!treePath) {
-      this.setState({ highlight: null })
-    }
-
-    const element = document.querySelector(`[data-extension-point="${treePath}"]`)
-    const provider = document.querySelector('.render-provider')
-    if (element && provider) {
-      const rect = element.getBoundingClientRect() as DOMRect
-      const providerRect = provider.getBoundingClientRect() as DOMRect
-
-      // Add offset from render provider main div
-      rect.y += -providerRect.y
-      rect.x += -providerRect.x
-
-      this.setState({ highlight: rect })
-    }
+    this.setState({ highlightTreePath: treePath })
   }
 
   public handleToggleEditMode = () => {
     const editMode = !this.state.editMode
     this.setState({ editMode },
       () => {
-        this.updateExtensionPointDOMElements(editMode)
         window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
       })
-  }
-
-  public handleMouseOverHighlight = (e: any) => {
-    if (!e.currentTarget) {
-      return
-    }
-
-    const treePath = e.currentTarget.getAttribute('data-extension-point')
-
-    clearTimeout(this.highlightRemovalTimeout)
-    this.highlightExtensionPoint(treePath)
-    e.stopPropagation()
-  }
-
-  public handleMouseLeaveHighlight = () => {
-    if (this.highlightRemovalTimeout) {
-      clearTimeout(this.highlightRemovalTimeout)
-    }
-
-    this.highlightRemovalTimeout = setTimeout(this.tryRemoveHighlight, 300)
-  }
-
-  public tryRemoveHighlight = () => {
-    this.highlightExtensionPoint(null)
-  }
-
-  public handleClickHighlight = (e: any) => {
-    if (!e.currentTarget) {
-      return
-    }
-
-    e.preventDefault()
-    e.stopPropagation()
-    const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.editExtensionPoint(treePath)
   }
 
   public handleToggleShowAdminControls = () => {
@@ -230,7 +161,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public render() {
     const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, highlight, showAdminControls, activeConditions, allMatches, scope, viewport} = this.state
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, allMatches, scope, viewport} = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -282,18 +213,6 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       </Draggable>
     )
 
-    const {x: left, y: top, width, height} = highlight || DEFAULT_HIGHLIGHT_RECT
-    const highlightStyle = {
-      animationDuration: '0.6s',
-      height,
-      left,
-      pointerEvents: 'none',
-      top,
-      transition: highlight ? 'top 0.3s, left 0.3s, width 0.3s, height 0.3s' : undefined,
-      width,
-      zIndex: 999,
-    }
-
     const topbarStyle = {
       animationDuration: '0.2s',
       transform: `translate(0,${showAdminControls?0:'-100%'})`,
@@ -325,7 +244,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
           <Fragment>
-            <div id="editor-provider-overlay" style={highlightStyle} className={`absolute ${highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''}`} />
+            <HighlightOverlay treePath={highlightTreePath} editMode={this.state.editMode} editExtensionPoint={this.editExtensionPoint}/>
             {children}
           </Fragment>
         </EditBar>
