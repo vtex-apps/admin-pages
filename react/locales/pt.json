@@ -1,5 +1,9 @@
 {
   "pages.admin-menu-button": "Pages",
-  "pages.conditions.custom.title": "Customizado",
-  "pages.editor.components.edit": "Editar página"
+  "pages.conditions.scope.route": "Esta rota",
+  "pages.conditions.scope.site": "Todo o site",
+  "pages.conditions.scope.url": "Esta URL",
+  "pages.editor.components.conditions.custom.label": "Adicionar condições customizadas",
+  "pages.editor.components.conditions.custom.placeholder": "Selecionar condições...",
+  "pages.editor.components.conditions.native.label": "Aplicar configurações para"
 }
