@@ -77,8 +77,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   // tslint:disable-next-line
   private _isMounted: boolean = false
 
+  private initialProps: object
+
   constructor(props: any) {
     super(props)
+
+    this.initialProps = {}
 
     this.state = {
       conditions: [],

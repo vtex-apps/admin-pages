@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, Fragment } from 'react'
+import React, { Component, CSSProperties, Fragment } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
-import EditBar, {APP_CONTENT_ELEMENT_ID} from './components/EditBar'
+import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
@@ -17,24 +17,13 @@ interface EditorProviderState {
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
-  highlight: DOMRect | null
   showAdminControls: boolean
   scope: ConfigurationScope
   template: string | null
   viewport: Viewport
 }
 
-const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
-
-const updateDefaultHighlightRect = (e: any) => {
-  const provider = document.querySelector('.render-provider')
-  const providerRect = provider && provider.getBoundingClientRect() as DOMRect
-
-  DEFAULT_HIGHLIGHT_RECT.y = e.pageY + (providerRect ? -providerRect.y : 0)
-  DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
-}
-
-class EditorProvider extends Component<{} & RenderContextProps & DataProps<{availableConditions: [Condition]}>, EditorProviderState> {
+class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
   public static contextTypes = {
     components: PropTypes.object,
   }
@@ -45,19 +34,14 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     runtime: PropTypes.object,
   }
 
-  public highlightRemovalTimeout: any
-
   constructor(props: any) {
     super(props)
-
-    this.highlightRemovalTimeout = null
 
     this.state = {
       activeConditions: [],
       allMatches: true,
       editMode: false,
       editTreePath: null,
-      highlight: null,
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -75,94 +59,20 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       )
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-    document.onmousemove = updateDefaultHighlightRect
     // Forward scroll events to window so code doesn't have to hook into #app-content
-    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => {setTimeout(() => window.dispatchEvent(e), 0)}, {passive: true})
-  }
-
-  public updateExtensionPointDOMElements = (editMode: boolean) => {
-    const elements = document.querySelectorAll(`[data-extension-point]`)
-    elements.forEach((e: Element) => {
-      if (editMode) {
-        e.addEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.addEventListener('click', this.handleClickHighlight)
-        e.style.cursor = 'pointer'
-      } else {
-        e.removeEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.removeEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.removeEventListener('click', this.handleClickHighlight)
-        e.style.cursor = null
-      }
-    })
+    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
   }
 
   public editExtensionPoint = (treePath: string | null) => {
-    this.setState({ editTreePath: treePath, highlight: null, editMode: false },
-      () => this.updateExtensionPointDOMElements(false))
-  }
-
-  public highlightExtensionPoint = (treePath: string | null) => {
-    if (!treePath) {
-      this.setState({ highlight: null })
-    }
-
-    const element = document.querySelector(`[data-extension-point="${treePath}"]`)
-    const provider = document.querySelector('.render-provider')
-    if (element && provider) {
-      const rect = element.getBoundingClientRect() as DOMRect
-      const providerRect = provider.getBoundingClientRect() as DOMRect
-
-      // Add offset from render provider main div
-      rect.y += -providerRect.y
-      rect.x += -providerRect.x
-
-      this.setState({ highlight: rect })
-    }
+    this.setState({ editTreePath: treePath, editMode: false })
   }
 
   public handleToggleEditMode = () => {
     const editMode = !this.state.editMode
     this.setState({ editMode },
       () => {
-        this.updateExtensionPointDOMElements(editMode)
         window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
       })
-  }
-
-  public handleMouseOverHighlight = (e: any) => {
-    if (!e.currentTarget) {
-      return
-    }
-
-    const treePath = e.currentTarget.getAttribute('data-extension-point')
-
-    clearTimeout(this.highlightRemovalTimeout)
-    this.highlightExtensionPoint(treePath)
-    e.stopPropagation()
-  }
-
-  public handleMouseLeaveHighlight = () => {
-    if (this.highlightRemovalTimeout) {
-      clearTimeout(this.highlightRemovalTimeout)
-    }
-
-    this.highlightRemovalTimeout = setTimeout(this.tryRemoveHighlight, 300)
-  }
-
-  public tryRemoveHighlight = () => {
-    this.highlightExtensionPoint(null)
-  }
-
-  public handleClickHighlight = (e: any) => {
-    if (!e.currentTarget) {
-      return
-    }
-
-    e.preventDefault()
-    e.stopPropagation()
-    const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.editExtensionPoint(treePath)
   }
 
   public handleToggleShowAdminControls = () => {
@@ -230,7 +140,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public render() {
     const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, highlight, showAdminControls, activeConditions, allMatches, scope, viewport} = this.state
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -247,7 +157,6 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
-      highlightExtensionPoint: this.highlightExtensionPoint,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
@@ -268,7 +177,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       }
     }
 
-    const adminControlsStyle = {
+    const adminControlsStyle: CSSProperties = {
       animationDuration: '0.6s',
       transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
       visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
@@ -282,22 +191,10 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       </Draggable>
     )
 
-    const {x: left, y: top, width, height} = highlight || DEFAULT_HIGHLIGHT_RECT
-    const highlightStyle = {
-      animationDuration: '0.6s',
-      height,
-      left,
-      pointerEvents: 'none',
-      top,
-      transition: highlight ? 'top 0.3s, left 0.3s, width 0.3s, height 0.3s' : undefined,
-      width,
-      zIndex: 999,
-    }
-
     const topbarStyle = {
       animationDuration: '0.2s',
-      transform: `translate(0,${showAdminControls?0:'-100%'})`,
-      transition: `transform 300ms ease-in-out ${!showAdminControls?'300ms':''}`,
+      transform: `translate(0,${showAdminControls ? 0 : '-100%'})`,
+      transition: `transform 300ms ease-in-out ${!showAdminControls ? '300ms' : ''}`,
     }
 
     const childrenWithSidebar = (
@@ -312,7 +209,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
               onClick={this.handleToggleEditMode}
               className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
             >
-              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'}/></span>
+              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'} /></span>
             </button>
             <button
               type="button"
@@ -323,12 +220,9 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
             </button>
           </ExtensionPoint>
         </div>
-        <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
-          <Fragment>
-            <div id="editor-provider-overlay" style={highlightStyle} className={`absolute ${highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''}`} />
-            {children}
-          </Fragment>
-        </EditBar>
+        <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
+          {children}
+        </EditorContainer>
       </Fragment>
     )
 
