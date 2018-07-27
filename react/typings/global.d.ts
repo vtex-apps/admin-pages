@@ -146,4 +146,15 @@ declare global {
     conditions?: string[]
     template?: string
   }
+
+  interface ExtensionConfiguration {
+    allMatches: boolean
+    conditions: string[]
+    configurationId: string
+    device: string
+    propsJSON: string
+    routeId: string
+    scope: ConfigurationScope
+    url?: string
+  }
 }

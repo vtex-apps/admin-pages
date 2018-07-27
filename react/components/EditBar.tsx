@@ -4,7 +4,6 @@ import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import ComponentEditor from './ComponentEditor'
 import ComponentList from './ComponentList'
-import ConditionSelector from './conditions/ConditionSelector'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
@@ -58,19 +57,18 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
 
   public renderSideBarContent() {
     const { editor: { editTreePath }, editor, runtime } = this.props
-    return (
-      <Fragment>
-        <PageInfo editor={editor} runtime={runtime} />
-        <ConditionSelector editor={editor} runtime={runtime} />
-        <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
-          <FormattedMessage id="pages.editor.components.title"/>
-        </h3>
-        { editTreePath == null
-          ? <ComponentList editor={editor} runtime={runtime} />
-          : <ComponentEditor editor={editor} runtime={runtime} />
-        }
-      </Fragment>
-    )
+
+    return editTreePath === null
+      ? (
+        <Fragment>
+          <PageInfo editor={editor} runtime={runtime} />
+          <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
+            <FormattedMessage id="pages.editor.components.title" />
+          </h3>
+          <ComponentList editor={editor} runtime={runtime} />
+        </Fragment>
+      )
+      : <ComponentEditor editor={editor} runtime={runtime} />
   }
 
   public renderSideBar() {

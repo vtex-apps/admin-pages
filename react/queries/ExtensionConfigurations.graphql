@@ -1,0 +1,12 @@
+query ExtensionConfigurations($treePath: String!) {
+  extensionConfigurations(treePath: $treePath) {
+    allMatches
+    conditions
+    configurationId
+    device
+    propsJSON
+    routeId
+    scope
+    url
+  }
+}
