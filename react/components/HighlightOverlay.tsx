@@ -3,6 +3,8 @@ import React, { Component, CSSProperties } from 'react'
 
 const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 
+const HIGHLIGHT_REMOVAL_TIMEOUT_MS = 300
+
 const updateDefaultHighlightRect = (e: any) => {
   const provider = document.querySelector('.render-provider')
   const providerRect = provider && provider.getBoundingClientRect() as DOMRect
@@ -11,20 +13,18 @@ const updateDefaultHighlightRect = (e: any) => {
   DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
 }
 
-interface HighlightOverlayProps {
-  editMode: boolean,
-  treePath: string | null,
-  editExtensionPoint: (treePath: string | null) => void,
+interface Props {
+  editExtensionPoint: (treePath: string | null) => void
+  editMode: boolean
+  highlightExtensionPoint: (treePath: string | null) => void
+  highlightTreePath: string | null
 }
-
-interface HighlightOverlayState {
-  treePath: string | null,
-}
-
-export default class HighlightOverlay extends Component<HighlightOverlayProps, HighlightOverlayState> {
+export default class HighlightOverlay extends Component<Props> {
   public static propTypes = {
+    editExtensionPoint: PropTypes.func,
     editMode: PropTypes.bool,
-    treePath: PropTypes.string,
+    highlightExtensionPoint: PropTypes.func,
+    highlightTreePath: PropTypes.string,
   }
 
   public highlightRemovalTimeout: any
@@ -33,14 +33,13 @@ export default class HighlightOverlay extends Component<HighlightOverlayProps, H
     super(props)
 
     this.highlightRemovalTimeout = null
+  }
 
-    this.state = {
-      treePath: null,
-    }
+  public componentDidMount() {
+    document.onmousemove = updateDefaultHighlightRect
   }
 
   public componentDidUpdate() {
-    document.onmousemove = updateDefaultHighlightRect
     this.updateExtensionPointDOMElements(this.props.editMode)
   }
 
@@ -62,16 +61,10 @@ export default class HighlightOverlay extends Component<HighlightOverlayProps, H
     })
   }
 
-  public highlightExtensionPoint = () => {
-    const treePath = this.state.treePath || this.props.treePath
-
-    if (!treePath) {
-      return null
-    }
-
-    const element = document.querySelector(`[data-extension-point="${treePath}"]`)
+  public getHighlightRect = (highlightTreePath : string) => {
+    const element = document.querySelector(`[data-extension-point="${highlightTreePath}"]`)
     const provider = document.querySelector('.render-provider')
-    if (element && provider) {
+    if (highlightTreePath && element && provider) {
       const rect = element.getBoundingClientRect() as DOMRect
       const providerRect = provider.getBoundingClientRect() as DOMRect
 
@@ -88,9 +81,7 @@ export default class HighlightOverlay extends Component<HighlightOverlayProps, H
     }
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.setState({
-      treePath
-    })
+    this.props.highlightExtensionPoint(treePath)
 
     clearTimeout(this.highlightRemovalTimeout)
     e.stopPropagation()
@@ -101,13 +92,11 @@ export default class HighlightOverlay extends Component<HighlightOverlayProps, H
       clearTimeout(this.highlightRemovalTimeout)
     }
 
-    this.highlightRemovalTimeout = setTimeout(this.tryRemoveHighlight, 300)
+    this.highlightRemovalTimeout = setTimeout(this.tryRemoveHighlight, HIGHLIGHT_REMOVAL_TIMEOUT_MS)
   }
 
   public tryRemoveHighlight = () => {
-    this.setState({
-      treePath: null
-    })
+    this.props.highlightExtensionPoint(null)
   }
 
   public handleClickHighlight = (e: any) => {
@@ -117,14 +106,13 @@ export default class HighlightOverlay extends Component<HighlightOverlayProps, H
 
     e.preventDefault()
     e.stopPropagation()
-    this.props.editExtensionPoint(this.state.treePath)
-    this.setState({
-      treePath: null
-    })
+    this.props.editExtensionPoint(this.props.highlightTreePath)
+    this.props.highlightExtensionPoint(null)
   }
 
   public render() {
-    const highlight = this.highlightExtensionPoint()
+    const { highlightTreePath } = this.props
+    const highlight = highlightTreePath && this.getHighlightRect(highlightTreePath)
     const { x: left, y: top, width, height } = highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',

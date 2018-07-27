@@ -1,14 +1,13 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, Fragment, CSSProperties } from 'react'
+import React, { Component, CSSProperties, Fragment } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
-import EditBar, { APP_CONTENT_ELEMENT_ID } from './components/EditBar'
+import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
-import HighlightOverlay from './components/HighlightOverlay'
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
@@ -18,7 +17,6 @@ interface EditorProviderState {
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
-  highlightTreePath: string | null
   showAdminControls: boolean
   scope: ConfigurationScope
   template: string | null
@@ -36,19 +34,14 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     runtime: PropTypes.object,
   }
 
-  public highlightRemovalTimeout: any
-
   constructor(props: any) {
     super(props)
-
-    this.highlightRemovalTimeout = null
 
     this.state = {
       activeConditions: [],
       allMatches: true,
       editMode: false,
       editTreePath: null,
-      highlightTreePath: null,
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -71,11 +64,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 
   public editExtensionPoint = (treePath: string | null) => {
-    this.setState({ editTreePath: treePath, editMode: false, highlightTreePath: null })
-  }
-
-  public highlightExtensionPoint = (treePath: string | null) => {
-    this.setState({ highlightTreePath: treePath })
+    this.setState({ editTreePath: treePath, editMode: false })
   }
 
   public handleToggleEditMode = () => {
@@ -151,7 +140,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
 
   public render() {
     const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -168,7 +157,6 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
-      highlightExtensionPoint: this.highlightExtensionPoint,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
@@ -232,12 +220,9 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
             </button>
           </ExtensionPoint>
         </div>
-        <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
-          <Fragment>
-            <HighlightOverlay treePath={highlightTreePath} editMode={this.state.editMode} editExtensionPoint={this.editExtensionPoint} />
-            {children}
-          </Fragment>
-        </EditBar>
+        <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
+          {children}
+        </EditorContainer>
       </Fragment>
     )
 

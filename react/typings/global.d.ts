@@ -104,7 +104,6 @@ declare global {
     setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
-    highlightExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
   }
 

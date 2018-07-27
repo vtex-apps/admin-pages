@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-
 import { FormattedMessage } from 'react-intl'
+
 import ComponentEditor from './ComponentEditor'
 import ComponentList from './ComponentList'
+import HighlightOverlay from './HighlightOverlay'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content'
 
-const getContainerProps = (layout: ConfigurationDevice) => {
+const getContainerProps = (layout: Viewport) => {
   switch (layout) {
     case 'mobile':
       return {
@@ -39,11 +40,15 @@ const getContainerProps = (layout: ConfigurationDevice) => {
   }
 }
 
-interface EditBarProps {
+interface Props {
   visible: boolean
 }
 
-export default class EditBar extends Component<EditBarProps & RenderContextProps & EditorContextProps> {
+interface State {
+  highlightTreePath: string | null
+}
+
+export default class EditorContainer extends Component<Props & RenderContextProps & EditorContextProps, State> {
   public static propTypes = {
     children: PropTypes.node,
     editor: PropTypes.object,
@@ -51,8 +56,20 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
     visible: PropTypes.bool,
   }
 
+  constructor (props: Props & RenderContextProps & EditorContextProps) {
+    super(props)
+
+    this.state = {
+      highlightTreePath: null
+    }
+  }
+
   public componentDidMount() {
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+  }
+
+  public highlightExtensionPoint = (highlightTreePath: string | null) => {
+    this.setState({ highlightTreePath })
   }
 
   public renderSideBarContent() {
@@ -65,7 +82,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
           <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
             <FormattedMessage id="pages.editor.components.title" />
           </h3>
-          <ComponentList editor={editor} runtime={runtime} />
+          <ComponentList editor={editor} runtime={runtime} highlightExtensionPoint={this.highlightExtensionPoint} />
         </Fragment>
       )
       : <ComponentEditor editor={editor} runtime={runtime} />
@@ -96,7 +113,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
   }
 
   public render() {
-    const { editor: { viewport }, visible } = this.props
+    const { editor: { editMode, editExtensionPoint, viewport }, visible } = this.props
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
@@ -106,6 +123,7 @@ export default class EditBar extends Component<EditBarProps & RenderContextProps
           <main
             {...getContainerProps(viewport)}
             role="main">
+            <HighlightOverlay editMode={editMode} editExtensionPoint={editExtensionPoint} highlightExtensionPoint={this.highlightExtensionPoint} highlightTreePath={this.state.highlightTreePath} />
             {this.props.children}
           </main>
         </div>

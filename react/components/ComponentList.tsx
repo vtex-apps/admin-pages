@@ -37,7 +37,11 @@ const isDifferentPage = (treePath: string, page: string, pages: string[]) => {
   return !!sameLevelPages.find((p: string) => treePath.startsWith(p))
 }
 
-class ComponentList extends Component<{} & RenderContextProps & EditorContextProps> {
+interface Props {
+  highlightExtensionPoint: (treePath: string | null) => void
+}
+
+class ComponentList extends Component<Props & RenderContextProps & EditorContextProps> {
   public static propTypes = {
     editor: PropTypes.object,
     runtime: PropTypes.object,
@@ -46,15 +50,16 @@ class ComponentList extends Component<{} & RenderContextProps & EditorContextPro
   public onEdit = (event: any) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
     this.props.editor.editExtensionPoint(treePath as string)
+    this.props.highlightExtensionPoint(null)
   }
 
   public handleMouseEnter = (event: any) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
-    this.props.editor.highlightExtensionPoint(treePath as string)
+    this.props.highlightExtensionPoint(treePath as string)
   }
 
-  public handleMouseLeave = (event: any) => {
-    this.props.editor.highlightExtensionPoint(null)
+  public handleMouseLeave = () => {
+    this.props.highlightExtensionPoint(null)
   }
 
   public renderComponentButton = (treePath: string) => {
