@@ -1,41 +1,31 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, Fragment } from 'react'
+import React, { Component, Fragment, CSSProperties } from 'react'
 import { DataProps, graphql } from 'react-apollo'
 import { ExtensionPoint } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
-import EditBar, {APP_CONTENT_ELEMENT_ID} from './components/EditBar'
+import EditBar, { APP_CONTENT_ELEMENT_ID } from './components/EditBar'
 import { EditorContext } from './components/EditorContext'
+import HighlightOverlay from './components/HighlightOverlay'
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
-import HighlightOverlay from './components/HighlightOverlay'
 
 interface EditorProviderState {
   activeConditions: string[]
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
-  highlight: DOMRect | null
+  highlightTreePath: string | null
   showAdminControls: boolean
   scope: ConfigurationScope
   template: string | null
   viewport: Viewport
 }
 
-const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
-
-const updateDefaultHighlightRect = (e: any) => {
-  const provider = document.querySelector('.render-provider')
-  const providerRect = provider && provider.getBoundingClientRect() as DOMRect
-
-  DEFAULT_HIGHLIGHT_RECT.y = e.pageY + (providerRect ? -providerRect.y : 0)
-  DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
-}
-
-class EditorProvider extends Component<{} & RenderContextProps & DataProps<{availableConditions: [Condition]}>, EditorProviderState> {
+class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
   public static contextTypes = {
     components: PropTypes.object,
   }
@@ -58,7 +48,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       allMatches: true,
       editMode: false,
       editTreePath: null,
-      highlight: null,
+      highlightTreePath: null,
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -77,7 +67,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
     }
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
     // Forward scroll events to window so code doesn't have to hook into #app-content
-    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => {setTimeout(() => window.dispatchEvent(e), 0)}, {passive: true})
+    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
   }
 
   public editExtensionPoint = (treePath: string | null) => {
@@ -161,7 +151,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
   public render() {
     const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, allMatches, scope, viewport} = this.state
+    const { editMode, editTreePath, highlightTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
     const root = page.split('/')[0]
 
     const isAdmin = root === 'admin'
@@ -199,7 +189,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
       }
     }
 
-    const adminControlsStyle = {
+    const adminControlsStyle: CSSProperties = {
       animationDuration: '0.6s',
       transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
       visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
@@ -215,8 +205,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
 
     const topbarStyle = {
       animationDuration: '0.2s',
-      transform: `translate(0,${showAdminControls?0:'-100%'})`,
-      transition: `transform 300ms ease-in-out ${!showAdminControls?'300ms':''}`,
+      transform: `translate(0,${showAdminControls ? 0 : '-100%'})`,
+      transition: `transform 300ms ease-in-out ${!showAdminControls ? '300ms' : ''}`,
     }
 
     const childrenWithSidebar = (
@@ -231,7 +221,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
               onClick={this.handleToggleEditMode}
               className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
             >
-              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'}/></span>
+              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'} /></span>
             </button>
             <button
               type="button"
@@ -244,7 +234,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{avai
         </div>
         <EditBar editor={editor} runtime={runtime} visible={showAdminControls}>
           <Fragment>
-            <HighlightOverlay treePath={highlightTreePath} editMode={this.state.editMode} editExtensionPoint={this.editExtensionPoint}/>
+            <HighlightOverlay treePath={highlightTreePath} editMode={this.state.editMode} editExtensionPoint={this.editExtensionPoint} />
             {children}
           </Fragment>
         </EditBar>

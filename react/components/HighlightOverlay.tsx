@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component } from 'react'
+import React, { Component, CSSProperties } from 'react'
 
 const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 
@@ -11,9 +11,20 @@ const updateDefaultHighlightRect = (e: any) => {
   DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
 }
 
-export default class HighlightOverlay extends Component {
+interface HighlightOverlayProps {
+  editMode: boolean,
+  treePath: string | null,
+  editExtensionPoint: (treePath: string | null) => void,
+}
+
+interface HighlightOverlayState {
+  treePath: string | null,
+}
+
+export default class HighlightOverlay extends Component<HighlightOverlayProps, HighlightOverlayState> {
   public static propTypes = {
-    treePath: PropTypes.str
+    editMode: PropTypes.bool,
+    treePath: PropTypes.string,
   }
 
   public highlightRemovalTimeout: any
@@ -24,8 +35,7 @@ export default class HighlightOverlay extends Component {
     this.highlightRemovalTimeout = null
 
     this.state = {
-      editMode: props.editMode
-      treePath: null
+      treePath: null,
     }
   }
 
@@ -34,28 +44,20 @@ export default class HighlightOverlay extends Component {
     this.updateExtensionPointDOMElements(this.props.editMode)
   }
 
-  static getDerivedStateFromProps(props, prevState) {
-    if (prevState.editMode != props.editMode) {
-      return {
-        editMode: props.editMode
-      }
-    }
-    return null
-  }
-
   public updateExtensionPointDOMElements = (editMode: boolean) => {
-    const elements = document.querySelectorAll(`[data-extension-point]`)
+    const elements = Array.from(document.querySelectorAll(`[data-extension-point]`))
     elements.forEach((e: Element) => {
+      const element = e as HTMLElement
       if (editMode) {
-        e.addEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.addEventListener('click', this.handleClickHighlight)
-        e.style.cursor = 'pointer'
+        element.addEventListener('mouseover', this.handleMouseOverHighlight as any)
+        element.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
+        element.addEventListener('click', this.handleClickHighlight)
+        element.style.cursor = 'pointer'
       } else {
-        e.removeEventListener('mouseover', this.handleMouseOverHighlight as any)
-        e.removeEventListener('mouseleave', this.handleMouseLeaveHighlight)
-        e.removeEventListener('click', this.handleClickHighlight)
-        e.style.cursor = null
+        element.removeEventListener('mouseover', this.handleMouseOverHighlight as any)
+        element.removeEventListener('mouseleave', this.handleMouseLeaveHighlight)
+        element.removeEventListener('click', this.handleClickHighlight)
+        element.style.cursor = null
       }
     })
   }
@@ -87,7 +89,7 @@ export default class HighlightOverlay extends Component {
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
     this.setState({
-      treePath: treePath
+      treePath
     })
 
     clearTimeout(this.highlightRemovalTimeout)
@@ -115,14 +117,16 @@ export default class HighlightOverlay extends Component {
 
     e.preventDefault()
     e.stopPropagation()
-    const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.props.editExtensionPoint(treePath)
+    this.props.editExtensionPoint(this.state.treePath)
+    this.setState({
+      treePath: null
+    })
   }
 
   public render() {
     const highlight = this.highlightExtensionPoint()
-    const {x: left, y: top, width, height} = highlight || DEFAULT_HIGHLIGHT_RECT
-    const highlightStyle = {
+    const { x: left, y: top, width, height } = highlight || DEFAULT_HIGHLIGHT_RECT
+    const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',
       height,
       left,
