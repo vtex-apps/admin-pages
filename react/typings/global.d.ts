@@ -10,6 +10,7 @@ declare global {
 
   interface Extension {
     component: string | null
+    configurationsIds?: string[]
     props?: any
     shouldRender?: boolean
   }
@@ -154,6 +155,6 @@ declare global {
     propsJSON: string
     routeId: string
     scope: ConfigurationScope
-    url?: string
+    url: string
   }
 }

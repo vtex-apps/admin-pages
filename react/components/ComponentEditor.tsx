@@ -2,9 +2,16 @@ import PropTypes from 'prop-types'
 import { filter, has, keys, map, merge, pick, pickBy, prop, reduce, mergeDeepLeft } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { injectIntl, intlShape } from 'react-intl'
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 import Form from 'react-jsonschema-form'
-import { Button, Modal, IconArrowBack, Spinner } from 'vtex.styleguide'
+import {
+  Badge,
+  Button,
+  Card,
+  IconArrowBack,
+  Modal,
+  Spinner,
+} from 'vtex.styleguide'
 
 import PathMinus from '../images/PathMinus'
 
@@ -59,7 +66,7 @@ interface ComponentEditorProps {
 interface ComponentEditorState {
   conditions: string[]
   configuration?: ExtensionConfiguration
-  configurationAfterModal?: ExtensionConfiguration
+  isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
@@ -77,15 +84,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   // tslint:disable-next-line
   private _isMounted: boolean = false
 
-  private initialProps: object
-
   constructor(props: any) {
     super(props)
 
-    this.initialProps = {}
-
     this.state = {
       conditions: [],
+      isEditMode: false,
       isLoading: false,
       isModalOpen: false,
       mode: 'content',
@@ -263,11 +267,37 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     return mergeDeepLeft(uiSchema, componentUiSchema || {})
   }
 
+  private getDefaultConfiguration = (): ExtensionConfiguration => {
+    const { runtime } = this.props
+
+    return {
+      allMatches: true,
+      conditions: [],
+      configurationId: 'new',
+      device: runtime.device,
+      propsJSON: '{}',
+      routeId: runtime.page,
+      scope: 'url',
+      url: window.location.pathname,
+    }
+  }
+
+  private getExtension = (): Extension => {
+    const { editor: { editTreePath }, runtime: { extensions } } = this.props
+    const {
+      component = null,
+      configurationsIds = [],
+      props = {}
+    } = extensions[editTreePath as string] || {}
+
+    return { component, configurationsIds, props: props || {} }
+  }
+
   private handleConditionsChange = (newConditions: string[]) => {
     this.setState({ conditions: newConditions })
   }
 
-  private handleConfigurationChange(newConfiguration: ExtensionConfiguration) {
+  private handleConfigurationChange = (newConfiguration: ExtensionConfiguration) => {
     const { editor, runtime } = this.props
 
     this.setState({
@@ -285,12 +315,9 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     })
   }
 
-  private handleConfigurationDefaultState() {
-    const { runtime } = this.props
-
+  private handleConfigurationDefaultState = () => {
     const extensionConfigurationsQuery = this.props.extensionConfigurations
     const configurations = extensionConfigurationsQuery.extensionConfigurations
-
     if (
       !this.state.configuration &&
       !extensionConfigurationsQuery.loading &&
@@ -304,34 +331,52 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         })
       } else {
         this.setState({
-          configuration: {
-            allMatches: true,
-            conditions: [],
-            configurationId: 'new',
-            device: runtime.device,
-            propsJSON: '{}',
-            routeId: runtime.page,
-            scope: 'url',
-          }
+          configuration: this.getDefaultConfiguration(),
+          wasModified: true,
+        }, () => {
+          this.handleConfigurationOpen(this.state.configuration!)
         })
       }
     }
   }
 
-  private handleConfigurationSelection(newConfiguration?: ExtensionConfiguration) {
+  private handleConfigurationClose = () => {
+    const { editor, runtime } = this.props
+
+    if (this.state.wasModified) {
+      this.handleModalOpen()
+    } else {
+      this.setState({ isEditMode: false })
+
+      runtime.updateRuntime({
+        conditions: editor.activeConditions,
+        device: runtime.device,
+        scope: editor.scope,
+      })
+    }
+  }
+
+  private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
+    const { configuration: currConfiguration } = this.state
+
     if (
-      newConfiguration &&
-      newConfiguration.configurationId !== this.state.configuration!.configurationId
+      currConfiguration &&
+      currConfiguration.configurationId !== configuration.configurationId
     ) {
-      if (this.state.wasModified) {
-        this.setState({
-          configurationAfterModal: newConfiguration
-        }, () => {
-          this.handleModalOpen()
-        })
-      } else {
-        this.handleConfigurationChange(newConfiguration)
-      }
+      this.handleConfigurationChange(configuration)
+    }
+
+    this.setState({ isEditMode: true })
+  }
+
+  private handleConfigurationSelection = (newConfiguration: ExtensionConfiguration) => {
+    const { configuration: currConfiguration } = this.state
+
+    if (
+      !currConfiguration ||
+      newConfiguration.configurationId !== currConfiguration.configurationId
+    ) {
+      this.handleConfigurationChange(newConfiguration)
     }
   }
 
@@ -339,36 +384,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     this.setState({ wasModified: false }, () => {
       this.handleModalResolution()
     })
-  }
-
-  private handleExit = (event?: any) => {
-    const { editor, runtime } = this.props
-
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
-
-    const props =
-      configurations && configurations.length > 0
-        ? JSON.parse(configurations[0].propsJSON)
-        : this.getExtension().props
-
-    if (event) {
-      event.stopPropagation()
-    }
-
-    if (this.state.wasModified) {
-      this.handleModalOpen()
-    } else {
-      runtime.updateExtension(
-        editor.editTreePath!,
-        {
-          component: this.getExtension().component,
-          props,
-        }
-      )
-
-      editor.editExtensionPoint(null)
-    }
   }
 
   private handleFormChange = (event: any) => {
@@ -411,11 +426,14 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   private handleModalResolution = () => {
-    this.handleModalClose()
+    const extensionConfigurationsQuery = this.props.extensionConfigurations
+    const configurations = extensionConfigurationsQuery.extensionConfigurations
 
-    if (this.state.configurationAfterModal) {
-      this.handleConfigurationChange(this.state.configurationAfterModal)
-      this.setState({ configurationAfterModal: undefined })
+    this.handleModalClose()
+    this.handleConfigurationClose()
+
+    if (configurations.length === 0) {
+      this.handleQuit()
     }
   }
 
@@ -425,11 +443,28 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     }
   }
 
+  private handleQuit = (event?: any) => {
+    const { editor, runtime } = this.props
+
+    if (event) {
+      event.stopPropagation()
+    }
+
+    runtime.updateRuntime({
+      conditions: editor.activeConditions,
+      device: runtime.device,
+      scope: editor.scope,
+    })
+
+    editor.editExtensionPoint(null)
+  }
+
   private handleSave = (event: any) => {
     console.log('save', event, this.props)
     const {
       editor: { editTreePath },
       runtime,
+      runtime: { extensions },
       saveExtension,
     } = this.props
     const { conditions, configuration, scope } = this.state
@@ -456,9 +491,11 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         {
           query: ExtensionConfigurations,
           variables: {
+            configurationsIds: extensions[editTreePath as string].configurationsIds,
             treePath: editTreePath,
-          }
-        }
+            url: window.location.pathname,
+          },
+        },
       ],
       variables: {
         allMatches,
@@ -503,6 +540,127 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     if (newScope !== this.state.scope) {
       this.setState({ scope: newScope })
     }
+  }
+
+  private renderConfigurationCard(
+    configuration: ExtensionConfiguration
+  ): JSX.Element {
+    const isActive =
+      this.state.configuration &&
+      configuration.configurationId === this.state.configuration.configurationId
+
+    return (
+      <div
+        className="mh5 mt5 pointer"
+        onClick={() => { this.handleConfigurationSelection(configuration) }}
+      >
+        <Card noPadding>
+          <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
+            {configuration.configurationId}
+            <div className="mt5">
+              <FormattedMessage id="pages.conditions.scope.title" />
+              <Badge
+                bgColor="#979899"
+                color="#FFF"
+              >
+                {configuration.scope}
+              </Badge>
+            </div>
+            {configuration.conditions.length > 0 &&
+              <div className="mt5">
+                <FormattedMessage id="pages.editor.components.configurations.customConditions" />
+                <div>
+                  {configuration.conditions.join(', ')}
+                </div>
+              </div>
+            }
+            <div className="mt5">
+              <Button
+                onClick={() => { this.handleConfigurationOpen(configuration) }}
+                size="small"
+                variation="tertiary"
+              >
+                {this.props.intl.formatMessage({
+                  id: 'pages.editor.components.configurations.button.edit'
+                })}
+              </Button>
+            </div>
+          </div>
+        </Card>
+      </div>
+    )
+  }
+
+  private renderConfigurationSection(
+    schema: object,
+    uiSchema: object,
+    extensionProps: object
+  ): JSX.Element {
+    const { editor, runtime } = this.props
+    const { configuration } = this.state
+
+    const mobile = window.innerWidth < 600
+    const animation = mobile ? 'slideInUp' : 'fadeIn'
+
+    const props = configuration
+      ? {
+        ...configuration.propsJSON && JSON.parse(configuration.propsJSON),
+        ...extensionProps,
+      }
+      : extensionProps
+
+    return (
+      <Fragment>
+        <ConditionsSelector
+          editor={editor}
+          onChangeCustomConditions={this.handleConditionsChange}
+          onChangeScope={this.handleScopeChange}
+          runtime={runtime}
+          scope={this.state.scope}
+          selectedConditions={this.state.conditions}
+        />
+        <div className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+          <ModeSwitcher
+            activeMode={this.state.mode}
+            modes={MODES}
+            onSwitch={this.handleModeSwitch}
+          />
+          <Form
+            schema={schema}
+            formData={props}
+            onChange={this.handleFormChange}
+            onSubmit={this.handleSave}
+            FieldTemplate={FieldTemplate}
+            ArrayFieldTemplate={ArrayFieldTemplate}
+            ObjectFieldTemplate={ObjectFieldTemplate}
+            uiSchema={uiSchema}
+            widgets={widgets}
+            showErrorList
+            ErrorList={ErrorListTemplate}
+            formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+          >
+            <button className="dn" type="submit" />
+          </Form>
+          <div id="form__error-list-template___alert" />
+        </div>
+      </Fragment>
+    )
+  }
+
+  private renderConfigurationsList(
+    configurationsList: ExtensionConfiguration[],
+  ): JSX.Element {
+    return (
+      <Fragment>
+        {configurationsList.map(
+          (configuration: ExtensionConfiguration, index: number) => (
+            <Fragment key={index}>
+              {this.renderConfigurationCard(configuration)}
+            </Fragment>
+          )
+        )}
+      </Fragment>
+    )
   }
 
   private renderModal(): JSX.Element {
@@ -559,82 +717,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     )
   }
 
-  private renderConfigurationSection(
-    schema: object,
-    uiSchema: object,
-    extensionProps: object,
-    configuration?: ExtensionConfiguration,
-    index?: number
-  ): JSX.Element {
-    const { editor, runtime } = this.props
-
-    const mobile = window.innerWidth < 600
-    const animation = mobile ? 'slideInUp' : 'fadeIn'
-
-    const props = configuration
-      ? {
-        ...configuration.propsJSON && JSON.parse(configuration.propsJSON),
-        ...extensionProps,
-      }
-      : extensionProps
-
-    const isExpanded =
-      this.state.configuration && (
-        configuration
-          ? configuration.configurationId === this.state.configuration.configurationId
-          : this.state.configuration.configurationId === 'new'
-      )
-
-    return (
-      <Fragment>
-        <div
-          className={`w-100 pl5 flex justify-between items-center pointer bt b--light-silver ${isExpanded ? ' bg-light-silver' : 'gray'}`}
-          onClick={() => { this.handleConfigurationSelection(configuration) }}
-          style={{ height: '48px' }}
-        >
-          {`Configuration ${(index || 0) + 1}`}
-          {isExpanded && this.state.wasModified && this.renderSaveButton()}
-        </div>
-        {isExpanded && (
-          <div className="mt5">
-            <ConditionsSelector
-              editor={editor}
-              onChangeCustomConditions={this.handleConditionsChange}
-              onChangeScope={this.handleScopeChange}
-              runtime={runtime}
-              scope={this.state.scope}
-              selectedConditions={this.state.conditions}
-            />
-            <div className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
-              <ModeSwitcher
-                activeMode={this.state.mode}
-                modes={MODES}
-                onSwitch={this.handleModeSwitch}
-              />
-              <Form
-                schema={schema}
-                formData={props}
-                onChange={this.handleFormChange}
-                onSubmit={this.handleSave}
-                FieldTemplate={FieldTemplate}
-                ArrayFieldTemplate={ArrayFieldTemplate}
-                ObjectFieldTemplate={ObjectFieldTemplate}
-                uiSchema={uiSchema}
-                widgets={widgets}
-                showErrorList
-                ErrorList={ErrorListTemplate}
-                formContext={{ isLayoutMode: this.state.mode === 'layout' }}
-              >
-                <button className="dn" type="submit" />
-              </Form>
-              <div id="form__error-list-template___alert" />
-            </div>
-          </div>
-        )}
-      </Fragment>
-    )
-  }
-
   public render() {
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
@@ -682,15 +764,30 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     return (
       <div className="w-100 dark-gray">
         {this.renderModal()}
-        <div className="flex items-center pl5 pv5 bt b--light-silver">
-          <span className="pointer" onClick={this.handleExit}>
+        <div className="w-100 flex items-center pl5 pv5 bt b--light-silver">
+          <span
+            className="pointer"
+            onClick={
+              this.state.isEditMode
+                ? this.handleConfigurationClose
+                : this.handleQuit
+            }
+          >
             <IconArrowBack size={16} color="#585959" />
           </span>
           <span className="ml5">
             <PathMinus size={16} color="#585959" />
           </span>
-          <h4 className="f6 fw5 pl5 track-1 ttu mv0 dark-gray">
-            {componentSchema.title}
+          <h4 className="w-100 f6 fw5 pl5 track-1 mv0 dark-gray">
+            {this.state.isEditMode
+              ? (
+                <div className="flex justify-between items-center">
+                  {this.state.configuration!.conditions.join(', ') + ' ' + this.state.configuration!.scope}
+                  {this.state.wasModified && this.renderSaveButton()}
+                </div>
+              )
+              : componentSchema.title
+            }
           </h4>
         </div>
         {extensionConfigurationsQuery.loading
@@ -700,19 +797,10 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             </div>
           )
           : extensionConfigurationsQuery.extensionConfigurations &&
-            extensionConfigurationsQuery.extensionConfigurations.length > 0
-            ? extensionConfigurationsQuery.extensionConfigurations.map(
-              (configuration: ExtensionConfiguration, index: number) => (
-                <Fragment key={index}>
-                  {this.renderConfigurationSection(
-                    schema,
-                    uiSchema,
-                    extensionProps,
-                    configuration,
-                    index
-                  )}
-                </Fragment>
-              )
+            extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+            !this.state.isEditMode
+            ? this.renderConfigurationsList(
+              extensionConfigurationsQuery.extensionConfigurations
             )
             : this.renderConfigurationSection(
               schema,
@@ -722,12 +810,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
         }
       </div>
     )
-  }
-
-  private getExtension = (): Extension => {
-    const { editor: { editTreePath }, runtime: { extensions } } = this.props
-    const { component = null, props = {} } = extensions[editTreePath as string] || {}
-    return { component, props: props || {} }
   }
 }
 
@@ -746,9 +828,14 @@ export default compose(
   }),
   graphql(ExtensionConfigurations, {
     name: 'extensionConfigurations',
-    options: ({ editor: { editTreePath } }: EditorContextProps) => ({
+    options: ({
+      editor: { editTreePath },
+      runtime: { extensions }
+    }: EditorContextProps & RenderContextProps) => ({
       variables: {
+        configurationsIds: extensions[editTreePath as string].configurationsIds,
         treePath: editTreePath,
+        url: window.location.pathname,
       }
     })
   })

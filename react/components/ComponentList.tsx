@@ -85,7 +85,7 @@ class ComponentList extends Component<Props & RenderContextProps & EditorContext
         style={{ animationDuration: '0.2s' }}
       >
         <div className="bb b--light-silver w-100 pb5">
-          <span className="pl5"><ComponentIcon /></span><span className="f6 fw5 pl5 track-1 ttu"><FormattedMessage id={schema.title} /></span>
+          <span className="pl5"><ComponentIcon /></span><span className="f6 fw5 pl5 track-1"><FormattedMessage id={schema.title} /></span>
         </div>
       </button>
     )

@@ -1,5 +1,13 @@
-query ExtensionConfigurations($treePath: String!) {
-  extensionConfigurations(treePath: $treePath) {
+query ExtensionConfigurations(
+  $configurationsIds: [String],
+  $treePath: String!,
+  $url: String!
+) {
+  extensionConfigurations(
+    configurationsIds: $configurationsIds,
+    treePath: $treePath,
+    url: $url
+  ) {
     allMatches
     conditions
     configurationId
