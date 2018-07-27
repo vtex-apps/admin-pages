@@ -7,6 +7,7 @@
   "pages.editor.components.button.save": "Salvar",
   "pages.editor.components.conditions.custom.label": "Añadir condiciones personalizadas",
   "pages.editor.components.conditions.custom.placeholder": "Seleccionar condiciones...",
+  "pages.editor.components.configurations.button.create": "Crear configuración",
   "pages.editor.components.configurations.button.edit": "Editar",
   "pages.editor.components.configurations.customConditions": "Condiciones personalizadas:",
   "pages.editor.components.modal.button.discard": "Descartar",

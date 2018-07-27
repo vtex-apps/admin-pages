@@ -315,6 +315,32 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     })
   }
 
+  private handleConfigurationClose = () => {
+    const {
+      editor,
+      extensionConfigurations: extensionConfigurationsQuery,
+      runtime,
+    } = this.props
+
+    const configurations = extensionConfigurationsQuery.extensionConfigurations
+
+    if (this.state.wasModified) {
+      this.handleModalOpen()
+    } else {
+      this.setState({ isEditMode: false }, () => {
+        if (configurations.length > 0) {
+          this.handleConfigurationChange(configurations[0])
+        }
+      })
+    }
+  }
+
+  private handleConfigurationCreation = () => {
+    this.handleConfigurationOpen(this.getDefaultConfiguration())
+
+    this.setState({ wasModified: true })
+  }
+
   private handleConfigurationDefaultState = () => {
     const extensionConfigurationsQuery = this.props.extensionConfigurations
     const configurations = extensionConfigurationsQuery.extensionConfigurations
@@ -337,22 +363,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           this.handleConfigurationOpen(this.state.configuration!)
         })
       }
-    }
-  }
-
-  private handleConfigurationClose = () => {
-    const { editor, runtime } = this.props
-
-    if (this.state.wasModified) {
-      this.handleModalOpen()
-    } else {
-      this.setState({ isEditMode: false })
-
-      runtime.updateRuntime({
-        conditions: editor.activeConditions,
-        device: runtime.device,
-        scope: editor.scope,
-      })
     }
   }
 
@@ -452,7 +462,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     runtime.updateRuntime({
       conditions: editor.activeConditions,
-      device: runtime.device,
       scope: editor.scope,
     })
 
@@ -545,6 +554,8 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   private renderConfigurationCard(
     configuration: ExtensionConfiguration
   ): JSX.Element {
+    const { intl } = this.props
+
     const isActive =
       this.state.configuration &&
       configuration.configurationId === this.state.configuration.configurationId
@@ -556,14 +567,15 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       >
         <Card noPadding>
           <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
-            {configuration.configurationId}
             <div className="mt5">
               <FormattedMessage id="pages.conditions.scope.title" />
               <Badge
                 bgColor="#979899"
                 color="#FFF"
               >
-                {configuration.scope}
+                {intl.formatMessage({
+                  id: `pages.conditions.scope.${configuration.scope}`,
+                })}
               </Badge>
             </div>
             {configuration.conditions.length > 0 &&
@@ -580,13 +592,29 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
                 size="small"
                 variation="tertiary"
               >
-                {this.props.intl.formatMessage({
+                {intl.formatMessage({
                   id: 'pages.editor.components.configurations.button.edit'
                 })}
               </Button>
             </div>
           </div>
         </Card>
+      </div>
+    )
+  }
+
+  private renderCreateConfigurationButton(): JSX.Element {
+    return (
+      <div className="mh5 mt5">
+        <Button
+          block
+          onClick={this.handleConfigurationCreation}
+          variation="tertiary"
+        >
+          {this.props.intl.formatMessage({
+            id: 'pages.editor.components.configurations.button.create',
+          })}
+        </Button>
       </div>
     )
   }
@@ -659,6 +687,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             </Fragment>
           )
         )}
+        {this.renderCreateConfigurationButton()}
       </Fragment>
     )
   }
