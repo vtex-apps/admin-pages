@@ -5,12 +5,17 @@
   "pages.conditions.scope.title": "Escopo: ",
   "pages.conditions.scope.url": "Esta URL",
   "pages.editor.components.button.save": "Salvar",
-  "pages.editor.components.conditions.custom.label": "Adicionar condições customizadas",
-  "pages.editor.components.conditions.custom.placeholder": "Selecionar condições...",
-  "pages.editor.components.conditions.native.label": "Aplicar configurações para",
+  "pages.editor.components.conditions.custom.label":
+    "Adicionar condições customizadas",
+  "pages.editor.components.conditions.custom.placeholder":
+    "Selecionar condições...",
+  "pages.editor.components.conditions.native.label":
+    "Aplicar configurações para",
   "pages.editor.components.configurations.button.create": "Criar configuração",
   "pages.editor.components.configurations.button.edit": "Editar",
-  "pages.editor.components.configurations.customConditions": "Condições customizadas:",
+  "pages.editor.components.configurations.customConditions":
+    "Condições customizadas:",
   "pages.editor.components.modal.button.discard": "Descartar",
-  "pages.editor.components.modal.text": "Você tem modificações não salvas para esta configuração."
+  "pages.editor.components.modal.text":
+    "Você tem modificações não salvas para esta configuração."
 }
