@@ -1,23 +1,23 @@
 mutation SaveExtension(
-  $configurationId: String,
-  $extensionName: String,
-  $propsJSON: String,
-  $device: String,
-  $scope: String,
-  $path: String,
-  $routeId: String,
-  $conditions: [String],
   $allMatches: Boolean
+  $conditions: [String]
+  $configurationId: String
+  $device: String
+  $extensionName: String!
+  $path: String!
+  $propsJSON: String
+  $routeId: String!
+  $scope: String!
 ) {
   saveExtension(
-    configurationId: $configurationId
-    extensionName: $extensionName
-    propsJSON: $propsJSON
-    device: $device
-    scope: $scope
-    path: $path
-    routeId: $routeId
-    conditions: $conditions
     allMatches: $allMatches
+    conditions: $conditions
+    configurationId: $configurationId
+    device: $device
+    extensionName: $extensionName
+    path: $path
+    propsJSON: $propsJSON
+    routeId: $routeId
+    scope: $scope
   )
 }

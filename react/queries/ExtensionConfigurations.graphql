@@ -1,11 +1,13 @@
 query ExtensionConfigurations(
-  $configurationsIds: [String],
-  $treePath: String!,
+  $configurationsIds: [String]
+  $routeId: String!
+  $treePath: String!
   $url: String!
 ) {
   extensionConfigurations(
-    configurationsIds: $configurationsIds,
-    treePath: $treePath,
+    configurationsIds: $configurationsIds
+    routeId: $routeId
+    treePath: $treePath
     url: $url
   ) {
     allMatches

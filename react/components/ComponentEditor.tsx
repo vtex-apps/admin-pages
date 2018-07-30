@@ -1,8 +1,18 @@
-import PropTypes from 'prop-types'
-import { filter, has, keys, map, merge, pick, pickBy, prop, reduce, mergeDeepLeft } from 'ramda'
+import {
+  filter,
+  has,
+  keys,
+  map,
+  merge,
+  pick,
+  pickBy,
+  prop,
+  reduce,
+  mergeDeepLeft,
+} from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import {
   Badge,
@@ -34,7 +44,7 @@ import Toggle from './form/Toggle'
 import ModeSwitcher from './ModeSwitcher'
 
 const defaultUiSchema = {
-  'classNames': 'editor-form',
+  classNames: 'editor-form',
 }
 
 const widgets = {
@@ -54,9 +64,10 @@ interface ExtensionConfigurationsQuery {
   error: object
   extensionConfigurations: ExtensionConfiguration[]
   loading: boolean
+  refetch: (variables?: object) => void
 }
 
-interface ComponentEditorProps {
+interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
   availableComponents: any
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
@@ -74,17 +85,13 @@ interface ComponentEditorState {
   wasModified: boolean
 }
 
-class ComponentEditor extends Component<ComponentEditorProps & RenderContextProps & EditorContextProps, ComponentEditorState> {
-  public static propTypes = {
-    availableComponents: PropTypes.object,
-    intl: intlShape.isRequired,
-    saveExtension: PropTypes.any,
-  }
-
-  // tslint:disable-next-line
+class ComponentEditor extends Component<
+  ComponentEditorProps,
+  ComponentEditorState
+> {
   private _isMounted: boolean = false
 
-  constructor(props: any) {
+  constructor(props: ComponentEditorProps) {
     super(props)
 
     this.state = {
@@ -128,12 +135,13 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       reduce(
         (nextProps, key) =>
           merge(nextProps, {
-            [key]: properties[key].type === 'object'
-              ? getPropsFromSchema(properties[key].properties, prevProps[key])
-              : prevProps[key],
+            [key]:
+              properties[key].type === 'object'
+                ? getPropsFromSchema(properties[key].properties, prevProps[key])
+                : prevProps[key],
           }),
         {},
-        filter(v => prevProps[v] !== undefined, keys(properties))
+        filter(v => prevProps[v] !== undefined, keys(properties)),
       )
 
     const componentSchema = this.getComponentSchema(component, props, runtime)
@@ -141,7 +149,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     return getPropsFromSchema(componentSchema.properties, props)
   }
 
-  public isEmptyExtensionPoint = (component) =>
+  public isEmptyExtensionPoint = component =>
     /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
 
   /**
@@ -153,11 +161,13 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
    * @param {object} props The component props to be passed to the getSchema
    */
   public getComponentSchema = (component, props, runtime) => {
-    const componentSchema =
-      component && (component.schema || (component.getSchema && component.getSchema(props, { routes: runtime.pages }))) || {
-        properties: {},
-        type: 'object',
-      }
+    const componentSchema = (component &&
+      (component.schema ||
+        (component.getSchema &&
+          component.getSchema(props, { routes: runtime.pages })))) || {
+      properties: {},
+      type: 'object',
+    }
 
     /**
      * Traverse the schema properties searching for the title, description and enum
@@ -167,14 +177,17 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
      * @return {object} Schema with title, description and enumNames properties translated
      */
     const traverseAndTranslate: (schema: object) => object = schema => {
-      const translate: (value: string | { id: string, values: object }) => string =
-        value => typeof value === 'string'
+      const translate: (
+        value: string | { id: string; values: object },
+      ) => string = value =>
+        typeof value === 'string'
           ? this.props.intl.formatMessage({ id: value })
           : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
       const translatedSchema = map(
-        value => Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema)
+        value =>
+          Array.isArray(value) ? map(translate, value) : translate(value),
+        pick(['title', 'description', 'enumNames'], schema),
       )
 
       if (has('widget', schema)) {
@@ -182,14 +195,20 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           schema.widget,
           map(
             translate,
-            pick(['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'], schema.widget)
-          )
+            pick(
+              ['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'],
+              schema.widget,
+            ),
+          ),
         )
       }
 
       if (schema.type === 'object') {
         translatedSchema.properties = reduce(
-          (properties, key) => merge(properties, { [key]: traverseAndTranslate(schema.properties[key]) }),
+          (properties, key) =>
+            merge(properties, {
+              [key]: traverseAndTranslate(schema.properties[key]),
+            }),
           {},
           keys(schema.properties),
         )
@@ -245,23 +264,42 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
      * @param {object} properties The schema properties to be analysed.
      */
     const getDeepUiSchema = properties => {
-      const deepProperties = pickBy(property => has('properties', property), properties)
-      const itemsProperties = pickBy(property => has('items', property), properties)
+      const deepProperties = pickBy(
+        property => has('properties', property),
+        properties,
+      )
+      const itemsProperties = pickBy(
+        property => has('items', property),
+        properties,
+      )
 
       return {
-        ...map(value => value.widget, pickBy(property => has('widget', property), properties)),
-        ...deepProperties && map(property => getDeepUiSchema(property.properties), deepProperties),
-        ...itemsProperties && map(item => getDeepUiSchema(item), itemsProperties),
+        ...map(
+          value => value.widget,
+          pickBy(property => has('widget', property), properties),
+        ),
+        ...(deepProperties &&
+          map(
+            property => getDeepUiSchema(property.properties),
+            deepProperties,
+          )),
+        ...(itemsProperties &&
+          map(item => getDeepUiSchema(item), itemsProperties)),
       }
     }
 
     const uiSchema = {
-      ...map(value => value.widget, pickBy(
-        property => has('widget', property), componentSchema.properties
-      )),
-      ...map(property => getDeepUiSchema(property.properties), pickBy(
-        property => has('properties', property), componentSchema.properties
-      )),
+      ...map(
+        value => value.widget,
+        pickBy(property => has('widget', property), componentSchema.properties),
+      ),
+      ...map(
+        property => getDeepUiSchema(property.properties),
+        pickBy(
+          property => has('properties', property),
+          componentSchema.properties,
+        ),
+      ),
     }
 
     return mergeDeepLeft(uiSchema, componentUiSchema || {})
@@ -283,12 +321,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   private getExtension = (): Extension => {
-    const { editor: { editTreePath }, runtime: { extensions } } = this.props
     const {
-      component = null,
-      configurationsIds = [],
-      props = {}
-    } = extensions[editTreePath as string] || {}
+      editor: { editTreePath },
+      runtime: { extensions },
+    } = this.props
+    const { component = null, configurationsIds = [], props = {} } =
+      extensions[editTreePath as string] || {}
 
     return { component, configurationsIds, props: props || {} }
   }
@@ -297,30 +335,28 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     this.setState({ conditions: newConditions })
   }
 
-  private handleConfigurationChange = (newConfiguration: ExtensionConfiguration) => {
+  private handleConfigurationChange = (
+    newConfiguration: ExtensionConfiguration,
+  ) => {
     const { editor, runtime } = this.props
 
-    this.setState({
-      conditions: newConfiguration.conditions,
-      configuration: newConfiguration,
-      scope: newConfiguration.scope,
-    }, () => {
-      runtime.updateExtension(
-        editor.editTreePath!,
-        {
+    this.setState(
+      {
+        conditions: newConfiguration.conditions,
+        configuration: newConfiguration,
+        scope: newConfiguration.scope,
+      },
+      () => {
+        runtime.updateExtension(editor.editTreePath!, {
           component: this.getExtension().component,
           props: JSON.parse(newConfiguration.propsJSON),
-        }
-      )
-    })
+        })
+      },
+    )
   }
 
   private handleConfigurationClose = () => {
-    const {
-      editor,
-      extensionConfigurations: extensionConfigurationsQuery,
-      runtime,
-    } = this.props
+    const { extensionConfigurations: extensionConfigurationsQuery } = this.props
 
     const configurations = extensionConfigurationsQuery.extensionConfigurations
 
@@ -356,12 +392,15 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           scope: configurations[0].scope,
         })
       } else {
-        this.setState({
-          configuration: this.getDefaultConfiguration(),
-          wasModified: true,
-        }, () => {
-          this.handleConfigurationOpen(this.state.configuration!)
-        })
+        this.setState(
+          {
+            configuration: this.getDefaultConfiguration(),
+            wasModified: true,
+          },
+          () => {
+            this.handleConfigurationOpen(this.state.configuration!)
+          },
+        )
       }
     }
   }
@@ -379,7 +418,88 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     this.setState({ isEditMode: true })
   }
 
-  private handleConfigurationSelection = (newConfiguration: ExtensionConfiguration) => {
+  private handleConfigurationSave = async (event: any) => {
+    const { editor, runtime, saveExtension } = this.props
+    const { conditions, configuration, scope } = this.state
+
+    const { allMatches, device } = configuration!
+
+    const configurationId =
+      configuration!.configurationId === 'new'
+        ? undefined
+        : configuration!.configurationId
+
+    const { component, props = {} } = this.getExtension()
+    const isEmpty = this.isEmptyExtensionPoint(component)
+
+    const componentImplementation = component && getImplementation(component)
+    const pickedProps = isEmpty
+      ? null
+      : this.getSchemaProps(componentImplementation, props, runtime)
+
+    this.setState({
+      isLoading: true,
+    })
+
+    try {
+      await saveExtension({
+        variables: {
+          allMatches,
+          conditions,
+          configurationId,
+          device,
+          extensionName: editor.editTreePath,
+          path: window.location.pathname,
+          propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
+          routeId: runtime.page,
+          scope,
+        },
+      })
+
+      const extensionConfigurationsQuery = this.props.extensionConfigurations
+
+      await extensionConfigurationsQuery.refetch({
+        configurationsIds:
+          runtime.extensions[editor.editTreePath as string].configurationsIds,
+        routeId: runtime.page,
+        treePath: editor.editTreePath,
+        url: window.location.pathname,
+      })
+
+      this.setState(
+        {
+          isLoading: false,
+          wasModified: false,
+        },
+        () => {
+          if (this.state.isModalOpen) {
+            this.handleModalResolution()
+          } else {
+            this.handleConfigurationClose()
+          }
+        },
+      )
+    } catch (err) {
+      this.setState(
+        {
+          isLoading: false,
+        },
+        () => {
+          if (this.state.isModalOpen) {
+            this.handleModalClose()
+          }
+
+          alert('Something went wrong. Please try again.')
+
+          console.log(err)
+        },
+      )
+    }
+  }
+
+  private handleConfigurationSelection = (
+    newConfiguration: ExtensionConfiguration,
+  ) => {
     const { configuration: currConfiguration } = this.state
 
     if (
@@ -397,9 +517,14 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   private handleFormChange = (event: any) => {
-    const { runtime: { updateExtension, updateComponentAssets }, runtime, editor: { editTreePath } } = this.props
+    const {
+      runtime: { updateExtension, updateComponentAssets },
+      runtime,
+      editor: { editTreePath },
+    } = this.props
     const { component: enumComponent } = event.formData
-    const component = enumComponent && enumComponent !== '' ? enumComponent : null
+    const component =
+      enumComponent && enumComponent !== '' ? enumComponent : null
     const Component = component && getImplementation(component)
 
     if (!this.state.wasModified) {
@@ -407,19 +532,22 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     }
 
     if (component && !Component) {
-      const allComponents = reduce((acc, component) => {
-        acc[component.name] = {
-          assets: component.assets,
-          dependencies: component.dependencies
-        }
-        return acc
-      }, {}, this.props.availableComponents.availableComponents)
+      const allComponents = reduce(
+        (acc, component) => {
+          acc[component.name] = {
+            assets: component.assets,
+            dependencies: component.dependencies,
+          }
+          return acc
+        },
+        {},
+        this.props.availableComponents.availableComponents,
+      )
 
       updateComponentAssets(allComponents)
     }
 
     const props = this.getSchemaProps(Component, event.formData, runtime)
-    console.log('Updating extension with props', props)
 
     updateExtension(editTreePath as string, {
       component,
@@ -468,83 +596,6 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     editor.editExtensionPoint(null)
   }
 
-  private handleSave = (event: any) => {
-    console.log('save', event, this.props)
-    const {
-      editor: { editTreePath },
-      runtime,
-      runtime: { extensions },
-      saveExtension,
-    } = this.props
-    const { conditions, configuration, scope } = this.state
-
-    const { allMatches, device } = configuration!
-
-    const configurationId =
-      configuration!.configurationId === 'new'
-        ? undefined
-        : configuration!.configurationId
-
-    const { component, props = {} } = this.getExtension()
-    const isEmpty = this.isEmptyExtensionPoint(component)
-
-    const componentImplementation = component && getImplementation(component)
-    const pickedProps = isEmpty ? null : this.getSchemaProps(componentImplementation, props, runtime)
-
-    this.setState({
-      isLoading: true,
-    })
-
-    saveExtension({
-      refetchQueries: [
-        {
-          query: ExtensionConfigurations,
-          variables: {
-            configurationsIds: extensions[editTreePath as string].configurationsIds,
-            treePath: editTreePath,
-            url: window.location.pathname,
-          },
-        },
-      ],
-      variables: {
-        allMatches,
-        conditions,
-        configurationId,
-        device,
-        extensionName: editTreePath,
-        path: window.location.pathname,
-        propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
-        routeId: runtime.page,
-        scope,
-      },
-    })
-    .then(data => {
-        console.log('OK!', data)
-
-        this.setState({
-          isLoading: false,
-          wasModified: false,
-        }, () => {
-          if (this.state.isModalOpen) {
-            this.handleModalResolution()
-          }
-        })
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-        }, () => {
-          if (this.state.isModalOpen) {
-            this.handleModalClose()
-          }
-        })
-
-        alert('Error loading extension point configuration.')
-
-        console.log(err)
-      })
-  }
-
   private handleScopeChange = (newScope: ConfigurationScope) => {
     if (newScope !== this.state.scope) {
       this.setState({ scope: newScope })
@@ -552,7 +603,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
   }
 
   private renderConfigurationCard(
-    configuration: ExtensionConfiguration
+    configuration: ExtensionConfiguration,
   ): JSX.Element {
     const { intl } = this.props
 
@@ -563,37 +614,36 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     return (
       <div
         className="mh5 mt5 pointer"
-        onClick={() => { this.handleConfigurationSelection(configuration) }}
+        onClick={() => {
+          this.handleConfigurationSelection(configuration)
+        }}
       >
         <Card noPadding>
           <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
             <div className="mt5">
               <FormattedMessage id="pages.conditions.scope.title" />
-              <Badge
-                bgColor="#979899"
-                color="#FFF"
-              >
+              <Badge bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
                   id: `pages.conditions.scope.${configuration.scope}`,
                 })}
               </Badge>
             </div>
-            {configuration.conditions.length > 0 &&
+            {configuration.conditions.length > 0 && (
               <div className="mt5">
                 <FormattedMessage id="pages.editor.components.configurations.customConditions" />
-                <div>
-                  {configuration.conditions.join(', ')}
-                </div>
+                <div>{configuration.conditions.join(', ')}</div>
               </div>
-            }
+            )}
             <div className="mt5">
               <Button
-                onClick={() => { this.handleConfigurationOpen(configuration) }}
+                onClick={() => {
+                  this.handleConfigurationOpen(configuration)
+                }}
                 size="small"
                 variation="tertiary"
               >
                 {intl.formatMessage({
-                  id: 'pages.editor.components.configurations.button.edit'
+                  id: 'pages.editor.components.configurations.button.edit',
                 })}
               </Button>
             </div>
@@ -619,10 +669,10 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     )
   }
 
-  private renderConfigurationSection(
+  private renderConfigurationEditor(
     schema: object,
     uiSchema: object,
-    extensionProps: object
+    extensionProps: object,
   ): JSX.Element {
     const { editor, runtime } = this.props
     const { configuration } = this.state
@@ -632,9 +682,9 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     const props = configuration
       ? {
-        ...configuration.propsJSON && JSON.parse(configuration.propsJSON),
-        ...extensionProps,
-      }
+          ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
+          ...extensionProps,
+        }
       : extensionProps
 
     return (
@@ -647,7 +697,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
           scope={this.state.scope}
           selectedConditions={this.state.conditions}
         />
-        <div className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${this._isMounted ? '' : 'fadeIn'}`} style={{ animationDuration: '0.2s' }}>
+        <div
+          className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${
+            this._isMounted ? '' : 'fadeIn'
+          }`}
+          style={{ animationDuration: '0.2s' }}
+        >
           <ModeSwitcher
             activeMode={this.state.mode}
             modes={MODES}
@@ -657,7 +712,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             schema={schema}
             formData={props}
             onChange={this.handleFormChange}
-            onSubmit={this.handleSave}
+            onSubmit={this.handleConfigurationSave}
             FieldTemplate={FieldTemplate}
             ArrayFieldTemplate={ArrayFieldTemplate}
             ObjectFieldTemplate={ObjectFieldTemplate}
@@ -685,7 +740,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             <Fragment key={index}>
               {this.renderConfigurationCard(configuration)}
             </Fragment>
-          )
+          ),
         )}
         {this.renderCreateConfigurationButton()}
       </Fragment>
@@ -701,7 +756,7 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
       >
         <div>
           {this.props.intl.formatMessage({
-            id: 'pages.editor.components.modal.text'
+            id: 'pages.editor.components.modal.text',
           })}
         </div>
         <div className="mt6 flex justify-end">
@@ -712,18 +767,18 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
               variation="tertiary"
             >
               {this.props.intl.formatMessage({
-                id: 'pages.editor.components.modal.button.discard'
+                id: 'pages.editor.components.modal.button.discard',
               })}
             </Button>
           </div>
           <Button
             isLoading={this.state.isLoading}
-            onClick={this.handleSave}
+            onClick={this.handleConfigurationSave}
             size="small"
             variation="primary"
           >
             {this.props.intl.formatMessage({
-              id: 'pages.editor.components.button.save'
+              id: 'pages.editor.components.button.save',
             })}
           </Button>
         </div>
@@ -735,12 +790,12 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
     return (
       <Button
         isLoading={this.state.isLoading}
-        onClick={this.handleSave}
+        onClick={this.handleConfigurationSave}
         size="small"
         variation="tertiary"
       >
         {this.props.intl.formatMessage({
-          id: 'pages.editor.components.button.save'
+          id: 'pages.editor.components.button.save',
         })}
       </Button>
     )
@@ -751,25 +806,33 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
 
     const { component, props } = this.getExtension()
     const Component = getImplementation(component)
-    const editableComponents = this.props.availableComponents.availableComponents
+    const editableComponents = this.props.availableComponents
+      .availableComponents
       ? map(prop('name'), this.props.availableComponents.availableComponents)
       : []
 
     const selectedComponent = component || null
 
-    const componentSchema = this.getComponentSchema(Component, props, this.props.runtime)
+    const componentSchema = this.getComponentSchema(
+      Component,
+      props,
+      this.props.runtime,
+    )
 
-    const componentUiSchema = Component && Component.uiSchema ? Component.uiSchema : null
+    const componentUiSchema =
+      Component && Component.uiSchema ? Component.uiSchema : null
 
-    const maybeComponent = !selectedComponent ? {
-      component: {
-        enum: editableComponents,
-        enumNames: editableComponents,
-        title: 'Component',
-        type: 'string',
-        default: '',
-      },
-    } : null
+    const maybeComponent = !selectedComponent
+      ? {
+          component: {
+            enum: editableComponents,
+            enumNames: editableComponents,
+            title: 'Component',
+            type: 'string',
+            default: '',
+          },
+        }
+      : null
 
     const schema = {
       ...componentSchema,
@@ -808,35 +871,31 @@ class ComponentEditor extends Component<ComponentEditorProps & RenderContextProp
             <PathMinus size={16} color="#585959" />
           </span>
           <h4 className="w-100 f6 fw5 pl5 track-1 mv0 dark-gray">
-            {this.state.isEditMode
-              ? (
-                <div className="flex justify-between items-center">
-                  {this.state.configuration!.conditions.join(', ') + ' ' + this.state.configuration!.scope}
-                  {this.state.wasModified && this.renderSaveButton()}
-                </div>
-              )
-              : componentSchema.title
-            }
+            {this.state.isEditMode ? (
+              <div className="flex justify-between items-center">
+                {this.state.configuration!.conditions.join(', ') +
+                  ' ' +
+                  this.state.configuration!.scope}
+                {this.state.wasModified && this.renderSaveButton()}
+              </div>
+            ) : (
+              componentSchema.title
+            )}
           </h4>
         </div>
-        {extensionConfigurationsQuery.loading
-          ? (
-            <div className="mt5 flex justify-center">
-              <Spinner />
-            </div>
+        {extensionConfigurationsQuery.loading ? (
+          <div className="mt5 flex justify-center">
+            <Spinner />
+          </div>
+        ) : extensionConfigurationsQuery.extensionConfigurations &&
+        extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+        !this.state.isEditMode ? (
+          this.renderConfigurationsList(
+            extensionConfigurationsQuery.extensionConfigurations,
           )
-          : extensionConfigurationsQuery.extensionConfigurations &&
-            extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-            !this.state.isEditMode
-            ? this.renderConfigurationsList(
-              extensionConfigurationsQuery.extensionConfigurations
-            )
-            : this.renderConfigurationSection(
-              schema,
-              uiSchema,
-              extensionProps
-            )
-        }
+        ) : (
+          this.renderConfigurationEditor(schema, uiSchema, extensionProps)
+        )}
       </div>
     )
   }
@@ -847,7 +906,7 @@ export default compose(
   graphql(SaveExtension, { name: 'saveExtension' }),
   graphql(AvailableComponents, {
     name: 'availableComponents',
-    options: (props: ComponentEditorProps & RenderContextProps & EditorContextProps) => ({
+    options: (props: ComponentEditorProps) => ({
       variables: {
         extensionName: props.editor.editTreePath,
         production: false,
@@ -859,13 +918,14 @@ export default compose(
     name: 'extensionConfigurations',
     options: ({
       editor: { editTreePath },
-      runtime: { extensions }
-    }: EditorContextProps & RenderContextProps) => ({
+      runtime: { extensions, page },
+    }: ComponentEditorProps) => ({
       variables: {
         configurationsIds: extensions[editTreePath as string].configurationsIds,
+        routeId: page,
         treePath: editTreePath,
         url: window.location.pathname,
-      }
-    })
-  })
+      },
+    }),
+  }),
 )(ComponentEditor)
