@@ -332,7 +332,7 @@ class ComponentEditor extends Component<
   }
 
   private handleConditionsChange = (newConditions: string[]) => {
-    this.setState({ conditions: newConditions })
+    this.setState({ conditions: newConditions, wasModified: true })
   }
 
   private handleConfigurationChange = (
@@ -386,11 +386,7 @@ class ComponentEditor extends Component<
       !extensionConfigurationsQuery.error
     ) {
       if (configurations && configurations.length > 0) {
-        this.setState({
-          conditions: configurations[0].conditions,
-          configuration: configurations[0],
-          scope: configurations[0].scope,
-        })
+        this.handleConfigurationChange(configurations[0])
       } else {
         this.setState(
           {
