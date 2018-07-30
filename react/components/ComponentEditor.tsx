@@ -388,15 +388,7 @@ class ComponentEditor extends Component<
       if (configurations && configurations.length > 0) {
         this.handleConfigurationChange(configurations[0])
       } else {
-        this.setState(
-          {
-            configuration: this.getDefaultConfiguration(),
-            wasModified: true,
-          },
-          () => {
-            this.handleConfigurationOpen(this.state.configuration!)
-          },
-        )
+        this.handleConfigurationOpen(this.getDefaultConfiguration())
       }
     }
   }
@@ -405,7 +397,7 @@ class ComponentEditor extends Component<
     const { configuration: currConfiguration } = this.state
 
     if (
-      currConfiguration &&
+      !currConfiguration ||
       currConfiguration.configurationId !== configuration.configurationId
     ) {
       this.handleConfigurationChange(configuration)
