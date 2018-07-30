@@ -1,7 +1,7 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
 
-import Dropdown from '../../form/Dropdown'
+import Dropdown from '../form/Dropdown'
 
 const SITE_SCOPE_CONDITION = {
   label: 'pages.conditions.scope.site',
@@ -16,28 +16,30 @@ const SCOPE_CONDITIONS = [
   {
     label: 'pages.conditions.scope.route',
     value: 'route',
-  }
+  },
 ]
 
-interface ScopeSelectorProps {
-  intl: ReactIntl.InjectedIntl
+interface Props {
   onChange: (value: ConfigurationScope) => void
   shouldEnableSite: boolean
   value: string
 }
 
-const ScopeSelector: React.StatelessComponent<ScopeSelectorProps> = ({
+const ScopeSelector = ({
   intl,
   onChange,
   shouldEnableSite,
   value,
-}) => (
+}: Props & ReactIntl.InjectedIntlProps) => (
   <Dropdown
-    label={intl.formatMessage({ id: 'pages.editor.components.conditions.native.label' })}
+    label={intl.formatMessage({
+      id: 'pages.editor.components.conditions.native.label',
+    })}
     onChange={onChange}
-    options={{ enumOptions: shouldEnableSite
-      ? [...SCOPE_CONDITIONS, SITE_SCOPE_CONDITION]
-      : SCOPE_CONDITIONS
+    options={{
+      enumOptions: shouldEnableSite
+        ? [...SCOPE_CONDITIONS, SITE_SCOPE_CONDITION]
+        : SCOPE_CONDITIONS,
     }}
     value={value}
   />

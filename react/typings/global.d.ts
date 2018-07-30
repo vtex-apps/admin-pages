@@ -1,11 +1,11 @@
-import {ReactElement, Component} from "react"
+import { ReactElement, Component } from 'react'
 
 declare global {
   declare module '*.graphql' {
-    import {DocumentNode} from 'graphql';
+    import { DocumentNode } from 'graphql'
 
-    const value: DocumentNode;
-    export default value;
+    const value: DocumentNode
+    export default value
   }
 
   interface Extension {
@@ -50,26 +50,26 @@ declare global {
   }
 
   interface RenderContext {
-    account: RenderRuntime['account'],
-    components: RenderRuntime['components'],
-    culture: RenderRuntime['culture'],
-    device: ConfigurationDevice,
-    emitter: RenderRuntime['emitter'],
-    extensions: RenderRuntime['extensions'],
-    fetchComponent: (component: string) => Promise<void>,
-    getSettings: (app: string) => any,
-    history: History | null,
-    navigate: (options: NavigateOptions) => boolean,
-    onPageChanged: (location: Location) => void,
-    page: RenderRuntime['page'],
-    pages: RenderRuntime['pages'],
-    prefetchPage: (name: string) => Promise<void>,
-    production: RenderRuntime['production'],
-    setDevice: (device: ConfigurationDevice) => void,
-    updateComponentAssets: (availableComponents: Components) => void,
-    updateExtension: (name: string, extension: Extension) => void,
-    updateRuntime: (options?: PageContextOptions) => Promise<void>,
-    workspace: RenderRuntime['workspace'],
+    account: RenderRuntime['account']
+    components: RenderRuntime['components']
+    culture: RenderRuntime['culture']
+    device: ConfigurationDevice
+    emitter: RenderRuntime['emitter']
+    extensions: RenderRuntime['extensions']
+    fetchComponent: (component: string) => Promise<void>
+    getSettings: (app: string) => any
+    history: History | null
+    navigate: (options: NavigateOptions) => boolean
+    onPageChanged: (location: Location) => void
+    page: RenderRuntime['page']
+    pages: RenderRuntime['pages']
+    prefetchPage: (name: string) => Promise<void>
+    production: RenderRuntime['production']
+    setDevice: (device: ConfigurationDevice) => void
+    updateComponentAssets: (availableComponents: Components) => void
+    updateExtension: (name: string, extension: Extension) => void
+    updateRuntime: (options?: PageContextOptions) => Promise<void>
+    workspace: RenderRuntime['workspace']
   }
 
   interface RenderContextProps {
@@ -135,7 +135,7 @@ declare global {
     query?: Record<string, string>
     start: boolean
     settings: {
-      [app: string]: any;
+      [app: string]: any
     }
     cacheHints: CacheHints
   }
@@ -157,4 +157,6 @@ declare global {
     scope: ConfigurationScope
     url: string
   }
+
+  type ComponentEditorMode = 'content' | 'layout'
 }

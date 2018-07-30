@@ -12,36 +12,32 @@ import {
 } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
-import {
-  Badge,
-  Button,
-  Card,
-  IconArrowBack,
-  Modal,
-  Spinner,
-} from 'vtex.styleguide'
+import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
-import PathMinus from '../images/PathMinus'
+import PathMinus from '../../images/PathMinus'
 
-import AvailableComponents from '../queries/AvailableComponents.graphql'
-import ExtensionConfigurations from '../queries/ExtensionConfigurations.graphql'
-import SaveExtension from '../queries/SaveExtension.graphql'
-import { getImplementation } from '../utils/components'
+import AvailableComponents from '../../queries/AvailableComponents.graphql'
+import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
+import SaveExtension from '../../queries/SaveExtension.graphql'
+import { getImplementation } from '../../utils/components'
+import ConditionsSelector from '../ConditionsSelector'
+import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
+import BaseInput from '../form/BaseInput'
+import Dropdown from '../form/Dropdown'
+import ErrorListTemplate from '../form/ErrorListTemplate'
+import FieldTemplate from '../form/FieldTemplate'
+import ImageUploader from '../form/ImageUploader'
+import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
+import Radio from '../form/Radio'
+import TextArea from '../form/TextArea'
+import Toggle from '../form/Toggle'
+import ModeSwitcher from '../ModeSwitcher'
 
-import ConditionsSelector from './conditions/ConditionsSelector'
-import ArrayFieldTemplate from './form/ArrayFieldTemplate'
-import BaseInput from './form/BaseInput'
-import Dropdown from './form/Dropdown'
-import ErrorListTemplate from './form/ErrorListTemplate'
-import FieldTemplate from './form/FieldTemplate'
-import ImageUploader from './form/ImageUploader'
-import ObjectFieldTemplate from './form/ObjectFieldTemplate'
-import Radio from './form/Radio'
-import TextArea from './form/TextArea'
-import Toggle from './form/Toggle'
-import ModeSwitcher from './ModeSwitcher'
+import ConfigurationsList from './ConfigurationsList'
+import Modal from './Modal'
+import SaveButton from './SaveButton'
 
 const defaultUiSchema = {
   classNames: 'editor-form',
@@ -56,9 +52,7 @@ const widgets = {
   'image-uploader': ImageUploader,
 }
 
-const MODES = ['content', 'layout']
-
-type ComponentEditorMode = 'content' | 'layout'
+const MODES: ComponentEditorMode[] = ['content', 'layout']
 
 interface ExtensionConfigurationsQuery {
   error: object
@@ -395,6 +389,12 @@ class ComponentEditor extends Component<
     }
   }
 
+  private handleConfigurationDiscard = () => {
+    this.setState({ wasModified: false }, () => {
+      this.handleModalResolution()
+    })
+  }
+
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
     const { configuration: currConfiguration } = this.state
 
@@ -408,7 +408,7 @@ class ComponentEditor extends Component<
     this.setState({ isEditMode: true })
   }
 
-  private handleConfigurationSave = async (event: any) => {
+  private handleConfigurationSave = async () => {
     const { editor, runtime, saveExtension } = this.props
     const { conditions, configuration, scope } = this.state
 
@@ -500,12 +500,6 @@ class ComponentEditor extends Component<
     }
   }
 
-  private handleDiscard = () => {
-    this.setState({ wasModified: false }, () => {
-      this.handleModalResolution()
-    })
-  }
-
   private handleFormChange = (event: any) => {
     const {
       runtime: { updateExtension, updateComponentAssets },
@@ -585,73 +579,6 @@ class ComponentEditor extends Component<
     }
   }
 
-  private renderConfigurationCard(
-    configuration: ExtensionConfiguration,
-  ): JSX.Element {
-    const { intl } = this.props
-
-    const isActive =
-      this.state.configuration &&
-      configuration.configurationId === this.state.configuration.configurationId
-
-    return (
-      <div
-        className="mh5 mt5 pointer"
-        onClick={() => {
-          this.handleConfigurationSelection(configuration)
-        }}
-      >
-        <Card noPadding>
-          <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
-            <div className="mt5">
-              <FormattedMessage id="pages.conditions.scope.title" />
-              <Badge bgColor="#979899" color="#FFF">
-                {intl.formatMessage({
-                  id: `pages.conditions.scope.${configuration.scope}`,
-                })}
-              </Badge>
-            </div>
-            {configuration.conditions.length > 0 && (
-              <div className="mt5">
-                <FormattedMessage id="pages.editor.components.configurations.customConditions" />
-                <div>{configuration.conditions.join(', ')}</div>
-              </div>
-            )}
-            <div className="mt5">
-              <Button
-                onClick={() => {
-                  this.handleConfigurationOpen(configuration)
-                }}
-                size="small"
-                variation="tertiary"
-              >
-                {intl.formatMessage({
-                  id: 'pages.editor.components.configurations.button.edit',
-                })}
-              </Button>
-            </div>
-          </div>
-        </Card>
-      </div>
-    )
-  }
-
-  private renderCreateConfigurationButton(): JSX.Element {
-    return (
-      <div className="mh5 mt5">
-        <Button
-          block
-          onClick={this.handleConfigurationCreation}
-          variation="tertiary"
-        >
-          {this.props.intl.formatMessage({
-            id: 'pages.editor.components.configurations.button.create',
-          })}
-        </Button>
-      </div>
-    )
-  }
-
   private renderConfigurationEditor(
     schema: object,
     uiSchema: object,
@@ -674,8 +601,8 @@ class ComponentEditor extends Component<
       <Fragment>
         <ConditionsSelector
           editor={editor}
-          onChangeCustomConditions={this.handleConditionsChange}
-          onChangeScope={this.handleScopeChange}
+          onCustomConditionsChange={this.handleConditionsChange}
+          onScopeChange={this.handleScopeChange}
           runtime={runtime}
           scope={this.state.scope}
           selectedConditions={this.state.conditions}
@@ -710,77 +637,6 @@ class ComponentEditor extends Component<
           <div id="form__error-list-template___alert" />
         </div>
       </Fragment>
-    )
-  }
-
-  private renderConfigurationsList(
-    configurationsList: ExtensionConfiguration[],
-  ): JSX.Element {
-    return (
-      <Fragment>
-        {configurationsList.map(
-          (configuration: ExtensionConfiguration, index: number) => (
-            <Fragment key={index}>
-              {this.renderConfigurationCard(configuration)}
-            </Fragment>
-          ),
-        )}
-        {this.renderCreateConfigurationButton()}
-      </Fragment>
-    )
-  }
-
-  private renderModal(): JSX.Element {
-    return (
-      <Modal
-        centered
-        isOpen={this.state.isModalOpen}
-        onClose={this.handleModalClose}
-      >
-        <div>
-          {this.props.intl.formatMessage({
-            id: 'pages.editor.components.modal.text',
-          })}
-        </div>
-        <div className="mt6 flex justify-end">
-          <div className="mr3">
-            <Button
-              onClick={this.handleDiscard}
-              size="small"
-              variation="tertiary"
-            >
-              {this.props.intl.formatMessage({
-                id: 'pages.editor.components.modal.button.discard',
-              })}
-            </Button>
-          </div>
-          <Button
-            isLoading={this.state.isLoading}
-            onClick={this.handleConfigurationSave}
-            size="small"
-            variation="primary"
-          >
-            {this.props.intl.formatMessage({
-              id: 'pages.editor.components.button.save',
-            })}
-          </Button>
-        </div>
-      </Modal>
-    )
-  }
-
-  private renderSaveButton(): JSX.Element {
-    return (
-      <Button
-        isLoading={this.state.isLoading}
-        onClick={this.handleConfigurationSave}
-        size="small"
-        variation="tertiary"
-      >
-        {this.props.intl.formatMessage({
-          id: 'pages.editor.components.button.save',
-        })}
-      </Button>
     )
   }
 
@@ -838,7 +694,13 @@ class ComponentEditor extends Component<
 
     return (
       <div className="w-100 dark-gray">
-        {this.renderModal()}
+        <Modal
+          isOpen={this.state.isModalOpen}
+          isSaveLoading={this.state.isLoading}
+          onClickDiscard={this.handleConfigurationDiscard}
+          onClickSave={this.handleConfigurationSave}
+          onClose={this.handleModalClose}
+        />
         <div className="w-100 flex items-center pl5 pv5 bt b--light-silver">
           <span
             className="pointer"
@@ -859,7 +721,13 @@ class ComponentEditor extends Component<
                 {this.state.configuration!.conditions.join(', ') +
                   ' ' +
                   this.state.configuration!.scope}
-                {this.state.wasModified && this.renderSaveButton()}
+                {this.state.wasModified && (
+                  <SaveButton
+                    isLoading={this.state.isLoading}
+                    onClick={this.handleConfigurationSave}
+                    variation="tertiary"
+                  />
+                )}
               </div>
             ) : (
               componentSchema.title
@@ -873,9 +741,15 @@ class ComponentEditor extends Component<
         ) : extensionConfigurationsQuery.extensionConfigurations &&
         extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
         !this.state.isEditMode ? (
-          this.renderConfigurationsList(
-            extensionConfigurationsQuery.extensionConfigurations,
-          )
+          <ConfigurationsList
+            activeConfiguration={this.state.configuration}
+            configurations={
+              extensionConfigurationsQuery.extensionConfigurations
+            }
+            onCreate={this.handleConfigurationCreation}
+            onEdit={this.handleConfigurationOpen}
+            onSelect={this.handleConfigurationSelection}
+          />
         ) : (
           this.renderConfigurationEditor(schema, uiSchema, extensionProps)
         )}

@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
+import { injectIntl, intlShape } from 'react-intl'
 
 const getChangeHandler = (onChange, emptyValue) => ({ target: { value } }) =>
   onChange(!value ? emptyValue : value)
@@ -29,12 +29,10 @@ const Dropdown = ({
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
-    options={
-      options.enumOptions.map(option=>({
-        ...option,
-        label: intl.formatMessage({id: option.label}),
-      }))
-    }
+    options={options.enumOptions.map(option => ({
+      ...option,
+      label: intl.formatMessage({ id: option.label }),
+    }))}
     placeholder={placeholder}
     readOnly={readonly}
     value={value || ''}

@@ -5,21 +5,18 @@ import ScopeSelector from './ScopeSelector'
 
 interface ConditionsSelectorProps {
   editor: EditorContext
-  onChangeCustomConditions: (newConditionsIds: string[]) => void
-  onChangeScope: (newScope: ConfigurationScope) => void
+  onCustomConditionsChange: (newConditionsIds: string[]) => void
+  onScopeChange: (newScope: ConfigurationScope) => void
   scope: ConfigurationScope
   selectedConditions: string[]
   runtime: RenderContext
 }
 
 const ConditionsSelector: React.StatelessComponent<ConditionsSelectorProps> = ({
-  editor: {
-    conditions,
-    editTreePath,
-  },
+  editor: { conditions, editTreePath },
   scope,
-  onChangeCustomConditions,
-  onChangeScope,
+  onCustomConditionsChange,
+  onScopeChange,
   selectedConditions,
   runtime: { page },
 }) => {
@@ -28,24 +25,23 @@ const ConditionsSelector: React.StatelessComponent<ConditionsSelectorProps> = ({
     value: condition.conditionId,
   }))
 
-  const shouldEnableSite = editTreePath && !editTreePath.startsWith(page) || false
+  const shouldEnableSite =
+    (editTreePath && !editTreePath.startsWith(page)) || false
 
   if (!shouldEnableSite && scope === 'site') {
-    onChangeScope('url')
+    onScopeChange('url')
   }
 
   return (
     <Fragment>
-      <div className="ph5 mb5">
-        <ScopeSelector
-          onChange={onChangeScope}
-          shouldEnableSite={shouldEnableSite}
-          value={scope}
-        />
-      </div>
-      <div className="ph5 mb5">
+      <ScopeSelector
+        onChange={onScopeChange}
+        shouldEnableSite={shouldEnableSite}
+        value={scope}
+      />
+      <div className="mt5">
         <CustomConditionsSelector
-          onChange={onChangeCustomConditions}
+          onChange={onCustomConditionsChange}
           options={availableCustomConditions}
           value={selectedConditions}
         />
