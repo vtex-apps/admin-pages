@@ -366,6 +366,8 @@ class ComponentEditor extends Component<
       this.setState({ isEditMode: false }, () => {
         if (configurations.length > 0) {
           this.handleConfigurationChange(configurations[0])
+        } else {
+          this.handleQuit()
         }
       })
     }
@@ -552,15 +554,8 @@ class ComponentEditor extends Component<
   }
 
   private handleModalResolution = () => {
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
-
     this.handleModalClose()
     this.handleConfigurationClose()
-
-    if (configurations.length === 0) {
-      this.handleQuit()
-    }
   }
 
   private handleModeSwitch = (newMode: ComponentEditorMode) => {
