@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, CSSProperties, Fragment } from 'react'
-import { DataProps, graphql } from 'react-apollo'
-import { ExtensionPoint } from 'render'
+import React, { Component, CSSProperties } from 'react'
+import { DataProps, graphql, compose } from 'react-apollo'
+import { withRuntimeContext } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
-import SelectionIcon from './images/SelectionIcon.js'
-import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 
 interface EditorProviderState {
@@ -198,32 +196,9 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     }
 
     const childrenWithSidebar = (
-      <Fragment>
-        <div
-          className="fixed left-0 right-0 z-9999 h-3em"
-          style={topbarStyle}
-        >
-          <ExtensionPoint id={`${root}/__topbar`}>
-            <button
-              type="button"
-              onClick={this.handleToggleEditMode}
-              className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
-            >
-              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'} /></span>
-            </button>
-            <button
-              type="button"
-              onClick={this.handleToggleShowAdminControls}
-              className="bg-white bn link pl3-ns pv3 flex items-center justify-center self-right z-max pointer animated fadeIn"
-            >
-              <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
-            </button>
-          </ExtensionPoint>
-        </div>
-        <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
-          {children}
-        </EditorContainer>
-      </Fragment>
+      <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
+        {children}
+      </EditorContainer>
     )
 
     return (
@@ -235,4 +210,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 }
 
-export default graphql(AvailableConditions)(EditorProvider)
+export default compose(
+  graphql(AvailableConditions),
+  withRuntimeContext,
+)(EditorProvider)

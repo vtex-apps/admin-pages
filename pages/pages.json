@@ -5,6 +5,9 @@
     },
     "admin/pages-detail": {
       "path": "/admin/pages/page/*pageId"
+    },
+    "admin/pages-editor": {
+      "path": "/admin/pages/editor/*path"
     }
   },
   "extensions": {
@@ -13,6 +16,9 @@
     },
     "admin/pages-detail": {
       "component": "PageList"
+    },
+    "admin/pages-editor": {
+      "component": "PageEditor"
     },
     "admin/navigation/storeSetup/pages": {
       "component": "vtex.admin/InjectNavigationData",
