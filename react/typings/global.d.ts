@@ -86,7 +86,9 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type ConfigurationScope = 'url' | 'route' | 'site'
+  type PagesGraphQLConfigurationScope = 'url' | 'route'
+
+  type ConfigurationScope = PagesGraphQLConfigurationScope | 'site'
 
   interface EditorConditionSection {
     activeConditions: string[]
@@ -155,7 +157,7 @@ declare global {
     label?: string
     propsJSON: string
     routeId: string
-    scope: ConfigurationScope
+    scope: PagesGraphQLConfigurationScope
     url: string
   }
 

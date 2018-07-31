@@ -5,6 +5,7 @@ import { Badge, Button, Card } from 'vtex.styleguide'
 interface Props {
   activeConfiguration?: ExtensionConfiguration
   configuration: ExtensionConfiguration
+  isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onEdit: (configuration: ExtensionConfiguration) => void
 }
@@ -12,6 +13,7 @@ interface Props {
 const ConfigurationCard = ({
   activeConfiguration,
   configuration,
+  isDisabled = false,
   intl,
   onClick,
   onEdit,
@@ -22,13 +24,23 @@ const ConfigurationCard = ({
 
   return (
     <div
-      className="mh5 mt5 pointer"
+      className={`mh5 mt5 ${!isDisabled ? 'pointer' : ''}`}
       onClick={() => {
-        onClick(configuration)
+        if (!isDisabled) {
+          onClick(configuration)
+        }
       }}
     >
       <Card noPadding>
-        <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
+        <div
+          className={`pa5 ${
+            isActive
+              ? 'bg-washed-blue'
+              : isDisabled
+                ? 'gray bg-light-silver'
+                : ''
+          }`}
+        >
           {configuration.label ? (
             <div className="f4">{configuration.label}</div>
           ) : (
@@ -36,33 +48,37 @@ const ConfigurationCard = ({
               {text => <div className="f4 i gray">{text}</div>}
             </FormattedMessage>
           )}
-          <div className="mt5">
-            <FormattedMessage id="pages.conditions.scope.title" />
-            <Badge bgColor="#979899" color="#FFF">
-              {intl.formatMessage({
-                id: `pages.conditions.scope.${configuration.scope}`,
-              })}
-            </Badge>
-          </div>
+          {!isDisabled && (
+            <div className="mt5">
+              <FormattedMessage id="pages.conditions.scope.title" />
+              <Badge bgColor="#979899" color="#FFF">
+                {intl.formatMessage({
+                  id: `pages.conditions.scope.${configuration.scope}`,
+                })}
+              </Badge>
+            </div>
+          )}
           {configuration.conditions.length > 0 && (
             <div className="mt5">
               <FormattedMessage id="pages.editor.components.configurations.customConditions" />
               <div>{configuration.conditions.join(', ')}</div>
             </div>
           )}
-          <div className="mt5">
-            <Button
-              onClick={() => {
-                onEdit(configuration)
-              }}
-              size="small"
-              variation="tertiary"
-            >
-              {intl.formatMessage({
-                id: 'pages.editor.components.configurations.button.edit',
-              })}
-            </Button>
-          </div>
+          {!isDisabled && (
+            <div className="mt5">
+              <Button
+                onClick={() => {
+                  onEdit(configuration)
+                }}
+                size="small"
+                variation="tertiary"
+              >
+                {intl.formatMessage({
+                  id: 'pages.editor.components.configurations.button.edit',
+                })}
+              </Button>
+            </div>
+          )}
         </div>
       </Card>
     </div>

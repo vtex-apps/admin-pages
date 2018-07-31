@@ -25,6 +25,10 @@ const ConfigurationsList = ({
           <ConfigurationCard
             activeConfiguration={activeConfiguration}
             configuration={configuration}
+            isDisabled={
+              configuration.scope === 'url' &&
+              configuration.url !== window.location.pathname
+            }
             onClick={onSelect}
             onEdit={onEdit}
           />
