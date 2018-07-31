@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 
 import ComponentEditor from '../components/ComponentEditor'
 
-import ComponentList from './ComponentList'
+import ComponentsList from './ComponentsList'
 import HighlightOverlay from './HighlightOverlay'
 import PageInfo from './PageInfo'
 
@@ -89,7 +89,7 @@ export default class EditorContainer extends Component<
         <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
           <FormattedMessage id="pages.editor.components.title" />
         </h3>
-        <ComponentList
+        <ComponentsList
           editor={editor}
           runtime={runtime}
           highlightExtensionPoint={this.highlightExtensionPoint}
