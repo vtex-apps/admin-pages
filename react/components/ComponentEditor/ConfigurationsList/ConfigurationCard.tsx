@@ -3,8 +3,8 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Badge, Button, Card } from 'vtex.styleguide'
 
 interface Props {
-  activeConfiguration?: ExtensionConfiguration
-  configuration: ExtensionConfiguration
+  activeConfiguration?: AdaptedExtensionConfiguration
+  configuration: AdaptedExtensionConfiguration
   isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onEdit: (configuration: ExtensionConfiguration) => void

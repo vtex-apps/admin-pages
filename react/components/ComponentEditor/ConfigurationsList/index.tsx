@@ -4,8 +4,8 @@ import ConfigurationCard from './ConfigurationCard'
 import CreateButton from './CreateButton'
 
 interface Props {
-  activeConfiguration?: ExtensionConfiguration
-  configurations: ExtensionConfiguration[]
+  activeConfiguration?: AdaptedExtensionConfiguration
+  configurations: AdaptedExtensionConfiguration[]
   onCreate: (event: Event) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
@@ -20,7 +20,7 @@ const ConfigurationsList = ({
 }: Props) => (
   <Fragment>
     {configurations.map(
-      (configuration: ExtensionConfiguration, index: number) => (
+      (configuration: AdaptedExtensionConfiguration, index: number) => (
         <Fragment key={index}>
           <ConfigurationCard
             activeConfiguration={activeConfiguration}

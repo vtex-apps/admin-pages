@@ -86,9 +86,9 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type PagesGraphQLConfigurationScope = 'url' | 'route'
+  type ServerConfigurationScope = 'url' | 'route'
 
-  type ConfigurationScope = PagesGraphQLConfigurationScope | 'site'
+  type ConfigurationScope = ServerConfigurationScope | 'site'
 
   interface EditorConditionSection {
     activeConditions: string[]
@@ -149,7 +149,7 @@ declare global {
     template?: string
   }
 
-  interface ExtensionConfiguration {
+  interface ServerExtensionConfiguration {
     allMatches: boolean
     conditions: string[]
     configurationId: string
@@ -157,9 +157,17 @@ declare global {
     label?: string
     propsJSON: string
     routeId: string
-    scope: PagesGraphQLConfigurationScope
+    scope: ServerConfigurationScope
     url: string
   }
+
+  interface AdaptedExtensionConfiguration extends ServerExtensionConfiguration {
+    scope: ConfigurationScope
+  }
+
+  type ExtensionConfiguration =
+    | ServerExtensionConfiguration
+    | AdaptedExtensionConfiguration
 
   type ComponentEditorMode = 'content' | 'layout'
 }

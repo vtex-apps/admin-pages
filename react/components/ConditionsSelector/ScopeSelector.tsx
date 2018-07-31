@@ -22,7 +22,7 @@ const SCOPE_CONDITIONS = [
 interface Props {
   onChange: (value: ConfigurationScope) => void
   shouldEnableSite: boolean
-  value: string
+  value: ConfigurationScope
 }
 
 const ScopeSelector = ({

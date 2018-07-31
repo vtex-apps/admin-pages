@@ -69,13 +69,12 @@ interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
 
 interface ComponentEditorState {
   conditions: string[]
-  configuration?: ExtensionConfiguration
+  configuration?: AdaptedExtensionConfiguration
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
   newLabel?: string
-  scope: ConfigurationScope
   wasModified: boolean
 }
 
@@ -95,7 +94,6 @@ class ComponentEditor extends Component<
       isLoading: false,
       isModalOpen: false,
       mode: 'content',
-      scope: 'url',
       wasModified: false,
     }
   }
@@ -375,9 +373,15 @@ class ComponentEditor extends Component<
         !this.state.isEditMode ? (
           <ConfigurationsList
             activeConfiguration={this.state.configuration}
-            configurations={
-              extensionConfigurationsQuery.extensionConfigurations
-            }
+            configurations={extensionConfigurationsQuery.extensionConfigurations.map(
+              configuration => ({
+                ...configuration,
+                scope: this.getEncodedScope(
+                  configuration.scope,
+                  configuration.routeId,
+                ),
+              }),
+            )}
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
@@ -388,6 +392,17 @@ class ComponentEditor extends Component<
       </div>
     )
   }
+
+  private getDecodedRouteId = (scope: ConfigurationScope, routeId: string) =>
+    scope === 'site' ? 'store' : routeId
+
+  private getDecodedScope = (scope: ConfigurationScope) =>
+    scope === 'site' ? 'route' : scope
+
+  private getEncodedScope = (
+    scope: ServerConfigurationScope | ConfigurationScope,
+    routeId: string,
+  ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
     const { runtime } = this.props
@@ -427,8 +442,13 @@ class ComponentEditor extends Component<
     this.setState(
       {
         conditions: newConfiguration.conditions,
-        configuration: newConfiguration,
-        scope: newConfiguration.scope,
+        configuration: {
+          ...newConfiguration,
+          scope: this.getEncodedScope(
+            newConfiguration.scope,
+            newConfiguration.routeId,
+          ),
+        },
       },
       () => {
         runtime.updateExtension(editor.editTreePath!, {
@@ -506,7 +526,7 @@ class ComponentEditor extends Component<
 
   private handleConfigurationSave = async () => {
     const { editor, runtime, saveExtension } = this.props
-    const { conditions, configuration, scope } = this.state
+    const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
 
@@ -539,8 +559,8 @@ class ComponentEditor extends Component<
           label: this.state.newLabel || configuration!.label,
           path: window.location.pathname,
           propsJSON: JSON.stringify(pickedProps),
-          routeId: runtime.page,
-          scope,
+          routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
+          scope: this.getDecodedScope(configuration!.scope),
         },
       })
 
@@ -676,8 +696,15 @@ class ComponentEditor extends Component<
   }
 
   private handleScopeChange = (newScope: ConfigurationScope) => {
-    if (newScope !== this.state.scope) {
-      this.setState({ scope: newScope, wasModified: true })
+    if (
+      this.state.configuration &&
+      newScope !== this.state.configuration.scope
+    ) {
+      this.setState(prevState => ({
+        ...prevState,
+        configuration: { ...prevState.configuration!, scope: newScope },
+        wasModified: true,
+      }))
     }
   }
 
@@ -714,7 +741,7 @@ class ComponentEditor extends Component<
               onCustomConditionsChange={this.handleConditionsChange}
               onScopeChange={this.handleScopeChange}
               runtime={runtime}
-              scope={this.state.scope}
+              scope={configuration && configuration.scope}
               selectedConditions={this.state.conditions}
             />
           </div>

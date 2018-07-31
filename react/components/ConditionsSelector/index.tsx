@@ -6,13 +6,13 @@ import ScopeSelector from './ScopeSelector'
 interface Props {
   onCustomConditionsChange: (newConditionsIds: string[]) => void
   onScopeChange: (newScope: ConfigurationScope) => void
-  scope: ConfigurationScope
+  scope?: ConfigurationScope
   selectedConditions: string[]
 }
 
 const ConditionsSelector = ({
   editor: { conditions, editTreePath },
-  scope,
+  scope = 'url',
   onCustomConditionsChange,
   onScopeChange,
   selectedConditions,
