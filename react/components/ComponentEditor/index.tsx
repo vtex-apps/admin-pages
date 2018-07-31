@@ -575,7 +575,7 @@ class ComponentEditor extends Component<
 
   private handleScopeChange = (newScope: ConfigurationScope) => {
     if (newScope !== this.state.scope) {
-      this.setState({ scope: newScope })
+      this.setState({ scope: newScope, wasModified: true })
     }
   }
 
