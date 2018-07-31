@@ -152,6 +152,7 @@ declare global {
     conditions: string[]
     configurationId: string
     device: string
+    label?: string
     propsJSON: string
     routeId: string
     scope: ConfigurationScope

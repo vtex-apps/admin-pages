@@ -16,8 +16,6 @@ import { injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
-import PathMinus from '../../images/PathMinus'
-
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
 import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
@@ -36,6 +34,7 @@ import Toggle from '../form/Toggle'
 import ModeSwitcher from '../ModeSwitcher'
 
 import ConfigurationsList from './ConfigurationsList'
+import LabelEditor from './LabelEditor'
 import Modal from './Modal'
 import SaveButton from './SaveButton'
 
@@ -75,6 +74,7 @@ interface ComponentEditorState {
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
+  newLabel?: string
   scope: ConfigurationScope
   wasModified: boolean
 }
@@ -357,7 +357,7 @@ class ComponentEditor extends Component<
     if (this.state.wasModified) {
       this.handleModalOpen()
     } else {
-      this.setState({ isEditMode: false }, () => {
+      this.setState({ isEditMode: false, newLabel: undefined }, () => {
         if (configurations.length > 0) {
           this.handleConfigurationChange(configurations[0])
         } else {
@@ -393,6 +393,12 @@ class ComponentEditor extends Component<
     this.setState({ wasModified: false }, () => {
       this.handleModalResolution()
     })
+  }
+
+  private handleConfigurationLabelChange = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.setState({ newLabel: event.target.value, wasModified: true })
+    }
   }
 
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
@@ -439,6 +445,7 @@ class ComponentEditor extends Component<
           configurationId,
           device,
           extensionName: editor.editTreePath,
+          label: this.state.newLabel || configuration!.label,
           path: window.location.pathname,
           propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
           routeId: runtime.page,
@@ -599,6 +606,14 @@ class ComponentEditor extends Component<
 
     return (
       <Fragment>
+        <div className="ph5 mt5">
+          <LabelEditor
+            onChange={this.handleConfigurationLabelChange}
+            value={
+              this.state.newLabel || (configuration && configuration.label)
+            }
+          />
+          <div className="mt5">
         <ConditionsSelector
           editor={editor}
           onCustomConditionsChange={this.handleConditionsChange}
@@ -607,6 +622,8 @@ class ComponentEditor extends Component<
           scope={this.state.scope}
           selectedConditions={this.state.conditions}
         />
+          </div>
+        </div>
         <div
           className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${
             this._isMounted ? '' : 'fadeIn'
@@ -701,7 +718,7 @@ class ComponentEditor extends Component<
           onClickSave={this.handleConfigurationSave}
           onClose={this.handleModalClose}
         />
-        <div className="w-100 flex items-center pl5 pv5 bt b--light-silver">
+        <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
           <span
             className="pointer"
             onClick={
@@ -712,16 +729,10 @@ class ComponentEditor extends Component<
           >
             <IconArrowBack size={16} color="#585959" />
           </span>
-          <span className="ml5">
-            <PathMinus size={16} color="#585959" />
-          </span>
-          <h4 className="w-100 f6 fw5 pl5 track-1 mv0 dark-gray">
-            {this.state.isEditMode ? (
-              <div className="flex justify-between items-center">
-                {this.state.configuration!.conditions.join(', ') +
-                  ' ' +
-                  this.state.configuration!.scope}
-                {this.state.wasModified && (
+          <div className="w-100 pl5 flex justify-between items-center">
+            <h4 className="mv0 f6 fw5 dark-gray">{componentSchema.title}</h4>
+            {this.state.isEditMode &&
+              this.state.wasModified && (
                   <SaveButton
                     isLoading={this.state.isLoading}
                     onClick={this.handleConfigurationSave}
@@ -729,10 +740,6 @@ class ComponentEditor extends Component<
                   />
                 )}
               </div>
-            ) : (
-              componentSchema.title
-            )}
-          </h4>
         </div>
         {extensionConfigurationsQuery.loading ? (
           <div className="mt5 flex justify-center">

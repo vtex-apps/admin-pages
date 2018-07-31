@@ -14,6 +14,7 @@ query ExtensionConfigurations(
     conditions
     configurationId
     device
+    label
     propsJSON
     routeId
     scope

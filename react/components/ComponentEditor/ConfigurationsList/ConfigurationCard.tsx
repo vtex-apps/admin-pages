@@ -29,6 +29,13 @@ const ConfigurationCard = ({
     >
       <Card noPadding>
         <div className={`pa5 ${isActive ? 'bg-washed-blue' : ''}`}>
+          {configuration.label ? (
+            <div className="f4">{configuration.label}</div>
+          ) : (
+            <FormattedMessage id="pages.editor.components.configurations.defaultTitle">
+              {text => <div className="f4 i gray">{text}</div>}
+            </FormattedMessage>
+          )}
           <div className="mt5">
             <FormattedMessage id="pages.conditions.scope.title" />
             <Badge bgColor="#979899" color="#FFF">

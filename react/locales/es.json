@@ -13,6 +13,8 @@
   "pages.editor.components.configurations.button.edit": "Editar",
   "pages.editor.components.configurations.customConditions":
     "Condiciones personalizadas:",
+  "pages.editor.components.configurations.defaultTitle": "Sin título",
+  "pages.editor.components.labelEditor.label": "Nombre de la configuración",
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.components.modal.text":
     "Tiene modificaciones no guardadas para esta configuración."

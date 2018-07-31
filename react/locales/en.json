@@ -20,6 +20,8 @@
   "pages.editor.components.configurations.button.edit": "Edit",
   "pages.editor.components.configurations.customConditions":
     "Custom conditions:",
+  "pages.editor.components.configurations.defaultTitle": "Untitled",
+  "pages.editor.components.labelEditor.label": "Configuration name",
   "pages.editor.components.modal.button.discard": "Discard",
   "pages.editor.components.modal.text":
     "You have unsaved modifications for this configuration.",

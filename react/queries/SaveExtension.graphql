@@ -4,6 +4,7 @@ mutation SaveExtension(
   $configurationId: String
   $device: String
   $extensionName: String!
+  $label: String
   $path: String!
   $propsJSON: String
   $routeId: String!
@@ -15,6 +16,7 @@ mutation SaveExtension(
     configurationId: $configurationId
     device: $device
     extensionName: $extensionName
+    label: $label
     path: $path
     propsJSON: $propsJSON
     routeId: $routeId
