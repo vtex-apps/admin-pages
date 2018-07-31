@@ -144,9 +144,6 @@ class ComponentEditor extends Component<
     return getPropsFromSchema(componentSchema.properties, props)
   }
 
-  public isEmptyExtensionPoint = component =>
-    /vtex\.pages-editor@.*\/EmptyExtensionPoint/.test(component)
-
   /**
    * It receives a component implementation and decide which type of schema
    * will use, a static (schema) or a dynamic (getSchema) schema.
@@ -305,10 +302,6 @@ class ComponentEditor extends Component<
 
     const { component, props } = this.getExtension()
     const componentImplementation = getImplementation(component)
-    const editableComponents = this.props.availableComponents
-      .availableComponents
-      ? map(prop('name'), this.props.availableComponents.availableComponents)
-      : []
 
     const selectedComponent = component || null
 
@@ -323,22 +316,9 @@ class ComponentEditor extends Component<
         ? componentImplementation.uiSchema
         : null
 
-    const maybeComponent = !selectedComponent
-      ? {
-          component: {
-            default: '',
-            enum: editableComponents,
-            enumNames: editableComponents,
-            title: 'Component',
-            type: 'string',
-          },
-        }
-      : null
-
     const schema = {
       ...componentSchema,
       properties: {
-        ...maybeComponent,
         ...componentSchema.properties,
       },
       title: undefined,
@@ -536,12 +516,13 @@ class ComponentEditor extends Component<
         : configuration!.configurationId
 
     const { component, props = {} } = this.getExtension()
-    const isEmpty = this.isEmptyExtensionPoint(component)
 
     const componentImplementation = component && getImplementation(component)
-    const pickedProps = isEmpty
-      ? null
-      : this.getSchemaProps(componentImplementation, props, runtime)
+    const pickedProps = this.getSchemaProps(
+      componentImplementation,
+      props,
+      runtime,
+    )
 
     this.setState({
       isLoading: true,
@@ -557,7 +538,7 @@ class ComponentEditor extends Component<
           extensionName: editor.editTreePath,
           label: this.state.newLabel || configuration!.label,
           path: window.location.pathname,
-          propsJSON: isEmpty ? '{}' : JSON.stringify(pickedProps),
+          propsJSON: JSON.stringify(pickedProps),
           routeId: runtime.page,
           scope,
         },
