@@ -3,7 +3,7 @@ import { injectIntl } from 'react-intl'
 
 import { Input } from 'vtex.styleguide'
 
-type Props = {
+interface Props {
   onChange: (event: Event) => void
   value?: string
 }

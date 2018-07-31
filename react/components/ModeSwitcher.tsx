@@ -1,7 +1,7 @@
 import React from 'react'
-import { Tabs, Tab } from 'vtex.styleguide'
+import { Tab, Tabs } from 'vtex.styleguide'
 
-type Props = {
+interface Props {
   activeMode: ComponentEditorMode
   modes: ComponentEditorMode[]
   onSwitch: (newMode: ComponentEditorMode) => void

@@ -4,11 +4,11 @@ import {
   keys,
   map,
   merge,
+  mergeDeepLeft,
   pick,
   pickBy,
   prop,
   reduce,
-  mergeDeepLeft,
 } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
@@ -83,6 +83,7 @@ class ComponentEditor extends Component<
   ComponentEditorProps,
   ComponentEditorState
 > {
+  // tslint:disable-next-line
   private _isMounted: boolean = false
 
   constructor(props: ComponentEditorProps) {
@@ -297,6 +298,115 @@ class ComponentEditor extends Component<
     }
 
     return mergeDeepLeft(uiSchema, componentUiSchema || {})
+  }
+
+  public render() {
+    const extensionConfigurationsQuery = this.props.extensionConfigurations
+
+    const { component, props } = this.getExtension()
+    const componentImplementation = getImplementation(component)
+    const editableComponents = this.props.availableComponents
+      .availableComponents
+      ? map(prop('name'), this.props.availableComponents.availableComponents)
+      : []
+
+    const selectedComponent = component || null
+
+    const componentSchema = this.getComponentSchema(
+      componentImplementation,
+      props,
+      this.props.runtime,
+    )
+
+    const componentUiSchema =
+      componentImplementation && componentImplementation.uiSchema
+        ? componentImplementation.uiSchema
+        : null
+
+    const maybeComponent = !selectedComponent
+      ? {
+          component: {
+            default: '',
+            enum: editableComponents,
+            enumNames: editableComponents,
+            title: 'Component',
+            type: 'string',
+          },
+        }
+      : null
+
+    const schema = {
+      ...componentSchema,
+      properties: {
+        ...maybeComponent,
+        ...componentSchema.properties,
+      },
+      title: undefined,
+    }
+
+    const uiSchema = {
+      ...defaultUiSchema,
+      ...this.getUiSchema(componentUiSchema, componentSchema),
+    }
+
+    const extensionProps = {
+      component: selectedComponent,
+      ...props,
+    }
+
+    return (
+      <div className="w-100 dark-gray">
+        <Modal
+          isOpen={this.state.isModalOpen}
+          isSaveLoading={this.state.isLoading}
+          onClickDiscard={this.handleConfigurationDiscard}
+          onClickSave={this.handleConfigurationSave}
+          onClose={this.handleModalClose}
+        />
+        <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
+          <span
+            className="pointer"
+            onClick={
+              this.state.isEditMode
+                ? this.handleConfigurationClose
+                : this.handleQuit
+            }
+          >
+            <IconArrowBack size={16} color="#585959" />
+          </span>
+          <div className="w-100 pl5 flex justify-between items-center">
+            <h4 className="mv0 f6 fw5 dark-gray">{componentSchema.title}</h4>
+            {this.state.isEditMode &&
+              this.state.wasModified && (
+                <SaveButton
+                  isLoading={this.state.isLoading}
+                  onClick={this.handleConfigurationSave}
+                  variation="tertiary"
+                />
+              )}
+          </div>
+        </div>
+        {extensionConfigurationsQuery.loading ? (
+          <div className="mt5 flex justify-center">
+            <Spinner />
+          </div>
+        ) : extensionConfigurationsQuery.extensionConfigurations &&
+        extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+        !this.state.isEditMode ? (
+          <ConfigurationsList
+            activeConfiguration={this.state.configuration}
+            configurations={
+              extensionConfigurationsQuery.extensionConfigurations
+            }
+            onCreate={this.handleConfigurationCreation}
+            onEdit={this.handleConfigurationOpen}
+            onSelect={this.handleConfigurationSelection}
+          />
+        ) : (
+          this.renderConfigurationEditor(schema, uiSchema, extensionProps)
+        )}
+      </div>
+    )
   }
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
@@ -516,18 +626,18 @@ class ComponentEditor extends Component<
     const { component: enumComponent } = event.formData
     const component =
       enumComponent && enumComponent !== '' ? enumComponent : null
-    const Component = component && getImplementation(component)
+    const componentImplementation = component && getImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })
     }
 
-    if (component && !Component) {
+    if (component && !componentImplementation) {
       const allComponents = reduce(
-        (acc, component) => {
-          acc[component.name] = {
-            assets: component.assets,
-            dependencies: component.dependencies,
+        (acc, currComponent) => {
+          acc[currComponent.name] = {
+            assets: currComponent.assets,
+            dependencies: currComponent.dependencies,
           }
           return acc
         },
@@ -538,7 +648,11 @@ class ComponentEditor extends Component<
       updateComponentAssets(allComponents)
     }
 
-    const props = this.getSchemaProps(Component, event.formData, runtime)
+    const props = this.getSchemaProps(
+      componentImplementation,
+      event.formData,
+      runtime,
+    )
 
     updateExtension(editTreePath as string, {
       component,
@@ -614,14 +728,14 @@ class ComponentEditor extends Component<
             }
           />
           <div className="mt5">
-        <ConditionsSelector
-          editor={editor}
-          onCustomConditionsChange={this.handleConditionsChange}
-          onScopeChange={this.handleScopeChange}
-          runtime={runtime}
-          scope={this.state.scope}
-          selectedConditions={this.state.conditions}
-        />
+            <ConditionsSelector
+              editor={editor}
+              onCustomConditionsChange={this.handleConditionsChange}
+              onScopeChange={this.handleScopeChange}
+              runtime={runtime}
+              scope={this.state.scope}
+              selectedConditions={this.state.conditions}
+            />
           </div>
         </div>
         <div
@@ -654,113 +768,6 @@ class ComponentEditor extends Component<
           <div id="form__error-list-template___alert" />
         </div>
       </Fragment>
-    )
-  }
-
-  public render() {
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-
-    const { component, props } = this.getExtension()
-    const Component = getImplementation(component)
-    const editableComponents = this.props.availableComponents
-      .availableComponents
-      ? map(prop('name'), this.props.availableComponents.availableComponents)
-      : []
-
-    const selectedComponent = component || null
-
-    const componentSchema = this.getComponentSchema(
-      Component,
-      props,
-      this.props.runtime,
-    )
-
-    const componentUiSchema =
-      Component && Component.uiSchema ? Component.uiSchema : null
-
-    const maybeComponent = !selectedComponent
-      ? {
-          component: {
-            enum: editableComponents,
-            enumNames: editableComponents,
-            title: 'Component',
-            type: 'string',
-            default: '',
-          },
-        }
-      : null
-
-    const schema = {
-      ...componentSchema,
-      title: undefined,
-      properties: {
-        ...maybeComponent,
-        ...componentSchema.properties,
-      },
-    }
-
-    const uiSchema = {
-      ...defaultUiSchema,
-      ...this.getUiSchema(componentUiSchema, componentSchema),
-    }
-
-    const extensionProps = {
-      component: selectedComponent,
-      ...props,
-    }
-
-    return (
-      <div className="w-100 dark-gray">
-        <Modal
-          isOpen={this.state.isModalOpen}
-          isSaveLoading={this.state.isLoading}
-          onClickDiscard={this.handleConfigurationDiscard}
-          onClickSave={this.handleConfigurationSave}
-          onClose={this.handleModalClose}
-        />
-        <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
-          <span
-            className="pointer"
-            onClick={
-              this.state.isEditMode
-                ? this.handleConfigurationClose
-                : this.handleQuit
-            }
-          >
-            <IconArrowBack size={16} color="#585959" />
-          </span>
-          <div className="w-100 pl5 flex justify-between items-center">
-            <h4 className="mv0 f6 fw5 dark-gray">{componentSchema.title}</h4>
-            {this.state.isEditMode &&
-              this.state.wasModified && (
-                  <SaveButton
-                    isLoading={this.state.isLoading}
-                    onClick={this.handleConfigurationSave}
-                    variation="tertiary"
-                  />
-                )}
-              </div>
-        </div>
-        {extensionConfigurationsQuery.loading ? (
-          <div className="mt5 flex justify-center">
-            <Spinner />
-          </div>
-        ) : extensionConfigurationsQuery.extensionConfigurations &&
-        extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-        !this.state.isEditMode ? (
-          <ConfigurationsList
-            activeConfiguration={this.state.configuration}
-            configurations={
-              extensionConfigurationsQuery.extensionConfigurations
-            }
-            onCreate={this.handleConfigurationCreation}
-            onEdit={this.handleConfigurationOpen}
-            onSelect={this.handleConfigurationSelection}
-          />
-        ) : (
-          this.renderConfigurationEditor(schema, uiSchema, extensionProps)
-        )}
-      </div>
     )
   }
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { filter, flatten, init, last, sort } from 'ramda'
+import { filter, flatten, sort } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { Link } from 'render'
@@ -37,35 +37,44 @@ class PageList extends Component<DataProps<PageData>> {
   }
 
   public toggleLoading = () => {
-    this.props.templates.loading || this.props.routes.loading ? this.context.startLoading() : this.context.stopLoading()
+    this.props.templates.loading || this.props.routes.loading
+      ? this.context.startLoading()
+      : this.context.stopLoading()
   }
 
-  public renderPageListEntry = (route: Route) => route.pages.map((page: Page, index: Number) => (
-    <tr className="striped--near-white" key={`${route.id}-${index}`}>
-      <td className="pv4 ph3 w-10">{route.id}</td>
-      <td className="pv4 ph3 w-20" style={{'wordBreak': 'break-word'}}>{route.path}</td>
-      <td className="pv4 ph3 w-10" >
-        {page.name}
-      </td>
-      <td className={`pv4 ph3 w-10 ${page.conditions.length === 0 ? 'gray' : ''}`}>
-        {page.conditions.length > 0 ? `${page.conditions.length}` : '(none)'}
-      </td>
-      <td className="pa4 w-10 v-align-center">
-        <div className="flex justify-between">
-          <Link to={`/admin/pages/page/${page.configurationId}`}>
-            <Button variation="primary" size="small">
-              <div className="flex">Settings</div>
-            </Button>
-          </Link>
-          <a href={route.path} target="_blank">
-            <Button variation="secondary" size="small">
-              <div className="flex"><ShareIcon /> <span className="pl4">View</span></div>
-            </Button>
-          </a>
-        </div>
-      </td>
-    </tr>
-  ))
+  public renderPageListEntry = (route: Route) =>
+    route.pages.map((page: Page, index: number) => (
+      <tr className="striped--near-white" key={`${route.id}-${index}`}>
+        <td className="pv4 ph3 w-10">{route.id}</td>
+        <td className="pv4 ph3 w-20" style={{ wordBreak: 'break-word' }}>
+          {route.path}
+        </td>
+        <td className="pv4 ph3 w-10">{page.name}</td>
+        <td
+          className={`pv4 ph3 w-10 ${
+            page.conditions.length === 0 ? 'gray' : ''
+          }`}
+        >
+          {page.conditions.length > 0 ? `${page.conditions.length}` : '(none)'}
+        </td>
+        <td className="pa4 w-10 v-align-center">
+          <div className="flex justify-between">
+            <Link to={`/admin/pages/page/${page.configurationId}`}>
+              <Button variation="primary" size="small">
+                <div className="flex">Settings</div>
+              </Button>
+            </Link>
+            <a href={route.path} target="_blank">
+              <Button variation="secondary" size="small">
+                <div className="flex">
+                  <ShareIcon /> <span className="pl4">View</span>
+                </div>
+              </Button>
+            </a>
+          </div>
+        </td>
+      </tr>
+    ))
 
   public renderPageList(routes: Route[]) {
     return (
@@ -73,39 +82,35 @@ class PageList extends Component<DataProps<PageData>> {
         <div className="flex justify-between items-center mb4">
           <h1>Pages</h1>
           <div>
-            <Link page="admin/pages-detail" params={{pageId: 'new'}}>
-              <Button size="small" variation="primary">New page</Button>
+            <Link page="admin/pages-detail" params={{ pageId: 'new' }}>
+              <Button size="small" variation="primary">
+                New page
+              </Button>
             </Link>
           </div>
         </div>
         <table className="collapse w-100">
           <tbody>
             <tr className="striped--near-white pv4">
-              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
-                Route ID
-              </th>
-              <th className="tl f6 ttu fw6 w-20 ph3 pv6">
-                Path Template
-              </th>
-              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
-                Name
-              </th>
-              <th className="tl f6 ttu fw6 w-10 ph3 pv6">
-                Conditions
-              </th>
-              <th className="tl f6 ttu fw6 w-10 pv6">
-              </th>
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">Route ID</th>
+              <th className="tl f6 ttu fw6 w-20 ph3 pv6">Path Template</th>
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">Name</th>
+              <th className="tl f6 ttu fw6 w-10 ph3 pv6">Conditions</th>
+              <th className="tl f6 ttu fw6 w-10 pv6" />
             </tr>
-            {
-              flatten(routes.map(this.renderPageListEntry))
-            }
+            {flatten(routes.map(this.renderPageListEntry))}
           </tbody>
         </table>
       </div>
     )
   }
 
-  public renderPageDetail(configurationId: string, routes: Route[], templates: Template[], availableConditions: String[]) {
+  public renderPageDetail(
+    configurationId: string,
+    routes: Route[],
+    templates: Template[],
+    availableConditions: string[],
+  ) {
     return (
       <PageEditor
         routes={routes}
@@ -119,7 +124,10 @@ class PageList extends Component<DataProps<PageData>> {
   public render() {
     const {
       conditions: { loading: loadingAvailableConditions },
-      templates: { loading: loadingTemplates, availableTemplates: templates = [] },
+      templates: {
+        loading: loadingTemplates,
+        availableTemplates: templates = [],
+      },
       routes: { loading: loadingRoutes, routes = [] },
       params: { pageId: configurationId },
     } = this.props
@@ -127,7 +135,7 @@ class PageList extends Component<DataProps<PageData>> {
     const availableConditions =
       this.props.conditions &&
       this.props.conditions.availableConditions.map(
-        condition => condition.conditionId
+        condition => condition.conditionId,
       )
 
     const isStore = (route: Route) => route.id.startsWith('store')
@@ -140,11 +148,20 @@ class PageList extends Component<DataProps<PageData>> {
 
     const isViewingPage = !!configurationId
 
-    const pageDetail = isViewingPage && this.renderPageDetail(configurationId, routes, templates, availableConditions)
+    const pageDetail =
+      isViewingPage &&
+      this.renderPageDetail(
+        configurationId,
+        routes,
+        templates,
+        availableConditions,
+      )
 
     const pageList = !isViewingPage && this.renderPageList(sortedRoutes)
 
-    const spinner = (loadingAvailableConditions || loadingTemplates || loadingRoutes) && <span>Loading...</span>
+    const spinner = (loadingAvailableConditions ||
+      loadingTemplates ||
+      loadingRoutes) && <span>Loading...</span>
 
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">
@@ -169,5 +186,5 @@ export default compose(
   }),
   graphql(Routes, {
     name: 'routes',
-  })
+  }),
 )(PageList)

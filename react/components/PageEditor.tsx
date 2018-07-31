@@ -32,11 +32,7 @@ const widgets = {
   ['multi-select']: MultiSelect,
 }
 
-const availableDevices = [
-  '',
-  'mobile',
-  'desktop',
-]
+const availableDevices = ['', 'mobile', 'desktop']
 
 const availableDevicesNames = [
   'All devices',
@@ -58,6 +54,7 @@ const availableContextsNames = [
   'Product search context',
 ]
 
+// tslint:disable:object-literal-sort-keys
 const partialSchema = {
   required: ['routeId', 'path', 'name'],
   properties: {
@@ -90,11 +87,14 @@ const partialSchema = {
   title: '',
   type: 'object',
 }
+// tslint:enable:object-literal-sort-keys
 
-const CUSTOM_ROUTE = [{
-  label: 'Create new route...',
-  value: 'store/',
-}]
+const CUSTOM_ROUTE = [
+  {
+    label: 'Create new route...',
+    value: 'store/',
+  },
+]
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
@@ -126,7 +126,9 @@ class PageEditor extends Component<any, any> {
 
     let page
     const route = props.routes.find(r => {
-      const foundPage = r.pages.find(p => p.configurationId === props.configurationId)
+      const foundPage = r.pages.find(
+        p => p.configurationId === props.configurationId,
+      )
 
       if (foundPage) {
         page = foundPage
@@ -151,7 +153,7 @@ class PageEditor extends Component<any, any> {
     }
   }
 
-  public handleFormChange = (event) => {
+  public handleFormChange = event => {
     const newState = {
       ...event.formData,
     }
@@ -168,7 +170,7 @@ class PageEditor extends Component<any, any> {
     this.setState(newState)
   }
 
-  public handleSave = (event) => {
+  public handleSave = event => {
     console.log('save', event, this.state)
     const { savePage } = this.props
     const {
@@ -184,9 +186,7 @@ class PageEditor extends Component<any, any> {
     } = this.state
 
     savePage({
-      refetchQueries: [
-        { query: Routes },
-      ],
+      refetchQueries: [{ query: Routes }],
       variables: {
         allMatches,
         conditions,
@@ -199,15 +199,15 @@ class PageEditor extends Component<any, any> {
         template,
       },
     })
-    .then((data) => {
-      console.log('OK!', data)
-      const location = createLocationDescriptor('/admin/pages')
-      this.context.history.push(location)
-    })
-    .catch(err => {
-      alert('Error saving page configuration.')
-      console.log(err)
-    })
+      .then(data => {
+        console.log('OK!', data)
+        const location = createLocationDescriptor('/admin/pages')
+        this.context.history.push(location)
+      })
+      .catch(err => {
+        alert('Error saving page configuration.')
+        console.log(err)
+      })
   }
 
   public handleRouteChange = (e, value) => {
@@ -247,22 +247,42 @@ class PageEditor extends Component<any, any> {
     } = this.state
 
     const templateIds = templates
-      ? map(prop('id'), filter(template => context ? template.context === context : true, templates))
+      ? map(
+          prop('id'),
+          filter(
+            currTemplate => (context ? currTemplate.context === context : true),
+            templates,
+          ),
+        )
       : []
 
     const isStore = ({ id }: Route) => id.startsWith('store')
 
     const storeRoutes: Route[] | null = routes && filter(isStore, routes)
-    const sortedRoutes = storeRoutes && sort<Route>((a: Route, b: Route) => {
-      return a.id.localeCompare(b.id)
-    }, storeRoutes)
+    const sortedRoutes =
+      storeRoutes &&
+      sort<Route>((a: Route, b: Route) => {
+        return a.id.localeCompare(b.id)
+      }, storeRoutes)
 
     const isEditablePage = !pageDeclarer
 
     const omittedProperties = selectedRouteId
-      ? (isEditablePage ? ['context'] : ['conditions', 'allMatches', 'context'])
-      : ['routeId', 'path', 'name', 'device', 'conditions', 'allMatches', 'template', 'context']
+      ? isEditablePage
+        ? ['context']
+        : ['conditions', 'allMatches', 'context']
+      : [
+          'routeId',
+          'path',
+          'name',
+          'device',
+          'conditions',
+          'allMatches',
+          'template',
+          'context',
+        ]
 
+    // tslint:disable:object-literal-sort-keys
     const dynamicSchema = {
       ...partialSchema.properties,
       template: {
@@ -287,6 +307,7 @@ class PageEditor extends Component<any, any> {
         type: 'boolean',
       },
     }
+    // tslint:enable:object-literal-sort-keys
 
     dynamicSchema.routeId.disabled = !isEditablePage
     dynamicSchema.path.disabled = !isEditablePage
@@ -298,8 +319,8 @@ class PageEditor extends Component<any, any> {
 
     const schema = {
       ...partialSchema,
-      required: partialSchema.required.concat(['template']),
       properties,
+      required: partialSchema.required.concat(['template']),
     }
 
     if (context === 'vtex.store@1.x/ProductContextProvider' && !routeDeclarer) {
@@ -309,7 +330,10 @@ class PageEditor extends Component<any, any> {
       }
     }
 
-    if (context === 'vtex.store@1.x/ProductSearchContextProvider' && !routeDeclarer) {
+    if (
+      context === 'vtex.store@1.x/ProductSearchContextProvider' &&
+      !routeDeclarer
+    ) {
       schema.properties.department = {
         title: 'Department',
         type: 'string',
@@ -342,10 +366,12 @@ class PageEditor extends Component<any, any> {
         <label className="vtex-input w-100">
           <span className="vtex-input__label db mb3 w-100">Declarer</span>
           <div className="flex vtex-input-prefix__group relative">
-            <input className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5"
+            <input
+              className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5"
               disabled
               type="text"
-              value={routeDeclarer} />
+              value={routeDeclarer}
+            />
           </div>
         </label>
       </div>
@@ -383,10 +409,7 @@ class PageEditor extends Component<any, any> {
         >
           <div className="mt7">
             <Link to="/admin/pages">
-              <Button
-                size="small"
-                variation="tertiary"
-              >
+              <Button size="small" variation="tertiary">
                 Cancel
               </Button>
             </Link>
@@ -405,4 +428,7 @@ class PageEditor extends Component<any, any> {
   }
 }
 
-export default graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } })(PageEditor)
+export default graphql(SavePage, {
+  name: 'savePage',
+  options: { fetchPolicy: 'cache-and-network' },
+})(PageEditor)

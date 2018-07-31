@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Badge, Button, Card } from 'vtex.styleguide'
 
-type Props = {
+interface Props {
   activeConfiguration?: ExtensionConfiguration
   configuration: ExtensionConfiguration
   onClick: (configuration: ExtensionConfiguration) => void

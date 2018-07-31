@@ -2,7 +2,7 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Button } from 'vtex.styleguide'
 
-type Props = {
+interface Props {
   isLoading: boolean
   onClick: (event: Event) => void
   variation?: 'primary' | 'secondary' | 'tertiary'

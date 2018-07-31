@@ -3,23 +3,21 @@ import React, { Fragment } from 'react'
 import CustomConditionsSelector from './CustomConditionsSelector'
 import ScopeSelector from './ScopeSelector'
 
-interface ConditionsSelectorProps {
-  editor: EditorContext
+interface Props {
   onCustomConditionsChange: (newConditionsIds: string[]) => void
   onScopeChange: (newScope: ConfigurationScope) => void
   scope: ConfigurationScope
   selectedConditions: string[]
-  runtime: RenderContext
 }
 
-const ConditionsSelector: React.StatelessComponent<ConditionsSelectorProps> = ({
+const ConditionsSelector = ({
   editor: { conditions, editTreePath },
   scope,
   onCustomConditionsChange,
   onScopeChange,
   selectedConditions,
   runtime: { page },
-}) => {
+}: Props & EditorContextProps & RenderContextProps) => {
   const availableCustomConditions = conditions.map(condition => ({
     label: condition.conditionId,
     value: condition.conditionId,

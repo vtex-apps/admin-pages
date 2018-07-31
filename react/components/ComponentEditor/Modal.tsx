@@ -4,7 +4,7 @@ import { Button, Modal as StyleguideModal } from 'vtex.styleguide'
 
 import SaveButton from './SaveButton'
 
-type Props = {
+interface Props {
   isOpen: boolean
   isSaveLoading: boolean
   onClickDiscard: (event: Event) => void

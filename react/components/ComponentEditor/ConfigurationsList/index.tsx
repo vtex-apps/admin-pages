@@ -3,7 +3,7 @@ import React, { Fragment } from 'react'
 import ConfigurationCard from './ConfigurationCard'
 import CreateButton from './CreateButton'
 
-type Props = {
+interface Props {
   activeConfiguration?: ExtensionConfiguration
   configurations: ExtensionConfiguration[]
   onCreate: (event: Event) => void
