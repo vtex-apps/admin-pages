@@ -382,6 +382,7 @@ class ComponentEditor extends Component<
                 ),
               }),
             )}
+            isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
@@ -468,7 +469,10 @@ class ComponentEditor extends Component<
       this.handleModalOpen()
     } else {
       this.setState({ isEditMode: false, newLabel: undefined }, () => {
-        if (configurations.length > 0) {
+        if (
+          configurations.length > 0 &&
+          !this.isConfigurationDisabled(configurations[0])
+        ) {
           this.handleConfigurationChange(configurations[0])
         } else {
           this.handleQuit()
@@ -491,7 +495,11 @@ class ComponentEditor extends Component<
       !extensionConfigurationsQuery.loading &&
       !extensionConfigurationsQuery.error
     ) {
-      if (configurations && configurations.length > 0) {
+      if (
+        configurations &&
+        configurations.length > 0 &&
+        !this.isConfigurationDisabled(configurations[0])
+      ) {
         this.handleConfigurationChange(configurations[0])
       } else {
         this.handleConfigurationOpen(this.getDefaultConfiguration())
@@ -706,6 +714,13 @@ class ComponentEditor extends Component<
         wasModified: true,
       }))
     }
+  }
+
+  private isConfigurationDisabled(configuration: ExtensionConfiguration) {
+    return (
+      configuration.scope === 'url' &&
+      configuration.url !== window.location.pathname
+    )
   }
 
   private renderConfigurationEditor(

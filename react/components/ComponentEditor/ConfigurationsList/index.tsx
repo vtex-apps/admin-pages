@@ -6,6 +6,7 @@ import CreateButton from './CreateButton'
 interface Props {
   activeConfiguration?: AdaptedExtensionConfiguration
   configurations: AdaptedExtensionConfiguration[]
+  isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
@@ -14,6 +15,7 @@ interface Props {
 const ConfigurationsList = ({
   activeConfiguration,
   configurations,
+  isDisabledChecker,
   onCreate,
   onEdit,
   onSelect,
@@ -25,10 +27,7 @@ const ConfigurationsList = ({
           <ConfigurationCard
             activeConfiguration={activeConfiguration}
             configuration={configuration}
-            isDisabled={
-              configuration.scope === 'url' &&
-              configuration.url !== window.location.pathname
-            }
+            isDisabled={isDisabledChecker(configuration)}
             onClick={onSelect}
             onEdit={onEdit}
           />
