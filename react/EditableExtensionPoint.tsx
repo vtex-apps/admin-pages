@@ -1,15 +1,10 @@
-import PropTypes from 'prop-types'
-import { PureComponent } from 'react'
+import React from 'react'
+
+interface Props {
+  children?: React.ReactNode
+}
 
 // Backwards compatibility, we can delete this file upon releasing the next render-runtime.
-class EditableExtensionPoint extends PureComponent {
-  public static propTypes = {
-    children: PropTypes.node
-  }
-
-  public render() {
-    return this.props.children
-  }
-}
+const EditableExtensionPoint = ({ children }: Props) => children
 
 export default EditableExtensionPoint
