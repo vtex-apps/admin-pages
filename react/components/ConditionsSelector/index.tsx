@@ -12,7 +12,7 @@ interface Props {
 
 const ConditionsSelector = ({
   editor: { conditions, editTreePath },
-  scope = 'url',
+  scope = 'route',
   onCustomConditionsChange,
   onScopeChange,
   selectedConditions,
@@ -27,7 +27,7 @@ const ConditionsSelector = ({
     (editTreePath && !editTreePath.startsWith(page)) || false
 
   if (!shouldEnableSite && scope === 'site') {
-    onScopeChange('url')
+    onScopeChange('route')
   }
 
   const shouldEnableCustomConditions = scope !== 'site'

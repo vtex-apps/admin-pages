@@ -415,7 +415,7 @@ class ComponentEditor extends Component<
       device: runtime.device,
       propsJSON: '{}',
       routeId: runtime.page,
-      scope: 'url',
+      scope: 'route',
       url: window.location.pathname,
     }
   }
