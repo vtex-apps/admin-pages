@@ -710,6 +710,7 @@ class ComponentEditor extends Component<
     ) {
       this.setState(prevState => ({
         ...prevState,
+        conditions: newScope === 'site' ? [] : prevState.conditions,
         configuration: { ...prevState.configuration!, scope: newScope },
         wasModified: true,
       }))

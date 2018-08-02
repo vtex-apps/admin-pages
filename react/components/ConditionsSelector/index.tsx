@@ -30,6 +30,8 @@ const ConditionsSelector = ({
     onScopeChange('url')
   }
 
+  const shouldEnableCustomConditions = scope !== 'site'
+
   return (
     <Fragment>
       <ScopeSelector
@@ -37,13 +39,15 @@ const ConditionsSelector = ({
         shouldEnableSite={shouldEnableSite}
         value={scope}
       />
-      <div className="mt5">
-        <CustomConditionsSelector
-          onChange={onCustomConditionsChange}
-          options={availableCustomConditions}
-          value={selectedConditions}
-        />
-      </div>
+      {shouldEnableCustomConditions && (
+        <div className="mt5">
+          <CustomConditionsSelector
+            onChange={onCustomConditionsChange}
+            options={availableCustomConditions}
+            value={selectedConditions}
+          />
+        </div>
+      )}
     </Fragment>
   )
 }
