@@ -93,7 +93,6 @@ const icons = (id, collorFill): IconsProps => {
 class DeviceComponent extends Component {
   public static propTypes = {
     id: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
-    key: PropTypes.oneOf(['tablet', 'desktop', 'mobile']),
     selected: PropTypes.bool,
     onClick: PropTypes.func
   }
