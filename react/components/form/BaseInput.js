@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Input } from 'vtex.styleguide'
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
 
 const BaseInput = props => {
   const {
@@ -20,7 +19,6 @@ const BaseInput = props => {
     required,
     schema,
     value,
-    intl,
   } = props
 
   const schemaType = schema.type === 'number' ? 'number' : 'text'
@@ -39,9 +37,9 @@ const BaseInput = props => {
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
-      label={<FormattedMessage id={label}/>}
-      max={max}
-      min={min}
+      label={label}
+      max={max && `${max}`}
+      min={min && `${min}`}
       onBlur={onBlur && (event => onBlur(id, event.target.value))}
       onChange={_onChange}
       onFocus={onFocus && (event => onFocus(id, event.target.value))}
@@ -49,7 +47,7 @@ const BaseInput = props => {
       readOnly={readonly || schema.readonly}
       required={required}
       type={type}
-      value={value}
+      value={value && `${value}`}
     />
   )
 }
@@ -81,7 +79,6 @@ BaseInput.propTypes = {
   schema: PropTypes.object.isRequired,
   type: PropTypes.string,
   value: PropTypes.any,
-  intl: intlShape.isRequired,
 }
 
-export default injectIntl(BaseInput)
+export default BaseInput

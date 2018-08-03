@@ -104,14 +104,13 @@ declare global {
     anyMatch: boolean
     editMode: boolean
     editTreePath: string | null
-    highlightTreePath: string | null
     scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
     setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
-    mouseOverExtensionPoint: (treePath: string | null) => void
+    highlightExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
   }
 

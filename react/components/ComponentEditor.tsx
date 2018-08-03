@@ -20,6 +20,7 @@ import FieldTemplate from './form/FieldTemplate'
 import ImageUploader from './form/ImageUploader'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
+import TextArea from './form/TextArea'
 import Toggle from './form/Toggle'
 import ModeSwitcher from './ModeSwitcher'
 
@@ -32,6 +33,7 @@ const widgets = {
   CheckboxWidget: Toggle,
   RadioWidget: Radio,
   SelectWidget: Dropdown,
+  TextareaWidget: TextArea,
   'image-uploader': ImageUploader,
 }
 
