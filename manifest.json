@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "pages-editor",
-  "version": "1.13.1",
+  "version": "1.14.0-beta",
   "title": "VTEX Pages Editor",
   "description": "The VTEX Pages framework editor components",
   "builders": {
