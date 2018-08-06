@@ -6,11 +6,13 @@ query Routes {
     cname
     context
     pages {
+      declarer
       name
       template
       device
       conditions
-      paramsJSON
+      allMatches
+      configurationId
     }
   }
 }

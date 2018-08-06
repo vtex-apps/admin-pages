@@ -9,12 +9,13 @@ const Toggle = ({
   label,
   onChange,
   readonly,
+  schema: { disabled: disabledBySchema},
   value,
 }) => (
   <StyleguideToggle
     autoFocus={autofocus}
     checked={value}
-    disabled={disabled || readonly}
+    disabled={disabled || disabledBySchema || readonly}
     id={id}
     label={label}
     onChange={event => onChange(event.target.checked)}
@@ -34,6 +35,9 @@ Toggle.propTypes = {
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   readonly: PropTypes.bool,
+  schema: PropTypes.shape({
+    disabled: PropTypes.bool,
+  }).isRequired,
   value: PropTypes.bool,
 }
 

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { filter, find, map, omit, prop, sort } from 'ramda'
+import { filter, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
 import { graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
@@ -12,12 +12,16 @@ import BaseInput from './form/BaseInput'
 import Dropdown from './form/Dropdown'
 import ErrorListTemplate from './form/ErrorListTemplate'
 import FieldTemplate from './form/FieldTemplate'
+import MultiSelect from './form/MultiSelect'
 import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
 import Toggle from './form/Toggle'
 
 const defaultUiSchema = {
-  'classNames': 'pages-editor-form',
+  classNames: 'pages-editor-form',
+  conditions: {
+    'ui:widget': 'multi-select',
+  },
 }
 
 const widgets = {
@@ -25,13 +29,10 @@ const widgets = {
   CheckboxWidget: Toggle,
   RadioWidget: Radio,
   SelectWidget: Dropdown,
+  ['multi-select']: MultiSelect,
 }
 
-const availableDevices = [
-  '',
-  'mobile',
-  'desktop',
-]
+const availableDevices = ['', 'mobile', 'desktop']
 
 const availableDevicesNames = [
   'All devices',
@@ -53,7 +54,9 @@ const availableContextsNames = [
   'Product search context',
 ]
 
+// tslint:disable:object-literal-sort-keys
 const partialSchema = {
+  required: ['routeId', 'path', 'name'],
   properties: {
     routeId: {
       title: 'Route ID',
@@ -84,11 +87,14 @@ const partialSchema = {
   title: '',
   type: 'object',
 }
+// tslint:enable:object-literal-sort-keys
 
-const CUSTOM_ROUTE = [{
-  label: 'Create new route...',
-  value: 'store/',
-}]
+const CUSTOM_ROUTE = [
+  {
+    label: 'Create new route...',
+    value: 'store/',
+  },
+]
 
 const createLocationDescriptor = (to, query) => ({
   pathname: to,
@@ -98,7 +104,8 @@ const createLocationDescriptor = (to, query) => ({
 
 class PageEditor extends Component<any, any> {
   public static propTypes = {
-    name: PropTypes.string,
+    availableConditions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    configurationId: PropTypes.string,
     routeId: PropTypes.string,
     routes: PropTypes.arrayOf(PropTypes.object),
     savePage: PropTypes.func,
@@ -117,23 +124,36 @@ class PageEditor extends Component<any, any> {
   constructor(props: any) {
     super(props)
 
-    const route = props.routeId && props.routes.find((r => r.id === props.routeId))
-    const page = route && route.pages.find(p => p.name === props.name)
-    const params = page && page.paramsJSON && JSON.parse(page.paramsJSON)
+    let page
+    const route = props.routes.find(r => {
+      const foundPage = r.pages.find(
+        p => p.configurationId === props.configurationId,
+      )
+
+      if (foundPage) {
+        page = foundPage
+
+        return true
+      }
+    })
 
     this.state = {
-      ...params,
+      allMatches: page && page.allMatches,
+      availableConditions: props.availableConditions,
+      conditions: page && page.conditions,
+      configurationId: props.configurationId,
       context: route && route.context,
-      declarer: route && route.declarer,
-      name: props.name,
+      name: page && page.name,
+      pageDeclarer: page && page.declarer,
       path: route && route.path,
-      routeId: props.routeId,
-      selectedRouteId: props.routeId,
+      routeDeclarer: route && route.declarer,
+      routeId: route && route.id,
+      selectedRouteId: route && route.id,
       template: page && page.template,
     }
   }
 
-  public handleFormChange = (event) => {
+  public handleFormChange = event => {
     const newState = {
       ...event.formData,
     }
@@ -150,43 +170,44 @@ class PageEditor extends Component<any, any> {
     this.setState(newState)
   }
 
-  public handleSave = (event) => {
+  public handleSave = event => {
     console.log('save', event, this.state)
     const { savePage } = this.props
-    const { name, template, path, routeId, device, context, slug, department, category, subcategory } = this.state
-    let paramsJSON
-
-    if (slug) {
-      paramsJSON = JSON.stringify({slug})
-    } else if (department || category || subcategory) {
-      paramsJSON = JSON.stringify({department, category, subcategory})
-    }
+    const {
+      allMatches,
+      conditions,
+      configurationId,
+      context,
+      device,
+      name,
+      path,
+      routeId,
+      template,
+    } = this.state
 
     savePage({
-      refetchQueries: [
-        { query: Routes },
-      ],
+      refetchQueries: [{ query: Routes }],
       variables: {
-        anyMatch: false,
-        conditions: [],
+        allMatches,
+        conditions,
+        configurationId,
         context,
         device,
         name,
-        paramsJSON,
         path,
         routeId,
         template,
       },
     })
-    .then((data) => {
-      console.log('OK!', data)
-      const location = createLocationDescriptor('/admin/pages')
-      this.context.history.push(location)
-    })
-    .catch(err => {
-      alert('Error saving page configuration.')
-      console.log(err)
-    })
+      .then(data => {
+        console.log('OK!', data)
+        const location = createLocationDescriptor('/admin/pages')
+        this.context.history.push(location)
+      })
+      .catch(err => {
+        alert('Error saving page configuration.')
+        console.log(err)
+      })
   }
 
   public handleRouteChange = (e, value) => {
@@ -194,12 +215,12 @@ class PageEditor extends Component<any, any> {
       id: value,
       path: '/',
     }
-
     this.setState({
+      conditions: [],
       context: route.context,
-      declarer: route.declarer,
       name: '',
       path: route.path,
+      routeDeclarer: route.declarer,
       routeId: route.id,
       selectedRouteId: route.id,
     })
@@ -208,12 +229,16 @@ class PageEditor extends Component<any, any> {
   public render() {
     const { routes, templates } = this.props
     const {
+      allMatches,
+      availableConditions,
       category,
+      conditions,
       context,
-      declarer,
       department,
       name,
+      pageDeclarer,
       path,
+      routeDeclarer,
       routeId,
       selectedRouteId,
       slug,
@@ -222,48 +247,93 @@ class PageEditor extends Component<any, any> {
     } = this.state
 
     const templateIds = templates
-      ? map(prop('id'), filter(template => context ? template.context === context : true, templates))
+      ? map(
+          prop('id'),
+          filter(
+            currTemplate => (context ? currTemplate.context === context : true),
+            templates,
+          ),
+        )
       : []
 
-    const isStore = ({id, declarer: routeDeclarer}: Route) => id.startsWith('store')
+    const isStore = ({ id }: Route) => id.startsWith('store')
 
     const storeRoutes: Route[] | null = routes && filter(isStore, routes)
-    const sortedRoutes = storeRoutes && sort<Route>((a: Route, b: Route) => {
-      return a.id.localeCompare(b.id)
-    }, storeRoutes)
+    const sortedRoutes =
+      storeRoutes &&
+      sort<Route>((a: Route, b: Route) => {
+        return a.id.localeCompare(b.id)
+      }, storeRoutes)
 
-    const isEditableRoute = !declarer
+    const isEditablePage = !pageDeclarer
 
-    partialSchema.properties.routeId.disabled = !isEditableRoute
-    partialSchema.properties.path.disabled = !isEditableRoute
-    partialSchema.properties.context.disabled = !isEditableRoute
+    const omittedProperties = selectedRouteId
+      ? isEditablePage
+        ? ['context']
+        : ['conditions', 'allMatches', 'context']
+      : [
+          'routeId',
+          'path',
+          'name',
+          'device',
+          'conditions',
+          'allMatches',
+          'template',
+          'context',
+        ]
 
-    const schemaProperties = selectedRouteId
-      ? partialSchema.properties
-      : omit(['routeId', 'path', 'context'], partialSchema.properties)
+    // tslint:disable:object-literal-sort-keys
+    const dynamicSchema = {
+      ...partialSchema.properties,
+      template: {
+        default: template,
+        enum: templateIds,
+        enumNames: templateIds,
+        title: 'Template',
+        type: 'string',
+      },
+      conditions: {
+        items: {
+          enum: availableConditions,
+          enumNames: availableConditions,
+          type: 'string',
+        },
+        title: 'Conditions',
+        type: 'array',
+        uniqueItems: true,
+      },
+      allMatches: {
+        title: 'Must match all conditions',
+        type: 'boolean',
+      },
+    }
+    // tslint:enable:object-literal-sort-keys
+
+    dynamicSchema.routeId.disabled = !isEditablePage
+    dynamicSchema.path.disabled = !isEditablePage
+    dynamicSchema.context.disabled = !isEditablePage
+    dynamicSchema.name.disabled = !isEditablePage
+    dynamicSchema.device.disabled = !isEditablePage
+
+    const properties = omit(omittedProperties, dynamicSchema)
 
     const schema = {
       ...partialSchema,
-      properties: {
-        ...schemaProperties,
-        template: {
-          default: '',
-          enum: templateIds,
-          enumNames: templateIds,
-          title: 'Template',
-          type: 'string',
-        },
-      },
+      properties,
+      required: partialSchema.required.concat(['template']),
     }
 
-    if (context === 'vtex.store@1.x/ProductContextProvider' && !declarer) {
+    if (context === 'vtex.store@1.x/ProductContextProvider' && !routeDeclarer) {
       schema.properties.slug = {
         title: 'Product Slug',
         type: 'string',
       }
     }
 
-    if (context === 'vtex.store@1.x/ProductSearchContextProvider' && !declarer) {
+    if (
+      context === 'vtex.store@1.x/ProductSearchContextProvider' &&
+      !routeDeclarer
+    ) {
       schema.properties.department = {
         title: 'Department',
         type: 'string',
@@ -282,6 +352,7 @@ class PageEditor extends Component<any, any> {
 
     const availableRoutes = sortedRoutes && (
       <StyleguideDropdown
+        disabled={!!routeDeclarer}
         label="Route type"
         placeholder="Select a route"
         options={this.routesToOptions(sortedRoutes).concat(CUSTOM_ROUTE)}
@@ -290,15 +361,17 @@ class PageEditor extends Component<any, any> {
       />
     )
 
-    const declarerField = (
+    const routeDeclarerField = (
       <div className="form-group field field-string w-100">
         <label className="vtex-input w-100">
           <span className="vtex-input__label db mb3 w-100">Declarer</span>
           <div className="flex vtex-input-prefix__group relative">
-            <input className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5"
+            <input
+              className="w-100 ma0 border-box bw1 br2 b--solid outline-0 near-black b--light-gray bg-light-gray bg-light-silver b--light-silver silver f6 pv3 ph5"
               disabled
               type="text"
-              value={declarer} />
+              value={routeDeclarer}
+            />
           </div>
         </label>
       </div>
@@ -306,14 +379,17 @@ class PageEditor extends Component<any, any> {
 
     return (
       <div className="dark-gray center">
+        <div id="form__error-list-template___alert" />
         <h1>{this.props.name === null ? 'Create Page' : 'Edit Page'}</h1>
-        {declarer && declarerField}
+        {routeDeclarer && routeDeclarerField}
         {availableRoutes}
         <Form
           ErrorList={ErrorListTemplate}
           FieldTemplate={FieldTemplate}
           formData={{
+            allMatches,
             category,
+            conditions,
             context,
             department,
             name,
@@ -341,7 +417,8 @@ class PageEditor extends Component<any, any> {
               size="small"
               type="submit"
               className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5"
-              variation="primary">
+              variation="primary"
+            >
               Save
             </Button>
           </div>
@@ -351,4 +428,7 @@ class PageEditor extends Component<any, any> {
   }
 }
 
-export default graphql(SavePage, { name: 'savePage', options: { fetchPolicy: 'cache-and-network' } })(PageEditor)
+export default graphql(SavePage, {
+  name: 'savePage',
+  options: { fetchPolicy: 'cache-and-network' },
+})(PageEditor)

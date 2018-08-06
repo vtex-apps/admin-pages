@@ -1,15 +1,16 @@
-import {ReactElement, Component} from "react"
+import { ReactElement, Component } from 'react'
 
 declare global {
   declare module '*.graphql' {
-    import {DocumentNode} from 'graphql';
+    import { DocumentNode } from 'graphql'
 
-    const value: DocumentNode;
-    export default value;
+    const value: DocumentNode
+    export default value
   }
 
   interface Extension {
     component: string | null
+    configurationsIds?: string[]
     props?: any
     shouldRender?: boolean
   }
@@ -29,6 +30,7 @@ declare global {
     template: string
     device: string
     params: Record<string, any>
+    configurationId: string
   }
 
   interface Route {
@@ -48,26 +50,26 @@ declare global {
   }
 
   interface RenderContext {
-    account: RenderRuntime['account'],
-    components: RenderRuntime['components'],
-    culture: RenderRuntime['culture'],
-    device: ConfigurationDevice,
-    emitter: RenderRuntime['emitter'],
-    extensions: RenderRuntime['extensions'],
-    fetchComponent: (component: string) => Promise<void>,
-    getSettings: (app: string) => any,
-    history: History | null,
-    navigate: (options: NavigateOptions) => boolean,
-    onPageChanged: (location: Location) => void,
-    page: RenderRuntime['page'],
-    pages: RenderRuntime['pages'],
-    prefetchPage: (name: string) => Promise<void>,
-    production: RenderRuntime['production'],
-    setDevice: (device: ConfigurationDevice) => void,
-    updateComponentAssets: (availableComponents: Components) => void,
-    updateExtension: (name: string, extension: Extension) => void,
-    updateRuntime: (options?: PageContextOptions) => Promise<void>,
-    workspace: RenderRuntime['workspace'],
+    account: RenderRuntime['account']
+    components: RenderRuntime['components']
+    culture: RenderRuntime['culture']
+    device: ConfigurationDevice
+    emitter: RenderRuntime['emitter']
+    extensions: RenderRuntime['extensions']
+    fetchComponent: (component: string) => Promise<void>
+    getSettings: (app: string) => any
+    history: History | null
+    navigate: (options: NavigateOptions) => boolean
+    onPageChanged: (location: Location) => void
+    page: RenderRuntime['page']
+    pages: RenderRuntime['pages']
+    prefetchPage: (name: string) => Promise<void>
+    production: RenderRuntime['production']
+    setDevice: (device: ConfigurationDevice) => void
+    updateComponentAssets: (availableComponents: Components) => void
+    updateExtension: (name: string, extension: Extension) => void
+    updateRuntime: (options?: PageContextOptions) => Promise<void>
+    workspace: RenderRuntime['workspace']
   }
 
   interface RenderContextProps {
@@ -77,13 +79,6 @@ declare global {
   type ConditionType = 'scope' | 'device' | 'custom'
 
   interface Condition {
-    id: string
-    type: ConditionType
-    message: string
-    multiple: boolean,
-  }
-
-  interface ConditionsCondition {
     conditionId: string
   }
 
@@ -91,17 +86,19 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type ConfigurationScope = 'url' | 'route' | 'site'
+  type ServerConfigurationScope = 'url' | 'route'
+
+  type ConfigurationScope = ServerConfigurationScope | 'site'
 
   interface EditorConditionSection {
-    conditions: Condition[] | ConditionsCondition[]
     activeConditions: string[]
+    conditions: Condition[]
     addCondition: (conditionId: string) => void
     removeCondition?: (conditionId: string) => void
   }
 
   interface EditorContext extends EditorConditionSection {
-    anyMatch: boolean
+    allMatches: boolean
     editMode: boolean
     editTreePath: string | null
     scope: ConfigurationScope
@@ -110,7 +107,6 @@ declare global {
     setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
-    highlightExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
   }
 
@@ -141,7 +137,7 @@ declare global {
     query?: Record<string, string>
     start: boolean
     settings: {
-      [app: string]: any;
+      [app: string]: any
     }
     cacheHints: CacheHints
   }
@@ -152,4 +148,26 @@ declare global {
     conditions?: string[]
     template?: string
   }
+
+  interface ServerExtensionConfiguration {
+    allMatches: boolean
+    conditions: string[]
+    configurationId: string
+    device: string
+    label?: string
+    propsJSON: string
+    routeId: string
+    scope: ServerConfigurationScope
+    url: string
+  }
+
+  interface AdaptedExtensionConfiguration extends ServerExtensionConfiguration {
+    scope: ConfigurationScope
+  }
+
+  type ExtensionConfiguration =
+    | ServerExtensionConfiguration
+    | AdaptedExtensionConfiguration
+
+  type ComponentEditorMode = 'content' | 'layout'
 }

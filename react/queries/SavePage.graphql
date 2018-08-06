@@ -1,3 +1,22 @@
-mutation SavePage($name: String, $template: String, $routeId: String, $path: String, $paramsJSON: String, $device: String, $context: String, $conditions: [String] = [], $anyMatch: Boolean = false) {
-  savePage(pageName: $name, template: $template, routeId: $routeId, path: $path, paramsJSON: $paramsJSON, device: $device, context: $context, conditions: $conditions, anyMatch: $anyMatch)
+mutation SavePage(
+  $configurationId: String,
+  $name: String,
+  $template: String,
+  $routeId: String,
+  $path: String,
+  $device: String,
+  $context: String,
+  $conditions: [String] = [],
+  $allMatches: Boolean = false) {
+  savePage(
+    configurationId: $configurationId
+    pageName: $name
+    template: $template
+    routeId: $routeId
+    path: $path
+    device: $device
+    context: $context
+    conditions: $conditions
+    allMatches: $allMatches
+  )
 }

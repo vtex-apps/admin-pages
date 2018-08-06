@@ -1,13 +1,13 @@
 import React from 'react'
-import { Tabs, Tab } from 'vtex.styleguide'
+import { Tab, Tabs } from 'vtex.styleguide'
 
-interface ModeSwitcherProps {
-  activeMode: string
-  modes: string[]
-  onSwitch: (mode: string) => void
+interface Props {
+  activeMode: ComponentEditorMode
+  modes: ComponentEditorMode[]
+  onSwitch: (newMode: ComponentEditorMode) => void
 }
 
-const ModeSwitcher = ({ activeMode, modes = [], onSwitch }: ModeSwitcherProps) => (
+const ModeSwitcher = ({ activeMode, modes = [], onSwitch }: Props) => (
   <Tabs fullWidth>
     {modes.map(mode => (
       <Tab

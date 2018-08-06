@@ -1,0 +1,23 @@
+query ExtensionConfigurations(
+  $configurationsIds: [String]
+  $routeId: String!
+  $treePath: String!
+  $url: String!
+) {
+  extensionConfigurations(
+    configurationsIds: $configurationsIds
+    routeId: $routeId
+    treePath: $treePath
+    url: $url
+  ) {
+    allMatches
+    conditions
+    configurationId
+    device
+    label
+    propsJSON
+    routeId
+    scope
+    url
+  }
+}

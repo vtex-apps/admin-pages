@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
-import { FormattedMessage, injectIntl, intlShape } from 'react-intl'
+import { injectIntl, intlShape } from 'react-intl'
 
 const getChangeHandler = (onChange, emptyValue) => ({ target: { value } }) =>
   onChange(!value ? emptyValue : value)
@@ -17,23 +17,22 @@ const Dropdown = ({
   options,
   placeholder,
   readonly,
+  schema,
   value,
   intl,
 }) => (
   <StyleguideDropdown
     autoFocus={autofocus}
-    disabled={disabled}
+    disabled={disabled || (schema && schema.disabled)}
     id={id}
-    label={<FormattedMessage id={label} />}
+    label={label && intl.formatMessage({ id: label })}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
-    options={
-      options.enumOptions.map(option=>({
-        ...option,
-        label: intl.formatMessage({id: option.label}),
-      }))
-    }
+    options={options.enumOptions.map(option => ({
+      ...option,
+      label: intl.formatMessage({ id: option.label }),
+    }))}
     placeholder={placeholder}
     readOnly={readonly}
     value={value || ''}
@@ -50,14 +49,17 @@ Dropdown.defaultProps = {
 Dropdown.propTypes = {
   autofocus: PropTypes.bool,
   disabled: PropTypes.bool,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  label: PropTypes.string,
   onChange: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
   options: PropTypes.object,
   readonly: PropTypes.bool,
   required: PropTypes.bool,
+  schema: PropTypes.shape({
+    disabled: PropTypes.bool,
+  }),
   value: PropTypes.any,
   intl: intlShape.isRequired,
 }
