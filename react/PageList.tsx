@@ -64,13 +64,6 @@ class PageList extends Component<DataProps<PageData>> {
                 <div className="flex">Settings</div>
               </Button>
             </Link>
-            <a href={route.path} target="_blank">
-              <Button variation="secondary" size="small">
-                <div className="flex">
-                  <ShareIcon /> <span className="pl4">View</span>
-                </div>
-              </Button>
-            </a>
           </div>
         </td>
       </tr>
