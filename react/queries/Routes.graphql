@@ -5,6 +5,7 @@ query Routes {
     path
     cname
     context
+    login
     pages {
       declarer
       name

@@ -6,6 +6,7 @@ mutation SavePage(
   $path: String,
   $device: String,
   $context: String,
+  $login: Boolean,
   $conditions: [String] = [],
   $allMatches: Boolean = false) {
   savePage(
@@ -16,6 +17,7 @@ mutation SavePage(
     path: $path
     device: $device
     context: $context
+    login: $login
     conditions: $conditions
     allMatches: $allMatches
   )
