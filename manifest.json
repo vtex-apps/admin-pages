@@ -1,9 +1,9 @@
 {
   "vendor": "vtex",
-  "name": "pages-editor",
-  "version": "1.14.2",
-  "title": "VTEX Pages Editor",
-  "description": "The VTEX Pages framework editor components",
+  "name": "admin-pages",
+  "version": "2.0.0",
+  "title": "VTEX Pages Admin",
+  "description": "The VTEX Pages CMS admin interface",
   "builders": {
     "pages": "0.x",
     "react": "2.x"

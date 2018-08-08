@@ -1,6 +1,6 @@
-# VTEX Pages editor
+# VTEX Pages Admin
 
-The Pages editor it's platform to dynamically edit a VTEX Store, making possible to select editable components and change its configurations adding or removing content in a straightforward away.
+The Pages Admin is a platform to dynamically edit a VTEX Store, making it possible to select editable components and change its configurations adding or removing content in a straightforward way.
 
 ## Continuous Integrations
 

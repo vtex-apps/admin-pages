@@ -3,22 +3,46 @@
     "admin/pages": {
       "path": "/admin/pages"
     },
-    "admin/pages-detail": {
+    "admin/pages/list": {
+      "path": "/admin/pages"
+    },
+    "admin/pages/list/page": {
       "path": "/admin/pages/page/*pageId"
     },
-    "admin/pages-editor": {
+    "admin/pages/editor-home": {
+      "path": "/admin/pages/editor"
+    },
+    "admin/pages/editor": {
       "path": "/admin/pages/editor/*path"
+    },
+    "admin/pages/redirects": {
+      "path": "/admin/pages/redirects"
+    },
+    "admin/pages/settings": {
+      "path": "/admin/pages/settings"
     }
   },
   "extensions": {
     "admin/pages": {
+      "component": "PagesAdmin"
+    },
+    "admin/pages/list": {
       "component": "PageList"
     },
-    "admin/pages-detail": {
+    "admin/pages/list/page": {
       "component": "PageList"
     },
-    "admin/pages-editor": {
+    "admin/pages/editor-home": {
       "component": "PageEditor"
+    },
+    "admin/pages/editor": {
+      "component": "PageEditor"
+    },
+    "admin/pages/redirects": {
+      "component": "Redirects"
+    },
+    "admin/pages/settings": {
+      "component": "Settings"
     },
     "admin/navigation/storeSetup/pages": {
       "component": "vtex.admin/InjectNavigationData",
