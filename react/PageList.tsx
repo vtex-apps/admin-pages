@@ -11,6 +11,8 @@ import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Routes from './queries/Routes.graphql'
 
+import './editbar.global.css'
+
 interface PageData {
   routes: Route[]
 }
