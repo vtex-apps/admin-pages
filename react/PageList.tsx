@@ -126,7 +126,7 @@ class PageList extends Component<DataProps<PageData>> {
     } = this.props
 
     const availableConditions =
-      this.props.conditions &&
+      this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId,
       )
