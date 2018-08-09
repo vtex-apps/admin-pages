@@ -32,7 +32,7 @@ const getContainerProps = (layout: Viewport) => {
       }
     default:
       return {
-        className: 'w-100 center',
+        className: 'w-100 calc--height center',
         style: {
           animationDuration: '0.2s',
           transition: `width 660ms`,
@@ -135,10 +135,10 @@ export default class EditorContainer extends Component<
         {this.renderSideBar()}
         <div
           id={APP_CONTENT_ELEMENT_ID}
-          className={`bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
+          className={`top-0 bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
             visible
-              ? 'top-3em-ns calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l'
-              : 'top-0 w-100'
+              ? 'calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l'
+              : 'w-100'
           }`}
           style={{
             transition: `width 300ms ease-in-out ${

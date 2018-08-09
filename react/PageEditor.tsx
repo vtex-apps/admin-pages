@@ -1,19 +1,13 @@
 import PropTypes from 'prop-types'
-import { filter, flatten, init, last, sort } from 'ramda'
 import React, { Component } from 'react'
-import { compose, DataProps, graphql } from 'react-apollo'
-import { Link } from 'render'
-import { Button } from 'vtex.styleguide'
 
 import EditorProvider from './EditorProvider'
-import ShareIcon from './images/ShareIcon'
-import AvailableConditions from './queries/AvailableConditions.graphql'
-import AvailableTemplates from './queries/AvailableTemplates.graphql'
-import Routes from './queries/Routes.graphql'
 
+interface PageEditorProps {
+  params: any
+}
 
-// eslint-disable-next-line
-class PageEditor extends Component {
+class PageEditor extends Component<PageEditorProps> {
   public static propTypes = {
     children: PropTypes.element,
     data: PropTypes.object,
@@ -38,13 +32,16 @@ class PageEditor extends Component {
   }
 
   public render() {
+    const { params: { path } } = this.props
+    console.log(this.props)
 
     return (
-      <div className="mw8 mr-auto ml-auto mv6 ph6">
-        <EditorProvider>
-          <iframe src="/" />
-        </EditorProvider>
-      </div>
+      <EditorProvider>
+        <iframe
+          className="w-100 h-100"
+          src={['/', path].filter((str) => !!str).join()}
+        />
+      </EditorProvider>
     )
   }
 }

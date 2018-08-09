@@ -19,6 +19,7 @@ interface EditorProviderState {
   scope: ConfigurationScope
   template: string | null
   viewport: Viewport
+  iframeRuntime: RenderContext | null
 }
 
 class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
@@ -40,6 +41,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       allMatches: true,
       editMode: false,
       editTreePath: null,
+      iframeRuntime: null,
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -48,7 +50,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 
   public componentDidMount() {
-    const { runtime: { page } } = this.props
+    const { runtime: { page, emitter } } = this.props
     const root = page.split('/')[0]
     if (root !== 'admin') {
       Array.prototype.forEach.call(
@@ -56,9 +58,21 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
         (e: any) => e.classList.add('editor-provider'),
       )
     }
+
+    emitter.addListener('iframeRuntime', this.iframeRuntime)
+
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
     // Forward scroll events to window so code doesn't have to hook into #app-content
     document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
+  }
+
+  public iframeRuntime = (runtime: RenderContext) => {
+    console.log('received runtime from iframe: ', runtime)
+    if (this.state.iframeRuntime === null) {
+      this.setState({
+        iframeRuntime: runtime
+      })
+    }
   }
 
   public editExtensionPoint = (treePath: string | null) => {
@@ -137,15 +151,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 
   public render() {
-    const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
-    const root = page.split('/')[0]
-
-    const isAdmin = root === 'admin'
-
-    if (isAdmin) {
-      return children
-    }
+    const { children, runtime, runtime: { device } } = this.props
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
 
     const editor: EditorContext = {
       activeConditions,
@@ -189,14 +196,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       </Draggable>
     )
 
-    const topbarStyle = {
-      animationDuration: '0.2s',
-      transform: `translate(0,${showAdminControls ? 0 : '-100%'})`,
-      transition: `transform 300ms ease-in-out ${!showAdminControls ? '300ms' : ''}`,
-    }
-
     const childrenWithSidebar = (
-      <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
+      <EditorContainer editor={editor} runtime={iframeRuntime || runtime} visible={showAdminControls}>
         {children}
       </EditorContainer>
     )
