@@ -53,10 +53,9 @@ class PagesAdmin extends Component<PagesAdminProps, PagesAdminState> {
   public render() {
     const { runtime: { navigate }, children, params } = this.props
     const { field } = this.state
+    const path = params.field || ''
 
-    console.log(params)
-
-    return params.field.startsWith('editor')
+    return path.startsWith('editor')
       ? (
         <Fragment>
           { children }

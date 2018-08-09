@@ -7,7 +7,6 @@ import {
   mergeDeepLeft,
   pick,
   pickBy,
-  prop,
   reduce,
 } from 'ramda'
 import React, { Component, Fragment } from 'react'
@@ -19,7 +18,7 @@ import { IconArrowBack, Spinner } from 'vtex.styleguide'
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
 import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
-import { getImplementation } from '../../utils/components'
+import { getIframeImplementation } from '../../utils/components'
 import ConditionsSelector from '../ConditionsSelector'
 import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
 import BaseInput from '../form/BaseInput'
@@ -299,7 +298,7 @@ class ComponentEditor extends Component<
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
     const { component, props } = this.getExtension()
-    const componentImplementation = getImplementation(component)
+    const componentImplementation = getIframeImplementation(component)
 
     const selectedComponent = component || null
 
@@ -545,7 +544,7 @@ class ComponentEditor extends Component<
 
     const { component, props = {} } = this.getExtension()
 
-    const componentImplementation = component && getImplementation(component)
+    const componentImplementation = component && getIframeImplementation(component)
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -635,7 +634,7 @@ class ComponentEditor extends Component<
     const { component: enumComponent } = event.formData
     const component =
       enumComponent && enumComponent !== '' ? enumComponent : null
-    const componentImplementation = component && getImplementation(component)
+    const componentImplementation = component && getIframeImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })

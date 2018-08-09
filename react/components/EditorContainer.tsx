@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { Spinner } from 'vtex.styleguide'
 
 import ComponentEditor from '../components/ComponentEditor'
 
@@ -83,20 +84,26 @@ export default class EditorContainer extends Component<
       runtime,
     } = this.props
 
-    return editTreePath === null ? (
-      <Fragment>
-        <PageInfo editor={editor} runtime={runtime} />
-        <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
-          <FormattedMessage id="pages.editor.components.title" />
-        </h3>
-        <ComponentsList
-          editor={editor}
-          runtime={runtime}
-          highlightExtensionPoint={this.highlightExtensionPoint}
-        />
-      </Fragment>
-    ) : (
-      <ComponentEditor editor={editor} runtime={runtime} />
+    return (
+      runtime
+      ? editTreePath === null ? (
+          <Fragment>
+            <PageInfo editor={editor} runtime={runtime} />
+            <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
+              <FormattedMessage id="pages.editor.components.title" />
+            </h3>
+            <ComponentsList
+              editor={editor}
+              runtime={runtime}
+              highlightExtensionPoint={this.highlightExtensionPoint}
+            />
+          </Fragment>
+        ) : (
+          <ComponentEditor editor={editor} runtime={runtime} />
+        )
+      : <div className="mt5 flex justify-center">
+          <Spinner />
+        </div>
     )
   }
 

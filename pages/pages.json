@@ -4,7 +4,7 @@
       "path": "/admin/pages/*field"
     },
     "admin/pages/list": {
-      "path": "/admin/pages"
+      "path": "/admin/pages/"
     },
     "admin/pages/list/page": {
       "path": "/admin/pages/page/*pageId"

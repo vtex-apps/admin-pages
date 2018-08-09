@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
 import React, { Component, CSSProperties } from 'react'
 import { DataProps, graphql, compose } from 'react-apollo'
-import { withRuntimeContext } from 'render'
+import { canUseDOM, withRuntimeContext } from 'render'
 
 import Draggable from 'react-draggable'
 import DeviceSwitcher from './components/DeviceSwitcher'
@@ -47,6 +47,14 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       template: null,
       viewport: 'desktop',
     }
+
+    if (canUseDOM) {
+      window.__provideRuntime = (runtime: RenderContext) => {
+        this.setState({
+          iframeRuntime: runtime
+        })
+      }
+    }
   }
 
   public componentDidMount() {
@@ -59,20 +67,9 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       )
     }
 
-    emitter.addListener('iframeRuntime', this.iframeRuntime)
-
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
     // Forward scroll events to window so code doesn't have to hook into #app-content
     document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
-  }
-
-  public iframeRuntime = (runtime: RenderContext) => {
-    console.log('received runtime from iframe: ', runtime)
-    if (this.state.iframeRuntime === null) {
-      this.setState({
-        iframeRuntime: runtime
-      })
-    }
   }
 
   public editExtensionPoint = (treePath: string | null) => {
@@ -85,111 +82,111 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       () => {
         window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
       })
-  }
+    }
 
-  public handleToggleShowAdminControls = () => {
-    const showAdminControls = !this.state.showAdminControls
-    const editMode = false
+    public handleToggleShowAdminControls = () => {
+      const showAdminControls = !this.state.showAdminControls
+      const editMode = false
 
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('render-container'),
-      (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
-    )
+      Array.prototype.forEach.call(
+        document.getElementsByClassName('render-container'),
+        (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
+      )
 
-    this.setState({ showAdminControls, editMode })
-  }
+      this.setState({ showAdminControls, editMode })
+    }
 
-  public handleAddCondition = (conditionId: string) => {
-    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
-      this.props.runtime.updateRuntime({
-        conditions: this.state.activeConditions,
-        device: this.props.runtime.device,
-        scope: this.state.scope,
-        template: this.state.template,
+    public handleAddCondition = (conditionId: string) => {
+      this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
+        this.props.runtime.updateRuntime({
+          conditions: this.state.activeConditions,
+          device: this.props.runtime.device,
+          scope: this.state.scope,
+          template: this.state.template,
+        })
       })
-    })
-  }
+    }
 
-  public handleRemoveCondition = (conditionId: string) => {
-    const activeConditions = difference(this.state.activeConditions, [conditionId])
-    this.setState({ activeConditions }, () => {
-      this.props.runtime.updateRuntime({
-        conditions: this.state.activeConditions,
-        device: this.props.runtime.device,
-        scope: this.state.scope,
-        template: this.state.template,
+    public handleRemoveCondition = (conditionId: string) => {
+      const activeConditions = difference(this.state.activeConditions, [conditionId])
+      this.setState({ activeConditions }, () => {
+        this.props.runtime.updateRuntime({
+          conditions: this.state.activeConditions,
+          device: this.props.runtime.device,
+          scope: this.state.scope,
+          template: this.state.template,
+        })
       })
-    })
-  }
+    }
 
-  public handleSetScope = (scope: ConfigurationScope) => {
-    this.setState({ scope })
-  }
+    public handleSetScope = (scope: ConfigurationScope) => {
+      this.setState({ scope })
+    }
 
-  public getViewport = (device: ConfigurationDevice) => {
-    switch (device) {
-      case 'any':
+    public getViewport = (device: ConfigurationDevice) => {
+      switch (device) {
+        case 'any':
         return 'desktop'
-      default:
-        return device
-    }
-  }
-
-  public handleSetDevice = (device: ConfigurationDevice) => {
-    this.props.runtime.setDevice(device)
-    this.handleSetViewport(this.getViewport(device))
-    this.props.runtime.updateRuntime({
-      conditions: this.state.activeConditions,
-      device,
-      scope: this.state.scope,
-      template: this.state.template,
-    })
-  }
-
-  public handleSetViewport = (viewport: Viewport) => {
-    this.setState({ viewport })
-  }
-
-  public render() {
-    const { children, runtime, runtime: { device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
-
-    const editor: EditorContext = {
-      activeConditions,
-      addCondition: this.handleAddCondition,
-      allMatches,
-      conditions: this.props.data.availableConditions || [],
-      editExtensionPoint: this.editExtensionPoint,
-      editMode,
-      editTreePath,
-      removeCondition: this.handleRemoveCondition,
-      scope,
-      setDevice: this.handleSetDevice,
-      setScope: this.handleSetScope,
-      setViewport: this.handleSetViewport,
-      toggleEditMode: this.handleToggleEditMode,
-      viewport,
-    }
-
-    const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
-      switch (d) {
-        case 'mobile':
-          return ['mobile', 'tablet']
-        case 'desktop':
-          return []
         default:
-          return ['mobile', 'tablet', 'desktop']
+        return device
       }
     }
 
-    const adminControlsStyle: CSSProperties = {
-      animationDuration: '0.6s',
-      transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
-      visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
+    public handleSetDevice = (device: ConfigurationDevice) => {
+      this.props.runtime.setDevice(device)
+      this.handleSetViewport(this.getViewport(device))
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
     }
 
-    const adminControlsToggle = (
-      <Draggable bounds="body">
+    public handleSetViewport = (viewport: Viewport) => {
+      this.setState({ viewport })
+    }
+
+    public render() {
+      const { children, runtime, runtime: { device } } = this.props
+      const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
+
+      const editor: EditorContext = {
+        activeConditions,
+        addCondition: this.handleAddCondition,
+        allMatches,
+        conditions: this.props.data.availableConditions || [],
+        editExtensionPoint: this.editExtensionPoint,
+        editMode,
+        editTreePath,
+        removeCondition: this.handleRemoveCondition,
+        scope,
+        setDevice: this.handleSetDevice,
+        setScope: this.handleSetScope,
+        setViewport: this.handleSetViewport,
+        toggleEditMode: this.handleToggleEditMode,
+        viewport,
+      }
+
+      const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
+        switch (d) {
+          case 'mobile':
+          return ['mobile', 'tablet']
+          case 'desktop':
+          return []
+          default:
+          return ['mobile', 'tablet', 'desktop']
+        }
+      }
+
+      const adminControlsStyle: CSSProperties = {
+        animationDuration: '0.6s',
+        transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
+        visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
+      }
+
+      const adminControlsToggle = (
+        <Draggable bounds="body">
         <div style={adminControlsStyle} className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns">
           <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} />
         </div>
@@ -197,7 +194,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     )
 
     const childrenWithSidebar = (
-      <EditorContainer editor={editor} runtime={iframeRuntime || runtime} visible={showAdminControls}>
+      <EditorContainer editor={editor} runtime={iframeRuntime} visible={showAdminControls}>
         {children}
       </EditorContainer>
     )

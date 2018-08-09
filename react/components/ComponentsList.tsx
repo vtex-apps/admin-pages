@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { getImplementation } from '../utils/components'
+import { getIframeImplementation } from '../utils/components'
 
 const getComponentSchema = (component: string, props: any) => {
-  const ComponentImpl = component && getImplementation(component)
+  const ComponentImpl = component && getIframeImplementation(component)
   return (
     ComponentImpl &&
     ((ComponentImpl.hasOwnProperty('schema') && ComponentImpl.schema) ||
