@@ -18,5 +18,11 @@
   "pages.editor.components.labelEditor.label": "Nome da configuração",
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.editpath.label": "Editando",
-  "pages.editor.components.modal.text": "Você tem modificações não salvas para esta configuração."
+  "pages.editor.components.modal.text": "Você tem modificações não salvas para esta configuração.",
+  "pages.editor.info.new-redirect": "Novo redirecionamento",
+  "pages.editor.info.from": "De",
+  "pages.editor.info.to": "Para",
+  "pages.editor.info.endDate": "Data de fim",
+  "pages.editor.info.active": "Ativo",
+  "pages.editor.info.remove": "Remover"
 }
