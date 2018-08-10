@@ -54,10 +54,19 @@
       "component": "vtex.admin/InjectNavigationData",
       "props": {
         "icon": "extensions-ic",
-        "path": "/admin/pages",
+        "id": "38",
+        "subItems": [
+          {
+            "labelId": "pages.admin-menu-button.pageList",
+            "path": "/admin/pages"
+          },
+          {
+            "labelId": "pages.admin-menu-button.displayConditions",
+            "path": "/admin/conditions-builder/pages"
+          }
+        ],
         "tag": "appframe.new",
-        "titleId": "pages.admin-menu-button",
-        "id": "38"
+        "titleId": "pages.admin-menu-button.main"
       }
     }
   }

@@ -1,5 +1,7 @@
 {
-  "pages.admin-menu-button": "Pages",
+  "pages.admin-menu-button.displayConditions": "Condiciones de exibición",
+  "pages.admin-menu-button.main": "Páginas",
+  "pages.admin-menu-button.pageList": "Lista de páginas",
   "pages.conditions.scope.route": "Esta ruta",
   "pages.conditions.scope.site": "Todo el sitio",
   "pages.conditions.scope.title": "Alcance: ",
