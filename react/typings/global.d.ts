@@ -37,6 +37,7 @@ declare global {
     id: string
     path: string
     context: string
+    login: boolean | null
     cname?: string
     params?: any
     disableExternals?: string[]

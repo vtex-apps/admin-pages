@@ -11,6 +11,8 @@ import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Routes from './queries/Routes.graphql'
 
+import './editbar.global.css'
+
 interface PageData {
   routes: Route[]
 }
@@ -64,13 +66,6 @@ class PageList extends Component<DataProps<PageData>> {
                 <div className="flex">Settings</div>
               </Button>
             </Link>
-            <a href={route.path} target="_blank">
-              <Button variation="secondary" size="small">
-                <div className="flex">
-                  <ShareIcon /> <span className="pl4">View</span>
-                </div>
-              </Button>
-            </a>
           </div>
         </td>
       </tr>
@@ -133,7 +128,7 @@ class PageList extends Component<DataProps<PageData>> {
     } = this.props
 
     const availableConditions =
-      this.props.conditions &&
+      this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId,
       )
