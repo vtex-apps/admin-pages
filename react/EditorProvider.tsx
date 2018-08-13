@@ -22,6 +22,8 @@ interface EditorProviderState {
   iframeRuntime: RenderContext | null
 }
 
+let iframeMessages: Record<string, string>
+
 class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
   public static contextTypes = {
     components: PropTypes.object,
@@ -31,6 +33,10 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     availableConditions: PropTypes.object,
     children: PropTypes.element.isRequired,
     runtime: PropTypes.object,
+  }
+
+  public static getCustomMessages() {
+    return iframeMessages
   }
 
   constructor(props: any) {
@@ -49,7 +55,12 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     }
 
     if (canUseDOM) {
-      window.__provideRuntime = (runtime: RenderContext) => {
+      window.__provideRuntime = (runtime: RenderContext, messages: Record<string, string>) => {
+        iframeMessages = messages
+        if (!this.state.iframeRuntime) {
+          runtime.updateComponentAssets(props.runtime.components)
+          this.props.runtime.updateComponentAssets({})
+        }
         this.setState({
           iframeRuntime: runtime
         })
@@ -58,7 +69,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 
   public componentDidMount() {
-    const { runtime: { page, emitter } } = this.props
+    const { runtime: { page } } = this.props
     const root = page.split('/')[0]
     if (root !== 'admin') {
       Array.prototype.forEach.call(
@@ -81,117 +92,127 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     this.setState({ editMode },
       () => {
         window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-      })
-    }
-
-    public handleToggleShowAdminControls = () => {
-      const showAdminControls = !this.state.showAdminControls
-      const editMode = false
-
-      Array.prototype.forEach.call(
-        document.getElementsByClassName('render-container'),
-        (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
-      )
-
-      this.setState({ showAdminControls, editMode })
-    }
-
-    public handleAddCondition = (conditionId: string) => {
-      this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
-        this.props.runtime.updateRuntime({
-          conditions: this.state.activeConditions,
-          device: this.props.runtime.device,
-          scope: this.state.scope,
-          template: this.state.template,
-        })
-      })
-    }
-
-    public handleRemoveCondition = (conditionId: string) => {
-      const activeConditions = difference(this.state.activeConditions, [conditionId])
-      this.setState({ activeConditions }, () => {
-        this.props.runtime.updateRuntime({
-          conditions: this.state.activeConditions,
-          device: this.props.runtime.device,
-          scope: this.state.scope,
-          template: this.state.template,
-        })
-      })
-    }
-
-    public handleSetScope = (scope: ConfigurationScope) => {
-      this.setState({ scope })
-    }
-
-    public getViewport = (device: ConfigurationDevice) => {
-      switch (device) {
-        case 'any':
-        return 'desktop'
-        default:
-        return device
       }
-    }
+    )
+  }
 
-    public handleSetDevice = (device: ConfigurationDevice) => {
-      this.props.runtime.setDevice(device)
-      this.handleSetViewport(this.getViewport(device))
+  public handleToggleShowAdminControls = () => {
+    const showAdminControls = !this.state.showAdminControls
+    const editMode = false
+
+    Array.prototype.forEach.call(
+      document.getElementsByClassName('render-container'),
+      (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
+    )
+
+    this.setState({ showAdminControls, editMode })
+  }
+
+  public handleAddCondition = (conditionId: string) => {
+    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
       this.props.runtime.updateRuntime({
         conditions: this.state.activeConditions,
-        device,
+        device: this.props.runtime.device,
         scope: this.state.scope,
         template: this.state.template,
       })
+    })
+  }
+
+  public handleRemoveCondition = (conditionId: string) => {
+    const activeConditions = difference(this.state.activeConditions, [conditionId])
+    this.setState({ activeConditions }, () => {
+      this.props.runtime.updateRuntime({
+        conditions: this.state.activeConditions,
+        device: this.props.runtime.device,
+        scope: this.state.scope,
+        template: this.state.template,
+      })
+    })
+  }
+
+  public handleSetScope = (scope: ConfigurationScope) => {
+    this.setState({ scope })
+  }
+
+  public getViewport = (device: ConfigurationDevice) => {
+    switch (device) {
+      case 'any':
+      return 'desktop'
+      default:
+      return device
+    }
+  }
+
+  public handleSetDevice = (device: ConfigurationDevice) => {
+    this.props.runtime.setDevice(device)
+    this.handleSetViewport(this.getViewport(device))
+    this.props.runtime.updateRuntime({
+      conditions: this.state.activeConditions,
+      device,
+      scope: this.state.scope,
+      template: this.state.template,
+    })
+  }
+
+  public handleSetViewport = (viewport: Viewport) => {
+    this.setState({ viewport })
+  }
+
+  public render() {
+    const { children, runtime: { device } } = this.props
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
+
+    const editor: EditorContext = {
+      activeConditions,
+      addCondition: this.handleAddCondition,
+      allMatches,
+      conditions: this.props.data.availableConditions || [],
+      editExtensionPoint: this.editExtensionPoint,
+      editMode,
+      editTreePath,
+      removeCondition: this.handleRemoveCondition,
+      scope,
+      setDevice: this.handleSetDevice,
+      setScope: this.handleSetScope,
+      setViewport: this.handleSetViewport,
+      toggleEditMode: this.handleToggleEditMode,
+      viewport,
     }
 
-    public handleSetViewport = (viewport: Viewport) => {
-      this.setState({ viewport })
+    const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
+      switch (d) {
+        case 'mobile':
+        return ['mobile', 'tablet']
+        case 'desktop':
+        return []
+        default:
+        return ['mobile', 'tablet', 'desktop']
+      }
     }
-
-    public render() {
-      const { children, runtime, runtime: { device } } = this.props
-      const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
-
-      const editor: EditorContext = {
-        activeConditions,
-        addCondition: this.handleAddCondition,
-        allMatches,
-        conditions: this.props.data.availableConditions || [],
-        editExtensionPoint: this.editExtensionPoint,
-        editMode,
-        editTreePath,
-        removeCondition: this.handleRemoveCondition,
-        scope,
-        setDevice: this.handleSetDevice,
-        setScope: this.handleSetScope,
-        setViewport: this.handleSetViewport,
-        toggleEditMode: this.handleToggleEditMode,
-        viewport,
-      }
-
-      const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
-        switch (d) {
-          case 'mobile':
-          return ['mobile', 'tablet']
-          case 'desktop':
-          return []
-          default:
-          return ['mobile', 'tablet', 'desktop']
-        }
-      }
-
-      const adminControlsStyle: CSSProperties = {
-        animationDuration: '0.6s',
-        transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
-        visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
-      }
-
-      const adminControlsToggle = (
-        <Draggable bounds="body">
-        <div style={adminControlsStyle} className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns">
-          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} />
-        </div>
-      </Draggable>
-    )
+    const adminControlsToggle = () => {
+      return (
+        <Draggable
+          bounds="body"
+          onStart={() => {
+            const iframe = document.getElementById('store-iframe')
+            if (iframe !== null) {
+              iframe.classList.add('iframe-pointer-none')
+            }
+          }}
+          onStop={() => {
+            const iframe = document.getElementById('store-iframe')
+            if (iframe !== null) {
+              iframe.classList.remove('iframe-pointer-none')
+            }
+          }}
+        >
+          <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute fixed bottom-1 bottom-2-ns left-1 left-2-ns">
+            <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} inPreview={!showAdminControls}/>
+          </div>
+        </Draggable>
+      )
+    }
 
     const childrenWithSidebar = (
       <EditorContainer editor={editor} runtime={iframeRuntime} visible={showAdminControls}>
@@ -201,7 +222,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
 
     return (
       <EditorContext.Provider value={editor}>
-        {adminControlsToggle}
+        {adminControlsToggle()}
         {childrenWithSidebar}
       </EditorContext.Provider>
     )

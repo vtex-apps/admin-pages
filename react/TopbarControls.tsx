@@ -1,4 +1,4 @@
-import React, {PureComponent} from 'react'
+import React, {Fragment, PureComponent} from 'react'
 
 import SelectionIcon from './images/SelectionIcon.js'
 import ShowIcon from './images/ShowIcon.js'
@@ -27,7 +27,7 @@ export default class TopbarControls extends PureComponent<{}, State> {
 
   public render() {
     return (
-      <div>
+      <Fragment>
         <button
           type="button"
           onClick={this.handleToggleEditMode}
@@ -42,7 +42,7 @@ export default class TopbarControls extends PureComponent<{}, State> {
         >
           <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
         </button>
-      </div>
+      </Fragment>
     )
   }
 }

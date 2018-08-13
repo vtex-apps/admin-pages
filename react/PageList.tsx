@@ -74,8 +74,7 @@ class PageList extends Component<DataProps<PageData>> {
   public renderPageList(routes: Route[]) {
     return (
       <div>
-        <div className="flex justify-between items-center mb4">
-          <h1>Pages</h1>
+        <div className="flex justify-end items-center mb4">
           <div>
             <Link page="admin/pages-detail" params={{ pageId: 'new' }}>
               <Button size="small" variation="primary">
@@ -128,7 +127,7 @@ class PageList extends Component<DataProps<PageData>> {
     } = this.props
 
     const availableConditions =
-      this.props.conditions.availableConditions &&
+      this.props.conditions && this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId,
       )

@@ -64,18 +64,20 @@ class PagesAdmin extends Component<PagesAdminProps, PagesAdminState> {
       : (
         <div>
           <PageHeader title="CMS" />
-          <Tabs>
-            {
-              values(mapObjIndexed((info: FieldInfo, key: string) => {
-                return (
-                  <Tab key={key} label={info.title} active={field === key} onClick={() => {
-                    this.setState({ field: key })
-                    navigate({ to: '/admin/pages/' + info.path })
-                  }} />
-                )
-              }, fields))
-            }
-          </Tabs>
+          <div className="ph7">
+            <Tabs>
+              {
+                values(mapObjIndexed((info: FieldInfo, key: string) => {
+                  return (
+                    <Tab key={key} label={info.title} active={path.startsWith(info.path) && (path === '' ? path === info.path : true)} onClick={() => {
+                      this.setState({ field: key })
+                      navigate({ to: '/admin/pages/' + info.path })
+                    }} />
+                  )
+                }, fields))
+              }
+            </Tabs>
+          </div>
           { children }
         </div>
       )

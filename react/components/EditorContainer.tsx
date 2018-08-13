@@ -3,15 +3,15 @@ import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'vtex.styleguide'
 
-import ComponentEditor from '../components/ComponentEditor'
+import ComponentEditor from './ComponentEditor'
 
+import HighlightOverlay from '../HighlightOverlay'
 import ComponentsList from './ComponentsList'
-import HighlightOverlay from './HighlightOverlay'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
 
-export const APP_CONTENT_ELEMENT_ID = 'app-content'
+export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
 
 const getContainerProps = (layout: Viewport) => {
   switch (layout) {
@@ -73,8 +73,35 @@ export default class EditorContainer extends Component<
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
+  public getSnapshotBeforeUpdate(prevProps: Props & RenderContextProps & EditorContextProps) {
+    const { runtime, editor: { editMode, editExtensionPoint } } = this.props
+    if (!prevProps.runtime && runtime) {
+      runtime.updateExtension('store/__overlay', {
+        component: 'vtex.admin-pages@2.0.0/HighlightOverlay',
+        props: {
+          editExtensionPoint,
+          editMode,
+          highlightExtensionPoint: this.highlightExtensionPoint
+        }
+      })
+    }
+  }
+
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
-    this.setState({ highlightTreePath })
+    const { runtime, editor: { editMode, editExtensionPoint } } = this.props
+    this.setState({ highlightTreePath }, () => {
+      if (runtime) {
+        runtime.updateExtension('store/__overlay', {
+          component: 'vtex.admin-pages@2.0.0/HighlightOverlay',
+          props: {
+            editExtensionPoint,
+            editMode,
+            highlightExtensionPoint: this.highlightExtensionPoint,
+            highlightTreePath
+          }
+        })
+      }
+    })
   }
 
   public renderSideBarContent() {
@@ -112,7 +139,7 @@ export default class EditorContainer extends Component<
 
     return (
       <div
-        id="sidebar-vtex"
+        id="sidebar-vtex-editor"
         className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
         style={{
           animationDuration: '0.333s',
@@ -134,7 +161,7 @@ export default class EditorContainer extends Component<
 
   public render() {
     const {
-      editor: { editMode, editExtensionPoint, viewport },
+      editor: { viewport },
       visible,
     } = this.props
     return (
@@ -154,12 +181,6 @@ export default class EditorContainer extends Component<
           }}
         >
           <main {...getContainerProps(viewport)} role="main">
-            <HighlightOverlay
-              editMode={editMode}
-              editExtensionPoint={editExtensionPoint}
-              highlightExtensionPoint={this.highlightExtensionPoint}
-              highlightTreePath={this.state.highlightTreePath}
-            />
             {this.props.children}
           </main>
         </div>

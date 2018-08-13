@@ -1,47 +1,53 @@
 {
   "pages": {
-    "admin/pages": {
-      "path": "/admin/pages/*field"
+    "admin/cms": {
+      "path": "/admin/cms/*field"
     },
-    "admin/pages/list": {
-      "path": "/admin/pages/"
+    "admin/cms/pages": {
+      "path": "/admin/cms/pages"
     },
-    "admin/pages/list/page": {
-      "path": "/admin/pages/page/*pageId"
+    "admin/cms/pages/page": {
+      "path": "/admin/cms/pages/page/*pageId"
     },
-    "admin/pages/editor-home": {
-      "path": "/admin/pages/editor"
+    "admin/cms/storefront-home": {
+      "path": "/admin/cms/storefront"
     },
-    "admin/pages/editor": {
-      "path": "/admin/pages/editor/*path"
+    "admin/cms/storefront": {
+      "path": "/admin/cms/storefront/*path"
     },
-    "admin/pages/redirects": {
-      "path": "/admin/pages/redirects"
+    "admin/cms/redirects": {
+      "path": "/admin/cms/redirects"
     },
-    "admin/pages/settings": {
-      "path": "/admin/pages/settings"
+    "admin/cms/settings": {
+      "path": "/admin/cms/settings"
     }
   },
   "extensions": {
-    "admin/pages": {
+    "store/__overlay": {
+      "component": "HighlightOverlay"
+    },
+    "admin/cms/__provider": {
+      "component": "EditorProvider"
+    },
+    "admin/cms": {
       "component": "PagesAdmin"
     },
-    "admin/pages/list": {
+    "admin/cms/pages": {
       "component": "PageList"
     },
-    "admin/pages/list/page": {
+    "admin/cms/pages/page": {
       "component": "PageList"
     },
-    "admin/pages/editor-home": {
+    "admin/cms/storefront-home": {
       "component": "PageEditor"
     },
-    "admin/pages/editor": {
+    "admin/cms/storefront": {
       "component": "PageEditor"
     },
-    "admin/pages/redirects": {
+    "admin/cms/redirects": {
       "component": "Redirects"
     },
-    "admin/pages/settings": {
+    "admin/cms/settings": {
       "component": "Settings"
     },
     "admin/navigation/storeSetup/pages": {

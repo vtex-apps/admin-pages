@@ -344,3 +344,7 @@ html, body {
 .accordion-item--dragged .accordion-content {
   display: none;
 }
+
+.iframe-pointer-none {
+  pointer-events: none;
+}
