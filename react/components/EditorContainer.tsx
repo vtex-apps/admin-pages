@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'vtex.styleguide'
 
 import ComponentEditor from './ComponentEditor'
 
-import HighlightOverlay from '../HighlightOverlay'
 import ComponentsList from './ComponentsList'
+import DeviceSwitcher from './DeviceSwitcher'
 import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
@@ -43,6 +44,9 @@ const getContainerProps = (layout: Viewport) => {
 }
 
 interface Props {
+  runtime: RenderContext | null
+  toggleShowAdminControls: () => void
+  viewports: Viewport[]
   visible: boolean
 }
 
@@ -51,7 +55,7 @@ interface State {
 }
 
 export default class EditorContainer extends Component<
-  Props & RenderContextProps & EditorContextProps,
+  Props & EditorContextProps,
   State
 > {
   public static propTypes = {
@@ -61,7 +65,7 @@ export default class EditorContainer extends Component<
     visible: PropTypes.bool,
   }
 
-  constructor(props: Props & RenderContextProps & EditorContextProps) {
+  constructor(props: Props & EditorContextProps) {
     super(props)
 
     this.state = {
@@ -89,6 +93,7 @@ export default class EditorContainer extends Component<
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
     const { runtime, editor: { editMode, editExtensionPoint } } = this.props
+    console.log(runtime.components)
     this.setState({ highlightTreePath }, () => {
       if (runtime) {
         runtime.updateExtension('store/__overlay', {
@@ -101,6 +106,8 @@ export default class EditorContainer extends Component<
           }
         })
       }
+
+      console.log(runtime.components)
     })
   }
 
@@ -161,7 +168,10 @@ export default class EditorContainer extends Component<
 
   public render() {
     const {
+      editor,
       editor: { viewport },
+      toggleShowAdminControls,
+      viewports,
       visible,
     } = this.props
     return (
@@ -180,6 +190,25 @@ export default class EditorContainer extends Component<
             }, top 300ms ease-in-out ${!visible ? '300ms' : ''}`,
           }}
         >
+          <Draggable
+            bounds="parent"
+            onStart={() => {
+              const iframe = document.getElementById('store-iframe')
+              if (iframe !== null) {
+                iframe.classList.add('iframe-pointer-none')
+              }
+            }}
+            onStop={() => {
+              const iframe = document.getElementById('store-iframe')
+              if (iframe !== null) {
+                iframe.classList.remove('iframe-pointer-none')
+              }
+            }}
+          >
+            <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
+              <DeviceSwitcher toggleEditMode={toggleShowAdminControls} editor={editor} viewports={viewports} inPreview={!visible}/>
+            </div>
+          </Draggable>
           <main {...getContainerProps(viewport)} role="main">
             {this.props.children}
           </main>

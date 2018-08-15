@@ -4,8 +4,6 @@ import React, { Component, CSSProperties } from 'react'
 import { DataProps, graphql, compose } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'render'
 
-import Draggable from 'react-draggable'
-import DeviceSwitcher from './components/DeviceSwitcher'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
 import AvailableConditions from './queries/AvailableConditions.graphql'
@@ -62,7 +60,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
           this.props.runtime.updateComponentAssets({})
         }
         this.setState({
-          iframeRuntime: runtime
+          iframeRuntime: runtime,
         })
       }
     }
@@ -155,6 +153,17 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     })
   }
 
+  public getAvailableViewports = (device: ConfigurationDevice): Viewport[] => {
+    switch (device) {
+      case 'mobile':
+      return ['mobile', 'tablet']
+      case 'desktop':
+      return []
+      default:
+      return ['mobile', 'tablet', 'desktop']
+    }
+  }
+
   public handleSetViewport = (viewport: Viewport) => {
     this.setState({ viewport })
   }
@@ -180,49 +189,20 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       viewport,
     }
 
-    const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
-      switch (d) {
-        case 'mobile':
-        return ['mobile', 'tablet']
-        case 'desktop':
-        return []
-        default:
-        return ['mobile', 'tablet', 'desktop']
-      }
-    }
-    const adminControlsToggle = () => {
-      return (
-        <Draggable
-          bounds="body"
-          onStart={() => {
-            const iframe = document.getElementById('store-iframe')
-            if (iframe !== null) {
-              iframe.classList.add('iframe-pointer-none')
-            }
-          }}
-          onStop={() => {
-            const iframe = document.getElementById('store-iframe')
-            if (iframe !== null) {
-              iframe.classList.remove('iframe-pointer-none')
-            }
-          }}
-        >
-          <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute fixed bottom-1 bottom-2-ns left-1 left-2-ns">
-            <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} inPreview={!showAdminControls}/>
-          </div>
-        </Draggable>
-      )
-    }
-
     const childrenWithSidebar = (
-      <EditorContainer editor={editor} runtime={iframeRuntime} visible={showAdminControls}>
+      <EditorContainer
+        editor={editor}
+        runtime={iframeRuntime}
+        toggleShowAdminControls={this.handleToggleShowAdminControls}
+        viewports={this.getAvailableViewports(device)}
+        visible={showAdminControls}
+      >
         {children}
       </EditorContainer>
     )
 
     return (
       <EditorContext.Provider value={editor}>
-        {adminControlsToggle()}
         {childrenWithSidebar}
       </EditorContext.Provider>
     )
