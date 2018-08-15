@@ -93,7 +93,6 @@ export default class EditorContainer extends Component<
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
     const { runtime, editor: { editMode, editExtensionPoint } } = this.props
-    console.log(runtime.components)
     this.setState({ highlightTreePath }, () => {
       if (runtime) {
         runtime.updateExtension('store/__overlay', {
@@ -106,8 +105,6 @@ export default class EditorContainer extends Component<
           }
         })
       }
-
-      console.log(runtime.components)
     })
   }
 
@@ -179,15 +176,17 @@ export default class EditorContainer extends Component<
         {this.renderSideBar()}
         <div
           id={APP_CONTENT_ELEMENT_ID}
-          className={`top-0 bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
+          className={`flex items-center top-0 bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
             visible
               ? 'calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l'
-              : 'w-100'
+              : 'w-100 h-100'
           }`}
           style={{
             transition: `width 300ms ease-in-out ${
               visible ? '300ms' : ''
-            }, top 300ms ease-in-out ${!visible ? '300ms' : ''}`,
+            }, top 300ms ease-in-out ${
+              !visible ? '300ms' : ''
+            }`,
           }}
         >
           <Draggable
@@ -209,7 +208,13 @@ export default class EditorContainer extends Component<
               <DeviceSwitcher toggleEditMode={toggleShowAdminControls} editor={editor} viewports={viewports} inPreview={!visible}/>
             </div>
           </Draggable>
-          <main {...getContainerProps(viewport)} role="main">
+          <main
+            {...getContainerProps(viewport)}
+            role="main"
+            style={{
+              transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`
+            }}
+          >
             {this.props.children}
           </main>
         </div>
