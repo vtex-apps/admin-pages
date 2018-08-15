@@ -92,18 +92,10 @@ export default class EditorContainer extends Component<
   }
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
-    const { runtime, editor: { editMode, editExtensionPoint } } = this.props
     this.setState({ highlightTreePath }, () => {
-      if (runtime) {
-        runtime.updateExtension('store/__overlay', {
-          component: 'vtex.admin-pages@2.0.0/HighlightOverlay',
-          props: {
-            editExtensionPoint,
-            editMode,
-            highlightExtensionPoint: this.highlightExtensionPoint,
-            highlightTreePath
-          }
-        })
+      const iframe = document.getElementById('store-iframe')
+      if (iframe && iframe.contentWindow) {
+        iframe.contentWindow.__setHighlightTreePath(highlightTreePath)
       }
     })
   }

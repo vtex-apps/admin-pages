@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
+import { canUseDOM } from 'render'
 
 const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 
@@ -19,7 +20,12 @@ interface Props {
   highlightExtensionPoint: (treePath: string | null) => void
   highlightTreePath: string | null
 }
-export default class HighlightOverlay extends Component<Props> {
+
+interface State {
+  highlightTreePath: string | null
+}
+
+export default class HighlightOverlay extends Component<Props, State> {
   public static propTypes = {
     editExtensionPoint: PropTypes.func,
     editMode: PropTypes.bool,
@@ -31,6 +37,18 @@ export default class HighlightOverlay extends Component<Props> {
 
   constructor(props: any) {
     super(props)
+
+    this.state = {
+      highlightTreePath: props.highlightTreePath
+    }
+
+    if (canUseDOM) {
+      window.__setHighlightTreePath = (treePath: string | null) => {
+        this.setState({
+          highlightTreePath: treePath
+        })
+      }
+    }
 
     this.highlightRemovalTimeout = null
   }
@@ -106,12 +124,13 @@ export default class HighlightOverlay extends Component<Props> {
 
     e.preventDefault()
     e.stopPropagation()
-    this.props.editExtensionPoint(this.props.highlightTreePath)
+    const { highlightTreePath } = this.state
+    this.props.editExtensionPoint(highlightTreePath)
     this.props.highlightExtensionPoint(null)
   }
 
   public render() {
-    const { highlightTreePath } = this.props
+    const { highlightTreePath } = this.state
     const highlight = highlightTreePath && this.getHighlightRect(highlightTreePath)
     const { x: left, y: top, width, height } = highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {
