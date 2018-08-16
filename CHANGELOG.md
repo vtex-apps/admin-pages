@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Renaming repository.
+- Rendering store inside iframe.
 
 ## [1.14.2] - 2018-08-10
 
@@ -14,8 +17,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.14.0] - 2018-08-06
 
 ## [1.14.0-beta] - 2018-08-03
+
 ### Fixed
-- Rename to admin-pages
+- Rename to admin-pages.
 
 ## [1.13.1] - 2018-07-25
 ### Added
