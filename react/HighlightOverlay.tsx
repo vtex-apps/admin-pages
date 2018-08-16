@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Component, CSSProperties, StatelessComponent } from 'react'
+import React, { Component, CSSProperties } from 'react'
 import { canUseDOM } from 'render'
 
 let DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
@@ -82,7 +82,6 @@ export default class HighlightOverlay extends Component<Props, State> {
       rect.y += -providerRect.y
       rect.x += -providerRect.x
       DEFAULT_HIGHLIGHT_RECT = rect
-
       return rect
     }
   }
