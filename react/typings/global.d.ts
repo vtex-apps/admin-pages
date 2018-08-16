@@ -102,6 +102,7 @@ declare global {
     allMatches: boolean
     editMode: boolean
     editTreePath: string | null
+    iframeWindow: Window
     scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void

@@ -18,6 +18,7 @@ interface EditorProviderState {
   template: string | null
   viewport: Viewport
   iframeRuntime: RenderContext | null
+  iframeWindow: Window
 }
 
 let iframeMessages: Record<string, string>
@@ -46,6 +47,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editMode: false,
       editTreePath: null,
       iframeRuntime: null,
+      iframeWindow: window,
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -61,6 +63,13 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
         }
         this.setState({
           iframeRuntime: runtime,
+          ...(
+            this.state.iframeWindow
+            ? {}
+            : {
+              iframeWindow: (document.getElementById('store-iframe') as HTMLElement).contentWindow as Window
+            }
+          )
         })
       }
     }
@@ -170,7 +179,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
 
   public render() {
     const { children, runtime: { device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime } = this.state
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime, iframeWindow } = this.state
 
     const editor: EditorContext = {
       activeConditions,
@@ -180,6 +189,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
+      iframeWindow,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
