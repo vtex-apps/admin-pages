@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types'
 import { mapObjIndexed, values } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 import { withRuntimeContext } from 'render'
+import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
-interface PagesAdminProps {
+interface Props {
   runtime: RenderContext
 }
 
-interface PagesAdminState {
+interface State {
   field: string
 }
 
@@ -23,26 +23,26 @@ interface Fields {
 
 const fields: Fields = {
   pages: {
+    path: 'pages',
     title: 'Pages',
-    path: ''
   },
   redirects: {
+    path: 'redirects',
     title: 'Redirects',
-    path: 'redirects'
   },
   settings: {
+    path: 'settings',
     title: 'Settings',
-    path: 'settings'
   }
 }
 
-class PagesAdmin extends Component<PagesAdminProps, PagesAdminState> {
+class PagesAdmin extends Component<Props, State> {
   public static propTypes = {
-    runtime: PropTypes.object,
     children: PropTypes.object,
+    runtime: PropTypes.object,
   }
 
-  constructor(props: PagesAdminProps) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -54,8 +54,11 @@ class PagesAdmin extends Component<PagesAdminProps, PagesAdminState> {
     const { runtime: { navigate }, children, params } = this.props
     const { field } = this.state
     const path = params.field || ''
+    if (path.length === 0) {
+      navigate({ to: '/admin/cms/pages'})
+    }
 
-    return path.startsWith('editor')
+    return path.startsWith('storefront')
       ? (
         <Fragment>
           { children }
@@ -71,7 +74,7 @@ class PagesAdmin extends Component<PagesAdminProps, PagesAdminState> {
                   return (
                     <Tab key={key} label={info.title} active={path.startsWith(info.path) && (path === '' ? path === info.path : true)} onClick={() => {
                       this.setState({ field: key })
-                      navigate({ to: '/admin/pages/' + info.path })
+                      navigate({ to: '/admin/cms/' + info.path })
                     }} />
                   )
                 }, fields))
