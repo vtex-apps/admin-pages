@@ -717,7 +717,7 @@ class ComponentEditor extends Component<
     }
   }
 
-  private isConfigurationDisabled(configuration: ExtensionConfiguration) {
+  private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
     const { iframeWindow } = this.props.editor
     return (
       configuration.scope === 'url' &&
