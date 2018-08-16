@@ -34,7 +34,7 @@ const getContainerProps = (layout: Viewport) => {
       }
     default:
       return {
-        className: 'w-100 calc--height center',
+        className: 'w-100 h-100 center',
         style: {
           animationDuration: '0.2s',
           transition: `width 660ms`,
@@ -158,26 +158,38 @@ export default class EditorContainer extends Component<
   public render() {
     const {
       editor,
-      editor: { viewport },
+      editor: { viewport, iframeWindow },
       toggleShowAdminControls,
       viewports,
       visible,
+      runtime,
     } = this.props
+
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {this.renderSideBar()}
+        <div className="calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l">
+          <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
+            <div className="flex items-center">
+              <h3 className="f5 pr3"><FormattedMessage id="pages.editor.editpath.label" />:</h3>
+              {iframeWindow.location.pathname}
+            </div>
+          </div>
         <div
           id={APP_CONTENT_ELEMENT_ID}
-          className={`flex items-center top-0 bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
+            className={`flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
             visible
-              ? 'calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l'
-              : 'w-100 h-100'
+                ? `${runtime ? 'calc--height-relative' : 'calc--height'} calc--width-ns calc--width-m calc--width-l`
+                : 'top-0 w-100 h-100'
           }`}
           style={{
+              top: `${visible && runtime ? 3 : 0}em`,
             transition: `width 300ms ease-in-out ${
               visible ? '300ms' : ''
             }, top 300ms ease-in-out ${
-              !visible ? '300ms' : ''
+                visible ? '' : '300ms'
+              }, height 300ms ease-in-out ${
+                visible ? '' : '300ms'
             }`,
           }}
         >
@@ -210,6 +222,7 @@ export default class EditorContainer extends Component<
             {this.props.children}
           </main>
         </div>
+      </div>
       </div>
     )
   }

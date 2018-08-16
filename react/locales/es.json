@@ -17,5 +17,6 @@
   "pages.editor.components.labelEditor.label": "Nombre de la configuración",
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.components.modal.text":
-    "Tiene modificaciones no guardadas para esta configuración."
+    "Tiene modificaciones no guardadas para esta configuración.",
+  "pages.editor.editpath.label": "Editando"
 }

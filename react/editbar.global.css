@@ -169,6 +169,10 @@ html, body {
   }
 }
 
+.calc--height-relative {
+  height: calc(100% - 3em);
+}
+
 /* Non small */
 @media screen and (min-width: 30em) {
   .h-3em-ns {
@@ -176,6 +180,9 @@ html, body {
   }
   .calc--height-ns {
     height: calc(100vh - 3em);
+  }
+  .calc--height-relative-ns {
+    height: calc(100% - 3em);
   }
   .top-3em-ns {
     top: 3em;
