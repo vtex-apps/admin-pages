@@ -61,16 +61,17 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
           runtime.updateComponentAssets(props.runtime.components)
           this.props.runtime.updateComponentAssets({})
         }
-        this.setState({
+        const newState = {
           iframeRuntime: runtime,
           ...(
-            this.state.iframeWindow
+            this.state.iframeRuntime
             ? {}
             : {
               iframeWindow: (document.getElementById('store-iframe') as HTMLElement).contentWindow as Window
             }
           )
-        })
+        }
+        this.setState(newState)
       }
     }
   }
