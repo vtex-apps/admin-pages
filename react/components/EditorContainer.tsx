@@ -4,11 +4,10 @@ import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'vtex.styleguide'
 
+import SelectionIcon from '../images/SelectionIcon.js'
 import ComponentEditor from './ComponentEditor'
-
 import ComponentsList from './ComponentsList'
 import DeviceSwitcher from './DeviceSwitcher'
-import PageInfo from './PageInfo'
 
 import '../editbar.global.css'
 
@@ -78,31 +77,31 @@ export default class EditorContainer extends Component<
   }
 
   public getSnapshotBeforeUpdate(prevProps: Props & RenderContextProps & EditorContextProps) {
-    const { runtime, editor: { editMode, editExtensionPoint } } = this.props
-    if (!prevProps.runtime && runtime) {
-      runtime.updateExtension('store/__overlay', {
-        component: 'vtex.admin-pages@2.0.0/HighlightOverlay',
-        props: {
-          editExtensionPoint,
-          editMode,
-          highlightExtensionPoint: this.highlightExtensionPoint
-        }
-      })
+    const { editor: { editMode } } = this.props
+    if (prevProps.editor.editMode !== editMode) {
+      this.highlightExtensionPoint(null)
     }
   }
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
+    const { editor: { editMode, editExtensionPoint } } = this.props
+
     this.setState({ highlightTreePath }, () => {
       const iframe = document.getElementById('store-iframe')
       if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.__setHighlightTreePath(highlightTreePath)
+        iframe.contentWindow.__setHighlightTreePath({
+          editExtensionPoint,
+          editMode,
+          highlightExtensionPoint: this.highlightExtensionPoint,
+          highlightTreePath
+        })
       }
     })
   }
 
   public renderSideBarContent() {
     const {
-      editor: { editTreePath },
+      editor: { editTreePath, editMode, toggleEditMode },
       editor,
       runtime,
     } = this.props
@@ -111,10 +110,17 @@ export default class EditorContainer extends Component<
       runtime
       ? editTreePath === null ? (
           <Fragment>
-            <PageInfo editor={editor} runtime={runtime} />
-            <h3 className="near-black mv0 bt bw1 b--light-silver pa5">
-              <FormattedMessage id="pages.editor.components.title" />
-            </h3>
+            <div className="flex justify-between items-center">
+              <h3 className="near-black f5 mv0 pa5">
+                <FormattedMessage id="pages.editor.components.title" />
+              </h3>
+              <div
+                onClick={toggleEditMode}
+                className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+              >
+                <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={editMode ? '#368df7' : '#979899'} /></span>
+              </div>
+            </div>
             <ComponentsList
               editor={editor}
               runtime={runtime}
@@ -175,54 +181,54 @@ export default class EditorContainer extends Component<
               {iframeWindow.location.pathname}
             </div>
           </div>
-        <div
-          id={APP_CONTENT_ELEMENT_ID}
+          <div
+            id={APP_CONTENT_ELEMENT_ID}
             className={`flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
-            visible
+              visible
                 ? `${runtime ? 'calc--height-relative' : 'calc--height'} calc--width-ns calc--width-m calc--width-l`
                 : 'top-0 w-100 h-100'
-          }`}
-          style={{
+            }`}
+            style={{
               top: `${visible && runtime ? 3 : 0}em`,
-            transition: `width 300ms ease-in-out ${
-              visible ? '300ms' : ''
-            }, top 300ms ease-in-out ${
+              transition: `width 300ms ease-in-out ${
+                visible ? '300ms' : ''
+              }, top 300ms ease-in-out ${
                 visible ? '' : '300ms'
               }, height 300ms ease-in-out ${
                 visible ? '' : '300ms'
-            }`,
-          }}
-        >
-          <Draggable
-            bounds="parent"
-            onStart={() => {
-              const iframe = document.getElementById('store-iframe')
-              if (iframe !== null) {
-                iframe.classList.add('iframe-pointer-none')
-              }
-            }}
-            onStop={() => {
-              const iframe = document.getElementById('store-iframe')
-              if (iframe !== null) {
-                iframe.classList.remove('iframe-pointer-none')
-              }
+              }`,
             }}
           >
-            <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
-              <DeviceSwitcher toggleEditMode={toggleShowAdminControls} editor={editor} viewports={viewports} inPreview={!visible}/>
-            </div>
-          </Draggable>
-          <main
-            {...getContainerProps(viewport)}
-            role="main"
-            style={{
-              transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`
-            }}
-          >
-            {this.props.children}
-          </main>
+            <Draggable
+              bounds="parent"
+              onStart={() => {
+                const iframe = document.getElementById('store-iframe')
+                if (iframe !== null) {
+                  iframe.classList.add('iframe-pointer-none')
+                }
+              }}
+              onStop={() => {
+                const iframe = document.getElementById('store-iframe')
+                if (iframe !== null) {
+                  iframe.classList.remove('iframe-pointer-none')
+                }
+              }}
+            >
+              <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
+                <DeviceSwitcher toggleEditMode={toggleShowAdminControls} editor={editor} viewports={viewports} inPreview={!visible}/>
+              </div>
+            </Draggable>
+            <main
+              {...getContainerProps(viewport)}
+              role="main"
+              style={{
+                transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`
+              }}
+            >
+              {this.props.children}
+            </main>
+          </div>
         </div>
-      </div>
       </div>
     )
   }
