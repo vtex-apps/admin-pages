@@ -2,17 +2,9 @@ import PropTypes from 'prop-types'
 import React, { Component, CSSProperties, StatelessComponent } from 'react'
 import { canUseDOM } from 'render'
 
-const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
+let DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 
 const HIGHLIGHT_REMOVAL_TIMEOUT_MS = 300
-
-const updateDefaultHighlightRect = (e: any) => {
-  const provider = document.querySelector('.render-provider')
-  const providerRect = provider && provider.getBoundingClientRect() as DOMRect
-
-  DEFAULT_HIGHLIGHT_RECT.y = e.pageY + (providerRect ? -providerRect.y : 0)
-  DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
-}
 
 interface Props {
   editExtensionPoint: (treePath: string | null) => void
@@ -57,10 +49,6 @@ export default class HighlightOverlay extends Component<Props, State> {
     this.highlightRemovalTimeout = null
   }
 
-  public componentDidMount() {
-    document.onmousemove = updateDefaultHighlightRect
-  }
-
   public componentDidUpdate() {
     this.updateExtensionPointDOMElements(this.state.editMode)
   }
@@ -93,6 +81,8 @@ export default class HighlightOverlay extends Component<Props, State> {
       // Add offset from render provider main div
       rect.y += -providerRect.y
       rect.x += -providerRect.x
+      DEFAULT_HIGHLIGHT_RECT = rect
+
       return rect
     }
   }
