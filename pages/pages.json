@@ -58,7 +58,7 @@
         "subItems": [
           {
             "labelId": "pages.admin-menu-button.pageList",
-            "path": "/admin/pages"
+            "path": "/admin/cms/pages"
           },
           {
             "labelId": "pages.admin-menu-button.displayConditions",
