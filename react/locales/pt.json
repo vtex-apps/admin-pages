@@ -1,24 +1,22 @@
 {
-  "pages.admin-menu-button": "Pages",
+  "pages.admin-menu-button.displayConditions": "Condições de exibição",
+  "pages.admin-menu-button.main": "Páginas",
+  "pages.admin-menu-button.pageList": "Lista de páginas",
+  "pages.admin-menu-button.storefront": "Storefront",
   "pages.conditions.scope.route": "Esta rota",
   "pages.conditions.scope.site": "Todo o site",
   "pages.conditions.scope.title": "Escopo: ",
   "pages.conditions.scope.url": "Esta URL",
   "pages.editor.components.button.save": "Salvar",
-  "pages.editor.components.conditions.custom.label":
-    "Adicionar condições customizadas",
-  "pages.editor.components.conditions.custom.placeholder":
-    "Selecionar condições...",
-  "pages.editor.components.conditions.native.label":
-    "Aplicar configurações para",
+  "pages.editor.components.conditions.custom.label": "Adicionar condições customizadas",
+  "pages.editor.components.conditions.custom.placeholder": "Selecionar condições...",
+  "pages.editor.components.conditions.native.label": "Aplicar configurações para",
   "pages.editor.components.configurations.button.create": "Criar configuração",
   "pages.editor.components.configurations.button.edit": "Editar",
-  "pages.editor.components.configurations.customConditions":
-    "Condições customizadas:",
+  "pages.editor.components.configurations.customConditions": "Condições customizadas:",
   "pages.editor.components.configurations.defaultTitle": "Sem título",
   "pages.editor.components.labelEditor.label": "Nome da configuração",
   "pages.editor.components.modal.button.discard": "Descartar",
-  "pages.editor.components.modal.text":
-    "Você tem modificações não salvas para esta configuração.",
-  "pages.editor.editpath.label": "Editando"
+  "pages.editor.editpath.label": "Editando",
+  "pages.editor.components.modal.text": "Você tem modificações não salvas para esta configuração."
 }
