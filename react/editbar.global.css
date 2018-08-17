@@ -169,6 +169,10 @@ html, body {
   }
 }
 
+.calc--height-relative {
+  height: calc(100% - 3em);
+}
+
 /* Non small */
 @media screen and (min-width: 30em) {
   .h-3em-ns {
@@ -176,6 +180,9 @@ html, body {
   }
   .calc--height-ns {
     height: calc(100vh - 3em);
+  }
+  .calc--height-relative-ns {
+    height: calc(100% - 3em);
   }
   .top-3em-ns {
     top: 3em;
@@ -212,12 +219,14 @@ html, body {
 
 .mobile-preview {
   width: 360px;
+  height: 640px;
   overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
 }
 
 .tablet-preview {
   width: 768px;
+  height: 1024px;
   overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.20);
 }
@@ -343,4 +352,8 @@ html, body {
 
 .accordion-item--dragged .accordion-content {
   display: none;
+}
+
+.iframe-pointer-none {
+  pointer-events: none;
 }

@@ -1,17 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
+import { canUseDOM } from 'render'
 
-const DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
+let DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 
 const HIGHLIGHT_REMOVAL_TIMEOUT_MS = 300
-
-const updateDefaultHighlightRect = (e: any) => {
-  const provider = document.querySelector('.render-provider')
-  const providerRect = provider && provider.getBoundingClientRect() as DOMRect
-
-  DEFAULT_HIGHLIGHT_RECT.y = e.pageY + (providerRect ? -providerRect.y : 0)
-  DEFAULT_HIGHLIGHT_RECT.x = e.pageX + (providerRect ? -providerRect.x : 0)
-}
 
 interface Props {
   editExtensionPoint: (treePath: string | null) => void
@@ -19,7 +12,15 @@ interface Props {
   highlightExtensionPoint: (treePath: string | null) => void
   highlightTreePath: string | null
 }
-export default class HighlightOverlay extends Component<Props> {
+
+interface State {
+  editExtensionPoint: (treePath: string | null) => void
+  editMode: boolean
+  highlightExtensionPoint: (treePath: string | null) => void
+  highlightTreePath: string | null
+}
+
+export default class HighlightOverlay extends Component<Props, State> {
   public static propTypes = {
     editExtensionPoint: PropTypes.func,
     editMode: PropTypes.bool,
@@ -32,15 +33,24 @@ export default class HighlightOverlay extends Component<Props> {
   constructor(props: any) {
     super(props)
 
+    this.state = {
+      editExtensionPoint: props.editExtensionPoint,
+      editMode: props.editMode,
+      highlightExtensionPoint: props.highlightExtensionPoint,
+      highlightTreePath: props.highlightTreePath,
+    }
+
+    if (canUseDOM) {
+      window.__setHighlightTreePath = (newState: State) => {
+        this.setState(newState)
+      }
+    }
+
     this.highlightRemovalTimeout = null
   }
 
-  public componentDidMount() {
-    document.onmousemove = updateDefaultHighlightRect
-  }
-
   public componentDidUpdate() {
-    this.updateExtensionPointDOMElements(this.props.editMode)
+    this.updateExtensionPointDOMElements(this.state.editMode)
   }
 
   public updateExtensionPointDOMElements = (editMode: boolean) => {
@@ -71,6 +81,7 @@ export default class HighlightOverlay extends Component<Props> {
       // Add offset from render provider main div
       rect.y += -providerRect.y
       rect.x += -providerRect.x
+      DEFAULT_HIGHLIGHT_RECT = rect
       return rect
     }
   }
@@ -81,7 +92,7 @@ export default class HighlightOverlay extends Component<Props> {
     }
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.props.highlightExtensionPoint(treePath)
+    this.state.highlightExtensionPoint(treePath)
 
     clearTimeout(this.highlightRemovalTimeout)
     e.stopPropagation()
@@ -96,7 +107,7 @@ export default class HighlightOverlay extends Component<Props> {
   }
 
   public tryRemoveHighlight = () => {
-    this.props.highlightExtensionPoint(null)
+    this.state.highlightExtensionPoint(null)
   }
 
   public handleClickHighlight = (e: any) => {
@@ -106,12 +117,13 @@ export default class HighlightOverlay extends Component<Props> {
 
     e.preventDefault()
     e.stopPropagation()
-    this.props.editExtensionPoint(this.props.highlightTreePath)
-    this.props.highlightExtensionPoint(null)
+    const { highlightTreePath } = this.state
+    this.state.editExtensionPoint(highlightTreePath)
+    this.state.highlightExtensionPoint(null)
   }
 
   public render() {
-    const { highlightTreePath } = this.props
+    const { highlightTreePath } = this.state
     const highlight = highlightTreePath && this.getHighlightRect(highlightTreePath)
     const { x: left, y: top, width, height } = highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {

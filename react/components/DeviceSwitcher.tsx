@@ -2,6 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
 
+import ShowIcon from '../images/ShowIcon.js'
+
 interface IconsProps {
   colorFill: string
   id: Viewport
@@ -21,6 +23,7 @@ interface DeviceComponentState {
 interface DeviceSwitcherProps {
   toggleEditMode: () => void
   viewports: Viewport[]
+  inPreview: boolean
 }
 
 const Icons = ({ id, colorFill }: IconsProps) => {
@@ -157,6 +160,7 @@ class DeviceSwitcher extends Component<
   public render() {
     const {
       editor: { viewport },
+      inPreview,
       toggleEditMode,
       viewports,
     } = this.props
@@ -229,7 +233,11 @@ class DeviceSwitcher extends Component<
           } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
           onClick={toggleEditMode}
         >
-          <IconEdit size={16} color="currentColor" solid />
+          {
+            inPreview
+              ? <IconEdit size={16} color="currentColor" solid />
+              : <ShowIcon />
+          }
         </div>
       </div>
     )

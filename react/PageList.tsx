@@ -5,7 +5,7 @@ import { compose, DataProps, graphql } from 'react-apollo'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
-import PageEditor from './components/PageEditor'
+import PageForm from './components/PageForm'
 import ShareIcon from './images/ShareIcon'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
@@ -74,8 +74,7 @@ class PageList extends Component<DataProps<PageData>> {
   public renderPageList(routes: Route[]) {
     return (
       <div>
-        <div className="flex justify-between items-center mb4">
-          <h1>Pages</h1>
+        <div className="flex justify-end items-center mb4">
           <div>
             <Link page="admin/pages-detail" params={{ pageId: 'new' }}>
               <Button size="small" variation="primary">
@@ -107,7 +106,7 @@ class PageList extends Component<DataProps<PageData>> {
     availableConditions: string[],
   ) {
     return (
-      <PageEditor
+      <PageForm
         routes={routes}
         templates={templates}
         configurationId={configurationId === 'new' ? null : configurationId}
@@ -128,7 +127,7 @@ class PageList extends Component<DataProps<PageData>> {
     } = this.props
 
     const availableConditions =
-      this.props.conditions.availableConditions &&
+      this.props.conditions && this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId,
       )

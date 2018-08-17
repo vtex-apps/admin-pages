@@ -1,5 +1,5 @@
 {
-  "name": "vtex.pages-editor",
+  "name": "vtex.admin-pages",
   "license": "UNLICENSED",
   "scripts": {
     "pretest": "yarn",

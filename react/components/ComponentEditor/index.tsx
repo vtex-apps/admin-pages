@@ -7,7 +7,6 @@ import {
   mergeDeepLeft,
   pick,
   pickBy,
-  prop,
   reduce,
 } from 'ramda'
 import React, { Component, Fragment } from 'react'
@@ -19,7 +18,7 @@ import { IconArrowBack, Spinner } from 'vtex.styleguide'
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
 import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
-import { getImplementation } from '../../utils/components'
+import { getIframeImplementation } from '../../utils/components'
 import ConditionsSelector from '../ConditionsSelector'
 import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
 import BaseInput from '../form/BaseInput'
@@ -299,7 +298,7 @@ class ComponentEditor extends Component<
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
     const { component, props } = this.getExtension()
-    const componentImplementation = getImplementation(component)
+    const componentImplementation = getIframeImplementation(component)
 
     const selectedComponent = component || null
 
@@ -386,6 +385,7 @@ class ComponentEditor extends Component<
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
+            iframeWindow={this.props.editor.iframeWindow}
           />
         ) : (
           this.renderConfigurationEditor(schema, uiSchema, extensionProps)
@@ -406,7 +406,7 @@ class ComponentEditor extends Component<
   ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
-    const { runtime } = this.props
+    const { runtime, editor: { iframeWindow } } = this.props
 
     return {
       allMatches: true,
@@ -416,7 +416,7 @@ class ComponentEditor extends Component<
       propsJSON: '{}',
       routeId: runtime.page,
       scope: 'route',
-      url: window.location.pathname,
+      url: iframeWindow.location.pathname,
     }
   }
 
@@ -533,7 +533,7 @@ class ComponentEditor extends Component<
   }
 
   private handleConfigurationSave = async () => {
-    const { editor, runtime, saveExtension } = this.props
+    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
     const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
@@ -545,7 +545,7 @@ class ComponentEditor extends Component<
 
     const { component, props = {} } = this.getExtension()
 
-    const componentImplementation = component && getImplementation(component)
+    const componentImplementation = component && getIframeImplementation(component)
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -565,7 +565,7 @@ class ComponentEditor extends Component<
           device,
           extensionName: editor.editTreePath,
           label: this.state.newLabel || configuration!.label,
-          path: window.location.pathname,
+          path: iframeWindow.location.pathname,
           propsJSON: JSON.stringify(pickedProps),
           routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
           scope: this.getDecodedScope(configuration!.scope),
@@ -579,7 +579,7 @@ class ComponentEditor extends Component<
           runtime.extensions[editor.editTreePath as string].configurationsIds,
         routeId: runtime.page,
         treePath: editor.editTreePath,
-        url: window.location.pathname,
+        url: iframeWindow.location.pathname,
       })
 
       this.setState(
@@ -635,7 +635,7 @@ class ComponentEditor extends Component<
     const { component: enumComponent } = event.formData
     const component =
       enumComponent && enumComponent !== '' ? enumComponent : null
-    const componentImplementation = component && getImplementation(component)
+    const componentImplementation = component && getIframeImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })
@@ -717,10 +717,11 @@ class ComponentEditor extends Component<
     }
   }
 
-  private isConfigurationDisabled(configuration: ExtensionConfiguration) {
+  private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
+    const { iframeWindow } = this.props.editor
     return (
       configuration.scope === 'url' &&
-      configuration.url !== window.location.pathname
+      configuration.url !== iframeWindow.location.pathname
     )
   }
 
@@ -729,10 +730,10 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, runtime } = this.props
+    const { editor, editor: { iframeWindow }, runtime } = this.props
     const { configuration } = this.state
 
-    const mobile = window.innerWidth < 600
+    const mobile = iframeWindow.innerWidth < 600
     const animation = mobile ? 'slideInUp' : 'fadeIn'
 
     const props = configuration
@@ -812,14 +813,14 @@ export default compose(
   graphql(ExtensionConfigurations, {
     name: 'extensionConfigurations',
     options: ({
-      editor: { editTreePath },
+      editor: { editTreePath, iframeWindow },
       runtime: { extensions, page },
     }: ComponentEditorProps) => ({
       variables: {
         configurationsIds: extensions[editTreePath as string].configurationsIds,
         routeId: page,
         treePath: editTreePath,
-        url: window.location.pathname,
+        url: iframeWindow.location.pathname,
       },
     }),
   }),

@@ -107,7 +107,7 @@ const createLocationDescriptor = (to, query) => ({
   ...(query && { search: query }),
 })
 
-class PageEditor extends Component<any, any> {
+class PageForm extends Component<any, any> {
   public static propTypes = {
     availableConditions: PropTypes.arrayOf(PropTypes.string).isRequired,
     configurationId: PropTypes.string,
@@ -442,4 +442,4 @@ class PageEditor extends Component<any, any> {
 export default graphql(SavePage, {
   name: 'savePage',
   options: { fetchPolicy: 'cache-and-network' },
-})(PageEditor)
+})(PageForm)

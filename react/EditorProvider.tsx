@@ -1,15 +1,11 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, CSSProperties, Fragment } from 'react'
-import { DataProps, graphql } from 'react-apollo'
-import { ExtensionPoint } from 'render'
+import React, { Component, CSSProperties } from 'react'
+import { DataProps, graphql, compose } from 'react-apollo'
+import { canUseDOM, withRuntimeContext } from 'render'
 
-import Draggable from 'react-draggable'
-import DeviceSwitcher from './components/DeviceSwitcher'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
-import SelectionIcon from './images/SelectionIcon.js'
-import ShowIcon from './images/ShowIcon.js'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 
 interface EditorProviderState {
@@ -21,7 +17,11 @@ interface EditorProviderState {
   scope: ConfigurationScope
   template: string | null
   viewport: Viewport
+  iframeRuntime: RenderContext | null
+  iframeWindow: Window
 }
+
+let iframeMessages: Record<string, string>
 
 class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
   public static contextTypes = {
@@ -34,6 +34,10 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     runtime: PropTypes.object,
   }
 
+  public static getCustomMessages() {
+    return iframeMessages
+  }
+
   constructor(props: any) {
     super(props)
 
@@ -42,10 +46,33 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       allMatches: true,
       editMode: false,
       editTreePath: null,
+      iframeRuntime: null,
+      iframeWindow: window,
       scope: 'url',
       showAdminControls: true,
       template: null,
       viewport: 'desktop',
+    }
+
+    if (canUseDOM) {
+      window.__provideRuntime = (runtime: RenderContext, messages: Record<string, string>) => {
+        iframeMessages = messages
+        if (!this.state.iframeRuntime) {
+          runtime.updateComponentAssets(props.runtime.components)
+          this.props.runtime.updateComponentAssets({})
+        }
+        const newState = {
+          iframeRuntime: runtime,
+          ...(
+            this.state.iframeRuntime
+            ? {}
+            : {
+              iframeWindow: (document.getElementById('store-iframe') as HTMLElement).contentWindow as Window
+            }
+          )
+        }
+        this.setState(newState)
+      }
     }
   }
 
@@ -58,6 +85,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
         (e: any) => e.classList.add('editor-provider'),
       )
     }
+
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
     // Forward scroll events to window so code doesn't have to hook into #app-content
     document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
@@ -72,7 +100,8 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     this.setState({ editMode },
       () => {
         window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-      })
+      }
+    )
   }
 
   public handleToggleShowAdminControls = () => {
@@ -117,9 +146,9 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   public getViewport = (device: ConfigurationDevice) => {
     switch (device) {
       case 'any':
-        return 'desktop'
+      return 'desktop'
       default:
-        return device
+      return device
     }
   }
 
@@ -134,20 +163,24 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     })
   }
 
+  public getAvailableViewports = (device: ConfigurationDevice): Viewport[] => {
+    switch (device) {
+      case 'mobile':
+      return ['mobile', 'tablet']
+      case 'desktop':
+      return []
+      default:
+      return ['mobile', 'tablet', 'desktop']
+    }
+  }
+
   public handleSetViewport = (viewport: Viewport) => {
     this.setState({ viewport })
   }
 
   public render() {
-    const { children, runtime, runtime: { page, device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport } = this.state
-    const root = page.split('/')[0]
-
-    const isAdmin = root === 'admin'
-
-    if (isAdmin) {
-      return children
-    }
+    const { children, runtime: { device } } = this.props
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime, iframeWindow } = this.state
 
     const editor: EditorContext = {
       activeConditions,
@@ -157,6 +190,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
+      iframeWindow,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
@@ -166,73 +200,27 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       viewport,
     }
 
-    const getAvailableViewports = (d: ConfigurationDevice): Viewport[] => {
-      switch (d) {
-        case 'mobile':
-          return ['mobile', 'tablet']
-        case 'desktop':
-          return []
-        default:
-          return ['mobile', 'tablet', 'desktop']
-      }
-    }
-
-    const adminControlsStyle: CSSProperties = {
-      animationDuration: '0.6s',
-      transition: `visibility 600ms step-start ${showAdminControls ? '' : '600ms'}`,
-      visibility: `${showAdminControls ? 'hidden' : 'visible'}`,
-    }
-
-    const adminControlsToggle = (
-      <Draggable bounds="body">
-        <div style={adminControlsStyle} className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max relative fixed top-1 top-2-ns right-1 right-2-ns">
-          <DeviceSwitcher toggleEditMode={this.handleToggleShowAdminControls} editor={editor} viewports={getAvailableViewports(device)} />
-        </div>
-      </Draggable>
-    )
-
-    const topbarStyle = {
-      animationDuration: '0.2s',
-      transform: `translate(0,${showAdminControls ? 0 : '-100%'})`,
-      transition: `transform 300ms ease-in-out ${!showAdminControls ? '300ms' : ''}`,
-    }
-
     const childrenWithSidebar = (
-      <Fragment>
-        <div
-          className="fixed left-0 right-0 z-9999 h-3em"
-          style={topbarStyle}
-        >
-          <ExtensionPoint id={`${root}/__topbar`}>
-            <button
-              type="button"
-              onClick={this.handleToggleEditMode}
-              className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
-            >
-              <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={this.state.editMode ? '#368df7' : '#979899'} /></span>
-            </button>
-            <button
-              type="button"
-              onClick={this.handleToggleShowAdminControls}
-              className="bg-white bn link pl3-ns pv3 flex items-center justify-center self-right z-max pointer animated fadeIn"
-            >
-              <span className="pr5 b--light-gray flex items-center"><ShowIcon /></span>
-            </button>
-          </ExtensionPoint>
-        </div>
-        <EditorContainer editor={editor} runtime={runtime} visible={showAdminControls}>
-          {children}
-        </EditorContainer>
-      </Fragment>
+      <EditorContainer
+        editor={editor}
+        runtime={iframeRuntime}
+        toggleShowAdminControls={this.handleToggleShowAdminControls}
+        viewports={this.getAvailableViewports(device)}
+        visible={showAdminControls}
+      >
+        {children}
+      </EditorContainer>
     )
 
     return (
       <EditorContext.Provider value={editor}>
-        {adminControlsToggle}
         {childrenWithSidebar}
       </EditorContext.Provider>
     )
   }
 }
 
-export default graphql(AvailableConditions)(EditorProvider)
+export default compose(
+  graphql(AvailableConditions),
+  withRuntimeContext,
+)(EditorProvider)
