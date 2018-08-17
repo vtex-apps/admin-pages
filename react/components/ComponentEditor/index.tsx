@@ -569,7 +569,10 @@ class ComponentEditor extends Component<
           configurationId,
           device,
           extensionName: editor.editTreePath,
-          label: this.state.newLabel || configuration!.label,
+          label:
+            this.state.newLabel !== undefined
+              ? this.state.newLabel
+              : configuration!.label,
           path: iframeWindow.location.pathname,
           propsJSON: JSON.stringify(pickedProps),
           routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
@@ -754,7 +757,9 @@ class ComponentEditor extends Component<
           <LabelEditor
             onChange={this.handleConfigurationLabelChange}
             value={
-              this.state.newLabel || (configuration && configuration.label)
+              this.state.newLabel !== undefined
+                ? this.state.newLabel
+                : configuration && configuration.label
             }
           />
           <div className="mt5">
