@@ -6,7 +6,7 @@
     "admin/cms/pages": {
       "path": "/admin/cms/pages"
     },
-    "admin/cms/pages/page": {
+    "admin/cms/page-detail": {
       "path": "/admin/cms/pages/page/*pageId"
     },
     "admin/cms/storefront-home": {
@@ -35,7 +35,7 @@
     "admin/cms/pages": {
       "component": "PageList"
     },
-    "admin/cms/pages/page": {
+    "admin/cms/page-detail": {
       "component": "PageList"
     },
     "admin/cms/storefront-home": {

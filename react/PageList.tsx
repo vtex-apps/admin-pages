@@ -61,7 +61,7 @@ class PageList extends Component<DataProps<PageData>> {
         </td>
         <td className="pa4 w-10 v-align-center">
           <div className="flex justify-between">
-            <Link to={`/admin/pages/page/${page.configurationId}`}>
+            <Link to={`/admin/cms/pages/page/${page.configurationId}`}>
               <Button variation="primary" size="small">
                 <div className="flex">Settings</div>
               </Button>
@@ -76,7 +76,7 @@ class PageList extends Component<DataProps<PageData>> {
       <div>
         <div className="flex justify-end items-center mb4">
           <div>
-            <Link page="admin/pages-detail" params={{ pageId: 'new' }}>
+            <Link page="admin/cms/page-detail" params={{ pageId: 'new' }}>
               <Button size="small" variation="primary">
                 New page
               </Button>

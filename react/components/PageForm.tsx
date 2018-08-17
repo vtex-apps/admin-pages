@@ -419,7 +419,7 @@ class PageForm extends Component<any, any> {
           widgets={widgets}
         >
           <div className="mt7">
-            <Link to="/admin/pages">
+            <Link to="/admin/cms/pages">
               <Button size="small" variation="tertiary">
                 Cancel
               </Button>
