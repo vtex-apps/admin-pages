@@ -209,7 +209,7 @@ class PageForm extends Component<any, any> {
     })
       .then(data => {
         console.log('OK!', data)
-        const location = createLocationDescriptor('/admin/pages')
+        const location = createLocationDescriptor('/admin/cms/pages')
         this.context.history.push(location)
       })
       .catch(err => {
