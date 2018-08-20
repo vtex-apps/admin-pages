@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types'
 import { path } from 'ramda'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
+
+import { State as HighlightOverlayState } from '../../HighlightOverlay'
+
+import DeviceSwitcher from './DeviceSwitcher'
 import Sidebar from './Sidebar'
 
-import { State as HighlightOverlayState } from '../HighlightOverlay'
-import DeviceSwitcher from './DeviceSwitcher'
-
-import '../editbar.global.css'
+import '../../editbar.global.css'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
 
@@ -42,6 +42,7 @@ const getContainerProps = (layout: Viewport) => {
 }
 
 interface Props {
+  editor: EditorContext
   runtime: RenderContext | null
   toggleShowAdminControls: () => void
   viewports: Viewport[]
@@ -52,18 +53,8 @@ interface State {
   highlightTreePath: string | null
 }
 
-export default class EditorContainer extends Component<
-  Props & EditorContextProps,
-  State
-> {
-  public static propTypes = {
-    children: PropTypes.node,
-    editor: PropTypes.object,
-    runtime: PropTypes.object,
-    visible: PropTypes.bool,
-  }
-
-  constructor(props: Props & EditorContextProps) {
+export default class EditorContainer extends Component<Props, State> {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -75,14 +66,26 @@ export default class EditorContainer extends Component<
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
+  public getSnapshotBeforeUpdate(prevProps: Props) {
+    const {
+      editor: { editMode },
+    } = this.props
+    if (prevProps.editor.editMode !== editMode) {
+      this.highlightExtensionPoint(null)
+    }
+  }
+
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
     const {
       editor: { editMode, editExtensionPoint },
     } = this.props
 
     this.setState({ highlightTreePath }, () => {
-      const iframe = document.getElementById('store-iframe') || {} as HighlightableIFrame
-      const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(['contentWindow', '__setHighlightTreePath'], iframe)
+      const iframe = document.getElementById('store-iframe') || {}
+      const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(
+        ['contentWindow', '__setHighlightTreePath'],
+        iframe,
+      )
       if (setHighlightTreePath) {
         setHighlightTreePath({
           editExtensionPoint,
@@ -94,22 +97,11 @@ export default class EditorContainer extends Component<
     })
   }
 
-  public getSnapshotBeforeUpdate(
-    prevProps: Props & RenderContextProps & EditorContextProps,
-  ) {
-    const {
-      editor: { editMode },
-    } = this.props
-    if (prevProps.editor.editMode !== editMode) {
-      this.highlightExtensionPoint(null)
-    }
-  }
-
   public render() {
     const {
       editor,
-      runtime,
       editor: { viewport, iframeWindow },
+      runtime,
       toggleShowAdminControls,
       viewports,
       visible,
@@ -117,10 +109,14 @@ export default class EditorContainer extends Component<
 
     return (
       <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-white bb bw1 b--light-silver">
-        {visible && <Sidebar editor={editor} runtime={runtime} highlightExtensionPoint={this.highlightExtensionPoint} />}
-        <div
-          className={`calc--height-ns flex-grow-1 db-ns dn`}
-        >
+        {runtime && visible && (
+          <Sidebar
+            editor={editor}
+            highlightHandler={this.highlightExtensionPoint}
+            runtime={runtime}
+          />
+        )}
+        <div className={`calc--height-ns flex-grow-1 db-ns dn`}>
           {visible && (
             <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
               <div className="flex items-center">
@@ -135,7 +131,7 @@ export default class EditorContainer extends Component<
             id={APP_CONTENT_ELEMENT_ID}
             className={`pa5 flex items-center bg-light-silver z-0 center-m left-0-m relative overflow-x-auto-m ${
               visible ? 'calc--height-relative' : 'top-0 w-100 h-100'
-            }`}
+              }`}
           >
             <Draggable
               bounds="parent"
@@ -154,11 +150,11 @@ export default class EditorContainer extends Component<
             >
               <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
                 <DeviceSwitcher
+                  inPreview={!visible}
+                  setViewport={editor.setViewport}
                   toggleEditMode={toggleShowAdminControls}
                   viewport={editor.viewport}
-                  setViewport={editor.setViewport}
                   viewports={viewports}
-                  inPreview={!visible}
                 />
               </div>
             </Draggable>
