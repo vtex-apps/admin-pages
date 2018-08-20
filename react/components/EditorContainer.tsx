@@ -183,7 +183,7 @@ export default class EditorContainer extends Component<
           </div>
           <div
             id={APP_CONTENT_ELEMENT_ID}
-            className={`flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
+            className={`pa5 flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
               visible
                 ? `${runtime ? 'calc--height-relative' : 'calc--height'} calc--width-ns calc--width-m calc--width-l`
                 : 'top-0 w-100 h-100'
