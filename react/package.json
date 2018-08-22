@@ -23,6 +23,7 @@
     "@types/prop-types": "^15.5.2",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/react": "^16.3.16",
+    "@types/react-datepicker": "^1.1.7",
     "@types/react-dom": "^16.0.5",
     "@types/react-helmet": "^5.0.5",
     "@types/react-intl": "^2.3.5",

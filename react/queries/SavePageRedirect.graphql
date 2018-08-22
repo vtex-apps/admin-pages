@@ -1,13 +1,13 @@
 mutation SavePageRedirect(
-  $fromUrl: String,
-  $toUrl: String,
-  $endDate: String,
   $active: Boolean
-  ) {
+  $endDate: String
+  $fromUrl: String
+  $toUrl: String
+) {
   savePageRedirect(
+    active: $active
+    endDate: $endDate
     fromUrl: $fromUrl
     toUrl: $toUrl
-    endDate: $endDate
-    active: $active
   )
 }
