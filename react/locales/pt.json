@@ -24,5 +24,8 @@
   "pages.editor.info.to": "Para",
   "pages.editor.info.endDate": "Data de fim",
   "pages.editor.info.active": "Ativo",
-  "pages.editor.info.remove": "Remover"
+  "pages.admin.redirects.info.noEndDate": "Sem data de fim",
+  "pages.editor.info.remove": "Remover",
+  "pages.editor.info.button.save": "Salvar",
+  "pages.editor.info.button.cancel": "Cancelar"
 }

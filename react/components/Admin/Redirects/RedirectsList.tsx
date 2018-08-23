@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Button, IconDelete, Pagination, Table } from 'vtex.styleguide'
 
@@ -52,10 +52,12 @@ class RedirectsList extends Component<Props, State> {
     )
 
     return (
-      <div className="mw8 mr-auto ml-auto mv6 ph6">
-        <Button onClick={onCreate} size="small" variation="primary">
-          <FormattedMessage id="pages.editor.info.new-redirect" />
-        </Button>
+      <Fragment>
+        <div className="flex justify-end mb4">
+          <Button onClick={onCreate} size="small" variation="primary">
+            <FormattedMessage id="pages.editor.info.new-redirect" />
+          </Button>
+        </div>
         <Table
           items={selectedItems}
           onRowClick={onSelect}
@@ -70,7 +72,7 @@ class RedirectsList extends Component<Props, State> {
           textShowRows="show rows"
           totalItems={this.itemsQty}
         />
-      </div>
+      </Fragment>
     )
   }
 

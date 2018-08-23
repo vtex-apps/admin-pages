@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 
 import PageRedirects from '../../../queries/PageRedirects.graphql'
 import RemovePageRedirect from '../../../queries/RemovePageRedirect.graphql'
 
-import RedirectModal from './RedirectModal'
+import RedirectForm from './RedirectForm'
 import RedirectsList from './RedirectsList'
 
 interface Props {
@@ -17,8 +17,7 @@ interface Props {
 }
 
 interface State {
-  isModalOpen: boolean
-  selectedRedirect: Redirect
+  selectedRedirect: Redirect | null
 }
 
 class Redirects extends Component<Props, State> {
@@ -31,13 +30,7 @@ class Redirects extends Component<Props, State> {
     super(props)
 
     this.state = {
-      isModalOpen: false,
-      selectedRedirect: {
-        active: false,
-        endDate: '',
-        fromUrl: '',
-        toUrl: '',
-      },
+      selectedRedirect: null,
     }
   }
 
@@ -54,16 +47,20 @@ class Redirects extends Component<Props, State> {
       pageRedirectsQuery: { loading, pageRedirects = [] },
     } = this.props
 
+    const { selectedRedirect } = this.state
+
+    if (loading) {
+      return <span>Loading...</span>
+    }
+
     return (
-      <Fragment>
-        <RedirectModal
-          isModalOpen={this.state.isModalOpen}
-          onClose={this.handleModalClose}
-          onInputChange={this.handleInputChange}
-          redirectInfo={this.state.selectedRedirect}
-        />
-        {loading ? (
-          <span>Loading...</span>
+      <div className="mw8 mr-auto ml-auto mv6 ph6">
+        {selectedRedirect ? (
+          <RedirectForm
+            closeForm={this.handleFormClose}
+            onInputChange={this.handleInputChange}
+            redirectInfo={this.state.selectedRedirect}
+          />
         ) : (
           <RedirectsList
             onCreate={this.handleRedirectCreation}
@@ -72,8 +69,17 @@ class Redirects extends Component<Props, State> {
             redirects={pageRedirects}
           />
         )}
-      </Fragment>
+      </div>
     )
+  }
+
+  private getDefaultRedirectInfo() {
+    return {
+      active: false,
+      endDate: '',
+      fromUrl: '',
+      toUrl: '',
+    }
   }
 
   private handleInputChange = (inputData: any) => {
@@ -93,15 +99,13 @@ class Redirects extends Component<Props, State> {
     }
   }
 
-  private handleModalClose = () => {
-    this.setState({
-      isModalOpen: false,
-    })
+  private handleFormClose = () => {
+    this.setState({ selectedRedirect: null })
   }
 
   private handleRedirectCreation = () => {
     this.setState({
-      isModalOpen: true,
+      selectedRedirect: this.getDefaultRedirectInfo(),
     })
   }
 
@@ -126,7 +130,6 @@ class Redirects extends Component<Props, State> {
 
   private handleRedirectSelection = (event: { rowData: Redirect }) => {
     this.setState({
-      isModalOpen: true,
       selectedRedirect: event.rowData,
     })
   }
