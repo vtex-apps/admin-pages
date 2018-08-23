@@ -27,15 +27,15 @@
   "pages.editor.empty-extension.edit": "Click here to edit it",
   "pages.editor.empty-extension.title": "This is an empty extension point",
   "pages.editor.editpath.label": "Editing",
-  "pages.editor.info.new-redirect": "New redirect",
-  "pages.editor.info.from": "From",
-  "pages.editor.info.to": "To",
   "pages.editor.info.page": "Page",
   "pages.editor.info.title": "Page Info",
-  "pages.editor.info.endDate": "End date",
-  "pages.editor.info.active": "Active",
+  "pages.admin.redirects.newRedirect": "New redirect",
+  "pages.admin.redirects.info.from": "From",
+  "pages.admin.redirects.info.to": "To",
+  "pages.admin.redirects.info.endDate": "End date",
+  "pages.admin.redirects.info.active": "Active",
   "pages.admin.redirects.info.noEndDate": "No end date",
-  "pages.editor.info.remove": "Remove",
-  "pages.editor.info.button.save": "Save",
-  "pages.editor.info.button.cancel": "Cancel"
+  "pages.admin.redirects.button.remove": "Remove",
+  "pages.admin.redirects.button.save": "Save",
+  "pages.admin.redirects.button.cancel": "Cancel"
 }

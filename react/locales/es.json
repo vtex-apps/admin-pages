@@ -18,13 +18,15 @@
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.editpath.label": "Editando",
   "pages.editor.components.modal.text": "Tiene modificaciones no guardadas para esta configuración.",
-  "pages.editor.info.new-redirect": "Nueva redirección",
-  "pages.editor.info.from": "De",
-  "pages.editor.info.to": "Para",
-  "pages.editor.info.endDate": "Fecha final",
-  "pages.editor.info.active": "Activo",
+  "pages.editor.info.page": "Página",
+  "pages.editor.info.title": "Informaciones de la Página",
+  "pages.admin.redirects.newRedirect": "Nueva redirección",
+  "pages.admin.redirects.info.from": "De",
+  "pages.admin.redirects.info.to": "Para",
+  "pages.admin.redirects.info.endDate": "Fecha final",
+  "pages.admin.redirects.info.active": "Activo",
   "pages.admin.redirects.info.noEndDate": "Sin fecha final",
-  "pages.editor.info.remove": "Retirar",
-  "pages.editor.info.button.save": "Salvar",
-  "pages.editor.info.button.cancel": "Cancelar"
+  "pages.admin.redirects.button.remove": "Retirar",
+  "pages.admin.redirects.button.save": "Salvar",
+  "pages.admin.redirects.button.cancel": "Cancelar"
 }

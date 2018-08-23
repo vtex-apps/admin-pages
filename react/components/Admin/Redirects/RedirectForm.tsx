@@ -54,14 +54,14 @@ class RedirectModal extends Component<Props, State> {
 
     return (
       <div>
-        <FormattedMessage id="pages.editor.info.new-redirect">
+        <FormattedMessage id="pages.admin.redirects.newRedirect">
           {text => <h1>{text}</h1>}
         </FormattedMessage>
         <Separator />
         <form onSubmit={this.handleSave}>
           <Input
             label={intl.formatMessage({
-              id: 'pages.editor.info.from',
+              id: 'pages.admin.redirects.info.from',
             })}
             onChange={(event: Event) => {
               if (event.target instanceof HTMLInputElement) {
@@ -73,7 +73,7 @@ class RedirectModal extends Component<Props, State> {
           <Separator />
           <Input
             label={intl.formatMessage({
-              id: 'pages.editor.info.to',
+              id: 'pages.admin.redirects.info.to',
             })}
             onChange={(event: Event) => {
               if (event.target instanceof HTMLInputElement) {
@@ -128,7 +128,7 @@ class RedirectModal extends Component<Props, State> {
             checked={active}
             id="active"
             label={intl.formatMessage({
-              id: 'pages.editor.info.active',
+              id: 'pages.admin.redirects.info.active',
             })}
             name="active-checkbox-group"
             onChange={(event: Event) => {
@@ -145,13 +145,13 @@ class RedirectModal extends Component<Props, State> {
             <div className="mr6">
               <Button onClick={closeForm} size="small" variation="tertiary">
                 {intl.formatMessage({
-                  id: 'pages.editor.info.button.cancel',
+                  id: 'pages.admin.redirects.button.cancel',
                 })}
               </Button>
             </div>
             <Button size="small" type="submit">
               {intl.formatMessage({
-                id: 'pages.editor.info.button.save',
+                id: 'pages.admin.redirects.button.save',
               })}
             </Button>
           </div>

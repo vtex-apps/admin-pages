@@ -55,7 +55,7 @@ class RedirectsList extends Component<Props, State> {
       <Fragment>
         <div className="flex justify-end mb4">
           <Button onClick={onCreate} size="small" variation="primary">
-            <FormattedMessage id="pages.editor.info.new-redirect" />
+            <FormattedMessage id="pages.admin.redirects.newRedirect" />
           </Button>
         </div>
         <Table
@@ -84,20 +84,26 @@ class RedirectsList extends Component<Props, State> {
       defaultSchema: {
         properties: {
           fromUrl: {
-            title: intl.formatMessage({ id: 'pages.editor.info.from' }),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.info.from',
+            }),
             type: 'string',
           },
           toUrl: {
-            title: intl.formatMessage({ id: 'pages.editor.info.to' }),
+            title: intl.formatMessage({ id: 'pages.admin.redirects.info.to' }),
             type: 'string',
           },
           endDate: {
-            title: intl.formatMessage({ id: 'pages.editor.info.endDate' }),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.info.endDate',
+            }),
             type: 'string',
           },
           active: {
             default: false,
-            title: intl.formatMessage({ id: 'pages.editor.info.active' }),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.info.active',
+            }),
             type: 'boolean',
           },
           remove: {
@@ -108,7 +114,9 @@ class RedirectsList extends Component<Props, State> {
                 </Button>
               </div>
             ),
-            title: intl.formatMessage({ id: 'pages.editor.info.remove' }),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.button.remove',
+            }),
             type: 'object',
           },
         },
