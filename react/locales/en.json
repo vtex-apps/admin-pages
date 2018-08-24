@@ -26,7 +26,18 @@
   "pages.editor.components.modal.text": "You have unsaved modifications for this configuration.",
   "pages.editor.empty-extension.edit": "Click here to edit it",
   "pages.editor.empty-extension.title": "This is an empty extension point",
+  "pages.editor.editpath.label": "Editing",
   "pages.editor.info.page": "Page",
   "pages.editor.info.title": "Page Info",
-  "pages.editor.editpath.label": "Editing"
+  "pages.admin.redirects.button.create": "New redirect",
+  "pages.admin.redirects.emptyState": "No redirects created",
+  "pages.admin.redirects.form.button.back": "Back",
+  "pages.admin.redirects.form.button.cancel": "Cancel",
+  "pages.admin.redirects.form.button.create": "Create",
+  "pages.admin.redirects.form.button.delete": "Delete",
+  "pages.admin.redirects.form.title.info": "Redirect info",
+  "pages.admin.redirects.form.title.new": "Create a redirect",
+  "pages.admin.redirects.table.endDate": "End date",
+  "pages.admin.redirects.table.from": "From",
+  "pages.admin.redirects.table.to": "To"
 }

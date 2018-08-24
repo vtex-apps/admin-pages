@@ -1,0 +1,10 @@
+mutation saveRedirect($endDate: String!, $from: String!, $to: String!) {
+  saveRedirect(endDate: $endDate, from: $from, to: $to) {
+    cacheId
+    disabled
+    endDate
+    from
+    id
+    to
+  }
+}

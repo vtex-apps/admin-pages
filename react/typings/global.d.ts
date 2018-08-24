@@ -172,4 +172,13 @@ declare global {
     | AdaptedExtensionConfiguration
 
   type ComponentEditorMode = 'content' | 'layout'
+
+  interface Redirect {
+    cacheId: string
+    disabled: boolean
+    endDate: string
+    from: string
+    id: string
+    to: string
+  }
 }

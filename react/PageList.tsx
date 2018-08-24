@@ -6,7 +6,6 @@ import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
 import PageForm from './components/PageForm'
-import ShareIcon from './images/ShareIcon'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
 import Routes from './queries/Routes.graphql'
@@ -17,7 +16,6 @@ interface PageData {
   routes: Route[]
 }
 
-// eslint-disable-next-line
 class PageList extends Component<DataProps<PageData>> {
   public static propTypes = {
     children: PropTypes.element,
@@ -118,16 +116,17 @@ class PageList extends Component<DataProps<PageData>> {
   public render() {
     const {
       conditions: { loading: loadingAvailableConditions },
+      params: { pageId: configurationId },
+      routes: { loading: loadingRoutes, routes = [] },
       templates: {
         loading: loadingTemplates,
         availableTemplates: templates = [],
       },
-      routes: { loading: loadingRoutes, routes = [] },
-      params: { pageId: configurationId },
     } = this.props
 
     const availableConditions =
-      this.props.conditions && this.props.conditions.availableConditions &&
+      this.props.conditions &&
+      this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
         condition => condition.conditionId,
       )
@@ -135,13 +134,11 @@ class PageList extends Component<DataProps<PageData>> {
     const isStore = (route: Route) => route.id.startsWith('store')
 
     const storeRoutes = filter(isStore, routes)
-
     const sortedRoutes = sort<Route>((a: Route, b: Route) => {
       return a.id.localeCompare(b.id)
     }, storeRoutes)
 
     const isViewingPage = !!configurationId
-
     const pageDetail =
       isViewingPage &&
       this.renderPageDetail(

@@ -1,9 +1,3 @@
-import React, { Component } from 'react'
+import Redirects from './components/Admin/Redirects'
 
-export default class Redirects extends Component {
-  public render() {
-    return (
-      null
-    )
-  }
-}
+export default Redirects
