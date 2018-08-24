@@ -1,0 +1,10 @@
+mutation DeleteRedirect($id: ID!) {
+  deleteRedirect(id: $id) {
+    cacheId
+    disabled
+    endDate
+    from
+    id
+    to
+  }
+}

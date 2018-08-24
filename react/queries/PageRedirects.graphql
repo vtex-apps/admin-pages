@@ -1,9 +1,0 @@
-query PageRedirects {
-  pageRedirects {
-    id
-    fromUrl
-    toUrl
-    endDate
-    active
-  }
-}

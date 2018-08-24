@@ -174,9 +174,11 @@ declare global {
   type ComponentEditorMode = 'content' | 'layout'
 
   interface Redirect {
-    active: boolean
+    cacheId: string
+    disabled: boolean
     endDate: string
-    fromUrl: string
-    toUrl: string
+    from: string
+    id: string
+    to: string
   }
 }

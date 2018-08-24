@@ -1,194 +1,171 @@
-import moment, { Moment } from 'moment'
-import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
-import DatePicker from 'react-datepicker'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Checkbox, Input } from 'vtex.styleguide'
+import { Button, Input } from 'vtex.styleguide'
 
-import SavePageRedirect from '../../../queries/SavePageRedirect.graphql'
+import DeleteRedirect from '../../../queries/DeleteRedirect.graphql'
+import SaveRedirect from '../../../queries/SaveRedirect.graphql'
 
 import Separator from './Separator'
 
 interface CustomProps {
   closeForm: () => void
+  deleteRedirect: (options: { variables: object }) => void
   onInputChange: (data: object) => void
   redirectInfo: Redirect
-  savePageRedirect: (options: object) => object
+  saveRedirect: (options: object) => object
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 interface State {
-  isEndless: boolean
+  isLoading: boolean
 }
 
-class RedirectModal extends Component<Props, State> {
-  public static contextTypes = {
-    culture: PropTypes.object,
-  }
+class RedirectForm extends Component<Props, State> {
+  private isViewMode: boolean
 
   constructor(props: Props) {
     super(props)
 
-    this.state = { isEndless: true }
+    this.isViewMode = props.redirectInfo.id !== 'new'
+
+    this.state = { isLoading: false }
   }
 
   public render() {
     const {
-      culture: { locale },
-    } = this.context
-
-    const {
       closeForm,
       intl,
       redirectInfo,
-      redirectInfo: { active, fromUrl, toUrl },
+      redirectInfo: { from, to },
     } = this.props
-
-    const { isEndless } = this.state
-
-    const endDate = redirectInfo.endDate
-      ? moment(redirectInfo.endDate)
-      : moment(moment()).add(1, 'days')
 
     return (
       <div>
-        <FormattedMessage id="pages.admin.redirects.newRedirect">
+        <FormattedMessage
+          id={
+            this.isViewMode
+              ? 'pages.admin.redirects.form.title.info'
+              : 'pages.admin.redirects.form.title.new'
+          }
+        >
           {text => <h1>{text}</h1>}
         </FormattedMessage>
         <Separator />
         <form onSubmit={this.handleSave}>
           <Input
+            disabled={this.isViewMode}
             label={intl.formatMessage({
-              id: 'pages.admin.redirects.info.from',
+              id: 'pages.admin.redirects.table.from',
             })}
             onChange={(event: Event) => {
               if (event.target instanceof HTMLInputElement) {
-                this.props.onInputChange({ fromUrl: event.target.value })
+                this.props.onInputChange({ from: event.target.value })
               }
             }}
-            value={fromUrl}
+            required
+            value={from}
           />
           <Separator />
           <Input
+            disabled={this.isViewMode}
             label={intl.formatMessage({
-              id: 'pages.admin.redirects.info.to',
+              id: 'pages.admin.redirects.table.to',
             })}
             onChange={(event: Event) => {
               if (event.target instanceof HTMLInputElement) {
-                this.props.onInputChange({ toUrl: event.target.value })
+                this.props.onInputChange({ to: event.target.value })
               }
             }}
-            value={toUrl}
-          />
-          <Separator />
-          <Checkbox
-            checked={isEndless}
-            id="isEndless"
-            label={intl.formatMessage({
-              id: 'pages.admin.redirects.info.noEndDate',
-            })}
-            name="isEndless-checkbox-group"
-            onChange={this.handleIsEndlessToggle}
-            size="small"
-            value="isEndless"
-          />
-          {!isEndless && (
-            <Fragment>
-              <Separator />
-              <FormattedMessage id="pages.admin.redirects.info.endDate">
-                {text => <div className="mb3 w-100 f6">{text}</div>}
-              </FormattedMessage>
-              <DatePicker
-                dateFormat="L — LT"
-                inline
-                fixedHeight
-                locale={locale}
-                maxTime={moment().endOf('day')}
-                minDate={moment()}
-                minTime={
-                  endDate && moment().isSame(endDate, 'day')
-                    ? moment()
-                    : moment().startOf('day')
-                }
-                onChange={(date: Moment) => {
-                  this.props.onInputChange({ endDate: date.utc().format() })
-                }}
-                selected={endDate}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={15}
-                utcOffset={-3}
-              />
-            </Fragment>
-          )}
-          <Separator />
-          <Checkbox
-            checked={active}
-            id="active"
-            label={intl.formatMessage({
-              id: 'pages.admin.redirects.info.active',
-            })}
-            name="active-checkbox-group"
-            onChange={(event: Event) => {
-              if (event.target instanceof HTMLInputElement) {
-                this.props.onInputChange({
-                  active: !(event.target.value === 'true'),
-                })
-              }
-            }}
-            value="active"
+            required
+            value={to}
           />
           <Separator />
           <div className="flex justify-end">
             <div className="mr6">
-              <Button onClick={closeForm} size="small" variation="tertiary">
+              <Button
+                disabled={this.state.isLoading}
+                onClick={closeForm}
+                size="small"
+                variation="tertiary"
+              >
                 {intl.formatMessage({
-                  id: 'pages.admin.redirects.button.cancel',
+                  id: this.isViewMode
+                    ? 'pages.admin.redirects.form.button.back'
+                    : 'pages.admin.redirects.form.button.cancel',
                 })}
               </Button>
             </div>
-            <Button size="small" type="submit">
-              {intl.formatMessage({
-                id: 'pages.admin.redirects.button.save',
-              })}
-            </Button>
+            {this.isViewMode ? (
+              <Button
+                isLoading={this.state.isLoading}
+                size="small"
+                onClick={this.handleDelete(redirectInfo.id)}
+                variation="danger"
+              >
+                {intl.formatMessage({
+                  id: 'pages.admin.redirects.form.button.delete',
+                })}
+              </Button>
+            ) : (
+              <Button
+                isLoading={this.state.isLoading}
+                size="small"
+                type="submit"
+              >
+                {intl.formatMessage({
+                  id: 'pages.admin.redirects.form.button.create',
+                })}
+              </Button>
+            )}
           </div>
         </form>
       </div>
     )
   }
 
-  private handleIsEndlessToggle = () => {
-    this.setState(
-      prevState => ({
-        isEndless: !prevState.isEndless,
-      }),
-      () => {
-        if (this.state.isEndless) {
-          this.props.onInputChange({ endDate: null })
-        }
-      },
-    )
-  }
+  private handleDelete = (redirectId: string) => async () => {
+    console.log(redirectId)
 
-  private handleSave = async (event: Event) => {
-    event.preventDefault()
+    const { deleteRedirect, closeForm } = this.props
 
-    const {
-      closeForm,
-      redirectInfo: { active, endDate, fromUrl, toUrl },
-      savePageRedirect,
-    } = this.props
+    this.setState({ isLoading: true })
 
     try {
-      const data = await savePageRedirect({
+      const data = await deleteRedirect({
         variables: {
-          active,
+          id: redirectId,
+        },
+      })
+
+      console.log('OK!', data)
+
+      closeForm()
+    } catch (err) {
+      alert('Error removing page redirect configuration.')
+
+      console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
+    }
+  }
+
+  private handleSave = async () => {
+    const {
+      closeForm,
+      redirectInfo: { endDate, from, to },
+      saveRedirect,
+    } = this.props
+
+    this.setState({ isLoading: true })
+
+    try {
+      const data = await saveRedirect({
+        variables: {
           endDate,
-          fromUrl,
-          toUrl,
+          from,
+          to,
         },
       })
 
@@ -199,14 +176,18 @@ class RedirectModal extends Component<Props, State> {
       alert('Error saving page configuration.')
 
       console.log(err)
+    } finally {
+      this.setState({ isLoading: false })
     }
   }
 }
 
 export default compose(
-  graphql(SavePageRedirect, {
-    name: 'savePageRedirect',
-    options: { fetchPolicy: 'cache-and-network' },
+  graphql(DeleteRedirect, {
+    name: 'deleteRedirect',
+  }),
+  graphql(SaveRedirect, {
+    name: 'saveRedirect',
   }),
   injectIntl,
-)(RedirectModal)
+)(RedirectForm)

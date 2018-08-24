@@ -2,23 +2,29 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 
-import PageRedirects from '../../../queries/PageRedirects.graphql'
-import RemovePageRedirect from '../../../queries/RemovePageRedirect.graphql'
+import RedirectsQuery from '../../../queries/Redirects.graphql'
 
 import RedirectForm from './RedirectForm'
 import RedirectsList from './RedirectsList'
 
 interface Props {
-  pageRedirectsQuery: {
+  disableRedirect: (options: { variables: object }) => void
+  enableRedirect: (options: { variables: object }) => void
+  redirectsQuery: {
     loading: boolean
-    pageRedirects: Redirect[]
+    redirects: {
+      redirects: Redirect[]
+      total: number
+    }
   }
-  removePageRedirect: (options: object) => void
 }
 
 interface State {
   selectedRedirect: Redirect | null
 }
+
+const REDIRECTS_FROM = 0
+const REDIRECTS_TO = 999
 
 class Redirects extends Component<Props, State> {
   public static contextTypes = {
@@ -44,18 +50,16 @@ class Redirects extends Component<Props, State> {
 
   public render() {
     const {
-      pageRedirectsQuery: { loading, pageRedirects = [] },
+      redirectsQuery: { loading, redirects: redirectsData },
     } = this.props
 
     const { selectedRedirect } = this.state
 
-    if (loading) {
-      return <span>Loading...</span>
-    }
-
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">
-        {selectedRedirect ? (
+        {loading ? (
+          <span>Loading...</span>
+        ) : selectedRedirect ? (
           <RedirectForm
             closeForm={this.handleFormClose}
             onInputChange={this.handleInputChange}
@@ -63,10 +67,10 @@ class Redirects extends Component<Props, State> {
           />
         ) : (
           <RedirectsList
-            onCreate={this.handleRedirectCreation}
-            onDelete={this.handleRedirectDeletion}
-            onSelect={this.handleRedirectSelection}
-            redirects={pageRedirects}
+            onCreate={this.handleRedirectCreate}
+            onSelect={this.handleRedirectSelect}
+            redirects={redirectsData.redirects}
+            totalItems={redirectsData.total}
           />
         )}
       </div>
@@ -75,11 +79,17 @@ class Redirects extends Component<Props, State> {
 
   private getDefaultRedirectInfo() {
     return {
-      active: false,
+      cacheId: '',
+      disabled: false,
       endDate: '',
-      fromUrl: '',
-      toUrl: '',
+      from: '',
+      id: 'new',
+      to: '',
     }
+  }
+
+  private handleFormClose = () => {
+    this.setState({ selectedRedirect: null })
   }
 
   private handleInputChange = (inputData: any) => {
@@ -92,43 +102,20 @@ class Redirects extends Component<Props, State> {
   }
 
   private handleLoading = () => {
-    if (this.props.pageRedirectsQuery.loading) {
+    if (this.props.redirectsQuery.loading) {
       this.context.startLoading()
     } else {
       this.context.stopLoading()
     }
   }
 
-  private handleFormClose = () => {
-    this.setState({ selectedRedirect: null })
-  }
-
-  private handleRedirectCreation = () => {
+  private handleRedirectCreate = () => {
     this.setState({
       selectedRedirect: this.getDefaultRedirectInfo(),
     })
   }
 
-  private handleRedirectDeletion = async (event: Event) => {
-    event.stopPropagation()
-
-    const { removePageRedirect } = this.props
-
-    try {
-      const data = await removePageRedirect({
-        variables: {
-          id: 'redirect-config-id',
-        },
-      })
-
-      console.log('OK!', data)
-    } catch (err) {
-      alert('Error removing page redirect configuration.')
-      console.log(err)
-    }
-  }
-
-  private handleRedirectSelection = (event: { rowData: Redirect }) => {
+  private handleRedirectSelect = (event: { rowData: Redirect }) => {
     this.setState({
       selectedRedirect: event.rowData,
     })
@@ -136,12 +123,13 @@ class Redirects extends Component<Props, State> {
 }
 
 export default compose(
-  graphql(PageRedirects, {
-    name: 'pageRedirectsQuery',
-    options: { fetchPolicy: 'cache-and-network' },
-  }),
-  graphql(RemovePageRedirect, {
-    name: 'removePageRedirect',
-    options: { fetchPolicy: 'cache-and-network' },
+  graphql(RedirectsQuery, {
+    name: 'redirectsQuery',
+    options: {
+      variables: {
+        from: REDIRECTS_FROM,
+        to: REDIRECTS_TO,
+      },
+    },
   }),
 )(Redirects)

@@ -1,7 +1,0 @@
-mutation RemovePageRedirect(
-  $id: String,
-  ) {
-  removePageRedirect(
-    id: $id
-  )
-}
