@@ -143,7 +143,7 @@ class RedirectForm extends Component<Props, State> {
 
       closeForm()
     } catch (err) {
-      alert('Error removing page redirect configuration.')
+      // alert('Error removing page redirect configuration.')
 
       console.log(err)
     } finally {
@@ -173,7 +173,7 @@ class RedirectForm extends Component<Props, State> {
 
       closeForm()
     } catch (err) {
-      alert('Error saving page configuration.')
+      // alert('Error saving page configuration.')
 
       console.log(err)
     } finally {
