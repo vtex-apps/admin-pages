@@ -56,7 +56,7 @@ class Redirects extends Component<Props, State> {
     const { selectedRedirect } = this.state
 
     return (
-      <div className="mw8 mr-auto ml-auto mv6 ph6">
+      <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
         {loading ? (
           <span>Loading...</span>
         ) : selectedRedirect ? (
