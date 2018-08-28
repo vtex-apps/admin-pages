@@ -126,8 +126,6 @@ class RedirectForm extends Component<Props, State> {
   }
 
   private handleDelete = (redirectId: string) => async () => {
-    console.log(redirectId)
-
     const { deleteRedirect, closeForm } = this.props
 
     this.setState({ isLoading: true })
