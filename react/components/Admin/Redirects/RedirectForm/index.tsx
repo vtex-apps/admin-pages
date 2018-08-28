@@ -7,6 +7,7 @@ import { Button, Input, Toggle } from 'vtex.styleguide'
 
 import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
+import { getFormattedLocalizedDate } from '../../../../utils/date'
 
 import DatePicker from './DatePicker'
 import Separator from './Separator'
@@ -108,15 +109,7 @@ class RedirectForm extends Component<Props, State> {
                   label={intl.formatMessage({
                     id: 'pages.admin.redirects.form.datePicker.title',
                   })}
-                  value={moment(endDate)
-                    .toDate()
-                    .toLocaleDateString(locale, {
-                      day: 'numeric',
-                      hour: 'numeric',
-                      minute: 'numeric',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
+                  value={getFormattedLocalizedDate(endDate, locale)}
                 />
               ) : (
                 <Fragment>

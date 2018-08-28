@@ -30,7 +30,8 @@
   "pages.admin.redirects.form.title.info": "Informaciones de la redirección",
   "pages.admin.redirects.form.title.new": "Crear una redirección",
   "pages.admin.redirects.form.toggle.endDate": "Esta redirección tiene una fecha final",
-  "pages.admin.redirects.table.endDate": "Fecha final",
+  "pages.admin.redirects.table.endDate.default": "no establecida",
+  "pages.admin.redirects.table.endDate.title": "Fecha final",
   "pages.admin.redirects.table.from": "De",
   "pages.admin.redirects.table.to": "Para"
 }

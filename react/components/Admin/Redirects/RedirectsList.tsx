@@ -1,6 +1,9 @@
+import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Button, EmptyState, Table } from 'vtex.styleguide'
+
+import { getFormattedLocalizedDate } from '../../../utils/date'
 
 interface CustomProps {
   onCreate: () => void
@@ -12,6 +15,11 @@ interface CustomProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 class RedirectsList extends Component<Props> {
+  public static contextTypes = {
+    culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
+      .isRequired,
+  }
+
   private schema: {
     defaultSchema: {
       items: Redirect[]
@@ -19,10 +27,10 @@ class RedirectsList extends Component<Props> {
     }
   }
 
-  constructor(props: Props) {
+  constructor(props: Props, context: RenderContext) {
     super(props)
 
-    this.schema = this.getSchema(props.redirects)
+    this.schema = this.getSchema(props.redirects, context.culture.locale)
   }
 
   public render() {
@@ -59,13 +67,14 @@ class RedirectsList extends Component<Props> {
     )
   }
 
-  private getSchema(redirects: Redirect[]) {
+  private getSchema = (redirects: Redirect[], locale: string) => {
     const { intl } = this.props
 
     return {
       defaultSchema: {
         items: redirects,
         properties: {
+          // tslint:disable:object-literal-sort-keys
           from: {
             title: intl.formatMessage({
               id: 'pages.admin.redirects.table.from',
@@ -78,6 +87,23 @@ class RedirectsList extends Component<Props> {
             }),
             type: 'string',
           },
+          endDate: {
+            cellRenderer: (cell: { cellData: string }) =>
+              cell.cellData ? (
+                <span className="ph4">
+                  {getFormattedLocalizedDate(cell.cellData, locale)}
+                </span>
+              ) : (
+                <FormattedMessage id="pages.admin.redirects.table.endDate.default">
+                  {text => <span className="ph4 silver">{text}</span>}
+                </FormattedMessage>
+              ),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.table.endDate.title',
+            }),
+            type: 'string',
+          },
+          // tslint:enable:object-literal-sort-keys
         },
       },
       type: 'object',
