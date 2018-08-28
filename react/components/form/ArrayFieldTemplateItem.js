@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import { SortableElement, SortableHandle } from 'react-sortable-hoc'
 import { Transition } from 'react-spring'
 
-import TrashSimple from '../icons/TrashSimple'
 import DragHandle from '../icons/DragHandle'
+import TrashSimple from '../icons/TrashSimple'
 
 const stopPropagation = fn => e => {
   e.stopPropagation()
@@ -28,6 +28,10 @@ class ArrayFieldTemplateItem extends Component {
     showDragHandle: PropTypes.bool,
   }
 
+  state = {
+    autoHeight: false,
+  }
+
   handleLabelClick = e => {
     const { isOpen, onOpen, onClose } = this.props
 
@@ -38,11 +42,26 @@ class ArrayFieldTemplateItem extends Component {
     }
   }
 
+  handleOnRest = () => {
+    if (!this.state.autoHeight) {
+      this.setState({ autoHeight: true })
+    }
+  }
+
+  handleOnStart = () => {
+    if (this.state.autoHeight) {
+      this.setState({ autoHeight: false })
+    }
+  }
+
   renderChildren = styles => {
     const { children } = this.props
-
     return (
-      <div style={styles}>
+      <div
+        style={{
+          ...styles,
+          height: this.state.autoHeight ? 'auto' : styles.height,
+        }}>
         {children}
       </div>
     )
@@ -59,37 +78,41 @@ class ArrayFieldTemplateItem extends Component {
       showDragHandle,
     } = this.props
 
-    const title = children.props.formData.__editorItemTitle || schema.items.properties.__editorItemTitle.default
+    const title =
+      children.props.formData.__editorItemTitle ||
+      schema.items.properties.__editorItemTitle.default
 
     return (
-      <div className={`accordion-item bb b--light-silver ${showDragHandle ? '' : 'accordion-item--handle-hidden'}`}>
+      <div
+        className={`accordion-item bb b--light-silver ${
+          showDragHandle ? '' : 'accordion-item--handle-hidden'
+        }`}>
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
             {showDragHandle && <Handle />}
-            <label className="f6 accordion-label-title">
-              {title}
-            </label>
+            <label className="f6 accordion-label-title">{title}</label>
           </div>
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
-                onClick={stopPropagation(onDropIndexClick(formIndex))}
-              >
+                onClick={stopPropagation(onDropIndexClick(formIndex))}>
                 <TrashSimple size={15} />
               </button>
             )}
           </div>
         </div>
         <div
-          className={`accordion-content ${isOpen ? 'accordion-content--open' : ''}`}
-        >
+          className={`accordion-content ${
+            isOpen ? 'accordion-content--open' : ''
+          }`}>
           <Transition
             keys={isOpen ? ['children'] : []}
             from={{ opacity: 0, height: 0 }}
             enter={{ opacity: 1, height: 'auto' }}
             leave={{ opacity: 0, height: 0 }}
-          >
+            onRest={this.handleOnRest}
+            onStart={this.handleOnStart}>
             {isOpen ? [this.renderChildren] : []}
           </Transition>
         </div>

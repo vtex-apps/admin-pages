@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React, { Fragment, Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { SortableContainer } from 'react-sortable-hoc'
 import { Button } from 'vtex.styleguide'
 
@@ -14,22 +14,27 @@ function getHelperDimensions({ node }) {
   }
 }
 
-const ArrayList = SortableContainer(({ items, schema, openedItem, onOpen, onClose, sorting }) => (
-  <div className={`accordion-list-container ${sorting ? 'accordion-list-container--sorting' : ''}`}>
-    {items.map(element => (
-      <ArrayFieldTemplateItem
-        key={element.index}
-        schema={schema}
-        isOpen={openedItem === element.index}
-        onOpen={onOpen(element.index)}
-        onClose={onClose}
-        formIndex={element.index}
-        showDragHandle={items.length > 1}
-        {...element}
-      />
-    ))}
-  </div>
-))
+const ArrayList = SortableContainer(
+  ({ items, schema, openedItem, onOpen, onClose, sorting }) => (
+    <div
+      className={`accordion-list-container ${
+        sorting ? 'accordion-list-container--sorting' : ''
+      }`}>
+      {items.map(element => (
+        <ArrayFieldTemplateItem
+          key={element.index}
+          schema={schema}
+          isOpen={openedItem === element.index}
+          onOpen={onOpen(element.index)}
+          onClose={onClose}
+          formIndex={element.index}
+          showDragHandle={items.length > 1}
+          {...element}
+        />
+      ))}
+    </div>
+  )
+)
 
 class ArrayFieldTemplate extends Component {
   static propTypes = {
@@ -40,7 +45,7 @@ class ArrayFieldTemplate extends Component {
   }
 
   state = {
-    openedItem: 0,
+    openedItem: null,
   }
 
   handleOpen = index => e => {
@@ -111,8 +116,7 @@ class ArrayFieldTemplate extends Component {
             <Button
               variation="secondary"
               size="small"
-              onClick={this.handleAddItem}
-            >
+              onClick={this.handleAddItem}>
               + Add More
             </Button>
           )}
