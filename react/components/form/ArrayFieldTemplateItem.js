@@ -40,6 +40,14 @@ class ArrayFieldTemplateItem extends Component {
     }
   }
 
+  handleOnRest = () => {
+    this.autoHeight = true
+  }
+
+  handleOnStart = () => {
+    this.autoHeight = false
+  }
+
   renderChildren = styles => {
     const { children } = this.props
     return (
@@ -97,8 +105,8 @@ class ArrayFieldTemplateItem extends Component {
             from={{ opacity: 0, height: 0 }}
             enter={{ opacity: 1, height: 'auto' }}
             leave={{ opacity: 0, height: 0 }}
-            onRest={() => (this.autoHeight = true)}
-            onStart={() => (this.autoHeight = false)}>
+            onRest={this.handleOnRest}
+            onStart={this.handleOnStart}>
             {isOpen ? [this.renderChildren] : []}
           </Transition>
         </div>
