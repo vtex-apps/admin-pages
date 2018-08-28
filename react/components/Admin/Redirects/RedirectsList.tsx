@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, EmptyState, Table } from 'vtex.styleguide'
+import { Badge, Button, EmptyState, Table } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../utils/date'
 
@@ -102,6 +102,23 @@ class RedirectsList extends Component<Props> {
               id: 'pages.admin.redirects.table.endDate.title',
             }),
             type: 'string',
+          },
+          disabled: {
+            cellRenderer: (cell: { cellData: boolean }) => (
+              <div className="ph4">
+                <Badge type={cell.cellData ? 'error' : 'success'}>
+                  {intl.formatMessage({
+                    id: cell.cellData
+                      ? 'pages.admin.redirects.table.status.inactive'
+                      : 'pages.admin.redirects.table.status.active',
+                  })}
+                </Badge>
+              </div>
+            ),
+            title: intl.formatMessage({
+              id: 'pages.admin.redirects.table.status.title',
+            }),
+            type: 'boolean',
           },
           // tslint:enable:object-literal-sort-keys
         },
