@@ -12,14 +12,12 @@
     "vtex.file-manager": "0.x",
     "vtex.file-manager-graphql": "0.x",
     "vtex.pages-graphql": "1.x",
-    "vtex.styleguide": "5.x",
+    "vtex.styleguide": "6.x",
     "vtex.admin": "1.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "settingsSchema": {},
   "scripts": {
     "postreleasy": "vtex publish -r vtex --verbose"
