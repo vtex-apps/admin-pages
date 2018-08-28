@@ -28,7 +28,9 @@ class ArrayFieldTemplateItem extends Component {
     showDragHandle: PropTypes.bool,
   }
 
-  autoHeight = false
+  state = {
+    autoHeight: false,
+  }
 
   handleLabelClick = e => {
     const { isOpen, onOpen, onClose } = this.props
@@ -41,11 +43,15 @@ class ArrayFieldTemplateItem extends Component {
   }
 
   handleOnRest = () => {
-    this.autoHeight = true
+    if (!this.state.autoHeight) {
+      this.setState({ autoHeight: true })
+    }
   }
 
   handleOnStart = () => {
-    this.autoHeight = false
+    if (this.state.autoHeight) {
+      this.setState({ autoHeight: false })
+    }
   }
 
   renderChildren = styles => {
@@ -54,7 +60,7 @@ class ArrayFieldTemplateItem extends Component {
       <div
         style={{
           ...styles,
-          height: this.autoHeight ? 'auto' : styles.height,
+          height: this.state.autoHeight ? 'auto' : styles.height,
         }}>
         {children}
       </div>
