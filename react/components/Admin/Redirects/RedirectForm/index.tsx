@@ -1,11 +1,14 @@
-import React, { Component } from 'react'
+import moment, { Moment } from 'moment'
+import PropTypes from 'prop-types'
+import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Input } from 'vtex.styleguide'
+import { Button, Input, Toggle } from 'vtex.styleguide'
 
-import DeleteRedirect from '../../../queries/DeleteRedirect.graphql'
-import SaveRedirect from '../../../queries/SaveRedirect.graphql'
+import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
+import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 
+import DatePicker from './DatePicker'
 import Separator from './Separator'
 
 interface CustomProps {
@@ -20,9 +23,15 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 interface State {
   isLoading: boolean
+  shouldShowDatePicker: boolean
 }
 
 class RedirectForm extends Component<Props, State> {
+  public static contextTypes = {
+    culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
+      .isRequired,
+  }
+
   private isViewMode: boolean
 
   constructor(props: Props) {
@@ -30,7 +39,10 @@ class RedirectForm extends Component<Props, State> {
 
     this.isViewMode = props.redirectInfo.id !== 'new'
 
-    this.state = { isLoading: false }
+    this.state = {
+      isLoading: false,
+      shouldShowDatePicker: !!props.redirectInfo.endDate,
+    }
   }
 
   public render() {
@@ -38,11 +50,15 @@ class RedirectForm extends Component<Props, State> {
       closeForm,
       intl,
       redirectInfo,
-      redirectInfo: { from, to },
+      redirectInfo: { endDate, from, to },
     } = this.props
 
+    const { isLoading, shouldShowDatePicker } = this.state
+
+    const { locale } = this.context.culture
+
     return (
-      <div>
+      <Fragment>
         <FormattedMessage
           id={
             this.isViewMode
@@ -59,11 +75,7 @@ class RedirectForm extends Component<Props, State> {
             label={intl.formatMessage({
               id: 'pages.admin.redirects.table.from',
             })}
-            onChange={(event: Event) => {
-              if (event.target instanceof HTMLInputElement) {
-                this.props.onInputChange({ from: event.target.value })
-              }
-            }}
+            onChange={this.updateFrom}
             required
             value={from}
           />
@@ -73,19 +85,58 @@ class RedirectForm extends Component<Props, State> {
             label={intl.formatMessage({
               id: 'pages.admin.redirects.table.to',
             })}
-            onChange={(event: Event) => {
-              if (event.target instanceof HTMLInputElement) {
-                this.props.onInputChange({ to: event.target.value })
-              }
-            }}
+            onChange={this.updateTo}
             required
             value={to}
           />
           <Separator />
+          <Toggle
+            checked={shouldShowDatePicker}
+            disabled={this.isViewMode}
+            label={intl.formatMessage({
+              id: 'pages.admin.redirects.form.toggle.endDate',
+            })}
+            onChange={this.toggleDatePickerVisibility}
+            size="small"
+          />
+          <Separator />
+          {shouldShowDatePicker && (
+            <Fragment>
+              {this.isViewMode ? (
+                <Input
+                  disabled
+                  label={intl.formatMessage({
+                    id: 'pages.admin.redirects.form.datePicker.title',
+                  })}
+                  value={moment(endDate)
+                    .toDate()
+                    .toLocaleDateString(locale, {
+                      day: 'numeric',
+                      hour: 'numeric',
+                      minute: 'numeric',
+                      month: 'long',
+                      year: 'numeric',
+                    })}
+                />
+              ) : (
+                <Fragment>
+                  <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                    {text => <div className="mb3 w-100 f6">{text}</div>}
+                  </FormattedMessage>
+                  <DatePicker
+                    locale={locale}
+                    onChange={this.updateEndDate}
+                    selected={endDate ? moment(endDate) : undefined}
+                  />
+                </Fragment>
+              )}
+              <Separator />
+            </Fragment>
+          )}
           <div className="flex justify-end">
             <div className="mr6">
               <Button
-                disabled={this.state.isLoading}
+                disabled={isLoading}
                 onClick={closeForm}
                 size="small"
                 variation="tertiary"
@@ -99,7 +150,7 @@ class RedirectForm extends Component<Props, State> {
             </div>
             {this.isViewMode ? (
               <Button
-                isLoading={this.state.isLoading}
+                isLoading={isLoading}
                 size="small"
                 onClick={this.handleDelete(redirectInfo.id)}
                 variation="danger"
@@ -109,11 +160,7 @@ class RedirectForm extends Component<Props, State> {
                 })}
               </Button>
             ) : (
-              <Button
-                isLoading={this.state.isLoading}
-                size="small"
-                type="submit"
-              >
+              <Button isLoading={isLoading} size="small" type="submit">
                 {intl.formatMessage({
                   id: 'pages.admin.redirects.form.button.create',
                 })}
@@ -121,7 +168,7 @@ class RedirectForm extends Component<Props, State> {
             )}
           </div>
         </form>
-      </div>
+      </Fragment>
     )
   }
 
@@ -177,6 +224,38 @@ class RedirectForm extends Component<Props, State> {
     } finally {
       this.setState({ isLoading: false })
     }
+  }
+
+  private updateEndDate = (value: Moment) => {
+    this.props.onInputChange({ endDate: value.utc().format() })
+  }
+
+  private updateFrom = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.props.onInputChange({ from: event.target.value })
+    }
+  }
+
+  private updateTo = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.props.onInputChange({ to: event.target.value })
+    }
+  }
+
+  private toggleDatePickerVisibility = () => {
+    this.setState(
+      prevState => ({
+        ...prevState,
+        shouldShowDatePicker: !prevState.shouldShowDatePicker,
+      }),
+      () => {
+        this.props.onInputChange({
+          endDate: this.state.shouldShowDatePicker
+            ? moment().add(1, 'days')
+            : '',
+        })
+      },
+    )
   }
 }
 
