@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Badge, Button, EmptyState, Table } from 'vtex.styleguide'
+import { Badge, EmptyState, Table } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
+
+import CreateButton from './CreateButton'
 
 interface CustomProps {
   onCreate: () => void
@@ -45,9 +47,7 @@ class RedirectsList extends Component<Props> {
           title={intl.formatMessage({ id: 'pages.admin.redirects.emptyState' })}
         >
           <div className="pt5">
-            <Button onClick={onCreate} size="small" variation="primary">
-              <FormattedMessage id="pages.admin.redirects.button.create" />
-            </Button>
+            <CreateButton onClick={onCreate} />
           </div>
         </EmptyState>
       )
@@ -56,9 +56,7 @@ class RedirectsList extends Component<Props> {
     return (
       <Fragment>
         <div className="flex justify-end mb4">
-          <Button onClick={onCreate} size="small" variation="primary">
-            <FormattedMessage id="pages.admin.redirects.button.create" />
-          </Button>
+          <CreateButton onClick={onCreate} />
         </div>
         <div className="pointer">
           <Table items={items} onRowClick={onSelect} schema={schema} />
