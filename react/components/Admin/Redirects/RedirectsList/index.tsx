@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { Badge, Button, EmptyState, Table } from 'vtex.styleguide'
 
-import { getFormattedLocalizedDate } from '../../../utils/date'
+import { getFormattedLocalizedDate } from '../../../../utils/date'
 
 interface CustomProps {
   onCreate: () => void
