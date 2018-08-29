@@ -5,7 +5,7 @@ import { compose, graphql } from 'react-apollo'
 import RedirectsQuery from '../../../queries/Redirects.graphql'
 
 import RedirectForm from './RedirectForm'
-import RedirectsList from './RedirectsList'
+import RedirectList from './RedirectList'
 
 interface Props {
   disableRedirect: (options: { variables: object }) => void
@@ -66,7 +66,7 @@ class Redirects extends Component<Props, State> {
             redirectInfo={this.state.selectedRedirect}
           />
         ) : (
-          <RedirectsList
+          <RedirectList
             onCreate={this.handleRedirectCreate}
             onSelect={this.handleRedirectSelect}
             redirects={redirectsData.redirects}

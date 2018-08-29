@@ -16,7 +16,7 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-class RedirectsList extends Component<Props> {
+class RedirectList extends Component<Props> {
   public static contextTypes = {
     culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
       .isRequired,
@@ -126,4 +126,4 @@ class RedirectsList extends Component<Props> {
   }
 }
 
-export default injectIntl(RedirectsList)
+export default injectIntl(RedirectList)
