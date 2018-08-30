@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { filter, flatten, sort } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
@@ -152,7 +153,16 @@ class PageList extends Component<DataProps<PageData>> {
 
     const spinner = (loadingAvailableConditions ||
       loadingTemplates ||
-      loadingRoutes) && <span>Loading...</span>
+      loadingRoutes) && (
+      <FormattedMessage id="pages.admin.loading">
+        {text => (
+          <span>
+            {text}
+            &hellip;
+          </span>
+        )}
+      </FormattedMessage>
+    )
 
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">

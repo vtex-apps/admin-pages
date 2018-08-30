@@ -87,7 +87,14 @@ class RedirectForm extends Component<Props, State> {
     if (!formData) {
       return (
         <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
-          <span>Loading...</span>
+          <FormattedMessage id="pages.admin.loading">
+            {text => (
+              <span>
+                {text}
+                &hellip;
+              </span>
+            )}
+          </FormattedMessage>
         </div>
       )
     }
