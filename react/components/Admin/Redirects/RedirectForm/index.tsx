@@ -8,11 +8,13 @@ import { Button, Input, Toggle } from 'vtex.styleguide'
 
 import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
 import Redirect from '../../../../queries/Redirect.graphql'
+import Redirects from '../../../../queries/Redirects.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 
 import DatePicker from './DatePicker'
 import Separator from './Separator'
+import { readRedirectsFromStore, writeRedirectsToStore } from './utils'
 
 interface CustomProps {
   deleteRedirect: (options: { variables: object }) => void
@@ -333,6 +335,30 @@ class RedirectForm extends Component<Props, State> {
 export default compose(
   graphql(DeleteRedirect, {
     name: 'deleteRedirect',
+    options: {
+      update: (store, { data }) => {
+        const deleteRedirect = data && data.deleteRedirect
+
+        try {
+          const queryData = readRedirectsFromStore(Redirects, store)
+
+          const newData = {
+            ...queryData,
+            redirects: {
+              ...queryData!.redirects,
+              redirects: queryData!.redirects.redirects.filter(
+                redirect => redirect.id !== deleteRedirect.id,
+              ),
+              total: queryData!.redirects.total - 1,
+            },
+          }
+
+          writeRedirectsToStore(newData, Redirects, store)
+        } catch (err) {
+          console.log('No cache found for "Redirects"')
+        }
+      },
+    },
   }),
   graphql(Redirect, {
     name: 'redirectQuery',
@@ -345,6 +371,28 @@ export default compose(
   }),
   graphql(SaveRedirect, {
     name: 'saveRedirect',
+    options: {
+      update: (store, { data }) => {
+        const saveRedirect = data && data.saveRedirect
+
+        try {
+          const queryData = readRedirectsFromStore(Redirects, store)
+
+          const newData = {
+            ...queryData,
+            redirects: {
+              ...queryData!.redirects,
+              redirects: queryData!.redirects.redirects.concat(saveRedirect),
+              total: queryData!.redirects.total + 1,
+            },
+          }
+
+          writeRedirectsToStore(newData, Redirects, store)
+        } catch (err) {
+          console.log('No cache found for "Redirects"')
+        }
+      },
+    },
   }),
   injectIntl,
   withRuntimeContext,
