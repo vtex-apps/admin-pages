@@ -18,6 +18,9 @@
     "admin/cms/redirects": {
       "path": "/admin/cms/redirects"
     },
+    "admin/cms/redirect-details": {
+      "path": "/admin/cms/redirects/*id"
+    },
     "admin/cms/settings": {
       "path": "/admin/cms/settings"
     }
@@ -45,7 +48,10 @@
       "component": "PageEditor"
     },
     "admin/cms/redirects": {
-      "component": "Redirects"
+      "component": "RedirectList"
+    },
+    "admin/cms/redirect-details": {
+      "component": "RedirectForm"
     },
     "admin/cms/settings": {
       "component": "Settings"

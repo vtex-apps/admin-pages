@@ -1,67 +1,110 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { compose, graphql } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import { withRuntimeContext } from 'render'
 import { Badge, EmptyState, Table } from 'vtex.styleguide'
 
+import Redirects from '../../../../queries/Redirects.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 
 import CreateButton from './CreateButton'
 
 interface CustomProps {
-  onCreate: () => void
-  onSelect: (event: { rowData: Redirect }) => void
-  redirects: Redirect[]
-  totalItems: number
+  redirectsQuery: {
+    loading: boolean
+    redirects?: {
+      redirects: Redirect[]
+      total: number
+    }
+  }
 }
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps
+type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
 
-class RedirectList extends Component<Props> {
-  public static contextTypes = {
-    culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
-      .isRequired,
-  }
-
-  private schema: {
+interface State {
+  schema?: {
     defaultSchema: {
       items: Redirect[]
       properties: object
     }
   }
+}
 
-  constructor(props: Props, context: RenderContext) {
+const BASE_URL = '/admin/cms/redirects'
+
+const REDIRECTS_FROM = 0
+const REDIRECTS_TO = 999
+
+class RedirectList extends Component<Props, State> {
+  public static contextTypes = {
+    culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
+      .isRequired,
+    startLoading: PropTypes.func.isRequired,
+    stopLoading: PropTypes.func.isRequired,
+  }
+
+  constructor(props: Props) {
     super(props)
 
-    this.schema = this.getSchema(props.redirects, context.culture.locale)
+    this.state = {
+      schema: undefined,
+    }
+  }
+
+  public componentDidMount() {
+    this.handleLoading()
+
+    this.handleStateSchema()
+  }
+
+  public componentDidUpdate() {
+    this.handleLoading()
+
+    this.handleStateSchema()
   }
 
   public render() {
-    const { intl, onCreate, onSelect } = this.props
+    const { intl } = this.props
 
-    const schema = this.schema.defaultSchema
-    const items = schema.items
-
-    if (items.length === 0) {
+    if (!this.state.schema) {
       return (
-        <EmptyState
-          title={intl.formatMessage({ id: 'pages.admin.redirects.emptyState' })}
-        >
-          <div className="pt5">
-            <CreateButton onClick={onCreate} />
-          </div>
-        </EmptyState>
+        <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
+          <span>Loading...</span>
+        </div>
       )
     }
 
+    const schema = this.state.schema.defaultSchema
+    const items = schema.items
+
     return (
-      <Fragment>
-        <div className="flex justify-end mb4">
-          <CreateButton onClick={onCreate} />
-        </div>
-        <div className="pointer">
-          <Table items={items} onRowClick={onSelect} schema={schema} />
-        </div>
-      </Fragment>
+      <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
+        {items.length === 0 ? (
+          <EmptyState
+            title={intl.formatMessage({
+              id: 'pages.admin.redirects.emptyState',
+            })}
+          >
+            <div className="pt5">
+              <CreateButton onClick={this.openNewRedirect} />
+            </div>
+          </EmptyState>
+        ) : (
+          <Fragment>
+            <div className="flex justify-end mb4">
+              <CreateButton onClick={this.openNewRedirect} />
+            </div>
+            <div className="pointer">
+              <Table
+                items={items}
+                onRowClick={this.viewRedirect}
+                schema={schema}
+              />
+            </div>
+          </Fragment>
+        )}
+      </div>
     )
   }
 
@@ -124,6 +167,54 @@ class RedirectList extends Component<Props> {
       type: 'object',
     }
   }
+
+  private handleLoading = () => {
+    if (this.props.redirectsQuery.loading) {
+      this.context.startLoading()
+    } else {
+      this.context.stopLoading()
+    }
+  }
+
+  private handleStateSchema = () => {
+    const { locale } = this.context.culture
+    const {
+      redirectsQuery: { redirects: redirectsData },
+    } = this.props
+    const { schema } = this.state
+
+    if (redirectsData && !schema) {
+      this.setState({
+        schema: this.getSchema(redirectsData.redirects, locale),
+      })
+    }
+  }
+
+  private openNewRedirect = () => {
+    const { navigate } = this.props.runtime
+
+    navigate({ to: `${BASE_URL}/new` })
+  }
+
+  private viewRedirect = (event: { rowData: Redirect }) => {
+    const { navigate } = this.props.runtime
+
+    const selectedRedirect = event.rowData
+
+    navigate({ to: `${BASE_URL}/${selectedRedirect.id}` })
+  }
 }
 
-export default injectIntl(RedirectList)
+export default compose(
+  graphql(Redirects, {
+    name: 'redirectsQuery',
+    options: {
+      variables: {
+        from: REDIRECTS_FROM,
+        to: REDIRECTS_TO,
+      },
+    },
+  }),
+  injectIntl,
+  withRuntimeContext,
+)(RedirectList)

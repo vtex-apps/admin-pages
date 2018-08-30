@@ -1,0 +1,10 @@
+query Redirect($id: ID!) {
+  redirect(id: $id) {
+    cacheId
+    disabled
+    endDate
+    from
+    id
+    to
+  }
+}
