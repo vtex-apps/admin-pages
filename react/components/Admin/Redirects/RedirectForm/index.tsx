@@ -11,6 +11,7 @@ import Redirect from '../../../../queries/Redirect.graphql'
 import Redirects from '../../../../queries/Redirects.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
+import Loader from '../../../Loader'
 import { NEW_REDIRECT_ID } from '../consts'
 
 import DatePicker from './DatePicker'
@@ -88,14 +89,7 @@ class RedirectForm extends Component<Props, State> {
     if (!formData) {
       return (
         <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
-          <FormattedMessage id="pages.admin.loading">
-            {text => (
-              <span>
-                {text}
-                &hellip;
-              </span>
-            )}
-          </FormattedMessage>
+          <Loader />
         </div>
       )
     }
