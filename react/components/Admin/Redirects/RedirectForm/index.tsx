@@ -13,6 +13,7 @@ import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Loader from '../../../Loader'
 import { NEW_REDIRECT_ID } from '../consts'
+import StylesContainer from '../StylesContainer'
 
 import DatePicker from './DatePicker'
 import Separator from './Separator'
@@ -86,16 +87,12 @@ class RedirectForm extends Component<Props, State> {
     const { intl } = this.props
     const { formData, isLoading, shouldShowDatePicker } = this.state
 
-    if (!formData) {
       return (
-        <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
+      <StylesContainer>
+        {!formData ? (
           <Loader />
-        </div>
-      )
-    }
-
-    return (
-      <div className="w-80 mw9 mv6 ph6 mr-auto ml-auto">
+        ) : (
+          <Fragment>
         <FormattedMessage
           id={
             this.isViewMode
@@ -199,7 +196,9 @@ class RedirectForm extends Component<Props, State> {
             )}
           </div>
         </form>
-      </div>
+          </Fragment>
+        )}
+      </StylesContainer>
     )
   }
 
