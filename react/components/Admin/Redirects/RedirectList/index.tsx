@@ -7,6 +7,7 @@ import { Badge, EmptyState, Table } from 'vtex.styleguide'
 
 import Redirects from '../../../../queries/Redirects.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
+import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
 
 import CreateButton from './CreateButton'
 
@@ -30,8 +31,6 @@ interface State {
     }
   }
 }
-
-const BASE_URL = '/admin/cms/redirects'
 
 const REDIRECTS_FROM = 0
 const REDIRECTS_TO = 999
@@ -200,7 +199,7 @@ class RedirectList extends Component<Props, State> {
   private openNewRedirect = () => {
     const { navigate } = this.props.runtime
 
-    navigate({ to: `${BASE_URL}/new` })
+    navigate({ to: `${BASE_URL}/${NEW_REDIRECT_ID}` })
   }
 
   private viewRedirect = (event: { rowData: Redirect }) => {

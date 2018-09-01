@@ -11,6 +11,7 @@ import Redirect from '../../../../queries/Redirect.graphql'
 import Redirects from '../../../../queries/Redirects.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 import { getFormattedLocalizedDate } from '../../../../utils/date'
+import { NEW_REDIRECT_ID } from '../consts'
 
 import DatePicker from './DatePicker'
 import Separator from './Separator'
@@ -33,8 +34,6 @@ interface State {
   isLoading: boolean
   shouldShowDatePicker: boolean
 }
-
-const NEW_REDIRECT_ID = 'new'
 
 class RedirectForm extends Component<Props, State> {
   public static contextTypes = {
