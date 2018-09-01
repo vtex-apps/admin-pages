@@ -33,6 +33,8 @@
   "pages.admin.redirects.form.title.info": "Informações do redirecionamento",
   "pages.admin.redirects.form.title.new": "Criar um redirecionamento",
   "pages.admin.redirects.form.toggle.endDate": "Este redirecionamento tem uma data de fim",
+  "pages.admin.redirects.pagination.of": "de",
+  "pages.admin.redirects.pagination.showRows": "Número de linhas",
   "pages.admin.redirects.table.status.active": "Ativo",
   "pages.admin.redirects.table.status.inactive": "Inativo",
   "pages.admin.redirects.table.status.title": "Status",

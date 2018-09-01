@@ -41,6 +41,8 @@
   "pages.admin.redirects.form.title.info": "Redirect info",
   "pages.admin.redirects.form.title.new": "Create a redirect",
   "pages.admin.redirects.form.toggle.endDate": "This redirect has an end date",
+  "pages.admin.redirects.pagination.of": "of",
+  "pages.admin.redirects.pagination.showRows": "Number of rows",
   "pages.admin.redirects.table.status.active": "Active",
   "pages.admin.redirects.table.status.inactive": "Inactive",
   "pages.admin.redirects.table.status.title": "Status",
