@@ -1,36 +1,67 @@
+import { DataProxy } from 'apollo-cache'
+
+import Redirects from '../../../../queries/Redirects.graphql'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
 
-interface RedirectsQuery {
-  redirects: {
-    redirects: Redirect[]
-    total: number
+import { MutationResult, QueryData, RedirectsQuery } from './typings'
+
+const cacheAccessParameters = {
+  query: Redirects,
+  variables: {
+    from: PAGINATION_START,
+    to: PAGINATION_START + PAGINATION_STEP,
+  },
+}
+
+export const getStoreUpdater = (operation: 'delete' | 'save') => (
+  store: DataProxy,
+  result: MutationResult,
+) => {
+  const deleteRedirect = result.data && result.data.deleteRedirect
+  const saveRedirect = result.data && result.data.saveRedirect
+
+  const isDelete = operation === 'delete'
+
+  try {
+    const queryData = readRedirectsFromStore(store)
+
+    if (queryData) {
+      const newRedirects = isDelete
+        ? (deleteRedirect &&
+            queryData.redirects.redirects.filter(
+              redirect => redirect.id !== deleteRedirect.id,
+            )) ||
+          queryData.redirects.redirects
+        : (saveRedirect &&
+            queryData.redirects.redirects.concat(saveRedirect)) ||
+          queryData.redirects.redirects
+
+      const newTotal = isDelete
+        ? queryData.redirects.total - 1
+        : queryData.redirects.total + 1
+
+      const newData = {
+        ...queryData,
+        redirects: {
+          ...queryData.redirects,
+          redirects: newRedirects,
+          total: newTotal,
+        },
+      }
+
+      writeRedirectsToStore(newData, store)
+    }
+  } catch (err) {
+    console.log('No cache found for "Redirects".')
   }
 }
 
-type QueryData = RedirectsQuery | null
+const readRedirectsFromStore = (store: DataProxy): QueryData =>
+  store.readQuery(cacheAccessParameters)
 
-const VARIABLES = {
-  from: PAGINATION_START,
-  to: PAGINATION_START + PAGINATION_STEP,
-}
-
-export const readRedirectsFromStore = (
-  redirectsQuery: RedirectsQuery,
-  store: any,
-): QueryData =>
-  store.readQuery({
-    query: redirectsQuery,
-    variables: VARIABLES,
-  })
-
-export const writeRedirectsToStore = (
-  newData: RedirectsQuery,
-  redirectsQuery: RedirectsQuery,
-  store: any,
-) => {
+const writeRedirectsToStore = (newData: RedirectsQuery, store: DataProxy) => {
   store.writeQuery({
     data: newData,
-    query: redirectsQuery,
-    variables: VARIABLES,
+    ...cacheAccessParameters,
   })
 }
