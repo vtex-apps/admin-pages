@@ -1,14 +1,4 @@
-import {
-  filter,
-  has,
-  keys,
-  map,
-  merge,
-  mergeDeepLeft,
-  pick,
-  pickBy,
-  reduce,
-} from 'ramda'
+import { filter, has, keys, map, merge, mergeDeepLeft, path, pick, pickBy, reduce } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
@@ -32,7 +22,6 @@ import TextArea from '../form/TextArea'
 import Toggle from '../form/Toggle'
 import Modal from '../Modal'
 import ModeSwitcher from '../ModeSwitcher'
-
 import ConfigurationsList from './ConfigurationsList'
 import LabelEditor from './LabelEditor'
 import SaveButton from './SaveButton'
@@ -260,8 +249,8 @@ class ComponentEditor extends Component<
         properties,
       )
       const itemsProperties = pickBy(
-        property => has('items', property),
-        properties,
+        property => has('properties', property),
+        properties.items
       )
 
       return {
@@ -275,7 +264,10 @@ class ComponentEditor extends Component<
             deepProperties,
           )),
         ...(itemsProperties &&
-          map(item => getDeepUiSchema(item), itemsProperties)),
+          map(
+            item => getDeepUiSchema(item),
+            itemsProperties)
+          ),
       }
     }
 
@@ -290,6 +282,13 @@ class ComponentEditor extends Component<
           property => has('properties', property),
           componentSchema.properties,
         ),
+      ),
+      ...map(
+        property => getDeepUiSchema(property),
+        pickBy(
+          property => has('items', property),
+          componentSchema.properties
+        )
       ),
     }
 
