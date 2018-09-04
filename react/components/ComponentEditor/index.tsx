@@ -30,11 +30,11 @@ import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
 import Radio from '../form/Radio'
 import TextArea from '../form/TextArea'
 import Toggle from '../form/Toggle'
+import Modal from '../Modal'
 import ModeSwitcher from '../ModeSwitcher'
 
 import ConfigurationsList from './ConfigurationsList'
 import LabelEditor from './LabelEditor'
-import Modal from './Modal'
 import SaveButton from './SaveButton'
 
 const NEW_CONFIGURATION_ID = 'new'
@@ -297,6 +297,8 @@ class ComponentEditor extends Component<
   }
 
   public render() {
+    const { intl } = this.props
+
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
     const { component, props } = this.getExtension()
@@ -342,11 +344,20 @@ class ComponentEditor extends Component<
     return (
       <div className="w-100 dark-gray">
         <Modal
+          isActionLoading={this.state.isLoading}
           isOpen={this.state.isModalOpen}
-          isSaveLoading={this.state.isLoading}
-          onClickDiscard={this.handleConfigurationDiscard}
-          onClickSave={this.handleConfigurationSave}
+          onClickAction={this.handleConfigurationSave}
+          onClickCancel={this.handleConfigurationDiscard}
           onClose={this.handleModalClose}
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.components.button.save',
+          })}
+          textButtonCancel={intl.formatMessage({
+            id: 'pages.editor.components.modal.button.discard',
+          })}
+          textMessage={intl.formatMessage({
+            id: 'pages.editor.components.modal.text',
+          })}
         />
         <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
           <span
