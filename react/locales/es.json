@@ -27,7 +27,7 @@
   "pages.admin.redirects.form.button.back": "Volver",
   "pages.admin.redirects.form.button.cancel": "Cancelar",
   "pages.admin.redirects.form.button.create": "Crear",
-  "pages.admin.redirects.form.button.delete": "Borrar",
+  "pages.admin.redirects.form.button.remove": "Borrar",
   "pages.admin.redirects.form.datePicker.title": "Fecha final",
   "pages.admin.redirects.form.modal.text": "¿Está seguro de que desea borrar esta redirección?",
   "pages.admin.redirects.form.title.info": "Informaciones de la redirección",

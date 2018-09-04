@@ -75,7 +75,7 @@ class Form extends Component<Props, State> {
           onClickCancel={this.toggleModalVisibility}
           onClose={this.toggleModalVisibility}
           textButtonAction={intl.formatMessage({
-            id: 'pages.admin.redirects.form.button.delete',
+            id: 'pages.admin.redirects.form.button.remove',
           })}
           textButtonCancel={intl.formatMessage({
             id: 'pages.admin.redirects.form.button.cancel',
@@ -177,7 +177,7 @@ class Form extends Component<Props, State> {
                     variation="danger"
                   >
                     {intl.formatMessage({
-                      id: 'pages.admin.redirects.form.button.delete',
+                      id: 'pages.admin.redirects.form.button.remove',
                     })}
                   </Button>
                 ) : (
