@@ -37,6 +37,8 @@ import LabelEditor from './LabelEditor'
 import Modal from './Modal'
 import SaveButton from './SaveButton'
 
+const NEW_CONFIGURATION_ID = 'new'
+
 const defaultUiSchema = {
   classNames: 'editor-form',
 }
@@ -331,6 +333,12 @@ class ComponentEditor extends Component<
       ...props,
     }
 
+    const shouldRenderSaveButton =
+      this.state.isEditMode &&
+      (this.state.wasModified ||
+        (this.state.configuration &&
+          this.state.configuration.configurationId === NEW_CONFIGURATION_ID))
+
     return (
       <div className="w-100 dark-gray">
         <Modal
@@ -353,8 +361,7 @@ class ComponentEditor extends Component<
           </span>
           <div className="w-100 pl5 flex justify-between items-center">
             <h4 className="mv0 f6 fw5 dark-gray">{componentSchema.title}</h4>
-            {this.state.isEditMode &&
-              this.state.wasModified && (
+            {shouldRenderSaveButton && (
                 <SaveButton
                   isLoading={this.state.isLoading}
                   onClick={this.handleConfigurationSave}
@@ -411,7 +418,7 @@ class ComponentEditor extends Component<
     return {
       allMatches: true,
       conditions: [],
-      configurationId: 'new',
+      configurationId: NEW_CONFIGURATION_ID,
       device: runtime.device,
       propsJSON: '{}',
       routeId: runtime.page,
@@ -483,8 +490,6 @@ class ComponentEditor extends Component<
 
   private handleConfigurationCreation = () => {
     this.handleConfigurationOpen(this.getDefaultConfiguration())
-
-    this.setState({ wasModified: true })
   }
 
   private handleConfigurationDefaultState = () => {
@@ -502,7 +507,7 @@ class ComponentEditor extends Component<
       ) {
         this.handleConfigurationChange(configurations[0])
       } else {
-        this.handleConfigurationOpen(this.getDefaultConfiguration())
+        this.handleConfigurationCreation()
       }
     }
   }
@@ -539,7 +544,7 @@ class ComponentEditor extends Component<
     const { allMatches, device } = configuration!
 
     const configurationId =
-      configuration!.configurationId === 'new'
+      configuration!.configurationId === NEW_CONFIGURATION_ID
         ? undefined
         : configuration!.configurationId
 
