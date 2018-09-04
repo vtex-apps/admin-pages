@@ -1,12 +1,10 @@
 import React from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Button } from 'vtex.styleguide'
 
-interface CustomProps {
+interface Props {
   onClick: () => void
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const CreateButton = ({ onClick }: Props) => (
   <Button onClick={onClick} size="small" variation="primary">
@@ -14,4 +12,4 @@ const CreateButton = ({ onClick }: Props) => (
   </Button>
 )
 
-export default injectIntl(CreateButton)
+export default CreateButton
