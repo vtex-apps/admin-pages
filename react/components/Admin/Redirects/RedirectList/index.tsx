@@ -48,12 +48,20 @@ class RedirectList extends Component<Props, State> {
                 <List
                   from={paginationFrom}
                   items={data.redirects.redirects}
-                  to={paginationTo}
+                  to={
+                    paginationTo > data.redirects.total
+                      ? data.redirects.total
+                      : paginationTo
+                  }
                 />
                 {data.redirects.total > 0 && (
                   <Pagination
                     currentItemFrom={paginationFrom + 1}
-                    currentItemTo={paginationTo}
+                    currentItemTo={
+                      paginationTo > data.redirects.total
+                        ? data.redirects.total
+                        : paginationTo
+                    }
                     onNextClick={this.getGoToNextPage(data.redirects.total)}
                     onPrevClick={this.goToPrevPage}
                     textOf={intl.formatMessage({
