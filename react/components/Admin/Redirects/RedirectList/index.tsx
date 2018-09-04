@@ -50,19 +50,21 @@ class RedirectList extends Component<Props, State> {
                   items={data.redirects.redirects}
                   to={paginationTo}
                 />
-                <Pagination
-                  currentItemFrom={paginationFrom + 1}
-                  currentItemTo={paginationTo}
-                  onNextClick={this.getGoToNextPage(data.redirects.total)}
-                  onPrevClick={this.goToPrevPage}
-                  textOf={intl.formatMessage({
-                    id: 'pages.admin.redirects.pagination.of',
-                  })}
-                  textShowRows={intl.formatMessage({
-                    id: 'pages.admin.redirects.pagination.showRows',
-                  })}
-                  totalItems={data.redirects.total}
-                />
+                {data.redirects.total > 0 && (
+                  <Pagination
+                    currentItemFrom={paginationFrom + 1}
+                    currentItemTo={paginationTo}
+                    onNextClick={this.getGoToNextPage(data.redirects.total)}
+                    onPrevClick={this.goToPrevPage}
+                    textOf={intl.formatMessage({
+                      id: 'pages.admin.redirects.pagination.of',
+                    })}
+                    textShowRows={intl.formatMessage({
+                      id: 'pages.admin.redirects.pagination.showRows',
+                    })}
+                    totalItems={data.redirects.total}
+                  />
+                )}
               </Fragment>
             )}
           </StylesContainer>
