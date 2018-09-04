@@ -7,6 +7,7 @@ import { withRuntimeContext } from 'render'
 import { Button, Input, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
+import Modal from '../../../Modal'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
 import StylesContainer from '../StylesContainer'
 
@@ -25,6 +26,7 @@ interface State {
   data: Redirect
   isLoading: boolean
   shouldShowDatePicker: boolean
+  shouldShowModal: boolean
 }
 
 class Form extends Component<Props, State> {
@@ -45,6 +47,7 @@ class Form extends Component<Props, State> {
       data: props.initialData,
       isLoading: false,
       shouldShowDatePicker: false,
+      shouldShowModal: false,
     }
   }
 
@@ -55,114 +58,140 @@ class Form extends Component<Props, State> {
   public render() {
     const { locale } = this.context.culture
     const { intl } = this.props
-    const { data, isLoading, shouldShowDatePicker } = this.state
+    const {
+      data,
+      isLoading,
+      shouldShowModal,
+      shouldShowDatePicker,
+    } = this.state
 
     return (
-      <StylesContainer>
-        <Fragment>
-          <FormattedMessage
-            id={
-              this.isViewMode
-                ? 'pages.admin.redirects.form.title.info'
-                : 'pages.admin.redirects.form.title.new'
-            }
-          >
-            {text => <h1>{text}</h1>}
-          </FormattedMessage>
-          <Separator />
-          <form onSubmit={this.handleSave}>
-            <Input
-              disabled={this.isViewMode}
-              label={intl.formatMessage({
-                id: 'pages.admin.redirects.table.from',
-              })}
-              onChange={this.updateFrom}
-              required
-              value={data.from}
-            />
+      <Fragment>
+        <Modal
+          isActionDanger
+          isActionLoading={isLoading}
+          isOpen={shouldShowModal}
+          onClickAction={this.handleDelete(data.id)}
+          onClickCancel={this.toggleModalVisibility}
+          onClose={this.toggleModalVisibility}
+          textButtonAction={intl.formatMessage({
+            id: 'pages.admin.redirects.form.button.delete',
+          })}
+          textButtonCancel={intl.formatMessage({
+            id: 'pages.admin.redirects.form.button.cancel',
+          })}
+          textMessage={intl.formatMessage({
+            id: 'pages.admin.redirects.form.modal.text',
+          })}
+        />
+        <StylesContainer>
+          <Fragment>
+            <FormattedMessage
+              id={
+                this.isViewMode
+                  ? 'pages.admin.redirects.form.title.info'
+                  : 'pages.admin.redirects.form.title.new'
+              }
+            >
+              {text => <h1>{text}</h1>}
+            </FormattedMessage>
             <Separator />
-            <Input
-              disabled={this.isViewMode}
-              label={intl.formatMessage({
-                id: 'pages.admin.redirects.table.to',
-              })}
-              onChange={this.updateTo}
-              required
-              value={data.to}
-            />
-            <Separator />
-            <Toggle
-              checked={shouldShowDatePicker}
-              disabled={this.isViewMode}
-              label={intl.formatMessage({
-                id: 'pages.admin.redirects.form.toggle.endDate',
-              })}
-              onChange={this.toggleDatePickerVisibility}
-              size="small"
-            />
-            <Separator />
-            {shouldShowDatePicker && (
-              <Fragment>
-                {this.isViewMode ? (
-                  <Input
-                    disabled
-                    label={intl.formatMessage({
-                      id: 'pages.admin.redirects.form.datePicker.title',
-                    })}
-                    value={getFormattedLocalizedDate(data.endDate, locale)}
-                  />
-                ) : (
-                  <Fragment>
-                    <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                      {text => <div className="mb3 w-100 f6">{text}</div>}
-                    </FormattedMessage>
-                    <DatePicker
-                      locale={locale}
-                      onChange={this.updateEndDate}
-                      selected={data.endDate ? moment(data.endDate) : undefined}
+            <form onSubmit={this.handleSave}>
+              <Input
+                disabled={this.isViewMode}
+                label={intl.formatMessage({
+                  id: 'pages.admin.redirects.table.from',
+                })}
+                onChange={this.updateFrom}
+                required
+                value={data.from}
+              />
+              <Separator />
+              <Input
+                disabled={this.isViewMode}
+                label={intl.formatMessage({
+                  id: 'pages.admin.redirects.table.to',
+                })}
+                onChange={this.updateTo}
+                required
+                value={data.to}
+              />
+              <Separator />
+              <Toggle
+                checked={shouldShowDatePicker}
+                disabled={this.isViewMode}
+                label={intl.formatMessage({
+                  id: 'pages.admin.redirects.form.toggle.endDate',
+                })}
+                onChange={this.toggleDatePickerVisibility}
+                size="small"
+              />
+              <Separator />
+              {shouldShowDatePicker && (
+                <Fragment>
+                  {this.isViewMode ? (
+                    <Input
+                      disabled
+                      label={intl.formatMessage({
+                        id: 'pages.admin.redirects.form.datePicker.title',
+                      })}
+                      value={getFormattedLocalizedDate(data.endDate, locale)}
                     />
-                  </Fragment>
-                )}
-                <Separator />
-              </Fragment>
-            )}
-            <div className="flex justify-end">
-              <div className="mr6">
-                <Button
-                  disabled={isLoading}
-                  onClick={this.exit}
-                  size="small"
-                  variation="tertiary"
-                >
-                  {intl.formatMessage({
-                    id: this.isViewMode
-                      ? 'pages.admin.redirects.form.button.back'
-                      : 'pages.admin.redirects.form.button.cancel',
-                  })}
-                </Button>
-              </div>
-              {this.isViewMode ? (
-                <Button
-                  isLoading={isLoading}
-                  size="small"
-                  onClick={this.handleDelete(data.id)}
-                  variation="danger"
-                >
-                  {intl.formatMessage({
-                    id: 'pages.admin.redirects.form.button.delete',
-                  })}
-                </Button>
-              ) : (
-                <Button isLoading={isLoading} size="small" type="submit">
-                  {intl.formatMessage({
-                    id: 'pages.admin.redirects.form.button.create',
-                  })}
-                </Button>
+                  ) : (
+                    <Fragment>
+                      <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                        {text => <div className="mb3 w-100 f6">{text}</div>}
+                      </FormattedMessage>
+                      <DatePicker
+                        locale={locale}
+                        onChange={this.updateEndDate}
+                        selected={
+                          data.endDate ? moment(data.endDate) : undefined
+                        }
+                      />
+                    </Fragment>
+                  )}
+                  <Separator />
+                </Fragment>
               )}
-            </div>
-          </form>
-        </Fragment>
-      </StylesContainer>
+              <div className="flex justify-end">
+                <div className="mr6">
+                  <Button
+                    disabled={isLoading}
+                    onClick={this.exit}
+                    size="small"
+                    variation="tertiary"
+                  >
+                    {intl.formatMessage({
+                      id: this.isViewMode
+                        ? 'pages.admin.redirects.form.button.back'
+                        : 'pages.admin.redirects.form.button.cancel',
+                    })}
+                  </Button>
+                </div>
+                {this.isViewMode ? (
+                  <Button
+                    isLoading={isLoading}
+                    size="small"
+                    onClick={this.toggleModalVisibility}
+                    variation="danger"
+                  >
+                    {intl.formatMessage({
+                      id: 'pages.admin.redirects.form.button.delete',
+                    })}
+                  </Button>
+                ) : (
+                  <Button isLoading={isLoading} size="small" type="submit">
+                    {intl.formatMessage({
+                      id: 'pages.admin.redirects.form.button.create',
+                    })}
+                  </Button>
+                )}
+              </div>
+            </form>
+          </Fragment>
+        </StylesContainer>
+      </Fragment>
     )
   }
 
@@ -235,22 +264,6 @@ class Form extends Component<Props, State> {
     })
   }
 
-  private updateEndDate = (value: Moment) => {
-    this.handleInputChange({ endDate: value.utc().format() })
-  }
-
-  private updateFrom = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.handleInputChange({ from: event.target.value })
-    }
-  }
-
-  private updateTo = (event: Event) => {
-    if (event.target instanceof HTMLInputElement) {
-      this.handleInputChange({ to: event.target.value })
-    }
-  }
-
   private toggleDatePickerVisibility = () => {
     this.setState(
       prevState => ({
@@ -265,6 +278,29 @@ class Form extends Component<Props, State> {
         })
       },
     )
+  }
+
+  private toggleModalVisibility = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      shouldShowModal: !prevState.shouldShowModal,
+    }))
+  }
+
+  private updateEndDate = (value: Moment) => {
+    this.handleInputChange({ endDate: value.utc().format() })
+  }
+
+  private updateFrom = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.handleInputChange({ from: event.target.value })
+    }
+  }
+
+  private updateTo = (event: Event) => {
+    if (event.target instanceof HTMLInputElement) {
+      this.handleInputChange({ to: event.target.value })
+    }
   }
 }
 

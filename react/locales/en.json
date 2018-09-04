@@ -38,6 +38,7 @@
   "pages.admin.redirects.form.button.create": "Create",
   "pages.admin.redirects.form.button.delete": "Delete",
   "pages.admin.redirects.form.datePicker.title": "End date",
+  "pages.admin.redirects.form.modal.text": "Are you sure you want to delete this redirect?",
   "pages.admin.redirects.form.title.info": "Redirect info",
   "pages.admin.redirects.form.title.new": "Create a redirect",
   "pages.admin.redirects.form.toggle.endDate": "This redirect has an end date",
