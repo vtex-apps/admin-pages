@@ -5,6 +5,7 @@ import { compose, DataProps, graphql } from 'react-apollo'
 import { Link } from 'render'
 import { Button } from 'vtex.styleguide'
 
+import Loader from './components/Loader'
 import PageForm from './components/PageForm'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 import AvailableTemplates from './queries/AvailableTemplates.graphql'
@@ -152,7 +153,7 @@ class PageList extends Component<DataProps<PageData>> {
 
     const spinner = (loadingAvailableConditions ||
       loadingTemplates ||
-      loadingRoutes) && <span>Loading...</span>
+      loadingRoutes) && <Loader />
 
     return (
       <div className="mw8 mr-auto ml-auto mv6 ph6">
