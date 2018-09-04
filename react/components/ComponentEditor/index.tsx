@@ -266,8 +266,9 @@ class ComponentEditor extends Component<
         ...(itemsProperties &&
           map(
             item => getDeepUiSchema(item),
-            itemsProperties)
-          ),
+            itemsProperties
+          )
+        ),
       }
     }
 
