@@ -61,28 +61,24 @@ class List extends Component<Props, State> {
 
     const items = schema.items
 
-    return (
+    return items.length === 0 ? (
+      <EmptyState
+        title={intl.formatMessage({
+          id: 'pages.admin.redirects.emptyState',
+        })}
+      >
+        <div className="pt5">
+          <CreateButton onClick={this.openNewItem} />
+        </div>
+      </EmptyState>
+    ) : (
       <Fragment>
-        {items.length === 0 ? (
-          <EmptyState
-            title={intl.formatMessage({
-              id: 'pages.admin.redirects.emptyState',
-            })}
-          >
-            <div className="pt5">
-              <CreateButton onClick={this.openNewItem} />
-            </div>
-          </EmptyState>
-        ) : (
-          <Fragment>
-            <div className="flex justify-end mb4">
-              <CreateButton onClick={this.openNewItem} />
-            </div>
-            <div className="pointer">
-              <Table items={items} onRowClick={this.viewItem} schema={schema} />
-            </div>
-          </Fragment>
-        )}
+        <div className="flex justify-end mb4">
+          <CreateButton onClick={this.openNewItem} />
+        </div>
+        <div className="pointer">
+          <Table items={items} onRowClick={this.viewItem} schema={schema} />
+        </div>
       </Fragment>
     )
   }
