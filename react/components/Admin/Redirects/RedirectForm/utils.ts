@@ -2,8 +2,9 @@ import { DataProxy } from 'apollo-cache'
 
 import Redirects from '../../../../queries/Redirects.graphql'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
+import { RedirectsQuery } from '../typings'
 
-import { MutationResult, QueryData, RedirectsQuery } from './typings'
+import { MutationResult, QueryData } from './typings'
 
 const cacheAccessParameters = {
   query: Redirects,
