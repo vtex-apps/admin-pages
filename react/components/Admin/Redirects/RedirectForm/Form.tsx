@@ -171,7 +171,6 @@ class Form extends Component<Props, State> {
                 </div>
                 {this.isViewMode ? (
                   <Button
-                    isLoading={isLoading}
                     size="small"
                     onClick={this.toggleModalVisibility}
                     variation="danger"
