@@ -9,6 +9,7 @@ import { PAGINATION_START, PAGINATION_STEP } from '../consts'
 import StylesContainer from '../StylesContainer'
 
 import List from './List'
+import { FetchMoreOptions } from './typings'
 
 type Props = ReactIntl.InjectedIntlProps
 
@@ -33,13 +34,14 @@ class RedirectList extends Component<Props, State> {
 
     return (
       <Query
+        notifyOnNetworkStatusChange
         query={Redirects}
         variables={{
-          from: paginationFrom,
-          to: paginationTo,
+          from: PAGINATION_START,
+          to: PAGINATION_STEP,
         }}
       >
-        {({ data, loading }) => (
+        {({ data, fetchMore, loading }) => (
           <StylesContainer>
             {loading ? (
               <Loader />
@@ -47,22 +49,21 @@ class RedirectList extends Component<Props, State> {
               <Fragment>
                 <List
                   from={paginationFrom}
-                  items={data.redirects.redirects}
-                  to={
-                    paginationTo > data.redirects.total
-                      ? data.redirects.total
-                      : paginationTo
-                  }
+                  items={data.redirects.redirects.slice(
+                    paginationFrom,
+                    paginationTo,
+                  )}
+                  to={paginationTo}
                 />
                 {data.redirects.total > 0 && (
                   <Pagination
                     currentItemFrom={paginationFrom + 1}
-                    currentItemTo={
-                      paginationTo > data.redirects.total
-                        ? data.redirects.total
-                        : paginationTo
-                    }
-                    onNextClick={this.getGoToNextPage(data.redirects.total)}
+                    currentItemTo={paginationTo}
+                    onNextClick={this.getGoToNextPage(
+                      data.redirects.redirects.length,
+                      data.redirects.total,
+                      fetchMore,
+                    )}
                     onPrevClick={this.goToPrevPage}
                     textOf={intl.formatMessage({
                       id: 'pages.admin.redirects.pagination.of',
@@ -81,14 +82,42 @@ class RedirectList extends Component<Props, State> {
     )
   }
 
-  private getGoToNextPage = (total: number) => () => {
+  private getGoToNextPage = (
+    dataLength: number,
+    total: number,
+    fetchMore: (options: FetchMoreOptions) => void,
+  ) => async () => {
+    const nextPaginationTo = this.getNextPaginationTo(
+      this.state.paginationFrom + PAGINATION_STEP,
+      total,
+    )
+
+    if (nextPaginationTo > dataLength) {
+      await fetchMore({
+        updateQuery: (prevData, { fetchMoreResult }) =>
+          fetchMoreResult
+            ? {
+                ...prevData,
+                redirects: {
+                  ...prevData.redirects,
+                  redirects: [
+                    ...prevData.redirects.redirects,
+                    ...fetchMoreResult.redirects.redirects,
+                  ],
+                },
+              }
+            : prevData,
+        variables: {
+          from: this.state.paginationTo,
+          to: nextPaginationTo,
+        },
+      })
+    }
+
     this.setState(prevState => ({
       ...prevState,
       paginationFrom: prevState.paginationTo,
-      paginationTo: this.getNextPaginationTo(
-        prevState.paginationFrom + PAGINATION_STEP,
-        total,
-      ),
+      paginationTo: nextPaginationTo,
     }))
   }
 

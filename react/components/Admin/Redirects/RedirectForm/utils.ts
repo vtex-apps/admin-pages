@@ -27,19 +27,28 @@ export const getStoreUpdater = (operation: 'delete' | 'save') => (
     const queryData = readRedirectsFromStore(store)
 
     if (queryData) {
-      const newRedirects = isDelete
-        ? (deleteRedirect &&
+      const newRedirects =
+        (isDelete
+          ? deleteRedirect &&
             queryData.redirects.redirects.filter(
               redirect => redirect.id !== deleteRedirect.id,
-            )) ||
-          queryData.redirects.redirects
-        : (saveRedirect &&
-            queryData.redirects.redirects.concat(saveRedirect)) ||
-          queryData.redirects.redirects
+            )
+          : saveRedirect &&
+            queryData.redirects.redirects.reduce(
+              (acc, currRedirect) =>
+                currRedirect.cacheId ===
+                `${saveRedirect.from}__${saveRedirect.to}`
+                  ? acc
+                  : [...acc, currRedirect],
+              [saveRedirect],
+            )) || queryData.redirects.redirects
 
-      const newTotal = isDelete
-        ? queryData.redirects.total - 1
-        : queryData.redirects.total + 1
+      const newTotal =
+        newRedirects.length !== queryData.redirects.redirects.length
+          ? isDelete
+            ? queryData.redirects.total - 1
+            : queryData.redirects.total + 1
+          : queryData.redirects.total
 
       const newData = {
         ...queryData,
