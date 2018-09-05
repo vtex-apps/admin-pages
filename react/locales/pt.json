@@ -24,7 +24,7 @@
   "pages.editor.info.title": "Informações da Página",
   "pages.admin.loading": "Carregando",
   "pages.admin.redirects.button.create": "Novo redirecionamento",
-  "pages.admin.redirects.emptyState": "Nenhum redirecionamento criado",
+  "pages.admin.redirects.emptyState": "Nenhum redirecionamento criado.",
   "pages.admin.redirects.form.button.back": "Voltar",
   "pages.admin.redirects.form.button.cancel": "Cancelar",
   "pages.admin.redirects.form.button.create": "Criar",
