@@ -23,7 +23,7 @@
   "pages.editor.info.title": "Informaciones de la Página",
   "pages.admin.loading": "Cargando",
   "pages.admin.redirects.button.create": "Nueva redirección",
-  "pages.admin.redirects.emptyState": "Ninguna redirección creada",
+  "pages.admin.redirects.emptyState": "Ninguna redirección creada.",
   "pages.admin.redirects.form.button.back": "Volver",
   "pages.admin.redirects.form.button.cancel": "Cancelar",
   "pages.admin.redirects.form.button.create": "Crear",

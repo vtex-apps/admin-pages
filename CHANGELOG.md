@@ -7,13 +7,57 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.3] - 2018-09-11
+### Added
+- **Redirects Admin**
+  - Periods to empty state i18n texts.
+
+### Fixed
+- **Redirects Admin**
+  - Apollo cache/fetch logic.
+
+### Removed
+- **Redirects Admin**
+  - Some `console.log`s.
+  - Loading from remove button outside of modal.
+
 ## [2.2.2] - 2018-09-05
 ### Fixed
 - Deep uiSchema now gets array items.
 
 ## [2.2.1] - 2018-09-04
+### Changed
+- **Redirects Admin**
+  - Hide `Pagination` @ empty state.
+
+### Fixed
+- **Redirects Admin**
+  - Pagination `to` edge case.
 
 ## [2.2.0] - 2018-09-04
+### Added
+- **Admins**
+  - I18n to loading text.
+
+- **Redirects Admin**
+  - Pagination to redirect list.
+  - Confirmation modal before deleting a redirect.
+  - End date to redirect form and list.
+  - Status to redirect list.
+  - Sublink to redirect list to admin.
+
+### Changed
+- **Redirects Admin**
+  - Split redirects components into separate routes.
+  - Make `Modal` more generic and move it to `components/`.
+  - Bump Styleguide to 6.x.
+
+### Fixed
+- **`ComponentEditor`**
+  - Save button rendering behavior @ new configs.
+
+- **`LabelEditor`**
+  - Empty value bug.
 
 ## [2.1.3] - 2018-08-28
 ### Fixed

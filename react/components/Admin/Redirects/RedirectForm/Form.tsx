@@ -171,7 +171,6 @@ class Form extends Component<Props, State> {
                 </div>
                 {this.isViewMode ? (
                   <Button
-                    isLoading={isLoading}
                     size="small"
                     onClick={this.toggleModalVisibility}
                     variation="danger"
@@ -204,13 +203,11 @@ class Form extends Component<Props, State> {
 
     this.setState({ isLoading: true }, async () => {
       try {
-        const data = await onDelete({
+        await onDelete({
           variables: {
             id: redirectId,
           },
         })
-
-        console.log('OK!', data)
 
         this.exit()
       } catch (err) {
@@ -243,15 +240,13 @@ class Form extends Component<Props, State> {
 
     this.setState({ isLoading: true }, async () => {
       try {
-        const data = await onSave({
+        await onSave({
           variables: {
             endDate,
             from,
             to,
           },
         })
-
-        console.log('OK!', data)
 
         this.exit()
       } catch (err) {

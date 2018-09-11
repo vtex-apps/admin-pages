@@ -32,7 +32,7 @@
   "pages.editor.info.title": "Page Info",
   "pages.admin.loading": "Loading",
   "pages.admin.redirects.button.create": "New redirect",
-  "pages.admin.redirects.emptyState": "No redirects created",
+  "pages.admin.redirects.emptyState": "No redirects created.",
   "pages.admin.redirects.form.button.back": "Back",
   "pages.admin.redirects.form.button.cancel": "Cancel",
   "pages.admin.redirects.form.button.create": "Create",
