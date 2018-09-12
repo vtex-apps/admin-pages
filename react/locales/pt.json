@@ -42,5 +42,8 @@
   "pages.admin.redirects.table.endDate.default": "não configurada",
   "pages.admin.redirects.table.endDate.title": "Data de fim",
   "pages.admin.redirects.table.from": "De",
-  "pages.admin.redirects.table.to": "Para"
+  "pages.admin.redirects.table.to": "Para",
+  "pages.admin.tabs.pages": "Páginas",
+  "pages.admin.tabs.redirects": "Redirecionamentos",
+  "pages.admin.tabs.settings": "Configurações"
 }

@@ -1,17 +1,20 @@
 import PropTypes from 'prop-types'
 import { mapObjIndexed, values } from 'ramda'
 import React, { Component, Fragment } from 'react'
+import { injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'render'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
-interface Props {
+interface CustomProps {
   params: { field: string }
   runtime: RenderContext
 }
 
+type Props = CustomProps & ReactIntl.InjectedIntlProps
+
 interface FieldInfo {
   path: string
-  title: string
+  titleId: string
 }
 
 interface Fields {
@@ -21,15 +24,15 @@ interface Fields {
 const fields: Fields = {
   pages: {
     path: 'pages',
-    title: 'Pages',
+    titleId: 'pages.admin.tabs.pages',
   },
   redirects: {
     path: 'redirects',
-    title: 'Redirects',
+    titleId: 'pages.admin.tabs.redirects',
   },
   settings: {
     path: 'settings',
-    title: 'Settings',
+    titleId: 'pages.admin.tabs.settings',
   },
 }
 
@@ -42,6 +45,7 @@ class PagesAdmin extends Component<Props> {
   public render() {
     const {
       children,
+      intl,
       params,
       runtime: { navigate },
     } = this.props
@@ -63,7 +67,7 @@ class PagesAdmin extends Component<Props> {
                 return (
                   <Tab
                     key={key}
-                    label={info.title}
+                    label={intl.formatMessage({ id: info.titleId })}
                     active={
                       path.startsWith(info.path) &&
                       (path === '' ? path === info.path : true)
@@ -83,4 +87,4 @@ class PagesAdmin extends Component<Props> {
   }
 }
 
-export default withRuntimeContext(PagesAdmin)
+export default withRuntimeContext(injectIntl(PagesAdmin))
