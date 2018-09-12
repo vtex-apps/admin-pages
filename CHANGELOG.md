@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.4] - 2018-09-12
+### Added
+- **Admin**
+  - I18n to tabs.
+
 ## [2.2.3] - 2018-09-11
 ### Added
 - **Redirects Admin**

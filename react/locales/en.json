@@ -50,5 +50,8 @@
   "pages.admin.redirects.table.endDate.default": "not set",
   "pages.admin.redirects.table.endDate.title": "End date",
   "pages.admin.redirects.table.from": "From",
-  "pages.admin.redirects.table.to": "To"
+  "pages.admin.redirects.table.to": "To",
+  "pages.admin.tabs.pages": "Pages",
+  "pages.admin.tabs.redirects": "Redirects",
+  "pages.admin.tabs.settings": "Settings"
 }
