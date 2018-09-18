@@ -1,9 +1,7 @@
-import { filter, keys, merge, reduce } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
-import { RenderComponent } from 'render'
 import { Spinner } from 'vtex.styleguide'
 
 import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
@@ -13,6 +11,8 @@ import {
   getComponentSchema,
   getExtension,
   getIframeImplementation,
+  getSchemaProps,
+  updateExtensionFromForm,
 } from '../../../../utils/components'
 import Modal from '../../../Modal'
 
@@ -68,45 +68,6 @@ class ConfigurationList extends Component<Props, State> {
     this.handleConfigurationDefaultState()
   }
 
-  public getSchemaProps = (
-    component: RenderComponent<any, any> | null,
-    props: any,
-    runtime: RenderContext,
-  ) => {
-    if (!component) {
-      return null
-    }
-
-    /**
-     * Recursively get the props defined in the properties.
-     *
-     * @param {object} properties The schema properties
-     * @param {object} prevProps The previous props passed to the component
-     * @return {object} Actual component props
-     */
-    const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
-      reduce(
-        (nextProps, key) =>
-          merge(nextProps, {
-            [key]:
-              properties[key].type === 'object'
-                ? getPropsFromSchema(properties[key].properties, prevProps[key])
-                : prevProps[key],
-          }),
-        {},
-        filter(v => prevProps[v] !== undefined, keys(properties)),
-      )
-
-    const componentSchema = getComponentSchema(
-      component,
-      props,
-      runtime,
-      this.props.intl,
-    )
-
-    return getPropsFromSchema(componentSchema.properties, props)
-  }
-
   public render() {
     const { editor, intl, runtime } = this.props
 
@@ -127,10 +88,12 @@ class ConfigurationList extends Component<Props, State> {
     )
 
     const shouldRenderSaveButton =
-      this.state.isEditMode &&
-      (this.state.wasModified ||
-        (this.state.configuration &&
-          this.state.configuration.configurationId === NEW_CONFIGURATION_ID)) || false
+      (this.state.isEditMode &&
+        (this.state.wasModified ||
+          (this.state.configuration &&
+            this.state.configuration.configurationId ===
+              NEW_CONFIGURATION_ID))) ||
+      false
 
     return (
       <div className="w-100 dark-gray">
@@ -157,46 +120,46 @@ class ConfigurationList extends Component<Props, State> {
         ) : extensionConfigurationsQuery.extensionConfigurations &&
           extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
           !this.state.isEditMode ? (
-              <List
-                activeConfiguration={this.state.configuration}
-                configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-                  configuration => ({
-                    ...configuration,
-                    scope: this.getEncodedScope(
-                      configuration.scope,
-                      configuration.routeId,
-                    ),
-                  }),
-                )}
-                iframeWindow={this.props.editor.iframeWindow}
-                isDisabledChecker={this.isConfigurationDisabled}
-                onClose={this.handleQuit}
-                onCreate={this.handleConfigurationCreation}
-                onEdit={this.handleConfigurationOpen}
-                onSelect={this.handleConfigurationSelection}
-                title={componentSchema.title}
-              />
-            ) : (
-              <Editor
-                conditions={this.state.conditions}
-                configuration={this.state.configuration}
-                editor={editor}
-                isLoading={this.state.isLoading}
-                newLabel={this.state.newLabel}
-                onClose={
-                  this.state.isEditMode
-                    ? this.handleConfigurationClose
-                    : this.handleQuit
-                }
-                onConditionsChange={this.handleConditionsChange}
-                onFormChange={this.handleFormChange}
-                onScopeChange={this.handleScopeChange}
-                onLabelChange={this.handleConfigurationLabelChange}
-                onSave={this.handleConfigurationSave}
-                runtime={runtime}
-                shouldRenderSaveButton={shouldRenderSaveButton}
-              />
+          <List
+            activeConfiguration={this.state.configuration}
+            configurations={extensionConfigurationsQuery.extensionConfigurations.map(
+              configuration => ({
+                ...configuration,
+                scope: this.getEncodedScope(
+                  configuration.scope,
+                  configuration.routeId,
+                ),
+              }),
             )}
+            iframeWindow={this.props.editor.iframeWindow}
+            isDisabledChecker={this.isConfigurationDisabled}
+            onClose={this.handleQuit}
+            onCreate={this.handleConfigurationCreation}
+            onEdit={this.handleConfigurationOpen}
+            onSelect={this.handleConfigurationSelection}
+            title={componentSchema.title}
+          />
+        ) : (
+          <Editor
+            conditions={this.state.conditions}
+            configuration={this.state.configuration}
+            editor={editor}
+            isLoading={this.state.isLoading}
+            newLabel={this.state.newLabel}
+            onClose={
+              this.state.isEditMode
+                ? this.handleConfigurationClose
+                : this.handleQuit
+            }
+            onConditionsChange={this.handleConditionsChange}
+            onFormChange={this.handleFormChange}
+            onScopeChange={this.handleScopeChange}
+            onLabelChange={this.handleConfigurationLabelChange}
+            onSave={this.handleConfigurationSave}
+            runtime={runtime}
+            shouldRenderSaveButton={shouldRenderSaveButton}
+          />
+        )}
       </div>
     )
   }
@@ -334,6 +297,7 @@ class ConfigurationList extends Component<Props, State> {
     const {
       editor,
       editor: { iframeWindow },
+      intl,
       runtime,
       saveExtension,
     } = this.props
@@ -356,10 +320,11 @@ class ConfigurationList extends Component<Props, State> {
       ? getIframeImplementation(component)
       : null
 
-    const pickedProps = this.getSchemaProps(
+    const pickedProps = getSchemaProps(
       componentImplementation,
       props,
       runtime,
+      intl,
     )
 
     this.setState({
@@ -441,46 +406,23 @@ class ConfigurationList extends Component<Props, State> {
 
   private handleFormChange = (event: IChangeEvent) => {
     const {
-      runtime: { updateExtension, updateComponentAssets },
+      availableComponents: { availableComponents },
+      intl,
       runtime,
       editor: { editTreePath },
     } = this.props
-    const { component: enumComponent } = event.formData
-    const component =
-      enumComponent && enumComponent !== '' ? enumComponent : null
-    const componentImplementation =
-      component && getIframeImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })
     }
 
-    if (component && !componentImplementation) {
-      const allComponents = reduce(
-        (acc: { [key: string]: any }, currComponent: any) => {
-          acc[currComponent.name] = {
-            assets: currComponent.assets,
-            dependencies: currComponent.dependencies,
-          }
-          return acc
-        },
-        {},
-        this.props.availableComponents.availableComponents,
-      )
-
-      updateComponentAssets(allComponents)
-    }
-
-    const props = this.getSchemaProps(
-      componentImplementation,
-      event.formData,
+    updateExtensionFromForm(
+      availableComponents,
+      editTreePath,
+      event,
+      intl,
       runtime,
     )
-
-    updateExtension(editTreePath as string, {
-      component,
-      props,
-    })
   }
 
   private handleModalClose = () => {

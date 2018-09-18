@@ -1,11 +1,5 @@
-import {
-  has,
-  keys,
-  map,
-  merge,
-  pick,
-  reduce,
-} from 'ramda'
+import { filter, has, keys, map, merge, pick, reduce } from 'ramda'
+import { IChangeEvent } from 'react-jsonschema-form'
 import { global, RenderComponent, Window } from 'render'
 
 /**
@@ -116,10 +110,99 @@ export function getImplementation(component: string) {
 }
 
 export function getIframeImplementation(component: string | null) {
-  if (component === null) { return null }
+  if (component === null) {
+    return null
+  }
+
   const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
-  if (!iframe) { return null }
+
+  if (!iframe) {
+    return null
+  }
+
   const window = iframe.contentWindow as Window | null
-  if (!window) { return null }
-  return window.__RENDER_7_COMPONENTS__ && window.__RENDER_7_COMPONENTS__[component]
+
+  if (!window) {
+    return null
+  }
+
+  return (
+    window.__RENDER_7_COMPONENTS__ && window.__RENDER_7_COMPONENTS__[component]
+  )
+}
+
+export const getSchemaProps = (
+  component: RenderComponent<any, any> | null,
+  props: object,
+  runtime: RenderContext,
+  intl: ReactIntl.InjectedIntl,
+) => {
+  if (!component) {
+    return null
+  }
+
+  /**
+   * Recursively get the props defined in the properties.
+   *
+   * @param {object} properties The schema properties
+   * @param {object} prevProps The previous props passed to the component
+   * @return {object} Actual component props
+   */
+  const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
+    reduce(
+      (nextProps, key) =>
+        merge(nextProps, {
+          [key]:
+            properties[key].type === 'object'
+              ? getPropsFromSchema(properties[key].properties, prevProps[key])
+              : prevProps[key],
+        }),
+      {},
+      filter(v => prevProps[v] !== undefined, keys(properties)),
+    )
+
+  const componentSchema = getComponentSchema(component, props, runtime, intl)
+
+  return getPropsFromSchema(componentSchema.properties, props)
+}
+
+export const updateExtensionFromForm = (
+  availableComponents: object[],
+  editTreePath: EditorContext['editTreePath'],
+  event: IChangeEvent,
+  intl: ReactIntl.InjectedIntl,
+  runtime: RenderContext,
+) => {
+  const { component: enumComponent } = event.formData
+  const component = enumComponent && enumComponent !== '' ? enumComponent : null
+  const componentImplementation =
+    component && getIframeImplementation(component)
+
+  if (component && !componentImplementation) {
+    const allComponents = reduce(
+      (acc: { [key: string]: any }, currComponent: any) => {
+        acc[currComponent.name] = {
+          assets: currComponent.assets,
+          dependencies: currComponent.dependencies,
+        }
+        return acc
+      },
+      {},
+      availableComponents,
+    )
+
+    runtime.updateComponentAssets(allComponents)
+  }
+
+  const props = getSchemaProps(
+    componentImplementation,
+    event.formData,
+    runtime,
+    intl,
+  )
+
+  runtime.updateExtension(editTreePath as string, {
+    component,
+    props,
+  })
 }
