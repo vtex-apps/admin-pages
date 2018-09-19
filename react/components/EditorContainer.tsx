@@ -145,17 +145,10 @@ export default class EditorContainer extends Component<
   }
 
   public renderSideBar() {
-    const { visible } = this.props
-
     return (
       <div
         id="sidebar-vtex-editor"
         className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
-        style={{
-          animationDuration: '0.333s',
-          transform: `translate(${visible ? '0%' : '+100%'}, 0)`,
-          transition: `transform 300ms ease-in-out ${visible ? '300ms' : ''}`,
-        }}
       >
         <nav
           id="admin-sidebar"
@@ -176,38 +169,31 @@ export default class EditorContainer extends Component<
       toggleShowAdminControls,
       viewports,
       visible,
-      runtime,
     } = this.props
 
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
-        {this.renderSideBar()}
-        <div className="calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l">
-          <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
-            <div className="flex items-center">
-              <h3 className="f5 pr3">
-                <FormattedMessage id="pages.editor.editpath.label" />:
-              </h3>
-              {iframeWindow.location.pathname}
+        {visible && this.renderSideBar()}
+        <div
+          className={`calc--height calc--height-ns ${
+            visible ? 'calc--width' : 'w-100'
+          }`}
+        >
+          {visible && (
+            <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
+              <div className="flex items-center">
+                <h3 className="f5 pr3">
+                  <FormattedMessage id="pages.editor.editpath.label" />:
+                </h3>
+                {iframeWindow.location.pathname}
+              </div>
             </div>
-          </div>
+          )}
           <div
             id={APP_CONTENT_ELEMENT_ID}
-            className={`pa5 flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
-              visible
-                ? `${
-                    runtime ? 'calc--height-relative' : 'calc--height'
-                  } calc--width-ns calc--width-m calc--width-l`
-                : 'top-0 w-100 h-100'
+            className={`pa5 flex items-center bg-light-silver z-0 center-m left-0-m relative overflow-x-auto-m ${
+              visible ? 'calc--height-relative' : 'top-0 w-100 h-100'
             }`}
-            style={{
-              top: `${visible && runtime ? 3 : 0}em`,
-              transition: `width 300ms ease-in-out ${
-                visible ? '300ms' : ''
-              }, top 300ms ease-in-out ${
-                visible ? '' : '300ms'
-              }, height 300ms ease-in-out ${visible ? '' : '300ms'}`,
-            }}
           >
             <Draggable
               bounds="parent"
