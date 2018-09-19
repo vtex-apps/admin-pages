@@ -76,15 +76,21 @@ export default class EditorContainer extends Component<
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
-  public getSnapshotBeforeUpdate(prevProps: Props & RenderContextProps & EditorContextProps) {
-    const { editor: { editMode } } = this.props
+  public getSnapshotBeforeUpdate(
+    prevProps: Props & RenderContextProps & EditorContextProps,
+  ) {
+    const {
+      editor: { editMode },
+    } = this.props
     if (prevProps.editor.editMode !== editMode) {
       this.highlightExtensionPoint(null)
     }
   }
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
-    const { editor: { editMode, editExtensionPoint } } = this.props
+    const {
+      editor: { editMode, editExtensionPoint },
+    } = this.props
 
     this.setState({ highlightTreePath }, () => {
       const iframe = document.getElementById('store-iframe')
@@ -93,7 +99,7 @@ export default class EditorContainer extends Component<
           editExtensionPoint,
           editMode,
           highlightExtensionPoint: this.highlightExtensionPoint,
-          highlightTreePath
+          highlightTreePath,
         })
       }
     })
@@ -106,33 +112,35 @@ export default class EditorContainer extends Component<
       runtime,
     } = this.props
 
-    return (
-      runtime
-      ? editTreePath === null ? (
-          <Fragment>
-            <div className="flex justify-between items-center">
-              <h3 className="near-black f5 mv0 pa5">
-                <FormattedMessage id="pages.editor.components.title" />
-              </h3>
-              <div
-                onClick={toggleEditMode}
-                className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
-              >
-                <span className="pr5 b--light-gray flex items-center"><SelectionIcon stroke={editMode ? '#368df7' : '#979899'} /></span>
-              </div>
+    return runtime ? (
+      editTreePath === null ? (
+        <Fragment>
+          <div className="flex justify-between items-center">
+            <h3 className="near-black f5 mv0 pa5">
+              <FormattedMessage id="pages.editor.components.title" />
+            </h3>
+            <div
+              onClick={toggleEditMode}
+              className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+            >
+              <span className="pr5 b--light-gray flex items-center">
+                <SelectionIcon stroke={editMode ? '#368df7' : '#979899'} />
+              </span>
             </div>
-            <ComponentsList
-              editor={editor}
-              runtime={runtime}
-              highlightExtensionPoint={this.highlightExtensionPoint}
-            />
-          </Fragment>
-        ) : (
-          <ComponentEditor editor={editor} runtime={runtime} />
-        )
-      : <div className="mt5 flex justify-center">
-          <Spinner />
-        </div>
+          </div>
+          <ComponentsList
+            editor={editor}
+            runtime={runtime}
+            highlightExtensionPoint={this.highlightExtensionPoint}
+          />
+        </Fragment>
+      ) : (
+        <ComponentEditor editor={editor} runtime={runtime} />
+      )
+    ) : (
+      <div className="mt5 flex justify-center">
+        <Spinner />
+      </div>
     )
   }
 
@@ -177,7 +185,9 @@ export default class EditorContainer extends Component<
         <div className="calc--height calc--height-ns calc--width-ns calc--width-m calc--width-l">
           <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
             <div className="flex items-center">
-              <h3 className="f5 pr3"><FormattedMessage id="pages.editor.editpath.label" />:</h3>
+              <h3 className="f5 pr3">
+                <FormattedMessage id="pages.editor.editpath.label" />:
+              </h3>
               {iframeWindow.location.pathname}
             </div>
           </div>
@@ -185,7 +195,9 @@ export default class EditorContainer extends Component<
             id={APP_CONTENT_ELEMENT_ID}
             className={`pa5 flex items-center bg-light-silver z-0 center-m left-0-m absolute-m overflow-x-auto-m ${
               visible
-                ? `${runtime ? 'calc--height-relative' : 'calc--height'} calc--width-ns calc--width-m calc--width-l`
+                ? `${
+                    runtime ? 'calc--height-relative' : 'calc--height'
+                  } calc--width-ns calc--width-m calc--width-l`
                 : 'top-0 w-100 h-100'
             }`}
             style={{
@@ -194,9 +206,7 @@ export default class EditorContainer extends Component<
                 visible ? '300ms' : ''
               }, top 300ms ease-in-out ${
                 visible ? '' : '300ms'
-              }, height 300ms ease-in-out ${
-                visible ? '' : '300ms'
-              }`,
+              }, height 300ms ease-in-out ${visible ? '' : '300ms'}`,
             }}
           >
             <Draggable
@@ -215,14 +225,19 @@ export default class EditorContainer extends Component<
               }}
             >
               <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
-                <DeviceSwitcher toggleEditMode={toggleShowAdminControls} editor={editor} viewports={viewports} inPreview={!visible}/>
+                <DeviceSwitcher
+                  toggleEditMode={toggleShowAdminControls}
+                  editor={editor}
+                  viewports={viewports}
+                  inPreview={!visible}
+                />
               </div>
             </Draggable>
             <main
               {...getContainerProps(viewport)}
               role="main"
               style={{
-                transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`
+                transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`,
               }}
             >
               {this.props.children}
