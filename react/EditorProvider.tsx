@@ -1,44 +1,43 @@
 import PropTypes from 'prop-types'
 import { difference, uniq } from 'ramda'
-import React, { Component, CSSProperties } from 'react'
-import { DataProps, graphql, compose } from 'react-apollo'
+import React, { Component } from 'react'
+import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'render'
 
-import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './components/EditorContainer'
+import EditorContainer, {
+  APP_CONTENT_ELEMENT_ID,
+} from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 
-interface EditorProviderState {
+type Props = RenderContextProps &
+  DataProps<{ availableConditions: [Condition] }>
+
+interface State {
   activeConditions: string[]
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
-  showAdminControls: boolean
-  scope: ConfigurationScope
-  template: string | null
-  viewport: Viewport
   iframeRuntime: RenderContext | null
   iframeWindow: Window
+  scope: ConfigurationScope
+  showAdminControls: boolean
+  template?: string
+  viewport: Viewport
 }
 
 let iframeMessages: Record<string, string>
 
-class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ availableConditions: [Condition] }>, EditorProviderState> {
+class EditorProvider extends Component<Props, State> {
   public static contextTypes = {
     components: PropTypes.object,
-  }
-
-  public static propTypes = {
-    availableConditions: PropTypes.object,
-    children: PropTypes.element.isRequired,
-    runtime: PropTypes.object,
   }
 
   public static getCustomMessages() {
     return iframeMessages
   }
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -50,45 +49,66 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       iframeWindow: window,
       scope: 'url',
       showAdminControls: true,
-      template: null,
+      template: undefined,
       viewport: 'desktop',
     }
 
     if (canUseDOM) {
-      window.__provideRuntime = (runtime: RenderContext, messages: Record<string, string>) => {
+      window.__provideRuntime = (
+        runtime: RenderContext,
+        messages: Record<string, string>,
+      ) => {
         iframeMessages = messages
+
         if (!this.state.iframeRuntime) {
           runtime.updateComponentAssets(props.runtime.components)
           this.props.runtime.updateComponentAssets({})
         }
+
         const newState = {
           iframeRuntime: runtime,
-          ...(
-            this.state.iframeRuntime
+          ...(this.state.iframeRuntime
             ? {}
             : {
-              iframeWindow: (document.getElementById('store-iframe') as HTMLElement).contentWindow as Window
-            }
-          )
+                iframeWindow: (document.getElementById(
+                  'store-iframe',
+                ) as HTMLIFrameElement).contentWindow as Window,
+              }),
         }
+
         this.setState(newState)
       }
     }
   }
 
   public componentDidMount() {
-    const { runtime: { page } } = this.props
+    const {
+      runtime: { page },
+    } = this.props
+
     const root = page.split('/')[0]
+
     if (root !== 'admin') {
       Array.prototype.forEach.call(
         document.getElementsByClassName('render-container'),
-        (e: any) => e.classList.add('editor-provider'),
+        (e: Element) => e.classList.add('editor-provider'),
       )
     }
 
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+
+    const appContentElement = document.getElementById(APP_CONTENT_ELEMENT_ID)
+
     // Forward scroll events to window so code doesn't have to hook into #app-content
-    document.getElementById(APP_CONTENT_ELEMENT_ID).addEventListener('scroll', (e) => { setTimeout(() => window.dispatchEvent(e), 0) }, { passive: true })
+    if (appContentElement) {
+      appContentElement.addEventListener(
+        'scroll',
+        e => {
+          setTimeout(() => window.dispatchEvent(e), 0)
+        },
+        { passive: true },
+      )
+    }
   }
 
   public editExtensionPoint = (treePath: string | null) => {
@@ -97,11 +117,10 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
 
   public handleToggleEditMode = () => {
     const editMode = !this.state.editMode
-    this.setState({ editMode },
-      () => {
-        window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-      }
-    )
+
+    this.setState({ editMode }, () => {
+      window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+    })
   }
 
   public handleToggleShowAdminControls = () => {
@@ -110,25 +129,36 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
 
     Array.prototype.forEach.call(
       document.getElementsByClassName('render-container'),
-      (e: any) => showAdminControls ? e.classList.add('editor-provider') : e.classList.remove('editor-provider'),
+      (e: Element) =>
+        showAdminControls
+          ? e.classList.add('editor-provider')
+          : e.classList.remove('editor-provider'),
     )
 
     this.setState({ showAdminControls, editMode })
   }
 
   public handleAddCondition = (conditionId: string) => {
-    this.setState({ activeConditions: uniq(this.state.activeConditions.concat(conditionId)) }, () => {
-      this.props.runtime.updateRuntime({
-        conditions: this.state.activeConditions,
-        device: this.props.runtime.device,
-        scope: this.state.scope,
-        template: this.state.template,
-      })
-    })
+    this.setState(
+      {
+        activeConditions: uniq(this.state.activeConditions.concat(conditionId)),
+      },
+      () => {
+        this.props.runtime.updateRuntime({
+          conditions: this.state.activeConditions,
+          device: this.props.runtime.device,
+          scope: this.state.scope,
+          template: this.state.template,
+        })
+      },
+    )
   }
 
   public handleRemoveCondition = (conditionId: string) => {
-    const activeConditions = difference(this.state.activeConditions, [conditionId])
+    const activeConditions = difference(this.state.activeConditions, [
+      conditionId,
+    ])
+
     this.setState({ activeConditions }, () => {
       this.props.runtime.updateRuntime({
         conditions: this.state.activeConditions,
@@ -146,15 +176,17 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   public getViewport = (device: ConfigurationDevice) => {
     switch (device) {
       case 'any':
-      return 'desktop'
+        return 'desktop'
       default:
-      return device
+        return device
     }
   }
 
   public handleSetDevice = (device: ConfigurationDevice) => {
     this.props.runtime.setDevice(device)
+
     this.handleSetViewport(this.getViewport(device))
+
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
@@ -166,11 +198,11 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   public getAvailableViewports = (device: ConfigurationDevice): Viewport[] => {
     switch (device) {
       case 'mobile':
-      return ['mobile', 'tablet']
+        return ['mobile', 'tablet']
       case 'desktop':
-      return []
+        return []
       default:
-      return ['mobile', 'tablet', 'desktop']
+        return ['mobile', 'tablet', 'desktop']
     }
   }
 
@@ -179,8 +211,22 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
   }
 
   public render() {
-    const { children, runtime: { device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime, iframeWindow } = this.state
+    const {
+      children,
+      runtime: { device },
+    } = this.props
+
+    const {
+      activeConditions,
+      allMatches,
+      editMode,
+      editTreePath,
+      iframeRuntime,
+      iframeWindow,
+      scope,
+      showAdminControls,
+      viewport,
+    } = this.state
 
     const editor: EditorContext = {
       activeConditions,
