@@ -167,7 +167,6 @@ class PageForm extends Component<any, any> {
       newState.path = '/'
     }
 
-    console.log('Updating props with formData...', event.formData, newState)
     this.setState(newState)
   }
 
