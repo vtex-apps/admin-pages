@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import { filter, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
-import { graphql } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Form from 'react-jsonschema-form'
-import { Link } from 'render'
+import { Link, withRuntimeContext } from 'render'
 import { Button, Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
 import Routes from '../queries/Routes.graphql'
@@ -101,12 +101,6 @@ const CUSTOM_ROUTE = [
   },
 ]
 
-const createLocationDescriptor = (to, query) => ({
-  pathname: to,
-  state: { renderRouting: true },
-  ...(query && { search: query }),
-})
-
 class PageForm extends Component<any, any> {
   public static propTypes = {
     availableConditions: PropTypes.arrayOf(PropTypes.string).isRequired,
@@ -174,48 +168,6 @@ class PageForm extends Component<any, any> {
 
     console.log('Updating props with formData...', event.formData, newState)
     this.setState(newState)
-  }
-
-  public handleSave = event => {
-    console.log('save', event, this.state)
-    const { savePage } = this.props
-    const {
-      allMatches,
-      conditions,
-      configurationId,
-      context,
-      device,
-      login,
-      name,
-      path,
-      routeId,
-      template,
-    } = this.state
-
-    savePage({
-      refetchQueries: [{ query: Routes }],
-      variables: {
-        allMatches,
-        conditions,
-        configurationId,
-        context,
-        device,
-        login,
-        name,
-        path,
-        routeId,
-        template,
-      },
-    })
-      .then(data => {
-        console.log('OK!', data)
-        const location = createLocationDescriptor('/admin/cms/pages')
-        this.context.history.push(location)
-      })
-      .catch(err => {
-        alert('Error saving page configuration.')
-        console.log(err)
-      })
   }
 
   public handleRouteChange = (e, value) => {
@@ -437,9 +389,60 @@ class PageForm extends Component<any, any> {
       </div>
     )
   }
+
+  private handleSave = () => {
+    const {
+      runtime: { navigate },
+      savePage,
+    } = this.props
+
+    const {
+      allMatches,
+      conditions,
+      configurationId,
+      context,
+      device,
+      login,
+      name,
+      path,
+      routeId,
+      template,
+    } = this.state
+
+    this.setState({ isLoading: true }, async () => {
+      try {
+        await savePage({
+          refetchQueries: [{ query: Routes }],
+          variables: {
+            allMatches,
+            conditions,
+            configurationId,
+            context,
+            device,
+            login,
+            name,
+            path,
+            routeId,
+            template,
+          },
+        })
+
+        navigate({ page: 'admin/cms/pages', params: {} })
+      } catch (err) {
+        this.setState({ isLoading: false }, () => {
+          console.log(err)
+
+          alert('Error: page could not be saved.')
+        })
+      }
+    })
+  }
 }
 
-export default graphql(SavePage, {
+export default compose(
+  graphql(SavePage, {
   name: 'savePage',
   options: { fetchPolicy: 'cache-and-network' },
-})(PageForm)
+  }),
+  withRuntimeContext,
+)(PageForm)
