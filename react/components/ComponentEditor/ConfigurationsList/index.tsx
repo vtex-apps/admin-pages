@@ -4,8 +4,8 @@ import ConfigurationCard from './ConfigurationCard'
 import CreateButton from './CreateButton'
 
 interface Props {
-  activeConfiguration?: AdaptedExtensionConfiguration
-  configurations: AdaptedExtensionConfiguration[]
+  activeConfiguration?: ExtensionConfiguration
+  configurations: ExtensionConfiguration[]
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
@@ -23,7 +23,7 @@ const ConfigurationsList: React.SFC<Props> = ({
 }) => (
   <Fragment>
     {configurations.map(
-      (configuration: AdaptedExtensionConfiguration, index: number) => (
+      (configuration: ExtensionConfiguration, index: number) => (
         <Fragment key={index}>
           <ConfigurationCard
             activeConfiguration={activeConfiguration}

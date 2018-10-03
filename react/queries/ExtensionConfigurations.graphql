@@ -1,23 +1,25 @@
 query ExtensionConfigurations(
   $configurationsIds: [String]
+  $context: ContextInput!
   $routeId: String!
   $treePath: String!
-  $url: String!
 ) {
   extensionConfigurations(
     configurationsIds: $configurationsIds
+    context: $context
     routeId: $routeId
     treePath: $treePath
-    url: $url
   ) {
     allMatches
     conditions
     configurationId
+    context {
+      id
+      type
+    }
     device
     label
     propsJSON
     routeId
-    scope
-    url
   }
 }

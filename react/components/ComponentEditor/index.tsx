@@ -1,4 +1,14 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
+import {
+  filter,
+  has,
+  keys,
+  map,
+  merge,
+  mergeDeepLeft,
+  pick,
+  pickBy,
+  reduce,
+} from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
@@ -46,12 +56,13 @@ interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
 
 interface ComponentEditorState {
   conditions: string[]
-  configuration?: AdaptedExtensionConfiguration
+  configuration?: ExtensionConfiguration
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
   newLabel?: string
+  scope: ConfigurationScope
   wasModified: boolean
 }
 
@@ -71,6 +82,7 @@ class ComponentEditor extends Component<
       isLoading: false,
       isModalOpen: false,
       mode: 'content',
+      scope: 'route',
       wasModified: false,
     }
   }
@@ -378,15 +390,9 @@ class ComponentEditor extends Component<
         !this.state.isEditMode ? (
           <ConfigurationsList
             activeConfiguration={this.state.configuration}
-            configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-              configuration => ({
-                ...configuration,
-                scope: this.getEncodedScope(
-                  configuration.scope,
-                  configuration.routeId,
-                ),
-              }),
-            )}
+            configurations={
+              extensionConfigurationsQuery.extensionConfigurations
+            }
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
@@ -400,29 +406,17 @@ class ComponentEditor extends Component<
     )
   }
 
-  private getDecodedRouteId = (scope: ConfigurationScope, routeId: string) =>
-    scope === 'site' ? 'store' : routeId
-
-  private getDecodedScope = (scope: ConfigurationScope) =>
-    scope === 'site' ? 'route' : scope
-
-  private getEncodedScope = (
-    scope: ServerConfigurationScope | ConfigurationScope,
-    routeId: string,
-  ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
-
   private getDefaultConfiguration = (): ExtensionConfiguration => {
-    const { runtime, editor: { iframeWindow } } = this.props
+    const { runtime } = this.props
 
     return {
       allMatches: true,
       conditions: [],
       configurationId: NEW_CONFIGURATION_ID,
+      context: runtime.context,
       device: runtime.device,
       propsJSON: '{}',
       routeId: runtime.page,
-      scope: 'route',
-      url: iframeWindow.location.pathname,
     }
   }
 
@@ -449,14 +443,8 @@ class ComponentEditor extends Component<
     this.setState(
       {
         conditions: newConfiguration.conditions,
-        configuration: {
-          ...newConfiguration,
-          scope: this.getEncodedScope(
-            newConfiguration.scope,
-            newConfiguration.routeId,
-          ),
+        configuration: newConfiguration,
         },
-      },
       () => {
         runtime.updateExtension(editor.editTreePath!, {
           component: this.getExtension().component,
@@ -556,6 +544,16 @@ class ComponentEditor extends Component<
       runtime,
     )
 
+    const path = iframeWindow.location.pathname
+
+    const configurationContext =
+      this.state.scope === 'url'
+        ? {
+            id: path,
+            type: 'url',
+          }
+        : runtime.context
+
     this.setState({
       isLoading: true,
     })
@@ -566,16 +564,16 @@ class ComponentEditor extends Component<
           allMatches,
           conditions,
           configurationId,
+          context: configurationContext,
           device,
           extensionName: editor.editTreePath,
           label:
             this.state.newLabel !== undefined
               ? this.state.newLabel
               : configuration!.label,
-          path: iframeWindow.location.pathname,
+          path,
           propsJSON: JSON.stringify(pickedProps),
-          routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
-          scope: this.getDecodedScope(configuration!.scope),
+          routeId: runtime.page,
         },
       })
 
@@ -584,9 +582,9 @@ class ComponentEditor extends Component<
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
           runtime.extensions[editor.editTreePath as string].configurationsIds,
+        context: runtime.context,
         routeId: runtime.page,
         treePath: editor.editTreePath,
-        url: iframeWindow.location.pathname,
       })
 
       this.setState(
@@ -695,6 +693,15 @@ class ComponentEditor extends Component<
     }
   }
 
+  private handleScopeChange = (newScope: ConfigurationScope) => {
+    if (newScope !== this.state.scope) {
+      this.setState({
+        scope: newScope,
+        wasModified: true,
+      })
+    }
+  }
+
   private handleQuit = (event?: any) => {
     const { editor, runtime } = this.props
 
@@ -704,31 +711,16 @@ class ComponentEditor extends Component<
 
     runtime.updateRuntime({
       conditions: editor.activeConditions,
-      scope: editor.scope,
     })
 
     editor.editExtensionPoint(null)
   }
 
-  private handleScopeChange = (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => {
-    if (
-      this.state.configuration &&
-      newScope !== this.state.configuration.scope
-    ) {
-      this.setState(prevState => ({
-        ...prevState,
-        conditions: newScope === 'site' ? [] : prevState.conditions,
-        configuration: { ...prevState.configuration!, scope: newScope },
-        wasModified: true,
-      }))
-    }
-  }
-
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
     const { iframeWindow } = this.props.editor
     return (
-      configuration.scope === 'url' &&
-      configuration.url !== iframeWindow.location.pathname
+      configuration.context.type === 'url' &&
+      configuration.context.id !== iframeWindow.location.pathname
     )
   }
 
@@ -737,7 +729,11 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, editor: { iframeWindow }, runtime } = this.props
+    const {
+      editor,
+      editor: { iframeWindow },
+    } = this.props
+
     const { configuration } = this.state
 
     const mobile = iframeWindow.innerWidth < 600
@@ -766,8 +762,7 @@ class ComponentEditor extends Component<
               editor={editor}
               onCustomConditionsChange={this.handleConditionsChange}
               onScopeChange={this.handleScopeChange}
-              runtime={runtime}
-              scope={configuration && configuration.scope}
+              scope={this.state.scope}
               selectedConditions={this.state.conditions}
             />
           </div>
@@ -814,14 +809,14 @@ export default compose(
   graphql(ExtensionConfigurations, {
     name: 'extensionConfigurations',
     options: ({
-      editor: { editTreePath, iframeWindow },
-      runtime: { extensions, page },
+      editor: { editTreePath },
+      runtime: { context, extensions, page },
     }: ComponentEditorProps) => ({
       variables: {
-        configurationsIds: extensions[editTreePath as string].configurationsIds,
+        configurationsIds: extensions[editTreePath!].configurationsIds,
+        context,
         routeId: page,
         treePath: editTreePath,
-        url: iframeWindow.location.pathname,
       },
     }),
   }),

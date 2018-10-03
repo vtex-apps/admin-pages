@@ -2,24 +2,24 @@ mutation SaveExtension(
   $allMatches: Boolean
   $conditions: [String]
   $configurationId: String
+  $context: ContextInput
   $device: String
   $extensionName: String!
   $label: String
   $path: String!
   $propsJSON: String
   $routeId: String!
-  $scope: String!
 ) {
   saveExtension(
     allMatches: $allMatches
     conditions: $conditions
     configurationId: $configurationId
+    context: $context
     device: $device
     extensionName: $extensionName
     label: $label
     path: $path
     propsJSON: $propsJSON
     routeId: $routeId
-    scope: $scope
   )
 }

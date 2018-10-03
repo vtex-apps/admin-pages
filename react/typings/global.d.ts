@@ -53,6 +53,7 @@ declare global {
   interface RenderContext {
     account: RenderRuntime['account']
     components: RenderRuntime['components']
+    context: RenderRuntime['context']
     culture: RenderRuntime['culture']
     device: ConfigurationDevice
     emitter: RenderRuntime['emitter']
@@ -77,8 +78,6 @@ declare global {
     runtime: RenderContext
   }
 
-  type ConditionType = 'scope' | 'device' | 'custom'
-
   interface Condition {
     conditionId: string
   }
@@ -86,10 +85,6 @@ declare global {
   type Viewport = 'desktop' | 'mobile' | 'tablet'
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
-
-  type ServerConfigurationScope = 'url' | 'route'
-
-  type ConfigurationScope = ServerConfigurationScope | 'site'
 
   interface EditorConditionSection {
     activeConditions: string[]
@@ -103,10 +98,8 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
-    scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
-    setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
@@ -120,6 +113,7 @@ declare global {
     account: string
     accountId: string
     appsEtag: string
+    context: PageContext
     customRouting?: boolean
     emitter: EventEmitter
     workspace: string
@@ -145,31 +139,35 @@ declare global {
   }
 
   interface PageContextOptions {
-    scope?: ConfigurationScope
     device?: ConfigurationDevice
     conditions?: string[]
     template?: string
   }
 
-  interface ServerExtensionConfiguration {
+  interface PageContext {
+    id: string
+    type:
+      | 'brand'
+      | 'category'
+      | 'department'
+      | 'product'
+      | 'search'
+      | 'subcategory'
+      | 'url'
+  }
+
+  interface ExtensionConfiguration {
     allMatches: boolean
     conditions: string[]
     configurationId: string
+    context: RenderRuntime['context']
     device: string
     label?: string
     propsJSON: string
     routeId: string
-    scope: ServerConfigurationScope
-    url: string
   }
 
-  interface AdaptedExtensionConfiguration extends ServerExtensionConfiguration {
-    scope: ConfigurationScope
-  }
-
-  type ExtensionConfiguration =
-    | ServerExtensionConfiguration
-    | AdaptedExtensionConfiguration
+  type ConfigurationScope = 'route' | 'url'
 
   type ComponentEditorMode = 'content' | 'layout'
 

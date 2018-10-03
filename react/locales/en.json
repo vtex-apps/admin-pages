@@ -7,8 +7,6 @@
   "pages.conditions.device.mobile": "Mobile",
   "pages.conditions.device.title": "Device",
   "pages.conditions.scope.route": "This route",
-  "pages.conditions.scope.site": "Entire site",
-  "pages.conditions.scope.template": "This template",
   "pages.conditions.scope.title": "Scope: ",
   "pages.conditions.scope.url": "This URL",
   "pages.editor.components.title": "Components",

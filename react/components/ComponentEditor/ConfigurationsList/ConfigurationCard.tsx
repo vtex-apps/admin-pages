@@ -3,8 +3,8 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { Badge, Button, Card } from 'vtex.styleguide'
 
 interface Props {
-  activeConfiguration?: AdaptedExtensionConfiguration
-  configuration: AdaptedExtensionConfiguration
+  activeConfiguration?: ExtensionConfiguration
+  configuration: ExtensionConfiguration
   isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onEdit: (configuration: ExtensionConfiguration) => void
@@ -53,7 +53,9 @@ const ConfigurationCard = ({
               <FormattedMessage id="pages.conditions.scope.title" />
               <Badge bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
-                  id: `pages.conditions.scope.${configuration.scope}`,
+                  id: `pages.conditions.scope.${
+                    configuration.context.type === 'url' ? 'url' : 'route'
+                  }`,
                 })}
               </Badge>
             </div>
