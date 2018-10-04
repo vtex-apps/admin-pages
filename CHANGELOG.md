@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.5] - 2018-10-04
+### Changed
+- **`ImageUploader`**
+  - Replace complete file URL with only its pathname.
+
 ## [2.2.4] - 2018-09-12
 ### Added
 - **Admin**
