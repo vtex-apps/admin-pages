@@ -4,6 +4,7 @@ import CustomConditionsSelector from './CustomConditionsSelector'
 import ScopeSelector from './ScopeSelector'
 
 interface CustomProps {
+  context: PageContext
   onCustomConditionsChange: (newConditionsIds: string[]) => void
   onScopeChange: (newScope: ConfigurationScope) => void
   scope: ConfigurationScope
@@ -13,6 +14,7 @@ interface CustomProps {
 type Props = CustomProps & EditorContextProps
 
 const ConditionsSelector = ({
+  context,
   editor: { conditions },
   onCustomConditionsChange,
   onScopeChange,
@@ -26,7 +28,7 @@ const ConditionsSelector = ({
 
   return (
     <Fragment>
-      <ScopeSelector onChange={onScopeChange} value={scope} />
+      <ScopeSelector context={context} onChange={onScopeChange} value={scope} />
       <div className="mt5">
         <CustomConditionsSelector
           onChange={onCustomConditionsChange}

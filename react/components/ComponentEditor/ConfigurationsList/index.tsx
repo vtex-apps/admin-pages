@@ -6,6 +6,7 @@ import CreateButton from './CreateButton'
 interface Props {
   activeConfiguration?: ExtensionConfiguration
   configurations: ExtensionConfiguration[]
+  iframeContext: RenderRuntime['context']
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
@@ -16,6 +17,7 @@ interface Props {
 const ConfigurationsList: React.SFC<Props> = ({
   activeConfiguration,
   configurations,
+  iframeContext,
   isDisabledChecker,
   onCreate,
   onEdit,
@@ -28,6 +30,7 @@ const ConfigurationsList: React.SFC<Props> = ({
           <ConfigurationCard
             activeConfiguration={activeConfiguration}
             configuration={configuration}
+            iframeContext={iframeContext}
             isDisabled={isDisabledChecker(configuration)}
             onClick={onSelect}
             onEdit={onEdit}

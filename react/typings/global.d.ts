@@ -160,14 +160,14 @@ declare global {
     allMatches: boolean
     conditions: string[]
     configurationId: string
-    context: RenderRuntime['context']
+    context?: RenderRuntime['context']
     device: string
     label?: string
     propsJSON: string
     routeId: string
   }
 
-  type ConfigurationScope = 'route' | 'url'
+  type ConfigurationScope = 'routeGeneric' | 'routeSpecific' | 'url'
 
   type ComponentEditorMode = 'content' | 'layout'
 

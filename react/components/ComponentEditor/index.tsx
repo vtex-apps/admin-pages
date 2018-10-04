@@ -82,7 +82,7 @@ class ComponentEditor extends Component<
       isLoading: false,
       isModalOpen: false,
       mode: 'content',
-      scope: 'route',
+      scope: 'routeSpecific',
       wasModified: false,
     }
   }
@@ -297,7 +297,7 @@ class ComponentEditor extends Component<
   }
 
   public render() {
-    const { intl } = this.props
+    const { editor: { iframeWindow }, intl, runtime } = this.props
 
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
@@ -309,7 +309,7 @@ class ComponentEditor extends Component<
     const componentSchema = this.getComponentSchema(
       componentImplementation,
       props,
-      this.props.runtime,
+      runtime,
     )
 
     const componentUiSchema =
@@ -393,11 +393,12 @@ class ComponentEditor extends Component<
             configurations={
               extensionConfigurationsQuery.extensionConfigurations
             }
+            iframeContext={runtime.context}
+            iframeWindow={iframeWindow}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
-            iframeWindow={this.props.editor.iframeWindow}
           />
         ) : (
           this.renderConfigurationEditor(schema, uiSchema, extensionProps)
@@ -444,6 +445,11 @@ class ComponentEditor extends Component<
       {
         conditions: newConfiguration.conditions,
         configuration: newConfiguration,
+        scope: !newConfiguration.context
+          ? 'routeGeneric'
+          : newConfiguration.context.type === 'url'
+            ? 'url'
+            : 'routeSpecific',
         },
       () => {
         runtime.updateExtension(editor.editTreePath!, {
@@ -525,7 +531,12 @@ class ComponentEditor extends Component<
   }
 
   private handleConfigurationSave = async () => {
-    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
+    const {
+      editor,
+      editor: { iframeWindow },
+      runtime,
+      saveExtension,
+    } = this.props
     const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
@@ -547,7 +558,9 @@ class ComponentEditor extends Component<
     const path = iframeWindow.location.pathname
 
     const configurationContext =
-      this.state.scope === 'url'
+      this.state.scope === 'routeGeneric'
+        ? null
+        : this.state.scope === 'url'
         ? {
             id: path,
             type: 'url',
@@ -717,10 +730,20 @@ class ComponentEditor extends Component<
   }
 
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
-    const { iframeWindow } = this.props.editor
+    const {
+      editor: { iframeWindow },
+      runtime,
+    } = this.props
+
+    if (!configuration.context) {
+      return false
+    }
+
     return (
-      configuration.context.type === 'url' &&
-      configuration.context.id !== iframeWindow.location.pathname
+      (configuration.context.type === 'url' &&
+        configuration.context.id !== iframeWindow.location.pathname) ||
+      (configuration.context.type !== 'url' &&
+        configuration.context.id !== runtime.context.id)
     )
   }
 
@@ -732,6 +755,7 @@ class ComponentEditor extends Component<
     const {
       editor,
       editor: { iframeWindow },
+      runtime: { context },
     } = this.props
 
     const { configuration } = this.state
@@ -759,6 +783,7 @@ class ComponentEditor extends Component<
           />
           <div className="mt5">
             <ConditionsSelector
+              context={context}
               editor={editor}
               onCustomConditionsChange={this.handleConditionsChange}
               onScopeChange={this.handleScopeChange}

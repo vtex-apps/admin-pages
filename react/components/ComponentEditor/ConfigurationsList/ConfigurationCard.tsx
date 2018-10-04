@@ -5,6 +5,7 @@ import { Badge, Button, Card } from 'vtex.styleguide'
 interface Props {
   activeConfiguration?: ExtensionConfiguration
   configuration: ExtensionConfiguration
+  iframeContext: RenderRuntime['context']
   isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onEdit: (configuration: ExtensionConfiguration) => void
@@ -13,6 +14,7 @@ interface Props {
 const ConfigurationCard = ({
   activeConfiguration,
   configuration,
+  iframeContext,
   isDisabled = false,
   intl,
   onClick,
@@ -54,7 +56,11 @@ const ConfigurationCard = ({
               <Badge bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
                   id: `pages.conditions.scope.${
-                    configuration.context.type === 'url' ? 'url' : 'route'
+                    !configuration.context
+                      ? `${iframeContext.type}.routeGeneric`
+                      : configuration.context.type === 'url'
+                        ? 'url'
+                        : `${configuration.context.type}.routeSpecific`
                   }`,
                 })}
               </Badge>
