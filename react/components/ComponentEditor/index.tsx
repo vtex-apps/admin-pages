@@ -837,6 +837,7 @@ export default compose(
       editor: { editTreePath },
       runtime: { context, extensions, page },
     }: ComponentEditorProps) => ({
+      fetchPolicy: 'network-only',
       variables: {
         configurationsIds: extensions[editTreePath!].configurationsIds,
         context,
