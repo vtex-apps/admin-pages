@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
@@ -47,7 +48,10 @@ class ImageUploader extends Component {
         })
 
         if (fileUrl) {
-          this.props.onChange(fileUrl)
+          const fileUrlObj = new URL(fileUrl)
+
+          this.props.onChange(fileUrlObj.pathname)
+
           this.setState({ isLoading: false })
         }
       } catch (e) {
