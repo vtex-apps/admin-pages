@@ -5,10 +5,16 @@ import { Dropdown } from 'vtex.styleguide'
 interface CustomProps {
   onChange: (value: ConfigurationScope) => void
   pageContext: PageContext
+  shouldEnableSite: boolean
   value: ConfigurationScope
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
+
+const SITE_OPTION = {
+  label: 'pages.conditions.scope.site',
+  value: 'site',
+}
 
 const URL_OPTIONS = [
   {
@@ -17,10 +23,16 @@ const URL_OPTIONS = [
   },
 ]
 
-const ScopeSelector = ({ intl, onChange, pageContext, value }: Props) => {
+const ScopeSelector = ({
+  intl,
+  onChange,
+  pageContext,
+  shouldEnableSite,
+  value,
+}: Props) => {
   const isUrl = pageContext.type === 'url'
 
-  const enumOptions = isUrl
+  const partialEnumOptions = isUrl
     ? URL_OPTIONS
     : [
         {
@@ -33,9 +45,13 @@ const ScopeSelector = ({ intl, onChange, pageContext, value }: Props) => {
         },
       ]
 
+  const enumOptions = shouldEnableSite
+    ? [SITE_OPTION, ...partialEnumOptions]
+    : partialEnumOptions
+
   return (
     <Dropdown
-      disabled={isUrl}
+      disabled={enumOptions.length === 1}
       label={intl.formatMessage({
         id: 'pages.editor.components.conditions.native.label',
       })}

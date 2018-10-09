@@ -6,6 +6,7 @@ import ScopeSelector from './ScopeSelector'
 interface CustomProps {
   onCustomConditionsChange: (newConditionsIds: string[]) => void
   onScopeChange: (newScope: ConfigurationScope) => void
+  page: RenderRuntime['page']
   pageContext: PageContext
   scope: ConfigurationScope
   selectedConditions: string[]
@@ -14,9 +15,10 @@ interface CustomProps {
 type Props = CustomProps & EditorContextProps
 
 const ConditionsSelector = ({
-  editor: { conditions },
+  editor: { conditions, editTreePath },
   onCustomConditionsChange,
   onScopeChange,
+  page,
   pageContext,
   scope,
   selectedConditions,
@@ -26,11 +28,14 @@ const ConditionsSelector = ({
     value: condition.conditionId,
   }))
 
+  const shouldEnableSite = (editTreePath && !editTreePath.startsWith(page)) || false
+
   return (
     <Fragment>
       <ScopeSelector
         onChange={onScopeChange}
         pageContext={pageContext}
+        shouldEnableSite={shouldEnableSite}
         value={scope}
       />
       <div className="mt5">

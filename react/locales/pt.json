@@ -13,6 +13,7 @@
   "pages.conditions.scope.department.routeSpecific": "este departamento",
   "pages.conditions.scope.product.routeSpecific": "este produto",
   "pages.conditions.scope.search.routeSpecific": "esta busca",
+  "pages.conditions.scope.site": "todo o site",
   "pages.conditions.scope.subcategory.routeSpecific": "esta subcategoria",
   "pages.conditions.scope.title": "Escopo: ",
   "pages.conditions.scope.url": "esta URL",

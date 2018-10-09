@@ -17,6 +17,7 @@
   "pages.conditions.scope.department.routeSpecific": "this department",
   "pages.conditions.scope.product.routeSpecific": "this product",
   "pages.conditions.scope.search.routeSpecific": "this search",
+  "pages.conditions.scope.site": "the entire site",
   "pages.conditions.scope.subcategory.routeSpecific": "this subcategory",
   "pages.conditions.scope.title": "Scope: ",
   "pages.conditions.scope.url": "this URL",

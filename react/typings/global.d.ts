@@ -167,7 +167,7 @@ declare global {
     routeId: string
   }
 
-  type ConfigurationScope = 'routeGeneric' | 'routeSpecific' | 'url'
+  type ConfigurationScope =  'site' | 'routeGeneric' | 'routeSpecific' | 'url'
 
   type ComponentEditorMode = 'content' | 'layout'
 

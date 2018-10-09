@@ -441,15 +441,22 @@ class ComponentEditor extends Component<
   ) => {
     const { editor, runtime } = this.props
 
+    const isScopeSite =
+      (editor.editTreePath && !editor.editTreePath.startsWith(runtime.page)) ||
+      false
+
     this.setState(
       {
         conditions: newConfiguration.conditions,
         configuration: newConfiguration,
-        scope: !newConfiguration.pageContext
-          ? 'routeGeneric'
-          : newConfiguration.pageContext.type === 'url'
-            ? 'url'
-            : 'routeSpecific',
+        scope:
+          isScopeSite
+            ? 'site'
+            : !newConfiguration.pageContext
+              ? 'routeGeneric'
+              : newConfiguration.pageContext.type === 'url'
+                ? 'url'
+                : 'routeSpecific',
         },
       () => {
         runtime.updateExtension(editor.editTreePath!, {
@@ -537,7 +544,7 @@ class ComponentEditor extends Component<
       runtime,
       saveExtension,
     } = this.props
-    const { conditions, configuration } = this.state
+    const { conditions, configuration, scope } = this.state
 
     const { allMatches, device } = configuration!
 
@@ -558,14 +565,14 @@ class ComponentEditor extends Component<
     const path = iframeWindow.location.pathname
 
     const configurationContext =
-      this.state.scope === 'routeGeneric'
+      (scope === 'routeGeneric' || scope === 'site')
         ? null
-        : this.state.scope === 'url'
-        ? {
+        : scope === 'url'
+          ? {
             id: path,
             type: 'url',
           }
-        : runtime.pageContext
+          : runtime.pageContext
 
     this.setState({
       isLoading: true,
@@ -755,7 +762,7 @@ class ComponentEditor extends Component<
     const {
       editor,
       editor: { iframeWindow },
-      runtime: { pageContext },
+      runtime,
     } = this.props
 
     const { configuration } = this.state
@@ -786,7 +793,8 @@ class ComponentEditor extends Component<
               editor={editor}
               onCustomConditionsChange={this.handleConditionsChange}
               onScopeChange={this.handleScopeChange}
-              pageContext={pageContext}
+              page={runtime.page}
+              pageContext={runtime.pageContext}
               scope={this.state.scope}
               selectedConditions={this.state.conditions}
             />
