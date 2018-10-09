@@ -393,12 +393,12 @@ class ComponentEditor extends Component<
             configurations={
               extensionConfigurationsQuery.extensionConfigurations
             }
-            iframeContext={runtime.context}
             iframeWindow={iframeWindow}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
+            pageContext={runtime.pageContext}
           />
         ) : (
           this.renderConfigurationEditor(schema, uiSchema, extensionProps)
@@ -414,7 +414,7 @@ class ComponentEditor extends Component<
       allMatches: true,
       conditions: [],
       configurationId: NEW_CONFIGURATION_ID,
-      context: runtime.context,
+      context: runtime.pageContext,
       device: runtime.device,
       propsJSON: '{}',
       routeId: runtime.page,
@@ -565,7 +565,7 @@ class ComponentEditor extends Component<
             id: path,
             type: 'url',
           }
-        : runtime.context
+        : runtime.pageContext
 
     this.setState({
       isLoading: true,
@@ -595,7 +595,7 @@ class ComponentEditor extends Component<
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
           runtime.extensions[editor.editTreePath as string].configurationsIds,
-        context: runtime.context,
+        context: runtime.pageContext,
         routeId: runtime.page,
         treePath: editor.editTreePath,
       })
@@ -743,7 +743,7 @@ class ComponentEditor extends Component<
       (configuration.context.type === 'url' &&
         configuration.context.id !== iframeWindow.location.pathname) ||
       (configuration.context.type !== 'url' &&
-        configuration.context.id !== runtime.context.id)
+        configuration.context.id !== runtime.pageContext.id)
     )
   }
 
@@ -755,7 +755,7 @@ class ComponentEditor extends Component<
     const {
       editor,
       editor: { iframeWindow },
-      runtime: { context },
+      runtime: { pageContext },
     } = this.props
 
     const { configuration } = this.state
@@ -783,10 +783,10 @@ class ComponentEditor extends Component<
           />
           <div className="mt5">
             <ConditionsSelector
-              context={context}
               editor={editor}
               onCustomConditionsChange={this.handleConditionsChange}
               onScopeChange={this.handleScopeChange}
+              pageContext={pageContext}
               scope={this.state.scope}
               selectedConditions={this.state.conditions}
             />
@@ -835,12 +835,12 @@ export default compose(
     name: 'extensionConfigurations',
     options: ({
       editor: { editTreePath },
-      runtime: { context, extensions, page },
+      runtime: { extensions, page, pageContext },
     }: ComponentEditorProps) => ({
       fetchPolicy: 'network-only',
       variables: {
         configurationsIds: extensions[editTreePath!].configurationsIds,
-        context,
+        context: pageContext,
         routeId: page,
         treePath: editTreePath,
       },

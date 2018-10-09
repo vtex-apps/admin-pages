@@ -53,7 +53,6 @@ declare global {
   interface RenderContext {
     account: RenderRuntime['account']
     components: RenderRuntime['components']
-    context: RenderRuntime['context']
     culture: RenderRuntime['culture']
     device: ConfigurationDevice
     emitter: RenderRuntime['emitter']
@@ -64,6 +63,7 @@ declare global {
     navigate: (options: NavigateOptions) => boolean
     onPageChanged: (location: Location) => void
     page: RenderRuntime['page']
+    pageContext: RenderRuntime['pageContext']
     pages: RenderRuntime['pages']
     prefetchPage: (name: string) => Promise<void>
     production: RenderRuntime['production']
@@ -113,7 +113,6 @@ declare global {
     account: string
     accountId: string
     appsEtag: string
-    context: PageContext
     customRouting?: boolean
     emitter: EventEmitter
     workspace: string
@@ -122,6 +121,7 @@ declare global {
     page: string
     version: string
     culture: Culture
+    pageContext: PageContext
     pages: Routes
     routes: Routes
     extensions: Extensions
@@ -160,7 +160,7 @@ declare global {
     allMatches: boolean
     conditions: string[]
     configurationId: string
-    context?: RenderRuntime['context']
+    context?: RenderRuntime['pageContext']
     device: string
     label?: string
     propsJSON: string
