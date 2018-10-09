@@ -160,9 +160,9 @@ declare global {
     allMatches: boolean
     conditions: string[]
     configurationId: string
-    context?: RenderRuntime['pageContext']
     device: string
     label?: string
+    pageContext?: RenderRuntime['pageContext']
     propsJSON: string
     routeId: string
   }

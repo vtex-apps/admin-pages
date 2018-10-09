@@ -1,24 +1,24 @@
 query ExtensionConfigurations(
   $configurationsIds: [String]
-  $context: ContextInput!
+  $pageContext: PageContextInput!
   $routeId: String!
   $treePath: String!
 ) {
   extensionConfigurations(
     configurationsIds: $configurationsIds
-    context: $context
+    pageContext: $pageContext
     routeId: $routeId
     treePath: $treePath
   ) {
     allMatches
     conditions
     configurationId
-    context {
+    device
+    label
+    pageContext {
       id
       type
     }
-    device
-    label
     propsJSON
     routeId
   }

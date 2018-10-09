@@ -414,8 +414,8 @@ class ComponentEditor extends Component<
       allMatches: true,
       conditions: [],
       configurationId: NEW_CONFIGURATION_ID,
-      context: runtime.pageContext,
       device: runtime.device,
+      pageContext: runtime.pageContext,
       propsJSON: '{}',
       routeId: runtime.page,
     }
@@ -445,9 +445,9 @@ class ComponentEditor extends Component<
       {
         conditions: newConfiguration.conditions,
         configuration: newConfiguration,
-        scope: !newConfiguration.context
+        scope: !newConfiguration.pageContext
           ? 'routeGeneric'
-          : newConfiguration.context.type === 'url'
+          : newConfiguration.pageContext.type === 'url'
             ? 'url'
             : 'routeSpecific',
         },
@@ -577,13 +577,13 @@ class ComponentEditor extends Component<
           allMatches,
           conditions,
           configurationId,
-          context: configurationContext,
           device,
           extensionName: editor.editTreePath,
           label:
-            this.state.newLabel !== undefined
-              ? this.state.newLabel
-              : configuration!.label,
+          this.state.newLabel !== undefined
+            ? this.state.newLabel
+            : configuration!.label,
+          pageContext: configurationContext,
           path,
           propsJSON: JSON.stringify(pickedProps),
           routeId: runtime.page,
@@ -595,7 +595,7 @@ class ComponentEditor extends Component<
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
           runtime.extensions[editor.editTreePath as string].configurationsIds,
-        context: runtime.pageContext,
+        pageContext: runtime.pageContext,
         routeId: runtime.page,
         treePath: editor.editTreePath,
       })
@@ -735,15 +735,15 @@ class ComponentEditor extends Component<
       runtime,
     } = this.props
 
-    if (!configuration.context) {
+    if (!configuration.pageContext) {
       return false
     }
 
     return (
-      (configuration.context.type === 'url' &&
-        configuration.context.id !== iframeWindow.location.pathname) ||
-      (configuration.context.type !== 'url' &&
-        configuration.context.id !== runtime.pageContext.id)
+      (configuration.pageContext.type === 'url' &&
+        configuration.pageContext.id !== iframeWindow.location.pathname) ||
+      (configuration.pageContext.type !== 'url' &&
+        configuration.pageContext.id !== runtime.pageContext.id)
     )
   }
 

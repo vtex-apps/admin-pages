@@ -56,11 +56,11 @@ const ConfigurationCard = ({
               <Badge bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
                   id: `pages.conditions.scope.${
-                    !configuration.context
+                    !configuration.pageContext
                       ? `${pageContext.type}.routeGeneric`
-                      : configuration.context.type === 'url'
+                      : configuration.pageContext.type === 'url'
                         ? 'url'
-                        : `${configuration.context.type}.routeSpecific`
+                        : `${configuration.pageContext.type}.routeSpecific`
                   }`,
                 })}
               </Badge>
