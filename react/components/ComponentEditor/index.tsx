@@ -839,8 +839,11 @@ export default compose(
     }: ComponentEditorProps) => ({
       fetchPolicy: 'network-only',
       variables: {
-        configurationsIds: extensions[editTreePath!].configurationsIds,
-        context: pageContext,
+        configurationsIds:
+          (extensions[editTreePath!] &&
+            extensions[editTreePath!].configurationsIds) ||
+          [],
+        pageContext,
         routeId: page,
         treePath: editTreePath,
       },
