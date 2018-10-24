@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.8] - 2018-10-24
+### Fixed
+- **`EditorContainer`**
+  - Non-responsive behavior when admin sidebar gets expanded/collapsed.
+
 ## [2.2.7] - 2018-10-24
 ### Fixed
 - **I18n (Spanish)**
