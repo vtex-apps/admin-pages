@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`EditorContainer`**
   - Move sidebar to it's own component.
   - Type IFrame on `highlightExtensionPoint`.
+- **`Sidebar`**
+  - Favour early returns instead of ternary operators.
+  - Move component selector to it's own component.
 
 ## [2.3.9] - 2018-11-26
 ### Fixed
