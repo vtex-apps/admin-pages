@@ -143,6 +143,7 @@ class PageForm extends Component<any, any> {
       conditions: page && page.conditions,
       configurationId: props.configurationId,
       context: route && route.context,
+      isLoading: false,
       login: route && !!route.login,
       name: page && page.name,
       pageDeclarer: page && page.declarer,
@@ -196,6 +197,7 @@ class PageForm extends Component<any, any> {
       conditions,
       context,
       department,
+      isLoading,
       login,
       name,
       pageDeclarer,
@@ -372,11 +374,13 @@ class PageForm extends Component<any, any> {
         >
           <div className="mt7">
             <Link to="/admin/cms/pages">
-              <Button size="small" variation="tertiary">
+              <Button disabled={isLoading} size="small" variation="tertiary">
                 <FormattedMessage id="pages.admin.pages.form.button.cancel" />
               </Button>
             </Link>
             <Button
+              disabled={isLoading}
+              isLoading={isLoading}
               size="small"
               type="submit"
               variation="primary"
@@ -440,8 +444,8 @@ class PageForm extends Component<any, any> {
 
 export default compose(
   graphql(SavePage, {
-  name: 'savePage',
-  options: { fetchPolicy: 'cache-and-network' },
+    name: 'savePage',
+    options: { fetchPolicy: 'cache-and-network' },
   }),
   withRuntimeContext,
 )(PageForm)
