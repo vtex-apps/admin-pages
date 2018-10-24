@@ -31,6 +31,8 @@
   "pages.editor.info.page": "Page",
   "pages.editor.info.title": "Page Info",
   "pages.admin.loading": "Loading",
+  "pages.admin.pages.form.button.cancel": "Cancel",
+  "pages.admin.pages.form.button.save": "Save",
   "pages.admin.redirects.button.create": "New redirect",
   "pages.admin.redirects.emptyState": "No redirects created.",
   "pages.admin.redirects.form.button.back": "Back",

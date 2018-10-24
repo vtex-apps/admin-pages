@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.9] - 2018-10-24
+### Added
+- **`PageForm`**
+  - Loading logic.
+  - I18n to buttons.
+
+### Fixed
+- **`PageForm`**
+  - Error dialog on success bug.
+
+### Removed
+- **`PageForm`**
+  - Unused classes from save button.
+  - Some `console.log`s.
+
 ## [2.2.8] - 2018-10-24
 ### Fixed
 - **`EditorContainer`**

@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "admin-pages",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
