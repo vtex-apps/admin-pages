@@ -379,7 +379,6 @@ class PageForm extends Component<any, any> {
             <Button
               size="small"
               type="submit"
-              className="fw5 ph5 pv3 ttu br2 fw4 f7 bw1 ba b--blue bg-blue white hover-bg-heavy-blue hover-b--heavy-blue pointer mr5"
               variation="primary"
             >
               Save
