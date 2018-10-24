@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { canUseDOM } from 'render'
 
 import { getIframeImplementation } from '../utils/components'
 
@@ -63,8 +64,23 @@ class ComponentsList extends Component<
         <div className="bb b--light-silver" />
         {Object.keys(extensions)
           .filter(this.validateExtension)
+          .sort(this.sortComponents)
           .map(this.renderComponentButton)}
       </div>
+    )
+  }
+
+  private getComponentElement = (treePath: string) => {
+    const {
+      editor: { iframeWindow },
+    } = this.props
+
+    if (!canUseDOM) {
+      return undefined
+    }
+
+    return iframeWindow.document.querySelector(
+      `[data-extension-point="${treePath}"]`,
     )
   }
 
@@ -98,6 +114,29 @@ class ComponentsList extends Component<
       </div>
     </button>
   )
+
+  private sortComponents = (treePathA: string, treePathB: string) => {
+    const componentA = this.getComponentElement(treePathA)
+
+    if (!componentA) {
+      return 1
+    }
+
+    const componentB = this.getComponentElement(treePathB)
+
+    if (!componentB) {
+      return -1
+    }
+
+    const { x: xA, y: yA } = componentA.getBoundingClientRect() as DOMRect
+    const { x: xB, y: yB } = componentB.getBoundingClientRect() as DOMRect
+
+    if (yA > yB || (yA === yB && xA > xB)) {
+      return 1
+    }
+
+    return -1
+  }
 
   private validateExtension = (treePath: string) => {
     const {
