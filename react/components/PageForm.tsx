@@ -2,6 +2,7 @@ import PropTypes from 'prop-types'
 import { filter, map, omit, prop, sort } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { Link, withRuntimeContext } from 'render'
 import { Button, Dropdown as StyleguideDropdown } from 'vtex.styleguide'
@@ -373,7 +374,7 @@ class PageForm extends Component<any, any> {
           <div className="mt7">
             <Link to="/admin/cms/pages">
               <Button size="small" variation="tertiary">
-                Cancel
+                <FormattedMessage id="pages.admin.pages.form.button.cancel" />
               </Button>
             </Link>
             <Button
@@ -381,7 +382,7 @@ class PageForm extends Component<any, any> {
               type="submit"
               variation="primary"
             >
-              Save
+              <FormattedMessage id="pages.admin.pages.form.button.save" />
             </Button>
           </div>
         </Form>

@@ -22,6 +22,8 @@
   "pages.editor.info.page": "Página",
   "pages.editor.info.title": "Informaciones de la Página",
   "pages.admin.loading": "Cargando",
+  "pages.admin.pages.form.button.cancel": "Cancelar",
+  "pages.admin.pages.form.button.save": "Salvar",
   "pages.admin.redirects.button.create": "Nueva redirección",
   "pages.admin.redirects.emptyState": "Ninguna redirección creada.",
   "pages.admin.redirects.form.button.back": "Volver",
