@@ -2,11 +2,8 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
-import { Spinner } from 'vtex.styleguide'
+import Sidebar from './Sidebar'
 
-import SelectionIcon from '../images/SelectionIcon.js'
-import ComponentEditor from './ComponentEditor'
-import ComponentsList from './ComponentsList'
 import DeviceSwitcher from './DeviceSwitcher'
 
 import '../editbar.global.css'
@@ -76,24 +73,13 @@ export default class EditorContainer extends Component<
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
-  public getSnapshotBeforeUpdate(
-    prevProps: Props & RenderContextProps & EditorContextProps,
-  ) {
-    const {
-      editor: { editMode },
-    } = this.props
-    if (prevProps.editor.editMode !== editMode) {
-      this.highlightExtensionPoint(null)
-    }
-  }
-
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
     const {
       editor: { editMode, editExtensionPoint },
     } = this.props
 
     this.setState({ highlightTreePath }, () => {
-      const iframe = document.getElementById('store-iframe')
+      const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.__setHighlightTreePath({
           editExtensionPoint,
@@ -105,66 +91,21 @@ export default class EditorContainer extends Component<
     })
   }
 
-  public renderSideBarContent() {
+  public getSnapshotBeforeUpdate(
+    prevProps: Props & RenderContextProps & EditorContextProps,
+  ) {
     const {
-      editor: { editTreePath, editMode, toggleEditMode },
-      editor,
-      runtime,
+      editor: { editMode },
     } = this.props
-
-    return runtime ? (
-      editTreePath === null ? (
-        <Fragment>
-          <div className="flex justify-between items-center">
-            <h3 className="near-black f5 mv0 pa5">
-              <FormattedMessage id="pages.editor.components.title" />
-            </h3>
-            <div
-              onClick={toggleEditMode}
-              className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
-            >
-              <span className="pr5 b--light-gray flex items-center">
-                <SelectionIcon stroke={editMode ? '#368df7' : '#979899'} />
-              </span>
-            </div>
-          </div>
-          <ComponentsList
-            editor={editor}
-            runtime={runtime}
-            highlightExtensionPoint={this.highlightExtensionPoint}
-          />
-        </Fragment>
-      ) : (
-        <ComponentEditor editor={editor} runtime={runtime} />
-      )
-    ) : (
-      <div className="mt5 flex justify-center">
-        <Spinner />
-      </div>
-    )
-  }
-
-  public renderSideBar() {
-    return (
-      <div
-        id="sidebar-vtex-editor"
-        className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
-      >
-        <nav
-          id="admin-sidebar"
-          className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
-        >
-          <div className="h-100 overflow-y-scroll">
-            {this.renderSideBarContent()}
-          </div>
-        </nav>
-      </div>
-    )
+    if (prevProps.editor.editMode !== editMode) {
+      this.highlightExtensionPoint(null)
+    }
   }
 
   public render() {
     const {
       editor,
+      runtime,
       editor: { viewport, iframeWindow },
       toggleShowAdminControls,
       viewports,
@@ -173,7 +114,7 @@ export default class EditorContainer extends Component<
 
     return (
       <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
-        {visible && this.renderSideBar()}
+        {visible && <Sidebar editor={editor} runtime={runtime} highlightExtensionPoint={this.highlightExtensionPoint} />}
         <div
           className={`calc--height calc--height-ns ${
             visible ? 'calc--width' : 'w-100'
