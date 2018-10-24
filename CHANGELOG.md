@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.2.6] - 2018-10-24
+### Fixed
+- **`editbar.global.css`**
+  - Fixing tablet positioning on storefront editor
+
 ## [2.2.5] - 2018-10-04
 ### Changed
 - **`ImageUploader`**
