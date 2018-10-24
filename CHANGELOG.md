@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **`PageForm`**
+  - Loading logic.
+  - I18n to buttons.
+
+### Fixed
+- **`PageForm`**
+  - Error dialog on success bug.
+
+### Removed
+- **`PageForm`**
+  - Unused classes from save button.
+  - Some `console.log`s.
 
 ## [2.2.8] - 2018-10-24
 ### Fixed
