@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 
 import ComponentEditor from '../ComponentEditor'
 import ComponentSelector from './ComponentSelector'
+import EditorSwitcher from './EditorSwitcher'
 
 import { Spinner } from 'vtex.styleguide'
 
@@ -13,11 +14,15 @@ interface Props {
 
 export default class Sidebar extends Component<Props> {
   public render() {
+    const { editor } = this.props
     return (
       <div
         id="sidebar-vtex-editor"
         className="right-0-ns z-1 h-100 top-3em-ns calc--height-ns w-18em-ns fixed w-100 w-auto-ns"
       >
+        <EditorSwitcher
+          editor={editor}
+        />
         <nav
           id="admin-sidebar"
           className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
