@@ -16,7 +16,6 @@ import FieldTemplate from '../form/FieldTemplate'
 import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
 
 import Modal from '../Modal'
-import ModeSwitcher from '../ModeSwitcher'
 import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
@@ -27,8 +26,6 @@ const NEW_CONFIGURATION_ID = 'new'
 const defaultUiSchema = {
   classNames: 'editor-form',
 }
-
-const MODES: ComponentEditorMode[] = ['content', 'layout']
 
 interface ExtensionConfigurationsQuery {
   error: object
@@ -50,7 +47,6 @@ interface ComponentEditorState {
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
-  mode: ComponentEditorMode
   newLabel?: string
   wasModified: boolean
 }
@@ -70,7 +66,6 @@ class ComponentEditor extends Component<
       isEditMode: false,
       isLoading: false,
       isModalOpen: false,
-      mode: 'content',
       wasModified: false,
     }
   }
@@ -689,12 +684,6 @@ class ComponentEditor extends Component<
     this.handleConfigurationClose()
   }
 
-  private handleModeSwitch = (newMode: ComponentEditorMode) => {
-    if (newMode !== this.state.mode) {
-      this.setState({ mode: newMode })
-    }
-  }
-
   private handleQuit = (event?: any) => {
     const { editor, runtime } = this.props
 
@@ -737,7 +726,7 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, editor: { iframeWindow }, runtime } = this.props
+    const { editor, editor: { iframeWindow, mode }, runtime } = this.props
     const { configuration } = this.state
 
     const mobile = iframeWindow.innerWidth < 600
@@ -778,18 +767,13 @@ class ComponentEditor extends Component<
           }`}
           style={{ animationDuration: '0.2s' }}
         >
-          <ModeSwitcher
-            activeMode={this.state.mode}
-            modes={MODES}
-            onSwitch={this.handleModeSwitch}
-          />
           <Form
             schema={schema}
             formData={props}
             onChange={this.handleFormChange}
             onSubmit={this.handleConfigurationSave}
             uiSchema={uiSchema}
-            formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+            formContext={{ isLayoutMode: mode === 'layout' }}
           />
           <div id="form__error-list-template___alert" />
         </div>

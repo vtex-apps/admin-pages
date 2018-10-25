@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`Sidebar`**
   - Favour early returns instead of ternary operators.
   - Move component selector to it's own component.
+- **`EditorProvider`**
+  - Add `mode` (and `setMode`) to EditorContext.
+- **`ComponentEditor`**
+  - Remove `mode` from state.
+  - Use `mode` from EditorContext.
+- **`ModeSwitcher`**
+  - Move inside of `Sidebar` folder.
+  - Switching mode from `editor` instead of props.
 
 ## [2.5.0] - 2018-12-05
 ### Changed

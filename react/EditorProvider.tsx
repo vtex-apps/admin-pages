@@ -22,6 +22,7 @@ interface State {
   editTreePath: string | null
   iframeRuntime: RenderContext | null
   iframeWindow: Window
+  mode: EditorMode
   scope: ConfigurationScope
   showAdminControls: boolean
   template?: string
@@ -52,6 +53,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
+      mode: 'content',
       scope: 'url',
       showAdminControls: true,
       template: undefined,
@@ -243,6 +245,10 @@ class EditorProvider extends Component<Props, State> {
     this.setState({ viewport })
   }
 
+  public handleSetMode = (mode: EditorMode) => {
+    this.setState({ mode })
+  }
+
   public render() {
     const {
       children,
@@ -256,6 +262,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       iframeRuntime,
       iframeWindow,
+      mode,
       scope,
       showAdminControls,
       viewport,
@@ -270,9 +277,11 @@ class EditorProvider extends Component<Props, State> {
       editMode,
       editTreePath,
       iframeWindow,
+      mode,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
+      setMode: this.handleSetMode,
       setScope: this.handleSetScope,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,
