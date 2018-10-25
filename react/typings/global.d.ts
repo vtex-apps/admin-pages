@@ -91,6 +91,8 @@ declare global {
 
   type ConfigurationScope = ServerConfigurationScope | 'site'
 
+  type EditorMode = 'content' | 'layout'
+
   interface EditorConditionSection {
     activeConditions: string[]
     conditions: Condition[]
@@ -103,9 +105,11 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
+    mode: EditorMode
     scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
+    setMode: (mode: EditorMode) => void
     setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
@@ -170,8 +174,6 @@ declare global {
   type ExtensionConfiguration =
     | ServerExtensionConfiguration
     | AdaptedExtensionConfiguration
-
-  type ComponentEditorMode = 'content' | 'layout'
 
   interface Redirect {
     cacheId: string

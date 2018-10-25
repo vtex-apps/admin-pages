@@ -14,6 +14,7 @@ interface EditorProviderState {
   editMode: boolean
   editTreePath: string | null
   showAdminControls: boolean
+  mode: EditorMode
   scope: ConfigurationScope
   template: string | null
   viewport: Viewport
@@ -48,6 +49,7 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
+      mode: 'content',
       scope: 'url',
       showAdminControls: true,
       template: null,
@@ -178,9 +180,13 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
     this.setState({ viewport })
   }
 
+  public handleSetMode = (mode: EditorMode) => {
+    this.setState({ mode })
+  }
+
   public render() {
     const { children, runtime: { device } } = this.props
-    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, scope, viewport, iframeRuntime, iframeWindow } = this.state
+    const { editMode, editTreePath, showAdminControls, activeConditions, allMatches, mode, scope, viewport, iframeRuntime, iframeWindow } = this.state
 
     const editor: EditorContext = {
       activeConditions,
@@ -191,9 +197,11 @@ class EditorProvider extends Component<{} & RenderContextProps & DataProps<{ ava
       editMode,
       editTreePath,
       iframeWindow,
+      mode,
       removeCondition: this.handleRemoveCondition,
       scope,
       setDevice: this.handleSetDevice,
+      setMode: this.handleSetMode,
       setScope: this.handleSetScope,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,

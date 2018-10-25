@@ -21,7 +21,6 @@ import Radio from '../form/Radio'
 import TextArea from '../form/TextArea'
 import Toggle from '../form/Toggle'
 import Modal from '../Modal'
-import ModeSwitcher from '../ModeSwitcher'
 import ConfigurationsList from './ConfigurationsList'
 import LabelEditor from './LabelEditor'
 import SaveButton from './SaveButton'
@@ -40,8 +39,6 @@ const widgets = {
   TextareaWidget: TextArea,
   'image-uploader': ImageUploader,
 }
-
-const MODES: ComponentEditorMode[] = ['content', 'layout']
 
 interface ExtensionConfigurationsQuery {
   error: object
@@ -63,7 +60,6 @@ interface ComponentEditorState {
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
-  mode: ComponentEditorMode
   newLabel?: string
   wasModified: boolean
 }
@@ -83,7 +79,6 @@ class ComponentEditor extends Component<
       isEditMode: false,
       isLoading: false,
       isModalOpen: false,
-      mode: 'content',
       wasModified: false,
     }
   }
@@ -701,12 +696,6 @@ class ComponentEditor extends Component<
     this.handleConfigurationClose()
   }
 
-  private handleModeSwitch = (newMode: ComponentEditorMode) => {
-    if (newMode !== this.state.mode) {
-      this.setState({ mode: newMode })
-    }
-  }
-
   private handleQuit = (event?: any) => {
     const { editor, runtime } = this.props
 
@@ -749,7 +738,7 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, editor: { iframeWindow }, runtime } = this.props
+    const { editor, editor: { iframeWindow, mode }, runtime } = this.props
     const { configuration } = this.state
 
     const mobile = iframeWindow.innerWidth < 600
@@ -790,11 +779,6 @@ class ComponentEditor extends Component<
           }`}
           style={{ animationDuration: '0.2s' }}
         >
-          <ModeSwitcher
-            activeMode={this.state.mode}
-            modes={MODES}
-            onSwitch={this.handleModeSwitch}
-          />
           <Form
             schema={schema}
             formData={props}
@@ -807,7 +791,7 @@ class ComponentEditor extends Component<
             widgets={widgets}
             showErrorList
             ErrorList={ErrorListTemplate}
-            formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+            formContext={{ isLayoutMode: mode === 'layout' }}
           >
             <button className="dn" type="submit" />
           </Form>
