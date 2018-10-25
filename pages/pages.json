@@ -67,10 +67,6 @@
             "path": "/admin/cms/pages"
           },
           {
-            "labelId": "pages.admin-menu-button.redirectList",
-            "path": "/admin/cms/redirects"
-          },
-          {
             "labelId": "pages.admin-menu-button.storefront",
             "path": "/admin/cms/storefront"
           },
