@@ -54,14 +54,16 @@ class EditorProvider extends Component<Props, State> {
     }
 
     if (canUseDOM) {
-      window.__provideRuntime = (
+      window.__provideRuntime = async (
         runtime: RenderContext,
         messages: Record<string, string>,
       ) => {
         iframeMessages = messages
 
+        await this.props.runtime.updateRuntime()
+
         if (!this.state.iframeRuntime) {
-          runtime.updateComponentAssets(props.runtime.components)
+          runtime.updateComponentAssets(this.props.runtime.components)
           this.props.runtime.updateComponentAssets({})
         }
 
