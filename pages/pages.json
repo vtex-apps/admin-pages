@@ -27,7 +27,8 @@
   },
   "extensions": {
     "store/__overlay": {
-      "component": "HighlightOverlay"
+      "component": "HighlightOverlay",
+      "ssr": false
     },
     "admin/cms/__provider": {
       "component": "EditorProvider"
