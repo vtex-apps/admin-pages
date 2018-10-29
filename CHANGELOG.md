@@ -21,6 +21,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`utils/components.ts`**
   - Used to be `components.js`
 
+  - **Typings**
+  - `Window` interface with custom methods.
+
 ### Fixed
 - **`lint.sh`**
   - Use lint command in react folder.
@@ -30,6 +33,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Type window.
 - **`ComponentEditor/index.tsx`**
   - Several type errors.
+
+- **`EditorProvider`**
+  - I18n messages update logic.
+  - Typing and formatting.
 
 ### Changed
 - **`manifest.json`**
