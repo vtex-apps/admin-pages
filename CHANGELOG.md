@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`lint.sh`**
   - Use lint command in react folder.
 
+### Changed
+- **`manifest.json`**
+  - Use styleguide `7.x`.
+
 ## [2.3.1] - 2018-10-29
 ### Added
 - **`editbar.global.css`**
