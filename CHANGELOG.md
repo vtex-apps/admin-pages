@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - **`vtex.styleguide.d.ts`**
   - Typing for styleguide.
+- **`react/package.json`**
+  - Lint command.
+
+### Fixed
+- **`lint.sh`**
+  - Use lint command in react folder.
 
 ## [2.3.1] - 2018-10-29
 ### Added
