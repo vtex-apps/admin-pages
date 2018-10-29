@@ -70,6 +70,7 @@ class EditorProvider extends Component<Props, State> {
         }
 
         const newState = {
+          ...this.state,
           iframeRuntime: runtime,
           ...(this.state.iframeRuntime
             ? {}

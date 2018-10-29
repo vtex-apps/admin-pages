@@ -209,7 +209,7 @@ declare global {
 
   interface Window extends Window {
     __provideRuntime?: (
-      runtime: RenderContext | null,
+      runtime: RenderContext,
       messages?: Record<string, string>,
     ) => void
   }
