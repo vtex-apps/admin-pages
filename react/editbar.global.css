@@ -146,6 +146,10 @@ html, body {
   width: 100%;
 }
 
+.calc--width {
+  width: calc(100% - 18em);
+}
+
 @media only screen and (max-width: 40em) {
   .size-editor {
     bottom: 0;
