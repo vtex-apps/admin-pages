@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { difference, uniq } from 'ramda'
+import { difference, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'render'
@@ -26,7 +26,9 @@ interface State {
   viewport: Viewport
 }
 
-let iframeMessages: Record<string, string>
+let iframeMessages: Record<string, string> | undefined
+// tslint:disable-next-line:no-empty
+const noop = () => {}
 
 class EditorProvider extends Component<Props, State> {
   public static contextTypes = {
@@ -56,7 +58,7 @@ class EditorProvider extends Component<Props, State> {
     if (canUseDOM) {
       window.__provideRuntime = async (
         runtime: RenderContext,
-        messages: Record<string, string>,
+        messages?: Record<string, string>,
       ) => {
         iframeMessages = messages
 
@@ -85,7 +87,7 @@ class EditorProvider extends Component<Props, State> {
 
   public componentDidMount() {
     const {
-      runtime: { page },
+      runtime: { page, production, emitter },
     } = this.props
 
     const root = page.split('/')[0]
@@ -100,6 +102,11 @@ class EditorProvider extends Component<Props, State> {
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
 
     const appContentElement = document.getElementById(APP_CONTENT_ELEMENT_ID)
+    emitter.addListener('localesChanged', this.emitLocaleEventToIframe)
+
+    if (!production) {
+      emitter.addListener('localesUpdated', this.emitLocaleEventToIframe)
+    }
 
     // Forward scroll events to window so code doesn't have to hook into #app-content
     if (appContentElement) {
@@ -111,6 +118,23 @@ class EditorProvider extends Component<Props, State> {
         { passive: true },
       )
     }
+  }
+
+  public componentWillUnmount() {
+    const {
+      runtime: { production, emitter }
+    } = this.props
+
+    emitter.removeListener('localesChanged', this.emitLocaleEventToIframe)
+
+    if (!production) {
+      emitter.removeListener('localesUpdated', this.emitLocaleEventToIframe)
+    }
+  }
+
+  public emitLocaleEventToIframe = (event: string) => {
+    const emitToIframe: RenderRuntime['emitter'] = pathOr({emit: noop}, ['state', 'iframeRuntime', 'emitter'])(this)
+    emitToIframe.emit('localesChanged', event)
   }
 
   public editExtensionPoint = (treePath: string | null) => {
