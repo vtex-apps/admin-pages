@@ -207,7 +207,7 @@ declare global {
 
   type UISchema = any
 
-  interface Window extends Window {
+  interface Window {
     __provideRuntime?: (
       runtime: RenderContext,
       messages?: Record<string, string>,

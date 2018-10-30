@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - `Window` interface with custom methods.
 
 - **`EditorProvider`**
-  - Add `emitLocaleEventToIframe` method to sync iframe locale.
+  - `emitLocaleEventToIframe` method to sync iframe locale.
 
 ### Fixed
 - **`lint.sh`**
