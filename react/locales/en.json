@@ -26,8 +26,6 @@
   "pages.editor.empty-extension.edit": "Click here to edit it",
   "pages.editor.empty-extension.title": "This is an empty extension point",
   "pages.editor.editpath.label": "Editing",
-  "pages.editor.info.page": "Page",
-  "pages.editor.info.title": "Page Info",
   "pages.admin.loading": "Loading",
   "pages.admin.pages.form.button.cancel": "Cancel",
   "pages.admin.pages.form.button.save": "Save",
