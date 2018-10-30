@@ -19,8 +19,6 @@
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.editpath.label": "Editando",
   "pages.editor.components.modal.text": "Tiene modificaciones no guardadas para esta configuración.",
-  "pages.editor.info.page": "Página",
-  "pages.editor.info.title": "Informaciones de la Página",
   "pages.admin.loading": "Cargando",
   "pages.admin.pages.form.button.cancel": "Cancelar",
   "pages.admin.pages.form.button.save": "Salvar",
