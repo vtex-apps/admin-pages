@@ -11,10 +11,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Typing for styleguide.
 - **`react/package.json`**
   - Lint command.
+- **`global.d.ts`**
+  - Highlightable Iframe and Window.
 
 ### Fixed
 - **`lint.sh`**
   - Use lint command in react folder.
+- **`EditorContainer.tsx`**
+  - Type iframe.
+- **`HighlightOverlay.tsx`**
+  - Type window.
 
 ### Changed
 - **`manifest.json`**
