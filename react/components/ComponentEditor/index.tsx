@@ -3,6 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
+import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
@@ -102,7 +103,7 @@ class ComponentEditor extends Component<
     this._isMounted = false
   }
 
-  public getSchemaProps = (component, props, runtime) => {
+  public getSchemaProps = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext) => {
     if (!component) {
       return null
     }
@@ -114,7 +115,7 @@ class ComponentEditor extends Component<
      * @param {object} prevProps The previous props passed to the component
      * @return {object} Actual component props
      */
-    const getPropsFromSchema = (properties = {}, prevProps) =>
+    const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
       reduce(
         (nextProps, key) =>
           merge(nextProps, {
@@ -140,8 +141,8 @@ class ComponentEditor extends Component<
    * @param {object} component The component implementation
    * @param {object} props The component props to be passed to the getSchema
    */
-  public getComponentSchema = (component, props, runtime) => {
-    const componentSchema = (component &&
+  public getComponentSchema = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext): ComponentSchema => {
+    const componentSchema: ComponentSchema = (component &&
       (component.schema ||
         (component.getSchema &&
           component.getSchema(props, { routes: runtime.pages })))) || {
@@ -156,18 +157,18 @@ class ComponentEditor extends Component<
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
-    const traverseAndTranslate: (schema: object) => object = schema => {
+    const traverseAndTranslate: (schema: ComponentSchema) => ComponentSchema = schema => {
       const translate: (
-        value: string | { id: string; values: object },
+        value: string | { id: string; values?: { [key: string]: string } },
       ) => string = value =>
         typeof value === 'string'
           ? this.props.intl.formatMessage({ id: value })
           : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
-      const translatedSchema = map(
-        value =>
+      const translatedSchema: ComponentSchema = map(
+        (value: any): any =>
           Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema),
+        pick(['title', 'description', 'enumNames'], schema) as object
       )
 
       if (has('widget', schema)) {
@@ -187,6 +188,7 @@ class ComponentEditor extends Component<
         translatedSchema.properties = reduce(
           (properties, key) =>
             merge(properties, {
+              // @ts-ignore
               [key]: traverseAndTranslate(schema.properties[key]),
             }),
           {},
@@ -226,7 +228,7 @@ class ComponentEditor extends Component<
    * @return {object} A object defining the complete `UiSchema` that matches all the schema
    *  properties.
    */
-  public getUiSchema = (componentUiSchema, componentSchema) => {
+  public getUiSchema = (componentUiSchema: UISchema, componentSchema: ComponentSchema): UISchema => {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
      * the correct path to the property.
@@ -243,7 +245,7 @@ class ComponentEditor extends Component<
      *
      * @param {object} properties The schema properties to be analysed.
      */
-    const getDeepUiSchema = properties => {
+    const getDeepUiSchema = (properties: any): UISchema => {
       const deepProperties = pickBy(
         property => has('properties', property),
         properties,
@@ -275,20 +277,20 @@ class ComponentEditor extends Component<
     const uiSchema = {
       ...map(
         value => value.widget,
-        pickBy(property => has('widget', property), componentSchema.properties),
+        pickBy(property => has('widget', property), componentSchema.properties as ComponentSchemaProperties) as {widget: any},
       ),
       ...map(
         property => getDeepUiSchema(property.properties),
         pickBy(
           property => has('properties', property),
-          componentSchema.properties,
-        ),
+          componentSchema.properties as ComponentSchemaProperties,
+        ) as ComponentSchemaProperties,
       ),
       ...map(
         property => getDeepUiSchema(property),
         pickBy(
           property => has('items', property),
-          componentSchema.properties
+          componentSchema.properties as ComponentSchemaProperties
         )
       ),
     }
@@ -561,7 +563,7 @@ class ComponentEditor extends Component<
 
     const { component, props = {} } = this.getExtension()
 
-    const componentImplementation = component && getIframeImplementation(component)
+    const componentImplementation = component ? getIframeImplementation(component) : null
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -662,7 +664,7 @@ class ComponentEditor extends Component<
 
     if (component && !componentImplementation) {
       const allComponents = reduce(
-        (acc, currComponent) => {
+        (acc: {[key: string]: any}, currComponent: any) => {
           acc[currComponent.name] = {
             assets: currComponent.assets,
             dependencies: currComponent.dependencies,

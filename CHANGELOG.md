@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Lint command.
 - **`global.d.ts`**
   - Highlightable Iframe and Window.
+  - ComponentSchema types.
+- **`render.d.ts`**
+  - RenderComponent related types.
+- **`utils/components.ts`**
+  - Used to be `components.js`
 
 ### Fixed
 - **`lint.sh`**
@@ -21,10 +26,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Type iframe.
 - **`HighlightOverlay.tsx`**
   - Type window.
+- **`ComponentEditor/index.tsx`**
+  - Several type errors.
 
 ### Changed
 - **`manifest.json`**
   - Use styleguide `7.x`.
+- **`render.d.ts`**
+  - Export pattern.
+
+### Removed
+- **`utils/components.js`**
+  - Became `components.ts`.
 
 ## [2.3.1] - 2018-10-29
 ### Added

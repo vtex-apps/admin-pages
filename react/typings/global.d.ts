@@ -189,4 +189,21 @@ declare global {
   interface HighlightableWindow extends Window {
     __setHighlightTreePath: (HighlightOverlayState) => void
   }
+
+  interface ComponentSchemaProperties {
+      [key: string]: ComponentSchema
+  }
+
+  interface ComponentSchema {
+    type?: string
+    title?: string
+    description?: string
+    enumNames?: any
+    widget?: any
+    items?: any
+    minItems?: number
+    properties?: ComponentSchemaProperties
+  }
+
+  type UISchema = any
 }
