@@ -1,4 +1,8 @@
 #!/bin/bash
 
 cd react/
-yarn lint
+
+if [ -z `which yarn` ];
+  then npm run lint;
+  else yarn lint;
+fi;
