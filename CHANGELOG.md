@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.3] - 2018-11-05
+### Added
+- **Typings**
+  - `Window` interface with custom methods.
+- **`EditorProvider`**
+  - `emitLocaleEventToIframe` method to sync iframe locale.
+
+### Fixed
+- **`EditorProvider`**
+  - I18n messages update logic.
+  - Typing and formatting.
+
 ## [2.3.2] - 2018-11-05
 ### Added
 - **`vtex.styleguide.d.ts`**

@@ -206,4 +206,11 @@ declare global {
   }
 
   type UISchema = any
+
+  interface Window {
+    __provideRuntime?: (
+      runtime: RenderContext,
+      messages?: Record<string, string>,
+    ) => void
+  }
 }
