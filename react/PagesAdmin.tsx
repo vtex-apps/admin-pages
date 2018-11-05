@@ -55,33 +55,37 @@ class PagesAdmin extends Component<Props> {
       navigate({ to: '/admin/cms/pages' })
     }
 
-    return path.startsWith('storefront') ? (
-      <Fragment>{children}</Fragment>
-    ) : (
-      <div>
-        <PageHeader title="CMS" />
-        <div className="ph7">
-          <Tabs>
-            {values(
-              mapObjIndexed((info: FieldInfo, key: string) => {
-                return (
-                  <Tab
-                    key={key}
-                    label={intl.formatMessage({ id: info.titleId })}
-                    active={
-                      path.startsWith(info.path) &&
-                      (path === '' ? path === info.path : true)
-                    }
-                    onClick={() => {
-                      navigate({ to: '/admin/cms/' + info.path })
-                    }}
-                  />
-                )
-              }, fields),
-            )}
-          </Tabs>
-        </div>
-        {children}
+    return (
+      <div className="h-100 bg-light-silver">
+        {path.startsWith('storefront') ? (
+          children
+        ) : (
+          <Fragment>
+            <PageHeader title="CMS" />
+            <div className="ph7">
+              <Tabs>
+                {values(
+                  mapObjIndexed((info: FieldInfo, key: string) => {
+                    return (
+                      <Tab
+                        key={key}
+                        label={intl.formatMessage({ id: info.titleId })}
+                        active={
+                          path.startsWith(info.path) &&
+                          (path === '' ? path === info.path : true)
+                        }
+                        onClick={() => {
+                          navigate({ to: '/admin/cms/' + info.path })
+                        }}
+                      />
+                    )
+                  }, fields),
+                )}
+              </Tabs>
+            </div>
+            {children}
+          </Fragment>
+        )}
       </div>
     )
   }
