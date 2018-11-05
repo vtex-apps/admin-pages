@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **Typings**
+  - `Window` interface with custom methods.
+- **`EditorProvider`**
+  - `emitLocaleEventToIframe` method to sync iframe locale.
+
+### Fixed
+- **`EditorProvider`**
+  - I18n messages update logic.
+  - Typing and formatting.
 
 ## [2.3.2] - 2018-11-05
 ### Added
@@ -21,12 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`utils/components.ts`**
   - Used to be `components.js`
 
-  - **Typings**
-  - `Window` interface with custom methods.
-
-- **`EditorProvider`**
-  - `emitLocaleEventToIframe` method to sync iframe locale.
-
 ### Fixed
 - **`lint.sh`**
   - Use lint command in react folder.
@@ -36,10 +40,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Type window.
 - **`ComponentEditor/index.tsx`**
   - Several type errors.
-
-- **`EditorProvider`**
-  - I18n messages update logic.
-  - Typing and formatting.
 
 ### Changed
 - **`manifest.json`**
