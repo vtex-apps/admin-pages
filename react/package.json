@@ -3,7 +3,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "pretest": "yarn",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tsc --noEmit --pretty && tslint -c tslint.json './**/*.ts'"
   },
   "dependencies": {
     "exenv": "^1.2.2",

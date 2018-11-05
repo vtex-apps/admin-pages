@@ -1,4 +1,8 @@
 #!/bin/bash
 
 cd react/
-../node_modules/.bin/eslint .
+
+if [ -z `which yarn` ];
+  then npm run lint;
+  else yarn lint;
+fi;

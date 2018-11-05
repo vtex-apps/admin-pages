@@ -13,7 +13,7 @@ interface Props {
   highlightTreePath: string | null
 }
 
-interface State {
+export interface State {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
   highlightExtensionPoint: (treePath: string | null) => void
@@ -41,7 +41,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
 
     if (canUseDOM) {
-      window.__setHighlightTreePath = (newState: State) => {
+      (window as HighlightableWindow).__setHighlightTreePath = (newState: State) => {
         this.setState(newState)
       }
     }

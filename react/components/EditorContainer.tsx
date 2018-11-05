@@ -93,7 +93,7 @@ export default class EditorContainer extends Component<
     } = this.props
 
     this.setState({ highlightTreePath }, () => {
-      const iframe = document.getElementById('store-iframe')
+      const iframe = document.getElementById('store-iframe') as HighlightableIFrame | null
       if (iframe && iframe.contentWindow) {
         iframe.contentWindow.__setHighlightTreePath({
           editExtensionPoint,

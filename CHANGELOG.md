@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.2] - 2018-11-05
+### Added
+- **`vtex.styleguide.d.ts`**
+  - Typing for styleguide.
+- **`react/package.json`**
+  - Lint command.
+- **`global.d.ts`**
+  - Highlightable Iframe and Window.
+  - ComponentSchema types.
+- **`render.d.ts`**
+  - RenderComponent related types.
+- **`utils/components.ts`**
+  - Used to be `components.js`
+
+### Fixed
+- **`lint.sh`**
+  - Use lint command in react folder.
+- **`EditorContainer.tsx`**
+  - Type iframe.
+- **`HighlightOverlay.tsx`**
+  - Type window.
+- **`ComponentEditor/index.tsx`**
+  - Several type errors.
+
+### Changed
+- **`manifest.json`**
+  - Use styleguide `7.x`.
+- **`render.d.ts`**
+  - Export pattern.
+
+### Removed
+- **`utils/components.js`**
+  - Became `components.ts`.
+
 ## [2.3.1] - 2018-10-29
 ### Added
 - **`editbar.global.css`**

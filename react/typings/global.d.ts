@@ -1,5 +1,5 @@
 import { ReactElement, Component } from 'react'
-
+import { State as HighlightOverlayState } from '../HighlightOverlay'
 declare global {
   declare module '*.graphql' {
     import { DocumentNode } from 'graphql'
@@ -181,4 +181,29 @@ declare global {
     id: string
     to: string
   }
+
+  interface HighlightableIFrame extends HTMLIFrameElement {
+    contentWindow: ContentWindow | null
+  }
+
+  interface HighlightableWindow extends Window {
+    __setHighlightTreePath: (HighlightOverlayState) => void
+  }
+
+  interface ComponentSchemaProperties {
+      [key: string]: ComponentSchema
+  }
+
+  interface ComponentSchema {
+    type?: string
+    title?: string
+    description?: string
+    enumNames?: any
+    widget?: any
+    items?: any
+    minItems?: number
+    properties?: ComponentSchemaProperties
+  }
+
+  type UISchema = any
 }
