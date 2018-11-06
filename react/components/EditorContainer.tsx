@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types'
+import { path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'vtex.styleguide'
 
+import { State as HighlightOverlayState } from '../HighlightOverlay'
 import SelectionIcon from '../images/SelectionIcon.js'
 import ComponentEditor from './ComponentEditor'
 import ComponentsList from './ComponentsList'
@@ -93,9 +95,11 @@ export default class EditorContainer extends Component<
     } = this.props
 
     this.setState({ highlightTreePath }, () => {
-      const iframe = document.getElementById('store-iframe') as HighlightableIFrame | null
-      if (iframe && iframe.contentWindow) {
-        iframe.contentWindow.__setHighlightTreePath({
+
+      const iframe = document.getElementById('store-iframe') || {} as HighlightableIFrame
+      const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(['contentWindow', '__setHighlightTreePath'], iframe)
+      if (setHighlightTreePath) {
+        setHighlightTreePath({
           editExtensionPoint,
           editMode,
           highlightExtensionPoint: this.highlightExtensionPoint,

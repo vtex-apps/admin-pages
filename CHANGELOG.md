@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.4] - 2018-11-06
+### Changed
+- **`pages.json`**
+  - Set HighlightOverlay `ssr` as `false`.
+
+### Fixed
+- **`HighlightOverlay`**
+  - Checking if `setHighlightTreePath` is defined before calling it.
+
 ## [2.3.3] - 2018-11-05
 ### Added
 - **Typings**
