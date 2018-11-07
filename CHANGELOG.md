@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **`MessagesContext`**
+  - Create context to pass iframe locale messages to `PageEditor`.
+- **`EditorProvider`**
+  - New component to wrap `EditorProvider` with `MessagesContext.Consumer`.
+- **`PageEditor`**
+  - static method `getCustomMessages`
+  - `Message.Provider`
 
 ## [2.3.4] - 2018-11-06
 ### Changed
