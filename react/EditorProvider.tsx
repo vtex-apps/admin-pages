@@ -8,10 +8,12 @@ import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
 } from './components/EditorContainer'
 import { EditorContext } from './components/EditorContext'
+import MessagesContext, { IMessagesContext } from './components/MessagesContext'
 import AvailableConditions from './queries/AvailableConditions.graphql'
 
 type Props = RenderContextProps &
-  DataProps<{ availableConditions: [Condition] }>
+  DataProps<{ availableConditions: [Condition] }> &
+  IMessagesContext
 
 interface State {
   activeConditions: string[]
@@ -26,17 +28,12 @@ interface State {
   viewport: Viewport
 }
 
-let iframeMessages: Record<string, string> | undefined
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
 class EditorProvider extends Component<Props, State> {
   public static contextTypes = {
     components: PropTypes.object,
-  }
-
-  public static getCustomMessages() {
-    return iframeMessages
   }
 
   constructor(props: Props) {
@@ -58,10 +55,9 @@ class EditorProvider extends Component<Props, State> {
     if (canUseDOM) {
       window.__provideRuntime = async (
         runtime: RenderContext,
-        messages?: Record<string, string>,
+        messages?: object,
       ) => {
-        iframeMessages = messages
-
+        this.props.setMessages(messages)
         await this.props.runtime.updateRuntime()
 
         if (!this.state.iframeRuntime) {
@@ -293,7 +289,13 @@ class EditorProvider extends Component<Props, State> {
   }
 }
 
+const EditorWithMessageContext = (props: Props) => (
+  <MessagesContext.Consumer>
+    {({setMessages}) => (<EditorProvider {...props} setMessages={setMessages}/>)}
+  </MessagesContext.Consumer>
+)
+
 export default compose(
   graphql(AvailableConditions),
   withRuntimeContext,
-)(EditorProvider)
+)(EditorWithMessageContext)
