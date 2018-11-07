@@ -1,13 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import MessagesContext, { IMessagesContext } from './components/MessagesContext'
 import EditorProvider from './EditorProvider'
 
 interface PageEditorProps {
   params: any
 }
 
-class PageEditor extends Component<PageEditorProps> {
+let messages = {}
+
+class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   public static propTypes = {
     children: PropTypes.element,
     data: PropTypes.object,
@@ -17,6 +20,21 @@ class PageEditor extends Component<PageEditorProps> {
     prefetchPage: PropTypes.func,
     startLoading: PropTypes.func,
     stopLoading: PropTypes.func,
+  }
+
+  public static getCustomMessages = () => {
+    return messages
+  }
+
+  constructor(props: PageEditorProps) {
+    super(props)
+    this.state = {
+      setMessages: this.setMessages
+    }
+  }
+
+  public setMessages = (newMessages?: object) => {
+    messages = newMessages || {}
   }
 
   public componentDidMount() {
@@ -35,14 +53,16 @@ class PageEditor extends Component<PageEditorProps> {
     const { params: { path } } = this.props
 
     return (
-      <EditorProvider>
-        <iframe
-          id="store-iframe"
-          className="w-100 h-100"
-          src={['/', path].filter((str) => !!str).join('')}
-          frameBorder="0"
-        />
-      </EditorProvider>
+      <MessagesContext.Provider value={this.state}>
+        <EditorProvider>
+          <iframe
+            id="store-iframe"
+            className="w-100 h-100"
+            src={['/', path].filter((str) => !!str).join('')}
+            frameBorder="0"
+          />
+        </EditorProvider>
+      </MessagesContext.Provider>
     )
   }
 }
