@@ -214,4 +214,9 @@ declare global {
       shouldUpdateRuntime?: boolean
     ) => void
   }
+
+  interface AdminContext {
+    startLoading: () => void
+    stopLoading: () => void
+  }
 }
