@@ -60,7 +60,7 @@ class PagesAdmin extends Component<Props> {
         {path.startsWith('storefront') ? (
           children
         ) : (
-          <Fragment>
+          <div className="center mw8">
             <PageHeader title="CMS" />
             <div className="ph7">
               <Tabs>
@@ -84,7 +84,7 @@ class PagesAdmin extends Component<Props> {
               </Tabs>
             </div>
             {children}
-          </Fragment>
+          </div>
         )}
       </div>
     )

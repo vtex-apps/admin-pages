@@ -7,7 +7,7 @@ import { BASE_URL, NEW_REDIRECT_ID } from './components/admin/redirects/consts'
 import Form from './components/admin/redirects/Form'
 import Operations from './components/admin/redirects/Form/Operations'
 import { RedirectQuery } from './components/admin/redirects/Form/typings'
-import StylesContainer from './components/admin/redirects/StylesContainer'
+import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
@@ -97,7 +97,7 @@ class RedirectForm extends Component<Props, State> {
             })}
           </title>
         </Helmet>
-        <StylesContainer>
+        <Styles>
           <Operations>
             {({ deleteRedirect, saveRedirect }) =>
               isLoading ? (
@@ -111,7 +111,7 @@ class RedirectForm extends Component<Props, State> {
               )
             }
           </Operations>
-        </StylesContainer>
+        </Styles>
       </Fragment>
     )
   }
