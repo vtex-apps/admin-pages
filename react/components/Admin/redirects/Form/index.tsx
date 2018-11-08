@@ -8,10 +8,10 @@ import { Button, Input, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
+import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
 
 import DatePicker from './DatePicker'
-import Separator from './Separator'
 
 interface CustomProps {
   initialData: Redirect
@@ -92,7 +92,7 @@ class Form extends Component<Props, State> {
         >
           {text => <h1>{text}</h1>}
         </FormattedMessage>
-        <Separator />
+        <FormFieldSeparator />
         <form onSubmit={this.handleSave}>
           <Input
             disabled={this.isViewMode}
@@ -103,7 +103,7 @@ class Form extends Component<Props, State> {
             required
             value={data.from}
           />
-          <Separator />
+          <FormFieldSeparator />
           <Input
             disabled={this.isViewMode}
             label={intl.formatMessage({
@@ -113,7 +113,7 @@ class Form extends Component<Props, State> {
             required
             value={data.to}
           />
-          <Separator />
+          <FormFieldSeparator />
           <Toggle
             checked={shouldShowDatePicker}
             disabled={this.isViewMode}
@@ -123,7 +123,7 @@ class Form extends Component<Props, State> {
             onChange={this.toggleDatePickerVisibility}
             size="small"
           />
-          <Separator />
+          <FormFieldSeparator />
           {shouldShowDatePicker && (
             <Fragment>
               {this.isViewMode ? (
@@ -148,7 +148,7 @@ class Form extends Component<Props, State> {
                     />
                   </Fragment>
                 )}
-              <Separator />
+              <FormFieldSeparator />
             </Fragment>
           )}
           <div className="flex justify-end">
