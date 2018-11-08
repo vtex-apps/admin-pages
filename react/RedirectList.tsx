@@ -10,7 +10,7 @@ import {
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
 import { FetchMoreOptions } from './components/admin/redirects/List/typings'
-import StylesContainer from './components/admin/redirects/StylesContainer'
+import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
@@ -51,7 +51,7 @@ class RedirectList extends Component<Props, State> {
           }}
         >
           {({ data, fetchMore, loading }) => (
-            <StylesContainer>
+            <Styles>
               {loading ? (
                 <Loader />
               ) : (
@@ -85,7 +85,7 @@ class RedirectList extends Component<Props, State> {
                     )}
                   </Fragment>
                 )}
-            </StylesContainer>
+            </Styles>
           )}
         </Query>
       </Fragment>
