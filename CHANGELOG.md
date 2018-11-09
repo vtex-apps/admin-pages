@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.6] - 2018-11-09
+
 ## [2.3.5] - 2018-11-07
 ### Added
 - **`MessagesContext`**
