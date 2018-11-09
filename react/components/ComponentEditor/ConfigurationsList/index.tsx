@@ -6,20 +6,21 @@ import CreateButton from './CreateButton'
 interface Props {
   activeConfiguration?: AdaptedExtensionConfiguration
   configurations: AdaptedExtensionConfiguration[]
+  iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
 }
 
-const ConfigurationsList = ({
+const ConfigurationsList : React.SFC<Props> = ({
   activeConfiguration,
   configurations,
   isDisabledChecker,
   onCreate,
   onEdit,
   onSelect,
-}: Props) => (
+}) => (
   <Fragment>
     {configurations.map(
       (configuration: AdaptedExtensionConfiguration, index: number) => (

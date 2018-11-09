@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { SortableElement, SortableHandle } from 'react-sortable-hoc'
+import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
+import { SortableElement, SortableElementProps, SortableHandle } from 'react-sortable-hoc'
 import { Transition } from 'react-spring'
-
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 
-const stopPropagation = fn => e => {
+const stopPropagation = (fn: any) => (e: React.MouseEvent) => {
   e.stopPropagation()
   return fn(e)
 }
@@ -15,59 +15,44 @@ const Handle = SortableHandle(() => (
   <DragHandle size={12} className="accordion-handle" />
 ))
 
-class ArrayFieldTemplateItem extends Component {
-  static propTypes = {
+interface IProps {
+  children?: React.ReactElement<{formData: number}>
+  formIndex: number
+  hasRemove: boolean
+  isOpen: boolean
+  onClose: () => void
+  onOpen: (e: React.MouseEvent) => void
+  showDragHandle: boolean
+  schema: any
+}
+
+interface State {
+  autoHeight: boolean
+}
+
+type Props = IProps & SortableElementProps & ArrayFieldTemplateProps['items'][0]
+
+class ArrayFieldTemplateItem extends Component<Props, State> {
+  public static propTypes = {
     children: PropTypes.node,
     formIndex: PropTypes.number,
     hasRemove: PropTypes.bool,
-    onDropIndexClick: PropTypes.func,
-    schema: PropTypes.object,
     isOpen: PropTypes.bool,
-    onOpen: PropTypes.func,
     onClose: PropTypes.func,
+    onDropIndexClick: PropTypes.func,
+    onOpen: PropTypes.func,
+    schema: PropTypes.object,
     showDragHandle: PropTypes.bool,
   }
 
-  state = {
-    autoHeight: false,
-  }
-
-  handleLabelClick = e => {
-    const { isOpen, onOpen, onClose } = this.props
-
-    if (isOpen) {
-      onClose(e)
-    } else {
-      onOpen(e)
+  constructor(props: Props & SortableElementProps) {
+    super(props)
+    this.state = {
+      autoHeight: false,
     }
   }
 
-  handleOnRest = () => {
-    if (!this.state.autoHeight) {
-      this.setState({ autoHeight: true })
-    }
-  }
-
-  handleOnStart = () => {
-    if (this.state.autoHeight) {
-      this.setState({ autoHeight: false })
-    }
-  }
-
-  renderChildren = styles => {
-    const { children } = this.props
-    return (
-      <div
-        style={{
-          ...styles,
-          height: this.state.autoHeight ? 'auto' : styles.height,
-        }}>
-        {children}
-      </div>
-    )
-  }
-
-  render() {
+  public render() {
     const {
       children,
       schema,
@@ -116,6 +101,41 @@ class ArrayFieldTemplateItem extends Component {
             {isOpen ? [this.renderChildren] : []}
           </Transition>
         </div>
+      </div>
+    )
+  }
+
+  private handleLabelClick = (e: React.MouseEvent) => {
+    const { isOpen, onOpen, onClose } = this.props
+
+    if (isOpen) {
+      onClose()
+    } else {
+      onOpen(e)
+    }
+  }
+
+  private handleOnRest = () => {
+    if (!this.state.autoHeight) {
+      this.setState({ autoHeight: true })
+    }
+  }
+
+  private handleOnStart = () => {
+    if (this.state.autoHeight) {
+      this.setState({ autoHeight: false })
+    }
+  }
+
+  private renderChildren = (styles: React.CSSProperties) => {
+    const { children } = this.props
+    return (
+      <div
+        style={{
+          ...styles,
+          height: this.state.autoHeight ? 'auto' : styles.height,
+        }}>
+        {children}
       </div>
     )
   }
