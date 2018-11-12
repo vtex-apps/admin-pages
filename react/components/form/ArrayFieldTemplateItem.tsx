@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
-import { SortableElement, SortableElementProps, SortableHandle } from 'react-sortable-hoc'
-import { Transition } from 'react-spring'
+import {
+  SortableElement,
+  SortableElementProps,
+  SortableHandle,
+} from 'react-sortable-hoc'
+import { animated, Transition } from 'react-spring'
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 
@@ -16,7 +20,7 @@ const Handle = SortableHandle(() => (
 ))
 
 interface IProps {
-  children?: React.ReactElement<{formData: number}>
+  children?: React.ReactElement<{ formData: number }>
   formIndex: number
   hasRemove: boolean
   isOpen: boolean
@@ -45,13 +49,6 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     showDragHandle: PropTypes.bool,
   }
 
-  constructor(props: Props & SortableElementProps) {
-    super(props)
-    this.state = {
-      autoHeight: false,
-    }
-  }
-
   public render() {
     const {
       children,
@@ -71,7 +68,8 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
       <div
         className={`accordion-item bb b--light-silver ${
           showDragHandle ? '' : 'accordion-item--handle-hidden'
-        }`}>
+        }`}
+      >
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
             {showDragHandle && <Handle />}
@@ -81,7 +79,8 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
             {hasRemove && (
               <button
                 className="accordion-icon-button accordion-icon-button--remove"
-                onClick={stopPropagation(onDropIndexClick(formIndex))}>
+                onClick={stopPropagation(onDropIndexClick(formIndex))}
+              >
                 <TrashSimple size={15} />
               </button>
             )}
@@ -90,15 +89,17 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         <div
           className={`accordion-content ${
             isOpen ? 'accordion-content--open' : ''
-          }`}>
+          }`}
+        >
           <Transition
-            keys={isOpen ? ['children'] : []}
+            native
+            config={{ duration: 300 }}
+            items={isOpen ? ['children'] : []}
             from={{ opacity: 0, height: 0 }}
             enter={{ opacity: 1, height: 'auto' }}
             leave={{ opacity: 0, height: 0 }}
-            onRest={this.handleOnRest}
-            onStart={this.handleOnStart}>
-            {isOpen ? [this.renderChildren] : []}
+          >
+            {this.renderChildren}
           </Transition>
         </div>
       </div>
@@ -115,30 +116,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     }
   }
 
-  private handleOnRest = () => {
-    if (!this.state.autoHeight) {
-      this.setState({ autoHeight: true })
-    }
-  }
-
-  private handleOnStart = () => {
-    if (this.state.autoHeight) {
-      this.setState({ autoHeight: false })
-    }
-  }
-
-  private renderChildren = (styles: React.CSSProperties) => {
-    const { children } = this.props
-    return (
-      <div
-        style={{
-          ...styles,
-          height: this.state.autoHeight ? 'auto' : styles.height,
-        }}>
-        {children}
-      </div>
-    )
-  }
+  private renderChildren = (item: string) => (styles: React.CSSProperties) => (
+    <animated.div style={styles}>{this.props.children}</animated.div>
+  )
 }
 
 export default SortableElement(ArrayFieldTemplateItem)
