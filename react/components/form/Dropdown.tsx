@@ -1,12 +1,34 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
-import { injectIntl, intlShape } from 'react-intl'
 
-const getChangeHandler = (onChange, emptyValue) => ({ target: { value } }) =>
+interface Props {
+  label?: string
+  onClose?: () => void
+  onOpen?: () => void
+  schema: {
+    disabled?: boolean
+  }
+  options: {
+    emptyValue: string
+    enumOptions: Array<{label: string}>
+  }
+}
+
+type DropdownProps = WidgetProps & Props
+
+const SimpleFormattedMessage: React.SFC<{id: string}> = ({id}) => (
+  <FormattedMessage id={id}>{
+    (txt) => <>{txt}</>
+  }</FormattedMessage>
+)
+
+const getChangeHandler = (onChange: (value?: string) => void, emptyValue?: string) => ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
   onChange(!value ? emptyValue : value)
 
-const Dropdown = ({
+const Dropdown: React.SFC<DropdownProps> = ({
   autofocus,
   disabled,
   id,
@@ -19,19 +41,18 @@ const Dropdown = ({
   readonly,
   schema,
   value,
-  intl,
 }) => (
   <StyleguideDropdown
     autoFocus={autofocus}
     disabled={disabled || (schema && schema.disabled)}
     id={id}
-    label={label && intl.formatMessage({ id: label })}
+    label={label && <SimpleFormattedMessage id={label} />}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
     options={options.enumOptions.map(option => ({
       ...option,
-      label: intl.formatMessage({ id: option.label }),
+      label: option.label && <SimpleFormattedMessage id={option.label} />
     }))}
     placeholder={placeholder}
     readOnly={readonly}
@@ -61,7 +82,6 @@ Dropdown.propTypes = {
     disabled: PropTypes.bool,
   }),
   value: PropTypes.any,
-  intl: intlShape.isRequired,
 }
 
-export default injectIntl(Dropdown)
+export default Dropdown

@@ -8,10 +8,10 @@ import { Dimensions, SortableContainerProps, SortStart  } from 'react-sortable-h
 import ArrayList from './ArrayList'
 
 interface Props {
-  canAdd: boolean
-  items: ArrayFieldTemplateProps['items']
-  onAddClick: (event: Event) => void
-  schema: object
+  canAdd?: boolean
+  items?: ArrayFieldTemplateProps['items']
+  onAddClick?: (event: Event) => void
+  schema?: object
 }
 
 interface State {
@@ -29,7 +29,7 @@ function getHelperDimensions({ node }: SortStart): Dimensions {
 }
 
 
-class ArrayFieldTemplate extends Component<Props, State> {
+class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, State> {
   public static propTypes = {
     canAdd: PropTypes.bool,
     items: PropTypes.array,
@@ -37,7 +37,7 @@ class ArrayFieldTemplate extends Component<Props, State> {
     schema: PropTypes.object,
   }
 
-  constructor (props: Props) {
+  constructor (props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
       openedItem: null
@@ -123,4 +123,6 @@ class ArrayFieldTemplate extends Component<Props, State> {
 
 }
 
-export default ArrayFieldTemplate
+const StatelessArrayFieldTemplate: React.SFC<ArrayFieldTemplateProps> = (props) => (<ArrayFieldTemplate {...props} />)
+
+export default StatelessArrayFieldTemplate

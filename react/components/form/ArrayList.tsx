@@ -13,7 +13,7 @@ interface ArrayListProps {
   sorting?: boolean
 }
 
-class UnsortableArrayList extends React.Component<ArrayListProps & SortableContainerProps> {
+class ArrayList extends React.Component<ArrayListProps & SortableContainerProps> {
   public render() {
     const { items, schema, openedItem, onOpen, onClose, sorting } = this.props
     return (
@@ -21,7 +21,7 @@ class UnsortableArrayList extends React.Component<ArrayListProps & SortableConta
         className={`accordion-list-container ${
           sorting ? 'accordion-list-container--sorting' : ''
         }`}>
-        {items.map((element: {index: number}) => (
+        {items.map((element) => (
           <ArrayFieldTemplateItem
             key={element.index}
             children={<div> oi</div>}
@@ -39,4 +39,4 @@ class UnsortableArrayList extends React.Component<ArrayListProps & SortableConta
   }
 }
 
-export default SortableContainer(UnsortableArrayList)
+export default SortableContainer(ArrayList)

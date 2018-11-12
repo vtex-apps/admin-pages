@@ -2,7 +2,7 @@ import { filter, has, keys, map, merge, mergeDeepLeft, path, pick, pickBy, reduc
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
-import Form from 'react-jsonschema-form'
+import Form, { Widget } from 'react-jsonschema-form'
 import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
@@ -34,12 +34,12 @@ const defaultUiSchema = {
 }
 
 const widgets = {
-  BaseInput,
-  CheckboxWidget: Toggle,
-  RadioWidget: Radio,
-  SelectWidget: Dropdown,
-  TextareaWidget: TextArea,
-  'image-uploader': ImageUploader,
+  BaseInput: BaseInput as Widget,
+  CheckboxWidget: Toggle as Widget,
+  RadioWidget: Radio as Widget,
+  SelectWidget: Dropdown as Widget,
+  TextareaWidget: TextArea as Widget,
+  'image-uploader': ImageUploader as Widget,
 }
 
 const MODES: ComponentEditorMode[] = ['content', 'layout']
