@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { createPortal } from 'react-dom'
-import { ErrorListProps } from 'react-jsonschema-form'
+import { AjvError, ErrorListProps } from 'react-jsonschema-form'
 import { Alert } from 'vtex.styleguide'
 
 interface State {
@@ -65,13 +65,13 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     )
   }
 
-  private getErrorMessage(error) {
+  private getErrorMessage(error: AjvError) {
     const { message, property } = error
 
     return `${this.getFormattedFieldName(property)} ${message}`
   }
 
-  private getFormattedFieldName(fieldName) {
+  private getFormattedFieldName(fieldName: string) {
     return (
       fieldName.charAt(1).toUpperCase() +
       fieldName.slice(2).replace(/([a-z])([A-Z])/g, '$1 $2')
