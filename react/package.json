@@ -28,6 +28,7 @@
     "@types/react-helmet": "^5.0.5",
     "@types/react-intl": "^2.3.5",
     "@types/react-jsonschema-form": "^1.0.7",
+    "@types/react-select": "1.2.1",
     "apollo-client-preset": "^1.0.8",
     "babel": "^6.23.0",
     "babel-jest": "^22.4.3",

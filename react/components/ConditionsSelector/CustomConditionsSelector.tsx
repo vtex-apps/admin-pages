@@ -9,25 +9,23 @@ interface Option {
 }
 
 interface Props {
-  onChange: (newValue: string[]) => void
+  autofocus?: boolean
+  onChange: (newValue: Array<string | undefined>) => void
   options: Option[]
   value: string[]
 }
 
-const CustomConditionsSection = ({
-  intl,
-  onChange,
-  options,
-  value,
-}: Props & ReactIntl.InjectedIntlProps) => (
+const CustomConditionsSection: React.SFC<
+  Props & ReactIntl.InjectedIntlProps
+> = ({ intl, onChange, options, value }) => (
   <MultiSelect
     label={intl.formatMessage({
-      id: 'pages.editor.components.conditions.custom.label',
+      id: 'pages.editor.components.conditions.custom.label'
     })}
     onChange={onChange}
     options={{ enumOptions: options }}
     placeholder={intl.formatMessage({
-      id: 'pages.editor.components.conditions.custom.placeholder',
+      id: 'pages.editor.components.conditions.custom.placeholder'
     })}
     value={value}
   />

@@ -1,14 +1,25 @@
-import React, { Fragment } from 'react'
-import ReactSelect from 'react-select'
 import PropTypes from 'prop-types'
+import React, { Fragment } from 'react'
+import ReactSelect, { Option } from 'react-select'
 
-const getChangeHandler = onChange => value => {
-  const formattedValue = value.map(item => item.value)
-
-  return onChange(formattedValue)
+interface Props {
+  autofocus?: boolean
+  disabled?: boolean
+  id?: string
+  label?: string
+  onChange: (newValue: Array<string | undefined>) => void
+  options: {
+    enumOptions: Option[]
+  }
+  placeholder: string
+  schema?: {
+    disabled?: boolean
+    title: string
+  }
+  value: string[]
 }
 
-const MultiSelect = ({
+const MultiSelect: React.SFC<Props> = ({
   autofocus,
   disabled,
   id,
@@ -17,22 +28,27 @@ const MultiSelect = ({
   options: { enumOptions },
   placeholder,
   schema,
-  value,
+  value
 }) => (
   <Fragment>
     {(label || (schema && schema.title)) && (
       <label>
         <span className="dib mb3 w-100">
-          <span>{label || schema.title}</span>
+          <span>{label || (schema && schema.title)}</span>
         </span>
       </label>
     )}
     <ReactSelect
       autoFocus={autofocus}
-      disabled={disabled || (schema && schema.disabled) || enumOptions.length === 0}
+      disabled={
+        disabled || (schema && schema.disabled) || enumOptions.length === 0
+      }
       id={id}
       multi
-      onChange={getChangeHandler(onChange)}
+      onChange={(optionValues)=> {
+        const formattedValue = (optionValues as Option[]).map((item: Option) => item.value as string)
+        onChange(formattedValue)
+      }}
       options={enumOptions}
       placeholder={placeholder}
       value={value}
@@ -44,7 +60,7 @@ MultiSelect.defaultProps = {
   autofocus: false,
   disabled: false,
   placeholder: '',
-  value: [],
+  value: []
 }
 
 MultiSelect.propTypes = {
@@ -57,16 +73,16 @@ MultiSelect.propTypes = {
     enumOptions: PropTypes.arrayOf(
       PropTypes.shape({
         label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
+        value: PropTypes.string.isRequired
+      })
+    ).isRequired
   }).isRequired,
   placeholder: PropTypes.string,
   schema: PropTypes.shape({
     disabled: PropTypes.bool,
     title: PropTypes.string.isRequired
   }),
-  value: PropTypes.arrayOf(PropTypes.string),
+  value: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default MultiSelect

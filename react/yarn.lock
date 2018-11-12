@@ -87,6 +87,13 @@
     "@types/json-schema" "*"
     "@types/react" "*"
 
+"@types/react-select@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-1.2.1.tgz#6406874581ecf2e66e76b9db191bc6fb2f445023"
+  integrity sha512-8ANG55UsCZtyKjRmrL16rdMCWDFN8loleJ0/u4Y5xkW0PoC+yUHMrm6cD/p6S2u7hZG+LPHckyoynMClhMuCvQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react@*", "@types/react@^16.3.16":
   version "16.4.6"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
