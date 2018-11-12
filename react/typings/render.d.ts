@@ -12,7 +12,7 @@ declare module 'render' {
   interface RenderComponent<P={}, S={}> extends Component<P,S> {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema
-    getSchema?: (any, any) => ComponentSchema
+    getSchema?: (any, any?) => ComponentSchema
     uiSchema: UISchema
   }
 
