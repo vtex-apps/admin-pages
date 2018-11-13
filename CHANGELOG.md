@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **`Typings`**
+  - Converted some `.js` components to `.tsx`.
+  - Missing `vtex.styleguide` components exported to .
+  - Compatible types to work with external dependencies.
+  - vtex.styleguide.d.ts
 
 ## [2.3.7] - 2018-11-16
 ### Added
