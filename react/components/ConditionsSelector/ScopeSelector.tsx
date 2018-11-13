@@ -1,7 +1,6 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-
-import Dropdown from '../form/Dropdown'
+import { Dropdown } from 'vtex.styleguide'
 
 const SITE_SCOPE_CONDITION = {
   label: 'pages.conditions.scope.site',

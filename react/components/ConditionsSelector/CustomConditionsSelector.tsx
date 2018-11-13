@@ -10,7 +10,7 @@ interface Option {
 
 interface Props {
   autofocus?: boolean
-  onChange: (newValue: Array<string | undefined>) => void
+  onChange: (newValue: string[]) => void
   options: Option[]
   value: string[]
 }

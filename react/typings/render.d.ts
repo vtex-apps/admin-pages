@@ -7,7 +7,7 @@ declare module 'render' {
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
-  export const withRuntimeContext: any
+  export const withRuntimeContext: <TOriginalProps extends {}>(Component: ComponentType<TOriginalProps & RenderContextProps>) => ComponentType<TOriginalProps>
 
   interface RenderComponent<P={}, S={}> extends Component<P,S> {
     getCustomMessages?: (locale: string) => any

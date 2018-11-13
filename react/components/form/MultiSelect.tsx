@@ -7,7 +7,7 @@ interface Props {
   disabled?: boolean
   id?: string
   label?: string
-  onChange: (newValue: Array<string | undefined>) => void
+  onChange: (newValue: string[]) => void
   options: {
     enumOptions: Option[]
   }
