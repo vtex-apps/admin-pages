@@ -9,6 +9,7 @@ import {
 import { animated, Transition } from 'react-spring'
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
+import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 const stopPropagation = (fn: any) => (e: React.MouseEvent) => {
   e.stopPropagation()
@@ -76,7 +77,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
             {showDragHandle && <Handle />}
-            <label className="f6 accordion-label-title">{title}</label>
+            <label className="f6 accordion-label-title">
+              <SimpleFormattedMessage id={title} />
+            </label>
           </div>
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (

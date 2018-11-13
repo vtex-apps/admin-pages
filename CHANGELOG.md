@@ -9,9 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - **`Typings`**
   - Converted some `.js` components to `.tsx`.
-  - Missing `vtex.styleguide` components exported to .
+  - Missing `vtex.styleguide` components exported to `vtex.styleguide.d.ts`.
   - Compatible types to work with external dependencies.
-  - vtex.styleguide.d.ts
+-**`SimpleFormattedMessage`**
+  - Component that wraps `react-intl`'s `<FormattedMessage>` and  returns only text instead of `<span>` (The lesser DOM nodes generated, the better).
+
+### Changed
+- **`ScopeSelector`**
+  - Using `Dropdown` component from styleguide instead of component made for `react-jsonschema-form`.
 
 ## [2.3.7] - 2018-11-16
 ### Added

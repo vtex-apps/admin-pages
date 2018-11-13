@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
+import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 interface Props {
   label?: string
@@ -18,10 +18,6 @@ interface Props {
 }
 
 type DropdownProps = WidgetProps & Props
-
-const SimpleFormattedMessage: React.SFC<{ id: string }> = ({ id }) => (
-  <FormattedMessage id={id}>{txt => <>{txt}</>}</FormattedMessage>
-)
 
 const getChangeHandler = (
   onChange: (value?: string) => void,
