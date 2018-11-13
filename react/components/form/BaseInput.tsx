@@ -7,7 +7,7 @@ interface Props extends WidgetProps {
   label?: string
   max?: number
   min?: number
-  rawErrors?: string[],
+  rawErrors?: string[]
   type?: string
 }
 
@@ -36,8 +36,9 @@ const BaseInput: React.SFC<WidgetProps & Props> = props => {
 
   const currentError = rawErrors && rawErrors[0]
 
-  const onChange = ({ target: { value: inputValue } } : React.ChangeEvent<HTMLInputElement>) =>
-    props.onChange(inputValue || '')
+  const onChange = ({
+    target: { value: inputValue },
+  }: React.ChangeEvent<HTMLInputElement>) => props.onChange(inputValue || '')
 
   return (
     <Input
@@ -49,9 +50,17 @@ const BaseInput: React.SFC<WidgetProps & Props> = props => {
       label={label}
       max={max && `${max}`}
       min={min && `${min}`}
-      onBlur={onBlur && ((event: React.ChangeEvent<HTMLInputElement>) => (onBlur as any)(id, event.target.value))}
+      onBlur={
+        onBlur &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onBlur as any)(id, event.target.value))
+      }
       onChange={onChange}
-      onFocus={onFocus && ((event: React.ChangeEvent<HTMLInputElement>) => (onFocus as any)(id, event.target.value))}
+      onFocus={
+        onFocus &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onFocus as any)(id, event.target.value))
+      }
       placeholder={placeholder}
       readOnly={readonly || (schema as any).readonly}
       required={required}

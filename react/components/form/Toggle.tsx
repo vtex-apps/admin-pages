@@ -32,7 +32,9 @@ const Toggle: React.SFC<WidgetProps & Props> = ({
     disabled={disabled || disabledBySchema || readonly}
     id={id}
     label={label}
-    onChange={(event: React.ChangeEvent<HTMLInputElement>) => onChange(event.target.checked)}
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+      onChange(event.target.checked)
+    }
     size="small"
   />
 )

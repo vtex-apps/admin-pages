@@ -36,8 +36,7 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
         currErrors.reduce(
           (acc, error, index) => error.stack !== prevErrors[index].stack || acc,
           false,
-        )
-      )
+        ))
 
     if (!isVisible && haveErrorsChanged) {
       this.setState({ isVisible: true })
@@ -48,20 +47,24 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     const { errors } = this.props
     const { isVisible } = this.state
 
-    const container = document.getElementById('form__error-list-template___alert')
+    const container = document.getElementById(
+      'form__error-list-template___alert',
+    )
 
-    return container && createPortal(
-      errors.length > 0 &&
-      isVisible && (
-        <div className="w-100 z-max">
-          <Alert onClose={this.handleHide} type="error">
-            {errors.length > 1
-              ? `There are ${errors.length} invalid inputs.`
-              : this.getErrorMessage(errors[0])}
-          </Alert>
-        </div>
-      ),
-      container
+    return (
+      container &&
+      createPortal(
+        errors.length > 0 && isVisible && (
+          <div className="w-100 z-max">
+            <Alert onClose={this.handleHide} type="error">
+              {errors.length > 1
+                ? `There are ${errors.length} invalid inputs.`
+                : this.getErrorMessage(errors[0])}
+            </Alert>
+          </div>
+        ),
+        container,
+      )
     )
   }
 
@@ -83,6 +86,8 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
   }
 }
 
-const StatelessErrorListTemplate: React.SFC<ErrorListProps> = (props) => <ErrorListTemplate {...props} />
+const StatelessErrorListTemplate: React.SFC<ErrorListProps> = props => (
+  <ErrorListTemplate {...props} />
+)
 
 export default StatelessErrorListTemplate

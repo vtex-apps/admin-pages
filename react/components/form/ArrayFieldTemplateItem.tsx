@@ -33,7 +33,10 @@ interface IProps {
 interface State {
   autoHeight: boolean
 }
-type PropsFromItemTemplateProps = Pick<ArrayFieldTemplateProps['items'][0], 'onDropIndexClick' | 'hasRemove' | 'children'>
+type PropsFromItemTemplateProps = Pick<
+  ArrayFieldTemplateProps['items'][0],
+  'onDropIndexClick' | 'hasRemove' | 'children'
+>
 type Props = IProps & SortableElementProps & PropsFromItemTemplateProps
 
 class ArrayFieldTemplateItem extends Component<Props, State> {

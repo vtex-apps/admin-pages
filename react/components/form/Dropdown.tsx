@@ -13,19 +13,20 @@ interface Props {
   }
   options: {
     emptyValue: string
-    enumOptions: Array<{label: string}>
+    enumOptions: Array<{ label: string }>
   }
 }
 
 type DropdownProps = WidgetProps & Props
 
-const SimpleFormattedMessage: React.SFC<{id: string}> = ({id}) => (
-  <FormattedMessage id={id}>{
-    (txt) => <>{txt}</>
-  }</FormattedMessage>
+const SimpleFormattedMessage: React.SFC<{ id: string }> = ({ id }) => (
+  <FormattedMessage id={id}>{txt => <>{txt}</>}</FormattedMessage>
 )
 
-const getChangeHandler = (onChange: (value?: string) => void, emptyValue?: string) => ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
+const getChangeHandler = (
+  onChange: (value?: string) => void,
+  emptyValue?: string,
+) => ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
   onChange(!value ? emptyValue : value)
 
 const Dropdown: React.SFC<DropdownProps> = ({
@@ -52,7 +53,7 @@ const Dropdown: React.SFC<DropdownProps> = ({
     onOpen={onOpen}
     options={options.enumOptions.map(option => ({
       ...option,
-      label: option.label && <SimpleFormattedMessage id={option.label} />
+      label: option.label && <SimpleFormattedMessage id={option.label} />,
     }))}
     placeholder={placeholder}
     readOnly={readonly}

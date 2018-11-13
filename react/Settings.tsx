@@ -3,15 +3,15 @@ import { withRuntimeContext } from 'render'
 
 class Settings extends Component<RenderContextProps> {
   public componentDidMount() {
-    const { runtime: { navigate } } = this.props
+    const {
+      runtime: { navigate },
+    } = this.props
 
     navigate({ to: '/admin/apps/vtex.store/setup' })
   }
 
   public render() {
-    return (
-      null
-    )
+    return null
   }
 }
 

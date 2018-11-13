@@ -1,4 +1,4 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, path, pick, pickBy, reduce } from 'ramda'
+import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'

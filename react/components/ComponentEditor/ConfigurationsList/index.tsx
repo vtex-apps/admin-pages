@@ -13,7 +13,7 @@ interface Props {
   onSelect: (configuration: ExtensionConfiguration) => void
 }
 
-const ConfigurationsList : React.SFC<Props> = ({
+const ConfigurationsList: React.SFC<Props> = ({
   activeConfiguration,
   configurations,
   isDisabledChecker,

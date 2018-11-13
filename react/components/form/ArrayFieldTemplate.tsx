@@ -3,7 +3,11 @@ import React, { Component, Fragment } from 'react'
 import { Button } from 'vtex.styleguide'
 
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
-import { Dimensions, SortableContainerProps, SortStart  } from 'react-sortable-hoc'
+import {
+  Dimensions,
+  SortableContainerProps,
+  SortStart,
+} from 'react-sortable-hoc'
 
 import ArrayList from './ArrayList'
 
@@ -24,12 +28,14 @@ function getHelperDimensions({ node }: SortStart): Dimensions {
   const width = node instanceof HTMLElement ? node.offsetWidth : 0
   return {
     height: label && label.offsetHeight,
-    width
+    width,
   }
 }
 
-
-class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, State> {
+class ArrayFieldTemplate extends Component<
+  Props & ArrayFieldTemplateProps,
+  State
+> {
   public static propTypes = {
     canAdd: PropTypes.bool,
     items: PropTypes.array,
@@ -37,10 +43,10 @@ class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, Stat
     schema: PropTypes.object,
   }
 
-  constructor (props: Props & ArrayFieldTemplateProps) {
+  constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
-      openedItem: null
+      openedItem: null,
     }
   }
 
@@ -71,7 +77,8 @@ class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, Stat
             <Button
               variation="secondary"
               size="small"
-              onClick={this.handleAddItem}>
+              onClick={this.handleAddItem}
+            >
               + Add More
             </Button>
           )}
@@ -101,7 +108,10 @@ class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, Stat
     })
   }
 
-  private handleSortEnd: SortableContainerProps['onSortEnd'] = ({ oldIndex, newIndex }, e) => {
+  private handleSortEnd: SortableContainerProps['onSortEnd'] = (
+    { oldIndex, newIndex },
+    e,
+  ) => {
     const { items } = this.props
     const { onReorderClick } = items[oldIndex]
 
@@ -120,9 +130,10 @@ class ArrayFieldTemplate extends Component<Props & ArrayFieldTemplateProps, Stat
       openedItem: items.length,
     })
   }
-
 }
 
-const StatelessArrayFieldTemplate: React.SFC<ArrayFieldTemplateProps> = (props) => (<ArrayFieldTemplate {...props} />)
+const StatelessArrayFieldTemplate: React.SFC<
+  ArrayFieldTemplateProps
+> = props => <ArrayFieldTemplate {...props} />
 
 export default StatelessArrayFieldTemplate

@@ -20,12 +20,12 @@ const CustomConditionsSection: React.SFC<
 > = ({ intl, onChange, options, value }) => (
   <MultiSelect
     label={intl.formatMessage({
-      id: 'pages.editor.components.conditions.custom.label'
+      id: 'pages.editor.components.conditions.custom.label',
     })}
     onChange={onChange}
     options={{ enumOptions: options }}
     placeholder={intl.formatMessage({
-      id: 'pages.editor.components.conditions.custom.placeholder'
+      id: 'pages.editor.components.conditions.custom.placeholder',
     })}
     value={value}
   />

@@ -50,7 +50,9 @@ export default class Radio extends Component<RadioProps, State> {
               key={`${id}-${index}`}
               label={this.getLabel(item, index)}
               name={name || `${id}-group`}
-              onChange={(event: React.ChangeEvent) => this.handleSelection(event, item)}
+              onChange={(event: React.ChangeEvent) =>
+                this.handleSelection(event, item)
+              }
               value={item}
             />
           ))}
@@ -59,14 +61,19 @@ export default class Radio extends Component<RadioProps, State> {
   }
 
   private getLabel = (item: JSONSchema6Type, index: number) => {
-    const { schema: { enumNames } } = this.props
+    const {
+      schema: { enumNames },
+    } = this.props
 
     return enumNames && enumNames.length >= index
       ? enumNames[index]
       : item && item.toString()
   }
 
-  private handleSelection = (event: React.ChangeEvent, value: JSONSchema6Type) => {
+  private handleSelection = (
+    event: React.ChangeEvent,
+    value: JSONSchema6Type,
+  ) => {
     event.stopPropagation()
 
     this.setState({ value })
