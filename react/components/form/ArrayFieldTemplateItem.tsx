@@ -11,7 +11,7 @@ import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 import SimpleFormattedMessage from './SimpleFormattedMessage'
 
-const stopPropagation = (fn: any) => (e: React.MouseEvent) => {
+const stopPropagation = (fn: (e: React.MouseEvent) => void) => (e: React.MouseEvent) => {
   e.stopPropagation()
   return fn(e)
 }
