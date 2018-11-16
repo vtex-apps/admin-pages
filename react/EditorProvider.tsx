@@ -56,9 +56,13 @@ class EditorProvider extends Component<Props, State> {
       window.__provideRuntime = async (
         runtime: RenderContext,
         messages?: object,
+        shouldUpdateRuntime?: boolean
       ) => {
         this.props.setMessages(messages)
-        await this.props.runtime.updateRuntime()
+
+        if (shouldUpdateRuntime) {
+          await this.props.runtime.updateRuntime()
+        }
 
         if (!this.state.iframeRuntime) {
           runtime.updateComponentAssets(this.props.runtime.components)

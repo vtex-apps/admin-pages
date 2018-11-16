@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.7] - 2018-11-16
+### Added
+- **`EditorProvider`**
+  - `shouldUpdateRuntime` variable to conditionally call `updateRuntime`.
+
+### Fixed
+- **`ComponentEditor`**
+  - Title size remains the same with or without save button.
+
 ## [2.3.6] - 2018-11-09
 
 ## [2.3.5] - 2018-11-07
