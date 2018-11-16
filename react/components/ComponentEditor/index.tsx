@@ -373,7 +373,7 @@ class ComponentEditor extends Component<
             <IconArrowBack size={16} color="#585959" />
           </span>
           <div className="w-100 pl5 flex justify-between items-center">
-            <h4 className="mv0 f6 fw5 dark-gray">{componentSchema.title}</h4>
+            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">{componentSchema.title}</h4>
             {shouldRenderSaveButton && (
                 <SaveButton
                   isLoading={this.state.isLoading}
