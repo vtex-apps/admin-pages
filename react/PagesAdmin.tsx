@@ -56,7 +56,7 @@ class PagesAdmin extends Component<Props> {
     }
 
     return (
-      <div className="h-100 bg-light-silver">
+      <div className="h-100 overflow-y-auto bg-light-silver">
         {path.startsWith('storefront') ? (
           children
         ) : (
