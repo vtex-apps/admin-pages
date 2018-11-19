@@ -76,9 +76,7 @@ class List extends Component<Props, State> {
         <div className="flex justify-end mb4">
           <CreateButton onClick={this.openNewItem} />
         </div>
-        <div className="pointer">
-          <Table items={items} onRowClick={this.viewItem} schema={schema} />
-        </div>
+        <Table items={items} onRowClick={this.viewItem} schema={schema} />
       </Fragment>
     )
   }
