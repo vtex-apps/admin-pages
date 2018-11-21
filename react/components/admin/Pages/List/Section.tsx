@@ -4,8 +4,9 @@ import { withRuntimeContext } from 'render'
 import { Box, Button } from 'vtex.styleguide'
 
 import { FORM_PATHNAME, NEW_ROUTE_ID } from '../consts'
+import SeparatorWithLine from '../SeparatorWithLine'
+
 import Entry from './Entry'
-import EntrySeparator from './EntrySeparator'
 
 interface Props {
   hasCreateButton?: boolean
@@ -39,7 +40,7 @@ const Section = ({ hasCreateButton, routes, runtime, titleId }: Props) => (
     </div>
     {routes.map(route => (
       <Fragment key={route.id}>
-        <EntrySeparator />
+        <SeparatorWithLine />
         <Entry route={route} />
       </Fragment>
     ))}
