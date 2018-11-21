@@ -40,7 +40,7 @@
       "component": "PageList"
     },
     "admin/cms/page-details": {
-      "component": "PageList"
+      "component": "PageForm"
     },
     "admin/cms/storefront-home": {
       "component": "PageEditor"
