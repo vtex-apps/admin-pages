@@ -31,6 +31,8 @@ declare global {
     device: string
     params: Record<string, any>
     configurationId: string
+    allMatches: boolean
+    declarer: string | null
   }
 
   interface Route {

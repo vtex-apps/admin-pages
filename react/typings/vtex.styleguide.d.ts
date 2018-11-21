@@ -6,6 +6,7 @@ declare module 'vtex.styleguide' {
   export const Box: ReactElement
   export const Button: ReactElement
   export const Card: ReactElement
+  export const Checkbox: ReactElement
   export const Dropdown: ReactElement
   export const EmptyState: ReactElement
   export const IconArrowBack: ReactElement
