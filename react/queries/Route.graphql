@@ -1,0 +1,29 @@
+query Route(
+  $domain: String
+  $id: ID!
+  $renderMajor: Int
+  $production: Boolean
+) {
+  route(
+    domain: $domain
+    id: $id
+    renderMajor: $renderMajor
+    production: $production
+  ) {
+    cname
+    context
+    declarer
+    id
+    login
+    pages {
+      allMatches
+      conditions
+      configurationId
+      declarer
+      device
+      name
+      template
+    }
+    path
+  }
+}
