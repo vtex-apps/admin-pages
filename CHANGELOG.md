@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Using `Dropdown` component from styleguide instead of component made for `react-jsonschema-form`.
 - **`ComponentEditor`**
   - Move `Form` component to another file and implemented custom `shouldComponentUpdate` to prevent form stagger on update.
-- **`DeviceSwitch`**
+- **`DeviceSwitcher`**
   - Using `PureComponent` instead of `Component`.
   - Receives shallow props.
 
