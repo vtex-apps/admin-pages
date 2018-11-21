@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'render'
 import { Box, Button } from 'vtex.styleguide'
 
+import { FORM_PATHNAME, NEW_ROUTE_ID } from '../consts'
 import Entry from './Entry'
 import EntrySeparator from './EntrySeparator'
 
@@ -24,8 +25,8 @@ const Section = ({ hasCreateButton, routes, runtime, titleId }: Props) => (
           <Button
             onClick={() => {
               runtime.navigate({
-                page: 'admin/cms/page-detail',
-                params: { id: 'new' },
+                page: FORM_PATHNAME,
+                params: { id: NEW_ROUTE_ID },
               })
             }}
             size="small"
