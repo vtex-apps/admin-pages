@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
-
 import ShowIcon from '../images/ShowIcon.js'
 
 interface IconsProps {
@@ -21,8 +20,10 @@ interface DeviceComponentState {
 }
 
 interface DeviceSwitcherProps {
+  setViewport: (viewport: Viewport) => void
   toggleEditMode: () => void
   viewports: Viewport[]
+  viewport: Viewport
   inPreview: boolean
 }
 
@@ -144,12 +145,12 @@ class DeviceComponent extends Component<
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class DeviceSwitcher extends Component<
-  DeviceSwitcherProps & EditorContextProps
+class DeviceSwitcher extends React.PureComponent<
+  DeviceSwitcherProps
 > {
   public handleClick = ({ currentTarget }: Event) => {
     const {
-      editor: { setViewport },
+      setViewport
     } = this.props
 
     if (currentTarget && currentTarget instanceof HTMLElement) {
@@ -159,9 +160,9 @@ class DeviceSwitcher extends Component<
 
   public render() {
     const {
-      editor: { viewport },
       inPreview,
       toggleEditMode,
+      viewport,
       viewports,
     } = this.props
     return (

@@ -31,6 +31,12 @@ interface State {
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
+const viewPorts: {[name: string]: Viewport[]} = {
+  default: ['mobile', 'tablet', 'desktop'],
+  desktop: [],
+  mobile: ['mobile', 'tablet'],
+}
+
 class EditorProvider extends Component<Props, State> {
   public static contextTypes = {
     components: PropTypes.object,
@@ -225,11 +231,11 @@ class EditorProvider extends Component<Props, State> {
   public getAvailableViewports = (device: ConfigurationDevice): Viewport[] => {
     switch (device) {
       case 'mobile':
-        return ['mobile', 'tablet']
+        return viewPorts.mobile
       case 'desktop':
-        return []
+        return viewPorts.desktop
       default:
-        return ['mobile', 'tablet', 'desktop']
+        return viewPorts.default
     }
   }
 
