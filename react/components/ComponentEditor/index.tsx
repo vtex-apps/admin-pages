@@ -790,9 +790,7 @@ class ComponentEditor extends Component<
             onSubmit={this.handleConfigurationSave}
             uiSchema={uiSchema}
             formContext={{ isLayoutMode: this.state.mode === 'layout' }}
-          >
-            <button className="dn" type="submit" />
-          </Form>
+          />
           <div id="form__error-list-template___alert" />
         </div>
       </Fragment>
