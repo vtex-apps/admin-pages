@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.8] - 2018-11-21
+### Added
+- **`Typings`**
+  - Converted some `.js` components to `.tsx`.
+  - Missing `vtex.styleguide` components exported to `vtex.styleguide.d.ts`.
+  - Compatible types to work with external dependencies.
+- **`SimpleFormattedMessage`**
+  - Component that wraps `react-intl`'s `<FormattedMessage>` and  returns only text instead of `<span>` (The lesser DOM nodes generated, the better).
+- **`ArrayList`**
+  - Component from `ArrayFieldTemplate` file.
+
+### Changed
+- **`ScopeSelector`**
+  - Using `Dropdown` component from styleguide instead of component made for `react-jsonschema-form`.
+- **`ComponentEditor`**
+  - Move `Form` component to another file and implemented custom `shouldComponentUpdate` to prevent form stagger on update.
+- **`DeviceSwitcher`**
+  - Using `PureComponent` instead of `Component`.
+  - Receives shallow props.
+
+### Fixed
+- **`ArrayFieldTemplateItem.tsx`**
+  - Added `<SimpleFormattedMessage>` on label to solve i18n issues.
+
 ## [2.3.7] - 2018-11-16
 ### Added
 - **`EditorProvider`**

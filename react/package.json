@@ -14,7 +14,7 @@
     "react-jsonschema-form": "^1.0.1",
     "react-select": "^1.2.1",
     "react-sortable-hoc": "^0.8.3",
-    "react-spring": "^5.4.0",
+    "react-spring": "^6.1.8",
     "url-parse": "^1.4.3"
   },
   "devDependencies": {
@@ -28,6 +28,7 @@
     "@types/react-helmet": "^5.0.5",
     "@types/react-intl": "^2.3.5",
     "@types/react-jsonschema-form": "^1.0.7",
+    "@types/react-select": "1.2.1",
     "apollo-client-preset": "^1.0.8",
     "babel": "^6.23.0",
     "babel-jest": "^22.4.3",

@@ -217,7 +217,8 @@ export default class EditorContainer extends Component<
               <div className="animated br2 bg-white bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
                 <DeviceSwitcher
                   toggleEditMode={toggleShowAdminControls}
-                  editor={editor}
+                  viewport={editor.viewport}
+                  setViewport={editor.setViewport}
                   viewports={viewports}
                   inPreview={!visible}
                 />

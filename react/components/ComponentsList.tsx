@@ -9,13 +9,12 @@ interface Props {
   highlightExtensionPoint: (treePath: string | null) => void
 }
 
-const getComponentSchema = (component: string, props: any) => {
+const getComponentSchema = (component: string | null, props: any) => {
   const ComponentImpl = component && getIframeImplementation(component)
   return (
     ComponentImpl &&
     ((ComponentImpl.hasOwnProperty('schema') && ComponentImpl.schema) ||
-      (ComponentImpl.hasOwnProperty('getSchema') &&
-        ComponentImpl.getSchema(props)))
+      (ComponentImpl.getSchema && ComponentImpl.getSchema(props)))
   )
 }
 
@@ -94,26 +93,29 @@ class ComponentsList extends Component<
     return getComponentSchema(component, props)
   }
 
-  private renderComponentButton = (treePath: string) => (
-    <button
-      key={treePath}
-      type="button"
-      data-tree-path={treePath}
-      onClick={this.onEdit}
-      onMouseEnter={this.handleMouseEnter}
-      onMouseLeave={this.handleMouseLeave}
-      className={
-        'dark-gray bg-white pt5 pointer hover-bg-light-silver w-100 tl bn ph0 pb0'
-      }
-      style={{ animationDuration: '0.2s' }}
-    >
-      <div className="bb b--light-silver w-100 pb5">
-        <span className="f6 fw5 pl5 track-1">
-          <FormattedMessage id={this.getSchema(treePath).title} />
-        </span>
-      </div>
-    </button>
-  )
+  private renderComponentButton = (treePath: string) => {
+    const schema = this.getSchema(treePath)
+    return (
+      <button
+        key={treePath}
+        type="button"
+        data-tree-path={treePath}
+        onClick={this.onEdit}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}
+        className={
+          'dark-gray bg-white pt5 pointer hover-bg-light-silver w-100 tl bn ph0 pb0'
+        }
+        style={{ animationDuration: '0.2s' }}
+      >
+        <div className="bb b--light-silver w-100 pb5">
+          <span className="f6 fw5 pl5 track-1">
+            {schema && schema.title && <FormattedMessage id={schema.title} />}
+          </span>
+        </div>
+      </button>
+    )
+  }
 
   private sortComponents = (treePathA: string, treePathB: string) => {
     const componentA = this.getComponentElement(treePathA)

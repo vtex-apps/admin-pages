@@ -9,17 +9,15 @@ interface Option {
 }
 
 interface Props {
+  autofocus?: boolean
   onChange: (newValue: string[]) => void
   options: Option[]
   value: string[]
 }
 
-const CustomConditionsSection = ({
-  intl,
-  onChange,
-  options,
-  value,
-}: Props & ReactIntl.InjectedIntlProps) => (
+const CustomConditionsSection: React.SFC<
+  Props & ReactIntl.InjectedIntlProps
+> = ({ intl, onChange, options, value }) => (
   <MultiSelect
     label={intl.formatMessage({
       id: 'pages.editor.components.conditions.custom.label',

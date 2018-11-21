@@ -1,15 +1,29 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { WidgetProps } from 'react-jsonschema-form'
 import { Toggle as StyleguideToggle } from 'vtex.styleguide'
 
-const Toggle = ({
+interface Props {
+  label?: string
+  autofocus?: boolean
+  disabled?: boolean
+  id?: string
+  onChange?: React.EventHandler<React.ChangeEvent>
+  readonly?: boolean
+  schema: {
+    disabled?: boolean
+  }
+  value?: boolean
+}
+
+const Toggle: React.SFC<WidgetProps & Props> = ({
   autofocus,
   disabled,
   id,
   label,
   onChange,
   readonly,
-  schema: { disabled: disabledBySchema},
+  schema: { disabled: disabledBySchema },
   value,
 }) => (
   <StyleguideToggle
@@ -18,7 +32,9 @@ const Toggle = ({
     disabled={disabled || disabledBySchema || readonly}
     id={id}
     label={label}
-    onChange={event => onChange(event.target.checked)}
+    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+      onChange(event.target.checked)
+    }
     size="small"
   />
 )

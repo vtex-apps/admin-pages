@@ -1,8 +1,17 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
+import { WidgetProps } from 'react-jsonschema-form'
 import { Input } from 'vtex.styleguide'
 
-const BaseInput = props => {
+interface Props extends WidgetProps {
+  label?: string
+  max?: number
+  min?: number
+  rawErrors?: string[]
+  type?: string
+}
+
+const BaseInput: React.SFC<WidgetProps & Props> = props => {
   const {
     autofocus,
     disabled,
@@ -23,28 +32,37 @@ const BaseInput = props => {
 
   const schemaType = schema.type === 'number' ? 'number' : 'text'
 
-  const type = options.inputType || props.type || schemaType
+  const type = (options as any).inputType || props.type || schemaType
 
-  const currentError = rawErrors[0]
+  const currentError = rawErrors && rawErrors[0]
 
-  const _onChange = ({ target: { value } }) =>
-    props.onChange(value || '')
+  const onChange = ({
+    target: { value: inputValue },
+  }: React.ChangeEvent<HTMLInputElement>) => props.onChange(inputValue || '')
 
   return (
     <Input
       autoFocus={autofocus}
-      disabled={disabled || schema.disabled}
+      disabled={disabled || (schema as any).disabled}
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
       label={label}
       max={max && `${max}`}
       min={min && `${min}`}
-      onBlur={onBlur && (event => onBlur(id, event.target.value))}
-      onChange={_onChange}
-      onFocus={onFocus && (event => onFocus(id, event.target.value))}
+      onBlur={
+        onBlur &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onBlur as any)(id, event.target.value))
+      }
+      onChange={onChange}
+      onFocus={
+        onFocus &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onFocus as any)(id, event.target.value))
+      }
       placeholder={placeholder}
-      readOnly={readonly || schema.readonly}
+      readOnly={readonly || (schema as any).readonly}
       required={required}
       type={type}
       value={value && `${value}`}

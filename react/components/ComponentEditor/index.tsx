@@ -1,8 +1,7 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, path, pick, pickBy, reduce } from 'ramda'
+import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
-import Form from 'react-jsonschema-form'
 import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
@@ -12,18 +11,14 @@ import SaveExtension from '../../queries/SaveExtension.graphql'
 import { getIframeImplementation } from '../../utils/components'
 import ConditionsSelector from '../ConditionsSelector'
 import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
-import BaseInput from '../form/BaseInput'
-import Dropdown from '../form/Dropdown'
 import ErrorListTemplate from '../form/ErrorListTemplate'
 import FieldTemplate from '../form/FieldTemplate'
-import ImageUploader from '../form/ImageUploader'
 import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
-import Radio from '../form/Radio'
-import TextArea from '../form/TextArea'
-import Toggle from '../form/Toggle'
+
 import Modal from '../Modal'
 import ModeSwitcher from '../ModeSwitcher'
 import ConfigurationsList from './ConfigurationsList'
+import Form from './Form'
 import LabelEditor from './LabelEditor'
 import SaveButton from './SaveButton'
 
@@ -31,15 +26,6 @@ const NEW_CONFIGURATION_ID = 'new'
 
 const defaultUiSchema = {
   classNames: 'editor-form',
-}
-
-const widgets = {
-  BaseInput,
-  CheckboxWidget: Toggle,
-  RadioWidget: Radio,
-  SelectWidget: Dropdown,
-  TextareaWidget: TextArea,
-  'image-uploader': ImageUploader,
 }
 
 const MODES: ComponentEditorMode[] = ['content', 'layout']
@@ -802,17 +788,9 @@ class ComponentEditor extends Component<
             formData={props}
             onChange={this.handleFormChange}
             onSubmit={this.handleConfigurationSave}
-            FieldTemplate={FieldTemplate}
-            ArrayFieldTemplate={ArrayFieldTemplate}
-            ObjectFieldTemplate={ObjectFieldTemplate}
             uiSchema={uiSchema}
-            widgets={widgets}
-            showErrorList
-            ErrorList={ErrorListTemplate}
             formContext={{ isLayoutMode: this.state.mode === 'layout' }}
-          >
-            <button className="dn" type="submit" />
-          </Form>
+          />
           <div id="form__error-list-template___alert" />
         </div>
       </Fragment>
