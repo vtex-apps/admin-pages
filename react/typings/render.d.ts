@@ -1,6 +1,6 @@
 /* Typings for `render-runtime` */
 declare module 'render' {
-  import { ReactElement, Component } from 'react'
+  import { Component, ReactElement } from 'react'
 
   export const ExtensionPoint: ReactElement
   export const Helmet: ReactElement
@@ -15,7 +15,7 @@ declare module 'render' {
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema
-    getSchema?: (any, any?) => ComponentSchema
+    getSchema?: (props: object, otherArgs?: any) => ComponentSchema
     uiSchema: UISchema
   }
 
@@ -27,5 +27,5 @@ declare module 'render' {
     __RENDER_7_COMPONENTS__: ComponentsRegistry
   }
 
-  var global: Window
+  const global: Window
 }
