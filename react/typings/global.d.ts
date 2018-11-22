@@ -1,4 +1,4 @@
-import { ReactElement, Component } from 'react'
+import { Component, ReactElement } from 'react'
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 declare global {
   declare module '*.graphql' {
