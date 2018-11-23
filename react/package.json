@@ -7,6 +7,7 @@
     "lint": "tsc --noEmit --pretty && tslint -c tslint.json './**/*.ts'"
   },
   "dependencies": {
+    "classnames": "^2.2.6",
     "exenv": "^1.2.2",
     "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",
@@ -18,6 +19,7 @@
     "url-parse": "^1.4.3"
   },
   "devDependencies": {
+    "@types/classnames": "^2.2.6",
     "@types/graphql": "^0.12.5",
     "@types/intl": "^1.2.0",
     "@types/jest": "^23.3.9",

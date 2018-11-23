@@ -116,12 +116,10 @@ export default class EditorContainer extends Component<
     } = this.props
 
     return (
-      <div className="w-100 flex flex-column flex-row-l flex-wrap-l bg-white bb bw1 b--light-silver">
+      <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-white bb bw1 b--light-silver">
         {visible && <Sidebar editor={editor} runtime={runtime} highlightExtensionPoint={this.highlightExtensionPoint} />}
         <div
-          className={`calc--height calc--height-ns ${
-            visible ? 'calc--width' : 'w-100'
-          }`}
+          className={`calc--height-ns flex-grow-1 db-ns dn`}
         >
           {visible && (
             <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
