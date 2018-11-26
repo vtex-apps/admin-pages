@@ -18,16 +18,27 @@ const SCOPE_CONDITIONS = [
   },
 ]
 
-const getOptions = ({intl, shouldEnableSite}: {intl: InjectedIntl, shouldEnableSite: boolean}) => {
-  const conditions = shouldEnableSite ? [...SCOPE_CONDITIONS, SITE_SCOPE_CONDITION] : SCOPE_CONDITIONS
+const getOptions = ({
+  intl,
+  shouldEnableSite,
+}: {
+  intl: InjectedIntl
+  shouldEnableSite: boolean
+}) => {
+  const conditions = shouldEnableSite
+    ? [...SCOPE_CONDITIONS, SITE_SCOPE_CONDITION]
+    : SCOPE_CONDITIONS
   return conditions.map(option => ({
     ...option,
-    label: option.label && intl.formatMessage({id: option.label}),
+    label: option.label && intl.formatMessage({ id: option.label }),
   }))
 }
 
 interface Props {
-  onChange: (value: ConfigurationScope) => void
+  onChange: (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    value: ConfigurationScope,
+  ) => void
   shouldEnableSite: boolean
   value: ConfigurationScope
 }
@@ -43,7 +54,7 @@ const ScopeSelector = ({
       id: 'pages.editor.components.conditions.native.label',
     })}
     onChange={onChange}
-    options={getOptions({intl, shouldEnableSite})}
+    options={getOptions({ intl, shouldEnableSite })}
     value={value}
   />
 )
