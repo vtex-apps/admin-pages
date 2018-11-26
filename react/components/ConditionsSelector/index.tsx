@@ -5,7 +5,10 @@ import ScopeSelector from './ScopeSelector'
 
 interface Props {
   onCustomConditionsChange: (newConditionsIds: string[]) => void
-  onScopeChange: (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => void
+  onScopeChange: (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    newScope: ConfigurationScope,
+  ) => void
   scope?: ConfigurationScope
   selectedConditions: string[]
 }
@@ -30,8 +33,8 @@ const ConditionsSelector = ({
     // Only the second argument is used
     const mockEvent = {
       target: {
-        value: 'route'
-      }
+        value: 'route',
+      },
     }
     onScopeChange(mockEvent as React.ChangeEvent<HTMLSelectElement>, 'route')
   }
