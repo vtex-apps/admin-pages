@@ -27,7 +27,7 @@ const getOptions = ({intl, shouldEnableSite}: {intl: InjectedIntl, shouldEnableS
 }
 
 interface Props {
-  onChange: (value: ConfigurationScope) => void
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>, value: ConfigurationScope) => void
   shouldEnableSite: boolean
   value: ConfigurationScope
 }

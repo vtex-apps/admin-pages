@@ -5,7 +5,7 @@ import ScopeSelector from './ScopeSelector'
 
 interface Props {
   onCustomConditionsChange: (newConditionsIds: string[]) => void
-  onScopeChange: (newScope: ConfigurationScope) => void
+  onScopeChange: (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => void
   scope?: ConfigurationScope
   selectedConditions: string[]
 }
@@ -27,7 +27,13 @@ const ConditionsSelector = ({
     (editTreePath && !editTreePath.startsWith(page)) || false
 
   if (!shouldEnableSite && scope === 'site') {
-    onScopeChange('route')
+    // Only the second argument is used
+    const mockEvent = {
+      target: {
+        value: 'route'
+      }
+    }
+    onScopeChange(mockEvent as React.ChangeEvent<HTMLSelectElement>, 'route')
   }
 
   const shouldEnableCustomConditions = scope !== 'site'
