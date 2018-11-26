@@ -710,7 +710,7 @@ class ComponentEditor extends Component<
     editor.editExtensionPoint(null)
   }
 
-  private handleScopeChange = (newScope: ConfigurationScope) => {
+  private handleScopeChange = (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => {
     if (
       this.state.configuration &&
       newScope !== this.state.configuration.scope
