@@ -1,16 +1,20 @@
 import PropTypes from 'prop-types'
-import React, { Fragment, PureComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
 
-import Section from './components/admin/Pages/List/Section'
-import SectionSeparator from './components/admin/Pages/List/SectionSeparator'
+import List from './components/admin/Pages/List'
 import { CategorizedRoutes } from './components/admin/Pages/List/typings'
+import { isStoreRoute } from './components/admin/Pages/utils'
 import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
-const sortRoutes = (routes: Route[]) =>
-  routes.sort((a, b) => a.id.localeCompare(b.id))
+interface QueryResponse {
+  data?: {
+    routes: Route[]
+  }
+  loading: boolean
+}
 
 class PageList extends PureComponent {
   public static contextTypes = {
@@ -24,7 +28,7 @@ class PageList extends PureComponent {
     return (
       <Styles>
         <Query query={RoutesQuery}>
-          {({ data: { routes }, loading: isLoading }) => {
+          {({ data, loading: isLoading }: QueryResponse) => {
             if (isLoading) {
               startLoading()
 
@@ -33,9 +37,11 @@ class PageList extends PureComponent {
 
             stopLoading()
 
-            const storeRoutes = routes.filter((route: Route) =>
-              /^store\/[A-Za-z:]+$/.test(route.id),
-            )
+            const routes = data && data.routes
+
+            const storeRoutes = routes
+              ? routes.filter(route => isStoreRoute(route.id))
+              : []
 
             const categorizedRoutes = storeRoutes.reduce(
               (acc: CategorizedRoutes, currRoute: Route) => {
@@ -64,25 +70,7 @@ class PageList extends PureComponent {
               },
             )
 
-            return (
-              <Fragment>
-                <Section
-                  hasCreateButton
-                  routes={sortRoutes(categorizedRoutes.noProducts)}
-                  titleId="pages.admin.pages.list.section.standard"
-                />
-                <SectionSeparator />
-                <Section
-                  routes={sortRoutes(categorizedRoutes.singleProduct)}
-                  titleId="pages.admin.pages.list.section.product"
-                />
-                <SectionSeparator />
-                <Section
-                  routes={sortRoutes(categorizedRoutes.multipleProducts)}
-                  titleId="pages.admin.pages.list.section.productCollections"
-                />
-              </Fragment>
-            )
+            return <List categorizedRoutes={categorizedRoutes} />
           }}
         </Query>
       </Styles>

@@ -1,5 +1,5 @@
 export interface CategorizedRoutes {
-  multipleProducts: Routes[]
-  noProducts: Routes[]
-  singleProduct: Routes[]
+  multipleProducts: Route[]
+  noProducts: Route[]
+  singleProduct: Route[]
 }
