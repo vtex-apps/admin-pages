@@ -7,4 +7,9 @@ const capitalize = (word: string) =>
 
 export const getRouteTitle = (route: Route) =>
   route.title ||
-  (!isNewRoute(route.id) ? capitalize(route.id.split('store/')[1]) : '')
+  (!isNewRoute(route.id) && isStoreRoute(route.id)
+    ? capitalize(route.id.split('store/')[1])
+    : '')
+
+export const isStoreRoute = (routeId: string) =>
+  /^store\/[A-Za-z]+$/.test(routeId)
