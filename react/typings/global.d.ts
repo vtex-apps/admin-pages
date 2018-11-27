@@ -8,6 +8,14 @@ declare global {
     export default value
   }
 
+  declare module '*.css' {
+    interface cssClasses {
+      [cssClass: string]: string
+    }
+    const content: cssClasses
+    export default content
+  }
+
   interface Extension {
     component: string | null
     configurationsIds?: string[]
