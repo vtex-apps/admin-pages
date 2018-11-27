@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react'
 import { calcIconSize, Dimensions, IconProps } from './utils'
 
 const iconBaseDimensions: Dimensions = {
-  height: 18,
-  width: 16,
+  height: 24,
+  width: 24,
 }
 
 class Content extends PureComponent<IconProps> {
@@ -16,28 +16,29 @@ class Content extends PureComponent<IconProps> {
   public render() {
     const { color, size, block } = this.props
     const newSize = calcIconSize(iconBaseDimensions, size!)
-
     return (
       <svg
         className={`${block ? 'db' : ''}`}
         width={newSize.width}
         height={newSize.height}
-        viewBox="0 0 16 16"
+        viewBox="0 0 24 24"
         fill="none"
-        xmlns="http://www.w3.org/2000/svg"
       >
-        <path d="M1 4H15V15H1V4Z" stroke={color} strokeWidth="2" />
         <path
-          d="M0 1C0 0.447715 0.447715 0 1 0H15C15.5523 0 16 0.447715 16 1V5H0V1Z"
-          fill={color}
-        />
-        <line
-          x1="8.11133"
-          y1="4.70586"
-          x2="8.11133"
-          y2="14.1176"
+          d="M13.4665 18.9997H6V5H18.1331V14.3331L13.4665 18.9997Z"
           stroke={color}
-          strokeWidth="2"
+          stroke-width="1.6"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M13.4668 18.9997V14.3331H18.1334"
+          stroke={color}
+          stroke-width="1.6"
+          stroke-miterlimit="10"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         />
       </svg>
     )
