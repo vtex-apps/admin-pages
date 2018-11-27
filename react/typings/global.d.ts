@@ -204,7 +204,7 @@ declare global {
   }
 
   interface ComponentSchemaProperties {
-      [key: string]: ComponentSchema
+    [key: string]: ComponentSchema
   }
 
   interface ComponentSchema {
@@ -224,7 +224,7 @@ declare global {
     __provideRuntime?: (
       runtime: RenderContext,
       messages?: Record<string, string>,
-      shouldUpdateRuntime?: boolean
+      shouldUpdateRuntime?: boolean,
     ) => void
   }
 

@@ -1,8 +1,9 @@
 import classnames from 'classnames'
 import React from 'react'
-import Content from '../icons/Content'
-import Layout from '../icons/Layout'
-import { IconProps } from '../icons/utils'
+
+import Content from '../../icons/Content'
+import Layout from '../../icons/Layout'
+import { IconProps } from '../../icons/utils'
 
 import styles from './modeSwitcher.css'
 
