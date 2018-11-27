@@ -24,7 +24,7 @@ interface ModeProps {
 }
 
 const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
-  const Icon = modeIcons[mode]
+  const Icon = modeIcons[type]
   const isActive = type === mode
   const firstLetterUpperCaseType =
     type.substring(0, 1).toUpperCase() + type.substring(1)
@@ -32,7 +32,7 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
     <button
       className={classnames(
         {
-          'b--action-primary': isActive,
+          'b--rebel-pink': isActive,
           'c-muted-1 b--transparent hover-c-action-primary pointer': !isActive,
         },
         'bb-0 bg-transparent bl-0 bt-0 bw1 outline-0 pa4 relative v-mid w-100 flex items-center justify-center',
@@ -41,7 +41,7 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
       onClick={() => setMode(type as EditorMode)}
     >
       <div className="bg-animate hover-bg-light-silver h2 w2 br-pill flex items-center justify-center">
-        <Icon color={isActive ? '#134CD8' : undefined} />
+
         <div
           className={`${
             styles['hide-child']
@@ -54,6 +54,7 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
             {firstLetterUpperCaseType}
           </span>
         </div>
+        <Icon size={20} color={isActive ? 'var(--rebel-pink)' : 'var(--gray)'} />
       </div>
     </button>
   )
@@ -62,7 +63,7 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
 const modes: EditorMode[] = ['content', 'layout']
 
 const ModeSwitcher = ({ editor: { mode, setMode } }: Props) => (
-  <div className="pt5 pr1">
+  <div className="pt5">
     {modes.map(current => (
       <Mode key={current} type={current} mode={mode} setMode={setMode} />
     ))}
