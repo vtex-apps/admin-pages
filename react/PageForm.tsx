@@ -8,7 +8,11 @@ import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/Pages/consts'
 import Form from './components/admin/Pages/Form'
 import Operations from './components/admin/Pages/Form/Operations'
 import Title from './components/admin/Pages/Form/Title'
-import { getRouteTitle, isNewRoute } from './components/admin/Pages/utils'
+import {
+  getRouteTitle,
+  isNewRoute,
+  isStoreRoute,
+} from './components/admin/Pages/utils'
 import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import RouteQuery from './queries/Route.graphql'
@@ -33,6 +37,12 @@ class PageForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
+    const routeId = props.params.id
+
+    if (!isStoreRoute(routeId) && !isNewRoute(routeId)) {
+      this.exit()
+    }
+
     const defaultFormData = {
       context: '',
       declarer: '',
@@ -54,7 +64,7 @@ class PageForm extends Component<Props, State> {
       title: '',
     }
 
-    this.isNew = isNewRoute(props.params.id)
+    this.isNew = isNewRoute(routeId)
 
     this.state = {
       formData: this.isNew ? defaultFormData : undefined,

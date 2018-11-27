@@ -12,4 +12,4 @@ export const getRouteTitle = (route: Route) =>
     : '')
 
 export const isStoreRoute = (routeId: string) =>
-  /^store\/[A-Za-z]+$/.test(routeId)
+  /^store\/.+$/.test(routeId)
