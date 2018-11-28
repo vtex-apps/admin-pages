@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 
-import ConfigurationCard from './ConfigurationCard'
+import Card from './Card'
 import CreateButton from './CreateButton'
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
   onSelect: (configuration: ExtensionConfiguration) => void
 }
 
-const ConfigurationsList: React.SFC<Props> = ({
+const List: React.SFC<Props> = ({
   activeConfiguration,
   configurations,
   isDisabledChecker,
@@ -25,7 +25,7 @@ const ConfigurationsList: React.SFC<Props> = ({
     {configurations.map(
       (configuration: AdaptedExtensionConfiguration, index: number) => (
         <Fragment key={index}>
-          <ConfigurationCard
+          <Card
             activeConfiguration={activeConfiguration}
             configuration={configuration}
             isDisabled={isDisabledChecker(configuration)}
@@ -39,4 +39,4 @@ const ConfigurationsList: React.SFC<Props> = ({
   </Fragment>
 )
 
-export default ConfigurationsList
+export default List
