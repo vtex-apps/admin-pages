@@ -4,6 +4,13 @@ import { MutationFn } from 'react-apollo'
 import { withRuntimeContext } from 'render'
 
 import Form from './Form'
+import {
+  getAddConditionalTemplateState,
+  getChangeConditionsConditionalTemplateState,
+  getChangeTemplateConditionalTemplateState,
+  getLoginToggleState,
+  getRemoveConditionalTemplateState,
+} from './stateHandlers'
 
 interface Props {
   initialData: Route
@@ -37,7 +44,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public render() {
-    const { onExit } = this.props
+    const { conditions, templates, onExit } = this.props
     const { data, isLoading } = this.state
 
     return (
@@ -49,7 +56,41 @@ class FormContainer extends Component<Props, State> {
         onExit={onExit}
         onLoginToggle={this.handleLoginToggle}
         onSave={this.handleSave}
+        templates={templates}
+        conditions={conditions}
+        onAddConditionalTemplate={this.handleAddConditionalTemplate}
+        onRemoveConditionalTemplate={this.handleRemoveConditionalTemplate}
+        onChangeTemplateConditionalTemplate={
+          this.handleChangeTemplateConditionalTemplate
+        }
+        onChangeConditionsConditionalTemplate={
+          this.handleChangeConditionsConditionalTemplate
+        }
       />
+    )
+  }
+
+  private handleRemoveConditionalTemplate = (uniqueId: number) => {
+    this.setState(getRemoveConditionalTemplateState(uniqueId))
+  }
+
+  private handleAddConditionalTemplate: React.MouseEventHandler = e => {
+    this.setState(getAddConditionalTemplateState)
+  }
+
+  private handleChangeTemplateConditionalTemplate = (
+    uniqueId: number,
+    template: string,
+  ) => {
+    this.setState(getChangeTemplateConditionalTemplateState(uniqueId, template))
+  }
+
+  private handleChangeConditionsConditionalTemplate = (
+    uniqueId: number,
+    conditions: string[],
+  ) => {
+    this.setState(
+      getChangeConditionsConditionalTemplateState(uniqueId, conditions),
     )
   }
 
@@ -91,13 +132,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleLoginToggle = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      data: {
-        ...prevState.data,
-        login: !prevState.data.login,
-      },
-    }))
+    this.setState(getLoginToggleState)
   }
 
   private handleSave = (event: React.FormEvent) => {

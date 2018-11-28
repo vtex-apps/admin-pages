@@ -1,12 +1,15 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { Button, Checkbox, Input } from 'vtex.styleguide'
+import { Button, Checkbox, Input  } from 'vtex.styleguide'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
 import { getRouteTitle, isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
+
+
+import { TemplateSection } from './TemplateSection'
 
 interface CustomProps {
   data: Route
@@ -23,16 +26,22 @@ interface CustomProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const Form: React.SFC<Props> = ({
+  conditions,
   data,
   detailChangeHandlerGetter,
   intl,
   isLoading,
+  onAddConditionalTemplate,
+  onChangeConditionsConditionalTemplate,
+  onChangeTemplateConditionalTemplate,
   onDelete,
   onExit,
   onLoginToggle,
+  onRemoveConditionalTemplate,
   onSave,
+  templates,
 }) => {
-  const { declarer } = data.pages[0]
+  const { declarer } = data.pages[0] || { declarer: null }
 
   const isNew = isNewRoute(data.id)
 
@@ -76,7 +85,18 @@ const Form: React.SFC<Props> = ({
       />
       <FormFieldSeparator />
       <SeparatorWithLine />
-      <SectionTitle textId="pages.admin.pages.form.templates.title" />
+      <TemplateSection
+        intl={intl}
+        detailChangeHandlerGetter={detailChangeHandlerGetter}
+        pages={data.pages}
+        templates={templates}
+        templateId={data.templateId}
+        conditions={conditions}
+        onAddConditionalTemplate={onAddConditionalTemplate}
+        onRemoveConditionalTemplate={onRemoveConditionalTemplate}
+        onChangeTemplateConditionalTemplate={onChangeTemplateConditionalTemplate}
+        onChangeConditionsConditionalTemplate={onChangeConditionsConditionalTemplate}
+      />
       <SeparatorWithLine />
       <FormFieldSeparator />
       <div className={isDeletable ? 'flex justify-between' : ''}>
