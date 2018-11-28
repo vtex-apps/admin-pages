@@ -1,4 +1,14 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
+import {
+  filter,
+  has,
+  keys,
+  map,
+  merge,
+  mergeDeepLeft,
+  pick,
+  pickBy,
+  reduce,
+} from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
@@ -10,15 +20,11 @@ import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graph
 import SaveExtension from '../../queries/SaveExtension.graphql'
 import { getIframeImplementation } from '../../utils/components'
 import ConditionsSelector from '../ConditionsSelector'
-import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
-import ErrorListTemplate from '../form/ErrorListTemplate'
-import FieldTemplate from '../form/FieldTemplate'
-import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
 
 import Modal from '../Modal'
-import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
+import ConfigurationsList from './List'
 import SaveButton from './SaveButton'
 
 const NEW_CONFIGURATION_ID = 'new'
@@ -34,14 +40,16 @@ interface ExtensionConfigurationsQuery {
   refetch: (variables?: object) => void
 }
 
-interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
+interface Props {
   availableComponents: any
+  editor: EditorContext
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
+  runtime: RenderContext
   saveExtension: any
 }
 
-interface ComponentEditorState {
+interface State {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
   isEditMode: boolean
@@ -51,14 +59,11 @@ interface ComponentEditorState {
   wasModified: boolean
 }
 
-class ComponentEditor extends Component<
-  ComponentEditorProps,
-  ComponentEditorState
-> {
+class ConfigurationList extends Component<Props, State> {
   // tslint:disable-next-line
   private _isMounted: boolean = false
 
-  constructor(props: ComponentEditorProps) {
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -84,7 +89,11 @@ class ComponentEditor extends Component<
     this._isMounted = false
   }
 
-  public getSchemaProps = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext) => {
+  public getSchemaProps = (
+    component: RenderComponent<any, any> | null,
+    props: any,
+    runtime: RenderContext,
+  ) => {
     if (!component) {
       return null
     }
@@ -122,14 +131,18 @@ class ComponentEditor extends Component<
    * @param {object} component The component implementation
    * @param {object} props The component props to be passed to the getSchema
    */
-  public getComponentSchema = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext): ComponentSchema => {
+  public getComponentSchema = (
+    component: RenderComponent<any, any> | null,
+    props: any,
+    runtime: RenderContext,
+  ): ComponentSchema => {
     const componentSchema: ComponentSchema = (component &&
       (component.schema ||
         (component.getSchema &&
           component.getSchema(props, { routes: runtime.pages })))) || {
-      properties: {},
-      type: 'object',
-    }
+        properties: {},
+        type: 'object',
+      }
 
     /**
      * Traverse the schema properties searching for the title, description and enum
@@ -138,18 +151,20 @@ class ComponentEditor extends Component<
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
-    const traverseAndTranslate: (schema: ComponentSchema) => ComponentSchema = schema => {
+    const traverseAndTranslate: (
+      schema: ComponentSchema,
+    ) => ComponentSchema = schema => {
       const translate: (
         value: string | { id: string; values?: { [key: string]: string } },
       ) => string = value =>
-        typeof value === 'string'
-          ? this.props.intl.formatMessage({ id: value })
-          : this.props.intl.formatMessage({ id: value.id }, value.values || {})
+          typeof value === 'string'
+            ? this.props.intl.formatMessage({ id: value })
+            : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
       const translatedSchema: ComponentSchema = map(
         (value: any): any =>
           Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema) as object
+        pick(['title', 'description', 'enumNames'], schema) as object,
       )
 
       if (has('widget', schema)) {
@@ -209,7 +224,10 @@ class ComponentEditor extends Component<
    * @return {object} A object defining the complete `UiSchema` that matches all the schema
    *  properties.
    */
-  public getUiSchema = (componentUiSchema: UISchema, componentSchema: ComponentSchema): UISchema => {
+  public getUiSchema = (
+    componentUiSchema: UISchema,
+    componentSchema: ComponentSchema,
+  ): UISchema => {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
      * the correct path to the property.
@@ -233,7 +251,7 @@ class ComponentEditor extends Component<
       )
       const itemsProperties = pickBy(
         property => has('properties', property),
-        properties.items
+        properties.items,
       )
 
       return {
@@ -247,32 +265,25 @@ class ComponentEditor extends Component<
             deepProperties,
           )),
         ...(itemsProperties &&
-          map(
-            item => getDeepUiSchema(item),
-            itemsProperties
-          )
-        ),
+          map(item => getDeepUiSchema(item), itemsProperties)),
       }
     }
 
     const uiSchema = {
-      ...map(
-        value => value.widget,
-        pickBy(property => has('widget', property), componentSchema.properties as ComponentSchemaProperties) as {widget: any},
-      ),
-      ...map(
-        property => getDeepUiSchema(property.properties),
-        pickBy(
-          property => has('properties', property),
-          componentSchema.properties as ComponentSchemaProperties,
-        ) as ComponentSchemaProperties,
-      ),
+      ...map(value => value.widget, pickBy(
+        property => has('widget', property),
+        componentSchema.properties as ComponentSchemaProperties,
+      ) as { widget: any }),
+      ...map(property => getDeepUiSchema(property.properties), pickBy(
+        property => has('properties', property),
+        componentSchema.properties as ComponentSchemaProperties,
+      ) as ComponentSchemaProperties),
       ...map(
         property => getDeepUiSchema(property),
         pickBy(
           property => has('items', property),
-          componentSchema.properties as ComponentSchemaProperties
-        )
+          componentSchema.properties as ComponentSchemaProperties,
+        ),
       ),
     }
 
@@ -354,14 +365,16 @@ class ComponentEditor extends Component<
             <IconArrowBack size={16} color="#585959" />
           </span>
           <div className="w-100 pl5 flex justify-between items-center">
-            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">{componentSchema.title}</h4>
+            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">
+              {componentSchema.title}
+            </h4>
             {shouldRenderSaveButton && (
-                <SaveButton
-                  isLoading={this.state.isLoading}
-                  onClick={this.handleConfigurationSave}
-                  variation="tertiary"
-                />
-              )}
+              <SaveButton
+                isLoading={this.state.isLoading}
+                onClick={this.handleConfigurationSave}
+                variation="tertiary"
+              />
+            )}
           </div>
         </div>
         {extensionConfigurationsQuery.loading ? (
@@ -369,28 +382,28 @@ class ComponentEditor extends Component<
             <Spinner />
           </div>
         ) : extensionConfigurationsQuery.extensionConfigurations &&
-        extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-        !this.state.isEditMode ? (
-          <ConfigurationsList
-            activeConfiguration={this.state.configuration}
-            configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-              configuration => ({
-                ...configuration,
-                scope: this.getEncodedScope(
-                  configuration.scope,
-                  configuration.routeId,
-                ),
-              }),
+          extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+          !this.state.isEditMode ? (
+              <ConfigurationsList
+                activeConfiguration={this.state.configuration}
+                configurations={extensionConfigurationsQuery.extensionConfigurations.map(
+                  configuration => ({
+                    ...configuration,
+                    scope: this.getEncodedScope(
+                      configuration.scope,
+                      configuration.routeId,
+                    ),
+                  }),
+                )}
+                isDisabledChecker={this.isConfigurationDisabled}
+                onCreate={this.handleConfigurationCreation}
+                onEdit={this.handleConfigurationOpen}
+                onSelect={this.handleConfigurationSelection}
+                iframeWindow={this.props.editor.iframeWindow}
+              />
+            ) : (
+              this.renderConfigurationEditor(schema, uiSchema, extensionProps)
             )}
-            isDisabledChecker={this.isConfigurationDisabled}
-            onCreate={this.handleConfigurationCreation}
-            onEdit={this.handleConfigurationOpen}
-            onSelect={this.handleConfigurationSelection}
-            iframeWindow={this.props.editor.iframeWindow}
-          />
-        ) : (
-          this.renderConfigurationEditor(schema, uiSchema, extensionProps)
-        )}
       </div>
     )
   }
@@ -407,7 +420,10 @@ class ComponentEditor extends Component<
   ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
-    const { runtime, editor: { iframeWindow } } = this.props
+    const {
+      runtime,
+      editor: { iframeWindow },
+    } = this.props
 
     return {
       allMatches: true,
@@ -532,7 +548,12 @@ class ComponentEditor extends Component<
   }
 
   private handleConfigurationSave = async () => {
-    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
+    const {
+      editor,
+      editor: { iframeWindow },
+      runtime,
+      saveExtension,
+    } = this.props
     const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
@@ -544,7 +565,9 @@ class ComponentEditor extends Component<
 
     const { component, props = {} } = this.getExtension()
 
-    const componentImplementation = component ? getIframeImplementation(component) : null
+    const componentImplementation = component
+      ? getIframeImplementation(component)
+      : null
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -637,7 +660,8 @@ class ComponentEditor extends Component<
     const { component: enumComponent } = event.formData
     const component =
       enumComponent && enumComponent !== '' ? enumComponent : null
-    const componentImplementation = component && getIframeImplementation(component)
+    const componentImplementation =
+      component && getIframeImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })
@@ -645,7 +669,7 @@ class ComponentEditor extends Component<
 
     if (component && !componentImplementation) {
       const allComponents = reduce(
-        (acc: {[key: string]: any}, currComponent: any) => {
+        (acc: { [key: string]: any }, currComponent: any) => {
           acc[currComponent.name] = {
             assets: currComponent.assets,
             dependencies: currComponent.dependencies,
@@ -699,7 +723,10 @@ class ComponentEditor extends Component<
     editor.editExtensionPoint(null)
   }
 
-  private handleScopeChange = (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => {
+  private handleScopeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    newScope: ConfigurationScope,
+  ) => {
     if (
       this.state.configuration &&
       newScope !== this.state.configuration.scope
@@ -726,7 +753,11 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, editor: { iframeWindow, mode }, runtime } = this.props
+    const {
+      editor,
+      editor: { iframeWindow, mode },
+      runtime,
+    } = this.props
     const { configuration } = this.state
 
     const mobile = iframeWindow.innerWidth < 600
@@ -734,9 +765,9 @@ class ComponentEditor extends Component<
 
     const props = configuration
       ? {
-          ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-          ...extensionProps,
-        }
+        ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
+        ...extensionProps,
+      }
       : extensionProps
 
     return (
@@ -764,7 +795,7 @@ class ComponentEditor extends Component<
         <div
           className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${
             this._isMounted ? '' : 'fadeIn'
-          }`}
+            }`}
           style={{ animationDuration: '0.2s' }}
         >
           <Form
@@ -787,7 +818,7 @@ export default compose(
   graphql(SaveExtension, { name: 'saveExtension' }),
   graphql(AvailableComponents, {
     name: 'availableComponents',
-    options: (props: ComponentEditorProps) => ({
+    options: (props: Props) => ({
       variables: {
         extensionName: props.editor.editTreePath,
         production: false,
@@ -800,7 +831,7 @@ export default compose(
     options: ({
       editor: { editTreePath, iframeWindow },
       runtime: { extensions, page },
-    }: ComponentEditorProps) => ({
+    }: Props) => ({
       variables: {
         configurationsIds: extensions[editTreePath as string].configurationsIds,
         routeId: page,
@@ -809,4 +840,4 @@ export default compose(
       },
     }),
   }),
-)(ComponentEditor)
+)(ConfigurationList)

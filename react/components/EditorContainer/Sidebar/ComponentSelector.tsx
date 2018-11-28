@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import SelectionIcon from '../../../images/SelectionIcon'
-import ComponentsList from '../../ComponentsList'
+import ComponentList from '../../ComponentList'
 import { SidebarComponent } from '../../typings'
 
 interface Props {
@@ -30,7 +30,7 @@ class ComponentSelector extends PureComponent<Props> {
             </span>
           </div>
         </div>
-        <ComponentsList
+        <ComponentList
           components={components}
           editor={editor}
           highlightExtensionPoint={highlightHandler}

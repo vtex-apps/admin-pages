@@ -11,7 +11,7 @@ interface Props extends EditorContextProps {
   onMouseLeaveComponent: () => void
 }
 
-class ComponentsList extends Component<Props> {
+class ComponentList extends Component<Props> {
   public render() {
     const {
       components,
@@ -44,4 +44,4 @@ class ComponentsList extends Component<Props> {
   }
 }
 
-export default ComponentsList
+export default ComponentList
