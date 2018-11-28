@@ -11,6 +11,9 @@ declare module 'vtex.styleguide' {
   export const EmptyState: ReactElement
   export const IconArrowBack: ReactElement
   export const IconEdit: ReactElement
+  export const IconCaretDown: ReactElement
+  export const IconCaretUp: ReactElement
+  export const IconClose: ReactElement
   export const Input: ReactElement
   export const Modal: ReactElement
   export const PageHeader: ReactElement
