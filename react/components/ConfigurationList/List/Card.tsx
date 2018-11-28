@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Badge, Button, Card } from 'vtex.styleguide'
+import { Badge, Button, Card as StyleguideCard } from 'vtex.styleguide'
 
 interface Props {
   activeConfiguration?: AdaptedExtensionConfiguration
@@ -10,7 +10,7 @@ interface Props {
   onEdit: (configuration: ExtensionConfiguration) => void
 }
 
-const ConfigurationCard = ({
+const Card = ({
   activeConfiguration,
   configuration,
   isDisabled = false,
@@ -31,7 +31,7 @@ const ConfigurationCard = ({
         }
       }}
     >
-      <Card noPadding>
+      <StyleguideCard noPadding>
         <div
           className={`pa5 ${
             isActive
@@ -80,9 +80,9 @@ const ConfigurationCard = ({
             </div>
           )}
         </div>
-      </Card>
+      </StyleguideCard>
     </div>
   )
 }
 
-export default injectIntl(ConfigurationCard)
+export default injectIntl(Card)
