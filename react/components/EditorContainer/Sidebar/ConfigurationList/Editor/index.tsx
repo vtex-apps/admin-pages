@@ -50,8 +50,8 @@ const Editor: React.SFC<Props> = ({
 
   const props = configuration
     ? {
-      ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-      ...extensionProps,
+        ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
+        ...extensionProps,
       }
     : extensionProps
 
@@ -66,15 +66,17 @@ const Editor: React.SFC<Props> = ({
       runtime={runtime}
       shouldRenderSaveButton={shouldRenderSaveButton}
     >
-      <LabelEditor
-        onChange={onLabelChange}
-        value={
-          newLabel !== undefined
-            ? newLabel
-            : configuration && configuration.label
-        }
-      />
       <div className="mt5">
+        <LabelEditor
+          onChange={onLabelChange}
+          value={
+            newLabel !== undefined
+              ? newLabel
+              : configuration && configuration.label
+          }
+        />
+      </div>
+      <div className="mt5 pb5 bb bw1 b--light-silver">
         <ConditionsSelector
           editor={editor}
           onCustomConditionsChange={onConditionsChange}

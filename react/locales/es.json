@@ -60,6 +60,9 @@
   "pages.editor.components.configurations.defaultTitle": "Sin título",
   "pages.editor.components.labelEditor.label": "Nombre de la configuración",
   "pages.editor.components.modal.button.discard": "Descartar",
-  "pages.editor.components.modal.text": "Tiene modificaciones no guardadas para esta configuración.",
-  "pages.editor.editpath.label": "Editando"
+  "pages.editor.components.modal.text": "Tiene modificaciones no guardadas.",
+  "pages.editor.components.title": "Componentes",
+  "pages.editor.container.editpath.label": "Editando",
+  "pages.editor.info.page": "Página",
+  "pages.editor.info.title": "Informaciones de la Página"
 }
