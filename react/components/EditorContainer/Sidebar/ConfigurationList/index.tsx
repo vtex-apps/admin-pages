@@ -4,7 +4,7 @@ import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { RenderComponent } from 'render'
-import { IconArrowBack, Spinner } from 'vtex.styleguide'
+import { Spinner } from 'vtex.styleguide'
 
 import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
 import ExtensionConfigurations from '../../../../queries/ExtensionConfigurations.graphql'
@@ -18,7 +18,6 @@ import Modal from '../../../Modal'
 
 import Editor from './Editor'
 import List from './List'
-import SaveButton from './SaveButton'
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -131,7 +130,7 @@ class ConfigurationList extends Component<Props, State> {
       this.state.isEditMode &&
       (this.state.wasModified ||
         (this.state.configuration &&
-          this.state.configuration.configurationId === NEW_CONFIGURATION_ID))
+          this.state.configuration.configurationId === NEW_CONFIGURATION_ID)) || false
 
     return (
       <div className="w-100 dark-gray">
@@ -151,30 +150,6 @@ class ConfigurationList extends Component<Props, State> {
             id: 'pages.editor.components.modal.text',
           })}
         />
-        <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
-          <span
-            className="pointer"
-            onClick={
-              this.state.isEditMode
-                ? this.handleConfigurationClose
-                : this.handleQuit
-            }
-          >
-            <IconArrowBack size={16} color="#585959" />
-          </span>
-          <div className="w-100 pl5 flex justify-between items-center">
-            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">
-              {componentSchema.title}
-            </h4>
-            {shouldRenderSaveButton && (
-              <SaveButton
-                isLoading={this.state.isLoading}
-                onClick={this.handleConfigurationSave}
-                variation="tertiary"
-              />
-            )}
-          </div>
-        </div>
         {extensionConfigurationsQuery.loading ? (
           <div className="mt5 flex justify-center">
             <Spinner />
@@ -193,24 +168,33 @@ class ConfigurationList extends Component<Props, State> {
                     ),
                   }),
                 )}
+                iframeWindow={this.props.editor.iframeWindow}
                 isDisabledChecker={this.isConfigurationDisabled}
+                onClose={this.handleQuit}
                 onCreate={this.handleConfigurationCreation}
                 onEdit={this.handleConfigurationOpen}
                 onSelect={this.handleConfigurationSelection}
-                iframeWindow={this.props.editor.iframeWindow}
+                title={componentSchema.title}
               />
             ) : (
               <Editor
                 conditions={this.state.conditions}
                 configuration={this.state.configuration}
                 editor={editor}
+                isLoading={this.state.isLoading}
                 newLabel={this.state.newLabel}
+                onClose={
+                  this.state.isEditMode
+                    ? this.handleConfigurationClose
+                    : this.handleQuit
+                }
                 onConditionsChange={this.handleConditionsChange}
                 onFormChange={this.handleFormChange}
                 onScopeChange={this.handleScopeChange}
                 onLabelChange={this.handleConfigurationLabelChange}
                 onSave={this.handleConfigurationSave}
                 runtime={runtime}
+                shouldRenderSaveButton={shouldRenderSaveButton}
               />
             )}
       </div>

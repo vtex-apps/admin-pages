@@ -11,7 +11,9 @@ interface Props {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
   editor: EditorContext
+  isLoading: boolean
   newLabel?: string
+  onClose: () => void
   onConditionsChange: (newConditions: string[]) => void
   onFormChange: (event: IChangeEvent) => void
   onLabelChange: (event: Event) => void
@@ -21,19 +23,23 @@ interface Props {
     newScope: ConfigurationScope,
   ) => void
   runtime: RenderContext
+  shouldRenderSaveButton: boolean
 }
 
 const Editor: React.SFC<Props> = ({
   conditions,
   configuration,
   editor,
+  isLoading,
   newLabel,
+  onClose,
   onConditionsChange,
   onFormChange,
   onLabelChange,
   onSave,
   onScopeChange,
   runtime,
+  shouldRenderSaveButton,
 }) => {
   const extension = getExtension(editor.editTreePath, runtime.extensions)
 
@@ -44,13 +50,22 @@ const Editor: React.SFC<Props> = ({
 
   const props = configuration
     ? {
-        ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-        ...extensionProps,
+      ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
+      ...extensionProps,
       }
     : extensionProps
 
   return (
-    <div className="ph5 mt5">
+    <ComponentEditor
+      editor={editor}
+      isLoading={isLoading}
+      onChange={onFormChange}
+      onClose={onClose}
+      onSave={onSave}
+      props={props}
+      runtime={runtime}
+      shouldRenderSaveButton={shouldRenderSaveButton}
+    >
       <LabelEditor
         onChange={onLabelChange}
         value={
@@ -69,14 +84,7 @@ const Editor: React.SFC<Props> = ({
           selectedConditions={conditions}
         />
       </div>
-      <ComponentEditor
-        editor={editor}
-        onChange={onFormChange}
-        onSave={onSave}
-        props={props}
-        runtime={runtime}
-      />
-    </div>
+    </ComponentEditor>
   )
 }
 
