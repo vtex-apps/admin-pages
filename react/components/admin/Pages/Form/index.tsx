@@ -51,6 +51,7 @@ class FormContainer extends Component<Props, State> {
 
     return (
       <Form
+        canAddConditionalTemplates={true}
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
         isLoading={isLoading}
@@ -146,7 +147,10 @@ class FormContainer extends Component<Props, State> {
       try {
         await onSave({
           variables: {
-            route: this.state.data,
+            route: {
+              ...this.state.data,
+              id: this.state.data.id === 'new' ? undefined : this.state.data.id
+            },
           },
         })
 
