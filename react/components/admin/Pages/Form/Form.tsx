@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { injectIntl } from 'react-intl'
 import { Button, Checkbox, Input } from 'vtex.styleguide'
 
@@ -8,11 +8,13 @@ import { getRouteTitle, isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
 
-import { TemplateSection } from './TemplateSection'
+import { ConditionalTemplateSection } from './ConditionalTemplateSection'
+import { TemplateDropdown } from './TemplateDropdown'
 import { PageWithUniqueId } from './typings'
 
 interface CustomProps {
   conditions: Condition[]
+  canAddConditionalTemplates: boolean
   data: Route
   detailChangeHandlerGetter: (
     detailName: keyof Route,
@@ -39,6 +41,7 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const Form: React.SFC<Props> = ({
   conditions,
+  canAddConditionalTemplates,
   data,
   detailChangeHandlerGetter,
   intl,
@@ -84,6 +87,19 @@ const Form: React.SFC<Props> = ({
         required
         value={path}
       />
+      { !canAddConditionalTemplates &&
+        <Fragment>
+          <FormFieldSeparator />
+          <TemplateDropdown
+            intl={intl}
+            detailChangeHandlerGetter={detailChangeHandlerGetter}
+            label="pages.admin.pages.form.templates.conditional.template.label"
+            placeholder="pages.admin.pages.form.templates.conditional.template.placeholder"
+            template={data.template}
+            templates={templates}
+          />
+        </Fragment>
+      }
       <FormFieldSeparator />
       <Checkbox
         checked={!!data.login}
@@ -97,24 +113,28 @@ const Form: React.SFC<Props> = ({
       />
       <FormFieldSeparator />
       <SeparatorWithLine />
-      <TemplateSection
-        intl={intl}
-        detailChangeHandlerGetter={detailChangeHandlerGetter}
-        pages={data.pages as PageWithUniqueId[]}
-        templates={templates}
-        template={data.template}
-        conditions={conditions}
-        onAddConditionalTemplate={onAddConditionalTemplate}
-        onRemoveConditionalTemplate={onRemoveConditionalTemplate}
-        onChangeTemplateConditionalTemplate={
-          onChangeTemplateConditionalTemplate
-        }
-        onChangeConditionsConditionalTemplate={
-          onChangeConditionsConditionalTemplate
-        }
-      />
-      <SeparatorWithLine />
-      <FormFieldSeparator />
+      { canAddConditionalTemplates &&
+        <Fragment>
+          <ConditionalTemplateSection
+            intl={intl}
+            detailChangeHandlerGetter={detailChangeHandlerGetter}
+            pages={data.pages as PageWithUniqueId[]}
+            templates={templates}
+            template={data.template}
+            conditions={conditions}
+            onAddConditionalTemplate={onAddConditionalTemplate}
+            onRemoveConditionalTemplate={onRemoveConditionalTemplate}
+            onChangeTemplateConditionalTemplate={
+              onChangeTemplateConditionalTemplate
+            }
+            onChangeConditionsConditionalTemplate={
+              onChangeConditionsConditionalTemplate
+            }
+          />
+          <SeparatorWithLine />
+          <FormFieldSeparator />
+        </Fragment>
+      }
       <div className={isDeletable ? 'flex justify-between' : ''}>
         {isDeletable && (
           <Button

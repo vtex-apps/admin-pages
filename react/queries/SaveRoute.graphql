@@ -1,26 +1,8 @@
 mutation SaveRoute(
-  $allMatches: Boolean = false
-  $conditions: [String] = []
-  $configurationId: String
-  $context: String
-  $device: String
-  $login: Boolean
-  $name: String
-  $path: String
-  $routeId: String
-  $template: String
+  $route: RouteInput
 ) {
   saveRoute(
-    allMatches: $allMatches
-    conditions: $conditions
-    configurationId: $configurationId
-    context: $context
-    device: $device
-    login: $login
-    routeId: $routeId
-    pageName: $name
-    path: $path
-    template: $template
+    route: $route
   ) {
     cname
     context
