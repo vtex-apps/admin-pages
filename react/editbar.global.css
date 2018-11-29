@@ -58,21 +58,11 @@ html, body {
   font-size: 0.875rem;
 }
 
-.editor-form {
-  padding: 15px 24px 0px;
-  overflow-x: hidden;
-}
-
 .field-description {
   font-size: 12px;
   color: #979899;
   margin-top: 0px;
   font-style: italic;
-}
-
-.editor-form > label {
-  padding: 0px !important;
-  margin: 0px !important;
 }
 
 .form-control {
@@ -117,11 +107,6 @@ html, body {
 .radio-inline > span > span {
   padding-left: 5px;
   padding-right: 15px;
-}
-
-.editor-form .vtex-textarea textarea {
-  max-width: 100%;
-  min-width: 100%;
 }
 
 .field-range-wrapper > input {
