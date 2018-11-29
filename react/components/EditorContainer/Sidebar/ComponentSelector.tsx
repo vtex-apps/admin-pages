@@ -2,8 +2,9 @@ import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import SelectionIcon from '../../../images/SelectionIcon'
-import ComponentList from '../../ComponentList'
-import { SidebarComponent } from '../../typings'
+
+import ComponentList from './ComponentList'
+import { SidebarComponent } from './typings'
 
 interface Props {
   components: SidebarComponent[]

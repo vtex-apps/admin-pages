@@ -1,37 +1,26 @@
-import {
-  filter,
-  has,
-  keys,
-  map,
-  merge,
-  mergeDeepLeft,
-  pick,
-  pickBy,
-  reduce,
-} from 'ramda'
-import React, { Component, Fragment } from 'react'
+import { filter, keys, merge, reduce } from 'ramda'
+import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
+import { IChangeEvent } from 'react-jsonschema-form'
 import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
-import AvailableComponents from '../../queries/AvailableComponents.graphql'
-import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
-import SaveExtension from '../../queries/SaveExtension.graphql'
-import { getIframeImplementation } from '../../utils/components'
-import ConditionsSelector from '../ConditionsSelector'
+import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
+import ExtensionConfigurations from '../../../../queries/ExtensionConfigurations.graphql'
+import SaveExtension from '../../../../queries/SaveExtension.graphql'
+import {
+  getComponentSchema,
+  getExtension,
+  getIframeImplementation,
+} from '../../../../utils/components'
+import Modal from '../../../Modal'
 
-import Modal from '../Modal'
-import Form from './Form'
-import LabelEditor from './LabelEditor'
-import ConfigurationsList from './List'
+import Editor from './Editor'
+import List from './List'
 import SaveButton from './SaveButton'
 
 const NEW_CONFIGURATION_ID = 'new'
-
-const defaultUiSchema = {
-  classNames: 'editor-form',
-}
 
 interface ExtensionConfigurationsQuery {
   error: object
@@ -60,9 +49,6 @@ interface State {
 }
 
 class ConfigurationList extends Component<Props, State> {
-  // tslint:disable-next-line
-  private _isMounted: boolean = false
-
   constructor(props: Props) {
     super(props)
 
@@ -76,17 +62,11 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this._isMounted = true
-
     this.handleConfigurationDefaultState()
   }
 
   public componentDidUpdate() {
     this.handleConfigurationDefaultState()
-  }
-
-  public componentWillUnmount() {
-    this._isMounted = false
   }
 
   public getSchemaProps = (
@@ -118,216 +98,34 @@ class ConfigurationList extends Component<Props, State> {
         filter(v => prevProps[v] !== undefined, keys(properties)),
       )
 
-    const componentSchema = this.getComponentSchema(component, props, runtime)
+    const componentSchema = getComponentSchema(
+      component,
+      props,
+      runtime,
+      this.props.intl,
+    )
 
     return getPropsFromSchema(componentSchema.properties, props)
   }
 
-  /**
-   * It receives a component implementation and decide which type of schema
-   * will use, a static (schema) or a dynamic (getSchema) schema.
-   * If none, returns a JSON specifying a simple static schema.
-   *
-   * @param {object} component The component implementation
-   * @param {object} props The component props to be passed to the getSchema
-   */
-  public getComponentSchema = (
-    component: RenderComponent<any, any> | null,
-    props: any,
-    runtime: RenderContext,
-  ): ComponentSchema => {
-    const componentSchema: ComponentSchema = (component &&
-      (component.schema ||
-        (component.getSchema &&
-          component.getSchema(props, { routes: runtime.pages })))) || {
-        properties: {},
-        type: 'object',
-      }
-
-    /**
-     * Traverse the schema properties searching for the title, description and enum
-     * properties and translate their value using the messages from the intl context
-     *
-     * @param {object} schema Schema to be translated
-     * @return {object} Schema with title, description and enumNames properties translated
-     */
-    const traverseAndTranslate: (
-      schema: ComponentSchema,
-    ) => ComponentSchema = schema => {
-      const translate: (
-        value: string | { id: string; values?: { [key: string]: string } },
-      ) => string = value =>
-          typeof value === 'string'
-            ? this.props.intl.formatMessage({ id: value })
-            : this.props.intl.formatMessage({ id: value.id }, value.values || {})
-
-      const translatedSchema: ComponentSchema = map(
-        (value: any): any =>
-          Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema) as object,
-      )
-
-      if (has('widget', schema)) {
-        translatedSchema.widget = merge(
-          schema.widget,
-          map(
-            translate,
-            pick(
-              ['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'],
-              schema.widget,
-            ),
-          ),
-        )
-      }
-
-      if (schema.type === 'object') {
-        translatedSchema.properties = reduce(
-          (properties, key) =>
-            merge(properties, {
-              // @ts-ignore
-              [key]: traverseAndTranslate(schema.properties[key]),
-            }),
-          {},
-          keys(schema.properties),
-        )
-      }
-
-      if (schema.type === 'array') {
-        translatedSchema.items = traverseAndTranslate(schema.items)
-
-        if (!schema.minItems || schema.minItems < 1) {
-          translatedSchema.minItems = 1
-        }
-
-        translatedSchema.items.properties = {
-          __editorItemTitle: {
-            default: translatedSchema.items.title,
-            title: 'Item title',
-            type: 'string',
-          },
-          ...translatedSchema.items.properties,
-        }
-      }
-
-      return merge(schema, translatedSchema)
-    }
-
-    return traverseAndTranslate(componentSchema)
-  }
-
-  /**
-   * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
-   * Each schema property can define an widget especifying how to display it.
-   * @param {object} componentUiSchema The default static `UiSchema` definition
-   * @param {object} componentSchema The full `Component Schema` (already
-   *  applyed the `getSchema`, if its the case)
-   * @return {object} A object defining the complete `UiSchema` that matches all the schema
-   *  properties.
-   */
-  public getUiSchema = (
-    componentUiSchema: UISchema,
-    componentSchema: ComponentSchema,
-  ): UISchema => {
-    /**
-     * It goes deep into the schema tree to find widget definitions, generating
-     * the correct path to the property.
-     * e.g:
-     * {
-     *   banner1: {
-     *     numberOfLines: {
-     *       value: {
-     *         'ui:widget': 'range'
-     *       }
-     *     }
-     *   }
-     * }
-     *
-     * @param {object} properties The schema properties to be analysed.
-     */
-    const getDeepUiSchema = (properties: any): UISchema => {
-      const deepProperties = pickBy(
-        property => has('properties', property),
-        properties,
-      )
-      const itemsProperties = pickBy(
-        property => has('properties', property),
-        properties.items,
-      )
-
-      return {
-        ...map(
-          value => value.widget,
-          pickBy(property => has('widget', property), properties),
-        ),
-        ...(deepProperties &&
-          map(
-            property => getDeepUiSchema(property.properties),
-            deepProperties,
-          )),
-        ...(itemsProperties &&
-          map(item => getDeepUiSchema(item), itemsProperties)),
-      }
-    }
-
-    const uiSchema = {
-      ...map(value => value.widget, pickBy(
-        property => has('widget', property),
-        componentSchema.properties as ComponentSchemaProperties,
-      ) as { widget: any }),
-      ...map(property => getDeepUiSchema(property.properties), pickBy(
-        property => has('properties', property),
-        componentSchema.properties as ComponentSchemaProperties,
-      ) as ComponentSchemaProperties),
-      ...map(
-        property => getDeepUiSchema(property),
-        pickBy(
-          property => has('items', property),
-          componentSchema.properties as ComponentSchemaProperties,
-        ),
-      ),
-    }
-
-    return mergeDeepLeft(uiSchema, componentUiSchema || {})
-  }
-
   public render() {
-    const { intl } = this.props
+    const { editor, intl, runtime } = this.props
 
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
-    const { component, props } = this.getExtension()
-    const componentImplementation = getIframeImplementation(component)
-
-    const selectedComponent = component || null
-
-    const componentSchema = this.getComponentSchema(
-      componentImplementation,
-      props,
-      this.props.runtime,
+    const { component, props } = getExtension(
+      editor.editTreePath,
+      runtime.extensions,
     )
 
-    const componentUiSchema =
-      componentImplementation && componentImplementation.uiSchema
-        ? componentImplementation.uiSchema
-        : null
+    const componentImplementation = getIframeImplementation(component)
 
-    const schema = {
-      ...componentSchema,
-      properties: {
-        ...componentSchema.properties,
-      },
-      title: undefined,
-    }
-
-    const uiSchema = {
-      ...defaultUiSchema,
-      ...this.getUiSchema(componentUiSchema, componentSchema),
-    }
-
-    const extensionProps = {
-      component: selectedComponent,
-      ...props,
-    }
+    const componentSchema = getComponentSchema(
+      componentImplementation,
+      props,
+      runtime,
+      intl,
+    )
 
     const shouldRenderSaveButton =
       this.state.isEditMode &&
@@ -384,7 +182,7 @@ class ConfigurationList extends Component<Props, State> {
         ) : extensionConfigurationsQuery.extensionConfigurations &&
           extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
           !this.state.isEditMode ? (
-              <ConfigurationsList
+              <List
                 activeConfiguration={this.state.configuration}
                 configurations={extensionConfigurationsQuery.extensionConfigurations.map(
                   configuration => ({
@@ -402,7 +200,18 @@ class ConfigurationList extends Component<Props, State> {
                 iframeWindow={this.props.editor.iframeWindow}
               />
             ) : (
-              this.renderConfigurationEditor(schema, uiSchema, extensionProps)
+              <Editor
+                conditions={this.state.conditions}
+                configuration={this.state.configuration}
+                editor={editor}
+                newLabel={this.state.newLabel}
+                onConditionsChange={this.handleConditionsChange}
+                onFormChange={this.handleFormChange}
+                onScopeChange={this.handleScopeChange}
+                onLabelChange={this.handleConfigurationLabelChange}
+                onSave={this.handleConfigurationSave}
+                runtime={runtime}
+              />
             )}
       </div>
     )
@@ -437,17 +246,6 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private getExtension = (): Extension => {
-    const {
-      editor: { editTreePath },
-      runtime: { extensions },
-    } = this.props
-    const { component = null, configurationsIds = [], props = {} } =
-      extensions[editTreePath as string] || {}
-
-    return { component, configurationsIds, props: props || {} }
-  }
-
   private handleConditionsChange = (newConditions: string[]) => {
     this.setState({ conditions: newConditions, wasModified: true })
   }
@@ -470,7 +268,8 @@ class ConfigurationList extends Component<Props, State> {
       },
       () => {
         runtime.updateExtension(editor.editTreePath!, {
-          component: this.getExtension().component,
+          component: getExtension(editor.editTreePath, runtime.extensions)
+            .component,
           props: JSON.parse(newConfiguration.propsJSON),
         })
       },
@@ -554,6 +353,7 @@ class ConfigurationList extends Component<Props, State> {
       runtime,
       saveExtension,
     } = this.props
+
     const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
@@ -563,11 +363,15 @@ class ConfigurationList extends Component<Props, State> {
         ? undefined
         : configuration!.configurationId
 
-    const { component, props = {} } = this.getExtension()
+    const { component, props = {} } = getExtension(
+      editor.editTreePath,
+      runtime.extensions,
+    )
 
     const componentImplementation = component
       ? getIframeImplementation(component)
       : null
+
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -651,7 +455,7 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleFormChange = (event: any) => {
+  private handleFormChange = (event: IChangeEvent) => {
     const {
       runtime: { updateExtension, updateComponentAssets },
       runtime,
@@ -724,7 +528,7 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleScopeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>,
+    _: React.ChangeEvent<HTMLSelectElement>,
     newScope: ConfigurationScope,
   ) => {
     if (
@@ -745,70 +549,6 @@ class ConfigurationList extends Component<Props, State> {
     return (
       configuration.scope === 'url' &&
       configuration.url !== iframeWindow.location.pathname
-    )
-  }
-
-  private renderConfigurationEditor(
-    schema: object,
-    uiSchema: object,
-    extensionProps: object,
-  ): JSX.Element {
-    const {
-      editor,
-      editor: { iframeWindow, mode },
-      runtime,
-    } = this.props
-    const { configuration } = this.state
-
-    const mobile = iframeWindow.innerWidth < 600
-    const animation = mobile ? 'slideInUp' : 'fadeIn'
-
-    const props = configuration
-      ? {
-        ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-        ...extensionProps,
-      }
-      : extensionProps
-
-    return (
-      <Fragment>
-        <div className="ph5 mt5">
-          <LabelEditor
-            onChange={this.handleConfigurationLabelChange}
-            value={
-              this.state.newLabel !== undefined
-                ? this.state.newLabel
-                : configuration && configuration.label
-            }
-          />
-          <div className="mt5">
-            <ConditionsSelector
-              editor={editor}
-              onCustomConditionsChange={this.handleConditionsChange}
-              onScopeChange={this.handleScopeChange}
-              runtime={runtime}
-              scope={configuration && configuration.scope}
-              selectedConditions={this.state.conditions}
-            />
-          </div>
-        </div>
-        <div
-          className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${
-            this._isMounted ? '' : 'fadeIn'
-            }`}
-          style={{ animationDuration: '0.2s' }}
-        >
-          <Form
-            schema={schema}
-            formData={props}
-            onChange={this.handleFormChange}
-            onSubmit={this.handleConfigurationSave}
-            uiSchema={uiSchema}
-            formContext={{ isLayoutMode: mode === 'layout' }}
-          />
-          <div id="form__error-list-template___alert" />
-        </div>
-      </Fragment>
     )
   }
 }

@@ -1,17 +1,17 @@
-import React from 'react'
-
 import { equals } from 'ramda'
+import React from 'react'
 import JsonSchemaForm, { FormProps, Widget } from 'react-jsonschema-form'
-import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
-import BaseInput from '../form/BaseInput'
-import Dropdown from '../form/Dropdown'
-import ErrorListTemplate from '../form/ErrorListTemplate'
-import FieldTemplate from '../form/FieldTemplate'
-import ImageUploader from '../form/ImageUploader'
-import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
-import Radio from '../form/Radio'
-import TextArea from '../form/TextArea'
-import Toggle from '../form/Toggle'
+
+import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
+import BaseInput from '../../../form/BaseInput'
+import Dropdown from '../../../form/Dropdown'
+import ErrorListTemplate from '../../../form/ErrorListTemplate'
+import FieldTemplate from '../../../form/FieldTemplate'
+import ImageUploader from '../../../form/ImageUploader'
+import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
+import Radio from '../../../form/Radio'
+import TextArea from '../../../form/TextArea'
+import Toggle from '../../../form/Toggle'
 
 export const widgets = {
   BaseInput: BaseInput as Widget,

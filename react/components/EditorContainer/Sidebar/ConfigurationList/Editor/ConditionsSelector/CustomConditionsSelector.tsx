@@ -1,7 +1,7 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
 
-import MultiSelect from '../form/MultiSelect'
+import MultiSelect from '../../../../../form/MultiSelect'
 
 interface Option {
   label: string
