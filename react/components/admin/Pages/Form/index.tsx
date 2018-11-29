@@ -13,11 +13,13 @@ import {
 } from './stateHandlers'
 
 interface Props {
+  conditions: Condition[]
   initialData: Route
   onDelete: MutationFn
   onExit: () => void
   onSave: MutationFn
   runtime: RenderContext
+  templates: Template[]
 }
 
 interface State {
@@ -74,7 +76,7 @@ class FormContainer extends Component<Props, State> {
     this.setState(getRemoveConditionalTemplateState(uniqueId))
   }
 
-  private handleAddConditionalTemplate: React.MouseEventHandler = e => {
+  private handleAddConditionalTemplate = () => {
     this.setState(getAddConditionalTemplateState)
   }
 

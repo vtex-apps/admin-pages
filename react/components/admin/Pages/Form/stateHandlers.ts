@@ -1,14 +1,8 @@
-import { compose, map, max, pathOr, pipe, reduce } from 'ramda'
+import { ClientSideUniqueId, PageWithUniqueId } from './typings'
 export interface State {
   data: Route
   isLoading: boolean
 }
-
-export interface ClientSideUniqueId {
-  uniqueId: number
-}
-
-type PageWithUniqueId = Page & ClientSideUniqueId
 
 const getMaxUniqueId: (pages: PageWithUniqueId[]) => number = pages => {
   return pages.reduce((acc, { uniqueId: currentValue }) => {
@@ -62,11 +56,11 @@ export const getChangeTemplateConditionalTemplateState = (
   uniqueId: number,
   template: string,
 ) => (prevState: State) => {
-  const newPages = (prevState.data.pages as PageWithUniqueId[]).map((page) => {
+  const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
     if (page.uniqueId === uniqueId) {
       return {
         ...page,
-        template
+        template,
       }
     }
     return page
@@ -75,8 +69,8 @@ export const getChangeTemplateConditionalTemplateState = (
     ...prevState,
     data: {
       ...prevState.data,
-      pages: newPages
-    }
+      pages: newPages,
+    },
   }
 }
 
@@ -84,11 +78,11 @@ export const getChangeConditionsConditionalTemplateState = (
   uniqueId: number,
   conditions: string[],
 ) => (prevState: State) => {
-  const newPages = (prevState.data.pages as PageWithUniqueId[]).map((page) => {
+  const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
     if (page.uniqueId === uniqueId) {
       return {
         ...page,
-        conditions
+        conditions,
       }
     }
     return page
@@ -97,7 +91,7 @@ export const getChangeConditionsConditionalTemplateState = (
     ...prevState,
     data: {
       ...prevState.data,
-      pages: newPages
-    }
+      pages: newPages,
+    },
   }
 }
