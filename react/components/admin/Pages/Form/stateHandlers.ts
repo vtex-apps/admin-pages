@@ -1,8 +1,5 @@
+import { State } from './index'
 import { ClientSideUniqueId, PageWithUniqueId } from './typings'
-export interface State {
-  data: Route
-  isLoading: boolean
-}
 
 const getMaxUniqueId: (pages: PageWithUniqueId[]) => number = pages => {
   return pages.reduce((acc, { uniqueId: currentValue }) => {
@@ -92,6 +89,40 @@ export const getChangeConditionsConditionalTemplateState = (
     data: {
       ...prevState.data,
       pages: newPages,
+    },
+  }
+}
+
+const requiredMessage = 'pages.admin.pages.form.templates.field.required'
+
+const validateFalsyPath = (path: keyof Route) => (data: Route) =>
+  !data[path] && { [path]: requiredMessage }
+
+const validateConditionalTemplates = (data: Route) => {
+  return (data.pages as PageWithUniqueId[]).reduce((acc, {uniqueId, template, conditions}) => {
+    const templateError = !template && { template: requiredMessage }
+    const conditionsError = !conditions.length && { conditions: requiredMessage }
+    if (templateError || conditionsError) {
+      acc.pages = {
+        [uniqueId]: {
+          ...templateError,
+          ...conditionsError
+        }
+      }
+    }
+    return acc
+  }, {} as any)
+}
+
+export const getValidateFormState = (prevState: State) => {
+  return {
+    ...prevState,
+    formErrors: {
+      ...prevState.formErrors,
+      ...validateFalsyPath('path')(prevState.data),
+      ...validateFalsyPath('template')(prevState.data),
+      ...validateFalsyPath('title')(prevState.data),
+      ...validateConditionalTemplates(prevState.data)
     },
   }
 }
