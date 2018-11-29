@@ -2,12 +2,11 @@ import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'render'
-import { Box, Spinner } from 'vtex.styleguide'
+import { Box } from 'vtex.styleguide'
 
 import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/Pages/consts'
 import Form from './components/admin/Pages/Form'
 import Operations from './components/admin/Pages/Form/Operations'
-import Queries from './components/admin/Pages/Form/Queries'
 import Title from './components/admin/Pages/Form/Title'
 import {
   getRouteTitle,
@@ -98,38 +97,38 @@ class PageForm extends Component<Props, State> {
     return (
       <Styles>
         <Operations>
-          {({ deleteRoute, saveRoute }) =>
-            isLoading ? (
+          {({
+            conditionsResults,
+            deleteRoute,
+            saveRoute,
+            templatesResults,
+          }) => {
+            const templates = templatesResults.data.availableTemplates || []
+            const conditions = conditionsResults.data.availableConditions || []
+            const loading =
+              isLoading || templatesResults.loading || conditionsResults.loading
+            return loading ? (
               <Loader />
             ) : (
-              <Queries>
-                {({templatesResults, conditionsResults}) => {
-                  const templates = templatesResults.data.availableTemplates || []
-                  const conditions = conditionsResults.data.availableConditions || []
-                  const loading = templatesResults.loading || conditionsResults.loading
-                  return loading ? <Spinner /> : (
-                    <Box>
-                      {this.isNew ? (
-                        <FormattedMessage id="pages.admin.pages.form.title.new">
-                          {text => <Title>{text}</Title>}
-                        </FormattedMessage>
-                      ) : (
-                        formData && <Title>{getRouteTitle(formData)}</Title>
-                      )}
-                      <Form
-                        initialData={formData}
-                        onDelete={deleteRoute}
-                        onExit={this.exit}
-                        onSave={saveRoute}
-                        templates={templates}
-                        conditions={conditions}
-                      />
-                    </Box>
-                  )
-                }}
-              </Queries>
+              <Box>
+                {this.isNew ? (
+                  <FormattedMessage id="pages.admin.pages.form.title.new">
+                    {text => <Title>{text}</Title>}
+                  </FormattedMessage>
+                ) : (
+                  formData && <Title>{getRouteTitle(formData)}</Title>
+                )}
+                <Form
+                  initialData={formData}
+                  onDelete={deleteRoute}
+                  onExit={this.exit}
+                  onSave={saveRoute}
+                  templates={templates}
+                  conditions={conditions}
+                />
+              </Box>
             )
-          }
+          }}
         </Operations>
       </Styles>
     )
