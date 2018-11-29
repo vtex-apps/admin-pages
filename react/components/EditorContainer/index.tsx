@@ -121,7 +121,7 @@ export default class EditorContainer extends Component<Props, State> {
             <div className="ph5 f5 near-black h-3em h-3em-ns w-100 bb bw1 flex justify-between items-center b--light-silver shadow-solid-y">
               <div className="flex items-center">
                 <h3 className="f5 pr3">
-                  <FormattedMessage id="pages.editor.editpath.label" />:
+                  <FormattedMessage id="pages.editor.container.editpath.label" />:
                 </h3>
                 {iframeWindow.location.pathname}
               </div>

@@ -71,7 +71,7 @@ const ComponentEditor: React.SFC<Props> = ({
         shouldRenderSaveButton={shouldRenderSaveButton}
         title={componentSchema.title}
       />
-      <div className="ph5 mt5">
+      <div className="ph5 h-100 overflow-y-auto">
         {children}
         <div className="bg-white flex flex-column justify-between size-editor w-100 pb3">
           <Form
