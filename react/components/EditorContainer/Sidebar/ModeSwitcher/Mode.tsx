@@ -1,14 +1,16 @@
 import classnames from 'classnames'
 import React from 'react'
 
-import Content from '../../icons/Content'
-import Layout from '../../icons/Layout'
-import { IconProps } from '../../icons/utils'
+import Content from '../../../icons/Content'
+import Layout from '../../../icons/Layout'
+import { IconProps } from '../../../icons/utils'
 
 import styles from './modeSwitcher.css'
 
 interface Props {
-  editor: EditorContext
+  mode: EditorMode
+  setMode: EditorContext['setMode']
+  type: EditorMode
 }
 
 type ModeIcons = { [Key in EditorMode]: React.ComponentClass<IconProps> }
@@ -18,17 +20,14 @@ const modeIcons: ModeIcons = {
   layout: Layout,
 }
 
-interface ModeProps {
-  type: EditorMode
-  mode: EditorMode
-  setMode: EditorContext['setMode']
-}
-
-const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
+const Mode: React.SFC<Props> = ({ mode, setMode, type }) => {
   const Icon = modeIcons[type]
+
   const isActive = type === mode
+
   const firstLetterUpperCaseType =
     type.substring(0, 1).toUpperCase() + type.substring(1)
+
   return (
     <button
       className={classnames(
@@ -38,15 +37,14 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
         },
         'bb-0 bg-transparent bl-0 bt-0 bw1 outline-0 pa4 relative v-mid w-100 flex items-center justify-center',
       )}
-      value={type}
       onClick={() => setMode(type as EditorMode)}
+      value={type}
     >
       <div className="bg-animate hover-bg-light-silver h2 w2 br-pill flex items-center justify-center">
-
         <div
           className={`${
             styles['hide-child']
-          } hide-child absolute w-100 h-100 z-3`}
+            } hide-child absolute w-100 h-100 z-3`}
         >
           <span
             style={{ transform: 'translate3d(-100%, 1rem, 0)' }}
@@ -64,14 +62,4 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
   )
 }
 
-const modes: EditorMode[] = ['content', 'layout']
-
-const ModeSwitcher = ({ editor: { mode, setMode } }: Props) => (
-  <div className="pt5">
-    {modes.map(current => (
-      <Mode key={current} type={current} mode={mode} setMode={setMode} />
-    ))}
-  </div>
-)
-
-export default ModeSwitcher
+export default Mode
