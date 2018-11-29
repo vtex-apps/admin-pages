@@ -2,20 +2,41 @@ import React from 'react'
 import { Dropdown } from 'vtex.styleguide'
 import { ConditionalTemplatePicker } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
+import { PageWithUniqueId } from './typings'
 
-interface TemplateSectionProps {}
+interface TemplateSectionProps {
+  conditions: Condition[]
+  detailChangeHandlerGetter: (
+    detailName: keyof Route,
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => void
+  onAddConditionalTemplate: () => void
+  onChangeConditionsConditionalTemplate: (
+    uniqueId: number,
+    conditions: string[],
+  ) => void
+  onChangeTemplateConditionalTemplate: (
+    uniqueId: number,
+    template: string,
+  ) => void
+  onRemoveConditionalTemplate: (uniqueId: number) => void
+  pages: PageWithUniqueId[]
+  template: string
+  templates: Template[]
+}
 
-export const TemplateSection: React.SFC<TemplateSectionProps> = ({
+type Props = TemplateSectionProps & ReactIntl.InjectedIntlProps
+
+export const TemplateSection: React.SFC<Props> = ({
   conditions,
-  pages,
-  templates,
-  templateId,
   detailChangeHandlerGetter,
   intl,
   onAddConditionalTemplate,
-  onRemoveConditionalTemplate,
-  onChangeTemplateConditionalTemplate,
   onChangeConditionsConditionalTemplate,
+  onChangeTemplateConditionalTemplate,
+  onRemoveConditionalTemplate,
+  pages,
+  template,
+  templates,
 }) => (
   <React.Fragment>
     <SectionTitle textId="pages.admin.pages.form.templates.title" />
@@ -24,25 +45,29 @@ export const TemplateSection: React.SFC<TemplateSectionProps> = ({
         id: 'pages.admin.pages.form.templates.field.default',
       })}
       options={templates.map(({ id }) => ({ value: id, label: id }))}
-      onChange={detailChangeHandlerGetter('templateId')}
-      value={templateId}
+      onChange={detailChangeHandlerGetter('template')}
+      value={template}
     />
     <h2 className="mt7 f5 normal">Conditional</h2>
     <p className="f6 c-muted-2">
       Conditional template enables the use of a variant layout to your page.
       This layout will appear when it matches with the conditions set.
     </p>
-    {pages.map((page) => (
+    {pages.map(page => (
       <ConditionalTemplatePicker
         key={page.uniqueId}
         availableConditions={conditions}
         conditions={page.conditions}
         intl={intl}
-        onChangeConditionsConditionalTemplate={onChangeConditionsConditionalTemplate}
-        onChangeTemplateConditionalTemplate={onChangeTemplateConditionalTemplate}
+        onChangeConditionsConditionalTemplate={
+          onChangeConditionsConditionalTemplate
+        }
+        onChangeTemplateConditionalTemplate={
+          onChangeTemplateConditionalTemplate
+        }
         onRemoveConditionalTemplate={onRemoveConditionalTemplate}
         pageId={page.uniqueId}
-        templateId={page.template}
+        template={page.template}
         templates={templates}
       />
     ))}

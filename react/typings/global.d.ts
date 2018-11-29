@@ -44,6 +44,7 @@ declare global {
     params?: any
     disableExternals?: string[]
     declarer: string
+    template?: string
     title?: string
     pages: Page[]
   }

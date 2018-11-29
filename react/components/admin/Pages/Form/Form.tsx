@@ -1,6 +1,6 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { Button, Checkbox, Input  } from 'vtex.styleguide'
+import { Button, Checkbox, Input } from 'vtex.styleguide'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
@@ -8,19 +8,31 @@ import { getRouteTitle, isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
 
-
 import { TemplateSection } from './TemplateSection'
+import { PageWithUniqueId } from './typings'
 
 interface CustomProps {
+  conditions: Condition[]
   data: Route
   detailChangeHandlerGetter: (
-    detailName: string,
+    detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   isLoading: boolean
   onDelete: () => void
   onExit: () => void
   onLoginToggle: () => void
   onSave: (event: React.FormEvent) => void
+  onAddConditionalTemplate: () => void
+  onChangeConditionsConditionalTemplate: (
+    uniqueId: number,
+    conditions: string[],
+  ) => void
+  onChangeTemplateConditionalTemplate: (
+    uniqueId: number,
+    template: string,
+  ) => void
+  onRemoveConditionalTemplate: (uniqueId: number) => void
+  templates: Template[]
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -88,14 +100,18 @@ const Form: React.SFC<Props> = ({
       <TemplateSection
         intl={intl}
         detailChangeHandlerGetter={detailChangeHandlerGetter}
-        pages={data.pages}
+        pages={data.pages as PageWithUniqueId[]}
         templates={templates}
-        templateId={data.templateId}
+        template={data.template}
         conditions={conditions}
         onAddConditionalTemplate={onAddConditionalTemplate}
         onRemoveConditionalTemplate={onRemoveConditionalTemplate}
-        onChangeTemplateConditionalTemplate={onChangeTemplateConditionalTemplate}
-        onChangeConditionsConditionalTemplate={onChangeConditionsConditionalTemplate}
+        onChangeTemplateConditionalTemplate={
+          onChangeTemplateConditionalTemplate
+        }
+        onChangeConditionsConditionalTemplate={
+          onChangeConditionsConditionalTemplate
+        }
       />
       <SeparatorWithLine />
       <FormFieldSeparator />

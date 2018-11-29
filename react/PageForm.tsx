@@ -51,7 +51,7 @@ class PageForm extends Component<Props, State> {
       login: false,
       pages: [],
       path: '',
-      templateId: '',
+      template: '',
       title: '',
     }
 

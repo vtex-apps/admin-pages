@@ -7,13 +7,32 @@ import {
   IconClose,
 } from 'vtex.styleguide'
 
-export const ConditionalTemplatePicker = ({
+interface ConditionalTemplatePickerProps {
+  availableConditions: Condition[]
+  conditions: string[]
+  onChangeConditionsConditionalTemplate: (
+    uniqueId: number,
+    conditions: string[],
+  ) => void
+  onChangeTemplateConditionalTemplate: (
+    uniqueId: number,
+    template: string,
+  ) => void
+  onRemoveConditionalTemplate: (uniqueId: number) => void
+  pageId: number
+  template: string
+  templates: Template[]
+}
+
+type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
+
+export const ConditionalTemplatePicker: React.SFC<Props> = ({
   availableConditions,
   conditions,
   intl,
   templates,
   onChangeConditionsConditionalTemplate,
-  templateId,
+  template,
   onRemoveConditionalTemplate,
   onChangeTemplateConditionalTemplate,
   pageId,
@@ -25,8 +44,10 @@ export const ConditionalTemplatePicker = ({
           id: 'pages.admin.pages.form.templates.conditional.template.label',
         })}
         options={templates.map(({ id }) => ({ value: id, label: id }))}
-        onChange={(e: React.ChangeEvent, value: string) => onChangeTemplateConditionalTemplate(pageId, value)}
-        value={templateId}
+        onChange={(e: React.ChangeEvent, value: string) =>
+          onChangeTemplateConditionalTemplate(pageId, value)
+        }
+        value={template}
       />
     </div>
     <div className="w-50 mh5">
@@ -42,7 +63,9 @@ export const ConditionalTemplatePicker = ({
       </label>
       <ReactSelect
         className="f6"
-        arrowRenderer={({ onMouseDown, isOpen }: any ) => ( // ArrowRendererProps isn't defining isOpen.
+        arrowRenderer={(
+          { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
+        ) => (
           <div onMouseDown={onMouseDown}>
             {isOpen ? (
               <IconCaretUp color="#134cd8" size={8} />
