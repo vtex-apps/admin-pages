@@ -55,7 +55,10 @@ const Mode: React.SFC<ModeProps> = ({ type, mode, setMode }) => {
             {firstLetterUpperCaseType}
           </span>
         </div>
-        <Icon size={20} color={isActive ? 'var(--rebel-pink)' : 'var(--gray)'} />
+        <Icon
+          size={24}
+          color={isActive ? 'var(--near-black)' : 'var(--gray)'}
+        />
       </div>
     </button>
   )
