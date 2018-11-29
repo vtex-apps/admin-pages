@@ -10,6 +10,7 @@ interface ConditionalTemplateSectionProps {
   detailChangeHandlerGetter: (
     detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
+  formErrors: Partial<{[key in keyof Route]: string}>
   onAddConditionalTemplate: () => void
   onChangeConditionsConditionalTemplate: (
     uniqueId: number,
@@ -30,6 +31,7 @@ type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
 export const ConditionalTemplateSection: React.SFC<Props> = ({
   conditions,
   detailChangeHandlerGetter,
+  formErrors,
   intl,
   onAddConditionalTemplate,
   onChangeConditionsConditionalTemplate,
@@ -69,6 +71,7 @@ export const ConditionalTemplateSection: React.SFC<Props> = ({
         pageId={page.uniqueId}
         template={page.template}
         templates={templates}
+        formErrors={formErrors}
       />
     ))}
     <button

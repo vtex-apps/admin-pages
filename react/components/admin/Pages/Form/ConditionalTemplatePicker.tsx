@@ -1,3 +1,4 @@
+import {path} from 'ramda'
 import React from 'react'
 import ReactSelect, { Option } from 'react-select'
 import {
@@ -19,6 +20,7 @@ interface ConditionalTemplatePickerProps {
     template: string,
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
+  formErrors: Partial<{[key in keyof Route]: string}>
   pageId: number
   template: string
   templates: Template[]
@@ -29,13 +31,14 @@ type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
 export const ConditionalTemplatePicker: React.SFC<Props> = ({
   availableConditions,
   conditions,
+  formErrors,
   intl,
-  templates,
   onChangeConditionsConditionalTemplate,
-  template,
-  onRemoveConditionalTemplate,
   onChangeTemplateConditionalTemplate,
+  onRemoveConditionalTemplate,
   pageId,
+  template,
+  templates,
 }) => (
   <div className="flex items-center mv5 mw7">
     <div className="flex-grow-1">
@@ -48,6 +51,9 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
           onChangeTemplateConditionalTemplate(pageId, value)
         }
         value={template}
+        errorMessage={path(['pages', pageId, 'template'], formErrors) && intl.formatMessage({
+          id: path(['pages', pageId, 'template'], formErrors)
+        })}
       />
     </div>
     <div className="w-50 mh5">
@@ -60,9 +66,8 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
             })}
           </span>
         </span>
-      </label>
-      <ReactSelect
-        className="f6"
+        <ReactSelect
+        className={`f6 ${!!path(['pages', pageId, 'conditions'], formErrors) ? 'b--danger bw1' : ''}`}
         arrowRenderer={(
           { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
         ) => (
@@ -85,6 +90,10 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
           label: conditionId,
           value: conditionId,
         }))}
+        style={ !!path(['pages', pageId, 'conditions'], formErrors) ? {
+          borderColor: '#ff4c4c',
+          borderWidth: '.125rem',
+        } : {}}
         placeholder={
           <span className="ml2">
             {intl.formatMessage({
@@ -94,6 +103,14 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
         }
         value={conditions}
       />
+      </label>
+      { !!path(['pages', pageId, 'conditions'], formErrors) && (
+        <span className="c-danger f6 mt3 lh-title">
+          {intl.formatMessage({
+            id: path(['pages', pageId, 'conditions'], formErrors) as string
+          })}
+        </span>
+      )}
     </div>
     <button
       type="button"

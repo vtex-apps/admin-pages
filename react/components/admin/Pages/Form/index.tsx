@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
 import { MutationFn } from 'react-apollo'
 import { withRuntimeContext } from 'render'
@@ -10,6 +11,7 @@ import {
   getChangeTemplateConditionalTemplateState,
   getLoginToggleState,
   getRemoveConditionalTemplateState,
+  getValidateFormState,
 } from './stateHandlers'
 
 interface Props {
@@ -22,9 +24,10 @@ interface Props {
   templates: Template[]
 }
 
-interface State {
+export interface State {
   data: Route
   isLoading: boolean
+  formErrors: Partial<{[key in keyof Route]: string}>
 }
 
 class FormContainer extends Component<Props, State> {
@@ -37,6 +40,7 @@ class FormContainer extends Component<Props, State> {
 
     this.state = {
       data: props.initialData,
+      formErrors: {},
       isLoading: false,
     }
   }
@@ -47,7 +51,7 @@ class FormContainer extends Component<Props, State> {
 
   public render() {
     const { conditions, templates, onExit } = this.props
-    const { data, isLoading } = this.state
+    const { data, formErrors ,isLoading } = this.state
 
     return (
       <Form
@@ -69,6 +73,7 @@ class FormContainer extends Component<Props, State> {
         onChangeConditionsConditionalTemplate={
           this.handleChangeConditionsConditionalTemplate
         }
+        formErrors={formErrors}
       />
     )
   }
@@ -108,6 +113,7 @@ class FormContainer extends Component<Props, State> {
         ...prevState.data,
         [detailName]: newDetailValue,
       },
+      formErrors: {}
     }))
   }
 
@@ -143,26 +149,33 @@ class FormContainer extends Component<Props, State> {
 
     event.preventDefault()
 
-    this.setState({ isLoading: true }, async () => {
-      try {
-        await onSave({
-          variables: {
-            route: {
-              ...this.state.data,
-              id: this.state.data.id === 'new' ? undefined : this.state.data.id
+    const nextState = getValidateFormState(this.state)
+
+    if (isEmpty(nextState.formErrors)) {
+      this.setState({ isLoading: true }, async () => {
+        try {
+          await onSave({
+            variables: {
+              route: {
+                ...this.state.data,
+                id: this.state.data.id === 'new' ? undefined : this.state.data.id
+              },
             },
-          },
-        })
+          })
 
-        onExit()
-      } catch (err) {
-        this.setState({ isLoading: false }, () => {
-          console.log(err)
+          onExit()
+        } catch (err) {
+          this.setState({ isLoading: false }, () => {
+            console.log(err)
 
-          alert('Error: route could not be saved.')
-        })
-      }
-    })
+            alert('Error: route could not be saved.')
+          })
+        }
+      })
+    } else {
+      this.setState(getValidateFormState)
+    }
+
   }
 }
 
