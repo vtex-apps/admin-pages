@@ -9,6 +9,7 @@ interface TemplateDropdownProps {
     detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   templates: Template[]
+  errorMessage?: string
 }
 
 type Props = TemplateDropdownProps & ReactIntl.InjectedIntlProps
@@ -20,6 +21,7 @@ export const TemplateDropdown: React.SFC<Props> = ({
   detailChangeHandlerGetter,
   placeholder,
   templates,
+  errorMessage
 }) => (
   <Dropdown
     label={intl.formatMessage({
@@ -31,6 +33,7 @@ export const TemplateDropdown: React.SFC<Props> = ({
     options={templates.map(({ id }) => ({ value: id, label: id }))}
     onChange={detailChangeHandlerGetter('template')}
     value={template}
+    errorMessage={errorMessage}
   />
 )
 
