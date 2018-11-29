@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react'
 
+import EditorHeader from '../../EditorHeader'
+
 import Card from './Card'
 import CreateButton from './CreateButton'
 
@@ -8,20 +10,25 @@ interface Props {
   configurations: AdaptedExtensionConfiguration[]
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
+  onClose: () => void
   onCreate: (event: Event) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
+  title?: string
 }
 
 const List: React.SFC<Props> = ({
   activeConfiguration,
   configurations,
   isDisabledChecker,
+  onClose,
   onCreate,
   onEdit,
   onSelect,
+  title,
 }) => (
   <Fragment>
+    <EditorHeader onClose={onClose} title={title} />
     {configurations.map(
       (configuration: AdaptedExtensionConfiguration, index: number) => (
         <Fragment key={index}>
