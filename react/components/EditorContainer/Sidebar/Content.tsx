@@ -3,10 +3,10 @@ import { canUseDOM } from 'render'
 import { Spinner } from 'vtex.styleguide'
 
 import { getIframeImplementation } from '../../../utils/components'
-import ConfigurationList from '../../ConfigurationList'
-import { SidebarComponent } from '../../typings'
 
 import ComponentSelector from './ComponentSelector'
+import ConfigurationList from './ConfigurationList'
+import { SidebarComponent } from './typings'
 
 interface Props {
   editor: EditorContext
