@@ -78,8 +78,15 @@ class PageForm extends Component<Props, State> {
         })
 
         if (route) {
+          const routeWithPagesUniqueId = {
+            ...route,
+            pages: (route.pages|| []).map((page, uniqueId) => ({
+              ...page,
+              uniqueId: page.configurationId || uniqueId
+            }))
+          }
           this.setState({
-            formData: route,
+            formData: routeWithPagesUniqueId,
             isLoading: false,
           })
         } else {
