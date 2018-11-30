@@ -6,6 +6,9 @@ import { getIframeImplementation } from '../../../utils/components'
 
 import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
+import { FormMetaConsumer } from './FormMetaContext'
+import { ModalConsumer } from './ModalContext'
+import TemplateEditor from './TemplateEditor'
 import { SidebarComponent } from './typings'
 
 interface Props {
@@ -26,14 +29,40 @@ class Content extends Component<Props> {
       )
     }
 
-    return editor.editTreePath === null ? (
-      <ComponentSelector
-        components={this.getComponents(runtime)}
-        editor={editor}
-        highlightHandler={highlightHandler}
-      />
-    ) : (
-      <ConfigurationList editor={editor} runtime={runtime} />
+    if (editor.editTreePath === null) {
+      return (
+        <ComponentSelector
+          components={this.getComponents(runtime)}
+          editor={editor}
+          highlightHandler={highlightHandler}
+        />
+      )
+    }
+
+    return (
+      <FormMetaConsumer>
+        {formMeta => (
+          <ModalConsumer>
+            {modal =>
+              editor.mode === 'layout' ? (
+                <TemplateEditor
+                  editor={editor}
+                  formMeta={formMeta}
+                  modal={modal}
+                  runtime={runtime}
+                />
+              ) : (
+                <ConfigurationList
+                  editor={editor}
+                  formMeta={formMeta}
+                  modal={modal}
+                  runtime={runtime}
+                />
+              )
+            }
+          </ModalConsumer>
+        )}
+      </FormMetaConsumer>
     )
   }
 

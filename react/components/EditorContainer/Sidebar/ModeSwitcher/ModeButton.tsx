@@ -5,12 +5,12 @@ import Content from '../../../icons/Content'
 import Layout from '../../../icons/Layout'
 import { IconProps } from '../../../icons/utils'
 
-import styles from './modeSwitcher.css'
+import styles from './styles.css'
 
 interface Props {
+  activeMode: EditorMode
   mode: EditorMode
-  setMode: EditorContext['setMode']
-  type: EditorMode
+  switchHandler: () => void
 }
 
 type ModeIcons = { [Key in EditorMode]: React.ComponentClass<IconProps> }
@@ -20,13 +20,12 @@ const modeIcons: ModeIcons = {
   layout: Layout,
 }
 
-const Mode: React.SFC<Props> = ({ mode, setMode, type }) => {
-  const Icon = modeIcons[type]
+const ModeButton: React.SFC<Props> = ({ activeMode, mode, switchHandler }) => {
+  const Icon = modeIcons[mode]
 
-  const isActive = type === mode
+  const isActive = mode === activeMode
 
-  const firstLetterUpperCaseType =
-    type.substring(0, 1).toUpperCase() + type.substring(1)
+  const capitalizedMode = mode.substring(0, 1).toUpperCase() + mode.substring(1)
 
   return (
     <button
@@ -37,20 +36,21 @@ const Mode: React.SFC<Props> = ({ mode, setMode, type }) => {
         },
         'bb-0 bg-transparent bl-0 bt-0 bw1 outline-0 pa4 relative v-mid w-100 flex items-center justify-center',
       )}
-      onClick={() => setMode(type as EditorMode)}
-      value={type}
+      disabled={isActive}
+      onClick={switchHandler}
+      value={mode}
     >
       <div className="bg-animate hover-bg-light-silver h2 w2 br-pill flex items-center justify-center">
         <div
           className={`${
             styles['hide-child']
-            } hide-child absolute w-100 h-100 z-3`}
+          } hide-child absolute w-100 h-100 z-3`}
         >
           <span
             style={{ transform: 'translate3d(-100%, 1rem, 0)' }}
             className="white br1 dtc v-mid w-100 h-100 ph3 pv2 f7 child bg-black-70"
           >
-            {firstLetterUpperCaseType}
+            {capitalizedMode}
           </span>
         </div>
         <Icon
@@ -62,4 +62,4 @@ const Mode: React.SFC<Props> = ({ mode, setMode, type }) => {
   )
 }
 
-export default Mode
+export default ModeButton
