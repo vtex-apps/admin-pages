@@ -6,7 +6,7 @@ import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
-import UploadFile from '../../../queries/UpdateFile.gql'
+import UploadFile from '../../../queries/UploadFile.graphql'
 
 import Dropzone from './Dropzone'
 import ErrorAlert from './ErrorAlert'

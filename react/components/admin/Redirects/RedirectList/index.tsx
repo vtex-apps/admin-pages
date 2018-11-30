@@ -5,8 +5,8 @@ import { Pagination } from 'vtex.styleguide'
 
 import Redirects from '../../../../queries/Redirects.graphql'
 import Loader from '../../../Loader'
+import Styles from '../../Styles'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
-import StylesContainer from '../StylesContainer'
 
 import List from './List'
 import { FetchMoreOptions } from './typings'
@@ -42,7 +42,7 @@ class RedirectList extends Component<Props, State> {
         }}
       >
         {({ data, fetchMore, loading }) => (
-          <StylesContainer>
+          <Styles>
             {loading ? (
               <Loader />
             ) : (
@@ -76,7 +76,7 @@ class RedirectList extends Component<Props, State> {
                 )}
               </Fragment>
             )}
-          </StylesContainer>
+          </Styles>
         )}
       </Query>
     )

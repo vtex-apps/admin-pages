@@ -1,0 +1,23 @@
+mutation SaveRoute(
+  $route: RouteInput
+) {
+  saveRoute(
+    route: $route
+  ) {
+    cname
+    context
+    declarer
+    id
+    login
+    pages {
+      allMatches
+      conditions
+      configurationId
+      declarer
+      device
+      name
+      template
+    }
+    path
+  }
+}

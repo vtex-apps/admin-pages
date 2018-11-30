@@ -4,8 +4,8 @@ import { withRuntimeContext } from 'render'
 
 import Redirect from '../../../../queries/Redirect.graphql'
 import Loader from '../../../Loader'
+import Styles from '../../Styles'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-import StylesContainer from '../StylesContainer'
 
 import Form from './Form'
 import Operations from './Operations'
@@ -84,7 +84,7 @@ class RedirectForm extends Component<Props, State> {
     const { formData, isLoading } = this.state
 
     return (
-      <StylesContainer>
+      <Styles>
         <Operations>
           {({ deleteRedirect, saveRedirect }) =>
             isLoading ? (
@@ -98,7 +98,7 @@ class RedirectForm extends Component<Props, State> {
             )
           }
         </Operations>
-      </StylesContainer>
+      </Styles>
     )
   }
 }

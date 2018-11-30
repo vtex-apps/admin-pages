@@ -8,11 +8,10 @@ import { Button, Input, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
+import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-import StylesContainer from '../StylesContainer'
 
 import DatePicker from './DatePicker'
-import Separator from './Separator'
 
 interface CustomProps {
   initialData: Redirect
@@ -84,112 +83,108 @@ class Form extends Component<Props, State> {
             id: 'pages.admin.redirects.form.modal.text',
           })}
         />
-        <StylesContainer>
-          <Fragment>
-            <FormattedMessage
-              id={
-                this.isViewMode
-                  ? 'pages.admin.redirects.form.title.info'
-                  : 'pages.admin.redirects.form.title.new'
-              }
-            >
-              {text => <h1>{text}</h1>}
-            </FormattedMessage>
-            <Separator />
-            <form onSubmit={this.handleSave}>
-              <Input
-                disabled={this.isViewMode}
-                label={intl.formatMessage({
-                  id: 'pages.admin.redirects.table.from',
-                })}
-                onChange={this.updateFrom}
-                required
-                value={data.from}
-              />
-              <Separator />
-              <Input
-                disabled={this.isViewMode}
-                label={intl.formatMessage({
-                  id: 'pages.admin.redirects.table.to',
-                })}
-                onChange={this.updateTo}
-                required
-                value={data.to}
-              />
-              <Separator />
-              <Toggle
-                checked={shouldShowDatePicker}
-                disabled={this.isViewMode}
-                label={intl.formatMessage({
-                  id: 'pages.admin.redirects.form.toggle.endDate',
-                })}
-                onChange={this.toggleDatePickerVisibility}
-                size="small"
-              />
-              <Separator />
-              {shouldShowDatePicker && (
-                <Fragment>
-                  {this.isViewMode ? (
-                    <Input
-                      disabled
-                      label={intl.formatMessage({
-                        id: 'pages.admin.redirects.form.datePicker.title',
-                      })}
-                      value={getFormattedLocalizedDate(data.endDate, locale)}
+        <FormattedMessage
+          id={
+            this.isViewMode
+              ? 'pages.admin.redirects.form.title.info'
+              : 'pages.admin.redirects.form.title.new'
+          }
+        >
+          {text => <h1>{text}</h1>}
+        </FormattedMessage>
+        <FormFieldSeparator />
+        <form onSubmit={this.handleSave}>
+          <Input
+            disabled={this.isViewMode}
+            label={intl.formatMessage({
+              id: 'pages.admin.redirects.table.from',
+            })}
+            onChange={this.updateFrom}
+            required
+            value={data.from}
+          />
+          <FormFieldSeparator />
+          <Input
+            disabled={this.isViewMode}
+            label={intl.formatMessage({
+              id: 'pages.admin.redirects.table.to',
+            })}
+            onChange={this.updateTo}
+            required
+            value={data.to}
+          />
+          <FormFieldSeparator />
+          <Toggle
+            checked={shouldShowDatePicker}
+            disabled={this.isViewMode}
+            label={intl.formatMessage({
+              id: 'pages.admin.redirects.form.toggle.endDate',
+            })}
+            onChange={this.toggleDatePickerVisibility}
+            size="small"
+          />
+          <FormFieldSeparator />
+          {shouldShowDatePicker && (
+            <Fragment>
+              {this.isViewMode ? (
+                <Input
+                  disabled
+                  label={intl.formatMessage({
+                    id: 'pages.admin.redirects.form.datePicker.title',
+                  })}
+                  value={getFormattedLocalizedDate(data.endDate, locale)}
+                />
+              ) : (
+                  <Fragment>
+                    <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                      {text => <div className="mb3 w-100 f6">{text}</div>}
+                    </FormattedMessage>
+                    <DatePicker
+                      locale={locale}
+                      onChange={this.updateEndDate}
+                      selected={
+                        data.endDate ? moment(data.endDate) : undefined
+                      }
                     />
-                  ) : (
-                    <Fragment>
-                      <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                        {text => <div className="mb3 w-100 f6">{text}</div>}
-                      </FormattedMessage>
-                      <DatePicker
-                        locale={locale}
-                        onChange={this.updateEndDate}
-                        selected={
-                          data.endDate ? moment(data.endDate) : undefined
-                        }
-                      />
-                    </Fragment>
-                  )}
-                  <Separator />
-                </Fragment>
-              )}
-              <div className="flex justify-end">
-                <div className="mr6">
-                  <Button
-                    disabled={isLoading}
-                    onClick={this.exit}
-                    size="small"
-                    variation="tertiary"
-                  >
-                    {intl.formatMessage({
-                      id: this.isViewMode
-                        ? 'pages.admin.redirects.form.button.back'
-                        : 'pages.admin.redirects.form.button.cancel',
-                    })}
-                  </Button>
-                </div>
-                {this.isViewMode ? (
-                  <Button
-                    size="small"
-                    onClick={this.toggleModalVisibility}
-                    variation="danger"
-                  >
-                    {intl.formatMessage({
-                      id: 'pages.admin.redirects.form.button.remove',
-                    })}
-                  </Button>
-                ) : (
-                  <Button isLoading={isLoading} size="small" type="submit">
-                    {intl.formatMessage({
-                      id: 'pages.admin.redirects.form.button.create',
-                    })}
-                  </Button>
+                  </Fragment>
                 )}
-              </div>
-            </form>
-          </Fragment>
-        </StylesContainer>
+              <FormFieldSeparator />
+            </Fragment>
+          )}
+          <div className="flex justify-end">
+            <div className="mr6">
+              <Button
+                disabled={isLoading}
+                onClick={this.exit}
+                size="small"
+                variation="tertiary"
+              >
+                {intl.formatMessage({
+                  id: this.isViewMode
+                    ? 'pages.admin.redirects.form.button.back'
+                    : 'pages.admin.redirects.form.button.cancel',
+                })}
+              </Button>
+            </div>
+            {this.isViewMode ? (
+              <Button
+                size="small"
+                onClick={this.toggleModalVisibility}
+                variation="danger"
+              >
+                {intl.formatMessage({
+                  id: 'pages.admin.redirects.form.button.remove',
+                })}
+              </Button>
+            ) : (
+                <Button isLoading={isLoading} size="small" type="submit">
+                  {intl.formatMessage({
+                    id: 'pages.admin.redirects.form.button.create',
+                  })}
+                </Button>
+              )}
+          </div>
+        </form>
       </Fragment>
     )
   }

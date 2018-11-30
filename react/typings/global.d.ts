@@ -1,4 +1,4 @@
-import { ReactElement, Component } from 'react'
+import { Component, ReactElement } from 'react'
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 declare global {
   declare module '*.graphql' {
@@ -31,6 +31,8 @@ declare global {
     device: string
     params: Record<string, any>
     configurationId: string
+    allMatches: boolean
+    declarer: string | null
   }
 
   interface Route {
@@ -42,7 +44,8 @@ declare global {
     params?: any
     disableExternals?: string[]
     declarer: string
-    title?: string
+    template: string
+    title: string
     pages: Page[]
   }
 
@@ -213,5 +216,10 @@ declare global {
       messages?: Record<string, string>,
       shouldUpdateRuntime?: boolean
     ) => void
+  }
+
+  interface AdminContext {
+    startLoading: () => void
+    stopLoading: () => void
   }
 }
