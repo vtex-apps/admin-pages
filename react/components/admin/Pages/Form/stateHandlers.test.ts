@@ -69,6 +69,30 @@ describe('getAddConditionalTemplateState', () => {
       }),
     )
   })
+
+  it(`should clear form errors`, () => {
+    const mockState = {
+      data: {
+        pages: [] as Page[],
+      },
+      formErrors: {
+        title: 'oi',
+      },
+    } as State
+    expect(getAddConditionalTemplateState(mockState)).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 0,
+            },
+          ],
+        },
+        formErrors: {},
+      }),
+    )
+  })
 })
 
 describe('getLoginToggleState', () => {
@@ -100,16 +124,51 @@ describe('getRemoveConditionalTemplateState', () => {
         ] as any[],
       },
     } as State
-    expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual({
+    expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+
+  it(`should clear form errors`, () => {
+    const mockState = {
       data: {
         pages: [
           {
             ...newPage,
+            uniqueId: 10,
+          },
+          {
+            ...newPage,
             uniqueId: 5,
           },
-        ],
+        ] as any[],
       },
-    })
+      formErrors: {
+        title: 'oi',
+      },
+    } as State
+    expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+        formErrors: {},
+      }),
+    )
   })
 })
 
@@ -224,9 +283,11 @@ describe('getValidateFormState', () => {
         template: 'defaultTemplate',
         title: 'test',
       },
-      formErrors: {}
+      formErrors: {},
     } as State
-    expect(getValidateFormState(mockState)).toEqual(expect.objectContaining({formErrors: {}}))
+    expect(getValidateFormState(mockState)).toEqual(
+      expect.objectContaining({ formErrors: {} }),
+    )
   })
 
   it('should return error if path is falsy', () => {
@@ -248,7 +309,7 @@ describe('getValidateFormState', () => {
         template: 'defaultTemplate',
         title: 'test',
       },
-      formErrors: {}
+      formErrors: {},
     } as State
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -344,8 +405,8 @@ describe('getValidateFormState', () => {
             pages: {
               5: {
                 template: 'pages.admin.pages.form.templates.field.required',
-              }
-            }
+              },
+            },
           }),
         }),
       )
@@ -377,11 +438,50 @@ describe('getValidateFormState', () => {
             pages: {
               10: {
                 conditions: 'pages.admin.pages.form.templates.field.required',
-              }
-            }
+              },
+            },
           }),
         }),
       )
     })
+
+    it('should return error for more than one page and field', () => {
+      const mockState = {
+        data: {
+          pages: [
+            {
+              conditions: [],
+              template: '',
+              uniqueId: 10,
+            },
+            {
+              conditions: [],
+              template: '',
+              uniqueId: 5,
+            },
+          ] as any[],
+          path: '/test',
+          template: 'defaultTemplate',
+          title: 'defaultTemplate',
+        },
+      } as State
+      expect(getValidateFormState(mockState)).toEqual(
+        expect.objectContaining({
+          formErrors: expect.objectContaining({
+            pages: {
+              5: {
+                conditions: 'pages.admin.pages.form.templates.field.required',
+                template: 'pages.admin.pages.form.templates.field.required',
+              },
+              10: {
+                conditions: 'pages.admin.pages.form.templates.field.required',
+                template: 'pages.admin.pages.form.templates.field.required',
+              },
+            },
+          }),
+        }),
+      )
+    })
+
   })
 })

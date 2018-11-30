@@ -34,6 +34,7 @@ export const getAddConditionalTemplateState = (prevState: State) => {
   return {
     ...prevState,
     data: { ...prevState.data, pages: prevState.data.pages.concat(newPage) },
+    formErrors: {}
   }
 }
 
@@ -46,6 +47,7 @@ export const getRemoveConditionalTemplateState = (uniqueId: number) => (
   return {
     ...prevState,
     data: { ...prevState.data, pages: newPages },
+    formErrors: {}
   }
 }
 
@@ -104,6 +106,7 @@ const validateConditionalTemplates = (data: Route) => {
     const conditionsError = !conditions.length && { conditions: requiredMessage }
     if (templateError || conditionsError) {
       acc.pages = {
+        ...acc.pages,
         [uniqueId]: {
           ...templateError,
           ...conditionsError
