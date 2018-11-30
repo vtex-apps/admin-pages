@@ -1,4 +1,4 @@
-import {path} from 'ramda'
+import { path } from 'ramda'
 import React from 'react'
 import ReactSelect, { Option } from 'react-select'
 import {
@@ -20,7 +20,7 @@ interface ConditionalTemplatePickerProps {
     template: string,
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
-  formErrors: Partial<{[key in keyof Route]: string}>
+  formErrors: Partial<{ [key in keyof Route]: string }>
   pageId: number
   template: string
   templates: Template[]
@@ -51,9 +51,12 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
           onChangeTemplateConditionalTemplate(pageId, value)
         }
         value={template}
-        errorMessage={path(['pages', pageId, 'template'], formErrors) && intl.formatMessage({
-          id: path(['pages', pageId, 'template'], formErrors)
-        })}
+        errorMessage={
+          path(['pages', pageId, 'template'], formErrors) &&
+          intl.formatMessage({
+            id: path(['pages', pageId, 'template'], formErrors) as string,
+          })
+        }
       />
     </div>
     <div className="w-50 mh5">
@@ -67,47 +70,55 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
           </span>
         </span>
         <ReactSelect
-        className={`f6 ${!!path(['pages', pageId, 'conditions'], formErrors) ? 'b--danger bw1' : ''}`}
-        arrowRenderer={(
-          { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
-        ) => (
-          <div onMouseDown={onMouseDown}>
-            {isOpen ? (
-              <IconCaretUp color="#134cd8" size={8} />
-            ) : (
-              <IconCaretDown color="#134cd8" size={8} />
-            )}
-          </div>
-        )}
-        multi
-        onChange={optionValues => {
-          const formattedValue = (optionValues as Option[]).map(
-            (item: Option) => item.value as string,
-          )
-          onChangeConditionsConditionalTemplate(pageId, formattedValue)
-        }}
-        options={availableConditions.map(({ conditionId }) => ({
-          label: conditionId,
-          value: conditionId,
-        }))}
-        style={ !!path(['pages', pageId, 'conditions'], formErrors) ? {
-          borderColor: '#ff4c4c',
-          borderWidth: '.125rem',
-        } : {}}
-        placeholder={
-          <span className="ml2">
-            {intl.formatMessage({
-              id: 'pages.editor.components.conditions.custom.placeholder',
-            })}
-          </span>
-        }
-        value={conditions}
-      />
+          className={`f6 ${
+            !!path(['pages', pageId, 'conditions'], formErrors)
+              ? 'b--danger bw1'
+              : ''
+          }`}
+          arrowRenderer={(
+            { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
+          ) => (
+            <div onMouseDown={onMouseDown}>
+              {isOpen ? (
+                <IconCaretUp color="#134cd8" size={8} />
+              ) : (
+                <IconCaretDown color="#134cd8" size={8} />
+              )}
+            </div>
+          )}
+          multi
+          onChange={optionValues => {
+            const formattedValue = (optionValues as Option[]).map(
+              (item: Option) => item.value as string,
+            )
+            onChangeConditionsConditionalTemplate(pageId, formattedValue)
+          }}
+          options={availableConditions.map(({ conditionId }) => ({
+            label: conditionId,
+            value: conditionId,
+          }))}
+          style={
+            !!path(['pages', pageId, 'conditions'], formErrors)
+              ? {
+                  borderColor: '#ff4c4c',
+                  borderWidth: '.125rem',
+                }
+              : {}
+          }
+          placeholder={
+            <span className="ml2">
+              {intl.formatMessage({
+                id: 'pages.editor.components.conditions.custom.placeholder',
+              })}
+            </span>
+          }
+          value={conditions}
+        />
       </label>
-      { !!path(['pages', pageId, 'conditions'], formErrors) && (
+      {!!path(['pages', pageId, 'conditions'], formErrors) && (
         <span className="c-danger f6 mt3 lh-title">
           {intl.formatMessage({
-            id: path(['pages', pageId, 'conditions'], formErrors) as string
+            id: path(['pages', pageId, 'conditions'], formErrors) as string,
           })}
         </span>
       )}
