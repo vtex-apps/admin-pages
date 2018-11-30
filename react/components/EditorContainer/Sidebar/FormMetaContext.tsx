@@ -3,6 +3,9 @@ import React, { Component, createContext } from 'react'
 import { FormMetaContext } from './typings'
 
 const defaultExternalState: FormMetaContext = {
+  getWasModified: () => {
+    return false
+  },
   isLoading: false,
   setWasModified: () => {
     return
@@ -25,6 +28,7 @@ export class FormMetaProvider extends Component<{}, State> {
 
     this.state = {
       ...defaultExternalState,
+      getWasModified: this.getWasModified,
       setWasModified: this.setWasModified,
       toggleLoading: this.toggleLoading,
     }
@@ -36,6 +40,10 @@ export class FormMetaProvider extends Component<{}, State> {
         {this.props.children}
       </FormMetaContext.Provider>
     )
+  }
+
+  private getWasModified: State['getWasModified'] = () => {
+    return this.state.wasModified
   }
 
   private setWasModified: State['setWasModified'] = (newValue, callback) => {

@@ -1,24 +1,57 @@
 import React from 'react'
 
-import Mode from './Mode'
+import { FormMetaContext, ModalContext } from '../typings'
+
+import ModeButton from './ModeButton'
 
 interface Props {
   editor: EditorContext
+  formMeta: FormMetaContext
+  modal: ModalContext
 }
 
 const modes: EditorMode[] = ['content', 'layout']
 
-const ModeSwitcher = ({ editor }: Props) => (
+const ModeSwitcher = ({ editor, formMeta, modal }: Props) => (
   <div className="pt5">
-    {modes.map(current => (
-      <Mode
-        key={current}
-        mode={editor.mode}
-        setMode={editor.setMode}
-        type={current}
+    {modes.map(mode => (
+      <ModeButton
+        activeMode={editor.mode}
+        key={mode}
+        mode={mode}
+        switchHandler={() => {
+          modeSwitchHandler(editor, formMeta, modal, mode)
+        }}
       />
     ))}
   </div>
 )
+
+const modeSwitchHandler = (
+  editor: EditorContext,
+  formMeta: FormMetaContext,
+  modal: ModalContext,
+  newMode: EditorMode,
+) => {
+  if (formMeta.wasModified) {
+    const oldCloseCallbackHandler = modal.closeCallbackHandler
+
+    modal.setHandlers({
+      closeCallbackHandler: () => {
+        if (formMeta.getWasModified()) {
+          modal.setHandlers({
+            closeCallbackHandler: oldCloseCallbackHandler,
+          })
+        } else {
+          editor.setMode(newMode)
+        }
+      },
+    })
+
+    modal.open()
+  } else {
+    editor.setMode(newMode)
+  }
+}
 
 export default ModeSwitcher
