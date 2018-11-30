@@ -1,12 +1,11 @@
 import { path } from 'ramda'
 import React from 'react'
-import ReactSelect, { Option } from 'react-select'
 import {
   Dropdown,
-  IconCaretDown,
-  IconCaretUp,
   IconClose,
 } from 'vtex.styleguide'
+
+import Select from '../../../Select'
 
 interface ConditionalTemplatePickerProps {
   availableConditions: Condition[]
@@ -69,59 +68,18 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
             })}
           </span>
         </span>
-        <ReactSelect
-          className={`f6 ${
-            !!path(['pages', pageId, 'conditions'], formErrors)
-              ? 'b--danger bw1'
-              : ''
-          }`}
-          arrowRenderer={(
-            { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
-          ) => (
-            <div onMouseDown={onMouseDown}>
-              {isOpen ? (
-                <IconCaretUp color="#134cd8" size={8} />
-              ) : (
-                <IconCaretDown color="#134cd8" size={8} />
-              )}
-            </div>
-          )}
-          multi
-          onChange={optionValues => {
-            const formattedValue = (optionValues as Option[]).map(
-              (item: Option) => item.value as string,
-            )
-            onChangeConditionsConditionalTemplate(pageId, formattedValue)
-          }}
-          options={availableConditions.map(({ conditionId }) => ({
-            label: conditionId,
-            value: conditionId,
-          }))}
-          style={
-            !!path(['pages', pageId, 'conditions'], formErrors)
-              ? {
-                  borderColor: '#ff4c4c',
-                  borderWidth: '.125rem',
-                }
-              : {}
-          }
-          placeholder={
-            <span className="ml2">
-              {intl.formatMessage({
-                id: 'pages.editor.components.conditions.custom.placeholder',
-              })}
-            </span>
-          }
-          value={conditions}
-        />
       </label>
-      {!!path(['pages', pageId, 'conditions'], formErrors) && (
-        <span className="c-danger f6 mt3 lh-title">
-          {intl.formatMessage({
-            id: path(['pages', pageId, 'conditions'], formErrors) as string,
-          })}
-        </span>
-      )}
+      <Select
+        errorMessage={path(['pages', pageId, 'conditions'], formErrors)}
+        onChange={values => {
+          onChangeConditionsConditionalTemplate(pageId, values)
+        }}
+        options={availableConditions.map(({ conditionId }) => ({
+          label: conditionId,
+          value: conditionId,
+        }))}
+        value={conditions}
+      />
     </div>
     <button
       type="button"
