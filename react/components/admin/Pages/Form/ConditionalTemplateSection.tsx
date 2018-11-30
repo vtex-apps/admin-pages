@@ -3,14 +3,13 @@ import { Dropdown } from 'vtex.styleguide'
 import { ConditionalTemplatePicker } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
 import { PageWithUniqueId } from './typings'
-import { TemplateDropdown } from './TemplateDropdown'
 
 interface ConditionalTemplateSectionProps {
   conditions: Condition[]
   detailChangeHandlerGetter: (
     detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
-  formErrors: Partial<{[key in keyof Route]: string}>
+  formErrors: Partial<{ [key in keyof Route]: string }>
   onAddConditionalTemplate: () => void
   onChangeConditionsConditionalTemplate: (
     uniqueId: number,
@@ -43,12 +42,16 @@ export const ConditionalTemplateSection: React.SFC<Props> = ({
 }) => (
   <React.Fragment>
     <SectionTitle textId="pages.admin.pages.form.templates.title" />
-    <TemplateDropdown
-      intl={intl}
-      detailChangeHandlerGetter={detailChangeHandlerGetter}
-      label="pages.admin.pages.form.templates.field.default"
-      template={template}
-      templates={templates}
+    <Dropdown
+      label={intl.formatMessage({
+        id: 'pages.admin.pages.form.templates.field.default',
+      })}
+      options={templates.map(({ id }) => ({ value: id, label: id }))}
+      onChange={detailChangeHandlerGetter('template')}
+      value={template}
+      errorMessage={
+        formErrors.template && intl.formatMessage({ id: formErrors.template })
+      }
     />
     <h2 className="mt7 f5 normal">Conditional</h2>
     <p className="f6 c-muted-2">

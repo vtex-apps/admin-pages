@@ -27,7 +27,7 @@ interface Props {
 export interface State {
   data: Route
   isLoading: boolean
-  formErrors: Partial<{[key in keyof Route]: string}>
+  formErrors: Partial<{ [key in keyof Route]: string }>
 }
 
 class FormContainer extends Component<Props, State> {
@@ -51,11 +51,10 @@ class FormContainer extends Component<Props, State> {
 
   public render() {
     const { conditions, templates, onExit } = this.props
-    const { data, formErrors ,isLoading } = this.state
+    const { data, formErrors, isLoading } = this.state
 
     return (
       <Form
-        canAddConditionalTemplates={true}
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
         isLoading={isLoading}
@@ -113,7 +112,7 @@ class FormContainer extends Component<Props, State> {
         ...prevState.data,
         [detailName]: newDetailValue,
       },
-      formErrors: {}
+      formErrors: {},
     }))
   }
 
@@ -158,7 +157,8 @@ class FormContainer extends Component<Props, State> {
             variables: {
               route: {
                 ...this.state.data,
-                id: this.state.data.id === 'new' ? undefined : this.state.data.id
+                id:
+                  this.state.data.id === 'new' ? undefined : this.state.data.id,
               },
             },
           })
@@ -175,7 +175,6 @@ class FormContainer extends Component<Props, State> {
     } else {
       this.setState(getValidateFormState)
     }
-
   }
 }
 
