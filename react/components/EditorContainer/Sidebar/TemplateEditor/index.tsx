@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
@@ -8,40 +8,44 @@ import {
   getExtension,
   updateExtensionFromForm,
 } from '../../../../utils/components'
-import Modal from '../../../Modal'
-
 import ComponentEditor from '../ComponentEditor'
+import { FormMetaContext, ModalContext } from '../typings'
 
-interface CustomProps {
+interface Props extends ReactIntl.InjectedIntlProps {
   availableComponents: {
     availableComponents: object[]
     error: object
     loading: boolean
   }
   editor: EditorContext
+  formMeta: FormMetaContext
+  modal: ModalContext
   runtime: RenderContext
 }
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps
+class TemplateEditor extends Component<Props> {
+  private initialFormData: Extension
 
-interface State {
-  isLoading: boolean
-  shouldShowModal: boolean
-  wasModified: boolean
-}
-
-class TemplateEditor extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.state = {
-      isLoading: false,
-      shouldShowModal: false,
-      wasModified: false,
+    const { editor, runtime } = this.props
+
+    const extension = getExtension(editor.editTreePath, runtime.extensions)
+
+    this.initialFormData = {
+      component: extension.component || null,
+      props: extension.props,
     }
+
+    props.modal.setHandlers({
+      actionHandler: this.handleSave,
+      cancelHandler: this.handleDiscard,
+    })
   }
+
   public render() {
-    const { editor, intl, runtime } = this.props
+    const { editor, formMeta, modal, runtime } = this.props
 
     const extension = getExtension(editor.editTreePath, runtime.extensions)
 
@@ -51,41 +55,23 @@ class TemplateEditor extends Component<Props, State> {
     }
 
     return (
-      <Fragment>
-        <Modal
-          isActionLoading={this.state.isLoading}
-          isOpen={this.state.shouldShowModal}
-          onClickAction={this.saveTemplate}
-          onClickCancel={this.exit}
-          onClose={this.toggleModalVisibility}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.components.button.save',
-          })}
-          textButtonCancel={intl.formatMessage({
-            id: 'pages.editor.components.modal.button.discard',
-          })}
-          textMessage={intl.formatMessage({
-            id: 'pages.editor.components.modal.text',
-          })}
-        />
-        <ComponentEditor
-          editor={editor}
-          isLoading={this.state.isLoading}
-          onChange={this.handleChange}
-          onClose={this.handleExit}
-          onSave={this.saveTemplate}
-          props={extensionProps}
-          runtime={runtime}
-          shouldRenderSaveButton={this.state.wasModified}
-        />
-      </Fragment>
+      <ComponentEditor
+        editor={editor}
+        isLoading={formMeta.isLoading && !modal.isOpen}
+        onChange={this.handleChange}
+        onClose={this.handleExit}
+        onSave={this.handleSave}
+        props={extensionProps}
+        runtime={runtime}
+        shouldRenderSaveButton={formMeta.wasModified}
+      />
     )
   }
 
   private exit = () => {
     const { editor, runtime } = this.props
 
-    runtime.updateRuntime()
+    runtime.updateExtension(editor.editTreePath as string, this.initialFormData)
 
     editor.editExtensionPoint(null)
   }
@@ -94,12 +80,13 @@ class TemplateEditor extends Component<Props, State> {
     const {
       availableComponents: { availableComponents },
       editor: { editTreePath },
+      formMeta,
       intl,
       runtime,
     } = this.props
 
-    if (!this.state.wasModified) {
-      this.setState({ wasModified: true })
+    if (!formMeta.wasModified) {
+      formMeta.setWasModified(true)
     }
 
     updateExtensionFromForm(
@@ -111,23 +98,36 @@ class TemplateEditor extends Component<Props, State> {
     )
   }
 
+  private handleDiscard = () => {
+    this.props.formMeta.setWasModified(false, () => {
+      this.handleModalResolution()
+    })
+  }
+
   private handleExit = () => {
-    if (this.state.wasModified) {
-      this.toggleModalVisibility()
+    const { formMeta, modal } = this.props
+
+    if (formMeta.wasModified) {
+      modal.open()
     } else {
       this.exit()
     }
   }
 
-  private saveTemplate = () => {
-    console.log('Template editor: SAVE')
+  private handleModalResolution = () => {
+    const { modal } = this.props
+
+    if (!modal.closeCallbackHandler) {
+      modal.setHandlers({
+        closeCallbackHandler: this.exit,
+      })
+    }
+
+    modal.close()
   }
 
-  private toggleModalVisibility = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      shouldShowModal: !prevState.shouldShowModal,
-    }))
+  private handleSave = () => {
+    console.log('Template editor: SAVE')
   }
 }
 

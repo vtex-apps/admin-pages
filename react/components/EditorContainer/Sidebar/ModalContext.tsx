@@ -25,9 +25,7 @@ const ModalContext = createContext(defaultExternalState)
 
 export const ModalConsumer = ModalContext.Consumer
 
-interface State extends ModalContext {
-  closeCallback?: () => void
-}
+type State = ModalContext
 
 export class ModalProvider extends Component<{}, State> {
   constructor(props: {}) {
@@ -55,30 +53,28 @@ export class ModalProvider extends Component<{}, State> {
         isOpen: false,
       },
       () => {
-        if (this.state.closeCallback) {
-          this.state.closeCallback()
-        }
+        if (this.state.closeCallbackHandler) {
+          this.state.closeCallbackHandler()
 
-        this.setState({ closeCallback: undefined })
+          this.setState({ closeCallbackHandler: undefined })
+        }
       },
     )
   }
 
-  private open: State['open'] = closeCallback => {
+  private open: State['open'] = () => {
     this.setState({
-      closeCallback,
       isOpen: true,
     })
   }
 
-  private setHandlers: State['setHandlers'] = ({
-    actionHandler,
-    cancelHandler,
-  }) => {
+  private setHandlers: State['setHandlers'] = handlers => {
     this.setState(prevState => ({
       ...prevState,
-      actionHandler: actionHandler || prevState.actionHandler,
-      cancelHandler: cancelHandler || prevState.cancelHandler,
+      actionHandler: handlers.actionHandler || prevState.actionHandler,
+      cancelHandler: handlers.cancelHandler || prevState.cancelHandler,
+      closeCallbackHandler:
+        handlers.closeCallbackHandler || prevState.closeCallbackHandler,
     }))
   }
 }

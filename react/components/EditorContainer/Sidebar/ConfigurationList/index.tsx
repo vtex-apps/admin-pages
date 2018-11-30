@@ -14,7 +14,7 @@ import {
   getSchemaProps,
   updateExtensionFromForm,
 } from '../../../../utils/components'
-import Modal from '../../../Modal'
+import { FormMetaContext, ModalContext } from '../typings'
 
 import Editor from './Editor'
 import List from './List'
@@ -33,6 +33,8 @@ interface Props {
   editor: EditorContext
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
+  formMeta: FormMetaContext
+  modal: ModalContext
   runtime: RenderContext
   saveExtension: any
 }
@@ -41,22 +43,21 @@ interface State {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
   isEditMode: boolean
-  isLoading: boolean
-  isModalOpen: boolean
   newLabel?: string
-  wasModified: boolean
 }
 
 class ConfigurationList extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
+    props.modal.setHandlers({
+      actionHandler: this.handleConfigurationSave,
+      cancelHandler: this.handleConfigurationDiscard,
+    })
+
     this.state = {
       conditions: [],
       isEditMode: false,
-      isLoading: false,
-      isModalOpen: false,
-      wasModified: false,
     }
   }
 
@@ -69,7 +70,7 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   public render() {
-    const { editor, intl, runtime } = this.props
+    const { editor, formMeta, intl, modal, runtime } = this.props
 
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
@@ -89,78 +90,68 @@ class ConfigurationList extends Component<Props, State> {
 
     const shouldRenderSaveButton =
       (this.state.isEditMode &&
-        (this.state.wasModified ||
+        (formMeta.wasModified ||
           (this.state.configuration &&
             this.state.configuration.configurationId ===
               NEW_CONFIGURATION_ID))) ||
       false
 
-    return (
-      <div className="w-100 dark-gray">
-        <Modal
-          isActionLoading={this.state.isLoading}
-          isOpen={this.state.isModalOpen}
-          onClickAction={this.handleConfigurationSave}
-          onClickCancel={this.handleConfigurationDiscard}
-          onClose={this.handleModalClose}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.components.button.save',
-          })}
-          textButtonCancel={intl.formatMessage({
-            id: 'pages.editor.components.modal.button.discard',
-          })}
-          textMessage={intl.formatMessage({
-            id: 'pages.editor.components.modal.text',
-          })}
+    if (extensionConfigurationsQuery.loading) {
+      return (
+        <div className="mt5 flex justify-center">
+          <Spinner />
+        </div>
+      )
+    }
+
+    if (
+      extensionConfigurationsQuery.extensionConfigurations &&
+      extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+      !this.state.isEditMode
+    ) {
+      return (
+        <List
+          activeConfiguration={this.state.configuration}
+          configurations={extensionConfigurationsQuery.extensionConfigurations.map(
+            configuration => ({
+              ...configuration,
+              scope: this.getEncodedScope(
+                configuration.scope,
+                configuration.routeId,
+              ),
+            }),
+          )}
+          iframeWindow={this.props.editor.iframeWindow}
+          isDisabledChecker={this.isConfigurationDisabled}
+          onClose={this.handleQuit}
+          onCreate={this.handleConfigurationCreation}
+          onEdit={this.handleConfigurationOpen}
+          onSelect={this.handleConfigurationSelection}
+          title={componentSchema.title}
         />
-        {extensionConfigurationsQuery.loading ? (
-          <div className="mt5 flex justify-center">
-            <Spinner />
-          </div>
-        ) : extensionConfigurationsQuery.extensionConfigurations &&
-          extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-          !this.state.isEditMode ? (
-          <List
-            activeConfiguration={this.state.configuration}
-            configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-              configuration => ({
-                ...configuration,
-                scope: this.getEncodedScope(
-                  configuration.scope,
-                  configuration.routeId,
-                ),
-              }),
-            )}
-            iframeWindow={this.props.editor.iframeWindow}
-            isDisabledChecker={this.isConfigurationDisabled}
-            onClose={this.handleQuit}
-            onCreate={this.handleConfigurationCreation}
-            onEdit={this.handleConfigurationOpen}
-            onSelect={this.handleConfigurationSelection}
-            title={componentSchema.title}
-          />
-        ) : (
-          <Editor
-            conditions={this.state.conditions}
-            configuration={this.state.configuration}
-            editor={editor}
-            isLoading={this.state.isLoading}
-            newLabel={this.state.newLabel}
-            onClose={
-              this.state.isEditMode
-                ? this.handleConfigurationClose
-                : this.handleQuit
-            }
-            onConditionsChange={this.handleConditionsChange}
-            onFormChange={this.handleFormChange}
-            onScopeChange={this.handleScopeChange}
-            onLabelChange={this.handleConfigurationLabelChange}
-            onSave={this.handleConfigurationSave}
-            runtime={runtime}
-            shouldRenderSaveButton={shouldRenderSaveButton}
-          />
-        )}
-      </div>
+      )
+    }
+
+    return (
+      <Editor
+        conditions={this.state.conditions}
+        configuration={this.state.configuration}
+        editor={editor}
+        isLoading={formMeta.isLoading && !modal.isOpen}
+        newLabel={this.state.newLabel}
+        onClose={
+          this.state.isEditMode
+            ? this.handleConfigurationClose
+            : this.handleQuit
+        }
+        onConditionsChange={this.handleConditionsChange}
+        onFormChange={this.handleFormChange}
+        onScopeChange={this.handleScopeChange}
+        onLabelChange={this.handleConfigurationLabelChange}
+        onSave={this.handleConfigurationSave}
+        runtime={runtime}
+        shouldRenderSaveButton={shouldRenderSaveButton}
+      />
     )
   }
 
@@ -194,7 +185,9 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleConditionsChange = (newConditions: string[]) => {
-    this.setState({ conditions: newConditions, wasModified: true })
+    this.setState({ conditions: newConditions })
+
+    this.props.formMeta.setWasModified(true)
   }
 
   private handleConfigurationChange = (
@@ -224,12 +217,16 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleConfigurationClose = () => {
-    const { extensionConfigurations: extensionConfigurationsQuery } = this.props
+    const {
+      extensionConfigurations: extensionConfigurationsQuery,
+      formMeta,
+      modal,
+    } = this.props
 
     const configurations = extensionConfigurationsQuery.extensionConfigurations
 
-    if (this.state.wasModified) {
-      this.handleModalOpen()
+    if (formMeta.wasModified) {
+      modal.open()
     } else {
       this.setState({ isEditMode: false, newLabel: undefined }, () => {
         if (
@@ -239,6 +236,10 @@ class ConfigurationList extends Component<Props, State> {
           this.handleConfigurationChange(configurations[0])
         } else {
           this.handleQuit()
+        }
+
+        if (modal.isOpen) {
+          modal.close()
         }
       })
     }
@@ -269,14 +270,16 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleConfigurationDiscard = () => {
-    this.setState({ wasModified: false }, () => {
-      this.handleModalResolution()
+    this.props.formMeta.setWasModified(false, () => {
+      this.handleConfigurationClose()
     })
   }
 
   private handleConfigurationLabelChange = (event: Event) => {
     if (event.target instanceof HTMLInputElement) {
-      this.setState({ newLabel: event.target.value, wasModified: true })
+      this.setState({ newLabel: event.target.value })
+
+      this.props.formMeta.setWasModified(true)
     }
   }
 
@@ -297,7 +300,9 @@ class ConfigurationList extends Component<Props, State> {
     const {
       editor,
       editor: { iframeWindow },
+      formMeta,
       intl,
+      modal,
       runtime,
       saveExtension,
     } = this.props
@@ -327,9 +332,7 @@ class ConfigurationList extends Component<Props, State> {
       intl,
     )
 
-    this.setState({
-      isLoading: true,
-    })
+    formMeta.toggleLoading()
 
     try {
       await saveExtension({
@@ -360,34 +363,17 @@ class ConfigurationList extends Component<Props, State> {
         url: iframeWindow.location.pathname,
       })
 
-      this.setState(
-        {
-          isLoading: false,
-          wasModified: false,
-        },
-        () => {
-          if (this.state.isModalOpen) {
-            this.handleModalResolution()
-          } else {
-            this.handleConfigurationClose()
-          }
-        },
-      )
+      formMeta.toggleLoading(this.handleConfigurationDiscard)
     } catch (err) {
-      this.setState(
-        {
-          isLoading: false,
-        },
-        () => {
-          if (this.state.isModalOpen) {
-            this.handleModalClose()
-          }
+      formMeta.toggleLoading(() => {
+        if (modal.isOpen) {
+          modal.close()
+        }
 
-          alert('Something went wrong. Please try again.')
+        alert('Something went wrong. Please try again.')
 
-          console.log(err)
-        },
-      )
+        console.log(err)
+      })
     }
   }
 
@@ -407,13 +393,14 @@ class ConfigurationList extends Component<Props, State> {
   private handleFormChange = (event: IChangeEvent) => {
     const {
       availableComponents: { availableComponents },
+      formMeta,
       intl,
       runtime,
       editor: { editTreePath },
     } = this.props
 
-    if (!this.state.wasModified) {
-      this.setState({ wasModified: true })
+    if (!formMeta.wasModified) {
+      formMeta.setWasModified(true)
     }
 
     updateExtensionFromForm(
@@ -423,19 +410,6 @@ class ConfigurationList extends Component<Props, State> {
       intl,
       runtime,
     )
-  }
-
-  private handleModalClose = () => {
-    this.setState({ isModalOpen: false })
-  }
-
-  private handleModalOpen = () => {
-    this.setState({ isModalOpen: true })
-  }
-
-  private handleModalResolution = () => {
-    this.handleModalClose()
-    this.handleConfigurationClose()
   }
 
   private handleQuit = (event?: any) => {
