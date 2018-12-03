@@ -1,3 +1,3 @@
-import RedirectList from './components/admin/Redirects/RedirectList'
+import RedirectList from './components/admin/redirects/RedirectList'
 
 export default RedirectList

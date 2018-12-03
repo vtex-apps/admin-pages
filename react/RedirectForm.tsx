@@ -1,3 +1,3 @@
-import RedirectForm from './components/admin/Redirects/RedirectForm'
+import RedirectForm from './components/admin/redirects/RedirectForm'
 
 export default RedirectForm
