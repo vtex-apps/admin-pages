@@ -1,4 +1,4 @@
-export type FormMetaContext = {
+export interface FormMetaContext {
   getWasModified: () => FormMetaContext['wasModified']
   isLoading: boolean
   setWasModified: (newValue: boolean, callback?: () => void) => void
@@ -6,7 +6,7 @@ export type FormMetaContext = {
   wasModified: boolean
 }
 
-export type ModalContext = {
+export interface ModalContext {
   actionHandler: () => void
   cancelHandler: () => void
   closeCallbackHandler?: () => void
@@ -22,7 +22,7 @@ export type ModalContext = {
   ) => void
 }
 
-export type SidebarComponent = {
+export interface SidebarComponent {
   name: string
   treePath: string
 }
