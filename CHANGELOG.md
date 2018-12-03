@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- **`EditorContainer`**
+  - Move sidebar to it's own component.
+  - Type IFrame on `highlightExtensionPoint`.
+- **`Sidebar`**
+  - Favour early returns instead of ternary operators.
+  - Move component selector to it's own component.
+- **`EditorProvider`**
+  - Add `mode` (and `setMode`) to EditorContext.
+- **`ComponentEditor`**
+  - Remove `mode` from state.
+  - Use `mode` from EditorContext.
+- **`ModeSwitcher`**
+  - Move inside of `Sidebar` folder.
+  - Switching mode from `editor` instead of props.
 
 ## [2.3.9] - 2018-11-26
 ### Fixed

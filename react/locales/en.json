@@ -68,9 +68,11 @@
   "pages.editor.components.configurations.defaultTitle": "Untitled",
   "pages.editor.components.labelEditor.label": "Configuration name",
   "pages.editor.components.modal.button.discard": "Discard",
-  "pages.editor.components.modal.text": "You have unsaved modifications for this configuration.",
+  "pages.editor.components.modal.text": "You have unsaved modifications.",
   "pages.editor.components.title": "Components",
-  "pages.editor.editpath.label": "Editing",
+  "pages.editor.container.editpath.label": "Editing",
   "pages.editor.empty-extension.edit": "Click here to edit it",
-  "pages.editor.empty-extension.title": "This is an empty extension point"
+  "pages.editor.empty-extension.title": "This is an empty extension point",
+  "pages.editor.info.page": "Page",
+  "pages.editor.info.title": "Page Info"
 }

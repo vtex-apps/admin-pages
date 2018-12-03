@@ -1,7 +1,7 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
-import ShowIcon from '../images/ShowIcon.js'
+
+import ShowIcon from '../../images/ShowIcon.js'
 
 interface IconsProps {
   colorFill: string
@@ -145,13 +145,9 @@ class DeviceComponent extends Component<
 }
 
 // tslint:disable-next-line:max-classes-per-file
-class DeviceSwitcher extends React.PureComponent<
-  DeviceSwitcherProps
-> {
+class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
   public handleClick = ({ currentTarget }: Event) => {
-    const {
-      setViewport
-    } = this.props
+    const { setViewport } = this.props
 
     if (currentTarget && currentTarget instanceof HTMLElement) {
       setViewport(currentTarget.id as Viewport)
@@ -159,12 +155,7 @@ class DeviceSwitcher extends React.PureComponent<
   }
 
   public render() {
-    const {
-      inPreview,
-      toggleEditMode,
-      viewport,
-      viewports,
-    } = this.props
+    const { inPreview, toggleEditMode, viewport, viewports } = this.props
     return (
       <div
         className="flex justify-around w-100 bt-0 b--light-silver"
@@ -234,11 +225,11 @@ class DeviceSwitcher extends React.PureComponent<
           } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
           onClick={toggleEditMode}
         >
-          {
-            inPreview
-              ? <IconEdit size={16} color="currentColor" solid />
-              : <ShowIcon />
-          }
+          {inPreview ? (
+            <IconEdit size={16} color="currentColor" solid />
+          ) : (
+            <ShowIcon />
+          )}
         </div>
       </div>
     )

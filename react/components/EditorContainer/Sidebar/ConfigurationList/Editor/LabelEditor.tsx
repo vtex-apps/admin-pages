@@ -1,6 +1,5 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-
 import { Input } from 'vtex.styleguide'
 
 interface Props {
