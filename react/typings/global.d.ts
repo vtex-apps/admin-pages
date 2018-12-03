@@ -9,10 +9,10 @@ declare global {
   }
 
   declare module '*.css' {
-    interface cssClasses {
+    interface CssClasses {
       [cssClass: string]: string
     }
-    const content: cssClasses
+    const content: CssClasses
     export default content
   }
 
