@@ -1,46 +1,78 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
+import { arrayMove, SortEndHandler, SortStartHandler } from 'react-sortable-hoc'
 
 import { SidebarComponent } from '../typings'
 
-import ComponentButton from './ComponentButton'
+import SortableList from './SortableList'
+import { NormalizedComponent } from './typings'
+import { normalizeComponents } from './utils'
 
-interface Props extends EditorContextProps {
+interface Props {
   components: SidebarComponent[]
+  editor: EditorContext
   highlightExtensionPoint: (treePath: string | null) => void
-  onMouseEnterComponent: (event: any) => void
+  onMouseEnterComponent: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseLeaveComponent: () => void
 }
 
-class ComponentList extends Component<Props> {
+interface State {
+  components: NormalizedComponent[]
+  isSorting: boolean
+}
+
+class ComponentList extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      components: normalizeComponents(props.components),
+      isSorting: false,
+    }
+  }
+
   public render() {
-    const {
-      components,
-      onMouseEnterComponent,
-      onMouseLeaveComponent,
-    } = this.props
+    const { editor, onMouseEnterComponent, onMouseLeaveComponent } = this.props
+
+    const isSortable = editor.mode === 'layout'
 
     return (
-      <div>
-        <div className="bb b--light-silver" />
-        {components.map(component => (
-          <ComponentButton
-            key={component.treePath}
-            onEdit={this.handleEdit}
-            onMouseEnter={onMouseEnterComponent}
-            onMouseLeave={onMouseLeaveComponent}
-            title={component.name}
-            treePath={component.treePath}
-          />
-        ))}
-      </div>
+      <Fragment>
+        <div className="bb bw1 b--light-silver" />
+        <SortableList
+          components={this.state.components}
+          isSortable={isSortable}
+          isSorting={this.state.isSorting}
+          lockAxis="y"
+          onEdit={this.handleEdit}
+          onMouseEnter={onMouseEnterComponent}
+          onMouseLeave={onMouseLeaveComponent}
+          onSortEnd={this.handleSortEnd}
+          onSortStart={this.handleSortStart}
+          useDragHandle={isSortable}
+        />
+      </Fragment>
     )
   }
 
-  private handleEdit = (event: any) => {
+  private handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { editor, highlightExtensionPoint } = this.props
+
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
-    this.props.editor.editExtensionPoint(treePath as string)
-    this.props.highlightExtensionPoint(null)
+    editor.editExtensionPoint(treePath as string)
+
+    highlightExtensionPoint(null)
+  }
+
+  private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
+    this.setState({
+      components: arrayMove(this.state.components, oldIndex, newIndex),
+      isSorting: false,
+    })
+  }
+
+  private handleSortStart: SortStartHandler = () => {
+    this.setState({ isSorting: true })
   }
 }
 

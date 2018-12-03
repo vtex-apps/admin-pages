@@ -2,14 +2,14 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
 interface Props {
-  onEdit: (event: any) => void
-  onMouseEnter: (event: any) => void
+  onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseLeave: () => void
   title: string
   treePath: string
 }
 
-const ComponentButton = ({
+const Button = ({
   onEdit,
   onMouseEnter,
   onMouseLeave,
@@ -17,7 +17,7 @@ const ComponentButton = ({
   treePath,
 }: Props) => (
   <button
-    className="dark-gray bg-white pt5 pointer hover-bg-light-silver w-100 tl bn ph0 pb0"
+    className="w-100 pv5 ph0 bg-white hover-bg-light-silver dark-gray pointer tl bn"
     data-tree-path={treePath}
     key={treePath}
     onClick={onEdit}
@@ -26,12 +26,10 @@ const ComponentButton = ({
     style={{ animationDuration: '0.2s' }}
     type="button"
   >
-    <div className="bb b--light-silver w-100 pb5">
-      <span className="f6 fw5 pl5 track-1">
-        <FormattedMessage id={title} />
-      </span>
-    </div>
+    <FormattedMessage id={title}>
+      {text => <span className="pl5 f6 fw5 track-1">{text}</span>}
+    </FormattedMessage>
   </button>
 )
 
-export default ComponentButton
+export default Button
