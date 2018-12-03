@@ -4,15 +4,15 @@ import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'render'
 import { Box } from 'vtex.styleguide'
 
-import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/Pages/consts'
-import Form from './components/admin/Pages/Form'
-import Operations from './components/admin/Pages/Form/Operations'
-import Title from './components/admin/Pages/Form/Title'
+import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/pages/consts'
+import Form from './components/admin/pages/Form'
+import Operations from './components/admin/pages/Form/Operations'
+import Title from './components/admin/pages/Form/Title'
 import {
   getRouteTitle,
   isNewRoute,
   isStoreRoute,
-} from './components/admin/Pages/utils'
+} from './components/admin/pages/utils'
 import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import RouteQuery from './queries/Route.graphql'
