@@ -9,7 +9,7 @@ import {
 } from './utils'
 
 describe('normalizeComponents', () => {
-  it('should handle empty array inputs', () => {
+  it('handles empty array inputs', () => {
     const input: SidebarComponent[] = []
 
     const expectedOutput: NormalizedComponent[] = []
@@ -17,8 +17,8 @@ describe('normalizeComponents', () => {
     expect(normalizeComponents(input)).toEqual(expectedOutput)
   })
 
-  it('should nest store-level components', () => {
-    const input = [
+  it('nests store-level components', () => {
+    const input: SidebarComponent[] = [
       {
         name: 'editor.menu',
         treePath: 'store/header/menu-link',
@@ -53,7 +53,7 @@ describe('normalizeComponents', () => {
       },
     ]
 
-    const expectedOutput = [
+    const expectedOutput: NormalizedComponent[] = [
       {
         components: [
           {
@@ -93,8 +93,8 @@ describe('normalizeComponents', () => {
     expect(normalizeComponents(input)).toEqual(expectedOutput)
   })
 
-  it('should nest regular components', () => {
-    const input = [
+  it('nests regular components', () => {
+    const input: SidebarComponent[] = [
       {
         name: 'editor.header.title',
         treePath: 'store/header',
@@ -117,7 +117,7 @@ describe('normalizeComponents', () => {
       },
     ]
 
-    const expectedOutput = [
+    const expectedOutput: NormalizedComponent[] = [
       {
         name: 'editor.header.title',
         treePath: 'store/header',
@@ -145,8 +145,68 @@ describe('normalizeComponents', () => {
     expect(normalizeComponents(input)).toEqual(expectedOutput)
   })
 
-  it('should handle unordered nestable components', () => {
-    const input = [
+  it('handles multilevel nesting', () => {
+    const input: SidebarComponent[] = [
+      {
+        name: 'editor.header.title',
+        treePath: 'store/header',
+      },
+      {
+        name: 'editor.carousel.title',
+        treePath: 'store/home/carousel',
+      },
+      {
+        name: 'editor.shelf.title',
+        treePath: 'store/home/shelf',
+      },
+      {
+        name: 'editor.product-summary.title',
+        treePath: 'store/home/shelf/product-summary',
+      },
+      {
+        name: 'editor.product-rating.title',
+        treePath: 'store/home/shelf/product-summary/product-rating',
+      },
+      {
+        name: 'editor.footer.title',
+        treePath: 'store/footer',
+      },
+    ]
+
+    const expectedOutput: NormalizedComponent[] = [
+      {
+        name: 'editor.header.title',
+        treePath: 'store/header',
+      },
+      {
+        name: 'editor.carousel.title',
+        treePath: 'store/home/carousel',
+      },
+      {
+        components: [
+          {
+            name: 'editor.product-summary.title',
+            treePath: 'store/home/shelf/product-summary',
+          },
+          {
+            name: 'editor.product-rating.title',
+            treePath: 'store/home/shelf/product-summary/product-rating',
+          },
+        ],
+        name: 'editor.shelf.title',
+        treePath: 'store/home/shelf',
+      },
+      {
+        name: 'editor.footer.title',
+        treePath: 'store/footer',
+      },
+    ]
+
+    expect(normalizeComponents(input)).toEqual(expectedOutput)
+  })
+
+  it('handles unordered nestable components', () => {
+    const input: SidebarComponent[] = [
       {
         name: 'editor.header.title',
         treePath: 'store/header',
@@ -169,7 +229,7 @@ describe('normalizeComponents', () => {
       },
     ]
 
-    const expectedOutput = [
+    const expectedOutput: NormalizedComponent[] = [
       {
         name: 'editor.header.title',
         treePath: 'store/header',
@@ -199,55 +259,65 @@ describe('normalizeComponents', () => {
 })
 
 describe('isStoreLevelComponent', () => {
-  it(`should return true when called with 'store/header'`, () => {
-    const input = {
+  it(`returns true when called with 'store/header'`, () => {
+    const input: SidebarComponent = {
       name: 'header',
       treePath: 'store/header',
     }
 
-    expect(isStoreLevelComponent(input)).toBe(true)
+    const expectedOutput = true
+
+    expect(isStoreLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return true when called with 'store/footer'`, () => {
-    const input = {
+  it(`returns true when called with 'store/footer'`, () => {
+    const input: SidebarComponent = {
       name: 'footer',
       treePath: 'store/footer',
     }
 
-    expect(isStoreLevelComponent(input)).toBe(true)
+    const expectedOutput = true
+
+    expect(isStoreLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false when called with 'store/home/test'`, () => {
-    const input = {
+  it(`returns false when called with 'store/home/test'`, () => {
+    const input: SidebarComponent = {
       name: 'test',
       treePath: 'store/home/test',
     }
 
-    expect(isStoreLevelComponent(input)).toBe(false)
+    const expectedOutput = false
+
+    expect(isStoreLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false when called with 'store/header/login'`, () => {
-    const input = {
+  it(`returns false when called with 'store/header/login'`, () => {
+    const input: SidebarComponent = {
       name: 'login',
       treePath: 'store/header/login',
     }
 
-    expect(isStoreLevelComponent(input)).toBe(false)
+    const expectedOutput = false
+
+    expect(isStoreLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false when called with 'store/home/shelf/product-summary'`, () => {
-    const input = {
+  it(`returns false when called with 'store/home/shelf/product-summary'`, () => {
+    const input: SidebarComponent = {
       name: 'product-summary',
       treePath: 'store/home/shelf/product-summary',
     }
 
-    expect(isStoreLevelComponent(input)).toBe(false)
+    const expectedOutput = false
+
+    expect(isStoreLevelComponent(input)).toBe(expectedOutput)
   })
 })
 
 describe('isTopLevelComponent', () => {
-  it(`should return true when called with 'store/header'`, () => {
-    const input = {
+  it(`returns true when called with 'store/header'`, () => {
+    const input: SidebarComponent = {
       name: 'header',
       treePath: 'store/header',
     }
@@ -257,8 +327,8 @@ describe('isTopLevelComponent', () => {
     expect(isTopLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return true when called with 'store/footer'`, () => {
-    const input = {
+  it(`returns true when called with 'store/footer'`, () => {
+    const input: SidebarComponent = {
       name: 'footer',
       treePath: 'store/footer',
     }
@@ -268,8 +338,8 @@ describe('isTopLevelComponent', () => {
     expect(isTopLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return true when called with 'store/home/test'`, () => {
-    const input = {
+  it(`returns true when called with 'store/home/test'`, () => {
+    const input: SidebarComponent = {
       name: 'test',
       treePath: 'store/home/test',
     }
@@ -279,8 +349,8 @@ describe('isTopLevelComponent', () => {
     expect(isTopLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false when called with 'store/header/login'`, () => {
-    const input = {
+  it(`returns false when called with 'store/header/login'`, () => {
+    const input: SidebarComponent = {
       name: 'login',
       treePath: 'store/header/login',
     }
@@ -290,8 +360,8 @@ describe('isTopLevelComponent', () => {
     expect(isTopLevelComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false when called with 'store/home/shelf/product-summary'`, () => {
-    const input = {
+  it(`returns false when called with 'store/home/shelf/product-summary'`, () => {
+    const input: SidebarComponent = {
       name: 'product-summary',
       treePath: 'store/home/shelf/product-summary',
     }
@@ -303,8 +373,8 @@ describe('isTopLevelComponent', () => {
 })
 
 describe('isStoreLevelChildComponent', () => {
-  it(`should return true when treePath starts with 'store/header'`, () => {
-    const input = {
+  it(`returns true when treePath starts with 'store/header'`, () => {
+    const input: SidebarComponent = {
       name: 'login',
       treePath: 'store/header/login',
     }
@@ -314,8 +384,8 @@ describe('isStoreLevelChildComponent', () => {
     expect(isStoreLevelChildComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return true when treePath starts with 'store/footer'`, () => {
-    const input = {
+  it(`returns true when treePath starts with 'store/footer'`, () => {
+    const input: SidebarComponent = {
       name: 'login',
       treePath: 'store/footer/cards',
     }
@@ -325,8 +395,8 @@ describe('isStoreLevelChildComponent', () => {
     expect(isStoreLevelChildComponent(input)).toBe(expectedOutput)
   })
 
-  it(`should return false otherwise`, () => {
-    const input = {
+  it(`returns false otherwise`, () => {
+    const input: SidebarComponent = {
       name: 'login',
       treePath: 'store/home/shelf',
     }
