@@ -10,11 +10,12 @@ interface Props {
   components: SidebarComponent[]
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
+  iframeRuntime: RenderContextProps['runtime']
 }
 
 class ComponentSelector extends PureComponent<Props> {
   public render() {
-    const { components, editor, highlightHandler } = this.props
+    const { components, editor, highlightHandler, iframeRuntime } = this.props
 
     return (
       <Fragment>
@@ -37,12 +38,13 @@ class ComponentSelector extends PureComponent<Props> {
           highlightExtensionPoint={highlightHandler}
           onMouseEnterComponent={this.handleMouseEnter}
           onMouseLeaveComponent={this.handleMouseLeave}
+          iframeRuntime={iframeRuntime}
         />
       </Fragment>
     )
   }
 
-  private handleMouseEnter = (event: any) => {
+  private handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
     this.props.highlightHandler(treePath as string)
