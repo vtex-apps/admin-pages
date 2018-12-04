@@ -25,6 +25,15 @@ interface State {
 }
 
 class ComponentList extends Component<Props, State> {
+  public static getDerivedStateFromProps(props: Props, state: State) {
+    if (!equals(props.components, state.initialComponents)) {
+      return {
+        components: normalizeComponents(props.components),
+        initialComponents: props.components
+      }
+    }
+  }
+
   constructor(props: Props) {
     super(props)
 
@@ -32,15 +41,6 @@ class ComponentList extends Component<Props, State> {
       components: normalizeComponents(props.components),
       initialComponents: props.components,
       isSorting: false,
-    }
-  }
-
-  public componentWillReceiveProps(nextProps: Props) {
-    if (!equals(nextProps.components, this.state.initialComponents)) {
-      this.setState({
-        components: normalizeComponents(nextProps.components),
-        initialComponents: nextProps.components,
-      })
     }
   }
 
