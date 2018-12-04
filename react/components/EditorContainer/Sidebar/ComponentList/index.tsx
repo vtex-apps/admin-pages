@@ -1,7 +1,7 @@
 import { equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
 
-import { arrayMove, SortEndHandler, SortStartHandler } from 'react-sortable-hoc'
+import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 
 import { SidebarComponent } from '../typings'
 
@@ -20,7 +20,6 @@ interface Props {
 
 interface State {
   components: NormalizedComponent[]
-  isSorting: boolean
   initialComponents: SidebarComponent[]
 }
 
@@ -29,7 +28,7 @@ class ComponentList extends Component<Props, State> {
     if (!equals(props.components, state.initialComponents)) {
       return {
         components: normalizeComponents(props.components),
-        initialComponents: props.components
+        initialComponents: props.components,
       }
     }
   }
@@ -40,7 +39,6 @@ class ComponentList extends Component<Props, State> {
     this.state = {
       components: normalizeComponents(props.components),
       initialComponents: props.components,
-      isSorting: false,
     }
   }
 
@@ -55,13 +53,11 @@ class ComponentList extends Component<Props, State> {
         <SortableList
           components={this.state.components}
           isSortable={isSortable}
-          isSorting={this.state.isSorting}
           lockAxis="y"
           onEdit={this.handleEdit}
           onMouseEnter={onMouseEnterComponent}
           onMouseLeave={onMouseLeaveComponent}
           onSortEnd={this.handleSortEnd}
-          onSortStart={this.handleSortStart}
           useDragHandle={isSortable}
         />
       </Fragment>
@@ -126,18 +122,8 @@ class ComponentList extends Component<Props, State> {
 
       this.setState({
         components: arrayMove(this.state.components, oldIndex, newIndex),
-        isSorting: false,
-      })
-
-    } else {
-      this.setState({
-        isSorting: false,
       })
     }
-  }
-
-  private handleSortStart: SortStartHandler = () => {
-    this.setState({ isSorting: true })
   }
 }
 

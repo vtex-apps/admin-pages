@@ -1,8 +1,26 @@
 import React from 'react'
 import { SortableHandle } from 'react-sortable-hoc'
 
-import SideButton from './SideButton'
+import ComponentDragHandleIcon from '../../../../../icons/ComponentDragHandleIcon'
+import LockIcon from '../../../../../icons/LockIcon'
 
-const DragHandle = SortableHandle(() => <SideButton>::</SideButton>)
+import SideItem from './SideItem'
+
+interface Props {
+  isLocked: boolean
+  onMouseEnter: () => void
+}
+
+const DragHandle = SortableHandle<Props>(({ isLocked, onMouseEnter }) =>
+  isLocked ? (
+    <SideItem onMouseEnter={onMouseEnter}>
+      <LockIcon />
+    </SideItem>
+  ) : (
+    <SideItem isPointer onMouseEnter={onMouseEnter}>
+      <ComponentDragHandleIcon />
+    </SideItem>
+  ),
+)
 
 export default DragHandle
