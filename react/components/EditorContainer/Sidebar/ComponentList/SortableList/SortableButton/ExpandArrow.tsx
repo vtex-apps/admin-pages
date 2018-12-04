@@ -1,6 +1,8 @@
 import React from 'react'
 
-import SideButton from './SideButton'
+import ArrowIcon from '../../../../../icons/ArrowIcon'
+
+import SideItem from './SideItem'
 
 interface Props {
   isExpanded: boolean
@@ -8,7 +10,11 @@ interface Props {
 }
 
 const ExpandArrow: React.SFC<Props> = ({ isExpanded, onClick }) => (
-  <SideButton onClick={onClick}>{isExpanded ? 'V' : '>'}</SideButton>
+  <SideItem isPointer onClick={onClick}>
+    <div className={`flex items-center ${!isExpanded ? 'rotate-270' : ''}`}>
+      <ArrowIcon />
+    </div>
+  </SideItem>
 )
 
 export default ExpandArrow

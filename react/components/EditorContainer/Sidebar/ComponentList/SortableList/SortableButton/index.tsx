@@ -8,14 +8,11 @@ import DragHandle from './DragHandle'
 import ExpandArrow from './ExpandArrow'
 
 interface Props extends SortableElementProps {
-  isSorting: boolean
+  component: NormalizedComponent
   onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseLeave: () => void
   shouldRenderDragHandle: boolean
-  subitems: NormalizedComponent['components']
-  title: NormalizedComponent['name']
-  treePath: NormalizedComponent['treePath']
 }
 
 interface State {
@@ -31,26 +28,20 @@ class SortableButton extends Component<Props, State> {
     }
   }
 
-  public componentDidUpdate(prevProps: Props) {
-    if (this.state.isExpanded && !prevProps.isSorting && this.props.isSorting) {
-      this.setState({ isExpanded: false })
-    }
-  }
-
   public render() {
     const {
+      component,
       onEdit,
       onMouseEnter,
       onMouseLeave,
       shouldRenderDragHandle,
-      subitems,
-      title,
-      treePath,
     } = this.props
+
+    const subitems = component.components
 
     return (
       <li className="list">
-        <div className="flex items-center bb bw1 b--light-silver pointer">
+        <div className="flex items-center bb bw1 b--light-silver">
           {subitems && (
             <ExpandArrow
               isExpanded={this.state.isExpanded}
@@ -61,10 +52,15 @@ class SortableButton extends Component<Props, State> {
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
-            title={title}
-            treePath={treePath}
+            title={component.name}
+            treePath={component.treePath}
           />
-          {shouldRenderDragHandle && <DragHandle />}
+          {shouldRenderDragHandle && (
+            <DragHandle
+              isLocked={!component.isSortable}
+              onMouseEnter={this.handleMouseEnter}
+            />
+          )}
         </div>
         {this.state.isExpanded && subitems && (
           <Fragment>
@@ -91,6 +87,16 @@ class SortableButton extends Component<Props, State> {
         )}
       </li>
     )
+  }
+
+  private handleMouseEnter = () => {
+    if (this.props.component.isSortable) {
+      if (this.state.isExpanded) {
+        this.setState({
+          isExpanded: false,
+        })
+      }
+    }
   }
 
   private toggleExpansion = () => {
