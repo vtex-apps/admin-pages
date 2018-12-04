@@ -2,6 +2,7 @@ import { SidebarComponent } from '../typings'
 
 import { NormalizedComponent } from './typings'
 import {
+  getParentTreePath,
   isStoreLevelChildComponent,
   isStoreLevelComponent,
   isTopLevelComponent,
@@ -404,5 +405,14 @@ describe('isStoreLevelChildComponent', () => {
     const expectedOutput = false
 
     expect(isStoreLevelChildComponent(input)).toBe(expectedOutput)
+  })
+})
+
+describe('getParentTreePath', () => {
+  it('should return parent treePath (delimiter is "/")', () => {
+    expect(getParentTreePath('store/home/shelf')).toBe('store/home')
+  })
+  it('should handle strings with no delimiter ("/")', () => {
+    expect(getParentTreePath('store')).toBe('store')
   })
 })
