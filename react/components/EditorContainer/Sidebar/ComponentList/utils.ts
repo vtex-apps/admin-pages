@@ -30,3 +30,11 @@ export const isStoreLevelComponent = (component: SidebarComponent) =>
 
 export const isStoreLevelChildComponent = (component: SidebarComponent) =>
   /^store\/(header|footer)\/.+$/.test(component.treePath)
+
+export const getParentTreePath = (treePath: string): string => {
+  const splitTreePath = treePath.split('/')
+  if (splitTreePath.length === 1) {
+    return splitTreePath.join('')
+  }
+  return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
+}
