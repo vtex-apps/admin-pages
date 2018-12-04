@@ -2,6 +2,7 @@ import { SidebarComponent } from '../typings'
 
 import { NormalizedComponent } from './typings'
 import {
+  defineSortability,
   getParentTreePath,
   isStoreLevelChildComponent,
   isStoreLevelComponent,
@@ -74,18 +75,22 @@ describe('normalizeComponents', () => {
             treePath: 'store/header/category-menu',
           },
         ],
+        isSortable: false,
         name: 'editor.header.title',
         treePath: 'store/header',
       },
       {
+        isSortable: true,
         name: 'editor.carousel.title',
         treePath: 'store/home/carousel',
       },
       {
+        isSortable: true,
         name: 'editor.shelf.title',
         treePath: 'store/home/shelf',
       },
       {
+        isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store/footer',
       },
@@ -120,10 +125,12 @@ describe('normalizeComponents', () => {
 
     const expectedOutput: NormalizedComponent[] = [
       {
+        isSortable: false,
         name: 'editor.header.title',
         treePath: 'store/header',
       },
       {
+        isSortable: true,
         name: 'editor.carousel.title',
         treePath: 'store/home/carousel',
       },
@@ -134,10 +141,12 @@ describe('normalizeComponents', () => {
             treePath: 'store/home/shelf/product-summary',
           },
         ],
+        isSortable: true,
         name: 'editor.shelf.title',
         treePath: 'store/home/shelf',
       },
       {
+        isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store/footer',
       },
@@ -176,10 +185,12 @@ describe('normalizeComponents', () => {
 
     const expectedOutput: NormalizedComponent[] = [
       {
+        isSortable: false,
         name: 'editor.header.title',
         treePath: 'store/header',
       },
       {
+        isSortable: true,
         name: 'editor.carousel.title',
         treePath: 'store/home/carousel',
       },
@@ -194,10 +205,12 @@ describe('normalizeComponents', () => {
             treePath: 'store/home/shelf/product-summary/product-rating',
           },
         ],
+        isSortable: true,
         name: 'editor.shelf.title',
         treePath: 'store/home/shelf',
       },
       {
+        isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store/footer',
       },
@@ -232,10 +245,12 @@ describe('normalizeComponents', () => {
 
     const expectedOutput: NormalizedComponent[] = [
       {
+        isSortable: false,
         name: 'editor.header.title',
         treePath: 'store/header',
       },
       {
+        isSortable: true,
         name: 'editor.carousel.title',
         treePath: 'store/home/carousel',
       },
@@ -246,10 +261,12 @@ describe('normalizeComponents', () => {
             treePath: 'store/home/shelf/product-summary',
           },
         ],
+        isSortable: true,
         name: 'editor.shelf.title',
         treePath: 'store/home/shelf',
       },
       {
+        isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store/footer',
       },
@@ -409,10 +426,55 @@ describe('isStoreLevelChildComponent', () => {
 })
 
 describe('getParentTreePath', () => {
-  it('should return parent treePath (delimiter is "/")', () => {
+  it('returns parent treePath (delimiter is "/")', () => {
     expect(getParentTreePath('store/home/shelf')).toBe('store/home')
   })
-  it('should handle strings with no delimiter ("/")', () => {
+
+  it('handles strings with no delimiter ("/")', () => {
     expect(getParentTreePath('store')).toBe('store')
+  })
+})
+
+describe('defineSortability', () => {
+  it('returns isSortable === false for store-level components', () => {
+    const input = {
+      name: 'header',
+      treePath: 'store/header',
+    }
+
+    const expectedOutput = {
+      ...input,
+      isSortable: false,
+    }
+
+    expect(defineSortability(input)).toEqual(expectedOutput)
+  })
+
+  it('returns isSortable === true for top-level components', () => {
+    const input = {
+      name: 'shelf',
+      treePath: 'store/home/shelf',
+    }
+
+    const expectedOutput = {
+      ...input,
+      isSortable: true,
+    }
+
+    expect(defineSortability(input)).toEqual(expectedOutput)
+  })
+
+  it('returns isSortable === false for non-top-level components', () => {
+    const input = {
+      name: 'product-summary',
+      treePath: 'store/home/shelf/product-summary',
+    }
+
+    const expectedOutput = {
+      ...input,
+      isSortable: false,
+    }
+
+    expect(defineSortability(input)).toEqual(expectedOutput)
   })
 })
