@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 interface Props {
   onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseLeave: () => void
+  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void
   title: string
   treePath: string
 }
@@ -17,7 +17,7 @@ const Button = ({
   treePath,
 }: Props) => (
   <button
-    className="w-100 pv5 ph0 bg-white hover-bg-light-silver dark-gray pointer tl bn"
+    className="w-100 pv5 ph0 bg-white hover-blue dark-gray pointer tl bn"
     data-tree-path={treePath}
     key={treePath}
     onClick={onEdit}
