@@ -35,6 +35,7 @@ class Content extends Component<Props> {
           components={this.getComponents(runtime)}
           editor={editor}
           highlightHandler={highlightHandler}
+          iframeRuntime={runtime}
         />
       )
     }
