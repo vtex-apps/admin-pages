@@ -63,7 +63,6 @@ class ComponentList extends Component<Props, State> {
           onSortEnd={this.handleSortEnd}
           onSortStart={this.handleSortStart}
           useDragHandle={isSortable}
-          lockAxis="y"
         />
       </Fragment>
     )
@@ -86,12 +85,14 @@ class ComponentList extends Component<Props, State> {
     const secondTargetParentTreePath = getParentTreePath(
       this.state.components[newIndex].treePath,
     )
+
     const firstTargetName = last(
       this.state.components[oldIndex].treePath.split('/'),
     )
     const secondTargetName = last(
       this.state.components[newIndex].treePath.split('/'),
     )
+
     const isSameTree = firstTargetParentTreePath === secondTargetParentTreePath
     const isChangingSameExtensionPoint = firstTargetName === secondTargetName
 
@@ -99,6 +100,7 @@ class ComponentList extends Component<Props, State> {
       const extension: Extension = this.props.iframeRuntime.extensions[
         firstTargetParentTreePath
       ]
+
       const firstTargetIndex = findIndex(
         equals(firstTargetName),
         extension.props.elements,
@@ -107,6 +109,7 @@ class ComponentList extends Component<Props, State> {
         equals(secondTargetName),
         extension.props.elements,
       )
+
       const newOrder = arrayMove(
         extension.props.elements,
         firstTargetIndex,
@@ -120,12 +123,17 @@ class ComponentList extends Component<Props, State> {
           elements: newOrder,
         },
       })
-    }
 
-    this.setState({
-      components: arrayMove(this.state.components, oldIndex, newIndex),
-      isSorting: false,
-    })
+      this.setState({
+        components: arrayMove(this.state.components, oldIndex, newIndex),
+        isSorting: false,
+      })
+
+    } else {
+      this.setState({
+        isSorting: false,
+      })
+    }
   }
 
   private handleSortStart: SortStartHandler = () => {
