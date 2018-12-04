@@ -10,14 +10,16 @@ export const normalizeComponents = (components: SidebarComponent[]) =>
         acc.map(item =>
           currComponent.treePath.startsWith(item.treePath)
             ? {
-                ...item,
-                components: item.components
-                  ? [...item.components, currComponent]
-                  : [currComponent],
-              }
+              ...item,
+              components: item.components
+                ? [...item.components, currComponent]
+                : [currComponent],
+            }
             : item,
         ),
-      components.filter(isTopLevelComponent) as NormalizedComponent[],
+      components
+        .filter(isTopLevelComponent)
+        .map(defineSortability) as NormalizedComponent[],
     )
 
 export const isTopLevelComponent = (component: SidebarComponent) =>
@@ -38,3 +40,9 @@ export const getParentTreePath = (treePath: string): string => {
   }
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
+
+export const defineSortability = (component: SidebarComponent) => ({
+  ...component,
+  isSortable:
+    !isStoreLevelComponent(component) && isTopLevelComponent(component),
+})
