@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.3.10] - 2018-12-05
+
 ### Fixed
 - **`HighlightOverlay`**
   - Consider padding from iframe body to calculate offset.
