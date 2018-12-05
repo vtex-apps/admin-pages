@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.4.0] - 2018-12-05
+### Added
+- **`render.d.ts`**
+  - `Helmet` component.
+
+### Changed
+- **Redirects**
+  - Rename some folders and reorganize components.
+
+### Removed
+- **Redirects**
+  - Admin navbar link.
+
 ## [2.3.10] - 2018-12-05
 
 ### Fixed
