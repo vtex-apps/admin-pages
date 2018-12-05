@@ -42,23 +42,21 @@ class SortableButton extends Component<Props, State> {
     return (
       <li className="list">
         <div className="flex items-center bb bw1 b--light-silver">
-          {subitems && (
-            <ExpandArrow
-              isExpanded={this.state.isExpanded}
-              onClick={this.toggleExpansion}
-            />
+          {shouldRenderDragHandle && component.isSortable && (
+            <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
           <Button
+            hasLeftPadding={shouldRenderDragHandle && !component.isSortable}
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             title={component.name}
             treePath={component.treePath}
           />
-          {shouldRenderDragHandle && (
-            <DragHandle
-              isLocked={!component.isSortable}
-              onMouseEnter={this.handleMouseEnter}
+          {subitems && (
+            <ExpandArrow
+              isExpanded={this.state.isExpanded}
+              onClick={this.toggleExpansion}
             />
           )}
         </div>
