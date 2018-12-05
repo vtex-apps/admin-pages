@@ -57,27 +57,27 @@
     "admin/cms/settings": {
       "component": "Settings"
     },
-    "admin/navigation/storeSetup/pages": {
+    "admin/navigation/storeSetup/cms": {
       "component": "vtex.admin/InjectNavigationData",
       "props": {
-        "icon": "extensions-ic",
-        "id": "38",
         "subItems": [
           {
-            "labelId": "pages.admin-menu-button.pageList",
-            "path": "/admin/cms/pages"
-          },
-          {
+            "isNew": true,
             "labelId": "pages.admin-menu-button.storefront",
             "path": "/admin/cms/storefront"
           },
           {
+            "isNew": true,
+            "labelId": "pages.admin-menu-button.pageList",
+            "path": "/admin/cms/pages"
+          },
+          {
+            "isNew": true,
             "labelId": "pages.admin-menu-button.displayConditions",
             "path": "/admin/conditions-builder/pages"
           }
         ],
-        "tag": "appframe.new",
-        "titleId": "pages.admin-menu-button.main"
+        "titleId": "appframe.navigation.cms.title"
       }
     }
   }
