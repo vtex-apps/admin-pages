@@ -34,7 +34,7 @@ export const getAddConditionalTemplateState = (prevState: State) => {
   return {
     ...prevState,
     data: { ...prevState.data, pages: prevState.data.pages.concat(newPage) },
-    formErrors: {}
+    formErrors: {},
   }
 }
 
@@ -47,7 +47,7 @@ export const getRemoveConditionalTemplateState = (uniqueId: number) => (
   return {
     ...prevState,
     data: { ...prevState.data, pages: newPages },
-    formErrors: {}
+    formErrors: {},
   }
 }
 
@@ -70,6 +70,7 @@ export const getChangeTemplateConditionalTemplateState = (
       ...prevState.data,
       pages: newPages,
     },
+    formErrors: {},
   }
 }
 
@@ -92,6 +93,7 @@ export const getChangeConditionsConditionalTemplateState = (
       ...prevState.data,
       pages: newPages,
     },
+    formErrors: {},
   }
 }
 
@@ -101,20 +103,25 @@ const validateFalsyPath = (path: keyof Route) => (data: Route) =>
   !data[path] && { [path]: requiredMessage }
 
 const validateConditionalTemplates = (data: Route) => {
-  return (data.pages as PageWithUniqueId[]).reduce((acc, {uniqueId, template, conditions}) => {
-    const templateError = !template && { template: requiredMessage }
-    const conditionsError = !conditions.length && { conditions: requiredMessage }
-    if (templateError || conditionsError) {
-      acc.pages = {
-        ...acc.pages,
-        [uniqueId]: {
-          ...templateError,
-          ...conditionsError
+  return (data.pages as PageWithUniqueId[]).reduce(
+    (acc, { uniqueId, template, conditions }) => {
+      const templateError = !template && { template: requiredMessage }
+      const conditionsError = !conditions.length && {
+        conditions: requiredMessage,
+      }
+      if (templateError || conditionsError) {
+        acc.pages = {
+          ...acc.pages,
+          [uniqueId]: {
+            ...templateError,
+            ...conditionsError,
+          },
         }
       }
-    }
-    return acc
-  }, {} as any)
+      return acc
+    },
+    {} as any,
+  )
 }
 
 export const getValidateFormState = (prevState: State) => {
@@ -125,7 +132,7 @@ export const getValidateFormState = (prevState: State) => {
       ...validateFalsyPath('path')(prevState.data),
       ...validateFalsyPath('template')(prevState.data),
       ...validateFalsyPath('title')(prevState.data),
-      ...validateConditionalTemplates(prevState.data)
+      ...validateConditionalTemplates(prevState.data),
     },
   }
 }
