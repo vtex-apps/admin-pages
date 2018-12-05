@@ -1,7 +1,6 @@
 {
   "pages.admin-menu-button.displayConditions": "Display conditions",
-  "pages.admin-menu-button.main": "Pages",
-  "pages.admin-menu-button.pageList": "Page list",
+  "pages.admin-menu-button.pages": "Pages",
   "pages.admin-menu-button.storefront": "Storefront",
   "pages.conditions.device.any": "Any",
   "pages.conditions.device.desktop": "Desktop",

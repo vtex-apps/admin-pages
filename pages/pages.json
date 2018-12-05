@@ -68,7 +68,7 @@
           },
           {
             "isNew": true,
-            "labelId": "pages.admin-menu-button.pageList",
+            "labelId": "pages.admin-menu-button.pages",
             "path": "/admin/cms/pages"
           },
           {
