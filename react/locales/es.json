@@ -1,7 +1,6 @@
 {
   "pages.admin-menu-button.displayConditions": "Condiciones de exhibición",
-  "pages.admin-menu-button.main": "Páginas",
-  "pages.admin-menu-button.pageList": "Lista de páginas",
+  "pages.admin-menu-button.pages": "Páginas",
   "pages.admin-menu-button.storefront": "Storefront",
   "pages.conditions.scope.route": "Esta ruta",
   "pages.conditions.scope.site": "Todo el sitio",

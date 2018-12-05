@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.5.0] - 2018-12-05
+### Changed
+- **Pages**
+  - Rename "page list" to "pages".
+
+- **`pages.json`**
+  - Move admin links to CMS section.
+
 ## [2.4.0] - 2018-12-05
 ### Added
 - **`render.d.ts`**
