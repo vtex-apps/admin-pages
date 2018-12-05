@@ -88,7 +88,7 @@ export default class HighlightOverlay extends Component<Props, State> {
       // Add offset from render provider main div
       rect.y += -providerRect.y
       rect.x += -providerRect.x + (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
-      // rect.width += paddingLeft + paddingRight
+
       DEFAULT_HIGHLIGHT_RECT = rect
       return rect
     }
