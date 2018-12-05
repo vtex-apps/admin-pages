@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Move inside of `Sidebar` folder.
   - Switching mode from `editor` instead of props.
 
+### Fixed
+- **`HighlightOverlay`**
+  - Consider padding from iframe body to calculate offset.
+
 ## [2.3.9] - 2018-11-26
 ### Fixed
 - **`ComponentEditor`**
