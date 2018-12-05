@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
-import { withApollo, WithApolloClient } from 'react-apollo'
-import { withRuntimeContext } from 'render'
+import React, { Component, Fragment } from 'react'
+import { compose, withApollo, WithApolloClient } from 'react-apollo'
+import { injectIntl } from 'react-intl'
+import { Helmet, withRuntimeContext } from 'render'
 
 import { BASE_URL, NEW_REDIRECT_ID } from './components/Admin/redirects/consts'
 import Form from './components/Admin/redirects/Form'
@@ -14,7 +15,9 @@ interface CustomProps {
   params: { id: string }
 }
 
-type Props = WithApolloClient<CustomProps & RenderContextProps>
+type Props = WithApolloClient<
+  CustomProps & RenderContextProps & ReactIntl.InjectedIntlProps
+>
 
 interface State {
   formData?: Redirect
@@ -80,26 +83,42 @@ class RedirectForm extends Component<Props, State> {
   }
 
   public render() {
+    const { intl, params } = this.props
     const { formData, isLoading } = this.state
 
     return (
-      <StylesContainer>
-        <Operations>
-          {({ deleteRedirect, saveRedirect }) =>
-            isLoading ? (
-              <Loader />
-            ) : (
-              <Form
-                initialData={formData}
-                onDelete={deleteRedirect}
-                onSave={saveRedirect}
-              />
-            )
-          }
-        </Operations>
-      </StylesContainer>
+      <Fragment>
+        <Helmet>
+          <title>
+            {intl.formatMessage({
+              id: params.id === NEW_REDIRECT_ID
+                ? 'pages.admin.redirects.form.title.new'
+                : 'pages.admin.redirects.form.title.info',
+            })}
+          </title>
+        </Helmet>
+        <StylesContainer>
+          <Operations>
+            {({ deleteRedirect, saveRedirect }) =>
+              isLoading ? (
+                <Loader />
+              ) : (
+                <Form
+                  initialData={formData}
+                  onDelete={deleteRedirect}
+                  onSave={saveRedirect}
+                />
+              )
+            }
+          </Operations>
+        </StylesContainer>
+      </Fragment>
     )
   }
 }
 
-export default withApollo(withRuntimeContext(RedirectForm))
+export default compose(
+  injectIntl,
+  withApollo,
+  withRuntimeContext,
+)(RedirectForm)
