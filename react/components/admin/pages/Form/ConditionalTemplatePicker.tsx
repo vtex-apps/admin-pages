@@ -38,7 +38,15 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
 }) => {
   const hasError =
     !!path(['pages', pageId, 'conditions'], formErrors) ||
-    path(['pages', pageId, 'template'], formErrors)
+    !!path(['pages', pageId, 'template'], formErrors)
+
+  const closeButtonStyle = hasError
+    ? {
+        marginBottom: 'auto',
+        marginTop: 'auto',
+      }
+    : undefined
+
   return (
     <div className={`flex ${!hasError && 'items-center'} mv5 mw7`}>
       <div className="flex-grow-1">
@@ -85,14 +93,7 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
       <button
         type="button"
         className="w1 h1 bg-silver br-100 flex items-center justify-center bn pa1 mt6"
-        style={
-          hasError
-            ? {
-                marginBottom: 'auto',
-                marginTop: 'auto',
-              }
-            : undefined
-        }
+        style={closeButtonStyle}
         onClick={() => onRemoveConditionalTemplate(pageId)}
       >
         <IconClose color="white" size={12} />
