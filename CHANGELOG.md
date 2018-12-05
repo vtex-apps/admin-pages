@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **`render.d.ts`**
+  - `Helmet` component.
+
+### Changed
+- **Redirects**
+  - Rename some folders and reorganize components.
+
+### Removed
+- **Redirects**
+  - Admin navbar link.
 
 ## [2.3.10] - 2018-12-05
 

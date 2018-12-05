@@ -3,6 +3,7 @@ declare module 'render' {
   import { ReactElement, Component } from 'react'
 
   export const ExtensionPoint: ReactElement
+  export const Helmet: ReactElement
   export const Link: ReactElement
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
