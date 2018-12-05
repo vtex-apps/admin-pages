@@ -74,13 +74,21 @@ export default class HighlightOverlay extends Component<Props, State> {
   public getHighlightRect = (highlightTreePath : string) => {
     const element = document.querySelector(`[data-extension-point="${highlightTreePath}"]`)
     const provider = document.querySelector('.render-provider')
+    const iframeBody = document.querySelector('body')
     if (highlightTreePath && element && provider) {
+      const paddingFromIframeBody = iframeBody ? {
+        left: parseInt(window.getComputedStyle(iframeBody, null).paddingLeft || '0', 10),
+        right: parseInt(window.getComputedStyle(iframeBody, null).paddingRight || '0', 10)
+      } : {
+        left: 0, right: 0
+      }
       const rect = element.getBoundingClientRect() as DOMRect
       const providerRect = provider.getBoundingClientRect() as DOMRect
 
       // Add offset from render provider main div
       rect.y += -providerRect.y
-      rect.x += -providerRect.x
+      rect.x += -providerRect.x + (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
+      // rect.width += paddingLeft + paddingRight
       DEFAULT_HIGHLIGHT_RECT = rect
       return rect
     }
