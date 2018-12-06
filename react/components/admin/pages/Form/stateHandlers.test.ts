@@ -26,6 +26,7 @@ describe('getAddConditionalTemplateState', () => {
         pages: [] as Page[],
       },
     } as State
+
     expect(getAddConditionalTemplateState(mockState)).toEqual(
       expect.objectContaining({
         data: {
@@ -55,6 +56,7 @@ describe('getAddConditionalTemplateState', () => {
         ] as any[],
       },
     } as State
+
     expect(getAddConditionalTemplateState(mockState)).toEqual(
       expect.objectContaining({
         data: {
@@ -79,6 +81,7 @@ describe('getAddConditionalTemplateState', () => {
         title: 'oi',
       },
     } as State
+
     expect(getAddConditionalTemplateState(mockState)).toEqual(
       expect.objectContaining({
         data: {
@@ -102,6 +105,7 @@ describe('getLoginToggleState', () => {
         login: true,
       },
     } as State
+
     expect(getLoginToggleState(mockState)).toEqual(
       expect.objectContaining({ data: { login: false } }),
     )
@@ -124,6 +128,7 @@ describe('getRemoveConditionalTemplateState', () => {
         ] as any[],
       },
     } as State
+
     expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
       expect.objectContaining({
         data: {
@@ -156,6 +161,7 @@ describe('getRemoveConditionalTemplateState', () => {
         title: 'oi',
       },
     } as State
+
     expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
       expect.objectContaining({
         data: {
@@ -192,9 +198,34 @@ describe('getChangeTemplateConditionalTemplateState', () => {
         ] as any[],
       },
     } as State
+
     expect(
       getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState),
-    ).toEqual({
+    ).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 10,
+            },
+            {
+              ...newPage,
+              template: 'store/test',
+              uniqueId: 3,
+            },
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+
+  it('should clear formError', () => {
+    const mockState = {
       data: {
         pages: [
           {
@@ -203,16 +234,26 @@ describe('getChangeTemplateConditionalTemplateState', () => {
           },
           {
             ...newPage,
-            template: 'store/test',
             uniqueId: 3,
           },
           {
             ...newPage,
             uniqueId: 5,
           },
-        ],
+        ] as any[],
       },
-    })
+      formErrors: {
+        title: 'oi',
+      },
+    } as State
+
+    expect(
+      getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState),
+    ).toEqual(
+      expect.objectContaining({
+        formErrors: {},
+      }),
+    )
   })
 })
 
@@ -236,12 +277,37 @@ describe('getChangeConditionsConditionalTemplateState', () => {
         ] as any[],
       },
     } as State
+
     expect(
       getChangeConditionsConditionalTemplateState(3, [
         'condition1',
         'condition2',
       ])(mockState),
-    ).toEqual({
+    ).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 10,
+            },
+            {
+              ...newPage,
+              conditions: ['condition1', 'condition2'],
+              uniqueId: 3,
+            },
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+
+  it('should clear formError', () => {
+    const mockState = {
       data: {
         pages: [
           {
@@ -250,17 +316,31 @@ describe('getChangeConditionsConditionalTemplateState', () => {
           },
           {
             ...newPage,
-            conditions: ['condition1', 'condition2'],
             uniqueId: 3,
           },
           {
             ...newPage,
             uniqueId: 5,
           },
-        ],
+        ] as any[],
       },
-    })
+      formErrors: {
+        title: 'oi',
+      },
+    } as State
+
+    expect(
+      getChangeConditionsConditionalTemplateState(3, [
+        'condition1',
+        'condition2',
+      ])(mockState),
+    ).toEqual(
+      expect.objectContaining({
+        formErrors: {},
+      }),
+    )
   })
+
 })
 
 describe('getValidateFormState', () => {
@@ -285,6 +365,7 @@ describe('getValidateFormState', () => {
       },
       formErrors: {},
     } as State
+
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({ formErrors: {} }),
     )
@@ -311,6 +392,7 @@ describe('getValidateFormState', () => {
       },
       formErrors: {},
     } as State
+
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
@@ -340,6 +422,7 @@ describe('getValidateFormState', () => {
         title: 'test',
       },
     } as State
+
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
@@ -369,6 +452,7 @@ describe('getValidateFormState', () => {
         title: '',
       },
     } as State
+
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
@@ -399,6 +483,7 @@ describe('getValidateFormState', () => {
           title: 'defaultTemplate',
         },
       } as State
+
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
@@ -432,6 +517,7 @@ describe('getValidateFormState', () => {
           title: 'defaultTemplate',
         },
       } as State
+
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
@@ -465,6 +551,7 @@ describe('getValidateFormState', () => {
           title: 'defaultTemplate',
         },
       } as State
+
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
@@ -482,6 +569,6 @@ describe('getValidateFormState', () => {
         }),
       )
     })
-
   })
+
 })
