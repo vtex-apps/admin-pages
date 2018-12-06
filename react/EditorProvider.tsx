@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { difference, pathOr, uniq } from 'ramda'
+import { difference, equals, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'render'
@@ -22,6 +22,7 @@ interface State {
   editTreePath: string | null
   iframeRuntime: RenderContext | null
   iframeWindow: Window
+  messages: object
   mode: EditorMode
   scope: ConfigurationScope
   showAdminControls: boolean
@@ -53,6 +54,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
+      messages: {},
       mode: 'content',
       scope: 'url',
       showAdminControls: true,
@@ -77,9 +79,16 @@ class EditorProvider extends Component<Props, State> {
           this.props.runtime.updateComponentAssets({})
         }
 
+        if (!equals(Object.keys(this.state.messages), Object.keys({...messages}))) {
+          setTimeout(() => {
+            this.props.runtime.updateRuntime()
+          }, 500)
+        }
+
         const newState = {
           ...this.state,
           iframeRuntime: runtime,
+          messages: {...messages},
           ...(this.state.iframeRuntime
             ? {}
             : {
