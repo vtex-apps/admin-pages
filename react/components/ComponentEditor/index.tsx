@@ -290,6 +290,7 @@ class ComponentEditor extends Component<
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
     const { component, props } = this.getExtension()
+
     const componentImplementation = getIframeImplementation(component)
 
     const selectedComponent = component || null
@@ -530,7 +531,13 @@ class ComponentEditor extends Component<
       !currConfiguration ||
       currConfiguration.configurationId !== configuration.configurationId
     ) {
-      this.handleConfigurationChange(configuration)
+      const { props: extensionProps } = this.getExtension()
+      const propsJSON = configuration.propsJSON === '{}' && extensionProps ? JSON.stringify(extensionProps) : configuration.propsJSON
+
+      this.handleConfigurationChange({
+        ...configuration,
+        propsJSON
+      })
     }
 
     this.setState({ isEditMode: true })
