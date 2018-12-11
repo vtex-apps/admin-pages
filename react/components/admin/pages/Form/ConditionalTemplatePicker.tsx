@@ -6,10 +6,10 @@ import Select from '../../../Select'
 
 interface ConditionalTemplatePickerProps {
   availableConditions: Condition[]
-  conditions: string[]
+  conditions: SelectOption[]
   onChangeConditionsConditionalTemplate: (
     uniqueId: number,
-    conditions: string[],
+    conditions: SelectOption[],
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
@@ -81,7 +81,7 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
         <Select
           errorMessage={path(['pages', pageId, 'conditions'], formErrors)}
           onChange={values => {
-            onChangeConditionsConditionalTemplate(pageId, values)
+            onChangeConditionsConditionalTemplate(pageId, values as SelectOption[])
           }}
           options={availableConditions.map(({ conditionId }) => ({
             label: conditionId,

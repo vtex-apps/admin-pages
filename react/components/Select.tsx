@@ -1,16 +1,38 @@
 import React, { Fragment } from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
-import ReactSelect, { Option } from 'react-select'
+import ReactSelect from 'react-select'
 import { IconCaretDown, IconCaretUp } from 'vtex.styleguide'
+
+import { IndicatorProps } from 'react-select/lib/components/indicators'
+import { PlaceholderProps } from 'react-select/lib/components/Placeholder'
 
 interface SelectProps {
   errorMessage?: string
-  onChange: (options: string[]) => void
-  options: Option[]
-  value: string[]
+  onChange: (options: SelectOption | SelectOption[]) => void
+  options: SelectOption[]
+  value: SelectOption[]
 }
 
 type Props = SelectProps & InjectedIntlProps
+
+
+const DropdownIndicator: React.SFC<IndicatorProps<SelectOption>> = ({innerProps, selectProps}) => {
+  return (
+    <div className="pr4" {...innerProps}>
+      { selectProps.menuIsOpen ? (
+        <IconCaretUp color="#134cd8" size={8} />
+        ) : (
+        <IconCaretDown color="#134cd8" size={8} />
+        )}
+    </div>
+  )
+}
+
+const Placeholder: React.SFC<PlaceholderProps<SelectOption>> = ({innerProps, children}) => (
+  <span className="ml2 c-muted-2" {...innerProps}>
+    {children}
+  </span>
+)
 
 const Select: React.SFC<Props> = ({
   errorMessage,
@@ -22,40 +44,42 @@ const Select: React.SFC<Props> = ({
   <Fragment>
     <ReactSelect
       className={`f6 ${!!errorMessage ? 'b--danger bw1' : ''}`}
-      arrowRenderer={(
-        { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
-      ) => (
-        <div onMouseDown={onMouseDown}>
-          {isOpen ? (
-            <IconCaretUp color="#134cd8" size={8} />
-          ) : (
-            <IconCaretDown color="#134cd8" size={8} />
-          )}
-        </div>
-      )}
-      multi
+      components={{
+        DropdownIndicator,
+        IndicatorSeparator: () => null,
+        Placeholder,
+      }}
+      isMulti
       onChange={optionValues => {
-        const formattedValue = (optionValues as Option[]).map(
-          (item: Option) => item.value as string,
-        )
-        onChange(formattedValue)
+        if (optionValues) {
+          onChange(optionValues)
+        }
       }}
       options={options}
-      style={
-        !!errorMessage
+      styles={{
+        control: (style) => {
+          const errorStyle = !!errorMessage
           ? {
               borderColor: '#ff4c4c',
               borderWidth: '.125rem',
             }
           : {}
-      }
-      placeholder={
-        <span className="ml2">
-          {intl.formatMessage({
-            id: 'pages.editor.components.conditions.custom.placeholder',
-          })}
-        </span>
-      }
+          return {
+            ...style,
+            ...errorStyle,
+          }
+        }
+      }}
+      placeholder={intl.formatMessage({
+        id: 'pages.editor.components.conditions.custom.placeholder',
+      })}
+      theme={(theme) => ({
+        ...theme,
+        colors: {
+          ...theme.colors,
+          primary: '#cacbcc'
+        }
+      })}
       value={value}
     />
     {!!errorMessage && (

@@ -76,7 +76,7 @@ export const getChangeTemplateConditionalTemplateState = (
 
 export const getChangeConditionsConditionalTemplateState = (
   uniqueId: number,
-  conditions: string[],
+  conditions: SelectOption[],
 ) => (prevState: State) => {
   const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
     if (page.uniqueId === uniqueId) {

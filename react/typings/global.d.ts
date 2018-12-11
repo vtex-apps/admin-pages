@@ -34,7 +34,7 @@ declare global {
 
   interface Page {
     name: string
-    conditions: string[]
+    conditions: SelectOption[]
     template: string
     device: string
     params: Record<string, any>
@@ -231,5 +231,10 @@ declare global {
   interface AdminContext {
     startLoading: () => void
     stopLoading: () => void
+  }
+
+  interface SelectOption {
+    label: string
+    value: string
   }
 }

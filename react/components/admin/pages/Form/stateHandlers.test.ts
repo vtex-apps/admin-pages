@@ -280,8 +280,8 @@ describe('getChangeConditionsConditionalTemplateState', () => {
 
     expect(
       getChangeConditionsConditionalTemplateState(3, [
-        'condition1',
-        'condition2',
+        {label: 'condition1', value: 'condition1'},
+        {label: 'condition2', value: 'condition2'},
       ])(mockState),
     ).toEqual(
       expect.objectContaining({
@@ -293,7 +293,8 @@ describe('getChangeConditionsConditionalTemplateState', () => {
             },
             {
               ...newPage,
-              conditions: ['condition1', 'condition2'],
+              conditions: [{label: 'condition1', value: 'condition1'},
+              {label: 'condition2', value: 'condition2'}],
               uniqueId: 3,
             },
             {
@@ -331,8 +332,8 @@ describe('getChangeConditionsConditionalTemplateState', () => {
 
     expect(
       getChangeConditionsConditionalTemplateState(3, [
-        'condition1',
-        'condition2',
+        {label: 'condition1', value: 'condition1'},
+        {label: 'condition2', value: 'condition2'},
       ])(mockState),
     ).toEqual(
       expect.objectContaining({

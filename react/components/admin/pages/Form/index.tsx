@@ -94,7 +94,7 @@ class FormContainer extends Component<Props, State> {
 
   private handleChangeConditionsConditionalTemplate = (
     uniqueId: number,
-    conditions: string[],
+    conditions: SelectOption[],
   ) => {
     this.setState(
       getChangeConditionsConditionalTemplateState(uniqueId, conditions),

@@ -26,7 +26,7 @@ interface CustomProps {
   onAddConditionalTemplate: () => void
   onChangeConditionsConditionalTemplate: (
     uniqueId: number,
-    conditions: string[],
+    conditions: SelectOption[],
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
