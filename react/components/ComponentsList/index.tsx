@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { canUseDOM } from 'render'
+import { ToastConsumer, ToastProvider } from 'vtex.styleguide'
 
 import { getIframeImplementation } from '../../utils/components'
 
@@ -54,14 +55,21 @@ class ComponentsList extends Component<
     } = this.props
 
     return (
-      <SortableList
-        components={this.getComponents()}
-        editor={editor}
-        iframeRuntime={iframeRuntime}
-        highlightExtensionPoint={highlightExtensionPoint}
-        onMouseEnterComponent={this.handleMouseEnter}
-        onMouseLeaveComponent={this.handleMouseLeave}
-      />
+      <ToastProvider positioning="parent">
+        <ToastConsumer>
+          {({ showToast }) => (
+            <SortableList
+              components={this.getComponents()}
+              editor={editor}
+              iframeRuntime={iframeRuntime}
+              highlightExtensionPoint={highlightExtensionPoint}
+              onMouseEnterComponent={this.handleMouseEnter}
+              onMouseLeaveComponent={this.handleMouseLeave}
+              showToast={showToast}
+            />
+          )}
+        </ToastConsumer>
+      </ToastProvider>
     )
   }
 
