@@ -10,9 +10,9 @@ interface Option {
 
 interface Props {
   autofocus?: boolean
-  onChange: (newValue: string[]) => void
+  onChange: (newValue: SelectOption[]) => void
   options: Option[]
-  value: string[]
+  value: SelectOption[]
 }
 
 const CustomConditionsSection: React.SFC<

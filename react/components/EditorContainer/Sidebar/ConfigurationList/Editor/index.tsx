@@ -8,13 +8,13 @@ import ConditionsSelector from './ConditionsSelector'
 import LabelEditor from './LabelEditor'
 
 interface Props {
-  conditions: string[]
+  conditions: SelectOption[]
   configuration?: AdaptedExtensionConfiguration
   editor: EditorContext
   isLoading: boolean
   newLabel?: string
   onClose: () => void
-  onConditionsChange: (newConditions: string[]) => void
+  onConditionsChange: (newConditions: SelectOption[]) => void
   onFormChange: (event: IChangeEvent) => void
   onLabelChange: (event: Event) => void
   onSave: () => void

@@ -4,13 +4,13 @@ import CustomConditionsSelector from './CustomConditionsSelector'
 import ScopeSelector from './ScopeSelector'
 
 interface Props {
-  onCustomConditionsChange: (newConditionsIds: string[]) => void
+  onCustomConditionsChange: (newConditionsIds: SelectOption[]) => void
   onScopeChange: (
     e: React.ChangeEvent<HTMLSelectElement>,
     newScope: ConfigurationScope,
   ) => void
   scope?: ConfigurationScope
-  selectedConditions: string[]
+  selectedConditions: SelectOption[]
 }
 
 const ConditionsSelector = ({
