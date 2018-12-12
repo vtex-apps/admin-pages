@@ -4,6 +4,7 @@ import { Dropdown, IconClose } from 'vtex.styleguide'
 
 import Select from '../../../Select'
 
+type OptionsType = SelectOption | SelectOption[] | null | undefined
 interface ConditionalTemplatePickerProps {
   availableConditions: Condition[]
   conditions: SelectOption[]
@@ -80,7 +81,7 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
         </label>
         <Select
           errorMessage={path(['pages', pageId, 'conditions'], formErrors)}
-          onChange={values => {
+          onChange={(values: OptionsType) => {
             onChangeConditionsConditionalTemplate(pageId, values as SelectOption[])
           }}
           options={availableConditions.map(({ conditionId }) => ({
