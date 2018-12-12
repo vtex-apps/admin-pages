@@ -1,13 +1,14 @@
 import { equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
+import { ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import { NormalizedComponent, SidebarComponent } from '../typings'
 
 import List from './List'
 import { getParentTreePath, normalizeComponents } from './utils'
 
-interface Props {
+interface CustomProps {
   components: SidebarComponent[]
   editor: EditorContext
   highlightExtensionPoint: (treePath: string | null) => void
@@ -15,6 +16,8 @@ interface Props {
   onMouseEnterComponent: (event: React.MouseEvent<HTMLButtonElement>) => void
   onMouseLeaveComponent: () => void
 }
+
+type Props = CustomProps & ToastConsumerRenderProps
 
 interface State {
   components: NormalizedComponent[]
