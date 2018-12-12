@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`ModeSwitcher`**
   - Move inside of `Sidebar` folder.
   - Switching mode from `editor` instead of props.
+- **`Select`** and **`MultiSelect`**
+  - Update `react-select` to v2. Related changes on all usages: components in `ConfigurationList` and `admin/pages/Form`.
 
 ## [2.5.0] - 2018-12-05
 ### Changed
