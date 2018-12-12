@@ -28,6 +28,19 @@ interface ExtensionConfigurationsQuery {
   refetch: (variables?: object) => void
 }
 
+interface SaveExtensionVariables {
+  allMatches?: boolean
+  conditions?: string[]
+  configurationId?: string
+  device?: string
+  extensionName: string
+  label?: string
+  path: string
+  propsJSON?: string
+  routeId: string
+  scope: string
+}
+
 interface Props {
   availableComponents: any
   editor: EditorContext
@@ -36,11 +49,11 @@ interface Props {
   formMeta: FormMetaContext
   modal: ModalContext
   runtime: RenderContext
-  saveExtension: any
+  saveExtension: ({variables}: {variables: SaveExtensionVariables}) => Promise<any>
 }
 
 interface State {
-  conditions: string[]
+  conditions: SelectOption[]
   configuration?: AdaptedExtensionConfiguration
   isEditMode: boolean
   newLabel?: string
@@ -184,7 +197,7 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleConditionsChange = (newConditions: string[]) => {
+  private handleConditionsChange = (newConditions: SelectOption[]) => {
     this.setState({ conditions: newConditions })
 
     this.props.formMeta.setWasModified(true)
@@ -194,10 +207,10 @@ class ConfigurationList extends Component<Props, State> {
     newConfiguration: ExtensionConfiguration,
   ) => {
     const { editor, runtime } = this.props
-
+    const conditions = newConfiguration.conditions.map((value) => ({value, label: value}))
     this.setState(
       {
-        conditions: newConfiguration.conditions,
+        conditions,
         configuration: {
           ...newConfiguration,
           scope: this.getEncodedScope(
@@ -307,7 +320,9 @@ class ConfigurationList extends Component<Props, State> {
       saveExtension,
     } = this.props
 
-    const { conditions, configuration } = this.state
+    const { conditions: conditionsOptions, configuration } = this.state
+
+    const conditions = conditionsOptions.map(({value}) => value)
 
     const { allMatches, device } = configuration!
 
@@ -335,6 +350,10 @@ class ConfigurationList extends Component<Props, State> {
     formMeta.toggleLoading()
 
     try {
+      if (!editor.editTreePath) {
+        throw new Error('No extension name. editor.editTreePath is ' + editor.editTreePath)
+      }
+
       await saveExtension({
         variables: {
           allMatches,
