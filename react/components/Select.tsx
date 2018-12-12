@@ -5,6 +5,7 @@ import { IconCaretDown, IconCaretUp } from 'vtex.styleguide'
 
 import { IndicatorProps } from 'react-select/lib/components/indicators'
 import { PlaceholderProps } from 'react-select/lib/components/Placeholder'
+import { Props as ReactSelectProps } from 'react-select/lib/Select'
 
 interface SelectProps {
   errorMessage?: string
@@ -13,8 +14,7 @@ interface SelectProps {
   value: SelectOption[]
 }
 
-type Props = SelectProps & InjectedIntlProps
-
+type Props = SelectProps & InjectedIntlProps & ReactSelectProps
 
 const DropdownIndicator: React.SFC<IndicatorProps<SelectOption>> = ({innerProps, selectProps}) => {
   return (
@@ -40,6 +40,7 @@ const Select: React.SFC<Props> = ({
   options,
   intl,
   value,
+  ...props
 }) => (
   <Fragment>
     <ReactSelect
@@ -81,6 +82,7 @@ const Select: React.SFC<Props> = ({
         }
       })}
       value={value}
+      {...props}
     />
     {!!errorMessage && (
       <span className="c-danger f6 mt3 lh-title">

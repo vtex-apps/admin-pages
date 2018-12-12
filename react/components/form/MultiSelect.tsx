@@ -1,22 +1,22 @@
-import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
-import ReactSelect, { Option } from 'react-select'
+
+import Select from '../Select'
 
 interface Props {
   autofocus?: boolean
   disabled?: boolean
   id?: string
   label?: string
-  onChange: (newValue: string[]) => void
+  onChange: (newValue: SelectOption[]) => void
   options: {
-    enumOptions: Option[]
+    enumOptions: SelectOption[]
   }
   placeholder: string
   schema?: {
     disabled?: boolean
     title: string
   }
-  value: string[]
+  value: SelectOption[]
 }
 
 const MultiSelect: React.SFC<Props> = ({
@@ -38,18 +38,15 @@ const MultiSelect: React.SFC<Props> = ({
         </span>
       </label>
     )}
-    <ReactSelect
+    <Select
       autoFocus={autofocus}
-      disabled={
+      isDisabled={
         disabled || (schema && schema.disabled) || enumOptions.length === 0
       }
       id={id}
-      multi
-      onChange={optionValues => {
-        const formattedValue = (optionValues as Option[]).map(
-          (item: Option) => item.value as string,
-        )
-        onChange(formattedValue)
+      isMulti
+      onChange={(optionValues?: SelectOption | SelectOption[] | null) => {
+        onChange(optionValues as SelectOption[])
       }}
       options={enumOptions}
       placeholder={placeholder}
@@ -63,28 +60,6 @@ MultiSelect.defaultProps = {
   disabled: false,
   placeholder: '',
   value: [],
-}
-
-MultiSelect.propTypes = {
-  autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
-  id: PropTypes.string,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  options: PropTypes.shape({
-    enumOptions: PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-  }).isRequired,
-  placeholder: PropTypes.string,
-  schema: PropTypes.shape({
-    disabled: PropTypes.bool,
-    title: PropTypes.string.isRequired,
-  }),
-  value: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default MultiSelect
