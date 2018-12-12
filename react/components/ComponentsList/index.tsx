@@ -1,21 +1,14 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { FormattedMessage } from 'react-intl'
 import { canUseDOM } from 'render'
 
-import { getIframeImplementation } from '../utils/components'
+import { getIframeImplementation } from '../../utils/components'
+
+import SortableList from './SortableList'
+import { SidebarComponent } from './typings'
 
 interface Props {
   highlightExtensionPoint: (treePath: string | null) => void
-}
-
-const getComponentSchema = (component: string | null, props: any) => {
-  const ComponentImpl = component && getIframeImplementation(component)
-  return (
-    ComponentImpl &&
-    ((ComponentImpl.hasOwnProperty('schema') && ComponentImpl.schema) ||
-      (ComponentImpl.getSchema && ComponentImpl.getSchema(props)))
-  )
 }
 
 const isDifferentPage = (treePath: string, page: string, pages: string[]) => {
@@ -32,7 +25,7 @@ const isDifferentPage = (treePath: string, page: string, pages: string[]) => {
 
 class ComponentsList extends Component<
   Props & RenderContextProps & EditorContextProps
-> {
+  > {
   public static propTypes = {
     editor: PropTypes.object,
     runtime: PropTypes.object,
@@ -55,17 +48,20 @@ class ComponentsList extends Component<
 
   public render() {
     const {
-      runtime: { extensions },
+      editor,
+      highlightExtensionPoint,
+      runtime: iframeRuntime,
     } = this.props
 
     return (
-      <div>
-        <div className="bb b--light-silver" />
-        {Object.keys(extensions)
-          .filter(this.validateExtension)
-          .sort(this.sortComponents)
-          .map(this.renderComponentButton)}
-      </div>
+      <SortableList
+        components={this.getComponents()}
+        editor={editor}
+        iframeRuntime={iframeRuntime}
+        highlightExtensionPoint={highlightExtensionPoint}
+        onMouseEnterComponent={this.handleMouseEnter}
+        onMouseLeaveComponent={this.handleMouseLeave}
+      />
     )
   }
 
@@ -83,38 +79,33 @@ class ComponentsList extends Component<
     )
   }
 
-  private getSchema(treePath: string) {
+  private getComponentSchema(treePath: string) {
     const {
       runtime: { extensions },
     } = this.props
 
     const { component, props = {} } = extensions[treePath]
 
-    return getComponentSchema(component, props)
-  }
+    const ComponentImpl =
+      (component && getIframeImplementation(component)) || undefined
 
-  private renderComponentButton = (treePath: string) => {
-    const schema = this.getSchema(treePath)
     return (
-      <button
-        key={treePath}
-        type="button"
-        data-tree-path={treePath}
-        onClick={this.onEdit}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
-        className={
-          'dark-gray bg-white pt5 pointer hover-bg-light-silver w-100 tl bn ph0 pb0'
-        }
-        style={{ animationDuration: '0.2s' }}
-      >
-        <div className="bb b--light-silver w-100 pb5">
-          <span className="f6 fw5 pl5 track-1">
-            {schema && schema.title && <FormattedMessage id={schema.title} />}
-          </span>
-        </div>
-      </button>
+      ComponentImpl &&
+      ((ComponentImpl.hasOwnProperty('schema') && ComponentImpl.schema) ||
+        (ComponentImpl.getSchema && ComponentImpl.getSchema(props)))
     )
+}
+
+  private getComponents() {
+    const { runtime } = this.props
+
+    return Object.keys(runtime.extensions)
+      .filter(this.validateExtension)
+      .sort(this.sortComponents)
+      .map<SidebarComponent>(treePath => ({
+        name: this.getComponentSchema(treePath)!.title!,
+        treePath,
+      }))
   }
 
   private sortComponents = (treePathA: string, treePathB: string) => {
@@ -145,7 +136,7 @@ class ComponentsList extends Component<
       runtime: { pages, page },
     } = this.props
 
-    const schema = this.getSchema(treePath)
+    const schema = this.getComponentSchema(treePath)
 
     return (
       schema &&
