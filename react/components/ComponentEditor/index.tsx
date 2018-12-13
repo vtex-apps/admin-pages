@@ -143,11 +143,30 @@ class ComponentEditor extends Component<
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
+    
+    const translateFromNative: (schema: ComponentSchema) => ComponentSchema = schema => {
+      if(schema.type === 'nativeImage'){
+        schema.type='string'
+        schema.widget = {
+          'ui:widget': 'image-uploader',
+        }
+      }
+      if(schema.type === 'nativeOptions'){
+        schema.type = 'number',
+        schema.widget= {
+          'ui:options': {
+            inline: true,
+          },
+          'ui:widget': 'radio',
+        }
+      }
+    }
+
     const traverseAndTranslate: (schema: ComponentSchema) => ComponentSchema = schema => {
       const translate: (
         value: string | { id: string; values?: { [key: string]: string } },
       ) => string = value =>
-        typeof value === 'string'
+        typeof value === 'string' 
           ? this.props.intl.formatMessage({ id: value })
           : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
@@ -156,6 +175,7 @@ class ComponentEditor extends Component<
           Array.isArray(value) ? map(translate, value) : translate(value),
         pick(['title', 'description', 'enumNames'], schema) as object
       )
+      translateFromNative(schema)
 
       if (has('widget', schema)) {
         translatedSchema.widget = merge(
