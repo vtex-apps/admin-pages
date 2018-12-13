@@ -166,7 +166,7 @@ class ComponentEditor extends Component<
       const translate: (
         value: string | { id: string; values?: { [key: string]: string } },
       ) => string = value =>
-        typeof value === 'string' 
+        typeof value === 'string'
           ? this.props.intl.formatMessage({ id: value })
           : this.props.intl.formatMessage({ id: value.id }, value.values || {})
 
