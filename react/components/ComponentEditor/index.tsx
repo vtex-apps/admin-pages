@@ -30,6 +30,32 @@ const defaultUiSchema = {
 
 const MODES: ComponentEditorMode[] = ['content', 'layout']
 
+const nativeMap: Record<string, ComponentSchema> = {
+  nativeImage: {
+    type: 'string',
+    widget: {
+      'ui:widget': 'image-uploader',
+    },
+  },
+  nativeOptions: {
+    type: 'number',
+    widget: {
+      'ui:options': {
+        inline: true,
+      },
+      'ui:widget': 'radio',
+    },
+  }
+}
+
+const translateFromNative = (schema: ComponentSchema): ComponentSchema => {
+  const modifications = schema.type && nativeMap[schema.type]
+  if (modifications) {
+    return merge(schema,modifications)
+  }
+  return schema
+}
+
 interface ExtensionConfigurationsQuery {
   error: object
   extensionConfigurations: ExtensionConfiguration[]
@@ -156,7 +182,7 @@ class ComponentEditor extends Component<
           Array.isArray(value) ? map(translate, value) : translate(value),
         pick(['title', 'description', 'enumNames'], schema) as object
       )
-
+      translateFromNative(schema)
       if (has('widget', schema)) {
         translatedSchema.widget = merge(
           schema.widget,
