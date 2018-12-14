@@ -46,21 +46,23 @@ const mockComponents = {
   },
   'vtex.shelf-title': {
     schema: {
-      title: 'Shelf Title'
-    }
-  }
+      title: 'Shelf Title',
+    },
+  },
 }
 
-const mockPages = [
-  'store/home',
-  'store/account',
-  'store/search'
-]
+const mockPages = ['store/home', 'store/account', 'store/search']
 
 describe('getComponents', () => {
-
   it('should return array of filtered by presence of schema and title components', () => {
-    expect(getComponents(mockExtensions, mockComponents as any, 'store/home', mockPages)).toEqual([
+    expect(
+      getComponents(
+        mockExtensions,
+        mockComponents as any,
+        'store/home',
+        mockPages,
+      ),
+    ).toEqual([
       {
         name: 'Carousel',
         treePath: 'store/home/carousel',
@@ -82,17 +84,20 @@ describe('getComponents', () => {
 
   it('should use elements from props of LayoutContainer to determine order', () => {
     expect(
-      getComponents({
-        ...mockExtensions,
-        'store/home': {
-          component: 'vtex.LayoutContainer',
-          props: {
-            elements: ['shelf', 'carousel'],
+      getComponents(
+        {
+          ...mockExtensions,
+          'store/home': {
+            component: 'vtex.LayoutContainer',
+            props: {
+              elements: ['shelf', 'carousel'],
+            },
           },
         },
-      }, mockComponents as any,
-      'store/home',
-      mockPages),
+        mockComponents as any,
+        'store/home',
+        mockPages,
+      ),
     ).toEqual([
       {
         name: 'Shelf',
@@ -126,10 +131,15 @@ describe('getComponents', () => {
         }),
       },
     }
-    expect(getComponents(extensions, components as any, 'store/home', ['store/home'])).toEqual([{
-      name: 'Shelf',
-      treePath: 'store/home/shelf',
-    },])
+    expect(
+      getComponents(extensions, components as any, 'store/home', [
+        'store/home',
+      ]),
+    ).toEqual([
+      {
+        name: 'Shelf',
+        treePath: 'store/home/shelf',
+      },
+    ])
   })
-
 })
