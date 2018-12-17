@@ -54,7 +54,7 @@ const mockComponents = {
 const mockPages = ['store/home', 'store/account', 'store/search']
 
 describe('getComponents', () => {
-  it('should return array of filtered by presence of schema and title components', () => {
+  it('should filter out components without either a schema or a title', () => {
     expect(
       getComponents(
         mockExtensions,
