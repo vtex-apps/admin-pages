@@ -8,16 +8,10 @@ export function getIframeImplementation(component: string | null) {
   if (component === null) {
     return null
   }
-  const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
-  if (!iframe) {
-    return null
-  }
-  const window = iframe.contentWindow as Window | null
-  if (!window) {
-    return null
-  }
+  const iframeRenderComponents = getIframeRenderComponents()
+
   return (
-    window.__RENDER_7_COMPONENTS__ && window.__RENDER_7_COMPONENTS__[component]
+    iframeRenderComponents && iframeRenderComponents[component]
   )
 }
 
