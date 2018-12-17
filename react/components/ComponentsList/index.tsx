@@ -42,17 +42,19 @@ class ComponentsList extends Component<
       runtime: iframeRuntime,
     } = this.props
 
+    const components = getComponents(
+      iframeRuntime.extensions,
+      getIframeRenderComponents(),
+      iframeRuntime.page,
+      Object.keys(iframeRuntime.pages),
+    )
+
     return (
       <ToastProvider positioning="parent">
         <ToastConsumer>
           {({ showToast }) => (
             <SortableList
-              components={getComponents(
-                iframeRuntime.extensions,
-                getIframeRenderComponents(),
-                iframeRuntime.page,
-                Object.keys(iframeRuntime.pages),
-              )}
+              components={components}
               editor={editor}
               iframeRuntime={iframeRuntime}
               highlightExtensionPoint={highlightExtensionPoint}
