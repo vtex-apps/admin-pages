@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **Pages**
   - Rename "page list" to "pages".
 
+- **ComponentsList**
+  - Moved `getComponents` logic into another file.
+  - `getComponents` sort logic doesn't use `getBoundingClientRect` anymore. Instead, it tries to use `props.elements` from extension.
+
 - **`pages.json`**
   - Move admin links to CMS section.
 
