@@ -2,7 +2,7 @@ import { has, path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'render'
 import { SidebarComponent } from './typings'
 
-const isSamePage = (page: string, pages: string[]) => (treePath: string) => {
+const isSamePageGetter = (page: string, pages: string[]) => (treePath: string) => {
   if (treePath.startsWith(page)) {
     return true
   }
@@ -34,11 +34,13 @@ const getComponentSchemaGetter = (
   extensions: Extensions,
 ) => (treePath: string) => {
   const getComponentName = getComponentNameGetterFromExtensions(extensions)
+  const extensionProps = pathOr({}, [treePath, 'props'], extensions)
   const component = getComponentName(treePath)
   const getSchema = path([component, 'getSchema'], { ...components })
+
   return (
     path([component, 'schema'], { ...components }) ||
-    (typeof getSchema === 'function' && getSchema({}))
+    (typeof getSchema === 'function' && getSchema(extensionProps))
   )
 }
 
@@ -52,10 +54,9 @@ export function getComponents(
   const getComponentSchema = getComponentSchemaGetter(components, extensions)
 
   return Object.keys(extensions)
-    .filter(isSamePage(page, pages))
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
-      return !!schema && !!has('title', schema)
+      return isSamePageGetter(page, pages)(treePath) && !!schema && !!has('title', schema)
     })
     .sort((treePathA, treePathB) => {
       const parentPathA = `${treePathA.split('/')[0]}/${
