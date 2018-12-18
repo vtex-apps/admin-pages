@@ -7,6 +7,7 @@ interface Props {
   configuration: AdaptedExtensionConfiguration
   isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
+  onDelete: (configuration: ExtensionConfiguration) => void
   onEdit: (configuration: ExtensionConfiguration) => void
 }
 
@@ -17,6 +18,7 @@ const ConfigurationCard = ({
   intl,
   onClick,
   onEdit,
+  onDelete,
 }: Props & ReactIntl.InjectedIntlProps) => {
   const isActive =
     activeConfiguration &&
@@ -75,6 +77,17 @@ const ConfigurationCard = ({
               >
                 {intl.formatMessage({
                   id: 'pages.editor.components.configurations.button.edit',
+                })}
+              </Button>
+              <Button
+                onClick={() => {
+                  onDelete(configuration)
+                }}
+                size="small"
+                variation="tertiary"
+              >
+                {intl.formatMessage({
+                  id: 'pages.editor.components.configurations.button.delete',
                 })}
               </Button>
             </div>

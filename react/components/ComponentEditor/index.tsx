@@ -1,4 +1,4 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
+import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce, test } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
@@ -13,10 +13,11 @@ import ConditionsSelector from '../ConditionsSelector'
 import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
 import ErrorListTemplate from '../form/ErrorListTemplate'
 import FieldTemplate from '../form/FieldTemplate'
+import ImageUploader from '../form/ImageUploader'
 import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
-
 import Modal from '../Modal'
 import ModeSwitcher from '../ModeSwitcher'
+
 import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
@@ -30,6 +31,50 @@ const defaultUiSchema = {
 
 const MODES: ComponentEditorMode[] = ['content', 'layout']
 
+const nativeMap: Record<string, ComponentSchema> = {
+  nativeImage: {
+    type: 'string',
+    widget: {
+      'ui:widget': 'image-uploader',
+    },
+  },
+  nativeOptions: {
+    type: 'number',
+    widget: {
+      'ui:options': {
+        inline: true,
+      },
+      'ui:widget': 'RadioWidget',
+    },
+  },
+  nativePlainText: {
+    type: 'string',
+    widget:{
+      'ui:widget': 'BaseInput',
+    },
+  },
+  nativeRichText: {
+    type: 'string',
+    widget: {
+      'ui:widget': 'TextareaWidget',
+    },
+  },
+  nativeVideoLink: {
+    type: 'string',
+    widget:{
+      'ui:widget': 'TextareaWidget',
+    },
+  },
+}
+
+const translateFromNative = (schema: ComponentSchema): ComponentSchema => {
+  const modifications = schema.type && nativeMap[schema.type]
+  if (modifications) {
+    return merge(schema,modifications)
+  }
+  return schema
+}
+
 interface ExtensionConfigurationsQuery {
   error: object
   extensionConfigurations: ExtensionConfiguration[]
@@ -42,6 +87,7 @@ interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
   saveExtension: any
+  deleteExtension: any
 }
 
 interface ComponentEditorState {
@@ -156,6 +202,7 @@ class ComponentEditor extends Component<
           Array.isArray(value) ? map(translate, value) : translate(value),
         pick(['title', 'description', 'enumNames'], schema) as object
       )
+      schema = translateFromNative(schema)
 
       if (has('widget', schema)) {
         translatedSchema.widget = merge(
@@ -280,7 +327,6 @@ class ComponentEditor extends Component<
         )
       ),
     }
-
     return mergeDeepLeft(uiSchema, componentUiSchema || {})
   }
 
@@ -299,7 +345,6 @@ class ComponentEditor extends Component<
       props,
       this.props.runtime,
     )
-
     const componentUiSchema =
       componentImplementation && componentImplementation.uiSchema
         ? componentImplementation.uiSchema
@@ -389,6 +434,7 @@ class ComponentEditor extends Component<
             )}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
+            onDelete={this.handleConfigurationDelete}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
             iframeWindow={this.props.editor.iframeWindow}
@@ -522,7 +568,26 @@ class ComponentEditor extends Component<
       this.setState({ newLabel: event.target.value, wasModified: true })
     }
   }
-
+  private handleConfigurationDelete = (configuration: ExtensionConfiguration) => {
+    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
+    const extensionConfigurationsQuery = this.props.extensionConfigurations
+    const configurations = extensionConfigurationsQuery.extensionConfigurations
+    this.props.extensionConfigurations.extensionConfigurations = configurations.filter(testConfiguration=>testConfiguration.configurationId !== configuration.configurationId)
+    console.log(this.props.extensionConfigurations)
+    console.log(runtime.extensions[editor.editTreePath as string].configurationsIds)
+    console.log(this.props)
+    // this.setState({ isEditMode: false, newLabel: undefined }, () => {
+    //   if (
+    //     configurations.length > 0 &&
+    //     !this.isConfigurationDisabled(configurations[0])
+    //   ) {
+    //     this.handleConfigurationChange(configurations[0])
+    //   } else {
+    //     this.handleQuit()
+    //   }
+    // })
+    this.handleConfigurationSave()
+  }
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
     const { configuration: currConfiguration } = this.state
 
@@ -539,7 +604,6 @@ class ComponentEditor extends Component<
   private handleConfigurationSave = async () => {
     const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
     const { conditions, configuration } = this.state
-
     const { allMatches, device } = configuration!
 
     const configurationId =
