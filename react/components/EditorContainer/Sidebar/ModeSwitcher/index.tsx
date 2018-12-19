@@ -10,10 +10,10 @@ interface Props {
   modal: ModalContext
 }
 
-const modes: EditorMode[] = ['content', 'layout']
+const modes: EditorMode[] = ['content', 'layout', 'style']
 
 const ModeSwitcher = ({ editor, formMeta, modal }: Props) => (
-  <div className="pt5">
+  <div className="flex bb bl bw1 b--muted-5">
     {modes.map(mode => (
       <ModeButton
         activeMode={editor.mode}

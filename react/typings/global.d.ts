@@ -102,7 +102,7 @@ declare global {
 
   type ConfigurationScope = ServerConfigurationScope | 'site'
 
-  type EditorMode = 'content' | 'layout'
+  type EditorMode = 'content' | 'layout' | 'style'
 
   interface EditorConditionSection {
     activeConditions: string[]

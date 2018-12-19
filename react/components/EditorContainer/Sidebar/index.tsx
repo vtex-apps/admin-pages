@@ -24,7 +24,7 @@ const Sidebar: React.SFC<Props> = ({
 }) => (
   <div
     id="sidebar-vtex-editor"
-    className="z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse"
+    className="z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns"
   >
     <FormMetaProvider>
       <FormMetaConsumer>
