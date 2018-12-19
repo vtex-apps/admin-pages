@@ -1,7 +1,7 @@
 import { equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import { ToastConsumerRenderProps } from 'vtex.styleguide'
+import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import { NormalizedComponent, SidebarComponent } from '../typings'
 
@@ -24,7 +24,7 @@ interface State {
   initialComponents: SidebarComponent[]
 }
 
-class ComponentList extends Component<Props, State> {
+class SortableList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
     if (!equals(props.components, state.initialComponents)) {
       return {
@@ -49,16 +49,24 @@ class ComponentList extends Component<Props, State> {
     return (
       <Fragment>
         <div className="bb bw1 b--light-silver" />
-        <List
-          components={this.state.components}
-          isSortable
-          lockAxis="y"
-          onEdit={this.handleEdit}
-          onMouseEnter={onMouseEnterComponent}
-          onMouseLeave={onMouseLeaveComponent}
-          onSortEnd={this.handleSortEnd}
-          useDragHandle
-        />
+        <div className="flex flex-column justify-between flex-grow-1">
+          <List
+            components={this.state.components}
+            isSortable
+            lockAxis="y"
+            onEdit={this.handleEdit}
+            onMouseEnter={onMouseEnterComponent}
+            onMouseLeave={onMouseLeaveComponent}
+            onSortEnd={this.handleSortEnd}
+            useDragHandle
+          />
+          <div className="bt bw1 b--light-silver" style={{ marginTop: 'auto' }}>
+            <Button disabled={true} variation="tertiary">
+              undo (i18n)
+            </Button>
+            <Button variation="tertiary">save (i18n)</Button>
+          </div>
+        </div>
       </Fragment>
     )
   }
@@ -126,4 +134,4 @@ class ComponentList extends Component<Props, State> {
   }
 }
 
-export default ComponentList
+export default SortableList
