@@ -1,0 +1,12 @@
+query ListStyles {
+  listStyles {
+    app
+    name
+    colors {
+      emphasis
+      actionPrimary
+      actionSecondary
+      base
+    }
+  }
+}
