@@ -16,7 +16,7 @@ declare module 'render' {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema
     getSchema?: (any, any?) => ComponentSchema
-    uiSchema: UISchema
+    uiSchema?: UISchema
   }
 
   export interface ComponentsRegistry {
