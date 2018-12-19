@@ -6,6 +6,7 @@ import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
+import DeleteConfiguration from '../../queries/DeleteConfiguration.graphql'
 import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
 import { getIframeImplementation } from '../../utils/components'
@@ -84,10 +85,10 @@ interface ExtensionConfigurationsQuery {
 
 interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
   availableComponents: any
+  deleteConfiguration: any
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
   saveExtension: any
-  deleteExtension: any
 }
 
 interface ComponentEditorState {
@@ -345,6 +346,7 @@ class ComponentEditor extends Component<
       props,
       this.props.runtime,
     )
+
     const componentUiSchema =
       componentImplementation && componentImplementation.uiSchema
         ? componentImplementation.uiSchema
@@ -568,26 +570,63 @@ class ComponentEditor extends Component<
       this.setState({ newLabel: event.target.value, wasModified: true })
     }
   }
-  private handleConfigurationDelete = (configuration: ExtensionConfiguration) => {
-    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
-    this.props.extensionConfigurations.extensionConfigurations = configurations.filter(testConfiguration=>testConfiguration.configurationId !== configuration.configurationId)
-    console.log(this.props.extensionConfigurations)
-    console.log(runtime.extensions[editor.editTreePath as string].configurationsIds)
-    console.log(this.props)
-    // this.setState({ isEditMode: false, newLabel: undefined }, () => {
-    //   if (
-    //     configurations.length > 0 &&
-    //     !this.isConfigurationDisabled(configurations[0])
-    //   ) {
-    //     this.handleConfigurationChange(configurations[0])
-    //   } else {
-    //     this.handleQuit()
-    //   }
-    // })
-    this.handleConfigurationSave()
+  // private handleConfigurationDelete = (configuration: ExtensionConfiguration) => {
+  //   const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
+  //   const extensionConfigurationsQuery = this.props.extensionConfigurations
+  //   const configurations = extensionConfigurationsQuery.extensionConfigurations
+  //   this.props.extensionConfigurations.extensionConfigurations = configurations.filter(testConfiguration=>testConfiguration.configurationId !== configuration.configurationId)
+  //   console.log(this.props.extensionConfigurations)
+  //   console.log(runtime.extensions[editor.editTreePath as string].configurationsIds)
+  //   console.log(this.props)
+  //   // this.setState({ isEditMode: false, newLabel: undefined }, () => {
+  //   //   if (
+  //   //     configurations.length > 0 &&
+  //   //     !this.isConfigurationDisabled(configurations[0])
+  //   //   ) {
+  //   //     this.handleConfigurationChange(configurations[0])
+  //   //   } else {
+  //   //     this.handleQuit()
+  //   //   }
+  //   // })
+  //   this.handleConfigurationSave()
+  // }
+
+  private handleConfigurationDelete = async (configurationId: ExtensionConfiguration['configurationId']) => {
+
+    const { deleteConfiguration, editor, runtime } = this.props
+
+    this.setState({
+      isLoading: true,
+    })
+
+    try {
+      await deleteConfiguration({
+        variables: {
+          configurationId,
+          extensionName: editor.editTreePath,
+          routeId: runtime.page,
+        },
+      })
+
+      const extensionConfigurationsQuery = this.props.extensionConfigurations
+
+      await extensionConfigurationsQuery.refetch({
+        configurationsIds:
+          runtime.extensions[editor.editTreePath as string].configurationsIds,
+        treePath: editor.editTreePath,
+      })
+
+      this.setState(
+        {
+          isLoading: false,
+        }
+      )
+    } catch (err) {
+      alert('Something went wrong. Please try again.')
+      console.log(err)
+    }
   }
+
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
     const { configuration: currConfiguration } = this.state
 
@@ -604,6 +643,7 @@ class ComponentEditor extends Component<
   private handleConfigurationSave = async () => {
     const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
     const { conditions, configuration } = this.state
+
     const { allMatches, device } = configuration!
 
     const configurationId =
@@ -865,6 +905,7 @@ class ComponentEditor extends Component<
 export default compose(
   injectIntl,
   graphql(SaveExtension, { name: 'saveExtension' }),
+  graphql(DeleteConfiguration,{ name: 'deleteConfiguration'}),
   graphql(AvailableComponents, {
     name: 'availableComponents',
     options: (props: ComponentEditorProps) => ({

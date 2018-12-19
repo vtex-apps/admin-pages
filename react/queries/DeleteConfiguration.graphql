@@ -1,0 +1,11 @@
+mutation DeleteConfiguration(
+  $configurationId: String!
+  $extensionName: String!
+  $routeId: String!
+) {
+  deleteConfiguration(
+    configurationId: $configurationId
+    extensionName: $extensionName
+    routeId: $routeId
+  )
+}

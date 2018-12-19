@@ -9,7 +9,7 @@ interface Props {
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
-  onDelete: (configuration: ExtensionConfiguration) => void
+  onDelete: (configurationId: ExtensionConfiguration['configurationId']) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
 }
