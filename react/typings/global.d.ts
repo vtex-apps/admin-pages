@@ -159,6 +159,22 @@ declare global {
     cacheHints: CacheHints
   }
 
+  interface StyleColors {
+    emphasis: string
+    actionPrimary: string
+    actionSecondary: string
+    base: string
+  }
+
+  interface StyleBasic {
+    app: string
+    name: string
+  }
+
+  interface Style extends StyleBasic{
+    colors: StyleColors
+  }
+
   interface PageContextOptions {
     scope?: ConfigurationScope
     device?: ConfigurationDevice

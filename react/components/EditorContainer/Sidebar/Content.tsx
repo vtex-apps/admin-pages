@@ -8,6 +8,7 @@ import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
 import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
+import StyleList from './StyleList'
 import TemplateEditor from './TemplateEditor'
 import { SidebarComponent } from './typings'
 
@@ -30,6 +31,9 @@ class Content extends Component<Props> {
     }
 
     if (editor.editTreePath === null) {
+      if (editor.mode === 'style') {
+        return <StyleList iframeWindow={editor.iframeWindow}/>
+      }
       return (
         <ComponentSelector
           components={this.getComponents(runtime)}
