@@ -142,4 +142,42 @@ describe('getComponents', () => {
       },
     ])
   })
+
+  it(`should make header fixed at first position and footer fixed at last`, () => {
+    const extensions = {
+      ...mockExtensions,
+      'store/footer': {
+        component: 'footer',
+      },
+      'store/header': {
+        component: 'header',
+      },
+    }
+    const components = {
+      ...mockComponents,
+      footer: {
+        schema: { title: 'footer' },
+      },
+      header: {
+        schema: { title: 'header' },
+      },
+    }
+
+    const result = getComponents(
+      extensions,
+      components as any,
+      'store/home',
+      mockPages,
+    )
+
+    expect(result[0]).toEqual({
+      name: 'header',
+      treePath: 'store/header',
+    })
+
+    expect(result[result.length - 1]).toEqual({
+      name: 'footer',
+      treePath: 'store/footer',
+    })
+  })
 })
