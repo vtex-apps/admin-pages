@@ -119,8 +119,8 @@ export default class EditorContainer extends Component<
     return runtime ? (
       editTreePath === null ? (
         <Fragment>
-          <div className="flex justify-between items-center">
-            <h3 className="near-black f5 mv0 pa5">
+          <div className="mv5 flex justify-between items-center">
+            <h3 className="ph5 f5 near-black">
               <FormattedMessage id="pages.editor.components.title" />
             </h3>
             <div
@@ -158,7 +158,7 @@ export default class EditorContainer extends Component<
           id="admin-sidebar"
           className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden fixed absolute-m w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
         >
-          <div className="h-100 overflow-y-scroll">
+          <div className="h-100 flex flex-column">
             {this.renderSideBarContent()}
           </div>
         </nav>

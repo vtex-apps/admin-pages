@@ -15,7 +15,7 @@ interface Props {
 
 const List = SortableContainer<Props>(
   ({ components, isSortable, onEdit, onMouseEnter, onMouseLeave }) => (
-    <ul className="mv0 pl0">
+    <ul className="mv0 pl0 overflow-y-auto">
       {components.map((component, index) => (
         <SortableButton
           component={component}
