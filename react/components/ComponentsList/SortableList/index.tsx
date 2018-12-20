@@ -1,6 +1,6 @@
 import { equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, MutationFn } from 'react-apollo'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
@@ -17,7 +17,7 @@ interface CustomProps {
   iframeRuntime: RenderContextProps['runtime']
   onMouseEnterComponent: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeaveComponent: () => void
-  saveExtension: any
+  saveExtension: MutationFn
 }
 
 type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
@@ -25,7 +25,7 @@ type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
 interface State {
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
-  loadingMutation: boolean
+  isLoadingMutation: boolean
 }
 
 class SortableList extends Component<Props, State> {
@@ -44,13 +44,13 @@ class SortableList extends Component<Props, State> {
     this.state = {
       components: normalizeComponents(props.components),
       initialComponents: props.components,
-      loadingMutation: false,
+      isLoadingMutation: false,
     }
   }
 
   public render() {
     const { onMouseEnterComponent, onMouseLeaveComponent, intl } = this.props
-    const { loadingMutation } = this.state
+    const { isLoadingMutation } = this.state
     return (
       <Fragment>
         <div className="bb bw1 b--light-silver" />
@@ -71,7 +71,7 @@ class SortableList extends Component<Props, State> {
               undo (i18n)
             </Button>
             <Button
-              isLoading={loadingMutation}
+              isLoading={isLoadingMutation}
               variation="tertiary"
               onClick={this.handleSaveReorder}
             >
@@ -100,15 +100,19 @@ class SortableList extends Component<Props, State> {
 
     const iframeWindow = (document.getElementById(
       'store-iframe',
-    ) as HTMLIFrameElement).contentWindow as Window
+    ) as HTMLIFrameElement).contentWindow
 
     const iframeCurrentPage = iframeRuntime.page
     const extension = iframeRuntime.extensions[iframeCurrentPage]
     const configurationId = path(['configurationIds', 0])(extension)
 
     try {
+      if (iframeWindow === null) {
+        throw new Error('iframeWindow is null')
+      }
+
       this.setState({
-        loadingMutation: true,
+        isLoadingMutation: true,
       })
 
       await saveExtension({
@@ -125,11 +129,6 @@ class SortableList extends Component<Props, State> {
           scope: 'route',
         },
       })
-
-      this.setState({
-        loadingMutation: false,
-      })
-
       this.props.showToast(
         intl.formatMessage({ id: 'pages.editor.component-list.save.success' }),
       )
@@ -137,7 +136,12 @@ class SortableList extends Component<Props, State> {
       this.props.showToast(
         intl.formatMessage({ id: 'pages.editor.component-list.save.error' }),
       )
+    } finally {
+      this.setState({
+        isLoadingMutation: false,
+      })
     }
+
   }
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
