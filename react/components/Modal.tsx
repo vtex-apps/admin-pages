@@ -10,7 +10,7 @@ interface Props {
   onClose: (event: Event) => void
   textButtonAction: string
   textButtonCancel: string
-  textMessage: string
+  textMessage: string | React.ReactNode
 }
 
 const Modal = ({
