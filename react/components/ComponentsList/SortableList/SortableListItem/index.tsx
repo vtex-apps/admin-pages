@@ -87,7 +87,6 @@ class SortableListItem extends Component<Props, State> {
             <div className="bb b--light-silver" />
           </ul>
         )}
-        <div className="bb b--light-silver" />
       </li>
     )
   }
