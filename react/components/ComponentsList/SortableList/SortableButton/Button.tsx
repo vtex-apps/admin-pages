@@ -31,7 +31,7 @@ const Button = ({
     type="button"
   >
     <FormattedMessage id={title}>
-      {text => <span className="pl5 f6 fw5 track-1">{text}</span>}
+      {text => <span className="pl2 f6 fw5 track-1">{text}</span>}
     </FormattedMessage>
   </button>
 )
