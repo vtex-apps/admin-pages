@@ -11,7 +11,7 @@ import { getParentTreePath, normalizeComponents } from './utils'
 interface CustomProps {
   components: SidebarComponent[]
   editor: EditorContext
-  highlightExtensionPoint: (treePath: string | null) => void
+  highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
   onMouseEnterComponent: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeaveComponent: () => void
@@ -73,13 +73,13 @@ class SortableList extends Component<Props, State> {
   }
 
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { editor, highlightExtensionPoint } = this.props
+    const { editor, highlightHandler } = this.props
 
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
     editor.editExtensionPoint(treePath as string)
 
-    highlightExtensionPoint(null)
+    highlightHandler(null)
   }
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {

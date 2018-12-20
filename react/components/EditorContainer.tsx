@@ -134,8 +134,8 @@ export default class EditorContainer extends Component<
           </div>
           <ComponentsList
             editor={editor}
+            highlightHandler={this.highlightExtensionPoint}
             runtime={runtime}
-            highlightExtensionPoint={this.highlightExtensionPoint}
           />
         </Fragment>
       ) : (

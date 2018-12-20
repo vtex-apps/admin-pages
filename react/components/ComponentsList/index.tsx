@@ -9,7 +9,7 @@ import SortableList from './SortableList'
 import { getComponents } from './getComponents'
 
 interface Props {
-  highlightExtensionPoint: (treePath: string | null) => void
+  highlightHandler: (treePath: string | null) => void
 }
 
 class ComponentsList extends Component<
@@ -23,22 +23,22 @@ class ComponentsList extends Component<
   public onEdit = (event: any) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
     this.props.editor.editExtensionPoint(treePath as string)
-    this.props.highlightExtensionPoint(null)
+    this.props.highlightHandler(null)
   }
 
   public handleMouseEnter = (event: any) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
-    this.props.highlightExtensionPoint(treePath as string)
+    this.props.highlightHandler(treePath as string)
   }
 
   public handleMouseLeave = () => {
-    this.props.highlightExtensionPoint(null)
+    this.props.highlightHandler(null)
   }
 
   public render() {
     const {
       editor,
-      highlightExtensionPoint,
+      highlightHandler,
       runtime: iframeRuntime,
     } = this.props
 
@@ -57,7 +57,7 @@ class ComponentsList extends Component<
               components={components}
               editor={editor}
               iframeRuntime={iframeRuntime}
-              highlightExtensionPoint={highlightExtensionPoint}
+              highlightHandler={highlightHandler}
               onMouseEnterComponent={this.handleMouseEnter}
               onMouseLeaveComponent={this.handleMouseLeave}
               showToast={showToast}
