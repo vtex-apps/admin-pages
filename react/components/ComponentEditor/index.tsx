@@ -94,12 +94,14 @@ interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
 interface ComponentEditorState {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
+  isDeleteModalOpen: boolean
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
   newLabel?: string
   wasModified: boolean
+  deletedConfigurationId: string
 }
 
 class ComponentEditor extends Component<
@@ -114,6 +116,8 @@ class ComponentEditor extends Component<
 
     this.state = {
       conditions: [],
+      deletedConfigurationId: '',
+      isDeleteModalOpen: false,
       isEditMode: false,
       isLoading: false,
       isModalOpen: false,
@@ -381,26 +385,71 @@ class ComponentEditor extends Component<
         <Modal
           isActionLoading={this.state.isLoading}
           isOpen={this.state.isModalOpen}
-          onClickAction={this.handleConfigurationSave}
-          onClickCancel={this.handleConfigurationDiscard}
-          onClose={this.handleModalClose}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.components.button.save',
-          })}
-          textButtonCancel={intl.formatMessage({
-            id: 'pages.editor.components.modal.button.discard',
-          })}
-          textMessage={intl.formatMessage({
-            id: 'pages.editor.components.modal.text',
-          })}
+          onClickAction={
+            this.state.isDeleteModalOpen
+            ?
+            this.handleConfigurationDelete
+            :
+            this.handleConfigurationSave
+          }
+          onClickCancel={
+            this.state.isDeleteModalOpen
+            ?
+            this.handleModalClose
+            :
+            this.handleConfigurationDiscard
+          }
+          onClose={
+            this.state.isDeleteModalOpen
+            ?
+            this.handleModalClose
+            :
+            this.handleModalClose
+          }
+          textButtonAction={
+            this.state.isDeleteModalOpen
+            ?
+            intl.formatMessage({
+              id: 'pages.editor.components.button.delete',
+            })
+            :
+            intl.formatMessage({
+              id: 'pages.editor.components.button.save',
+            })
+          }
+          textButtonCancel={
+            this.state.isDeleteModalOpen
+            ?
+            intl.formatMessage({
+              id: 'pages.editor.components.button.cancel',
+            })
+            :
+            intl.formatMessage({
+              id: 'pages.editor.components.button.discard',
+            })
+          }
+          textMessage={
+            this.state.isDeleteModalOpen
+            ?
+            intl.formatMessage({
+              id: 'pages.editor.components.modal.deleteText',
+            })
+            :
+            intl.formatMessage({
+              id: 'pages.editor.components.modal.text',
+            })
+          }
         />
+
         <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
           <span
             className="pointer"
             onClick={
               this.state.isEditMode
-                ? this.handleConfigurationClose
-                : this.handleQuit
+              ?
+              this.handleConfigurationClose
+              :
+              this.handleQuit
             }
           >
             <IconArrowBack size={16} color="#585959" />
@@ -410,7 +459,17 @@ class ComponentEditor extends Component<
             {shouldRenderSaveButton && (
                 <SaveButton
                   isLoading={this.state.isLoading}
-                  onClick={this.handleConfigurationSave}
+                  onClick={
+                    this.state.isEditMode
+                    ?
+                    (
+                      this.state.isModalOpen
+                      ?this.handleConfigurationClose
+                      :this.handleConfigurationSave
+                    )
+                    :
+                    this.handleModalClose
+                  }
                   variation="tertiary"
                 />
               )}
@@ -436,7 +495,7 @@ class ComponentEditor extends Component<
             )}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
-            onDelete={this.handleConfigurationDelete}
+            onDelete={this.handleDeleteModalOpen}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
             iframeWindow={this.props.editor.iframeWindow}
@@ -570,29 +629,9 @@ class ComponentEditor extends Component<
       this.setState({ newLabel: event.target.value, wasModified: true })
     }
   }
-  // private handleConfigurationDelete = (configuration: ExtensionConfiguration) => {
-  //   const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
-  //   const extensionConfigurationsQuery = this.props.extensionConfigurations
-  //   const configurations = extensionConfigurationsQuery.extensionConfigurations
-  //   this.props.extensionConfigurations.extensionConfigurations = configurations.filter(testConfiguration=>testConfiguration.configurationId !== configuration.configurationId)
-  //   console.log(this.props.extensionConfigurations)
-  //   console.log(runtime.extensions[editor.editTreePath as string].configurationsIds)
-  //   console.log(this.props)
-  //   // this.setState({ isEditMode: false, newLabel: undefined }, () => {
-  //   //   if (
-  //   //     configurations.length > 0 &&
-  //   //     !this.isConfigurationDisabled(configurations[0])
-  //   //   ) {
-  //   //     this.handleConfigurationChange(configurations[0])
-  //   //   } else {
-  //   //     this.handleQuit()
-  //   //   }
-  //   // })
-  //   this.handleConfigurationSave()
-  // }
 
-  private handleConfigurationDelete = async (configurationId: ExtensionConfiguration['configurationId']) => {
-
+  private handleConfigurationDelete = async () => {
+    const configurationId = this.state.deletedConfigurationId
     const { deleteConfiguration, editor, runtime } = this.props
 
     this.setState({
@@ -619,12 +658,20 @@ class ComponentEditor extends Component<
       this.setState(
         {
           isLoading: false,
-        }
+        },
+        () => {
+          this.handleModalClose()
+        },
       )
+      this.setState({isDeleteModalOpen: false,})
+      if(this.props.extensionConfigurations.extensionConfigurations.length === 0){ this.setState({isEditMode: true,})}
+      else{ this.handleConfigurationChange(this.props.extensionConfigurations.extensionConfigurations[0])}
+
     } catch (err) {
       alert('Something went wrong. Please try again.')
       console.log(err)
     }
+
   }
 
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
@@ -781,7 +828,11 @@ class ComponentEditor extends Component<
   }
 
   private handleModalClose = () => {
-    this.setState({ isModalOpen: false })
+    this.setState({ isModalOpen: false})
+  }
+
+  private handleDeleteModalOpen = (configurationId: ExtensionConfiguration['configurationId']) => {
+    this.setState({ isDeleteModalOpen: true, isModalOpen: true, deletedConfigurationId: configurationId})
   }
 
   private handleModalOpen = () => {
