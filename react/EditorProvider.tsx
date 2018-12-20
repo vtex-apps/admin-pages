@@ -3,6 +3,7 @@ import { difference, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'render'
+import { ToastProvider } from 'vtex.styleguide'
 
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
@@ -31,7 +32,7 @@ interface State {
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
-const viewPorts: {[name: string]: Viewport[]} = {
+const viewPorts: { [name: string]: Viewport[] } = {
   default: ['mobile', 'tablet', 'desktop'],
   desktop: [],
   mobile: ['mobile', 'tablet'],
@@ -62,7 +63,7 @@ class EditorProvider extends Component<Props, State> {
       window.__provideRuntime = async (
         runtime: RenderContext,
         messages?: object,
-        shouldUpdateRuntime?: boolean
+        shouldUpdateRuntime?: boolean,
       ) => {
         this.props.setMessages(messages)
 
@@ -129,7 +130,7 @@ class EditorProvider extends Component<Props, State> {
 
   public componentWillUnmount() {
     const {
-      runtime: { production, emitter }
+      runtime: { production, emitter },
     } = this.props
 
     emitter.removeListener('localesChanged', this.emitLocaleEventToIframe)
@@ -140,7 +141,11 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public emitLocaleEventToIframe = (event: string) => {
-    const emitToIframe: RenderRuntime['emitter'] = pathOr({emit: noop}, ['state', 'iframeRuntime', 'emitter'])(this)
+    const emitToIframe: RenderRuntime['emitter'] = pathOr({ emit: noop }, [
+      'state',
+      'iframeRuntime',
+      'emitter',
+    ])(this)
     emitToIframe.emit('localesChanged', event)
   }
 
@@ -292,16 +297,20 @@ class EditorProvider extends Component<Props, State> {
     )
 
     return (
-      <EditorContext.Provider value={editor}>
-        {childrenWithSidebar}
-      </EditorContext.Provider>
+      <ToastProvider positioning="parent">
+        <EditorContext.Provider value={editor}>
+          {childrenWithSidebar}
+        </EditorContext.Provider>
+      </ToastProvider>
     )
   }
 }
 
 const EditorWithMessageContext = (props: Props) => (
   <MessagesContext.Consumer>
-    {({setMessages}) => (<EditorProvider {...props} setMessages={setMessages}/>)}
+    {({ setMessages }) => (
+      <EditorProvider {...props} setMessages={setMessages} />
+    )}
   </MessagesContext.Consumer>
 )
 
