@@ -6,6 +6,7 @@ import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import SaveExtension from '../../../queries/SaveExtension.graphql'
+import Modal from '../../Modal'
 import { NormalizedComponent, SidebarComponent } from '../typings'
 import List from './List'
 import { getParentTreePath, normalizeComponents } from './utils'
@@ -23,10 +24,17 @@ interface CustomProps {
 type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
 
 interface State {
+  cancelMessageId: string
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
+  isModalOpen: boolean
+  handleCancelModal: () => void
+  handleCloseModal: () => void
+  handleConfirmModal: () => void
 }
+
+const noop = () => console.log('noop')
 
 class SortableList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
@@ -42,17 +50,40 @@ class SortableList extends Component<Props, State> {
     super(props)
 
     this.state = {
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       components: normalizeComponents(props.components),
+      handleCancelModal: noop,
+      handleCloseModal: noop,
+      handleConfirmModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
+      isModalOpen: false
     }
   }
 
   public render() {
     const { onMouseEnterComponent, onMouseLeaveComponent, intl } = this.props
-    const { isLoadingMutation } = this.state
+    const { cancelMessageId, handleCancelModal, handleCloseModal, handleConfirmModal, isLoadingMutation, isModalOpen } = this.state
+
     return (
       <Fragment>
+        <Modal
+          isActionLoading={isLoadingMutation}
+          textButtonAction={intl.formatMessage({id: 'pages.editor.component-list.save.button'})}
+          onClickAction={handleConfirmModal}
+          textButtonCancel={intl.formatMessage({id: cancelMessageId})}
+          onClickCancel={handleCancelModal}
+          onClose={handleCloseModal}
+          isOpen={isModalOpen}
+          textMessage={
+            <Fragment>
+              <h1>(i18n) Save Template</h1>
+                <p>
+                  (i18n) Are you sure? The changes will be applied to all pages that are using this {'<<<<<'}template{'>>>>>'}
+              </p>
+            </Fragment>
+          }
+        />
         <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
           <List
@@ -76,7 +107,7 @@ class SortableList extends Component<Props, State> {
               <Button
                 isLoading={isLoadingMutation}
                 variation="tertiary"
-                onClick={this.handleSaveReorder}
+                onClick={this.handleOpenSaveChangesModal}
               >
                 {intl.formatMessage({
                   id: 'pages.editor.component-list.save.button',
@@ -99,6 +130,26 @@ class SortableList extends Component<Props, State> {
     highlightHandler(null)
   }
 
+  private handleOpenSaveChangesModal = () => {
+    this.setState({
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      handleCancelModal: this.handleCloseModal,
+      handleCloseModal: this.handleCloseModal,
+      handleConfirmModal: this.handleSaveReorder,
+      isModalOpen: true,
+    })
+  }
+
+  private handleCloseModal = () => {
+    this.setState({
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      handleCancelModal: noop,
+      handleCloseModal: noop,
+      handleConfirmModal: noop,
+      isModalOpen: false,
+    })
+  }
+
   private handleSaveReorder = async () => {
     const { iframeRuntime, intl, saveExtension } = this.props
 
@@ -109,6 +160,7 @@ class SortableList extends Component<Props, State> {
     const iframeCurrentPage = iframeRuntime.page
     const extension = iframeRuntime.extensions[iframeCurrentPage]
     const configurationId = path(['configurationIds', 0])(extension)
+    let toastMessage = ''
 
     try {
       if (iframeWindow === null) {
@@ -133,17 +185,18 @@ class SortableList extends Component<Props, State> {
           scope: 'route',
         },
       })
-      this.props.showToast(
-        intl.formatMessage({ id: 'pages.editor.component-list.save.success' }),
-      )
+
+      toastMessage = intl.formatMessage({ id: 'pages.editor.component-list.save.success' })
     } catch (e) {
-      this.props.showToast(
-        intl.formatMessage({ id: 'pages.editor.component-list.save.error' }),
-      )
+      toastMessage = intl.formatMessage({ id: 'pages.editor.component-list.save.error' })
     } finally {
+      this.handleCloseModal()
       this.setState({
         isLoadingMutation: false,
       })
+
+      this.props.showToast(toastMessage)
+
     }
 
   }
