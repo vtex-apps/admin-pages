@@ -1,10 +1,12 @@
-import { equals, findIndex, last } from 'ramda'
+import { equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
+import { compose, graphql } from 'react-apollo'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
+import SaveExtension from '../../../queries/SaveExtension.graphql'
 import { NormalizedComponent, SidebarComponent } from '../typings'
-
 import List from './List'
 import { getParentTreePath, normalizeComponents } from './utils'
 
@@ -15,13 +17,15 @@ interface CustomProps {
   iframeRuntime: RenderContextProps['runtime']
   onMouseEnterComponent: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeaveComponent: () => void
+  saveExtension: any
 }
 
-type Props = CustomProps & ToastConsumerRenderProps
+type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
 
 interface State {
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
+  loadingMutation: boolean
 }
 
 class SortableList extends Component<Props, State> {
@@ -40,12 +44,13 @@ class SortableList extends Component<Props, State> {
     this.state = {
       components: normalizeComponents(props.components),
       initialComponents: props.components,
+      loadingMutation: false,
     }
   }
 
   public render() {
-    const { onMouseEnterComponent, onMouseLeaveComponent } = this.props
-
+    const { onMouseEnterComponent, onMouseLeaveComponent, intl } = this.props
+    const { loadingMutation } = this.state
     return (
       <Fragment>
         <div className="bb bw1 b--light-silver" />
@@ -65,7 +70,15 @@ class SortableList extends Component<Props, State> {
             <Button disabled={true} variation="tertiary">
               undo (i18n)
             </Button>
-            <Button variation="tertiary">save (i18n)</Button>
+            <Button
+              isLoading={loadingMutation}
+              variation="tertiary"
+              onClick={this.handleSaveReorder}
+            >
+              {intl.formatMessage({
+                id: 'pages.editor.component-list.save.button',
+              })}
+            </Button>
           </div>
         </div>
       </Fragment>
@@ -80,6 +93,51 @@ class SortableList extends Component<Props, State> {
     editor.editExtensionPoint(treePath as string)
 
     highlightHandler(null)
+  }
+
+  private handleSaveReorder = async () => {
+    const { iframeRuntime, intl, saveExtension } = this.props
+
+    const iframeWindow = (document.getElementById(
+      'store-iframe',
+    ) as HTMLIFrameElement).contentWindow as Window
+
+    const iframeCurrentPage = iframeRuntime.page
+    const extension = iframeRuntime.extensions[iframeCurrentPage]
+    const configurationId = path(['configurationIds', 0])(extension)
+
+    try {
+      this.setState({
+        loadingMutation: true,
+      })
+
+      await saveExtension({
+        variables: {
+          allMatches: true,
+          conditions: [],
+          configurationId,
+          device: 'any',
+          extensionName: iframeCurrentPage,
+          label: null,
+          path: iframeWindow.location.pathname,
+          propsJSON: JSON.stringify(extension.props),
+          routeId: 'store',
+          scope: 'route',
+        },
+      })
+
+      this.setState({
+        loadingMutation: false,
+      })
+
+      this.props.showToast(
+        intl.formatMessage({ id: 'pages.editor.component-list.save.success' }),
+      )
+    } catch (e) {
+      this.props.showToast(
+        intl.formatMessage({ id: 'pages.editor.component-list.save.error' }),
+      )
+    }
   }
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
@@ -135,4 +193,7 @@ class SortableList extends Component<Props, State> {
   }
 }
 
-export default SortableList
+export default compose(
+  injectIntl,
+  graphql(SaveExtension, { name: 'saveExtension' }),
+)(SortableList)
