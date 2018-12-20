@@ -1,4 +1,4 @@
-import { equals, findIndex, last, path } from 'ramda'
+import { clone, equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
@@ -7,7 +7,11 @@ import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import SaveExtension from '../../../queries/SaveExtension.graphql'
 import Modal from '../../Modal'
-import { NormalizedComponent, SidebarComponent } from '../typings'
+import {
+  NormalizedComponent,
+  ReorderChange,
+  SidebarComponent,
+} from '../typings'
 import List from './List'
 import { getParentTreePath, normalizeComponents } from './utils'
 
@@ -34,6 +38,7 @@ interface State {
   handleCancelModal: () => void
   handleCloseModal: () => void
   handleConfirmModal: () => void
+  changes: ReorderChange[]
 }
 
 const noop = () => console.log('noop')
@@ -53,35 +58,48 @@ class SortableList extends Component<Props, State> {
 
     this.state = {
       cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
       handleCloseModal: noop,
       handleConfirmModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
-      isModalOpen: false
+      isModalOpen: false,
     }
   }
 
   public render() {
     const { onMouseEnterComponent, onMouseLeaveComponent, intl } = this.props
-    const { cancelMessageId, handleCancelModal, handleCloseModal, handleConfirmModal, isLoadingMutation, isModalOpen } = this.state
+    const {
+      cancelMessageId,
+      changes,
+      handleCancelModal,
+      handleCloseModal,
+      handleConfirmModal,
+      isLoadingMutation,
+      isModalOpen,
+    } = this.state
+    const hasChanges = changes.length > 0
 
     return (
       <Fragment>
         <Modal
           isActionLoading={isLoadingMutation}
-          textButtonAction={intl.formatMessage({id: 'pages.editor.component-list.save.button'})}
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.component-list.save.button',
+          })}
           onClickAction={handleConfirmModal}
-          textButtonCancel={intl.formatMessage({id: cancelMessageId})}
+          textButtonCancel={intl.formatMessage({ id: cancelMessageId })}
           onClickCancel={handleCancelModal}
           onClose={handleCloseModal}
           isOpen={isModalOpen}
           textMessage={
             <Fragment>
               <h1>(i18n) Save Template</h1>
-                <p>
-                  (i18n) Are you sure? The changes will be applied to all pages that are using this {'<<<<<'}template{'>>>>>'}
+              <p>
+                (i18n) Are you sure? The changes will be applied to all pages
+                that are using this {'<<<<<'}template{'>>>>>'}
               </p>
             </Fragment>
           }
@@ -99,14 +117,22 @@ class SortableList extends Component<Props, State> {
             useDragHandle
           />
           <div className="bt b--light-silver" />
-          <div className="bt bw1 b--light-silver w-100" style={{ marginTop: 'auto' }}>
+          <div
+            className="bt bw1 b--light-silver w-100"
+            style={{ marginTop: 'auto' }}
+          >
             <div className="w-50 fl tc bw1 br b--light-silver">
-              <Button disabled={true} variation="tertiary">
+              <Button
+                disabled={!hasChanges}
+                variation="tertiary"
+                onClick={this.handleUndo}
+              >
                 undo (i18n)
               </Button>
             </div>
             <div className="w-50 fl tc">
               <Button
+                disabled={!hasChanges}
                 isLoading={isLoadingMutation}
                 variation="tertiary"
                 onClick={this.handleOpenSaveChangesModal}
@@ -188,17 +214,21 @@ class SortableList extends Component<Props, State> {
         },
       })
 
-      toastMessage = intl.formatMessage({ id: 'pages.editor.component-list.save.success' })
+      toastMessage = intl.formatMessage({
+        id: 'pages.editor.component-list.save.success',
+      })
     } catch (e) {
-      toastMessage = intl.formatMessage({ id: 'pages.editor.component-list.save.error' })
+      toastMessage = intl.formatMessage({
+        id: 'pages.editor.component-list.save.error',
+      })
     } finally {
       this.handleCloseModal()
+
       this.setState({
         isLoadingMutation: false,
       })
 
       this.props.showToast(toastMessage)
-
     }
   }
 
@@ -234,6 +264,9 @@ class SortableList extends Component<Props, State> {
         extension.props.elements,
       )
 
+      const oldOrder = clone(extension.props.elements)
+      const target = firstTargetParentTreePath
+
       const newOrder = arrayMove(
         extension.props.elements,
         firstTargetIndex,
@@ -248,10 +281,27 @@ class SortableList extends Component<Props, State> {
         },
       })
 
-      this.setState({
+      this.setState(prevState => ({
+        changes: [...prevState.changes, { order: oldOrder, target }],
         components: arrayMove(this.state.components, oldIndex, newIndex),
-      })
+      }))
     }
+  }
+
+  private handleUndo = () => {
+    const { target, order } = last(this.state.changes)
+    const extension = this.props.iframeRuntime.extensions[target]
+    const changes = this.state.changes.slice(0, this.state.changes.length - 1)
+
+    this.props.iframeRuntime.updateExtension(target, {
+      ...extension,
+      props: {
+        ...extension.props,
+        elements: order,
+      },
+    })
+
+    this.setState({ changes })
   }
 }
 
