@@ -36,7 +36,7 @@ const ConfigurationCard = ({
     >
       <Card noPadding>
         <div
-          className={`pa5 ${
+          className={`pv5 pr5 ${
             isActive
               ? 'bg-washed-blue'
               : isDisabled
@@ -44,27 +44,27 @@ const ConfigurationCard = ({
                 : ''
           }`}
         >
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center pl5">
           {configuration.label ? (
             <div className="f4">{configuration.label}</div>
           ) : (
-            <FormattedMessage id="pages.editor.components.configurations.defaultTitle">
-              {text => <div className="f4 i gray">{text}</div>}
-            </FormattedMessage>
-          )}
-          <Button
-            icon
-            onClick={() => {
-              onDelete(configuration.configurationId)
-            }}
-            size="small"
-            variation="tertiary"
-          >
-            <Delete/>
-          </Button>
-            </div>
+              <FormattedMessage id="pages.editor.components.configurations.defaultTitle">
+                {text => <div className="f4 i gray">{text}</div>}
+              </FormattedMessage>
+              )}
+              <Button
+                icon
+                onClick={() => {
+                  onDelete(configuration.configurationId)
+                }}
+                size="small"
+                variation="tertiary"
+              >
+                <Delete/>
+              </Button>
+      </div>
           {!isDisabled && (
-            <div className="mt5">
+            <div className="mt5 pl5">
               <FormattedMessage id="pages.conditions.scope.title" />
               <Badge bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
@@ -74,7 +74,7 @@ const ConfigurationCard = ({
             </div>
           )}
           {configuration.conditions.length > 0 && (
-            <div className="mt5">
+            <div className="mt5 pl5">
               <FormattedMessage id="pages.editor.components.configurations.customConditions" />
               <div>{configuration.conditions.join(', ')}</div>
             </div>
