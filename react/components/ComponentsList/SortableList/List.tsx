@@ -9,7 +9,9 @@ interface Props {
   components: NormalizedComponent[]
   isSortable: boolean
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>,
+  ) => void
   onMouseLeave: () => void
 }
 

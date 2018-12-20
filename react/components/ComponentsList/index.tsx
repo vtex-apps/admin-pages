@@ -20,27 +20,8 @@ class ComponentsList extends Component<
     runtime: PropTypes.object,
   }
 
-  public onEdit = (event: any) => {
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
-    this.props.editor.editExtensionPoint(treePath as string)
-    this.props.highlightHandler(null)
-  }
-
-  public handleMouseEnter = (event: any) => {
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
-    this.props.highlightHandler(treePath as string)
-  }
-
-  public handleMouseLeave = () => {
-    this.props.highlightHandler(null)
-  }
-
   public render() {
-    const {
-      editor,
-      highlightHandler,
-      runtime: iframeRuntime,
-    } = this.props
+    const { editor, highlightHandler, runtime: iframeRuntime } = this.props
 
     const components = getComponents(
       iframeRuntime.extensions,
@@ -64,6 +45,18 @@ class ComponentsList extends Component<
         )}
       </ToastConsumer>
     )
+  }
+
+  private handleMouseEnter = (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>,
+  ) => {
+    const treePath = event.currentTarget.getAttribute('data-tree-path')
+
+    this.props.highlightHandler(treePath)
+  }
+
+  private handleMouseLeave = () => {
+    this.props.highlightHandler(null)
   }
 }
 

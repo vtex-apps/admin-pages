@@ -5,18 +5,14 @@ interface Props {
   hasLeftPadding?: boolean
   isChild?: boolean
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
-  onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void
   title: string
   treePath: string
 }
 
-const ListItem = ({
+const Item = ({
   hasLeftPadding,
   isChild,
   onEdit,
-  onMouseEnter,
-  onMouseLeave,
   title,
   treePath,
 }: Props) => (
@@ -25,10 +21,7 @@ const ListItem = ({
       hasLeftPadding ? 'pl7 pr0' : 'ph0'
     }`}
     data-tree-path={treePath}
-    key={treePath}
     onClick={onEdit}
-    onMouseEnter={onMouseEnter}
-    onMouseLeave={onMouseLeave}
     style={{ animationDuration: '0.2s' }}
   >
     <FormattedMessage id={title}>
@@ -41,4 +34,4 @@ const ListItem = ({
   </div>
 )
 
-export default ListItem
+export default Item
