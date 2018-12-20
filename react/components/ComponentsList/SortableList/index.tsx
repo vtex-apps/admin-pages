@@ -34,12 +34,10 @@ type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
 interface State {
   changes: ReorderChange[]
   components: NormalizedComponent[]
+  handleCancelModal: () => void
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
   isModalOpen: boolean
-  handleCancelModal: () => void
-  handleCloseModal: () => void
-  handleConfirmModal: () => void
   modalCancelMessageId: string
   modalTextMessageId: string
 }
@@ -63,8 +61,6 @@ class SortableList extends Component<Props, State> {
       changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
-      handleCloseModal: noop,
-      handleConfirmModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
@@ -79,8 +75,6 @@ class SortableList extends Component<Props, State> {
     const {
       changes,
       handleCancelModal,
-      handleCloseModal,
-      handleConfirmModal,
       isLoadingMutation,
       isModalOpen,
       modalCancelMessageId,
@@ -94,9 +88,9 @@ class SortableList extends Component<Props, State> {
         <Modal
           isActionLoading={isLoadingMutation}
           isOpen={isModalOpen}
-          onClickAction={handleConfirmModal}
+          onClickAction={this.handleSaveReorder}
           onClickCancel={handleCancelModal}
-          onClose={handleCloseModal}
+          onClose={this.handleCloseModal}
           textButtonAction={intl.formatMessage({
             id: 'pages.editor.component-list.button.save',
           })}
@@ -146,20 +140,39 @@ class SortableList extends Component<Props, State> {
   }
 
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { editor, highlightHandler } = this.props
+    if (this.state.changes.length > 0) {
+      const handleCancelModal = () => {
+        this.setState(prevState => ({
+          ...prevState,
+          changes: [prevState.changes[0]],
+          isModalOpen: false,
+        }), () => {
+          this.handleUndo()
+        })
+      }
 
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
+      this.setState({
+        handleCancelModal,
+        isModalOpen: true,
+        modalCancelMessageId:
+          'pages.editor.component-list.undo.modal.button.cancel',
+        modalTextMessageId: 'pages.editor.component-list.undo.modal.text',
+      })
+    } else {
+      const { editor, highlightHandler } = this.props
 
-    editor.editExtensionPoint(treePath)
+      const treePath = event.currentTarget.getAttribute('data-tree-path')
 
-    highlightHandler(null)
+      editor.editExtensionPoint(treePath)
+
+      highlightHandler(null)
+    }
   }
+
 
   private handleOpenSaveChangesModal = () => {
     this.setState({
       handleCancelModal: this.handleCloseModal,
-      handleCloseModal: this.handleCloseModal,
-      handleConfirmModal: this.handleSaveReorder,
       isModalOpen: true,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
@@ -170,8 +183,6 @@ class SortableList extends Component<Props, State> {
   private handleCloseModal = () => {
     this.setState({
       handleCancelModal: noop,
-      handleCloseModal: noop,
-      handleConfirmModal: noop,
       isModalOpen: false,
     })
   }
