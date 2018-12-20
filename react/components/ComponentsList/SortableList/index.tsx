@@ -16,7 +16,9 @@ interface CustomProps {
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
-  onMouseEnterComponent: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnterComponent: (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>,
+  ) => void
   onMouseLeaveComponent: () => void
   saveExtension: MutationFn
 }
@@ -125,7 +127,7 @@ class SortableList extends Component<Props, State> {
 
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
-    editor.editExtensionPoint(treePath as string)
+    editor.editExtensionPoint(treePath)
 
     highlightHandler(null)
   }
@@ -198,7 +200,6 @@ class SortableList extends Component<Props, State> {
       this.props.showToast(toastMessage)
 
     }
-
   }
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
