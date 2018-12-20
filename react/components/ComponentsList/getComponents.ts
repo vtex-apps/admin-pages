@@ -69,6 +69,11 @@ export function getComponents(
       const nameA = treePathA.split('/')[treePathA.split('/').length - 1]
       const nameB = treePathB.split('/')[treePathB.split('/').length - 1]
 
+      // This forces header to become first, or footer become last
+      if (nameA === 'header' || nameB === 'footer') {
+        return -1
+      }
+
       if (parentPathA !== parentPathB) {
         return 0
       }
