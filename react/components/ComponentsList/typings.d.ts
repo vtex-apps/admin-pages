@@ -7,3 +7,8 @@ export interface SidebarComponent {
   name: string
   treePath: string
 }
+
+interface ReorderChange {
+  target: string
+  order: string[]
+}
