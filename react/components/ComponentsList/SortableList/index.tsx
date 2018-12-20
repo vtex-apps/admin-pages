@@ -48,7 +48,7 @@ class SortableList extends Component<Props, State> {
 
     return (
       <Fragment>
-        <div className="bb b--light-silver" />
+        <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
           <List
             components={this.state.components}
