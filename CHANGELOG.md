@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- **`EditorProvider`**
+  - `ToastProvider` to `render()`.
+
+- **`SortableList`**
+  - Mutation to save extension.
+  - Injecting intl on default export.
+
+### Changed
+- **`manifest.json`**
+  - `vtex.styleguide` updated to `8.x`.
 
 ## [2.5.1] - 2019-01-02
 ### Fixed
