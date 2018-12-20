@@ -6,6 +6,7 @@ import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import SaveExtension from '../../../queries/SaveExtension.graphql'
+import UndoIcon from '../../icons/Undo'
 import Modal from '../../Modal'
 import {
   NormalizedComponent,
@@ -125,7 +126,7 @@ class SortableList extends Component<Props, State> {
                 onClick={this.handleUndo}
                 variation="tertiary"
               >
-                <FormattedMessage id="pages.editor.component-list.button.undo" />
+                <UndoIcon color={!hasChanges ? '#979899' : undefined} /><FormattedMessage id="pages.editor.component-list.button.undo" />
               </Button>
             </div>
             <div className="w-50 fl tc">
@@ -186,7 +187,7 @@ class SortableList extends Component<Props, State> {
     const extension = iframeRuntime.extensions[iframeCurrentPage]
     const configurationId = path(['configurationIds', 0])(extension)
     let toastMessage = ''
-
+    let changes = this.state.changes
     try {
       if (iframeWindow === null) {
         throw new Error('iframeWindow is null')
@@ -214,6 +215,7 @@ class SortableList extends Component<Props, State> {
       toastMessage = intl.formatMessage({
         id: 'pages.editor.component-list.save.toast.success',
       })
+      changes = []
     } catch (e) {
       toastMessage = intl.formatMessage({
         id: 'pages.editor.component-list.save.toast.error',
@@ -222,6 +224,7 @@ class SortableList extends Component<Props, State> {
       this.handleCloseModal()
 
       this.setState({
+        changes,
         isLoadingMutation: false,
       })
 
@@ -279,6 +282,7 @@ class SortableList extends Component<Props, State> {
       })
 
       this.setState(prevState => ({
+        ...prevState,
         changes: [...prevState.changes, { order: oldOrder, target }],
         components: arrayMove(this.state.components, oldIndex, newIndex),
       }))
@@ -286,19 +290,23 @@ class SortableList extends Component<Props, State> {
   }
 
   private handleUndo = () => {
-    const { target, order } = last(this.state.changes)
-    const extension = this.props.iframeRuntime.extensions[target]
-    const changes = this.state.changes.slice(0, this.state.changes.length - 1)
+    const lastChange = last(this.state.changes)
 
-    this.props.iframeRuntime.updateExtension(target, {
-      ...extension,
-      props: {
-        ...extension.props,
-        elements: order,
-      },
-    })
+    if (lastChange) {
+      const { target, order } = lastChange
+      const extension = this.props.iframeRuntime.extensions[target]
+      const changes = this.state.changes.slice(0, this.state.changes.length - 1)
 
-    this.setState({ changes })
+      this.props.iframeRuntime.updateExtension(target, {
+        ...extension,
+        props: {
+          ...extension.props,
+          elements: order,
+        },
+      })
+
+      this.setState({ changes })
+    }
   }
 }
 
