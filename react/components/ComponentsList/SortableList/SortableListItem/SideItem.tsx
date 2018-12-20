@@ -13,7 +13,7 @@ const SideItem: React.SFC<Props> = ({
   onMouseEnter,
 }) => (
   <div
-    className={`flex items-center ph3 pv5 bg-white dark-gray ${
+    className={`flex items-center ph3 pv5 bg-inherit dark-gray ${
       isPointer ? 'pointer' : ''
     }`}
     onClick={onClick}
