@@ -1,7 +1,7 @@
 import { clone, equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
@@ -12,6 +12,7 @@ import {
   ReorderChange,
   SidebarComponent,
 } from '../typings'
+
 import List from './List'
 import { getParentTreePath, normalizeComponents } from './utils'
 
@@ -30,7 +31,7 @@ interface CustomProps {
 type Props = CustomProps & ToastConsumerRenderProps & InjectedIntlProps
 
 interface State {
-  cancelMessageId: string
+  changes: ReorderChange[]
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
@@ -38,7 +39,8 @@ interface State {
   handleCancelModal: () => void
   handleCloseModal: () => void
   handleConfirmModal: () => void
-  changes: ReorderChange[]
+  modalCancelMessageId: string
+  modalTextMessageId: string
 }
 
 const noop = () => console.log('noop')
@@ -57,7 +59,6 @@ class SortableList extends Component<Props, State> {
     super(props)
 
     this.state = {
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
@@ -66,43 +67,40 @@ class SortableList extends Component<Props, State> {
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
+      modalCancelMessageId:
+        'pages.editor.component-list.modal.save.button.cancel',
+      modalTextMessageId: 'pages.editor.component-list.modal.save.text.',
     }
   }
 
   public render() {
     const { onMouseEnterComponent, onMouseLeaveComponent, intl } = this.props
     const {
-      cancelMessageId,
       changes,
       handleCancelModal,
       handleCloseModal,
       handleConfirmModal,
       isLoadingMutation,
       isModalOpen,
+      modalCancelMessageId,
+      modalTextMessageId,
     } = this.state
+
     const hasChanges = changes.length > 0
 
     return (
       <Fragment>
         <Modal
           isActionLoading={isLoadingMutation}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.save.button',
-          })}
+          isOpen={isModalOpen}
           onClickAction={handleConfirmModal}
-          textButtonCancel={intl.formatMessage({ id: cancelMessageId })}
           onClickCancel={handleCancelModal}
           onClose={handleCloseModal}
-          isOpen={isModalOpen}
-          textMessage={
-            <Fragment>
-              <h1>(i18n) Save Template</h1>
-              <p>
-                (i18n) Are you sure? The changes will be applied to all pages
-                that are using this {'<<<<<'}template{'>>>>>'}
-              </p>
-            </Fragment>
-          }
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.component-list.button.save',
+          })}
+          textButtonCancel={intl.formatMessage({ id: modalCancelMessageId })}
+          textMessage={intl.formatMessage({ id: modalTextMessageId })}
         />
         <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
@@ -124,10 +122,10 @@ class SortableList extends Component<Props, State> {
             <div className="w-50 fl tc bw1 br b--light-silver">
               <Button
                 disabled={!hasChanges}
-                variation="tertiary"
                 onClick={this.handleUndo}
+                variation="tertiary"
               >
-                undo (i18n)
+                <FormattedMessage id="pages.editor.component-list.button.undo" />
               </Button>
             </div>
             <div className="w-50 fl tc">
@@ -137,9 +135,7 @@ class SortableList extends Component<Props, State> {
                 variation="tertiary"
                 onClick={this.handleOpenSaveChangesModal}
               >
-                {intl.formatMessage({
-                  id: 'pages.editor.component-list.save.button',
-                })}
+                <FormattedMessage id="pages.editor.component-list.button.save" />
               </Button>
             </div>
           </div>
@@ -160,17 +156,18 @@ class SortableList extends Component<Props, State> {
 
   private handleOpenSaveChangesModal = () => {
     this.setState({
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       handleCancelModal: this.handleCloseModal,
       handleCloseModal: this.handleCloseModal,
       handleConfirmModal: this.handleSaveReorder,
       isModalOpen: true,
+      modalCancelMessageId:
+        'pages.editor.component-list.save.modal.button.cancel',
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     })
   }
 
   private handleCloseModal = () => {
     this.setState({
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       handleCancelModal: noop,
       handleCloseModal: noop,
       handleConfirmModal: noop,
@@ -215,11 +212,11 @@ class SortableList extends Component<Props, State> {
       })
 
       toastMessage = intl.formatMessage({
-        id: 'pages.editor.component-list.save.success',
+        id: 'pages.editor.component-list.save.toast.success',
       })
     } catch (e) {
       toastMessage = intl.formatMessage({
-        id: 'pages.editor.component-list.save.error',
+        id: 'pages.editor.component-list.save.toast.error',
       })
     } finally {
       this.handleCloseModal()
