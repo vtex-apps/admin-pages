@@ -26,6 +26,7 @@
   "pages.editor.components.configurations.defaultTitle": "Sem título",
   "pages.editor.components.labelEditor.label": "Nome da configuração",
   "pages.editor.components.modal.button.discard": "Descartar",
+  "pages.editor.components.title": "Componentes",
   "pages.editor.editpath.label": "Editando",
   "pages.editor.components.modal.text": "Você tem modificações não salvas para esta configuração.",
   "pages.editor.info.page": "Página",
