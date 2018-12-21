@@ -120,7 +120,10 @@ class SortableList extends Component<Props, State> {
                 onClick={this.handleUndo}
                 variation="tertiary"
               >
-                <UndoIcon color={!hasChanges ? '#979899' : undefined} /><FormattedMessage id="pages.editor.component-list.button.undo" />
+                <UndoIcon color={!hasChanges ? '#979899' : undefined} />
+                <FormattedMessage id="pages.editor.component-list.button.undo">
+                  {text => <span className="pl3">{text}</span>}
+                </FormattedMessage>
               </Button>
             </div>
             <div className="w-50 fl tc">
