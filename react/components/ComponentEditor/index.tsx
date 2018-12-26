@@ -23,7 +23,6 @@ import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
 import SaveButton from './SaveButton'
-import { bool } from 'prop-types';
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -344,7 +343,7 @@ class ComponentEditor extends Component<
 
           onClickAction={this.state.isDeleteModalOpen ? this.handleConfigurationDelete : this.handleConfigurationSave}
           onClickCancel={this.state.isDeleteModalOpen ? this.handleModalClose : this.handleConfigurationDiscard}
-          onClose={this.state.isDeleteModalOpen ? this.handleModalClose : this.handleModalClose}
+          onClose={this.handleModalClose}
 
           textButtonAction={this.state.isDeleteModalOpen?
             intl.formatMessage({id: 'pages.editor.components.button.delete',}):
