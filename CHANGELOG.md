@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- **`HighlightOverlay`**
+  - Uncovered edge case where a component has two or more DOM elements that alternate visibility based on the user device.
 
 ## [2.5.0] - 2018-12-05
 ### Changed
