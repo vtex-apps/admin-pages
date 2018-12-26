@@ -23,6 +23,7 @@ import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
 import SaveButton from './SaveButton'
+import { bool } from 'prop-types';
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -32,49 +33,6 @@ const defaultUiSchema = {
 
 const MODES: ComponentEditorMode[] = ['content', 'layout']
 
-const nativeMap: Record<string, ComponentSchema> = {
-  nativeImage: {
-    type: 'string',
-    widget: {
-      'ui:widget': 'image-uploader',
-    },
-  },
-  nativeOptions: {
-    type: 'number',
-    widget: {
-      'ui:options': {
-        inline: true,
-      },
-      'ui:widget': 'RadioWidget',
-    },
-  },
-  nativePlainText: {
-    type: 'string',
-    widget:{
-      'ui:widget': 'BaseInput',
-    },
-  },
-  nativeRichText: {
-    type: 'string',
-    widget: {
-      'ui:widget': 'TextareaWidget',
-    },
-  },
-  nativeVideoLink: {
-    type: 'string',
-    widget:{
-      'ui:widget': 'TextareaWidget',
-    },
-  },
-}
-
-const translateFromNative = (schema: ComponentSchema): ComponentSchema => {
-  const modifications = schema.type && nativeMap[schema.type]
-  if (modifications) {
-    return merge(schema,modifications)
-  }
-  return schema
-}
 
 interface ExtensionConfigurationsQuery {
   error: object
@@ -206,7 +164,6 @@ class ComponentEditor extends Component<
           Array.isArray(value) ? map(translate, value) : translate(value),
         pick(['title', 'description', 'enumNames'], schema) as object
       )
-      schema = translateFromNative(schema)
 
       if (has('widget', schema)) {
         translatedSchema.widget = merge(
