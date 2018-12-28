@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Card, IconFailure, Radio } from 'vtex.styleguide'
+import { Card, Radio } from 'vtex.styleguide'
 
 import Colors from './Colors'
 
@@ -28,12 +28,6 @@ export default class StyleCard extends Component<Props, {}> {
                 onChange={() => onChange(style)}
                 value={styleId}
               />
-              <div className="c-action-primary pb2 flex justify-between items-center">
-                <IconFailure solid/>
-                <Button size="small" variation="tertiary">
-                  Edit
-                </Button>
-              </div>
             </div>
           </div>
         </Card>
