@@ -1,5 +1,8 @@
 query stylePath($app: String, $name: String){
-  stylePath(app: $app, name: $name) {
+  stylePath(style: {
+    app: $app,
+    name: $name
+  }) {
     path
   }
 }
