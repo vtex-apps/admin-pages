@@ -8,6 +8,13 @@ query ListStyles {
       actionSecondary
       base
     }
+    typography {
+      fontFamily
+      fontWeight
+      fontSize
+      textTransform
+      letterSpacing
+    }
     selected
   }
 }

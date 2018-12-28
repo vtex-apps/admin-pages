@@ -20,7 +20,7 @@ export default class Colors extends Component<ColorsProps, {}> {
     )
 
     return (
-      <div className="w4 flex ba br2 b--muted-5 bg-muted-5 mb4">
+      <div className="w4 flex ba br2 b--muted-5 bg-muted-5">
         {colorContainer(emphasis, { leftBorder: true })}
         {colorContainer(actionPrimary)}
         {colorContainer(actionSecondary)}

@@ -1,3 +1,4 @@
+import { FontFamilyProperty, FontSizeProperty, FontWeightProperty, LetterSpacingProperty, TextTransformProperty } from 'csstype'
 import { Component, ReactElement } from 'react'
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 declare global {
@@ -166,6 +167,14 @@ declare global {
     base: string
   }
 
+  interface StyleTypography {
+    fontFamily: FontFamilyProperty
+    fontWeight: FontWeightProperty
+    fontSize: FontSizeProperty
+    textTransform: TextTransformProperty
+    letterSpacing: LetterSpacingProperty
+  }
+
   interface StyleBasic {
     app: string
     name: string
@@ -173,6 +182,8 @@ declare global {
 
   interface Style extends StyleBasic{
     colors: StyleColors
+    typography: StyleTypography
+    selected: boolean
   }
 
   interface PageContextOptions {

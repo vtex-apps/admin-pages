@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Card, Radio } from 'vtex.styleguide'
 
 import Colors from './Colors'
+import Typography from './Typography'
 
 interface Props {
   style: Style
@@ -12,14 +13,17 @@ interface Props {
 export default class StyleCard extends Component<Props, {}> {
   public render() {
     const { style, checked, onChange } = this.props
-    const { app, name, colors } = style
+    const { app, name, colors, typography } = style
     const styleId = [app, name].join('/')
 
     return (
       <div className="ph3 pb3">
         <Card noPadding>
-          <div className="pl4 pt5 pb2">
-            <Colors colors={colors} />
+          <div className="ph4 pt3 pb2">
+            <div className="flex justify-between items-center mb4">
+              <Colors colors={colors} />
+              <Typography typography={typography}/>
+            </div>
             <div className="flex justify-between">
               <Radio
                 checked={checked}
