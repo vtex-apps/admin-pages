@@ -1,3 +1,4 @@
+import { filter } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import { Spinner } from 'vtex.styleguide'
@@ -30,6 +31,18 @@ interface State {
 }
 
 class StyleList extends Component<Props, State> {
+  public static getDerivedStateFromProps(props: Props, state: State) {
+    const { stylesQueryInfo: {listStyles} } = props
+
+    if (state.currentStyle === undefined) {
+      const currentStyle = listStyles && filter((style: Style) => style.selected, listStyles)
+
+      return {
+        currentStyle: currentStyle && currentStyle[0]
+      }
+    }
+  }
+
   constructor(props: Props) {
     super(props)
 
@@ -60,7 +73,7 @@ class StyleList extends Component<Props, State> {
       query: StylePath,
       variables: {
         app: styleInfo.app,
-        name: styleInfo.name
+        name: styleInfo.name,
       },
     })
 

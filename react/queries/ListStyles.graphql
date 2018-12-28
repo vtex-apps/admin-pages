@@ -8,5 +8,6 @@ query ListStyles {
       actionSecondary
       base
     }
+    selected
   }
 }
