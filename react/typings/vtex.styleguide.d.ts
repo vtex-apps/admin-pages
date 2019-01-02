@@ -12,6 +12,7 @@ declare module 'vtex.styleguide' {
   export const IconFailure: ReactElement
   export const IconArrowBack: ReactElement
   export const IconEdit: ReactElement
+  export const IconOptionsDots: ReactElement
   export const IconCaretDown: ReactElement
   export const IconCaretUp: ReactElement
   export const IconClose: ReactElement

@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import { Card, Radio } from 'vtex.styleguide'
+import { Card, IconOptionsDots, Radio } from 'vtex.styleguide'
 
 import Colors from './Colors'
 import Typography from './Typography'
@@ -20,7 +19,7 @@ export default class StyleCard extends Component<Props, {}> {
       <div className="ph3 pb3">
         <Card noPadding>
           <div className="ph4 pt3 pb2">
-            <div className="flex justify-between items-center mb4">
+          <div className="flex justify-between items-center mb6">
               <Colors colors={colors} />
               <Typography typography={typography}/>
             </div>
@@ -32,6 +31,7 @@ export default class StyleCard extends Component<Props, {}> {
                 onChange={() => onChange(style)}
                 value={styleId}
               />
+            <IconOptionsDots />
             </div>
           </div>
         </Card>
