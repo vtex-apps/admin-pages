@@ -1,11 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
 
-import Content from '../../../icons/Content'
-import Layout from '../../../icons/Layout'
-import Style from '../../../icons/Style'
-import { IconProps } from '../../../icons/utils'
-
 import styles from './styles.css'
 
 interface Props {
@@ -14,17 +9,7 @@ interface Props {
   switchHandler: () => void
 }
 
-type ModeIcons = { [Key in EditorMode]: React.ComponentClass<IconProps> }
-
-const modeIcons: ModeIcons = {
-  content: Content,
-  layout: Layout,
-  style: Style,
-}
-
 const ModeButton: React.SFC<Props> = ({ activeMode, mode, switchHandler }) => {
-  const Icon = modeIcons[mode]
-
   const isActive = mode === activeMode
 
   const capitalizedMode = mode.substring(0, 1).toUpperCase() + mode.substring(1)
@@ -42,9 +27,6 @@ const ModeButton: React.SFC<Props> = ({ activeMode, mode, switchHandler }) => {
       onClick={switchHandler}
       value={mode}
     >
-      <Icon
-        size={24}
-      />
       <div className="pl2 f6 fw5 ">
         {capitalizedMode}
       </div>
