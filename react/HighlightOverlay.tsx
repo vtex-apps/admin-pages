@@ -30,6 +30,13 @@ export default class HighlightOverlay extends Component<Props, State> {
 
   public highlightRemovalTimeout: any
 
+  private INITIAL_HIGHLIGHT_RECT = {
+    height: 0,
+    width: 0,
+    x: 0,
+    y: 0,
+  }
+
   constructor(props: any) {
     super(props)
 
@@ -71,19 +78,45 @@ export default class HighlightOverlay extends Component<Props, State> {
     })
   }
 
-  public getHighlightRect = (highlightTreePath : string) => {
-    const element = document.querySelector(`[data-extension-point="${highlightTreePath}"]`)
+  public getHighlightRect = (highlightTreePath: string) => {
+    const elements = document.querySelectorAll(
+      `[data-extension-point="${highlightTreePath}"]`,
+    )
+
     const provider = document.querySelector('.render-provider')
+
     const iframeBody = document.querySelector('body')
-    if (highlightTreePath && element && provider) {
-      const paddingFromIframeBody = iframeBody ? {
-        left: parseInt(window.getComputedStyle(iframeBody, null).paddingLeft || '0', 10),
-        right: parseInt(window.getComputedStyle(iframeBody, null).paddingRight || '0', 10)
-      } : {
-        left: 0, right: 0
+
+    if (highlightTreePath && elements && provider) {
+      const paddingFromIframeBody = iframeBody
+        ? {
+          left: parseInt(
+            window.getComputedStyle(iframeBody, null).paddingLeft || '0',
+            10,
+          ),
+          right: parseInt(
+            window.getComputedStyle(iframeBody, null).paddingRight || '0',
+            10,
+          ),
+        }
+        : {
+          left: 0,
+          right: 0,
       }
-      const rect = element.getBoundingClientRect() as DOMRect
+
       const providerRect = provider.getBoundingClientRect() as DOMRect
+
+      const elementsArray: Element[] = Array.prototype.slice.call(elements)
+
+      const element = elementsArray.find(currElement => {
+        const currRect = currElement.getBoundingClientRect()
+
+        return currRect.width > 0 && currRect.height > 0
+      })
+
+      const rect = element
+        ? element.getBoundingClientRect() as DOMRect
+        : this.INITIAL_HIGHLIGHT_RECT
 
       // Add offset from render provider main div
       rect.y += -providerRect.y

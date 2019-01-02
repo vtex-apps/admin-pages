@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.5.1] - 2019-01-02
+### Fixed
+- **`HighlightOverlay`**
+  - Uncovered edge case where a component has two or more DOM elements that alternate visibility based on the user device.
+
 ## [2.5.0] - 2018-12-05
 ### Changed
 - **Pages**
