@@ -46,11 +46,15 @@ class StyleList extends Component<Props, State> {
         <Spinner />
       </div>
     ) : (
-      <List styles={listStyles} currentStyle={currentStyle} onChange={this.onChange} />
+      <List
+        currentStyle={currentStyle}
+        onChange={this.onChange}
+        styles={listStyles}
+      />
     )
   }
 
-  private onChange = async (style: Style | undefined) => {
+  private onChange = async (style?: Style) => {
     const { iframeWindow } = this.props
 
     if (style === undefined) {

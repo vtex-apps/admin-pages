@@ -1,19 +1,28 @@
 import { equals } from 'ramda'
-import React, { Component } from 'react'
+import React, { Fragment } from 'react'
 
 import StyleCard from './StyleCard'
 
 interface Props {
+  currentStyle?: Style
+  onChange: (style?: Style) => void
   styles: Style[]
-  currentStyle: Style | undefined
-  onChange: (style: Style | undefined) => void
 }
 
-export default class List extends Component<Props, {}> {
-  public render() {
-    const { styles, currentStyle, onChange } = this.props
-    return styles ? styles.map((style: Style) => (
-      <StyleCard style={style} checked={equals(currentStyle, style)} onChange={onChange}/>
-    )) : []
-  }
-}
+const List: React.SFC<Props> = ({ currentStyle, onChange, styles }) =>
+  styles
+    ? (
+      <Fragment>
+        {styles.map((style: Style, index) => (
+          <StyleCard
+            checked={equals(currentStyle, style)}
+            key={index}
+            onChange={onChange}
+            style={style}
+          />
+        ))}
+      </Fragment>
+    )
+    : null
+
+export default List
