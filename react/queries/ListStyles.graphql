@@ -2,6 +2,7 @@ query ListStyles {
   listStyles {
     app
     name
+    path
     colors {
       emphasis
       actionPrimary

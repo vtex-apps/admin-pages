@@ -180,7 +180,8 @@ declare global {
     name: string
   }
 
-  interface Style extends StyleBasic{
+  interface Style extends StyleBasic {
+    path: string
     colors: StyleColors
     typography: StyleTypography
     selected: boolean
