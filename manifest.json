@@ -13,7 +13,7 @@
     "vtex.file-manager-graphql": "0.x",
     "vtex.pages-graphql": "1.x",
     "vtex.styleguide": "8.x",
-    "vtex.styles-graphql": "0.x",
+    "vtex.styles-graphql": "1.x",
     "vtex.admin": "1.x"
   },
   "mustUpdateAt": "2018-09-05",
