@@ -21,7 +21,7 @@ const ModeButton: React.SFC<Props> = ({ activeMode, mode, switchHandler }) => {
           'c-muted-2 b--transparent hover-c-action-primary pointer': !isActive,
           'c-on-base b--emphasis': isActive,
         },
-        'bg-transparent bl-0 bt-0 br-0 bw1 outline-0 pb3 pt4 relative v-mid w-100 flex items-center justify-center',
+        'bg-transparent bl-0 bt-0 br-0 bw1 outline-0 pb4 pt5 relative v-mid w-100 flex items-center justify-center',
       )}
       disabled={isActive}
       onClick={switchHandler}
