@@ -137,7 +137,10 @@ class StyleList extends Component<Props, State> {
   private onChange = async (style: Style) => {
     const { client, iframeWindow, stylesQueryInfo: { refetch } } = this.props
 
-    console.log(style)
+    const styleLinkElement = iframeWindow && iframeWindow.document && iframeWindow.document.getElementById('style_link')
+    if (styleLinkElement) {
+      styleLinkElement.setAttribute('href', style.path)
+    }
 
     try {
       await client.mutate<{ saveSelectedStyle: StyleBasic }>({
@@ -150,12 +153,6 @@ class StyleList extends Component<Props, State> {
       refetch()
     } catch (err) {
       console.error(err)
-    }
-
-    const styleLinkElement = iframeWindow && iframeWindow.document && iframeWindow.document.getElementById('style_link')
-
-    if (styleLinkElement) {
-      styleLinkElement.setAttribute('href', style.path)
     }
   }
 
