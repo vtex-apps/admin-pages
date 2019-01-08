@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { compose } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'render'
-import { Badge, EmptyState, Table } from 'vtex.styleguide'
+import { EmptyState, Table, Tag } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
@@ -119,13 +119,13 @@ class List extends Component<Props, State> {
         disabled: {
           cellRenderer: (cell: { cellData: boolean }) => (
             <div className="ph4">
-              <Badge type={cell.cellData ? 'error' : 'success'}>
+              <Tag type={cell.cellData ? 'error' : 'success'}>
                 {intl.formatMessage({
                   id: cell.cellData
                     ? 'pages.admin.redirects.table.status.inactive'
                     : 'pages.admin.redirects.table.status.active',
                 })}
-              </Badge>
+              </Tag>
             </div>
           ),
           title: intl.formatMessage({
