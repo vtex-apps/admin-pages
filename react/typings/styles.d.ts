@@ -13,6 +13,10 @@ interface StyleSelectorTypography {
   letterSpacing: LetterSpacingProperty
 }
 
+interface Selected {
+  selected: boolean
+}
+
 interface StyleBasic {
   app: string
   name: string

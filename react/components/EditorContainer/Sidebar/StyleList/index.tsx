@@ -5,6 +5,7 @@ import { Alert, Button, Input, Spinner } from 'vtex.styleguide'
 
 import CreateStyle from '../../../../queries/CreateStyle.graphql'
 import ListStyles from '../../../../queries/ListStyles.graphql'
+import SaveSelectedStyle from '../../../../queries/SaveSelectedStyle.graphql'
 
 import Modal from '../../../../components/Modal'
 import List from './List'
@@ -30,28 +31,14 @@ interface ModalInfo {
 }
 
 interface State {
-  currentStyle?: Style
   modal: ModalInfo
 }
 
 class StyleList extends Component<Props, State> {
-  public static getDerivedStateFromProps(props: Props, state: State) {
-    const { stylesQueryInfo: {listStyles} } = props
-
-    if (state.currentStyle === undefined) {
-      const currentStyle = listStyles && filter((style) => style.selected, listStyles)
-
-      return {
-        currentStyle: currentStyle && currentStyle[0]
-      }
-    }
-  }
-
   constructor(props: Props) {
     super(props)
 
     this.state = {
-      currentStyle: undefined,
       modal: {
         alertMessage: '',
         isOpen: false,
@@ -63,7 +50,7 @@ class StyleList extends Component<Props, State> {
 
   public render() {
     const { stylesQueryInfo: { listStyles, loading } } = this.props
-    const { currentStyle, modal: { alertMessage, isOpen, showAlert } } = this.state
+    const { modal: { alertMessage, isOpen, showAlert } } = this.state
 
     return loading ? (
       <div className="pt7 flex justify-around">
@@ -73,7 +60,6 @@ class StyleList extends Component<Props, State> {
       <div>
         <div>
           <List
-            currentStyle={ currentStyle }
             onChange={ this.onChange }
             styles={ listStyles }
           />
@@ -148,11 +134,22 @@ class StyleList extends Component<Props, State> {
     }
   }
 
-  private onChange = async (style?: Style) => {
-    const { iframeWindow } = this.props
+  private onChange = async (style: Style) => {
+    const { client, iframeWindow, stylesQueryInfo: { refetch } } = this.props
 
-    if (style === undefined) {
-      return
+    console.log(style)
+
+    try {
+      await client.mutate<{ saveSelectedStyle: StyleBasic }>({
+        mutation: SaveSelectedStyle,
+        variables: {
+          app: style.app,
+          name: style.name,
+        },
+      })
+      refetch()
+    } catch (err) {
+      console.error(err)
     }
 
     const styleLinkElement = iframeWindow && iframeWindow.document && iframeWindow.document.getElementById('style_link')
@@ -160,8 +157,6 @@ class StyleList extends Component<Props, State> {
     if (styleLinkElement) {
       styleLinkElement.setAttribute('href', style.path)
     }
-
-    this.setState({ currentStyle: style })
   }
 
   private onModalChange = (event: Event) => {

@@ -4,18 +4,17 @@ import React, { Fragment } from 'react'
 import StyleCard from './StyleCard'
 
 interface Props {
-  currentStyle?: Style
-  onChange: (style?: Style) => void
+  onChange: (style: Style) => void
   styles: Style[]
 }
 
-const List: React.SFC<Props> = ({ currentStyle, onChange, styles }) =>
+const List: React.SFC<Props> = ({ onChange, styles }) =>
   styles
     ? (
       <Fragment>
         {styles.map((style: Style, index) => (
           <StyleCard
-            checked={equals(currentStyle, style)}
+            checked={style.selected}
             key={index}
             onChange={onChange}
             style={style}

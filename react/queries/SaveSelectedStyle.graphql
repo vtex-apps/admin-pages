@@ -1,0 +1,8 @@
+mutation SaveSelectedStyle($app: String, $name: String){
+  saveSelectedStyle(style: {
+    app: $app,
+    name: $name
+  }) {
+    selected
+  }
+}
