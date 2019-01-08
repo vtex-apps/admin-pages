@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, IconOptionsDots, Radio } from 'vtex.styleguide'
+import { Badge, Card, IconOptionsDots } from 'vtex.styleguide'
 
 import Colors from './Colors'
 import Typography from './Typography'
@@ -11,25 +11,30 @@ interface Props {
 }
 
 const StyleCard: React.SFC<Props> = ({style, checked, onChange}) => {
-  const { app, name, colors, typography } = style
-  const styleId = [app, name].join('/')
+  const { name, colors, typography } = style
 
   return (
     <div className="ph3 pb3">
       <Card noPadding>
-        <div className="ph4 pt3 pb2">
-          <div className="flex justify-between items-center mb6">
+        <div className="ph5 pt5 pb2" onClick={() => { onChange(style) }}>
+          <div className="flex justify-between items-center mb5">
             <Colors colors={colors} />
             <Typography typography={typography}/>
           </div>
-          <div className="flex justify-between">
-            <Radio
-              checked={checked}
-              id={styleId}
-              label={name}
-              onChange={() => onChange(style)}
-              value={styleId}
-            />
+          <div className="flex justify-between items-center mb2">
+            <div className="flex items-center h2">
+              <span className="hf5 mr3">{ name }</span>
+              {
+                checked
+                ? <Badge
+                    bgColor="#F71963"
+                    color="#FFFFFF"
+                  >
+                    Current Theme
+                  </Badge>
+                : null
+              }
+            </div>
             <IconOptionsDots />
           </div>
         </div>
