@@ -1,0 +1,6 @@
+mutation CreateStyle($name: String!) {
+  createStyle(name: $name) {
+    app
+    name
+  }
+}

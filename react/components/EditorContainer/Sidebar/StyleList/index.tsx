@@ -1,19 +1,37 @@
 import { filter } from 'ramda'
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
-import { Spinner } from 'vtex.styleguide'
+import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
+import { Alert, Button, Input, Spinner } from 'vtex.styleguide'
 
+import CreateStyle from '../../../../queries/CreateStyle.graphql'
 import ListStyles from '../../../../queries/ListStyles.graphql'
 
+import Modal from '../../../../components/Modal'
 import List from './List'
 
-interface Props {
+interface ListStylesQuery {
+  listStyles: Style[]
+  loading: boolean
+  refetch: (variables?: object) => void
+}
+
+interface CustomProps {
   iframeWindow: Window
-  stylesQueryInfo: any
+  stylesQueryInfo: ListStylesQuery
+}
+
+type Props = WithApolloClient<CustomProps>
+
+interface ModalInfo {
+  alertMessage: string
+  isOpen: boolean
+  newStyleName: string
+  showAlert: boolean
 }
 
 interface State {
-  currentStyle: Style | undefined
+  currentStyle?: Style
+  modal: ModalInfo
 }
 
 class StyleList extends Component<Props, State> {
@@ -21,7 +39,7 @@ class StyleList extends Component<Props, State> {
     const { stylesQueryInfo: {listStyles} } = props
 
     if (state.currentStyle === undefined) {
-      const currentStyle = listStyles && filter((style: Style) => style.selected, listStyles)
+      const currentStyle = listStyles && filter((style) => style.selected, listStyles)
 
       return {
         currentStyle: currentStyle && currentStyle[0]
@@ -33,25 +51,101 @@ class StyleList extends Component<Props, State> {
     super(props)
 
     this.state = {
-      currentStyle: undefined
+      currentStyle: undefined,
+      modal: {
+        alertMessage: '',
+        isOpen: false,
+        newStyleName: '',
+        showAlert: false,
+      }
     }
   }
 
   public render() {
-    const { stylesQueryInfo, stylesQueryInfo: {listStyles} } = this.props
-    const { currentStyle } = this.state
+    const { stylesQueryInfo: { listStyles, loading } } = this.props
+    const { currentStyle, modal: { alertMessage, isOpen, showAlert } } = this.state
 
-    return stylesQueryInfo.loading ? (
-      <div className="w100 pt7 flex justify-around">
+    return loading ? (
+      <div className="pt7 flex justify-around">
         <Spinner />
       </div>
     ) : (
-      <List
-        currentStyle={currentStyle}
-        onChange={this.onChange}
-        styles={listStyles}
-      />
+      <div>
+        <div>
+          <List
+            currentStyle={ currentStyle }
+            onChange={ this.onChange }
+            styles={ listStyles }
+          />
+        </div>
+        <div className="flex justify-around">
+          <Modal
+            isActionLoading={ false }
+            isOpen={ isOpen }
+            onClickAction={ this.createStyle }
+            onClickCancel={ this.toggleModal }
+            onClose={ this.toggleModal }
+            textButtonAction="Create New Style"
+            textButtonCancel="Cancel"
+          >
+            <div className="pb5">New Style</div>
+            <div
+              className="b--muted-4 bw1 bt pv5"
+              style={{ maxWidth: '100vh', width: '35rem' }}
+            >
+              <Input
+                placeholder="Type a name to your style"
+                dataAttributes={{ 'hj-white-list': true, test: 'string' }}
+                onChange={ this.onModalChange }
+              />
+            </div>
+            {
+              showAlert
+              ? <Alert type="error">
+                  { alertMessage }
+                </Alert>
+              : null
+            }
+          </Modal>
+          <Button
+            onClick={ this.toggleModal }
+            variation="tertiary"
+            size="regular"
+          >
+            New Style
+          </Button>
+        </div>
+      </div>
     )
+  }
+
+  private createStyle = async () => {
+    const { client, stylesQueryInfo: { refetch } } = this.props
+    const { modal, modal: { newStyleName } } = this.state
+
+    try {
+      await client.mutate<{ createStyle: StyleBasic }>({
+        mutation: CreateStyle,
+        variables: {
+          name: newStyleName,
+        },
+      })
+      refetch()
+      this.setState({
+        modal: {
+          ...modal,
+          isOpen: false,
+        }
+      })
+    } catch (err) {
+      this.setState({
+        modal: {
+          ...modal,
+          alertMessage: err.graphQLErrors[0].message,
+          showAlert: true,
+        }
+      })
+    }
   }
 
   private onChange = async (style?: Style) => {
@@ -69,8 +163,32 @@ class StyleList extends Component<Props, State> {
 
     this.setState({ currentStyle: style })
   }
+
+  private onModalChange = (event: Event) => {
+    const { modal } = this.state
+    if (event.target instanceof HTMLInputElement) {
+      this.setState({
+        modal: {
+          ...modal,
+          newStyleName: event.target.value,
+        }
+      })
+    }
+  }
+
+  private toggleModal = async () => {
+    const { modal } = this.state
+
+    this.setState({
+      modal: {
+        ...modal,
+        isOpen: !modal.isOpen,
+      }
+    })
+  }
 }
 
 export default compose(
   graphql(ListStyles, { name: 'stylesQueryInfo' }),
+  withApollo,
 )(StyleList)
