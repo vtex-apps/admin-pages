@@ -10,10 +10,11 @@ interface Props {
   onClose: (event: Event) => void
   textButtonAction: string
   textButtonCancel: string
-  textMessage: string
+  textMessage?: string
 }
 
-const Modal = ({
+const Modal: React.SFC<Props> = ({
+  children,
   isActionDanger = false,
   isActionLoading,
   isOpen,
@@ -23,9 +24,9 @@ const Modal = ({
   textButtonAction,
   textButtonCancel,
   textMessage,
-}: Props) => (
+}) => (
   <StyleguideModal centered isOpen={isOpen} onClose={onClose}>
-    <div>{textMessage}</div>
+    <div>{ children || textMessage }</div>
     <div className="mt6 flex justify-end">
       <div className="mr3">
         <Button onClick={onClickCancel} size="small" variation="tertiary">
