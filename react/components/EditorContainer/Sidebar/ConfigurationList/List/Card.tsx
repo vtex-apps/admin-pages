@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { Badge, Button, Card as StyleguideCard } from 'vtex.styleguide'
+import { Button, Card as StyleguideCard, Tag } from 'vtex.styleguide'
 
 interface Props {
   activeConfiguration?: AdaptedExtensionConfiguration
@@ -51,11 +51,11 @@ const Card = ({
           {!isDisabled && (
             <div className="mt5">
               <FormattedMessage id="pages.conditions.scope.title" />
-              <Badge bgColor="#979899" color="#FFF">
+              <Tag bgColor="#979899" color="#FFF">
                 {intl.formatMessage({
                   id: `pages.conditions.scope.${configuration.scope}`,
                 })}
-              </Badge>
+              </Tag>
             </div>
           )}
           {configuration.conditions.length > 0 && (
