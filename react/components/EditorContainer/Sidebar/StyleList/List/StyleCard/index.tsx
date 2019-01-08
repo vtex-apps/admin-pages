@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Card, IconOptionsDots } from 'vtex.styleguide'
+import { Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
 import Colors from './Colors'
 import Typography from './Typography'
@@ -26,12 +26,12 @@ const StyleCard: React.SFC<Props> = ({style, checked, onChange}) => {
               <span className="hf5 mr3">{ name }</span>
               {
                 checked
-                ? <Badge
+                ? <Tag
                     bgColor="#F71963"
                     color="#FFFFFF"
                   >
                     Current Theme
-                  </Badge>
+                  </Tag>
                 : null
               }
             </div>
