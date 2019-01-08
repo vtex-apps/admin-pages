@@ -160,33 +160,6 @@ declare global {
     cacheHints: CacheHints
   }
 
-  interface StyleColors {
-    emphasis: string
-    actionPrimary: string
-    actionSecondary: string
-    base: string
-  }
-
-  interface StyleTypography {
-    fontFamily: FontFamilyProperty
-    fontWeight: FontWeightProperty
-    fontSize: FontSizeProperty
-    textTransform: TextTransformProperty
-    letterSpacing: LetterSpacingProperty
-  }
-
-  interface StyleBasic {
-    app: string
-    name: string
-  }
-
-  interface Style extends StyleBasic {
-    path: string
-    colors: StyleColors
-    typography: StyleTypography
-    selected: boolean
-  }
-
   interface PageContextOptions {
     scope?: ConfigurationScope
     device?: ConfigurationDevice

@@ -3,18 +3,26 @@ query ListStyles {
     app
     name
     path
-    colors {
-      emphasis
-      actionPrimary
-      actionSecondary
-      base
-    }
-    typography {
-      fontFamily
-      fontWeight
-      fontSize
-      textTransform
-      letterSpacing
+    config {
+      semanticColors {
+        background {
+          action_primary
+          action_secondary
+          emphasis
+          base
+        }
+      }
+      typography {
+        styles {
+          heading_2 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+        }
+      }
     }
     selected
   }

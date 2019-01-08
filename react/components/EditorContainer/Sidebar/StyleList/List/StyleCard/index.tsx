@@ -11,15 +11,15 @@ interface Props {
 }
 
 const StyleCard: React.SFC<Props> = ({style, checked, onChange}) => {
-  const { name, colors, typography } = style
+  const { name, config: { semanticColors: { background }, typography: { styles: { heading_2 } } } } = style
 
   return (
     <div className="ph3 pb3">
       <Card noPadding>
         <div className="ph5 pt5 pb2" onClick={() => { onChange(style) }}>
           <div className="flex justify-between items-center mb5">
-            <Colors colors={colors} />
-            <Typography typography={typography}/>
+            <Colors colors={background} />
+            <Typography typography={heading_2}/>
           </div>
           <div className="flex justify-between items-center mb2">
             <div className="flex items-center h2">

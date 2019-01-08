@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 interface TypographyProps {
-  typography: StyleTypography
+  typography: StyleSelectorTypography
 }
 
 export default class Typography extends Component<TypographyProps, {}> {
