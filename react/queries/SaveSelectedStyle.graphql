@@ -3,6 +3,7 @@ mutation SaveSelectedStyle($app: String, $name: String){
     app: $app,
     name: $name
   }) {
-    selected
+    app
+    name
   }
 }
