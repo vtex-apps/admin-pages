@@ -121,7 +121,6 @@ class Form extends Component<Props, State> {
               id: 'pages.admin.redirects.form.toggle.endDate',
             })}
             onChange={this.toggleDatePickerVisibility}
-            size="small"
           />
           <FormFieldSeparator />
           {shouldShowDatePicker && (

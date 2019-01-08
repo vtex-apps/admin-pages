@@ -35,7 +35,6 @@ const Toggle: React.SFC<WidgetProps & Props> = ({
     onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
       onChange(event.target.checked)
     }
-    size="small"
   />
 )
 
