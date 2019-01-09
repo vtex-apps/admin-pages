@@ -31,10 +31,23 @@ interface ModalInfo {
 }
 
 interface State {
+  selectedStyle?: Style
   modal: ModalInfo
 }
 
 class StyleList extends Component<Props, State> {
+  public static getDerivedStateFromProps(props: Props, state: State) {
+    const { stylesQueryInfo: { listStyles } } = props
+
+    if (state.selectedStyle === undefined) {
+      const selectedStyle = listStyles && filter((style) => style.selected, listStyles)[0]
+
+      return {
+        selectedStyle
+      }
+    }
+  }
+
   constructor(props: Props) {
     super(props)
 
@@ -50,7 +63,7 @@ class StyleList extends Component<Props, State> {
 
   public render() {
     const { stylesQueryInfo: { listStyles, loading } } = this.props
-    const { modal: { alertMessage, isOpen, showAlert } } = this.state
+    const { modal: { alertMessage, isOpen, showAlert }, selectedStyle } = this.state
 
     return loading ? (
       <div className="pt7 flex justify-around">
@@ -61,6 +74,7 @@ class StyleList extends Component<Props, State> {
         <div>
           <List
             onChange={ this.onChange }
+            selectedStyle={ selectedStyle }
             styles={ listStyles }
           />
         </div>
@@ -135,7 +149,7 @@ class StyleList extends Component<Props, State> {
   }
 
   private onChange = async (style: Style) => {
-    const { client, iframeWindow, stylesQueryInfo: { refetch } } = this.props
+    const { client, iframeWindow } = this.props
 
     const styleLinkElement = iframeWindow && iframeWindow.document && iframeWindow.document.getElementById('style_link')
     if (styleLinkElement) {
@@ -150,7 +164,9 @@ class StyleList extends Component<Props, State> {
           name: style.name,
         },
       })
-      refetch()
+      this.setState({
+        selectedStyle: style
+      })
     } catch (err) {
       console.error(err)
     }
