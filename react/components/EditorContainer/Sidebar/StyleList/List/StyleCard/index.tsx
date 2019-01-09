@@ -15,7 +15,7 @@ const StyleCard: React.SFC<Props> = ({style, checked, onChange}) => {
 
   const options = [
     {
-      label: 'Select as theme',
+      label: 'Select as store style',
       onClick: () => { onChange(style) },
     }
   ]
@@ -29,15 +29,15 @@ const StyleCard: React.SFC<Props> = ({style, checked, onChange}) => {
             <Typography typography={heading_2}/>
           </div>
           <div className="flex justify-between items-center mb2">
-            <div className="flex items-center h2">
-              <span className="hf5 mr3">{ name }</span>
+            <div className="flex items-center h2 w-80">
+              <span className="hf5 mr3 truncate">{ name }</span>
               {
                 checked
                 ? <Tag
                     bgColor="#F71963"
                     color="#FFFFFF"
                   >
-                    Current Theme
+                    Current
                   </Tag>
                 : null
               }
