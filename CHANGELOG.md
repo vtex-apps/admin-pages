@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - **`ModeSwitcher`**
   - Move inside of `Sidebar` folder.
   - Switching mode from `editor` instead of props.
+- **Styleguide**
+  - Update version to 8.x.
 
 ## [2.5.0] - 2018-12-05
 ### Changed
