@@ -1,11 +1,12 @@
 import { SidebarComponent } from '../typings'
 
+import { partition } from 'ramda'
 import { NormalizedComponent } from './typings'
 
-export const normalizeComponents = (components: SidebarComponent[]) =>
-  components
-    .filter(item => !isTopLevelComponent(item))
-    .reduce(
+export const normalizeComponents = (components: SidebarComponent[]) => {
+  const [roots, leaves] = partition(isRootComponent, components)
+
+  return leaves.reduce(
       (acc, currComponent) =>
         acc.map(item =>
           currComponent.treePath.startsWith(item.treePath)
@@ -17,21 +18,12 @@ export const normalizeComponents = (components: SidebarComponent[]) =>
             }
             : item,
         ),
-      components
-        .filter(isTopLevelComponent)
-        .map(defineSortability) as NormalizedComponent[],
-    )
+      roots as NormalizedComponent[]
+    ).map(item => ({...item, isSortable: true}))
+}
 
-export const isTopLevelComponent = (component: SidebarComponent) =>
-  isStoreLevelComponent(component) ||
-  (!isStoreLevelChildComponent(component) &&
-    component.treePath.split('/').length === 3)
-
-export const isStoreLevelComponent = (component: SidebarComponent) =>
-  /^store\/(header|footer)$/.test(component.treePath)
-
-export const isStoreLevelChildComponent = (component: SidebarComponent) =>
-  /^store\/(header|footer)\/.+$/.test(component.treePath)
+export const isRootComponent = (component: SidebarComponent) =>
+  component.treePath.split('/') .length  === 2
 
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
@@ -40,9 +32,3 @@ export const getParentTreePath = (treePath: string): string => {
   }
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
-
-export const defineSortability = (component: SidebarComponent) => ({
-  ...component,
-  isSortable:
-    !isStoreLevelComponent(component) && isTopLevelComponent(component),
-})
