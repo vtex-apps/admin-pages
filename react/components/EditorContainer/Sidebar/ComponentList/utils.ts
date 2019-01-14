@@ -7,7 +7,8 @@ import { NormalizedComponent } from './typings'
 export const normalizeComponents = (components: SidebarComponent[]) => {
   const [roots, leaves] = partition(isRootComponent, components)
 
-  return leaves.map(leaf => ({...leaf, isSortable: false}))
+  return leaves
+    .map(leaf => ({ ...leaf, isSortable: false }))
     .reduce<NormalizedComponent[]>(
       (acc, currComponent) =>
         acc.map(item =>
@@ -16,16 +17,16 @@ export const normalizeComponents = (components: SidebarComponent[]) => {
               ...item,
               components: item.components
                 ? [...item.components, currComponent]
-                : [currComponent],
+                : [currComponent]
             }
-            : item,
+            : item
         ),
-      roots.map(root => ({...root, isSortable: true}))
+      roots.map(root => ({ ...root, isSortable: true }))
     )
 }
 
 export const isRootComponent = (component: SidebarComponent) =>
-  component.treePath.split('/') .length === 2
+  component.treePath.split('/').length === 2
 
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
