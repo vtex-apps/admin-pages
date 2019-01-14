@@ -1,13 +1,14 @@
+import { partition } from 'ramda'
+
 import { SidebarComponent } from '../typings'
 
-import { partition } from 'ramda'
 import { NormalizedComponent } from './typings'
 
 export const normalizeComponents = (components: SidebarComponent[]) => {
   const [roots, leaves] = partition(isRootComponent, components)
 
-  return leaves
-    .reduce(
+  return leaves.map(leaf => ({...leaf, isSortable: false}))
+    .reduce<NormalizedComponent[]>(
       (acc, currComponent) =>
         acc.map(item =>
           currComponent.treePath.startsWith(item.treePath)
@@ -19,11 +20,8 @@ export const normalizeComponents = (components: SidebarComponent[]) => {
             }
             : item,
         ),
-      roots as NormalizedComponent[]
+      roots.map(root => ({...root, isSortable: true}))
     )
-    .map(item => (
-      {...item, isSortable: true}
-    ))
 }
 
 export const isRootComponent = (component: SidebarComponent) =>
