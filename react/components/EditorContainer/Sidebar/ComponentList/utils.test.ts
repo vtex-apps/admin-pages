@@ -56,18 +56,22 @@ describe('normalizeComponents', () => {
       {
         components: [
           {
+            isSortable: false,
             name: 'editor.menu',
             treePath: 'store.home/header.full/menu-link',
           },
           {
+            isSortable: false,
             name: 'editor.minicart.title',
             treePath: 'store.home/header.full/minicart',
           },
           {
+            isSortable: false,
             name: 'editor.login.title',
             treePath: 'store.home/header.full/login',
           },
           {
+            isSortable: false,
             name: 'editor.category-menu.title',
             treePath: 'store.home/header.full/category-menu',
           },
@@ -134,6 +138,7 @@ describe('normalizeComponents', () => {
       {
         components: [
           {
+            isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf/product-summary',
           },
@@ -194,10 +199,12 @@ describe('normalizeComponents', () => {
       {
         components: [
           {
+            isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf/product-summary',
           },
           {
+            isSortable: false,
             name: 'editor.product-rating.title',
             treePath: 'store.home/shelf/product-summary/product-rating',
           },
@@ -254,6 +261,7 @@ describe('normalizeComponents', () => {
       {
         components: [
           {
+            isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf/product-summary',
           },
