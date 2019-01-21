@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
 import { MutationFn } from 'react-apollo'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import Form from './Form'
 import {

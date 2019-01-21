@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { Query } from 'react-apollo'
 import { injectIntl } from 'react-intl'
-import { Helmet } from 'render'
+import { Helmet } from 'vtex.render-runtime'
 import { Pagination } from 'vtex.styleguide'
 
 import {

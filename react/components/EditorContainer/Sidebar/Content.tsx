@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { canUseDOM } from 'render'
+import { canUseDOM } from 'vtex.render-runtime'
 import { Spinner } from 'vtex.styleguide'
 
 import { getIframeImplementation } from '../../../utils/components'

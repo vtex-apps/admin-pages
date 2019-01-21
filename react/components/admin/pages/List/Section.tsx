@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, Button } from 'vtex.styleguide'
 
 import { FORM_PATHNAME, NEW_ROUTE_ID } from '../consts'

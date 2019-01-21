@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { difference, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
-import { canUseDOM, withRuntimeContext } from 'render'
+import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
-import { canUseDOM } from 'render'
+import { canUseDOM } from 'vtex.render-runtime'
 
 let DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
 

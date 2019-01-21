@@ -1,5 +1,5 @@
 import React from 'react'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import { IconEdit } from 'vtex.styleguide'
 
 import { FORM_PATHNAME } from '../consts'

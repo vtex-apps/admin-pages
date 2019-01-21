@@ -1,5 +1,5 @@
 /* Typings for `render-runtime` */
-declare module 'render' {
+declare module 'vtex.render-runtime' {
   import { Component, ReactElement } from 'react'
 
   export const ExtensionPoint: ReactElement

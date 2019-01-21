@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box } from 'vtex.styleguide'
 
 import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/pages/consts'

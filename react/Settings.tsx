@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 class Settings extends Component<RenderContextProps> {
   public componentDidMount() {

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { compose } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import { EmptyState, Table, Tag } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'

@@ -1,6 +1,6 @@
 import { filter, has, keys, map, merge, pick, reduce } from 'ramda'
 import { IChangeEvent } from 'react-jsonschema-form'
-import { global, RenderComponent, Window } from 'render'
+import { global, RenderComponent, Window } from 'vtex.render-runtime'
 
 /**
  * It receives a component implementation and decide which type of schema

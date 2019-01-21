@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import { mapObjIndexed, values } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { injectIntl } from 'react-intl'
-import { withRuntimeContext } from 'render'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
 interface CustomProps {

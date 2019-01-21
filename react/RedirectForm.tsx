@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
-import { Helmet, withRuntimeContext } from 'render'
+import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 
 import { BASE_URL, NEW_REDIRECT_ID } from './components/admin/redirects/consts'
 import Form from './components/admin/redirects/Form'
