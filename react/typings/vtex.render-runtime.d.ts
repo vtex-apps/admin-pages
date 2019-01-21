@@ -24,7 +24,7 @@ declare module 'vtex.render-runtime' {
   }
 
   export interface Window extends Window {
-    __RENDER_7_COMPONENTS__: ComponentsRegistry
+    __RENDER_8_COMPONENTS__: ComponentsRegistry
   }
 
   const global: Window

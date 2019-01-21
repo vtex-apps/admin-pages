@@ -106,7 +106,7 @@ export const getExtension = (
 }
 
 export function getImplementation(component: string) {
-  return global.__RENDER_7_COMPONENTS__[component]
+  return global.__RENDER_8_COMPONENTS__[component]
 }
 
 export function getIframeImplementation(component: string | null) {
@@ -127,7 +127,7 @@ export function getIframeImplementation(component: string | null) {
   }
 
   return (
-    window.__RENDER_7_COMPONENTS__ && window.__RENDER_7_COMPONENTS__[component]
+    window.__RENDER_8_COMPONENTS__ && window.__RENDER_8_COMPONENTS__[component]
   )
 }
 
