@@ -19,11 +19,11 @@
   },
   "cms.storefront-home": {
     "around": ["editor-provider"],
-    "required": ["pages-editor"]
+    "required": ["page-editor"]
   },
   "cms.storefront": {
     "around": ["editor-provider"],
-    "required": ["pages-editor"]
+    "required": ["page-editor"]
   },
   "editor-provider": {
     "component": "EditorProvider"
@@ -31,7 +31,7 @@
   "pages-admin": {
     "component": "PagesAdmin"
   },
-  "pages-editor": {
-    "component": "PagesEditor"
+  "page-editor": {
+    "component": "PageEditor"
   }
 }
