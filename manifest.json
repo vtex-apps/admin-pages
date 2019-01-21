@@ -5,15 +5,15 @@
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
-    "pages": "0.x",
-    "react": "2.x"
+    "pages": "1.x",
+    "react": "3.x"
   },
   "dependencies": {
+    "vtex.admin": "1.x",
     "vtex.file-manager": "0.x",
     "vtex.file-manager-graphql": "0.x",
-    "vtex.pages-graphql": "1.x",
-    "vtex.styleguide": "8.x",
-    "vtex.admin": "1.x"
+    "vtex.pages-graphql": "2.x",
+    "vtex.styleguide": "9.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
