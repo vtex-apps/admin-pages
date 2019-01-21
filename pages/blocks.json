@@ -1,0 +1,32 @@
+{
+  "cms.pages": {
+    "inheritComponent": true
+  },
+  "cms.page-details": {
+    "inheritComponent": true
+  },
+  "cms.redirects": {
+    "inheritComponent": true
+  },
+  "cms.redirect-details": {
+    "inheritComponent": true
+  },
+  "cms.settings": {
+    "inheritComponent": true
+  },
+  "cms.storefront-home": {
+    "blocks": ["pages-editor"]
+  },
+  "cms.storefront": {
+    "blocks": ["pages-editor"]
+  },
+  "pages-admin": {
+    "inheritComponent": true
+  },
+  "editor-provider": {
+    "inheritComponent": true
+  },
+  "pages-editor": {
+    "inheritComponent": true
+  }
+}

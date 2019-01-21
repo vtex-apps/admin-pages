@@ -1,0 +1,23 @@
+{
+  "cms.pages": {
+    "path": "/admin/cms/pages"
+  },
+  "cms.page-details": {
+    "path": "/admin/cms/pages/*id"
+  },
+  "cms.redirects": {
+    "path": "/admin/cms/redirects"
+  },
+  "cms.redirect-details": {
+    "path": "/admin/cms/redirects/*id"
+  },
+  "cms.settings": {
+    "path": "/admin/cms/settings"
+  },
+  "cms.storefront-home": {
+    "path": "/admin/cms/storefront"
+  },
+  "cms.storefront": {
+    "path": "/admin/cms/storefront/*path"
+  }
+}
