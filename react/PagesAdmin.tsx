@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import { mapObjIndexed, values } from 'ramda'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { injectIntl } from 'react-intl'
-import { withRuntimeContext } from 'vtex.render-runtime'
+import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
 interface CustomProps {
@@ -51,8 +51,10 @@ class PagesAdmin extends Component<Props> {
     } = this.props
     const path = params.field || ''
 
-    if (path.length === 0) {
-      navigate({ to: '/admin/cms/pages' })
+    if (canUseDOM) {
+      if (path.length === 0) {
+        navigate({ to: '/admin/cms/pages' })
+      }
     }
 
     return (
