@@ -1,27 +1,27 @@
 {
-  "cms": {
+  "admin.cms": {
     "around": ["pages-admin"]
   },
-  "cms.pages": {
+  "admin.cms.pages": {
     "component": "PageList"
   },
-  "cms.page-details": {
+  "admin.cms.page-details": {
     "component": "PageForm"
   },
-  "cms.redirects": {
+  "admin.cms.redirects": {
     "component": "RedirectList"
   },
-  "cms.redirect-details": {
+  "admin.cms.redirect-details": {
     "component": "RedirectForm"
   },
-  "cms.settings": {
+  "admin.cms.settings": {
     "component": "Settings"
   },
-  "cms.storefront-home": {
+  "admin.cms.storefront-home": {
     "around": ["editor-provider"],
     "component": "PageEditor"
   },
-  "cms.storefront": {
+  "admin.cms.storefront": {
     "around": ["editor-provider"],
     "component": "PageEditor"
   },

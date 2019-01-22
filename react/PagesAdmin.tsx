@@ -5,6 +5,8 @@ import { injectIntl } from 'react-intl'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
+import { ROUTES_LIST } from './components/admin/pages/consts'
+
 interface CustomProps {
   params: { field: string }
   runtime: RenderContext
@@ -47,7 +49,7 @@ class PagesAdmin extends Component<Props> {
 
     if (canUseDOM) {
       if (path.length === 0) {
-        this.props.runtime.navigate({ page: 'cms.pages' })
+        this.props.runtime.navigate({ page: ROUTES_LIST })
       }
     }
   }

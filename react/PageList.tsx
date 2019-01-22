@@ -30,12 +30,12 @@ class PageList extends PureComponent {
         <Query query={RoutesQuery}>
           {({ data, loading: isLoading }: QueryResponse) => {
             if (isLoading) {
-              // startLoading()
+              startLoading()
 
               return <Loader />
             }
 
-            // stopLoading()
+            stopLoading()
 
             const routes = data && data.routes
 

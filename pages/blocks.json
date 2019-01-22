@@ -1,23 +1,23 @@
 {
-  "cms.pages": {
+  "admin.cms.pages": {
     "inheritComponent": true
   },
-  "cms.page-details": {
+  "admin.cms.page-details": {
     "inheritComponent": true
   },
-  "cms.redirects": {
+  "admin.cms.redirects": {
     "inheritComponent": true
   },
-  "cms.redirect-details": {
+  "admin.cms.redirect-details": {
     "inheritComponent": true
   },
-  "cms.settings": {
+  "admin.cms.settings": {
     "inheritComponent": true
   },
-  "cms.storefront-home": {
+  "admin.cms.storefront-home": {
     "inheritComponent": true
   },
-  "cms.storefront": {
+  "admin.cms.storefront": {
     "inheritComponent": true
   },
   "pages-admin": {

@@ -1,23 +1,23 @@
 {
-  "cms.pages": {
+  "admin.cms.pages": {
     "path": "/admin/cms/pages"
   },
-  "cms.page-details": {
+  "admin.cms.page-details": {
     "path": "/admin/cms/pages/*id"
   },
-  "cms.redirects": {
+  "admin.cms.redirects": {
     "path": "/admin/cms/redirects"
   },
-  "cms.redirect-details": {
+  "admin.cms.redirect-details": {
     "path": "/admin/cms/redirects/*id"
   },
-  "cms.settings": {
+  "admin.cms.settings": {
     "path": "/admin/cms/settings"
   },
-  "cms.storefront-home": {
+  "admin.cms.storefront-home": {
     "path": "/admin/cms/storefront"
   },
-  "cms.storefront": {
+  "admin.cms.storefront": {
     "path": "/admin/cms/storefront/*path"
   }
 }
