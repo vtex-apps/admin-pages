@@ -15,18 +15,15 @@
     "inheritComponent": true
   },
   "cms.storefront-home": {
-    "blocks": ["page-editor"]
+    "inheritComponent": true
   },
   "cms.storefront": {
-    "blocks": ["page-editor"]
+    "inheritComponent": true
   },
   "pages-admin": {
     "inheritComponent": true
   },
   "editor-provider": {
-    "inheritComponent": true
-  },
-  "page-editor": {
     "inheritComponent": true
   }
 }
