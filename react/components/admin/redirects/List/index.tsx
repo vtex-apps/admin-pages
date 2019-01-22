@@ -43,7 +43,7 @@ class List extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    // this.context.stopLoading()
   }
 
   public componentDidUpdate(prevProps: Props) {

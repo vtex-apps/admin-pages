@@ -46,7 +46,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    // this.context.stopLoading()
   }
 
   public render() {
