@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box } from 'vtex.styleguide'
 
-import { LIST_PATHNAME, NEW_ROUTE_ID } from './components/admin/pages/consts'
+import { NEW_ROUTE_ID, ROUTES_LIST } from './components/admin/pages/consts'
 import Form from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
@@ -80,10 +80,10 @@ class PageForm extends Component<Props, State> {
         if (route) {
           const routeWithPagesUniqueId = {
             ...route,
-            pages: (route.pages|| []).map((page, uniqueId) => ({
+            pages: (route.pages || []).map((page, uniqueId) => ({
               ...page,
-              uniqueId: page.configurationId || uniqueId
-            }))
+              uniqueId: page.configurationId || uniqueId,
+            })),
           }
           this.setState({
             formData: routeWithPagesUniqueId,
@@ -142,7 +142,7 @@ class PageForm extends Component<Props, State> {
   }
 
   private exit = () => {
-    this.props.runtime.navigate({ page: LIST_PATHNAME, params: {} })
+    this.props.runtime.navigate({ page: ROUTES_LIST, params: {} })
   }
 }
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { IconEdit } from 'vtex.styleguide'
 
-import { FORM_PATHNAME } from '../consts'
+import { ROUTES_FORM } from '../consts'
 import { getRouteTitle } from '../utils'
 
 interface Props {
@@ -17,7 +17,7 @@ const Entry = ({ route, runtime }: Props) => (
       className="flex pointer"
       onClick={() => {
         runtime.navigate({
-          page: FORM_PATHNAME,
+          page: ROUTES_FORM,
           params: { id: route.id },
         })
       }}

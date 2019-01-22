@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, Button } from 'vtex.styleguide'
 
-import { FORM_PATHNAME, NEW_ROUTE_ID } from '../consts'
+import { NEW_ROUTE_ID, ROUTES_FORM } from '../consts'
 import SeparatorWithLine from '../SeparatorWithLine'
 
 import Entry from './Entry'
@@ -26,7 +26,7 @@ const Section = ({ hasCreateButton, routes, runtime, titleId }: Props) => (
           <Button
             onClick={() => {
               runtime.navigate({
-                page: FORM_PATHNAME,
+                page: ROUTES_FORM,
                 params: { id: NEW_ROUTE_ID },
               })
             }}
