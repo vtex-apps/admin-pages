@@ -42,6 +42,16 @@ class PagesAdmin extends Component<Props> {
     runtime: PropTypes.object,
   }
 
+  public componentDidMount() {
+    const path = this.props.params.field || ''
+
+    if (canUseDOM) {
+      if (path.length === 0) {
+        this.props.runtime.navigate({ page: 'cms.pages' })
+      }
+    }
+  }
+
   public render() {
     const {
       children,
@@ -49,13 +59,8 @@ class PagesAdmin extends Component<Props> {
       params,
       runtime: { navigate },
     } = this.props
-    const path = params.field || ''
 
-    if (canUseDOM) {
-      if (path.length === 0) {
-        navigate({ to: '/admin/cms/pages' })
-      }
-    }
+    const path = params && params.field || ''
 
     return (
       <div className="h-100 overflow-y-auto bg-light-silver">
