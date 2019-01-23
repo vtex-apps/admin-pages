@@ -11,7 +11,7 @@ interface Props {
 
 const ExpandArrow: React.SFC<Props> = ({ isExpanded, onClick }) => (
   <SideItem isPointer onClick={onClick}>
-    <div className={`flex items-center ${isExpanded ? 'rotate-180' : ''}`}>
+    <div className={`flex items-center ${isExpanded ? '' : 'rotate-90'}`}>
       <ArrowIcon />
     </div>
   </SideItem>
