@@ -21,7 +21,7 @@ const ListItem: React.SFC<Props> = ({
   treePath,
 }) => (
   <div
-    className={`w-100 pv5 dark-gray bg-inherit pointer tl ${
+    className={`w-100 pv5 dark-gray bg-inherit tl ${
       hasLeftPadding ? 'pl7 pr0' : 'ph0'
     }`}
     data-tree-path={treePath}
