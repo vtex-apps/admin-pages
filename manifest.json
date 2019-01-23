@@ -6,6 +6,7 @@
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
     "pages": "1.x",
+    "messages": "1.x",
     "react": "3.x"
   },
   "dependencies": {
