@@ -64,8 +64,8 @@ class ComponentList extends Component<Props, State> {
       isLoadingMutation: false,
       isModalOpen: false,
       modalCancelMessageId:
-        'pages.editor.component-list.modal.save.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.modal.save.text.',
+        'pages.editor.component-list.save.modal.button.cancel',
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     }
   }
 
