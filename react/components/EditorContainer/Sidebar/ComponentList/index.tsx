@@ -126,7 +126,9 @@ class ComponentList extends Component<Props, State> {
                 variation="tertiary"
               >
                 <UndoIcon color={!hasChanges ? '#979899' : undefined} />
-                <FormattedMessage id="pages.editor.component-list.button.undo" />
+                <FormattedMessage id="pages.editor.component-list.button.undo">
+                  {text => <span className="pl3">{text}</span>}
+                </FormattedMessage>
               </Button>
             </div>
             <div className="w-50 fl tc">
