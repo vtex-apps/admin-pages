@@ -4,13 +4,13 @@ import { ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import { NormalizedComponent } from '../typings'
 
-import SortableButton from './SortableButton'
+import SortableListItem from './SortableListItem'
 
 interface CustomProps {
   components: NormalizedComponent[]
   isSortable: boolean
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave: () => void
 }
 
@@ -20,7 +20,7 @@ const SortableList = SortableContainer<Props>(
   ({ components, isSortable, onEdit, onMouseEnter, onMouseLeave }) => (
     <ul className="mv0 pl0 overflow-y-auto">
       {components.map((component, index) => (
-        <SortableButton
+        <SortableListItem
           component={component}
           disabled={!isSortable || !component.isSortable}
           index={index}
