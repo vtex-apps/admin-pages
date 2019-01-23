@@ -32,8 +32,6 @@ interface State {
   changes: ReorderChange[]
   components: NormalizedComponent[]
   handleCancelModal: () => void
-  handleCloseModal: () => void
-  handleConfirmModal: () => void
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
   isModalOpen: boolean
@@ -62,8 +60,6 @@ class ComponentList extends Component<Props, State> {
       changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
-      handleCloseModal: noop,
-      handleConfirmModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
@@ -90,9 +86,9 @@ class ComponentList extends Component<Props, State> {
       <Fragment>
         <Modal
           isActionLoading={this.state.isLoadingMutation}
-          onClickAction={this.state.handleConfirmModal}
+          onClickAction={this.handleSaveReorder}
           onClickCancel={this.state.handleCancelModal}
-          onClose={this.state.handleCloseModal}
+          onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
           textButtonAction={intl.formatMessage({
             id: 'pages.editor.component-list.button.save',
@@ -152,27 +148,46 @@ class ComponentList extends Component<Props, State> {
   private handleCloseModal = () => {
     this.setState({
       handleCancelModal: noop,
-      handleCloseModal: noop,
-      handleConfirmModal: noop,
       isModalOpen: false,
     })
   }
 
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
-    const { editor, highlightHandler } = this.props
+    if (this.state.changes.length > 0) {
+      const handleCancelModal = () => {
+        this.setState(
+          prevState => ({
+            ...prevState,
+            changes: [prevState.changes[0]],
+            isModalOpen: false,
+          }),
+          () => {
+            this.handleUndo()
+          }
+        )
+      }
 
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
+      this.setState({
+        handleCancelModal,
+        isModalOpen: true,
+        modalCancelMessageId:
+          'pages.editor.component-list.undo.modal.button.cancel',
+        modalTextMessageId: 'pages.editor.component-list.undo.modal.text',
+      })
+    } else {
+      const { editor, highlightHandler } = this.props
 
-    editor.editExtensionPoint(treePath)
+      const treePath = event.currentTarget.getAttribute('data-tree-path')
 
-    highlightHandler(null)
+      editor.editExtensionPoint(treePath)
+
+      highlightHandler(null)
+    }
   }
 
   private handleOpenSaveChangesModal = () => {
     this.setState({
       handleCancelModal: this.handleCloseModal,
-      handleCloseModal: this.handleCloseModal,
-      handleConfirmModal: this.handleSaveReorder,
       isModalOpen: true,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
