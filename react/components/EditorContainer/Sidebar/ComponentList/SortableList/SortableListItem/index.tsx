@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../../typings'
@@ -61,9 +61,12 @@ class SortableListItem extends Component<Props, State> {
           )}
         </div>
         {this.state.isExpanded && subitems && (
-          <Fragment>
+          <ul className="mv0 pl0">
             {subitems.map((item, index) => (
-              <div className="flex" key={item.treePath}>
+              <li
+                className="flex bg-white hover-bg-light-silver list"
+                key={item.treePath}
+              >
                 <div className="bl bw2 b--light-blue" />
                 <div
                   className={`w-100 ${
@@ -79,11 +82,12 @@ class SortableListItem extends Component<Props, State> {
                     treePath={item.treePath}
                   />
                 </div>
-              </div>
+              </li>
             ))}
-            <div className="bb bw1 b--light-silver" />
-          </Fragment>
+            <div className="bb b--light-silver" />
+          </ul>
         )}
+        <div className="bb b--light-silver" />
       </li>
     )
   }
