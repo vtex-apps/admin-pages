@@ -19,8 +19,8 @@ class ComponentSelector extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <div className="flex justify-between items-center">
-          <h3 className="near-black f5 mv0 pa5">
+        <div className="mv5 flex justify-between items-center">
+          <h3 className="ph5 f5 near-black">
             <FormattedMessage id="pages.editor.components.title" />
           </h3>
           <div
