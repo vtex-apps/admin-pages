@@ -11,7 +11,7 @@ interface Props {
   treePath: string
 }
 
-const ListItem: React.SFC<Props> = ({
+const Item: React.SFC<Props> = ({
   hasLeftPadding,
   isChild,
   onEdit,
@@ -41,4 +41,4 @@ const ListItem: React.SFC<Props> = ({
   </div>
 )
 
-export default ListItem
+export default Item
