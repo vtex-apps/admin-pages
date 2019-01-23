@@ -9,14 +9,14 @@ const HIGHLIGHT_REMOVAL_TIMEOUT_MS = 300
 interface Props {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
-  highlightExtensionPoint: (treePath: string | null) => void
+  highlighHandler: (treePath: string | null) => void
   highlightTreePath: string | null
 }
 
 export interface State {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
-  highlightExtensionPoint: (treePath: string | null) => void
+  highlighHandler: (treePath: string | null) => void
   highlightTreePath: string | null
 }
 
@@ -24,7 +24,7 @@ export default class HighlightOverlay extends Component<Props, State> {
   public static propTypes = {
     editExtensionPoint: PropTypes.func,
     editMode: PropTypes.bool,
-    highlightExtensionPoint: PropTypes.func,
+    highlighHandler: PropTypes.func,
     highlightTreePath: PropTypes.string,
   }
 
@@ -43,12 +43,14 @@ export default class HighlightOverlay extends Component<Props, State> {
     this.state = {
       editExtensionPoint: props.editExtensionPoint,
       editMode: props.editMode,
-      highlightExtensionPoint: props.highlightExtensionPoint,
+      highlighHandler: props.highlighHandler,
       highlightTreePath: props.highlightTreePath,
     }
 
     if (canUseDOM) {
-      (window as HighlightableWindow).__setHighlightTreePath = (newState: State) => {
+      (window as HighlightableWindow).__setHighlightTreePath = (
+        newState: State
+      ) => {
         this.setState(newState)
       }
     }
@@ -61,17 +63,24 @@ export default class HighlightOverlay extends Component<Props, State> {
   }
 
   public updateExtensionPointDOMElements = (editMode: boolean) => {
-    const elements = Array.from(document.querySelectorAll(`[data-extension-point]`))
+    const elements = Array.from(
+      document.querySelectorAll(`[data-extension-point]`)
+    )
     elements.forEach((e: Element) => {
       const element = e as HTMLElement
       if (editMode) {
-        element.addEventListener('mouseover', this.handleMouseOverHighlight as any)
+        element.addEventListener('mouseover', this
+          .handleMouseOverHighlight as any)
         element.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
         element.addEventListener('click', this.handleClickHighlight)
         element.style.cursor = 'pointer'
       } else {
-        element.removeEventListener('mouseover', this.handleMouseOverHighlight as any)
-        element.removeEventListener('mouseleave', this.handleMouseLeaveHighlight)
+        element.removeEventListener('mouseover', this
+          .handleMouseOverHighlight as any)
+        element.removeEventListener(
+          'mouseleave',
+          this.handleMouseLeaveHighlight
+        )
         element.removeEventListener('click', this.handleClickHighlight)
         element.style.cursor = null
       }
@@ -80,7 +89,7 @@ export default class HighlightOverlay extends Component<Props, State> {
 
   public getHighlightRect = (highlightTreePath: string) => {
     const elements = document.querySelectorAll(
-      `[data-extension-point="${highlightTreePath}"]`,
+      `[data-extension-point="${highlightTreePath}"]`
     )
 
     const provider = document.querySelector('.render-provider')
@@ -92,17 +101,17 @@ export default class HighlightOverlay extends Component<Props, State> {
         ? {
           left: parseInt(
             window.getComputedStyle(iframeBody, null).paddingLeft || '0',
-            10,
+            10
           ),
           right: parseInt(
             window.getComputedStyle(iframeBody, null).paddingRight || '0',
-            10,
+            10
           ),
         }
         : {
           left: 0,
           right: 0,
-      }
+        }
 
       const providerRect = provider.getBoundingClientRect() as DOMRect
 
@@ -115,12 +124,14 @@ export default class HighlightOverlay extends Component<Props, State> {
       })
 
       const rect = element
-        ? element.getBoundingClientRect() as DOMRect
+        ? (element.getBoundingClientRect() as DOMRect)
         : this.INITIAL_HIGHLIGHT_RECT
 
       // Add offset from render provider main div
       rect.y += -providerRect.y
-      rect.x += -providerRect.x + (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
+      rect.x +=
+        -providerRect.x +
+        (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
 
       DEFAULT_HIGHLIGHT_RECT = rect
       return rect
@@ -133,7 +144,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.state.highlightExtensionPoint(treePath)
+    this.state.highlighHandler(treePath)
 
     clearTimeout(this.highlightRemovalTimeout)
     e.stopPropagation()
@@ -144,11 +155,14 @@ export default class HighlightOverlay extends Component<Props, State> {
       clearTimeout(this.highlightRemovalTimeout)
     }
 
-    this.highlightRemovalTimeout = setTimeout(this.tryRemoveHighlight, HIGHLIGHT_REMOVAL_TIMEOUT_MS)
+    this.highlightRemovalTimeout = setTimeout(
+      this.tryRemoveHighlight,
+      HIGHLIGHT_REMOVAL_TIMEOUT_MS
+    )
   }
 
   public tryRemoveHighlight = () => {
-    this.state.highlightExtensionPoint(null)
+    this.state.highlighHandler(null)
   }
 
   public handleClickHighlight = (e: any) => {
@@ -160,26 +174,36 @@ export default class HighlightOverlay extends Component<Props, State> {
     e.stopPropagation()
     const { highlightTreePath } = this.state
     this.state.editExtensionPoint(highlightTreePath)
-    this.state.highlightExtensionPoint(null)
+    this.state.highlighHandler(null)
   }
 
   public render() {
     const { highlightTreePath } = this.state
-    const highlight = highlightTreePath && this.getHighlightRect(highlightTreePath)
-    const { x: left, y: top, width, height } = highlight || DEFAULT_HIGHLIGHT_RECT
+    const highlight =
+      highlightTreePath && this.getHighlightRect(highlightTreePath)
+    const { x: left, y: top, width, height } =
+      highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',
       height,
       left,
       pointerEvents: 'none',
       top,
-      transition: highlight ? 'top 0.3s, left 0.3s, width 0.3s, height 0.3s' : undefined,
+      transition: highlight
+        ? 'top 0.3s, left 0.3s, width 0.3s, height 0.3s'
+        : undefined,
       width,
       zIndex: 999,
     }
 
     return (
-      <div id="editor-provider-overlay" style={highlightStyle} className={`absolute ${highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''}`} />
+      <div
+        id="editor-provider-overlay"
+        style={highlightStyle}
+        className={`absolute ${
+          highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''
+          }`}
+      />
     )
   }
 }
