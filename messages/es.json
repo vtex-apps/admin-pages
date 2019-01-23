@@ -62,6 +62,9 @@
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.components.modal.text": "Tiene modificaciones no guardadas.",
   "pages.editor.components.title": "Componentes",
+  "pages.editor.component-list.save.button": "Salvar",
+  "pages.editor.component-list.save.error": "Error al guardar.",
+  "pages.editor.component-list.save.success": "Guardado con éxito.",
   "pages.editor.container.editpath.label": "Editando",
   "pages.editor.info.page": "Página",
   "pages.editor.info.title": "Informaciones de la Página"
