@@ -35,7 +35,7 @@ class ComponentSelector extends PureComponent<Props> {
         <ComponentList
           components={components}
           editor={editor}
-          highlightExtensionPoint={highlightHandler}
+          highlightHandler={highlightHandler}
           onMouseEnterComponent={this.handleMouseEnter}
           onMouseLeaveComponent={this.handleMouseLeave}
           iframeRuntime={iframeRuntime}

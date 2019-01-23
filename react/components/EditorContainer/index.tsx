@@ -90,7 +90,7 @@ export default class EditorContainer extends Component<Props, State> {
         setHighlightTreePath({
           editExtensionPoint,
           editMode,
-          highlightExtensionPoint: this.highlightExtensionPoint,
+          highlighHandler: this.highlightExtensionPoint,
           highlightTreePath,
         })
       }
