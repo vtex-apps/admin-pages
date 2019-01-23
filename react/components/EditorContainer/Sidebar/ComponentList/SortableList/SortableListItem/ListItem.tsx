@@ -4,14 +4,14 @@ import { FormattedMessage } from 'react-intl'
 interface Props {
   hasLeftPadding?: boolean
   isChild?: boolean
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseLeave: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void
   title: string
   treePath: string
 }
 
-const Button = ({
+const ListItem: React.SFC<Props> = ({
   hasLeftPadding,
   isChild,
   onEdit,
@@ -19,9 +19,9 @@ const Button = ({
   onMouseLeave,
   title,
   treePath,
-}: Props) => (
-  <button
-    className={`w-100 pv5 bg-white hover-blue dark-gray pointer tl bn ${
+}) => (
+  <div
+    className={`w-100 pv5 dark-gray bg-inherit pointer tl ${
       hasLeftPadding ? 'pl7 pr0' : 'ph0'
     }`}
     data-tree-path={treePath}
@@ -30,16 +30,15 @@ const Button = ({
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     style={{ animationDuration: '0.2s' }}
-    type="button"
   >
     <FormattedMessage id={title}>
       {text => (
-        <span className={`f6 fw5 track-1  ${isChild ? 'pl7' : 'pl2'}`}>
+        <span className={`f6 fw5 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
           {text}
         </span>
       )}
     </FormattedMessage>
-  </button>
+  </div>
 )
 
-export default Button
+export default ListItem

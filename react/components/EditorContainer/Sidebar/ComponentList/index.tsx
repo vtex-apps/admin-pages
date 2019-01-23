@@ -14,7 +14,7 @@ interface Props {
   editor: EditorContext
   highlightExtensionPoint: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
-  onMouseEnterComponent: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onMouseEnterComponent: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeaveComponent: () => void
 }
 
@@ -49,7 +49,7 @@ class ComponentList extends Component<Props, State> {
 
     return (
       <Fragment>
-        <div className="bb bw1 b--light-silver" />
+        <div className="bb b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
           <ToastProvider positioning="parent">
             <ToastConsumer>
@@ -67,7 +67,8 @@ class ComponentList extends Component<Props, State> {
                 />
               )}
             </ToastConsumer>
-          </ToastProvider>{' '}
+          </ToastProvider>
+          <div className="bt b--light-silver" />
           <div className="bt bw1 b--light-silver" style={{ marginTop: 'auto' }}>
             <Button disabled variation="tertiary">
               undo (i18n)
@@ -79,7 +80,7 @@ class ComponentList extends Component<Props, State> {
     )
   }
 
-  private handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     const { editor, highlightExtensionPoint } = this.props
 
     const treePath = event.currentTarget.getAttribute('data-tree-path')

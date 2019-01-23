@@ -44,7 +44,7 @@ class ComponentSelector extends PureComponent<Props> {
     )
   }
 
-  private handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
+  private handleMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
     this.props.highlightHandler(treePath as string)

@@ -3,14 +3,14 @@ import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../../typings'
 
-import Button from './Button'
 import DragHandle from './DragHandle'
 import ExpandArrow from './ExpandArrow'
+import ListItem from './ListItem'
 
 interface Props extends SortableElementProps {
   component: NormalizedComponent
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave: () => void
   shouldRenderDragHandle: boolean
 }
@@ -19,7 +19,7 @@ interface State {
   isExpanded: boolean
 }
 
-class SortableButton extends Component<Props, State> {
+class SortableListItem extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
@@ -41,11 +41,11 @@ class SortableButton extends Component<Props, State> {
 
     return (
       <li className="list">
-        <div className="flex items-center bb bw1 b--light-silver">
+        <div className="flex items-center bb bt bg-white hover-bg-light-silver b--light-silver">
           {shouldRenderDragHandle && component.isSortable && (
             <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
-          <Button
+          <ListItem
             hasLeftPadding={shouldRenderDragHandle && !component.isSortable}
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
@@ -70,7 +70,7 @@ class SortableButton extends Component<Props, State> {
                     index !== subitems.length - 1 ? 'bb b--light-silver ' : ''
                   }`}
                 >
-                  <Button
+                  <ListItem
                     isChild
                     onEdit={onEdit}
                     onMouseEnter={onMouseEnter}
@@ -106,4 +106,4 @@ class SortableButton extends Component<Props, State> {
   }
 }
 
-export default SortableElement(SortableButton)
+export default SortableElement(SortableListItem)
