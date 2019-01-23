@@ -32,5 +32,18 @@ declare module 'vtex.styleguide' {
   export const Table: ReactElement
   export const Tabs: ReactElement
   export const Tag: ReactElement
+
+  export type ToastConsumerRenderProps = { showToast: (text: string) => void }
+
+  export const ToastConsumer: ComponentType<{
+    children: (props: ToastConsumerRenderProps) => React.ReactNode
+  }>
+
+  type ToastProviderProps = {
+    positioning: 'parent' | 'window'
+  }
+
+  export const ToastProvider: ComponentType<ToastProviderProps>
+
   export const Toggle: ReactElement
 }

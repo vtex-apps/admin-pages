@@ -1,7 +1,7 @@
 import { equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
-
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
+import { ToastConsumer, ToastProvider } from 'vtex.styleguide'
 
 import { SidebarComponent } from '../typings'
 
@@ -50,16 +50,23 @@ class ComponentList extends Component<Props, State> {
     return (
       <Fragment>
         <div className="bb bw1 b--light-silver" />
-        <SortableList
-          components={this.state.components}
-          isSortable={isSortable}
-          lockAxis="y"
-          onEdit={this.handleEdit}
-          onMouseEnter={onMouseEnterComponent}
-          onMouseLeave={onMouseLeaveComponent}
-          onSortEnd={this.handleSortEnd}
-          useDragHandle={isSortable}
-        />
+        <ToastProvider positioning="parent">
+          <ToastConsumer>
+            {({ showToast }) => (
+              <SortableList
+                components={this.state.components}
+                isSortable={isSortable}
+                lockAxis="y"
+                onEdit={this.handleEdit}
+                onMouseEnter={onMouseEnterComponent}
+                onMouseLeave={onMouseLeaveComponent}
+                onSortEnd={this.handleSortEnd}
+                showToast={showToast}
+                useDragHandle={isSortable}
+              />
+            )}
+          </ToastConsumer>
+        </ToastProvider>
       </Fragment>
     )
   }
