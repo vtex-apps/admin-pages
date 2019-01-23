@@ -14,7 +14,7 @@ export const getComponentSchema = (
   component: RenderComponent<any, any> | null,
   props: any,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl,
+  intl: ReactIntl.InjectedIntl
 ): ComponentSchema => {
   const componentSchema: ComponentSchema = (component &&
     (component.schema ||
@@ -32,10 +32,10 @@ export const getComponentSchema = (
    * @return {object} Schema with title, description and enumNames properties translated
    */
   const traverseAndTranslate: (
-    schema: ComponentSchema,
+    schema: ComponentSchema
   ) => ComponentSchema = schema => {
     const translate: (
-      value: string | { id: string; values?: { [key: string]: string } },
+      value: string | { id: string; values?: { [key: string]: string } }
     ) => string = value =>
       typeof value === 'string'
         ? intl.formatMessage({ id: value })
@@ -44,7 +44,7 @@ export const getComponentSchema = (
     const translatedSchema: ComponentSchema = map(
       (value: any): any =>
         Array.isArray(value) ? map(translate, value) : translate(value),
-      pick(['title', 'description', 'enumNames'], schema) as object,
+      pick(['title', 'description', 'enumNames'], schema) as object
     )
 
     if (has('widget', schema)) {
@@ -54,9 +54,9 @@ export const getComponentSchema = (
           translate,
           pick(
             ['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'],
-            schema.widget,
-          ),
-        ),
+            schema.widget
+          )
+        )
       )
     }
 
@@ -68,7 +68,7 @@ export const getComponentSchema = (
             [key]: traverseAndTranslate(schema.properties[key]),
           }),
         {},
-        keys(schema.properties),
+        keys(schema.properties)
       )
     }
 
@@ -97,7 +97,7 @@ export const getComponentSchema = (
 
 export const getExtension = (
   editTreePath: EditorContext['editTreePath'],
-  extensions: RenderContext['extensions'],
+  extensions: RenderContext['extensions']
 ): Extension => {
   const { component = null, configurationsIds = [], props = {} } =
     extensions[editTreePath as string] || {}
@@ -105,37 +105,37 @@ export const getExtension = (
   return { component, configurationsIds, props: props || {} }
 }
 
-export function getImplementation(component: string) {
-  return global.__RENDER_8_COMPONENTS__[component]
-}
-
 export function getIframeImplementation(component: string | null) {
   if (component === null) {
     return null
   }
 
-  const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
+  const iframeRenderComponents = getIframeRenderComponents()
 
+  return iframeRenderComponents && iframeRenderComponents[component]
+}
+
+export function getIframeRenderComponents() {
+  const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
   if (!iframe) {
     return null
   }
-
   const window = iframe.contentWindow as Window | null
-
   if (!window) {
     return null
   }
+  return window.__RENDER_8_COMPONENTS__
+}
 
-  return (
-    window.__RENDER_8_COMPONENTS__ && window.__RENDER_8_COMPONENTS__[component]
-  )
+export function getImplementation(component: string) {
+  return global.__RENDER_8_COMPONENTS__[component]
 }
 
 export const getSchemaProps = (
   component: RenderComponent<any, any> | null,
   props: object,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl,
+  intl: ReactIntl.InjectedIntl
 ) => {
   if (!component) {
     return null
@@ -158,7 +158,7 @@ export const getSchemaProps = (
               : prevProps[key],
         }),
       {},
-      filter(v => prevProps[v] !== undefined, keys(properties)),
+      filter(v => prevProps[v] !== undefined, keys(properties))
     )
 
   const componentSchema = getComponentSchema(component, props, runtime, intl)
@@ -171,10 +171,11 @@ export const updateExtensionFromForm = (
   editTreePath: EditorContext['editTreePath'],
   event: IChangeEvent,
   intl: ReactIntl.InjectedIntl,
-  runtime: RenderContext,
+  runtime: RenderContext
 ) => {
   const { component: enumComponent } = event.formData
-  const component = enumComponent && enumComponent !== '' ? enumComponent : null
+  const component =
+    enumComponent && enumComponent !== '' ? enumComponent : null
   const componentImplementation =
     component && getIframeImplementation(component)
 
@@ -188,7 +189,7 @@ export const updateExtensionFromForm = (
         return acc
       },
       {},
-      availableComponents,
+      availableComponents
     )
 
     runtime.updateComponentAssets(allComponents)
@@ -198,7 +199,7 @@ export const updateExtensionFromForm = (
     componentImplementation,
     event.formData,
     runtime,
-    intl,
+    intl
   )
 
   runtime.updateExtension(editTreePath as string, {
