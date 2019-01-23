@@ -78,19 +78,26 @@ class ComponentList extends Component<Props, State> {
           />
           )}
           <div className="bt b--light-silver" />
-          <div className="bt bw1 b--light-silver" style={{ marginTop: 'auto' }}>
-            <Button disabled variation="tertiary">
-              undo (i18n)
-            </Button>
-            <Button
-              isLoading={this.state.isLoadingMutation}
-              variation="tertiary"
-              onClick={this.handleSaveReorder}
-            >
-              {intl.formatMessage({
-                id: 'pages.editor.component-list.save.button',
-              })}
-            </Button>
+          <div
+            className="bt bw1 b--light-silver w-100"
+            style={{ marginTop: 'auto' }}
+          >
+            <div className="w-50 fl tc bw1 br b--light-silver">
+              <Button disabled variation="tertiary">
+                undo (i18n)
+              </Button>
+            </div>
+            <div className="w-50 fl tc">
+              <Button
+                isLoading={this.state.isLoadingMutation}
+                variation="tertiary"
+                onClick={this.handleSaveReorder}
+              >
+                {intl.formatMessage({
+                  id: 'pages.editor.component-list.save.button',
+                })}
+              </Button>
+            </div>
           </div>
         </div>
       </Fragment>
