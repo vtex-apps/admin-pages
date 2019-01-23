@@ -22,7 +22,7 @@ declare module 'vtex.render-runtime' {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema
     getSchema?: (props: object, otherArgs?: any) => ComponentSchema
-    uiSchema: UISchema
+    uiSchema?: UISchema
   }
 
   export interface ComponentsRegistry {
