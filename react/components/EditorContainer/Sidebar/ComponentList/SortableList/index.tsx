@@ -1,11 +1,12 @@
 import React from 'react'
 import { SortableContainer } from 'react-sortable-hoc'
+import { ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import { NormalizedComponent } from '../typings'
 
 import SortableButton from './SortableButton'
 
-interface Props {
+interface CustomProps {
   components: NormalizedComponent[]
   isSortable: boolean
   onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -13,14 +14,10 @@ interface Props {
   onMouseLeave: () => void
 }
 
+type Props = CustomProps & ToastConsumerRenderProps
+
 const SortableList = SortableContainer<Props>(
-  ({
-    components,
-    isSortable,
-    onEdit,
-    onMouseEnter,
-    onMouseLeave,
-  }) => (
+  ({ components, isSortable, onEdit, onMouseEnter, onMouseLeave }) => (
     <ul className="mv0 pl0">
       {components.map((component, index) => (
         <SortableButton
@@ -35,7 +32,7 @@ const SortableList = SortableContainer<Props>(
         />
       ))}
     </ul>
-  ),
+  )
 )
 
 export default SortableList
