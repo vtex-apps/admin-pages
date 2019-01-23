@@ -1,7 +1,7 @@
 import { equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import { Button, ToastConsumer, ToastProvider } from 'vtex.styleguide'
+import { Button, ToastConsumer } from 'vtex.styleguide'
 
 import { SidebarComponent } from '../typings'
 
@@ -51,23 +51,21 @@ class ComponentList extends Component<Props, State> {
       <Fragment>
         <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
-          <ToastProvider positioning="parent">
-            <ToastConsumer>
-              {({ showToast }) => (
-                <SortableList
-                  components={this.state.components}
-                  isSortable={isSortable}
-                  lockAxis="y"
-                  onEdit={this.handleEdit}
-                  onMouseEnter={onMouseEnterComponent}
-                  onMouseLeave={onMouseLeaveComponent}
-                  onSortEnd={this.handleSortEnd}
-                  showToast={showToast}
-                  useDragHandle={isSortable}
-                />
-              )}
-            </ToastConsumer>
-          </ToastProvider>
+          <ToastConsumer>
+            {({ showToast }) => (
+              <SortableList
+                components={this.state.components}
+                isSortable={isSortable}
+                lockAxis="y"
+                onEdit={this.handleEdit}
+                onMouseEnter={onMouseEnterComponent}
+                onMouseLeave={onMouseLeaveComponent}
+                onSortEnd={this.handleSortEnd}
+                showToast={showToast}
+                useDragHandle={isSortable}
+              />
+            )}
+          </ToastConsumer>
           <div className="bt b--light-silver" />
           <div className="bt bw1 b--light-silver" style={{ marginTop: 'auto' }}>
             <Button disabled variation="tertiary">

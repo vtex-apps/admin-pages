@@ -3,6 +3,7 @@ import { difference, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
+import {ToastProvider} from 'vtex.styleguide'
 
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
@@ -300,9 +301,11 @@ class EditorProvider extends Component<Props, State> {
     )
 
     return (
-      <EditorContext.Provider value={editor}>
-        {childrenWithSidebar}
-      </EditorContext.Provider>
+      <ToastProvider positioning="parent">
+        <EditorContext.Provider value={editor}>
+          {childrenWithSidebar}
+        </EditorContext.Provider>
+      </ToastProvider>
     )
   }
 }
