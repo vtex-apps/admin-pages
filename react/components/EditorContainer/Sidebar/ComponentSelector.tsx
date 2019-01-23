@@ -51,7 +51,7 @@ class ComponentSelector extends PureComponent<Props> {
   }
 
   private handleMouseEnter = (
-    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>,
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
