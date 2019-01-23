@@ -4,7 +4,8 @@ import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box } from 'vtex.styleguide'
 
-import { NEW_ROUTE_ID, ROUTES_LIST } from './components/admin/pages/consts'
+import AdminWrapper from './components/admin/AdminWrapper'
+import { NEW_ROUTE_ID, ROUTES_LIST, WRAPPER_PATH } from './components/admin/pages/consts'
 import Form from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
@@ -13,7 +14,6 @@ import {
   isNewRoute,
   isStoreRoute,
 } from './components/admin/pages/utils'
-import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import RouteQuery from './queries/Route.graphql'
 
@@ -102,7 +102,7 @@ class PageForm extends Component<Props, State> {
     const { formData, isLoading } = this.state
 
     return (
-      <Styles>
+      <AdminWrapper path={WRAPPER_PATH}>
         <Operations>
           {({
             conditionsResults,
@@ -137,7 +137,7 @@ class PageForm extends Component<Props, State> {
             )
           }}
         </Operations>
-      </Styles>
+      </AdminWrapper>
     )
   }
 

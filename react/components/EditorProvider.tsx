@@ -4,12 +4,13 @@ import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 
+import AvailableConditions from '../queries/AvailableConditions.graphql'
+
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
-} from './components/EditorContainer'
-import { EditorContext } from './components/EditorContext'
-import MessagesContext, { IMessagesContext } from './components/MessagesContext'
-import AvailableConditions from './queries/AvailableConditions.graphql'
+} from './EditorContainer'
+import { EditorContext } from './EditorContext'
+import MessagesContext, { IMessagesContext } from './MessagesContext'
 
 type Props = RenderContextProps &
   DataProps<{ availableConditions: [Condition] }> &

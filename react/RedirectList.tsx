@@ -4,13 +4,14 @@ import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Pagination } from 'vtex.styleguide'
 
+import AdminWrapper from './components/admin/AdminWrapper'
 import {
   PAGINATION_START,
   PAGINATION_STEP,
+  WRAPPER_PATH,
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
 import { FetchMoreOptions } from './components/admin/redirects/List/typings'
-import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
@@ -51,41 +52,41 @@ class RedirectList extends Component<Props, State> {
           }}
         >
           {({ data, fetchMore, loading }) => (
-            <Styles>
+            <AdminWrapper path={WRAPPER_PATH}>
               {loading ? (
                 <Loader />
               ) : (
-                  <Fragment>
-                    <List
-                      from={paginationFrom}
-                      items={data.redirects.redirects.slice(
-                        paginationFrom,
-                        paginationTo,
-                      )}
-                      to={paginationTo}
-                    />
-                    {data.redirects.total > 0 && (
-                      <Pagination
-                        currentItemFrom={paginationFrom + 1}
-                        currentItemTo={paginationTo}
-                        onNextClick={this.getGoToNextPage(
-                          data.redirects.redirects.length,
-                          data.redirects.total,
-                          fetchMore,
-                        )}
-                        onPrevClick={this.goToPrevPage}
-                        textOf={intl.formatMessage({
-                          id: 'pages.admin.redirects.pagination.of',
-                        })}
-                        textShowRows={intl.formatMessage({
-                          id: 'pages.admin.redirects.pagination.showRows',
-                        })}
-                        totalItems={data.redirects.total}
-                      />
+                <Fragment>
+                  <List
+                    from={paginationFrom}
+                    items={data.redirects.redirects.slice(
+                      paginationFrom,
+                      paginationTo,
                     )}
-                  </Fragment>
-                )}
-            </Styles>
+                    to={paginationTo}
+                  />
+                  {data.redirects.total > 0 && (
+                    <Pagination
+                      currentItemFrom={paginationFrom + 1}
+                      currentItemTo={paginationTo}
+                      onNextClick={this.getGoToNextPage(
+                        data.redirects.redirects.length,
+                        data.redirects.total,
+                        fetchMore,
+                      )}
+                      onPrevClick={this.goToPrevPage}
+                      textOf={intl.formatMessage({
+                        id: 'pages.admin.redirects.pagination.of',
+                      })}
+                      textShowRows={intl.formatMessage({
+                        id: 'pages.admin.redirects.pagination.showRows',
+                      })}
+                      totalItems={data.redirects.total}
+                    />
+                  )}
+                </Fragment>
+              )}
+            </AdminWrapper>
           )}
         </Query>
       </Fragment>

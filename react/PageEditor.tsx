@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import EditorProvider from './components/EditorProvider'
 import MessagesContext, { IMessagesContext } from './components/MessagesContext'
-import EditorProvider from './EditorProvider'
 
 interface PageEditorProps {
   params: any
@@ -28,8 +28,9 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
 
   constructor(props: PageEditorProps) {
     super(props)
+
     this.state = {
-      setMessages: this.setMessages
+      setMessages: this.setMessages,
     }
   }
 
@@ -50,19 +51,23 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public render() {
-    const { params: { path } } = this.props
+    const {
+      params: { path },
+    } = this.props
 
     return (
-      <MessagesContext.Provider value={this.state}>
-        <EditorProvider>
-          <iframe
-            id="store-iframe"
-            className="w-100 h-100"
-            src={['/', path].filter((str) => !!str).join('')}
-            frameBorder="0"
-          />
-        </EditorProvider>
-      </MessagesContext.Provider>
+      <div className="h-100 overflow-y-auto bg-light-silver">
+        <MessagesContext.Provider value={this.state}>
+          <EditorProvider>
+            <iframe
+              id="store-iframe"
+              className="w-100 h-100"
+              src={['/', path].filter(str => !!str).join('')}
+              frameBorder="0"
+            />
+          </EditorProvider>
+        </MessagesContext.Provider>
+      </div>
     )
   }
 }

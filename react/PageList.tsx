@@ -2,10 +2,11 @@ import PropTypes from 'prop-types'
 import React, { PureComponent } from 'react'
 import { Query } from 'react-apollo'
 
+import AdminWrapper from './components/admin/AdminWrapper'
+import { WRAPPER_PATH } from './components/admin/pages/consts'
 import List from './components/admin/pages/List'
 import { CategorizedRoutes } from './components/admin/pages/List/typings'
 import { isStoreRoute } from './components/admin/pages/utils'
-import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
@@ -26,7 +27,7 @@ class PageList extends PureComponent {
     const { startLoading, stopLoading } = this.context
 
     return (
-      <Styles>
+      <AdminWrapper path={WRAPPER_PATH}>
         <Query query={RoutesQuery}>
           {({ data, loading: isLoading }: QueryResponse) => {
             if (isLoading) {
@@ -73,7 +74,7 @@ class PageList extends PureComponent {
             return <List categorizedRoutes={categorizedRoutes} />
           }}
         </Query>
-      </Styles>
+      </AdminWrapper>
     )
   }
 }

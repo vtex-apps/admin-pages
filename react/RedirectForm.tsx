@@ -3,11 +3,15 @@ import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 
-import { BASE_URL, NEW_REDIRECT_ID } from './components/admin/redirects/consts'
+import AdminWrapper from './components/admin/AdminWrapper'
+import {
+  BASE_URL,
+  NEW_REDIRECT_ID,
+  WRAPPER_PATH,
+} from './components/admin/redirects/consts'
 import Form from './components/admin/redirects/Form'
 import Operations from './components/admin/redirects/Form/Operations'
 import { RedirectQuery } from './components/admin/redirects/Form/typings'
-import Styles from './components/admin/Styles'
 import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
@@ -91,13 +95,14 @@ class RedirectForm extends Component<Props, State> {
         <Helmet>
           <title>
             {intl.formatMessage({
-              id: params.id === NEW_REDIRECT_ID
-                ? 'pages.admin.redirects.form.title.new'
-                : 'pages.admin.redirects.form.title.info',
+              id:
+                params.id === NEW_REDIRECT_ID
+                  ? 'pages.admin.redirects.form.title.new'
+                  : 'pages.admin.redirects.form.title.info',
             })}
           </title>
         </Helmet>
-        <Styles>
+        <AdminWrapper path={WRAPPER_PATH}>
           <Operations>
             {({ deleteRedirect, saveRedirect }) =>
               isLoading ? (
@@ -111,7 +116,7 @@ class RedirectForm extends Component<Props, State> {
               )
             }
           </Operations>
-        </Styles>
+        </AdminWrapper>
       </Fragment>
     )
   }
