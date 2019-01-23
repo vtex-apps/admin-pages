@@ -5,6 +5,7 @@ import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
+import Modal from '../../../Modal'
 import SaveExtension from '../../../queries/SaveExtension.graphql'
 import { SidebarComponent } from '../typings'
 
@@ -27,9 +28,18 @@ interface CustomProps {
 type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
 
 interface State {
+  cancelMessageId: string
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
+  isModalOpen: boolean
+  handleCancelModal: () => void
+  handleCloseModal: () => void
+  handleConfirmModal: () => void
+}
+
+const noop = () => {
+  return
 }
 
 class ComponentList extends Component<Props, State> {
@@ -46,9 +56,14 @@ class ComponentList extends Component<Props, State> {
     super(props)
 
     this.state = {
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       components: normalizeComponents(props.components),
+      handleCancelModal: noop,
+      handleCloseModal: noop,
+      handleConfirmModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
+      isModalOpen: false,
     }
   }
 
@@ -65,6 +80,28 @@ class ComponentList extends Component<Props, State> {
 
     return (
       <Fragment>
+        <Modal
+          isActionLoading={this.state.isLoadingMutation}
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.component-list.save.button',
+          })}
+          onClickAction={this.state.handleConfirmModal}
+          textButtonCancel={intl.formatMessage({
+            id: this.state.cancelMessageId,
+          })}
+          onClickCancel={this.state.handleCancelModal}
+          onClose={this.state.handleCloseModal}
+          isOpen={this.state.isModalOpen}
+          textMessage={
+            <Fragment>
+              <h1>(i18n) Save Template</h1>
+              <p>
+                (i18n) Are you sure? The changes will be applied to all pages
+                that are using this {'<<<<<'}template{'>>>>>'}
+              </p>
+            </Fragment>
+          }
+        />
         <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
           <SortableList
@@ -92,8 +129,8 @@ class ComponentList extends Component<Props, State> {
             <div className="w-50 fl tc">
               <Button
                 isLoading={this.state.isLoadingMutation}
+                onClick={this.handleOpenSaveChangesModal}
                 variation="tertiary"
-                onClick={this.handleSaveReorder}
               >
                 {intl.formatMessage({
                   id: 'pages.editor.component-list.save.button',
@@ -106,6 +143,16 @@ class ComponentList extends Component<Props, State> {
     )
   }
 
+  private handleCloseModal = () => {
+    this.setState({
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      handleCancelModal: noop,
+      handleCloseModal: noop,
+      handleConfirmModal: noop,
+      isModalOpen: false,
+    })
+  }
+
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     const { editor, highlightHandler } = this.props
 
@@ -114,6 +161,16 @@ class ComponentList extends Component<Props, State> {
     editor.editExtensionPoint(treePath)
 
     highlightHandler(null)
+  }
+
+  private handleOpenSaveChangesModal = () => {
+    this.setState({
+      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      handleCancelModal: this.handleCloseModal,
+      handleCloseModal: this.handleCloseModal,
+      handleConfirmModal: this.handleSaveReorder,
+      isModalOpen: true,
+    })
   }
 
   private handleSaveReorder = async () => {
@@ -163,6 +220,8 @@ class ComponentList extends Component<Props, State> {
         intl.formatMessage({ id: 'pages.editor.component-list.save.error' })
       )
     } finally {
+      this.handleCloseModal()
+
       this.setState({
         isLoadingMutation: false,
       })
