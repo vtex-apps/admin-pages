@@ -5,6 +5,7 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
+import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
 import SaveExtension from '../../../queries/SaveExtension.graphql'
 import { SidebarComponent } from '../typings'
@@ -128,6 +129,7 @@ class ComponentList extends Component<Props, State> {
                 onClick={this.handleUndo}
                 variation="tertiary"
               >
+                <UndoIcon color={!hasChanges ? '#979899' : undefined} />
                 <FormattedMessage id="pages.editor.component-list.button.undo" />
               </Button>
             </div>
@@ -193,6 +195,8 @@ class ComponentList extends Component<Props, State> {
       throw new Error('iframeWindow is null')
     }
 
+    let changes = this.state.changes
+
     try {
       this.setState({
         isLoadingMutation: true,
@@ -213,15 +217,13 @@ class ComponentList extends Component<Props, State> {
         },
       })
 
-      this.setState({
-        isLoadingMutation: false,
-      })
-
       this.props.showToast(
         intl.formatMessage({
           id: 'pages.editor.component-list.save.toast.success',
         })
       )
+
+      changes = []
     } catch (e) {
       this.props.showToast(
         intl.formatMessage({
@@ -232,6 +234,7 @@ class ComponentList extends Component<Props, State> {
       this.handleCloseModal()
 
       this.setState({
+        changes,
         isLoadingMutation: false,
       })
     }
@@ -296,19 +299,28 @@ class ComponentList extends Component<Props, State> {
   }
 
   private handleUndo = () => {
-    const { target, order } = last(this.state.changes)
-    const extension = this.props.iframeRuntime.extensions[target]
-    const changes = this.state.changes.slice(0, this.state.changes.length - 1)
+    const lastChange = last(this.state.changes)
 
-    this.props.iframeRuntime.updateExtension(target, {
-      ...extension,
-      props: {
-        ...extension.props,
-        elements: order,
-      },
-    })
+    if (lastChange) {
+      const { target, order } = lastChange
 
-    this.setState({ changes })
+      const extension = this.props.iframeRuntime.extensions[target]
+
+      const changes = this.state.changes.slice(
+        0,
+        this.state.changes.length - 1
+      )
+
+      this.props.iframeRuntime.updateExtension(target, {
+        ...extension,
+        props: {
+          ...extension.props,
+          elements: order,
+        },
+      })
+
+      this.setState({ changes })
+    }
   }
 }
 
