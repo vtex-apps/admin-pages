@@ -71,6 +71,7 @@ class SortableButton extends Component<Props, State> {
                   }`}
                 >
                   <Button
+                    isChild
                     onEdit={onEdit}
                     onMouseEnter={onMouseEnter}
                     onMouseLeave={onMouseLeave}
