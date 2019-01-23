@@ -14,11 +14,11 @@ export const normalizeComponents = (components: SidebarComponent[]) => {
         acc.map(item =>
           currComponent.treePath.startsWith(item.treePath)
             ? {
-                ...item,
-                components: item.components
-                  ? [...item.components, currComponent]
-                  : [currComponent],
-              }
+              ...item,
+              components: item.components
+                ? [...item.components, currComponent]
+                : [currComponent],
+            }
             : item
         ),
       roots.map(root => ({ ...root, isSortable: true }))

@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import { difference, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
-import { compose, DataProps, graphql } from 'react-apollo'
+import { compose, DataProps } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
-import {ToastProvider} from 'vtex.styleguide'
+import { ToastProvider } from 'vtex.styleguide'
 
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
@@ -32,7 +32,7 @@ interface State {
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
-const viewPorts: {[name: string]: Viewport[]} = {
+const viewPorts: { [name: string]: Viewport[] } = {
   default: ['mobile', 'tablet', 'desktop'],
   desktop: [],
   mobile: ['mobile', 'tablet'],
@@ -84,7 +84,7 @@ class EditorProvider extends Component<Props, State> {
             ? {}
             : {
                 iframeWindow: (document.getElementById(
-                  'store-iframe',
+                  'store-iframe'
                 ) as HTMLIFrameElement).contentWindow as Window,
               }),
         }
@@ -104,7 +104,7 @@ class EditorProvider extends Component<Props, State> {
     if (root !== 'admin') {
       Array.prototype.forEach.call(
         document.getElementsByClassName('render-container'),
-        (e: Element) => e.classList.add('editor-provider'),
+        (e: Element) => e.classList.add('editor-provider')
       )
     }
 
@@ -124,14 +124,14 @@ class EditorProvider extends Component<Props, State> {
         e => {
           setTimeout(() => window.dispatchEvent(e), 0)
         },
-        { passive: true },
+        { passive: true }
       )
     }
   }
 
   public componentWillUnmount() {
     const {
-      runtime: { production, emitter }
+      runtime: { production, emitter },
     } = this.props
 
     emitter.removeListener('localesChanged', this.emitLocaleEventToIframe)
@@ -142,7 +142,11 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public emitLocaleEventToIframe = (event: string) => {
-    const emitToIframe: RenderRuntime['emitter'] = pathOr({emit: noop}, ['state', 'iframeRuntime', 'emitter'])(this)
+    const emitToIframe: RenderRuntime['emitter'] = pathOr({ emit: noop }, [
+      'state',
+      'iframeRuntime',
+      'emitter',
+    ])(this)
     emitToIframe.emit('localesChanged', event)
   }
 
@@ -167,7 +171,7 @@ class EditorProvider extends Component<Props, State> {
       (e: Element) =>
         showAdminControls
           ? e.classList.add('editor-provider')
-          : e.classList.remove('editor-provider'),
+          : e.classList.remove('editor-provider')
     )
 
     this.setState({ showAdminControls, editMode })
@@ -185,7 +189,7 @@ class EditorProvider extends Component<Props, State> {
           scope: this.state.scope,
           template: this.state.template,
         })
-      },
+      }
     )
   }
 
@@ -312,7 +316,9 @@ class EditorProvider extends Component<Props, State> {
 
 const EditorWithMessageContext = (props: Props) => (
   <MessagesContext.Consumer>
-    {({setMessages}) => (<EditorProvider {...props} setMessages={setMessages}/>)}
+    {({ setMessages }) => (
+      <EditorProvider {...props} setMessages={setMessages} />
+    )}
   </MessagesContext.Consumer>
 )
 
