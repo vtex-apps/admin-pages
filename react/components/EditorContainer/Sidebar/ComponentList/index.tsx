@@ -1,4 +1,4 @@
-import { equals, findIndex, last, path } from 'ramda'
+import { clone, equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
@@ -10,7 +10,7 @@ import SaveExtension from '../../../queries/SaveExtension.graphql'
 import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
-import { NormalizedComponent } from './typings'
+import { NormalizedComponent, ReorderChange } from './typings'
 import { getParentTreePath, normalizeComponents } from './utils'
 
 interface CustomProps {
@@ -29,6 +29,7 @@ type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
 
 interface State {
   cancelMessageId: string
+  changes: ReorderChange[]
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
@@ -57,6 +58,7 @@ class ComponentList extends Component<Props, State> {
 
     this.state = {
       cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
+      changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
       handleCloseModal: noop,
@@ -75,6 +77,8 @@ class ComponentList extends Component<Props, State> {
       onMouseLeaveComponent,
       showToast,
     } = this.props
+
+    const hasChanges = this.state.changes.length > 0
 
     const isSortable = editor.mode === 'layout'
 
@@ -122,12 +126,17 @@ class ComponentList extends Component<Props, State> {
             style={{ marginTop: 'auto' }}
           >
             <div className="w-50 fl tc bw1 br b--light-silver">
-              <Button disabled variation="tertiary">
+              <Button
+                disabled={!hasChanges}
+                onClick={this.handleUndo}
+                variation="tertiary"
+              >
                 undo (i18n)
               </Button>
             </div>
             <div className="w-50 fl tc">
               <Button
+                disabled={!hasChanges}
                 isLoading={this.state.isLoadingMutation}
                 onClick={this.handleOpenSaveChangesModal}
                 variation="tertiary"
@@ -260,6 +269,10 @@ class ComponentList extends Component<Props, State> {
         extension.props.elements
       )
 
+      const oldOrder = clone(extension.props.elements)
+
+      const target = firstTargetParentTreePath
+
       const newOrder = arrayMove(
         extension.props.elements,
         firstTargetIndex,
@@ -274,10 +287,28 @@ class ComponentList extends Component<Props, State> {
         },
       })
 
-      this.setState({
+      this.setState(prevState => ({
+        ...prevState,
+        changes: [...prevState.changes, { order: oldOrder, target }],
         components: arrayMove(this.state.components, oldIndex, newIndex),
-      })
+      }))
     }
+  }
+
+  private handleUndo = () => {
+    const { target, order } = last(this.state.changes)
+    const extension = this.props.iframeRuntime.extensions[target]
+    const changes = this.state.changes.slice(0, this.state.changes.length - 1)
+
+    this.props.iframeRuntime.updateExtension(target, {
+      ...extension,
+      props: {
+        ...extension.props,
+        elements: order,
+      },
+    })
+
+    this.setState({ changes })
   }
 }
 
