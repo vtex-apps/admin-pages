@@ -1,7 +1,7 @@
 import { clone, equals, findIndex, last, path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
@@ -28,15 +28,16 @@ interface CustomProps {
 type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
 
 interface State {
-  cancelMessageId: string
   changes: ReorderChange[]
   components: NormalizedComponent[]
-  initialComponents: SidebarComponent[]
-  isLoadingMutation: boolean
-  isModalOpen: boolean
   handleCancelModal: () => void
   handleCloseModal: () => void
   handleConfirmModal: () => void
+  initialComponents: SidebarComponent[]
+  isLoadingMutation: boolean
+  isModalOpen: boolean
+  modalCancelMessageId: string
+  modalTextMessageId: string
 }
 
 const noop = () => {
@@ -57,7 +58,6 @@ class ComponentList extends Component<Props, State> {
     super(props)
 
     this.state = {
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       changes: [],
       components: normalizeComponents(props.components),
       handleCancelModal: noop,
@@ -66,6 +66,9 @@ class ComponentList extends Component<Props, State> {
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
+      modalCancelMessageId:
+        'pages.editor.component-list.modal.save.button.cancel',
+      modalTextMessageId: 'pages.editor.component-list.modal.save.text.',
     }
   }
 
@@ -86,25 +89,19 @@ class ComponentList extends Component<Props, State> {
       <Fragment>
         <Modal
           isActionLoading={this.state.isLoadingMutation}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.save.button',
-          })}
           onClickAction={this.state.handleConfirmModal}
-          textButtonCancel={intl.formatMessage({
-            id: this.state.cancelMessageId,
-          })}
           onClickCancel={this.state.handleCancelModal}
           onClose={this.state.handleCloseModal}
           isOpen={this.state.isModalOpen}
-          textMessage={
-            <Fragment>
-              <h1>(i18n) Save Template</h1>
-              <p>
-                (i18n) Are you sure? The changes will be applied to all pages
-                that are using this {'<<<<<'}template{'>>>>>'}
-              </p>
-            </Fragment>
-          }
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.component-list.button.save',
+          })}
+          textButtonCancel={intl.formatMessage({
+            id: this.state.modalCancelMessageId,
+          })}
+          textMessage={intl.formatMessage({
+            id: this.state.modalTextMessageId,
+          })}
         />
         <div className="bb bw1 b--light-silver" />
         <div className="flex flex-column justify-between flex-grow-1">
@@ -131,7 +128,7 @@ class ComponentList extends Component<Props, State> {
                 onClick={this.handleUndo}
                 variation="tertiary"
               >
-                undo (i18n)
+                <FormattedMessage id="pages.editor.component-list.button.undo" />
               </Button>
             </div>
             <div className="w-50 fl tc">
@@ -141,9 +138,7 @@ class ComponentList extends Component<Props, State> {
                 onClick={this.handleOpenSaveChangesModal}
                 variation="tertiary"
               >
-                {intl.formatMessage({
-                  id: 'pages.editor.component-list.save.button',
-                })}
+                <FormattedMessage id="pages.editor.component-list.button.save" />
               </Button>
             </div>
           </div>
@@ -154,7 +149,6 @@ class ComponentList extends Component<Props, State> {
 
   private handleCloseModal = () => {
     this.setState({
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       handleCancelModal: noop,
       handleCloseModal: noop,
       handleConfirmModal: noop,
@@ -174,11 +168,13 @@ class ComponentList extends Component<Props, State> {
 
   private handleOpenSaveChangesModal = () => {
     this.setState({
-      cancelMessageId: 'pages.editor.component-list.modal.button.cancel',
       handleCancelModal: this.handleCloseModal,
       handleCloseModal: this.handleCloseModal,
       handleConfirmModal: this.handleSaveReorder,
       isModalOpen: true,
+      modalCancelMessageId:
+        'pages.editor.component-list.save.modal.button.cancel',
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     })
   }
 
@@ -222,11 +218,15 @@ class ComponentList extends Component<Props, State> {
       })
 
       this.props.showToast(
-        intl.formatMessage({ id: 'pages.editor.component-list.save.success' })
+        intl.formatMessage({
+          id: 'pages.editor.component-list.save.toast.success',
+        })
       )
     } catch (e) {
       this.props.showToast(
-        intl.formatMessage({ id: 'pages.editor.component-list.save.error' })
+        intl.formatMessage({
+          id: 'pages.editor.component-list.save.toast.error',
+        })
       )
     } finally {
       this.handleCloseModal()
