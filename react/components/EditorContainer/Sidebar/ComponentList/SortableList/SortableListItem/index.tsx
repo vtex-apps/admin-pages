@@ -5,12 +5,14 @@ import { NormalizedComponent } from '../../typings'
 
 import DragHandle from './DragHandle'
 import ExpandArrow from './ExpandArrow'
-import ListItem from './ListItem'
+import Item from './Item'
 
 interface Props extends SortableElementProps {
   component: NormalizedComponent
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
+  ) => void
   onMouseLeave: () => void
   shouldRenderDragHandle: boolean
 }
@@ -41,11 +43,16 @@ class SortableListItem extends Component<Props, State> {
 
     return (
       <li className="list">
-        <div className="flex items-center bb bt bg-white hover-bg-light-silver b--light-silver">
+        <div
+          className="flex items-center bb bt bg-white hover-bg-light-silver b--light-silver"
+          data-tree-path={component.treePath}
+          onMouseEnter={onMouseEnter}
+          onMouseLeave={onMouseLeave}
+        >
           {shouldRenderDragHandle && component.isSortable && (
             <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
-          <ListItem
+          <Item
             hasLeftPadding={shouldRenderDragHandle && !component.isSortable}
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
@@ -65,7 +72,10 @@ class SortableListItem extends Component<Props, State> {
             {subitems.map((item, index) => (
               <li
                 className="flex bg-white hover-bg-light-silver list"
+                data-tree-path={item.treePath}
                 key={item.treePath}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}
               >
                 <div className="bl bw2 b--light-blue" />
                 <div
@@ -73,7 +83,7 @@ class SortableListItem extends Component<Props, State> {
                     index !== subitems.length - 1 ? 'bb b--light-silver ' : ''
                   }`}
                 >
-                  <ListItem
+                  <Item
                     isChild
                     onEdit={onEdit}
                     onMouseEnter={onMouseEnter}
