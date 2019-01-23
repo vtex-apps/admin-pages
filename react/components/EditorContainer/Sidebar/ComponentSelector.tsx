@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import SelectionIcon from '../../../images/SelectionIcon'
 
@@ -32,14 +33,19 @@ class ComponentSelector extends PureComponent<Props> {
             </span>
           </div>
         </div>
-        <ComponentList
-          components={components}
-          editor={editor}
-          highlightHandler={highlightHandler}
-          onMouseEnterComponent={this.handleMouseEnter}
-          onMouseLeaveComponent={this.handleMouseLeave}
-          iframeRuntime={iframeRuntime}
-        />
+        <ToastConsumer>
+          {({ showToast }) => (
+            <ComponentList
+              components={components}
+              editor={editor}
+              highlightHandler={highlightHandler}
+              onMouseEnterComponent={this.handleMouseEnter}
+              onMouseLeaveComponent={this.handleMouseLeave}
+              iframeRuntime={iframeRuntime}
+              showToast={showToast}
+            />
+          )}
+        </ToastConsumer>
       </Fragment>
     )
   }
