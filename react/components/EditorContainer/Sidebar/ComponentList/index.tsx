@@ -76,17 +76,17 @@ class ComponentList extends Component<Props, State> {
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
     const firstTargetParentTreePath = getParentTreePath(
-      this.state.components[oldIndex].treePath,
+      this.state.components[oldIndex].treePath
     )
     const secondTargetParentTreePath = getParentTreePath(
-      this.state.components[newIndex].treePath,
+      this.state.components[newIndex].treePath
     )
 
     const firstTargetName = last(
-      this.state.components[oldIndex].treePath.split('/'),
+      this.state.components[oldIndex].treePath.split('/')
     )
     const secondTargetName = last(
-      this.state.components[newIndex].treePath.split('/'),
+      this.state.components[newIndex].treePath.split('/')
     )
 
     const isSameTree = firstTargetParentTreePath === secondTargetParentTreePath
@@ -99,17 +99,17 @@ class ComponentList extends Component<Props, State> {
 
       const firstTargetIndex = findIndex(
         equals(firstTargetName),
-        extension.props.elements,
+        extension.props.elements
       )
       const secondTargetIndex = findIndex(
         equals(secondTargetName),
-        extension.props.elements,
+        extension.props.elements
       )
 
       const newOrder = arrayMove(
         extension.props.elements,
         firstTargetIndex,
-        secondTargetIndex,
+        secondTargetIndex
       )
 
       this.props.iframeRuntime.updateExtension(firstTargetParentTreePath, {

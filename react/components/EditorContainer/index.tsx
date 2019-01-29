@@ -84,7 +84,7 @@ export default class EditorContainer extends Component<Props, State> {
       const iframe = document.getElementById('store-iframe') || {}
       const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(
         ['contentWindow', '__setHighlightTreePath'],
-        iframe,
+        iframe
       )
       if (setHighlightTreePath) {
         setHighlightTreePath({
