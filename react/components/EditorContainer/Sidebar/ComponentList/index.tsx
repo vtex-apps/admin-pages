@@ -12,7 +12,7 @@ import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
 import { NormalizedComponent, ReorderChange } from './typings'
-import { getParentTreePath, normalizeComponents } from './utils'
+import { getParentTreePath, normalize } from './utils'
 
 interface CustomProps {
   components: SidebarComponent[]
@@ -47,8 +47,8 @@ class ComponentList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
     if (!equals(props.components, state.initialComponents)) {
       return {
-        components: normalizeComponents(props.components),
-        initialComponents: props.components,
+        components: normalize(props.components),
+        initialComponents: props.components
       }
     }
   }
@@ -58,14 +58,14 @@ class ComponentList extends Component<Props, State> {
 
     this.state = {
       changes: [],
-      components: normalizeComponents(props.components),
+      components: normalize(props.components),
       handleCancelModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text'
     }
   }
 
@@ -75,7 +75,7 @@ class ComponentList extends Component<Props, State> {
       intl,
       onMouseEnterComponent,
       onMouseLeaveComponent,
-      showToast,
+      showToast
     } = this.props
 
     const hasChanges = this.state.changes.length > 0
@@ -91,13 +91,13 @@ class ComponentList extends Component<Props, State> {
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
           textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.button.save',
+            id: 'pages.editor.component-list.button.save'
           })}
           textButtonCancel={intl.formatMessage({
-            id: this.state.modalCancelMessageId,
+            id: this.state.modalCancelMessageId
           })}
           textMessage={intl.formatMessage({
-            id: this.state.modalTextMessageId,
+            id: this.state.modalTextMessageId
           })}
         />
         <div className="bb bw1 b--light-silver" />
@@ -149,7 +149,7 @@ class ComponentList extends Component<Props, State> {
   private handleCloseModal = () => {
     this.setState({
       handleCancelModal: noop,
-      isModalOpen: false,
+      isModalOpen: false
     })
   }
 
@@ -160,7 +160,7 @@ class ComponentList extends Component<Props, State> {
           prevState => ({
             ...prevState,
             changes: [prevState.changes[0]],
-            isModalOpen: false,
+            isModalOpen: false
           }),
           () => {
             this.handleUndo()
@@ -173,7 +173,7 @@ class ComponentList extends Component<Props, State> {
         isModalOpen: true,
         modalCancelMessageId:
           'pages.editor.component-list.undo.modal.button.cancel',
-        modalTextMessageId: 'pages.editor.component-list.undo.modal.text',
+        modalTextMessageId: 'pages.editor.component-list.undo.modal.text'
       })
     } else {
       const { editor, highlightHandler } = this.props
@@ -192,7 +192,7 @@ class ComponentList extends Component<Props, State> {
       isModalOpen: true,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text'
     })
   }
 
@@ -215,7 +215,7 @@ class ComponentList extends Component<Props, State> {
 
     try {
       this.setState({
-        isLoadingMutation: true,
+        isLoadingMutation: true
       })
 
       await saveExtension({
@@ -229,13 +229,13 @@ class ComponentList extends Component<Props, State> {
           path: iframeWindow.location.pathname,
           propsJSON: JSON.stringify(extension.props),
           routeId: 'store',
-          scope: 'route',
-        },
+          scope: 'route'
+        }
       })
 
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.success',
+          id: 'pages.editor.component-list.save.toast.success'
         })
       )
 
@@ -243,7 +243,7 @@ class ComponentList extends Component<Props, State> {
     } catch (e) {
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.error',
+          id: 'pages.editor.component-list.save.toast.error'
         })
       )
     } finally {
@@ -251,7 +251,7 @@ class ComponentList extends Component<Props, State> {
 
       this.setState({
         changes,
-        isLoadingMutation: false,
+        isLoadingMutation: false
       })
     }
   }
@@ -302,14 +302,14 @@ class ComponentList extends Component<Props, State> {
         ...extension,
         props: {
           ...extension.props,
-          elements: newOrder,
-        },
+          elements: newOrder
+        }
       })
 
       this.setState(prevState => ({
         ...prevState,
         changes: [...prevState.changes, { order: oldOrder, target }],
-        components: arrayMove(this.state.components, oldIndex, newIndex),
+        components: arrayMove(this.state.components, oldIndex, newIndex)
       }))
     }
   }
@@ -331,8 +331,8 @@ class ComponentList extends Component<Props, State> {
         ...extension,
         props: {
           ...extension.props,
-          elements: order,
-        },
+          elements: order
+        }
       })
 
       this.setState({ changes })
