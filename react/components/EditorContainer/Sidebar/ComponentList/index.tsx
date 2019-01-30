@@ -104,6 +104,7 @@ class ComponentList extends Component<Props, State> {
         <div className="flex flex-column justify-between flex-grow-1">
           <SortableList
             components={this.state.components}
+            editor={editor}
             isSortable={isSortable}
             lockAxis="y"
             onEdit={this.handleEdit}

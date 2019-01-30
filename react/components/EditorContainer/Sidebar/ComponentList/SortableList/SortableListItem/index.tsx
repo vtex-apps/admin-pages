@@ -9,6 +9,7 @@ import Item from './Item'
 
 interface Props extends SortableElementProps {
   component: NormalizedComponent
+  editor: EditorContext
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
@@ -26,17 +27,18 @@ class SortableListItem extends Component<Props, State> {
     super(props)
 
     this.state = {
-      isExpanded: false,
+      isExpanded: false
     }
   }
 
   public render() {
     const {
       component,
+      editor,
       onEdit,
       onMouseEnter,
       onMouseLeave,
-      shouldRenderDragHandle,
+      shouldRenderDragHandle
     } = this.props
 
     const subitems = component.components
@@ -53,7 +55,10 @@ class SortableListItem extends Component<Props, State> {
             <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
           <Item
-            hasLeftPadding={shouldRenderDragHandle && !component.isSortable}
+            hasLeftPadding={
+              editor.mode === 'content' ||
+              (shouldRenderDragHandle && !component.isSortable)
+            }
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -105,7 +110,7 @@ class SortableListItem extends Component<Props, State> {
     if (this.props.component.isSortable) {
       if (this.state.isExpanded) {
         this.setState({
-          isExpanded: false,
+          isExpanded: false
         })
       }
     }
@@ -114,7 +119,7 @@ class SortableListItem extends Component<Props, State> {
   private toggleExpansion = () => {
     this.setState(prevState => ({
       ...prevState,
-      isExpanded: !prevState.isExpanded,
+      isExpanded: !prevState.isExpanded
     }))
   }
 }
