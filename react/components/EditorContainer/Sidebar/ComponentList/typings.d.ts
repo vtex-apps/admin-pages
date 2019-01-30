@@ -5,6 +5,13 @@ export interface NormalizedComponent extends SidebarComponent {
   isSortable: boolean
 }
 
+export interface NormalizedRelativeRoot {
+  after: NormalizedComponent[]
+  around: NormalizedComponent[]
+  before: NormalizedComponent[]
+  nestedAround: NormalizedComponent[]
+}
+
 export interface ReorderChange {
   target: string
   order: string[]

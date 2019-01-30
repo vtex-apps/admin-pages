@@ -17,6 +17,9 @@ declare global {
   }
 
   interface Extension {
+    after?: string[],
+    around?: string[],
+    before?: string[],
     component: string | null
     configurationsIds?: string[]
     props?: any
