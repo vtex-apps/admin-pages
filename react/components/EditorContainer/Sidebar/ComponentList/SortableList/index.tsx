@@ -8,6 +8,7 @@ import SortableListItem from './SortableListItem'
 
 interface CustomProps {
   components: NormalizedComponent[]
+  editor: EditorContext
   isSortable: boolean
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter: (
@@ -19,12 +20,13 @@ interface CustomProps {
 type Props = CustomProps & ToastConsumerRenderProps
 
 const SortableList = SortableContainer<Props>(
-  ({ components, isSortable, onEdit, onMouseEnter, onMouseLeave }) => (
+  ({ components, editor, isSortable, onEdit, onMouseEnter, onMouseLeave }) => (
     <ul className="mv0 pl0 overflow-y-auto pointer">
       {components.map((component, index) => (
         <SortableListItem
           component={component}
           disabled={!isSortable || !component.isSortable}
+          editor={editor}
           index={index}
           key={component.treePath}
           onEdit={onEdit}
