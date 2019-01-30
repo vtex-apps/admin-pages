@@ -21,8 +21,8 @@ const Item: React.SFC<Props> = ({
   treePath,
 }) => (
   <div
-    className={`w-100 pv5 dark-gray bg-inherit tl ${
-      hasLeftPadding ? 'pl7 pr0' : 'ph0'
+    className={`w-100 pv5 pr0 dark-gray bg-inherit tl ${
+      hasLeftPadding ? 'pl7' : 'pl0'
     }`}
     data-tree-path={treePath}
     key={treePath}
