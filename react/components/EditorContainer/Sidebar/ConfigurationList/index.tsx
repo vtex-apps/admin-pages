@@ -32,10 +32,10 @@ interface Props {
   availableComponents: any
   editor: EditorContext
   extensionConfigurations: ExtensionConfigurationsQuery
+  iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   formMeta: FormMetaContext
   modal: ModalContext
-  runtime: RenderContext
   saveExtension: any
 }
 
@@ -70,13 +70,13 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   public render() {
-    const { editor, formMeta, intl, modal, runtime } = this.props
+    const { editor, formMeta, intl, modal, iframeRuntime } = this.props
 
     const extensionConfigurationsQuery = this.props.extensionConfigurations
 
     const { component, props } = getExtension(
       editor.editTreePath,
-      runtime.extensions,
+      iframeRuntime.extensions,
     )
 
     const componentImplementation = getIframeImplementation(component)
@@ -84,7 +84,7 @@ class ConfigurationList extends Component<Props, State> {
     const componentSchema = getComponentSchema(
       componentImplementation,
       props,
-      runtime,
+      iframeRuntime,
       intl,
     )
 
@@ -137,6 +137,7 @@ class ConfigurationList extends Component<Props, State> {
         conditions={this.state.conditions}
         configuration={this.state.configuration}
         editor={editor}
+        iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         newLabel={this.state.newLabel}
         onClose={
@@ -149,7 +150,6 @@ class ConfigurationList extends Component<Props, State> {
         onScopeChange={this.handleScopeChange}
         onLabelChange={this.handleConfigurationLabelChange}
         onSave={this.handleConfigurationSave}
-        runtime={runtime}
         shouldRenderSaveButton={shouldRenderSaveButton}
       />
     )
@@ -168,7 +168,7 @@ class ConfigurationList extends Component<Props, State> {
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
     const {
-      runtime,
+      iframeRuntime,
       editor: { iframeWindow },
     } = this.props
 
@@ -176,9 +176,9 @@ class ConfigurationList extends Component<Props, State> {
       allMatches: true,
       conditions: [],
       configurationId: NEW_CONFIGURATION_ID,
-      device: runtime.device,
+      device: iframeRuntime.device,
       propsJSON: '{}',
-      routeId: runtime.page,
+      routeId: iframeRuntime.page,
       scope: 'route',
       url: iframeWindow.location.pathname,
     }
@@ -193,7 +193,7 @@ class ConfigurationList extends Component<Props, State> {
   private handleConfigurationChange = (
     newConfiguration: ExtensionConfiguration,
   ) => {
-    const { editor, runtime } = this.props
+    const { editor, iframeRuntime } = this.props
 
     this.setState(
       {
@@ -207,8 +207,8 @@ class ConfigurationList extends Component<Props, State> {
         },
       },
       () => {
-        runtime.updateExtension(editor.editTreePath!, {
-          component: getExtension(editor.editTreePath, runtime.extensions)
+        iframeRuntime.updateExtension(editor.editTreePath!, {
+          component: getExtension(editor.editTreePath, iframeRuntime.extensions)
             .component,
           props: JSON.parse(newConfiguration.propsJSON),
         })
@@ -303,7 +303,7 @@ class ConfigurationList extends Component<Props, State> {
       formMeta,
       intl,
       modal,
-      runtime,
+      iframeRuntime,
       saveExtension,
     } = this.props
 
@@ -318,7 +318,7 @@ class ConfigurationList extends Component<Props, State> {
 
     const { component, props = {} } = getExtension(
       editor.editTreePath,
-      runtime.extensions,
+      iframeRuntime.extensions,
     )
 
     const componentImplementation = component
@@ -328,7 +328,7 @@ class ConfigurationList extends Component<Props, State> {
     const pickedProps = getSchemaProps(
       componentImplementation,
       props,
-      runtime,
+      iframeRuntime,
       intl,
     )
 
@@ -348,7 +348,7 @@ class ConfigurationList extends Component<Props, State> {
               : configuration!.label,
           path: iframeWindow.location.pathname,
           propsJSON: JSON.stringify(pickedProps),
-          routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
+          routeId: this.getDecodedRouteId(configuration!.scope, iframeRuntime.page),
           scope: this.getDecodedScope(configuration!.scope),
         },
       })
@@ -357,8 +357,8 @@ class ConfigurationList extends Component<Props, State> {
 
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
-          runtime.extensions[editor.editTreePath as string].configurationsIds,
-        routeId: runtime.page,
+          iframeRuntime.extensions[editor.editTreePath as string].configurationsIds,
+        routeId: iframeRuntime.page,
         treePath: editor.editTreePath,
         url: iframeWindow.location.pathname,
       })
@@ -395,7 +395,7 @@ class ConfigurationList extends Component<Props, State> {
       availableComponents: { availableComponents },
       formMeta,
       intl,
-      runtime,
+      iframeRuntime,
       editor: { editTreePath },
     } = this.props
 
@@ -408,18 +408,18 @@ class ConfigurationList extends Component<Props, State> {
       editTreePath,
       event,
       intl,
-      runtime,
+      iframeRuntime,
     )
   }
 
   private handleQuit = (event?: any) => {
-    const { editor, runtime } = this.props
+    const { editor, iframeRuntime } = this.props
 
     if (event) {
       event.stopPropagation()
     }
 
-    runtime.updateRuntime({
+    iframeRuntime.updateRuntime({
       conditions: editor.activeConditions,
       scope: editor.scope,
     })
@@ -470,7 +470,7 @@ export default compose(
     name: 'extensionConfigurations',
     options: ({
       editor: { editTreePath, iframeWindow },
-      runtime: { extensions, page },
+      iframeRuntime: { extensions, page },
     }: Props) => ({
       variables: {
         configurationsIds: extensions[editTreePath as string].configurationsIds,

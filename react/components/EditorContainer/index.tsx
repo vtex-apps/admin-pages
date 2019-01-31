@@ -70,9 +70,12 @@ export default class EditorContainer extends Component<Props, State> {
     const {
       editor: { editMode },
     } = this.props
+
     if (prevProps.editor.editMode !== editMode) {
       this.highlightExtensionPoint(null)
     }
+
+    return null
   }
 
   public highlightExtensionPoint = (highlightTreePath: string | null) => {
