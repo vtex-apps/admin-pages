@@ -56,15 +56,15 @@ const Content: React.SFC<Props> = ({
               <TemplateEditor
                 editor={editor}
                 formMeta={formMeta}
-                modal={modal}
                 iframeRuntime={iframeRuntime}
+                modal={modal}
               />
             ) : (
               <ConfigurationList
                 editor={editor}
                 formMeta={formMeta}
-                modal={modal}
                 iframeRuntime={iframeRuntime}
+                modal={modal}
               />
             )
           }

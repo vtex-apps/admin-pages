@@ -6,7 +6,7 @@ import { IChangeEvent } from 'react-jsonschema-form'
 import {
   getComponentSchema,
   getExtension,
-  getIframeImplementation,
+  getIframeImplementation
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
 import { ComponentEditorFormContext } from '../typings'
@@ -16,12 +16,12 @@ import { getUiSchema } from './utils'
 
 interface CustomProps {
   editor: EditorContext
+  iframeRuntime: RenderContext
   isLoading: boolean
   onChange: (event: IChangeEvent) => void
   onClose: () => void
   onSave: () => void
   props: object
-  runtime: RenderContext
   shouldRenderSaveButton: boolean
 }
 
@@ -31,15 +31,15 @@ const ComponentEditor: React.SFC<Props> = ({
   children,
   editor,
   intl,
+  iframeRuntime,
   isLoading,
   onChange,
   onClose,
   onSave,
   props,
-  runtime,
-  shouldRenderSaveButton,
+  shouldRenderSaveButton
 }) => {
-  const extension = getExtension(editor.editTreePath, runtime.extensions)
+  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
   const componentImplementation = getIframeImplementation(extension.component)
 
@@ -51,16 +51,16 @@ const ComponentEditor: React.SFC<Props> = ({
   const componentSchema = getComponentSchema(
     componentImplementation,
     extension.props,
-    runtime,
+    iframeRuntime,
     intl
   )
 
   const schema = {
     ...componentSchema,
     properties: {
-      ...componentSchema.properties,
+      ...componentSchema.properties
     },
-    title: undefined,
+    title: undefined
   }
 
   return (

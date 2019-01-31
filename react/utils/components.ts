@@ -21,7 +21,7 @@ export const getComponentSchema = (
       (component.getSchema &&
         component.getSchema(props, { routes: runtime.pages })))) || {
     properties: {},
-    type: 'object',
+    type: 'object'
   }
 
   /**
@@ -65,7 +65,7 @@ export const getComponentSchema = (
         (properties, key) =>
           merge(properties, {
             // @ts-ignore
-            [key]: traverseAndTranslate(schema.properties[key]),
+            [key]: traverseAndTranslate(schema.properties[key])
           }),
         {},
         keys(schema.properties)
@@ -83,9 +83,9 @@ export const getComponentSchema = (
         __editorItemTitle: {
           default: translatedSchema.items.title,
           title: 'Item title',
-          type: 'string',
+          type: 'string'
         },
-        ...translatedSchema.items.properties,
+        ...translatedSchema.items.properties
       }
     }
 
@@ -155,7 +155,7 @@ export const getSchemaProps = (
           [key]:
             properties[key].type === 'object'
               ? getPropsFromSchema(properties[key].properties, prevProps[key])
-              : prevProps[key],
+              : prevProps[key]
         }),
       {},
       filter(v => prevProps[v] !== undefined, keys(properties))
@@ -184,7 +184,7 @@ export const updateExtensionFromForm = (
       (acc: { [key: string]: any }, currComponent: any) => {
         acc[currComponent.name] = {
           assets: currComponent.assets,
-          dependencies: currComponent.dependencies,
+          dependencies: currComponent.dependencies
         }
         return acc
       },
@@ -204,6 +204,6 @@ export const updateExtensionFromForm = (
 
   runtime.updateExtension(editTreePath as string, {
     component,
-    props,
+    props
   })
 }

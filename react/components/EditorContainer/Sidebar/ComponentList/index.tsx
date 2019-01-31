@@ -310,7 +310,7 @@ class ComponentList extends Component<Props, State> {
       this.setState(prevState => ({
         ...prevState,
         changes: [...prevState.changes, { order: oldOrder, target }],
-        components: arrayMove(this.state.components, oldIndex, newIndex)
+        components: arrayMove(prevState.components, oldIndex, newIndex)
       }))
     }
   }

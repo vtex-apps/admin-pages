@@ -11,6 +11,7 @@ interface Props {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
   editor: EditorContext
+  iframeRuntime: RenderContext
   isLoading: boolean
   newLabel?: string
   onClose: () => void
@@ -20,9 +21,8 @@ interface Props {
   onSave: () => void
   onScopeChange: (
     event: React.ChangeEvent<HTMLSelectElement>,
-    newScope: ConfigurationScope,
+    newScope: ConfigurationScope
   ) => void
-  runtime: RenderContext
   shouldRenderSaveButton: boolean
 }
 
@@ -30,6 +30,7 @@ const Editor: React.SFC<Props> = ({
   conditions,
   configuration,
   editor,
+  iframeRuntime,
   isLoading,
   newLabel,
   onClose,
@@ -38,32 +39,31 @@ const Editor: React.SFC<Props> = ({
   onLabelChange,
   onSave,
   onScopeChange,
-  runtime,
-  shouldRenderSaveButton,
+  shouldRenderSaveButton
 }) => {
-  const extension = getExtension(editor.editTreePath, runtime.extensions)
+  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
   const extensionProps = {
     component: extension.component || null,
-    ...extension.props,
+    ...extension.props
   }
 
   const props = configuration
     ? {
         ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-        ...extensionProps,
+        ...extensionProps
       }
     : extensionProps
 
   return (
     <ComponentEditor
       editor={editor}
+      iframeRuntime={iframeRuntime}
       isLoading={isLoading}
       onChange={onFormChange}
       onClose={onClose}
       onSave={onSave}
       props={props}
-      runtime={runtime}
       shouldRenderSaveButton={shouldRenderSaveButton}
     >
       <div className="mt5">
@@ -79,9 +79,9 @@ const Editor: React.SFC<Props> = ({
       <div className="mt5 pb5 bb bw1 b--light-silver">
         <ConditionsSelector
           editor={editor}
+          iframeRuntime={iframeRuntime}
           onCustomConditionsChange={onConditionsChange}
           onScopeChange={onScopeChange}
-          runtime={runtime}
           scope={configuration && configuration.scope}
           selectedConditions={conditions}
         />

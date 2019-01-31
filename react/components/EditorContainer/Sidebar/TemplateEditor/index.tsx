@@ -6,21 +6,21 @@ import { IChangeEvent } from 'react-jsonschema-form'
 import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
 import {
   getExtension,
-  updateExtensionFromForm,
+  updateExtensionFromForm
 } from '../../../../utils/components'
 import ComponentEditor from '../ComponentEditor'
 import { FormMetaContext, ModalContext } from '../typings'
 
 interface Props extends ReactIntl.InjectedIntlProps {
   availableComponents: {
-    availableComponents: object[]
-    error: object
-    loading: boolean
+    availableComponents: object[];
+    error: object;
+    loading: boolean;
   }
   editor: EditorContext
   formMeta: FormMetaContext
+  iframeRuntime: RenderContext
   modal: ModalContext
-  runtime: RenderContext
 }
 
 class TemplateEditor extends Component<Props> {
@@ -29,49 +29,58 @@ class TemplateEditor extends Component<Props> {
   constructor(props: Props) {
     super(props)
 
-    const { editor, runtime } = this.props
+    const { editor, iframeRuntime } = this.props
 
-    const extension = getExtension(editor.editTreePath, runtime.extensions)
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
 
     this.initialFormData = {
       component: extension.component || null,
-      props: extension.props,
+      props: extension.props
     }
 
     props.modal.setHandlers({
       actionHandler: this.handleSave,
-      cancelHandler: this.handleDiscard,
+      cancelHandler: this.handleDiscard
     })
   }
 
   public render() {
-    const { editor, formMeta, modal, runtime } = this.props
+    const { editor, formMeta, iframeRuntime, modal } = this.props
 
-    const extension = getExtension(editor.editTreePath, runtime.extensions)
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
 
     const extensionProps = {
       component: extension.component || null,
-      ...extension.props,
+      ...extension.props
     }
 
     return (
       <ComponentEditor
         editor={editor}
+        iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         onChange={this.handleChange}
         onClose={this.handleExit}
         onSave={this.handleSave}
         props={extensionProps}
-        runtime={runtime}
         shouldRenderSaveButton={formMeta.wasModified}
       />
     )
   }
 
   private exit = () => {
-    const { editor, runtime } = this.props
+    const { editor, iframeRuntime } = this.props
 
-    runtime.updateExtension(editor.editTreePath as string, this.initialFormData)
+    iframeRuntime.updateExtension(
+      editor.editTreePath as string,
+      this.initialFormData
+    )
 
     editor.editExtensionPoint(null)
   }
@@ -82,7 +91,7 @@ class TemplateEditor extends Component<Props> {
       editor: { editTreePath },
       formMeta,
       intl,
-      runtime,
+      iframeRuntime
     } = this.props
 
     if (!formMeta.wasModified) {
@@ -94,7 +103,7 @@ class TemplateEditor extends Component<Props> {
       editTreePath,
       event,
       intl,
-      runtime,
+      iframeRuntime
     )
   }
 
@@ -119,7 +128,7 @@ class TemplateEditor extends Component<Props> {
 
     if (!modal.closeCallbackHandler) {
       modal.setHandlers({
-        closeCallbackHandler: this.exit,
+        closeCallbackHandler: this.exit
       })
     }
 
@@ -139,8 +148,8 @@ export default compose(
       variables: {
         extensionName: props.editor.editTreePath,
         production: false,
-        renderMajor: 7,
-      },
-    }),
-  }),
+        renderMajor: 7
+      }
+    })
+  })
 )(TemplateEditor)
