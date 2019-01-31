@@ -13,6 +13,6 @@ export interface NormalizedRelativeRoot {
 }
 
 export interface ReorderChange {
-  target: string
   order: string[]
+  target: string
 }

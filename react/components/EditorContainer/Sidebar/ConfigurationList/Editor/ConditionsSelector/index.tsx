@@ -4,26 +4,28 @@ import CustomConditionsSelector from './CustomConditionsSelector'
 import ScopeSelector from './ScopeSelector'
 
 interface Props {
+  editor: EditorContext
+  iframeRuntime: RenderContext
   onCustomConditionsChange: (newConditionsIds: string[]) => void
   onScopeChange: (
     e: React.ChangeEvent<HTMLSelectElement>,
-    newScope: ConfigurationScope,
+    newScope: ConfigurationScope
   ) => void
   scope?: ConfigurationScope
   selectedConditions: string[]
 }
 
-const ConditionsSelector = ({
+const ConditionsSelector: React.SFC<Props> = ({
   editor: { conditions, editTreePath },
-  scope = 'route',
+  iframeRuntime: { page },
+  scope = 'route' as ConfigurationScope,
   onCustomConditionsChange,
   onScopeChange,
-  selectedConditions,
-  runtime: { page },
-}: Props & EditorContextProps & RenderContextProps) => {
+  selectedConditions
+}) => {
   const availableCustomConditions = conditions.map(condition => ({
     label: condition.conditionId,
-    value: condition.conditionId,
+    value: condition.conditionId
   }))
 
   const shouldEnableSite =
@@ -33,8 +35,8 @@ const ConditionsSelector = ({
     // Only the second argument is used
     const mockEvent = {
       target: {
-        value: 'route',
-      },
+        value: 'route'
+      }
     }
     onScopeChange(mockEvent as React.ChangeEvent<HTMLSelectElement>, 'route')
   }
