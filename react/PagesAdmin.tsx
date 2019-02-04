@@ -5,6 +5,8 @@ import { injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'render'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
+import IncompatibleMajor from './Incompatible2x'
+
 interface CustomProps {
   params: { field: string }
   runtime: RenderContext
@@ -55,34 +57,43 @@ class PagesAdmin extends Component<Props> {
       navigate({ to: '/admin/cms/pages' })
     }
 
-    return path.startsWith('storefront') ? (
-      <Fragment>{children}</Fragment>
-    ) : (
-      <div>
-        <PageHeader title="CMS" />
-        <div className="ph7">
-          <Tabs>
-            {values(
-              mapObjIndexed((info: FieldInfo, key: string) => {
-                return (
-                  <Tab
-                    key={key}
-                    label={intl.formatMessage({ id: info.titleId })}
-                    active={
-                      path.startsWith(info.path) &&
-                      (path === '' ? path === info.path : true)
-                    }
-                    onClick={() => {
-                      navigate({ to: '/admin/cms/' + info.path })
-                    }}
-                  />
-                )
-              }, fields),
-            )}
-          </Tabs>
-        </div>
-        {children}
-      </div>
+    return (
+      <IncompatibleMajor>
+        {({isMajor2}) => (
+          path.startsWith('storefront') ? (
+            <Fragment>
+              {isMajor2 && <div className="fixed w-100 h-100 bg-red z-max"/>}
+              {children}
+            </Fragment>
+          ) : (
+            <div>
+              <PageHeader title="CMS" />
+              {isMajor2 && <div className="fixed w-100 h-100 bg-red z-max"/>}
+              <div className="ph7">
+                <Tabs>
+                  {values(
+                    mapObjIndexed((info: FieldInfo, key: string) => {
+                      return (
+                        <Tab
+                          key={key}
+                          label={intl.formatMessage({ id: info.titleId })}
+                          active={
+                            path.startsWith(info.path) &&
+                            (path === '' ? path === info.path : true)
+                          }
+                          onClick={() => {
+                            navigate({ to: '/admin/cms/' + info.path })
+                          }}
+                        />
+                      )
+                    }, fields),
+                  )}
+                </Tabs>
+              </div>
+              {children}
+            </div>
+        ))}
+      </IncompatibleMajor>
     )
   }
 }
