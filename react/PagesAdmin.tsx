@@ -5,6 +5,9 @@ import { injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'render'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 
+import NoPagesIcon from './components/icons/NoPagesIcon'
+import NoStorefrontIcon from './components/icons/NoStorefrontIcon'
+import IncompatibilityCover from './components/IncompatibilityCover'
 import IncompatibleMajor from './Incompatible2x'
 
 interface CustomProps {
@@ -62,35 +65,44 @@ class PagesAdmin extends Component<Props> {
         {({isMajor2}) => (
           path.startsWith('storefront') ? (
             <Fragment>
-              {isMajor2 && <div className="fixed w-100 h-100 bg-red z-max"/>}
-              {children}
+              {isMajor2 ?
+                <div className={`flex flex-column ${isMajor2 ? 'bg-muted-5 overflow-y-auto vh-100' : ''}`}>
+                  <PageHeader title="Storefront" />
+                  <div className="relative">
+                    <IncompatibilityCover Icon={NoStorefrontIcon} pageName="Storefront" />
+                  </div>
+                </div>
+                : children
+              }
             </Fragment>
           ) : (
-            <div>
+            <div className={`flex flex-column ${isMajor2 ? 'bg-muted-5 overflow-y-auto vh-100' : ''}`}>
               <PageHeader title="CMS" />
-              {isMajor2 && <div className="fixed w-100 h-100 bg-red z-max"/>}
-              <div className="ph7">
-                <Tabs>
-                  {values(
-                    mapObjIndexed((info: FieldInfo, key: string) => {
-                      return (
-                        <Tab
-                          key={key}
-                          label={intl.formatMessage({ id: info.titleId })}
-                          active={
-                            path.startsWith(info.path) &&
-                            (path === '' ? path === info.path : true)
-                          }
-                          onClick={() => {
-                            navigate({ to: '/admin/cms/' + info.path })
-                          }}
-                        />
-                      )
-                    }, fields),
-                  )}
-                </Tabs>
+              <div className="relative">
+                {isMajor2 && <IncompatibilityCover Icon={NoPagesIcon} pageName="Pages" />}
+                <div className="ph7">
+                  <Tabs>
+                    {values(
+                      mapObjIndexed((info: FieldInfo, key: string) => {
+                        return (
+                          <Tab
+                            key={key}
+                            label={intl.formatMessage({ id: info.titleId })}
+                            active={
+                              path.startsWith(info.path) &&
+                              (path === '' ? path === info.path : true)
+                            }
+                            onClick={() => {
+                              navigate({ to: '/admin/cms/' + info.path })
+                            }}
+                          />
+                        )
+                      }, fields),
+                    )}
+                  </Tabs>
+                </div>
+                {children}
               </div>
-              {children}
             </div>
         ))}
       </IncompatibleMajor>

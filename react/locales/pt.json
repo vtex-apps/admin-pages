@@ -46,5 +46,8 @@
   "pages.admin.redirects.table.to": "Para",
   "pages.admin.tabs.pages": "Páginas",
   "pages.admin.tabs.redirects": "Redirecionamentos",
-  "pages.admin.tabs.settings": "Configurações"
+  "pages.admin.tabs.settings": "Configurações",
+  "pages.incompatibility.main-text": "Desculpe, o {pageName} V2 só está disponível para lojas usando a Dreamstore V1.",
+  "pages.incompatibility.sub-text": "Nós lançaremos o {pageName} V3 assim que possível. Fique ligado.",
+  "pages.incompatibility.support-text": "Se você precisa de mais detalhes sobre esse lançamento, contate seu account manager ou o time de suporte da VTEX."
 }
