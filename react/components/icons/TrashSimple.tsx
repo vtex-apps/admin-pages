@@ -1,22 +1,21 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { calcIconSize } from './utils'
 
 const iconBase = {
-  width: 17,
   height: 18,
+  width: 17,
 }
 
-export default class TrashSimple extends React.Component {
-  static defaultProps = {
+interface Props {
+  size?: number
+}
+
+export default class TrashSimple extends React.Component<Props> {
+  public static defaultProps = {
     size: 20,
   }
 
-  static propTypes = {
-    size: PropTypes.number,
-  }
-
-  render() {
+  public render() {
     const { size, ...props } = this.props
 
     const newSize = calcIconSize(iconBase, size)

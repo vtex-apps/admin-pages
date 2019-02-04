@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { Spinner } from 'vtex.styleguide'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
-import SelectionIcon from '../images/SelectionIcon.js'
+import SelectionIcon from '../images/SelectionIcon'
 import ComponentEditor from './ComponentEditor'
 import ComponentsList from './ComponentsList'
 import DeviceSwitcher from './DeviceSwitcher'

@@ -6,24 +6,35 @@ import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
-import UploadFile from '../../../queries/UpdateFile.gql'
+import UploadFile from '../../../queries/UpdateFile.graphql'
 
 import Dropzone from './Dropzone'
 import ErrorAlert from './ErrorAlert'
 
-const GRADIENT_STYLES = {
-  background:
-    '-moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  background:
-    '-webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
+const GRADIENT_STYLES: any = {
   background:
     'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
   filter:
-    "progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#d4000000', GradientType=0)",
+    `progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#d4000000', GradientType=0)`,
 }
 
-class ImageUploader extends Component {
-  constructor(props) {
+class ImageUploader extends Component<any, any> {
+  public static defaultProps = {
+    disabled: false,
+    value: '',
+  }
+
+  public static propTypes = {
+    disabled: PropTypes.bool,
+    onChange: PropTypes.func.isRequired,
+    schema: PropTypes.shape({
+      title: PropTypes.string.isRequired,
+    }).isRequired,
+    uploadFile: PropTypes.func.isRequired,
+    value: PropTypes.string,
+  }
+
+  public constructor(props: any) {
     super(props)
 
     this.state = {
@@ -32,47 +43,7 @@ class ImageUploader extends Component {
     }
   }
 
-  handleImageDrop = async acceptedFiles => {
-    const { uploadFile } = this.props
-
-    if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ isLoading: true })
-
-      try {
-        const {
-          data: {
-            uploadFile: { fileUrl },
-          },
-        } = await uploadFile({
-          variables: { file: acceptedFiles[0] },
-        })
-
-        if (fileUrl) {
-          const fileUrlObj = new URL(fileUrl)
-
-          this.props.onChange(fileUrlObj.pathname)
-
-          this.setState({ isLoading: false })
-        }
-      } catch (e) {
-        this.setState({
-          error: 'Something went wrong. Please try again.',
-          isLoading: false,
-        })
-      }
-    } else {
-      this.setState({
-        error:
-          'File exceeds the size limit of 4MB. Please choose a smaller one.',
-      })
-    }
-  }
-
-  handleErrorReset = () => {
-    this.setState({ error: null })
-  }
-
-  render() {
+  public render() {
     const {
       disabled,
       schema: { title },
@@ -161,21 +132,46 @@ class ImageUploader extends Component {
       </Fragment>
     )
   }
+
+  private handleImageDrop = async (acceptedFiles: any) => {
+    const { uploadFile } = this.props
+
+    if (acceptedFiles && acceptedFiles[0]) {
+      this.setState({ isLoading: true })
+
+      try {
+        const {
+          data: {
+            uploadFile: { fileUrl },
+          },
+        } = await uploadFile({
+          variables: { file: acceptedFiles[0] },
+        })
+
+        if (fileUrl) {
+          const fileUrlObj = new URL(fileUrl)
+
+          this.props.onChange(fileUrlObj.pathname)
+
+          this.setState({ isLoading: false })
+        }
+      } catch (e) {
+        this.setState({
+          error: 'Something went wrong. Please try again.',
+          isLoading: false,
+        })
+      }
+    } else {
+      this.setState({
+        error:
+          'File exceeds the size limit of 4MB. Please choose a smaller one.',
+      })
+    }
+  }
+
+  private handleErrorReset = () => {
+    this.setState({ error: null })
+  }
 }
 
-ImageUploader.defaultProps = {
-  disabled: false,
-  value: '',
-}
-
-ImageUploader.propTypes = {
-  disabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  schema: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-  uploadFile: PropTypes.func.isRequired,
-  value: PropTypes.string,
-}
-
-export default graphql(UploadFile, { name: 'uploadFile' })(ImageUploader)
+export default graphql(UploadFile, { name: 'uploadFile' })(ImageUploader as any)

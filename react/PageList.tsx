@@ -17,7 +17,14 @@ interface PageData {
   routes: Route[]
 }
 
-class PageList extends Component<DataProps<PageData>> {
+interface Props {
+  conditions: any
+  params: any
+  routes: any
+  templates: any
+}
+
+class PageList extends Component<Props & DataProps<PageData>> {
   public static propTypes = {
     children: PropTypes.element,
     data: PropTypes.object,
@@ -129,7 +136,7 @@ class PageList extends Component<DataProps<PageData>> {
       this.props.conditions &&
       this.props.conditions.availableConditions &&
       this.props.conditions.availableConditions.map(
-        condition => condition.conditionId,
+        (condition: any) => condition.conditionId,
       )
 
     const isStore = (route: Route) => route.id.startsWith('store')

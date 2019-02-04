@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 
-const hasFieldToBeDisplayed = (field, formContext) => {
+const hasFieldToBeDisplayed: (field: any, formContext: any) => any = (field, formContext) => {
   if (!formContext.isLayoutMode) {
     return true
   }
@@ -24,10 +24,10 @@ const ObjectFieldTemplate = ({
   required,
   schema,
   title,
-}) =>
+}: any) =>
   hasFieldToBeDisplayed(schema, formContext) && (
     <Fragment>
-      {properties.map(property => property.content)}
+      {properties.map((property: any) => property.content)}
     </Fragment>
   )
 

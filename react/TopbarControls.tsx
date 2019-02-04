@@ -1,7 +1,7 @@
 import React, {Fragment, PureComponent} from 'react'
 
-import SelectionIcon from './images/SelectionIcon.js'
-import ShowIcon from './images/ShowIcon.js'
+import SelectionIcon from './images/SelectionIcon'
+import ShowIcon from './images/ShowIcon'
 
 interface State {
   editMode: boolean

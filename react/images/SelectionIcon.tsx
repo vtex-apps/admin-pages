@@ -1,8 +1,12 @@
-import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 
-class SelectionIcon extends Component {
-  render() {
+class SelectionIcon extends Component<any> {
+  public static propTypes = {
+    stroke: PropTypes.string,
+  }
+
+  public render() {
     const {
       stroke,
     } = this.props
@@ -15,10 +19,6 @@ class SelectionIcon extends Component {
       </svg>
     )
   }
-}
-
-SelectionIcon.propTypes = {
-  stroke: PropTypes.string,
 }
 
 export default SelectionIcon

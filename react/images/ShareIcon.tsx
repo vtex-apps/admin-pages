@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 class ShareIcon extends Component {
-  render() {
+  public render() {
     return (
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16">
         <g className="nc-icon-wrapper" fill="#111">
@@ -12,10 +11,6 @@ class ShareIcon extends Component {
       </svg>
     )
   }
-}
-
-ShareIcon.propTypes = {
-  fill: PropTypes.string,
 }
 
 export default ShareIcon

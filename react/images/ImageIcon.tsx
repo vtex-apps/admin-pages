@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-const ImageIcon = ({ size, stroke }) => (
+const ImageIcon = ({ size, stroke }: any) => (
   <svg
     width={`${size}px`}
     height={`${size}px`}
@@ -46,7 +46,7 @@ ImageIcon.defaultProps = {
 }
 
 ImageIcon.propTypes = {
-  size: PropTypes.integer,
+  size: PropTypes.number,
   stroke: PropTypes.string,
 }
 

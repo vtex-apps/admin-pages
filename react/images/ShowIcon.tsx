@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 
 class ShowIcon extends Component {
-  render() {
+  public render() {
     return (
       <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1">
         <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
@@ -14,10 +13,6 @@ class ShowIcon extends Component {
       </svg>
     )
   }
-}
-
-ShowIcon.propTypes = {
-  fill: PropTypes.string,
 }
 
 export default ShowIcon
