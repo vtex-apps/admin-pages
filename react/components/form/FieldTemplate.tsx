@@ -7,7 +7,7 @@ const FieldTemplate = ({
   formContext,
   hidden,
   schema,
-}) => {
+}: any) => {
   const isHidden =
     hidden ||
     (schema.type !== 'object' && formContext.isLayoutMode != null && !!schema.isLayout !== formContext.isLayoutMode)

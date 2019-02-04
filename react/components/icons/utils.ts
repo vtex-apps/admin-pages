@@ -1,4 +1,4 @@
-export const calcIconSize = (iconBase, newSize) => {
+export const calcIconSize = (iconBase: any, newSize: any) => {
   const isHorizontal = iconBase.width >= iconBase.height
 
   const width = isHorizontal

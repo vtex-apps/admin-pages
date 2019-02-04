@@ -18,5 +18,6 @@ declare module 'vtex.styleguide' {
   export const Tab: ReactElement
   export const Table: ReactElement
   export const Tabs: ReactElement
+  export const Textarea: ReactElement
   export const Toggle: ReactElement
 }

@@ -2,20 +2,20 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { Alert } from 'vtex.styleguide'
 
-class ErrorAlert extends Component {
-  constructor() {
-    super()
+class ErrorAlert extends Component<any, any> {
+  public static propTypes = {
+    message: PropTypes.string.isRequired,
+  }
+
+  public constructor(props: any) {
+    super(props)
 
     this.state = {
       isVisible: true,
     }
   }
 
-  handleHide = () => {
-    this.setState({ isVisible: false })
-  }
-
-  render() {
+  public render() {
     const { message } = this.props
     const { isVisible } = this.state
 
@@ -29,10 +29,10 @@ class ErrorAlert extends Component {
       )
     )
   }
-}
 
-ErrorAlert.propTypes = {
-  message: PropTypes.string.isRequired,
+  private handleHide = () => {
+    this.setState({ isVisible: false })
+  }
 }
 
 export default ErrorAlert

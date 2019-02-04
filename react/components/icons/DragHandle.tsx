@@ -1,23 +1,22 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { calcIconSize } from './utils'
 
 const iconBase = {
-  width: 6,
   height: 12,
+  width: 6,
 }
 
-export default class HitDown extends React.Component {
-  static defaultProps = {
+interface Props {
+  size?: number
+  className: string
+}
+
+export default class HitDown extends React.Component<Props> {
+  public static defaultProps = {
     size: 20,
   }
 
-  static propTypes = {
-    size: PropTypes.number,
-    className: PropTypes.string,
-  }
-
-  render() {
+  public render() {
     const { size, className, ...props } = this.props
 
     const newSize = calcIconSize(iconBase, size)

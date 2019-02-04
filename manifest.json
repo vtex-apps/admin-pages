@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "admin-pages",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
@@ -9,11 +9,12 @@
     "react": "2.x"
   },
   "dependencies": {
-    "vtex.file-manager": "0.x",
+    "vtex.admin": "1.x",
+    "vtex.apps-graphql": "2.x",
     "vtex.file-manager-graphql": "0.x",
+    "vtex.file-manager": "0.x",
     "vtex.pages-graphql": "1.x",
-    "vtex.styleguide": "7.x",
-    "vtex.admin": "1.x"
+    "vtex.styleguide": "7.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],

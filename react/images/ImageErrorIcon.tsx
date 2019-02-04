@@ -1,7 +1,7 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
-const ImageErrorIcon = ({ stroke }) => (
+const ImageErrorIcon: React.SFC<any> & {propTypes: any, defaultProps: any} = ({ stroke }) => (
   <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1">
     <g
       id="Artboard-3-Copy"

@@ -19,7 +19,7 @@ export const widgets = {
   RadioWidget: Radio as Widget,
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea as Widget,
-  'image-uploader': ImageUploader as Widget,
+  'image-uploader': ImageUploader as any,
 }
 
 export default class Form extends React.Component<FormProps<any>> {

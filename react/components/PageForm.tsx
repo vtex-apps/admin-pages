@@ -25,7 +25,7 @@ const defaultUiSchema = {
   },
 }
 
-const widgets = {
+const widgets: any = {
   BaseInput,
   CheckboxWidget: Toggle,
   RadioWidget: Radio,
@@ -124,10 +124,10 @@ class PageForm extends Component<any, any> {
   constructor(props: any) {
     super(props)
 
-    let page
-    const route = props.routes.find(r => {
+    let page: any
+    const route = props.routes.find((r: any) => {
       const foundPage = r.pages.find(
-        p => p.configurationId === props.configurationId,
+        (p: any) => p.configurationId === props.configurationId,
       )
 
       if (foundPage) {
@@ -155,7 +155,7 @@ class PageForm extends Component<any, any> {
     }
   }
 
-  public handleFormChange = event => {
+  public handleFormChange = (event: any) => {
     const newState = {
       ...event.formData,
     }
@@ -171,7 +171,7 @@ class PageForm extends Component<any, any> {
     this.setState(newState)
   }
 
-  public handleRouteChange = (e, value) => {
+  public handleRouteChange = (e: any, value: any) => {
     const route = this.props.routes.find((p: Route) => p.id === value) || {
       id: value,
       path: '/',
@@ -212,9 +212,9 @@ class PageForm extends Component<any, any> {
 
     const templateIds = templates
       ? map(
-          prop('id'),
+          prop<any>('id'),
           filter(
-            currTemplate => (context ? currTemplate.context === context : true),
+            (currTemplate: any) => (context ? currTemplate.context === context : true),
             templates,
           ),
         )
@@ -247,7 +247,7 @@ class PageForm extends Component<any, any> {
         ]
 
     // tslint:disable:object-literal-sort-keys
-    const dynamicSchema = {
+    const dynamicSchema: any = {
       ...partialSchema.properties,
       template: {
         default: template,
@@ -281,7 +281,7 @@ class PageForm extends Component<any, any> {
 
     const properties = omit(omittedProperties, dynamicSchema)
 
-    const schema = {
+    const schema: any = {
       ...partialSchema,
       properties,
       required: partialSchema.required.concat(['template']),

@@ -4,7 +4,7 @@ import ReactDropzone from 'react-dropzone'
 
 const MAX_SIZE = 4 * 1024 * 1024
 
-const Dropzone = ({ disabled, children, extraClasses, onClick, onDrop }) => (
+const Dropzone = ({ disabled, children, extraClasses, onClick, onDrop }: any) => (
   <ReactDropzone
     accept="image/*"
     className={`w-100 h4 br2 ${extraClasses}`}

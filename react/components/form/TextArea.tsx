@@ -1,7 +1,7 @@
 import React from 'react'
 import { Textarea } from 'vtex.styleguide'
 
-const TextArea = (props) => {
+const TextArea = (props: any) => {
   const {
     /* eslint-disable react/prop-types */
     autofocus,
@@ -19,10 +19,10 @@ const TextArea = (props) => {
     /* eslint-enable react/prop-types */
   } = props
 
-  const [currentError] = Array.isArray(rawErrors) ? rawErrors : []
+  const [currentError] = Array.isArray(rawErrors) ? rawErrors : [] as any
 
-  const handleChange = ({ target: { value } }) =>
-    onChange(value || '')
+  const handleChange = ({ target: { value: targetValue } }: any) =>
+    onChange(targetValue || '')
 
   return (
     <Textarea
@@ -31,8 +31,8 @@ const TextArea = (props) => {
       errorMessage={currentError}
       helpText={schema.description}
       onChange={handleChange}
-      onBlue={onBlur && (event => onBlur(id, event.target.value))}
-      onFocus={onFocus && (event => onFocus(id, event.target.value))}
+      onBlue={onBlur && ((event: any) => onBlur(id, event.target.value))}
+      onFocus={onFocus && ((event: any) => onFocus(id, event.target.value))}
       readOnly={readonly}
       value={value}
       label={label}
