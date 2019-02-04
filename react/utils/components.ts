@@ -2,6 +2,8 @@ import { filter, has, keys, map, merge, pick, reduce } from 'ramda'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { global, RenderComponent, Window } from 'vtex.render-runtime'
 
+import { translateFromNative } from './native'
+
 /**
  * It receives a component implementation and decide which type of schema
  * will use, a static (schema) or a dynamic (getSchema) schema.
@@ -46,6 +48,8 @@ export const getComponentSchema = (
         Array.isArray(value) ? map(translate, value) : translate(value),
       pick(['title', 'description', 'enumNames'], schema) as object
     )
+
+    schema = translateFromNative(schema)
 
     if (has('widget', schema)) {
       translatedSchema.widget = merge(
