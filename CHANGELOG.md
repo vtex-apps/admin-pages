@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Check for `vtex.store@2.x` so we can notify users that `Storefront` and `Pages` are incompatible with the current major.
 
 ## [2.5.1] - 2019-01-02
 ### Fixed
