@@ -1,3 +1,3 @@
 {
-  "store > highlight-overlay": "highlight-overlay.cms"
+  "storeWrapper > highlight-overlay": "highlight-overlay.cms"
 }
