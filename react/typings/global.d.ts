@@ -17,9 +17,11 @@ declare global {
   }
 
   interface Extension {
-    after?: string[],
-    around?: string[],
-    before?: string[],
+    after?: string[]
+    around?: string[]
+    before?: string[]
+    blockId?: string
+    blocks?: string[]
     component: string | null
     configurationsIds?: string[]
     props?: any
@@ -236,4 +238,11 @@ declare global {
     startLoading: () => void
     stopLoading: () => void
   }
+
+  interface FormattedBlock {
+    id: Extension['blockId']
+    role: 'AFTER' | 'AROUND' | 'BEFORE' | 'BLOCK' | 'TEMPLATE'
+  }
+
+  type BlockPath = FormattedBlock[]
 }
