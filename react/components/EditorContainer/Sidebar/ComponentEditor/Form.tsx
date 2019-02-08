@@ -5,6 +5,9 @@ import JsonSchemaForm, { FormProps, Widget, WidgetProps } from 'react-jsonschema
 import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
 import BrandSelector from '../../../form/BrandSelector/index'
+import CategorySelector from '../../../form/CategorySelector/index'
+import CollectionSelector from '../../../form/CollectionSelector/index'
+import DepartmentSelector from '../../../form/DepartmentSelector/index'
 import Dropdown from '../../../form/Dropdown'
 import ErrorListTemplate from '../../../form/ErrorListTemplate'
 import FieldTemplate from '../../../form/FieldTemplate'
@@ -21,6 +24,9 @@ export const widgets = {
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea as Widget,
   'brand-selector': BrandSelector as Widget,
+  'category-selector': CategorySelector as Widget,
+  'collection-selector': CollectionSelector as Widget,
+  'department-selector': DepartmentSelector as Widget,
   'image-uploader': ImageUploader as Widget,
 }
 

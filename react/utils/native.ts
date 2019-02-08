@@ -30,11 +30,35 @@ const pages = iframe.__RUNTIME__ && Object.keys(iframe.__RUNTIME__.pages)
 
 export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties> = {
   brand: {
-    default: 'VTEX',
+    default: 'Default Brand',
     title: 'pages.editor.components.brand.title',
     type: 'string',
     widget: {
       'ui:widget': 'brand-selector'
+    }
+  },
+  category: {
+    default: 'Default Category',
+    title: 'pages.editor.components.category.title',
+    type: 'string',
+    widget: {
+      'ui:widget': 'category-selector'
+    }
+  },
+  collection: {
+    default: 'Default Collection',
+    title: 'pages.editor.components.collection.title',
+    type: 'string',
+    widget: {
+      'ui:widget': 'collection-selector'
+    }
+  },
+  department: {
+    default: 'Default Department',
+    title: 'pages.editor.components.department.title',
+    type: 'string',
+    widget: {
+      'ui:widget': 'department-selector'
     }
   },
   image: {
