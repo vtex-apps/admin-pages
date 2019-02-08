@@ -1,0 +1,6 @@
+query Departments($query: String) {
+  departmentSearch(query: $query) {
+    name
+    id
+  }
+}
