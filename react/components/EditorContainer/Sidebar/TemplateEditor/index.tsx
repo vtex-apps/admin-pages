@@ -1,29 +1,27 @@
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 
-import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
+import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
+import { getBlockPath } from '../../../../utils/blocks'
 import {
   getExtension,
-  updateExtensionFromForm
+  updateExtensionFromForm,
 } from '../../../../utils/components'
 import ComponentEditor from '../ComponentEditor'
 import { FormMetaContext, ModalContext } from '../typings'
 
 interface Props extends ReactIntl.InjectedIntlProps {
-  availableComponents: {
-    availableComponents: object[];
-    error: object;
-    loading: boolean;
-  }
   editor: EditorContext
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   modal: ModalContext
+  updateBlock: MutationFn
 }
 
 class TemplateEditor extends Component<Props> {
+  private blocks: Extension['blocks']
   private initialFormData: Extension
 
   constructor(props: Props) {
@@ -36,29 +34,21 @@ class TemplateEditor extends Component<Props> {
       iframeRuntime.extensions
     )
 
+    this.blocks = extension.blocks
+
     this.initialFormData = {
       component: extension.component || null,
-      props: extension.props
+      props: extension.props,
     }
 
     props.modal.setHandlers({
       actionHandler: this.handleSave,
-      cancelHandler: this.handleDiscard
+      cancelHandler: this.handleDiscard,
     })
   }
 
   public render() {
     const { editor, formMeta, iframeRuntime, modal } = this.props
-
-    const extension = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
-
-    const extensionProps = {
-      component: extension.component || null,
-      ...extension.props
-    }
 
     return (
       <ComponentEditor
@@ -68,7 +58,7 @@ class TemplateEditor extends Component<Props> {
         onChange={this.handleChange}
         onClose={this.handleExit}
         onSave={this.handleSave}
-        props={extensionProps}
+        props={this.getExtensionProps()}
         shouldRenderSaveButton={formMeta.wasModified}
       />
     )
@@ -85,13 +75,26 @@ class TemplateEditor extends Component<Props> {
     editor.editExtensionPoint(null)
   }
 
+  private getExtensionProps() {
+    const { editor, iframeRuntime } = this.props
+
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
+
+    return {
+      component: extension.component || null,
+      ...extension.props,
+    }
+  }
+
   private handleChange = (event: IChangeEvent) => {
     const {
-      availableComponents: { availableComponents },
       editor: { editTreePath },
       formMeta,
       intl,
-      iframeRuntime
+      iframeRuntime,
     } = this.props
 
     if (!formMeta.wasModified) {
@@ -99,7 +102,6 @@ class TemplateEditor extends Component<Props> {
     }
 
     updateExtensionFromForm(
-      availableComponents,
       editTreePath,
       event,
       intl,
@@ -128,28 +130,46 @@ class TemplateEditor extends Component<Props> {
 
     if (!modal.closeCallbackHandler) {
       modal.setHandlers({
-        closeCallbackHandler: this.exit
+        closeCallbackHandler: this.exit,
       })
     }
 
     modal.close()
   }
 
-  private handleSave = () => {
-    console.log('Template editor: SAVE')
+  private handleSave = async () => {
+    const { editor, formMeta, iframeRuntime, updateBlock } = this.props
+
+    const extensionProps = this.getExtensionProps()
+
+    formMeta.toggleLoading()
+
+    try {
+      await updateBlock({
+        variables: {
+          blockPath: getBlockPath(
+            iframeRuntime.extensions,
+            editor.editTreePath!
+          ),
+          changes: {
+            children: this.blocks,
+            propsJSON: JSON.stringify(extensionProps),
+          },
+        },
+      })
+    } catch (err) {
+      console.log(err)
+    } finally {
+      formMeta.setWasModified(false, () => {
+        formMeta.toggleLoading(this.exit)
+      })
+    }
   }
 }
 
 export default compose(
   injectIntl,
-  graphql(AvailableComponents, {
-    name: 'availableComponents',
-    options: (props: Props) => ({
-      variables: {
-        extensionName: props.editor.editTreePath,
-        production: false,
-        renderMajor: 7
-      }
-    })
+  graphql(UpdateBlock, {
+    name: 'updateBlock',
   })
 )(TemplateEditor)
