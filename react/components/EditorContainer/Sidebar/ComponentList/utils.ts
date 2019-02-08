@@ -2,6 +2,7 @@ import { flatten, partition } from 'ramda'
 
 import { SidebarComponent } from '../typings'
 
+import { getBlockRole } from '../../../../utils/blocks'
 import { NormalizedComponent, NormalizedRelativeRoot } from './typings'
 
 export const getParentTreePath = (treePath: string): string => {
@@ -46,26 +47,24 @@ export const normalize = (components: SidebarComponent[]) => {
 
       const treePathTail = splittedTreePath[splittedTreePath.length - 1]
 
-      const blockTypeMatch = treePathTail.match(/\$(after|around|before)_/)
+      const blockRole = getBlockRole(treePathTail)
 
-      if (!blockTypeMatch) {
+      if (!blockRole) {
         return acc
       }
 
-      const blockType = blockTypeMatch[1] as 'after' | 'around' | 'before'
-
       const currNormalizedRoot = { ...currRoot, isSortable: false }
 
-      if (blockType === 'around' && splittedTreePath.length === 3) {
+      if (blockRole === 'around' && splittedTreePath.length === 3) {
         return {
           ...acc,
-          nestedAround: [...acc.nestedAround, currNormalizedRoot]
+          nestedAround: [...acc.nestedAround, currNormalizedRoot],
         }
       }
 
       return {
         ...acc,
-        [blockType]: [...acc[blockType], currNormalizedRoot]
+        [blockRole]: [...acc[blockRole], currNormalizedRoot],
       }
     },
     { after: [], around: [], before: [], nestedAround: [] }
@@ -73,7 +72,7 @@ export const normalize = (components: SidebarComponent[]) => {
 
   const normalizedNonRelativeRoots = nonRelativeRoots.map(root => ({
     ...root,
-    isSortable: true
+    isSortable: true,
   }))
 
   const sortedRoots = [
@@ -85,10 +84,10 @@ export const normalize = (components: SidebarComponent[]) => {
           (nestedAround: NormalizedComponent) =>
             nestedAround.treePath.startsWith(nonRelativeRoot.treePath)
         ),
-        nonRelativeRoot
+        nonRelativeRoot,
       ])
     ),
-    ...normalizedRelativeRoots.after
+    ...normalizedRelativeRoots.after,
   ]
 
   return leaves
@@ -101,7 +100,7 @@ export const normalize = (components: SidebarComponent[]) => {
               ...root,
               components: root.components
                 ? [...root.components, leaf]
-                : [leaf]
+                : [leaf],
             }
             : root
         ),

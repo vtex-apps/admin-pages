@@ -17,9 +17,11 @@ declare global {
   }
 
   interface Extension {
-    after?: string[],
-    around?: string[],
-    before?: string[],
+    after?: string[]
+    around?: string[]
+    before?: string[]
+    blockId?: string
+    blocks?: string[]
     component: string | null
     configurationsIds?: string[]
     props?: any
@@ -245,4 +247,10 @@ declare global {
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
 
+  interface FormattedBlock {
+    id: Extension['blockId']
+    role: 'AFTER' | 'AROUND' | 'BEFORE' | 'BLOCK' | 'TEMPLATE'
+  }
+
+  type BlockPath = FormattedBlock[]
 }
