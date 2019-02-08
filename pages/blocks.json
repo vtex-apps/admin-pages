@@ -1,0 +1,25 @@
+{
+  "inject#storefront": {
+    "props": {
+      "subItems": [
+        {
+          "isNew": true,
+          "labelId": "pages.admin-menu-button.storefront",
+          "path": "/admin/cms/storefront"
+        },
+        {
+          "isNew": true,
+          "labelId": "pages.admin-menu-button.pages",
+          "path": "/admin/cms/pages"
+        },
+        {
+          "isNew": true,
+          "labelId": "pages.admin-menu-button.displayConditions",
+          "path": "/admin/conditions-builder/pages"
+        }
+      ],
+      "titleId": "appframe.navigation.cms.title",
+      "group": "storeSetup"
+    }
+  }
+}

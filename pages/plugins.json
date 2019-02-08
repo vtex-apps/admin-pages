@@ -1,3 +1,4 @@
 {
-  "storeWrapper > highlight-overlay": "highlight-overlay.cms"
+  "storeWrapper > highlight-overlay": "highlight-overlay.cms",
+  "navigation > inject": "inject#storefront"
 }
