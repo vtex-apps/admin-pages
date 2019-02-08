@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner } from 'vtex.styleguide'
 
-import AvailableComponents from '../../../../queries/AvailableComponents.graphql'
 import ExtensionConfigurations from '../../../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../../../queries/SaveExtension.graphql'
 import {
@@ -29,7 +28,6 @@ interface ExtensionConfigurationsQuery {
 }
 
 interface Props {
-  availableComponents: any
   editor: EditorContext
   extensionConfigurations: ExtensionConfigurationsQuery
   iframeRuntime: RenderContext
@@ -392,7 +390,6 @@ class ConfigurationList extends Component<Props, State> {
 
   private handleFormChange = (event: IChangeEvent) => {
     const {
-      availableComponents: { availableComponents },
       formMeta,
       intl,
       iframeRuntime,
@@ -404,7 +401,6 @@ class ConfigurationList extends Component<Props, State> {
     }
 
     updateExtensionFromForm(
-      availableComponents,
       editTreePath,
       event,
       intl,
@@ -456,16 +452,6 @@ class ConfigurationList extends Component<Props, State> {
 export default compose(
   injectIntl,
   graphql(SaveExtension, { name: 'saveExtension' }),
-  graphql(AvailableComponents, {
-    name: 'availableComponents',
-    options: (props: Props) => ({
-      variables: {
-        extensionName: props.editor.editTreePath,
-        production: false,
-        renderMajor: 7,
-      },
-    }),
-  }),
   graphql(ExtensionConfigurations, {
     name: 'extensionConfigurations',
     options: ({
