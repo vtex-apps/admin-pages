@@ -1,0 +1,9 @@
+mutation UpdateBlock(
+  $blockPath: [BlockPathItem]!
+  $changes: BlockChanges!
+) {
+  updateBlock(
+    blockPath: $blockPath
+    changes: $changes
+  )
+}
