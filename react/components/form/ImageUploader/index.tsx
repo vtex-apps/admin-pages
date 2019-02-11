@@ -1,6 +1,7 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
+import { ImageFile } from 'react-dropzone'
 import { FormattedMessage } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
@@ -131,7 +132,7 @@ class ImageUploader extends Component<Props, State> {
     )
   }
 
-  private handleImageDrop = async (acceptedFiles: string[]) => {
+  private handleImageDrop = async (acceptedFiles: ImageFile[]) => {
     const { uploadFile } = this.props as { uploadFile: MutationFunc }
 
     if (acceptedFiles && acceptedFiles[0]) {
