@@ -4,6 +4,7 @@ import JsonSchemaForm, { FormProps, Widget, WidgetProps } from 'react-jsonschema
 
 import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
+import BrandSelector from '../../../form/BrandSelector/index'
 import Dropdown from '../../../form/Dropdown'
 import ErrorListTemplate from '../../../form/ErrorListTemplate'
 import FieldTemplate from '../../../form/FieldTemplate'
@@ -19,6 +20,7 @@ export const widgets = {
   RadioWidget: Radio as Widget,
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea as Widget,
+  'brand-selector': BrandSelector as Widget,
   'image-uploader': ImageUploader as Widget,
 }
 

@@ -28,9 +28,15 @@ const pages = iframe.__RUNTIME__ && Object.keys(iframe.__RUNTIME__.pages)
 
 // tslint:disable:object-literal-sort-keys
 
-/* Fix this 'any' type inside Record<> */
-
-export const nativeMap: Record<string, any> = {
+export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties> = {
+  brand: {
+    default: 'VTEX',
+    title: 'pages.editor.components.brand.title',
+    type: 'string',
+    widget: {
+      'ui:widget': 'brand-selector'
+    }
+  },
   image: {
     description: {
       default: 'pages.editor.components.image.description.default',
