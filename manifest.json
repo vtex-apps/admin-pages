@@ -19,6 +19,7 @@
     "vtex.pwa-graphql": "1.x",
     "vtex.store": "2.x",
     "vtex.styles-graphql": "1.x",
+    "vtex.store-graphql": "2.x",
     "vtex.styleguide": "9.x"
   },
   "peerDependencies": {
