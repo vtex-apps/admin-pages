@@ -39,21 +39,17 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public componentDidMount() {
-    this.toggleLoading()
+    this.stopLoading()
   }
 
   public componentDidUpdate() {
-    this.toggleLoading()
-  }
-
-  public toggleLoading = () => {
-    this.context.stopLoading()
+    this.stopLoading()
   }
 
   public render() {
-    const {
-      params: { path },
-    } = this.props
+    const { params } = this.props
+
+    const path = params && params.path
 
     return (
       <div className="h-100 overflow-y-auto bg-light-silver">
@@ -69,6 +65,10 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
         </MessagesContext.Provider>
       </div>
     )
+  }
+
+  private stopLoading = () => {
+    this.context.stopLoading()
   }
 }
 
