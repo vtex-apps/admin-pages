@@ -1,7 +1,11 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 
-const ImageIcon = ({ size, stroke }) => (
+interface Props {
+  size?: number
+  stroke?: string
+}
+
+const ImageIcon: React.SFC<Props> = ({ size, stroke }) => (
   <svg
     width={`${size}px`}
     height={`${size}px`}
@@ -24,13 +28,7 @@ const ImageIcon = ({ size, stroke }) => (
         stroke={stroke}
         strokeWidth="1.4"
       >
-        <ellipse
-          id="Oval"
-          cx="8.25"
-          cy="3.83426966"
-          rx="3"
-          ry="3.06741573"
-        />
+        <ellipse id="Oval" cx="8.25" cy="3.83426966" rx="3" ry="3.06741573" />
         <polygon
           id="Shape"
           points="0.75 22.238764 6.75 13.0365169 9.75 16.1039326 15.75 8.43539326 23.25 22.238764"
@@ -42,12 +40,7 @@ const ImageIcon = ({ size, stroke }) => (
 
 ImageIcon.defaultProps = {
   size: 16,
-  stroke: '#979899'
+  stroke: '#979899',
 }
 
-ImageIcon.propTypes = {
-  size: PropTypes.integer,
-  stroke: PropTypes.string,
-}
-
-export default ImageIcon
+export default React.memo(ImageIcon)
