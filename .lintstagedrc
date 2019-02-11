@@ -7,8 +7,7 @@
       "./lint.sh",
     ],
     "**/*.+(js|json|css|ts|tsx|md|graphql)": [
-      "prettier --list-different",
-      "git add"
+      "prettier --list-different"
     ]
   }
 }
