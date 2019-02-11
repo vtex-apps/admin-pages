@@ -1,9 +1,9 @@
 mutation UpdateBlock(
+  $block: BlockInput!
   $blockPath: [BlockPathItem]!
-  $changes: BlockChanges!
 ) {
   updateBlock(
+    block: $block
     blockPath: $blockPath
-    changes: $changes
   )
 }
