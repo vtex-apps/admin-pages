@@ -2,38 +2,18 @@ import debounce from 'lodash.debounce'
 import React, { Component, Fragment } from 'react'
 import { ApolloConsumer } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { WidgetProps } from 'react-jsonschema-form'
-import Departments from '../../../queries/Departments.graphql'
-
-
-interface Option {
-  label: string
-  value: any
-}
-
-interface Department {
-  name: string
-  id: string
-}
-
-interface Data {
-  departmentSearch: Department[]
-}
-
-interface State {
-  data: Data
-  errors: any
-  loading: boolean
-  value: any
-}
+import { Option, State } from '../typings'
+import Departments from './queries/Departments.graphql'
+import { Data, Department } from './types/typings'
 
 interface CustomProps {
   value: any
 }
 
-class DepartmentSelector extends Component<WidgetProps, State> {
+class DepartmentSelector extends Component<WidgetProps, State<Data>> {
   constructor(props: WidgetProps) {
     super(props)
 

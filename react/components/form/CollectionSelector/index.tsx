@@ -2,38 +2,18 @@ import debounce from 'lodash.debounce'
 import React, { Component, Fragment } from 'react'
 import { ApolloConsumer } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { WidgetProps } from 'react-jsonschema-form'
-import Collections from '../../../queries/Collections.graphql'
-
-
-interface Option {
-  label: string
-  value: any
-}
-
-interface Collection {
-  name: string
-  id: string
-}
-
-interface Data {
-  collectionSearch: Collection[]
-}
-
-interface State {
-  data: Data
-  errors: any
-  loading: boolean
-  value: any
-}
+import { Option, State } from '../typings'
+import Collections from './queries/Collections.graphql'
+import { Collection, Data } from './types/typings'
 
 interface CustomProps {
   value: any
 }
 
-class CollectionSelector extends Component<WidgetProps, State> {
+class CollectionSelector extends Component<WidgetProps, State<Data>> {
   constructor(props: WidgetProps) {
     super(props)
 

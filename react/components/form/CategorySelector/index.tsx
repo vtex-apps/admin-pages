@@ -2,38 +2,18 @@ import debounce from 'lodash.debounce'
 import React, { Component, Fragment } from 'react'
 import { ApolloConsumer } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { WidgetProps } from 'react-jsonschema-form'
-import Categories from '../../../queries/Categories.graphql'
-
-
-interface Option {
-  label: string
-  value: any
-}
-
-interface Category {
-  name: string
-  id: string
-}
-
-interface Data {
-  categorySearch: Category[]
-}
-
-interface State {
-  data: Data
-  errors: any
-  loading: boolean
-  value: any
-}
+import { Option, State } from '../typings'
+import Categories from './queries/Categories.graphql'
+import { Category, Data } from './types/typings'
 
 interface CustomProps {
   value: any
 }
 
-class CategorySelector extends Component<WidgetProps, State> {
+class CategorySelector extends Component<WidgetProps, State<Data>> {
   constructor(props: WidgetProps) {
     super(props)
 

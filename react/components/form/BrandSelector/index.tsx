@@ -2,38 +2,18 @@ import debounce from 'lodash.debounce'
 import React, { Component, Fragment } from 'react'
 import { ApolloConsumer } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { WidgetProps } from 'react-jsonschema-form'
-import Brands from '../../../queries/Brands.graphql'
-
-
-interface Option {
-  label: string
-  value: any
-}
-
-interface Brand {
-  name: string
-  id: string
-}
-
-interface Data {
-  brandSearch: Brand[]
-}
-
-interface State {
-  data: Data
-  errors: any
-  loading: boolean
-  value: any
-}
+import { Option, State } from '../typings'
+import Brands from './queries/Brands.graphql'
+import { Brand, Data } from './types/typings'
 
 interface CustomProps {
   value: any
 }
 
-class BrandSelector extends Component<WidgetProps, State> {
+class BrandSelector extends Component<WidgetProps, State<Data>> {
   constructor(props: WidgetProps) {
     super(props)
 
