@@ -1,7 +1,8 @@
-import PropTypes from 'prop-types'
+import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
-import { graphql } from 'react-apollo'
+import { graphql, MutationFunc } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
 
@@ -11,19 +12,28 @@ import UploadFile from '../../../queries/UploadFile.graphql'
 import Dropzone from './Dropzone'
 import ErrorAlert from './ErrorAlert'
 
-const GRADIENT_STYLES = {
-  background:
-    '-moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  background:
-    '-webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  background:
-    'linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.83) 99%, rgba(0,0,0,0.83) 100%)',
-  filter:
-    "progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#d4000000', GradientType=0)",
+import styles from './imageUploader.css'
+
+interface Props extends WidgetProps {
+  disabled: boolean
+  onChange: (pathname: string) => void
+  schema: JSONSchema6
+  uploadFile?: MutationFunc
+  value: string
 }
 
-class ImageUploader extends Component {
-  constructor(props) {
+interface State {
+  error: string | null
+  isLoading: boolean
+}
+
+class ImageUploader extends Component<Props, State> {
+  public static defaultProps = {
+    disabled: false,
+    value: '',
+  }
+
+  constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -32,47 +42,7 @@ class ImageUploader extends Component {
     }
   }
 
-  handleImageDrop = async acceptedFiles => {
-    const { uploadFile } = this.props
-
-    if (acceptedFiles && acceptedFiles[0]) {
-      this.setState({ isLoading: true })
-
-      try {
-        const {
-          data: {
-            uploadFile: { fileUrl },
-          },
-        } = await uploadFile({
-          variables: { file: acceptedFiles[0] },
-        })
-
-        if (fileUrl) {
-          const fileUrlObj = new URL(fileUrl)
-
-          this.props.onChange(fileUrlObj.pathname)
-
-          this.setState({ isLoading: false })
-        }
-      } catch (e) {
-        this.setState({
-          error: 'Something went wrong. Please try again.',
-          isLoading: false,
-        })
-      }
-    } else {
-      this.setState({
-        error:
-          'File exceeds the size limit of 4MB. Please choose a smaller one.',
-      })
-    }
-  }
-
-  handleErrorReset = () => {
-    this.setState({ error: null })
-  }
-
-  render() {
+  public render() {
     const {
       disabled,
       schema: { title },
@@ -81,13 +51,13 @@ class ImageUploader extends Component {
     const { error, isLoading } = this.state
 
     const FieldTitle = () => (
-      <FormattedMessage id={title}>
+      <FormattedMessage id={title as string}>
         {text => <span className="w-100 db mb3">{text}</span>}
       </FormattedMessage>
     )
 
     const backgroundImageStyle = {
-      backgroundImage: `url(${value})`,
+      backgroundImage: `url("${value}")`,
     }
 
     if (value) {
@@ -112,15 +82,12 @@ class ImageUploader extends Component {
                 style={backgroundImageStyle}
               >
                 <div
-                  className="w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center"
-                  style={GRADIENT_STYLES}
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
                 >
-                  <Fragment>
-                    <div className="flex justify-center mb3">
-                      <ImageIcon stroke="#fff" />
-                    </div>
-                    <span className="white">Change image</span>
-                  </Fragment>
+                  <div className="flex justify-center mb3">
+                    <ImageIcon stroke="#fff" />
+                  </div>
+                  <span className="white">Change image</span>
                 </div>
               </div>
             )}
@@ -161,21 +128,46 @@ class ImageUploader extends Component {
       </Fragment>
     )
   }
+
+  private handleImageDrop = async (acceptedFiles: string[]) => {
+    const { uploadFile } = this.props as { uploadFile: MutationFunc }
+
+    if (acceptedFiles && acceptedFiles[0]) {
+      this.setState({ isLoading: true })
+
+      try {
+        const {
+          data: {
+            uploadFile: { fileUrl },
+          },
+        } = await uploadFile({
+          variables: { file: acceptedFiles[0] },
+        })
+
+        if (fileUrl) {
+          const fileUrlObj = new URL(fileUrl)
+
+          this.props.onChange(fileUrlObj.pathname)
+
+          this.setState({ isLoading: false })
+        }
+      } catch (e) {
+        this.setState({
+          error: 'Something went wrong. Please try again.',
+          isLoading: false,
+        })
+      }
+    } else {
+      this.setState({
+        error:
+          'File exceeds the size limit of 4MB. Please choose a smaller one.',
+      })
+    }
+  }
+
+  private handleErrorReset = () => {
+    this.setState({ error: null })
+  }
 }
 
-ImageUploader.defaultProps = {
-  disabled: false,
-  value: '',
-}
-
-ImageUploader.propTypes = {
-  disabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  schema: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-  }).isRequired,
-  uploadFile: PropTypes.func.isRequired,
-  value: PropTypes.string,
-}
-
-export default graphql(UploadFile, { name: 'uploadFile' })(ImageUploader)
+export default graphql<Props>(UploadFile, { name: 'uploadFile' })(ImageUploader)
