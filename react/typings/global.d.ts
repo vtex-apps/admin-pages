@@ -216,6 +216,7 @@ declare global {
     items?: any
     minItems?: number
     properties?: ComponentSchemaProperties
+    isLayout?: boolean
   }
 
   type UISchema = any
