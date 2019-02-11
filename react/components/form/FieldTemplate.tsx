@@ -21,7 +21,9 @@ const FieldTemplate: React.SFC<Props & FieldTemplateProps> = ({
 }) => {
   const isHidden =
     hidden ||
-    (schema.type !== 'object' && formContext.isLayoutMode != null && !!(schema as ComponentSchema).isLayout !== formContext.isLayoutMode)
+    (schema.type !== 'object' &&
+      formContext.isLayoutMode != null &&
+      !!(schema as ComponentSchema).isLayout !== formContext.isLayoutMode)
 
   if (isHidden) {
     return null
