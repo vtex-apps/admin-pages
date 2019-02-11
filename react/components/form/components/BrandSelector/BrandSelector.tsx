@@ -5,21 +5,21 @@ import { FormattedMessage } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { Option, State } from '../typings'
-import { formatOptions } from '../utils'
-import Departments from './queries/Departments.graphql'
-import { Data, Department } from './types/typings'
+import { Option, State } from '../../typings/typings'
+import { formatOptions } from '../../utils/utils'
+import Brands from './queries/Brands.graphql'
+import { Brand, Data } from './types/typings'
 
 interface CustomProps {
   value: any
 }
 
-class DepartmentSelector extends Component<WidgetProps, State<Data>> {
+class BrandSelector extends Component<WidgetProps, State<Data>> {
   constructor(props: WidgetProps) {
     super(props)
 
     this.state = {
-      data: { departmentSearch: [] } as Data,
+      data: { brandSearch: [] } as Data,
       errors: null,
       loading: false,
       value: this.props.value,
@@ -60,8 +60,8 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
                 multi = { false }
 
                 options = {
-                  (data && data.departmentSearch) ?
-                  formatOptions(data.departmentSearch) : []
+                  (data && data.brandSearch) ?
+                  formatOptions(data.brandSearch) : []
                 }
 
                 onChange = {
@@ -86,8 +86,8 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
                         data: newData,
                         errors: newErrors,
                         loading: newLoading,
-                      } = await client.query<{departmentSearch: Department[]}>({
-                        query: Departments,
+                      } = await client.query<{brandSearch: Brand[]}>({
+                        query: Brands,
                         variables: {
                           query: input
                         }
@@ -99,7 +99,7 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
                       })
                     } else {
                       this.setState({
-                        data: { departmentSearch: [] as Department[] },
+                        data: { brandSearch: [] as Brand[] },
                         loading: true,
                       })
                     }
@@ -119,4 +119,4 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
   }
 }
 
-export default DepartmentSelector
+export default BrandSelector

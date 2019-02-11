@@ -5,8 +5,8 @@ import { FormattedMessage } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
-import { Option, State } from '../typings'
-import { formatOptions } from '../utils'
+import { Option, State } from '../../typings/typings'
+import { formatOptions } from '../../utils/utils'
 import Categories from './queries/Categories.graphql'
 import { Category, Data } from './types/typings'
 
