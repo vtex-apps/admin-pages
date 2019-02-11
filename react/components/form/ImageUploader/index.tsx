@@ -82,7 +82,9 @@ class ImageUploader extends Component<Props, State> {
                 style={backgroundImageStyle}
               >
                 <div
-                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${
+                    styles.gradient
+                  }`}
                 >
                   <div className="flex justify-center mb3">
                     <ImageIcon stroke="#fff" />
@@ -104,7 +106,7 @@ class ImageUploader extends Component<Props, State> {
           disabled={disabled || isLoading}
           extraClasses={`ba bw1 b--dashed b--light-gray ${
             !isLoading ? 'cursor' : ''
-            }`}
+          }`}
           onClick={this.handleErrorReset}
           onDrop={this.handleImageDrop}
         >
@@ -119,7 +121,7 @@ class ImageUploader extends Component<Props, State> {
                 <div className="mb5 f6 tc gray">Drag your image here</div>
                 <Button size="small" variation="secondary">
                   Upload
-              </Button>
+                </Button>
               </Fragment>
             )}
           </div>
