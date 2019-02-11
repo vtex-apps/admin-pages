@@ -24,6 +24,10 @@ interface CustomProps {
   shouldRenderSaveButton: boolean
 }
 
+export interface ComponentEditorFormContext {
+  isLayoutMode: boolean
+}
+
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.SFC<Props> = ({

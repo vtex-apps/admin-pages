@@ -1,13 +1,12 @@
 import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { FieldTemplateProps } from 'react-jsonschema-form'
+import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/ComponentEditor'
 
 interface Props {
   children?: React.ReactElement<any>
   classNames: string
-  formContext: {
-    isLayoutMode: boolean
-  }
+  formContext: ComponentEditorFormContext
   hidden?: boolean
   schema: JSONSchema6
 }
