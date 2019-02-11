@@ -1,0 +1,13 @@
+{
+  "linters": {
+    "*.js": [
+      "eslint"
+    ],
+    "*.(ts|tsx)": [
+      "./lint.sh",
+    ],
+    "**/*.+(js|json|css|ts|tsx|md|graphql)": [
+      "prettier --list-different"
+    ]
+  }
+}

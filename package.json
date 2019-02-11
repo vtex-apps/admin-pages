@@ -1,0 +1,13 @@
+{
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "husky": "^1.1.4",
+    "prettier": "^1.15.2",
+    "lint-staged": "^8.0.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "scripts": {
     "pretest": "yarn",
     "test": "jest",
-    "lint": "tsc --noEmit --pretty && tslint -c tslint.json './**/*.ts'"
+    "lint": "tsc --noEmit --pretty && tslint -c tslint.json"
   },
   "dependencies": {
     "classnames": "^2.2.6",
