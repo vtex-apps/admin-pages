@@ -21,25 +21,14 @@ interface Props extends ReactIntl.InjectedIntlProps {
 }
 
 class TemplateEditor extends Component<Props> {
-  private blocks: Extension['blocks']
-  private initialFormData: Extension
+  private block: Extension
 
   constructor(props: Props) {
     super(props)
 
     const { editor, iframeRuntime } = this.props
 
-    const extension = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
-
-    this.blocks = extension.blocks
-
-    this.initialFormData = {
-      component: extension.component || null,
-      props: extension.props,
-    }
+    this.block = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
     props.modal.setHandlers({
       actionHandler: this.handleSave,
@@ -65,14 +54,7 @@ class TemplateEditor extends Component<Props> {
   }
 
   private exit = () => {
-    const { editor, iframeRuntime } = this.props
-
-    iframeRuntime.updateExtension(
-      editor.editTreePath as string,
-      this.initialFormData
-    )
-
-    editor.editExtensionPoint(null)
+    this.props.editor.editExtensionPoint(null)
   }
 
   private getExtensionProps() {
@@ -101,17 +83,22 @@ class TemplateEditor extends Component<Props> {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(
-      editTreePath,
-      event,
-      intl,
-      iframeRuntime
-    )
+    updateExtensionFromForm(editTreePath, event, intl, iframeRuntime)
   }
 
   private handleDiscard = () => {
+    const { editor, iframeRuntime, modal } = this.props
+
     this.props.formMeta.setWasModified(false, () => {
-      this.handleModalResolution()
+      if (!modal.closeCallbackHandler) {
+        modal.setHandlers({
+          closeCallbackHandler: this.exit,
+        })
+      }
+
+      iframeRuntime.updateExtension(editor.editTreePath as string, this.block)
+
+      modal.close()
     })
   }
 
@@ -125,20 +112,8 @@ class TemplateEditor extends Component<Props> {
     }
   }
 
-  private handleModalResolution = () => {
-    const { modal } = this.props
-
-    if (!modal.closeCallbackHandler) {
-      modal.setHandlers({
-        closeCallbackHandler: this.exit,
-      })
-    }
-
-    modal.close()
-  }
-
   private handleSave = async () => {
-    const { editor, formMeta, iframeRuntime, updateBlock } = this.props
+    const { editor, formMeta, iframeRuntime, modal, updateBlock } = this.props
 
     const extensionProps = this.getExtensionProps()
 
@@ -147,22 +122,31 @@ class TemplateEditor extends Component<Props> {
     try {
       await updateBlock({
         variables: {
+          block: {
+            after: this.block.after,
+            around: this.block.around,
+            before: this.block.before,
+            blocks: this.block.blocks,
+            propsJSON: JSON.stringify(extensionProps),
+          },
           blockPath: getBlockPath(
             iframeRuntime.extensions,
             editor.editTreePath!
           ),
-          changes: {
-            children: this.blocks,
-            propsJSON: JSON.stringify(extensionProps),
-          },
         },
       })
-    } catch (err) {
-      console.log(err)
-    } finally {
+
       formMeta.setWasModified(false, () => {
         formMeta.toggleLoading(this.exit)
       })
+    } catch (err) {
+      console.log(err)
+
+      formMeta.toggleLoading()
+    } finally {
+      if (modal.isOpen) {
+        modal.close()
+      }
     }
   }
 }
