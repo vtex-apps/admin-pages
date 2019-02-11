@@ -6,6 +6,7 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
 import { Option, State } from '../typings'
+import { formatOptions } from '../utils'
 import Collections from './queries/Collections.graphql'
 import { Collection, Data } from './types/typings'
 
@@ -60,12 +61,7 @@ class CollectionSelector extends Component<WidgetProps, State<Data>> {
 
                 options = {
                   (data && data.collectionSearch) ?
-                  data.collectionSearch.map(
-                    collection => ({
-                      label: collection.name,
-                      value: collection
-                    })
-                  ) : []
+                  formatOptions(data.collectionSearch) : []
                 }
 
                 onChange = {

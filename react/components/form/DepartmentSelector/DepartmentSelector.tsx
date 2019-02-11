@@ -6,6 +6,7 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
 import { Option, State } from '../typings'
+import { formatOptions } from '../utils'
 import Departments from './queries/Departments.graphql'
 import { Data, Department } from './types/typings'
 
@@ -60,12 +61,7 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
 
                 options = {
                   (data && data.departmentSearch) ?
-                  data.departmentSearch.map(
-                    department => ({
-                      label: department.name,
-                      value: department
-                    })
-                  ) : []
+                  formatOptions(data.departmentSearch) : []
                 }
 
                 onChange = {

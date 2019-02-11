@@ -6,6 +6,7 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
 import { Option, State } from '../typings'
+import { formatOptions } from '../utils'
 import Categories from './queries/Categories.graphql'
 import { Category, Data } from './types/typings'
 
@@ -60,12 +61,7 @@ class CategorySelector extends Component<WidgetProps, State<Data>> {
 
                 options = {
                   (data && data.categorySearch) ?
-                  data.categorySearch.map(
-                    category => ({
-                      label: category.name,
-                      value: category
-                    })
-                  ) : []
+                  formatOptions(data.categorySearch) : []
                 }
 
                 onChange = {

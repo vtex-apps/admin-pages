@@ -6,6 +6,7 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
 import { Option, State } from '../typings'
+import { formatOptions } from '../utils'
 import Brands from './queries/Brands.graphql'
 import { Brand, Data } from './types/typings'
 
@@ -60,12 +61,7 @@ class BrandSelector extends Component<WidgetProps, State<Data>> {
 
                 options = {
                   (data && data.brandSearch) ?
-                  data.brandSearch.map(
-                    brand => ({
-                      label: brand.name,
-                      value: brand
-                    })
-                  ) : []
+                  formatOptions(data.brandSearch) : []
                 }
 
                 onChange = {
