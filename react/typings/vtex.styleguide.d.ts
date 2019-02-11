@@ -1,5 +1,13 @@
 declare module 'vtex.styleguide' {
-  import { ReactElement } from 'react'
+  import { Component, ReactElement, v } from 'react'
+
+  interface TextareaProps extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>{
+    error?: boolean
+    errorMessage?: string
+    helpText?: ReactNode
+    value?: string
+    label?: string
+  }
 
   export const Alert: ReactElement
   export const Box: ReactElement
@@ -19,6 +27,7 @@ declare module 'vtex.styleguide' {
   export const Pagination: ReactElement
   export const Radio: ReactElement
   export const Spinner: ReactElement
+  export class Textarea extends Component<TextareaProps> {}
   export const Tab: ReactElement
   export const Table: ReactElement
   export const Tabs: ReactElement
