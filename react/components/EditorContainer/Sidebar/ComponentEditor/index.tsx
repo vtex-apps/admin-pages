@@ -55,7 +55,7 @@ const ComponentEditor: React.SFC<Props> = ({
     componentImplementation,
     extension.props,
     runtime,
-    intl,
+    intl
   )
 
   const schema = {
