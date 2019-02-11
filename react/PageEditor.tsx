@@ -39,11 +39,11 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public componentDidMount() {
-    this.stopLoading()
+    this.context.stopLoading()
   }
 
   public componentDidUpdate() {
-    this.stopLoading()
+    this.context.stopLoading()
   }
 
   public render() {
@@ -58,17 +58,13 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
             <iframe
               id="store-iframe"
               className="w-100 h-100"
-              src={['/', path].filter(str => !!str).join('')}
+              src={path ? `$/{path}` : '/'}
               frameBorder="0"
             />
           </EditorProvider>
         </MessagesContext.Provider>
       </div>
     )
-  }
-
-  private stopLoading = () => {
-    this.context.stopLoading()
   }
 }
 
