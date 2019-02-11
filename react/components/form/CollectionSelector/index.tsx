@@ -73,9 +73,7 @@ class CollectionSelector extends Component<WidgetProps, State> {
               console.log(errors)
               return (<p> Error! </p>)
             }
-            if(data) {
-              console.log(data)
-            }
+
             return (
               <EXPERIMENTAL_Select
                 multi = { false }
