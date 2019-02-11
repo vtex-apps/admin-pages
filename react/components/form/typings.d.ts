@@ -9,3 +9,7 @@ export interface State <T> {
   loading: boolean
   value: any
 }
+
+export interface NativeType {
+  name: string
+}
