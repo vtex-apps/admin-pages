@@ -150,6 +150,7 @@ declare module 'vtex.styleguide' {
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
   export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
+  export class EXPERIMENTAL_Select extends Component<any> {}
   export const IconArrowBack: ComponentType<any>
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
