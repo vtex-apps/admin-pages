@@ -28,91 +28,80 @@ class CollectionSelector extends Component<WidgetProps, State<Data>> {
 
   public render() {
     const {
-      schema: { title }
+      schema: { title },
     } = this.props
 
-    const {
-      errors,
-      loading,
-      data
-    } = this.state
+    const { errors, loading, data } = this.state
 
-    const FieldTitle = () => title ? (
-      <FormattedMessage id={title}>
-        {text => <span className="w-100 db mb3">{text}</span>}
-      </FormattedMessage>
-    ) : null
+    const FieldTitle = () =>
+      title ? (
+        <FormattedMessage id={title}>
+          {text => <span className="w-100 db mb3">{text}</span>}
+        </FormattedMessage>
+      ) : null
 
     return (
       <Fragment>
-        <FieldTitle/>
+        <FieldTitle />
         <ApolloConsumer>
-          {
-          (client) => {
-
-            if(errors) {
+          {client => {
+            if (errors) {
               console.log(errors)
-              return (<p> Error! </p>)
+              return <p> Error! </p>
             }
 
             return (
               <EXPERIMENTAL_Select
-                multi = { false }
-
-                options = {
-                  (data && data.collectionSearch) ?
-                  formatOptions(data.collectionSearch) : []
+                multi={false}
+                options={
+                  data && data.collectionSearch
+                    ? formatOptions(data.collectionSearch)
+                    : []
                 }
+                onChange={(option: Option) => {
+                  if (option) {
+                    const { value } = option
 
-                onChange = {
-                  (option: Option) => {
-                    if (option) {
-                      const { value } = option
-
-                      this.setState({
-                        value
-                      })
-                      this.props.onChange(value)
-                    }
+                    this.setState({
+                      value,
+                    })
+                    this.props.onChange(value)
                   }
-                }
-
-                loading = { loading }
-
-                onSearchInputChange = {
-                  debounce(async (input) => {
-                    if (input.length >= 2 /* magic number: min. number of letters needed to search */) {
-                      const {
-                        data: newData,
-                        errors: newErrors,
-                        loading: newLoading,
-                      } = await client.query<{collectionSearch: Collection[]}>({
-                        query: Collections,
-                        variables: {
-                          query: input
-                        }
-                      })
-                      this.setState({
-                        data: newData,
-                        errors: newErrors,
-                        loading: newLoading,
-                      })
-                    } else {
-                      this.setState({
-                        data: { collectionSearch: [] as Collection[] },
-                        loading: true,
-                      })
-                    }
-                  }, 300 /* magic number: debounce time */ )
-                }
-
-                loadingMessage = {
+                }}
+                loading={loading}
+                onSearchInputChange={debounce(async input => {
+                  if (
+                    input.length >=
+                    2 /* magic number: min. number of letters needed to search */
+                  ) {
+                    const {
+                      data: newData,
+                      errors: newErrors,
+                      loading: newLoading,
+                    } = await client.query<{ collectionSearch: Collection[] }>({
+                      query: Collections,
+                      variables: {
+                        query: input,
+                      },
+                    })
+                    this.setState({
+                      data: newData,
+                      errors: newErrors,
+                      loading: newLoading,
+                    })
+                  } else {
+                    this.setState({
+                      data: { collectionSearch: [] as Collection[] },
+                      loading: true,
+                    })
+                  }
+                }, 300 /* magic number: debounce time */)}
+                loadingMessage={
                   'Write at least two letters' /* this is not showing up in the application, investigate */
                 }
               />
             )
-          }
-          }
+          }}
         </ApolloConsumer>
       </Fragment>
     )

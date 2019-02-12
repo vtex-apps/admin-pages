@@ -6,78 +6,95 @@ export const isNativeProperty = (property: ComponentSchema) => {
 
 export const translateFromNative = (schema: ComponentSchema) => {
   if (has('properties', schema) && schema.properties) {
-    const nativeProperties = filter(isNativeProperty, schema.properties) as ComponentSchemaProperties
-    const nonNativeProperties = filter((property: ComponentSchema) => !isNativeProperty(property), schema.properties) as ComponentSchemaProperties
+    const nativeProperties = filter(
+      isNativeProperty,
+      schema.properties
+    ) as ComponentSchemaProperties
+    const nonNativeProperties = filter(
+      (property: ComponentSchema) => !isNativeProperty(property),
+      schema.properties
+    ) as ComponentSchemaProperties
 
-    const translatedNativeProperties = mapObjIndexed((property: ComponentSchema) => {
-      const defaultTranslatedProperty = nativeMap[property.type!]
-      if (has('elements', property)) {
-        const translatedProperty = { ...mergeDeepRight(defaultTranslatedProperty, property.elements || {}) }
-        return { type: 'object', properties: { ...translatedProperty } }
-      }
-      return {...mergeDeepRight(defaultTranslatedProperty, property), type: defaultTranslatedProperty.type}
-    }, nativeProperties)
+    const translatedNativeProperties = mapObjIndexed(
+      (property: ComponentSchema) => {
+        const defaultTranslatedProperty = nativeMap[property.type!]
+        if (has('elements', property)) {
+          const translatedProperty = {
+            ...mergeDeepRight(
+              defaultTranslatedProperty,
+              property.elements || {}
+            ),
+          }
+          return { type: 'object', properties: { ...translatedProperty } }
+        }
+        return {
+          ...mergeDeepRight(defaultTranslatedProperty, property),
+          type: defaultTranslatedProperty.type,
+        }
+      },
+      nativeProperties
+    )
 
     schema.properties = merge(nonNativeProperties, translatedNativeProperties)
   }
   return schema
 }
 
-const iframe = document.getElementById('store-iframe') || {} as any
+const iframe = document.getElementById('store-iframe') || ({} as any)
 const pages = iframe.__RUNTIME__ && Object.keys(iframe.__RUNTIME__.pages)
 
 // tslint:disable:object-literal-sort-keys
 
-export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties> = {
+export const nativeMap: Record<
+  string,
+  ComponentSchema | ComponentSchemaProperties
+> = {
   brand: {
     default: 'Default Brand',
     title: 'pages.editor.components.brand.title',
     type: 'string',
     widget: {
-      'ui:widget': 'brand-selector'
-    }
+      'ui:widget': 'brand-selector',
+    },
   },
   category: {
     default: 'Default Category',
     title: 'pages.editor.components.category.title',
     type: 'string',
     widget: {
-      'ui:widget': 'category-selector'
-    }
+      'ui:widget': 'category-selector',
+    },
   },
   collection: {
     default: 'Default Collection',
     title: 'pages.editor.components.collection.title',
     type: 'string',
     widget: {
-      'ui:widget': 'collection-selector'
-    }
+      'ui:widget': 'collection-selector',
+    },
   },
   department: {
     default: 'Default Department',
     title: 'pages.editor.components.department.title',
     type: 'string',
     widget: {
-      'ui:widget': 'department-selector'
-    }
+      'ui:widget': 'department-selector',
+    },
   },
   image: {
     description: {
       default: 'pages.editor.components.image.description.default',
       title: 'pages.editor.components.image.description.title',
-      type: 'string'
+      type: 'string',
     },
     hasLink: {
       default: false,
       title: 'pages.editor.components.image.hasLink.title',
-      type: 'boolean'
+      type: 'boolean',
     },
     externalRoute: {
       default: 'rota interna',
-      enum: [
-        'rota interna',
-        'rota externa'
-      ],
+      enum: ['rota interna', 'rota externa'],
       title: 'pages.editor.components.image.externalRoute.title',
       type: 'string',
     },
@@ -99,7 +116,8 @@ export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties
       type: 'string',
     },
     desktop: {
-      default: 'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
+      default:
+        'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
       title: 'pages.editor.components.image.image.desktopImage.title',
       type: 'string',
       widget: {
@@ -107,7 +125,8 @@ export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties
       },
     },
     mobile: {
-      default: 'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
+      default:
+        'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
       title: 'pages.editor.components.image.image.mobileImage.title',
       type: 'string',
       widget: {
@@ -173,5 +192,5 @@ export const nativeMap: Record<string, ComponentSchema|ComponentSchemaProperties
         'ui:widget': 'textarea',
       },
     },
-  }
+  },
 }
