@@ -13,6 +13,6 @@ export interface NormalizedRelativeRoot {
 }
 
 export interface ReorderChange {
-  order: string[]
+  order: InnerBlock[]
   target: string
 }

@@ -21,7 +21,7 @@ declare global {
     around?: string[]
     before?: string[]
     blockId?: string
-    blocks?: string[]
+    blocks?: InnerBlock[]
     component: string | null
     configurationsIds?: string[]
     props?: any
@@ -253,4 +253,9 @@ declare global {
   }
 
   type BlockPath = FormattedBlock[]
+}
+
+interface InnerBlock {
+  blockId: string
+  extensionPointId: string
 }

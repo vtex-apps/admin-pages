@@ -1,4 +1,4 @@
-import { BlockRole } from './typings'
+import { BlockRole, RelativeBlocks } from './typings'
 
 export const getBlockRole = (treePathTail: string) => {
   const blockRoleMatch = treePathTail.match(/\$(after|around|before)_/)
@@ -79,3 +79,18 @@ export const getParentBlockId = (
 
   return blockId
 }
+
+export const getRelativeBlocksIds = (
+  treePath: string,
+  extensions: RenderContext['extensions'],
+  targetObj: RelativeBlocks
+) =>
+  Object.entries(targetObj)
+    .reduce<RelativeBlocks>((acc, [currKey, currValue]) => currValue
+      ? ({
+        ...acc, [currKey]: currValue.map(
+          block => extensions[`${treePath}/${block}`].blockId as string)
+      })
+      : acc,
+      {}
+    )

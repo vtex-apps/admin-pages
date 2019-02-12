@@ -5,7 +5,9 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
-import SaveExtension from '../../../../queries/SaveExtension.graphql'
+import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
+import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
+import { getExtension } from '../../../../utils/components'
 import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
 import { SidebarComponent } from '../typings'
@@ -23,7 +25,7 @@ interface CustomProps {
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
   onMouseLeaveComponent: () => void
-  saveExtension: MutationFn
+  updateBlock: MutationFn
 }
 
 type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
@@ -53,8 +55,14 @@ class ComponentList extends Component<Props, State> {
     }
   }
 
+  private block: Extension
+
   constructor(props: Props) {
     super(props)
+
+    const { iframeRuntime } = props
+
+    this.block = getExtension(iframeRuntime.page, iframeRuntime.extensions)
 
     this.state = {
       changes: [],
@@ -198,15 +206,15 @@ class ComponentList extends Component<Props, State> {
   }
 
   private handleSaveReorder = async () => {
-    const { iframeRuntime, intl, saveExtension } = this.props
+    const { iframeRuntime, intl, updateBlock } = this.props
 
     const iframeWindow = (document.getElementById(
       'store-iframe'
     ) as HTMLIFrameElement).contentWindow
 
     const iframeCurrentPage = iframeRuntime.page
+
     const extension = iframeRuntime.extensions[iframeCurrentPage]
-    const configurationId = path(['configurationIds', 0])(extension)
 
     if (iframeWindow === null) {
       throw new Error('iframeWindow is null')
@@ -214,23 +222,34 @@ class ComponentList extends Component<Props, State> {
 
     let changes = this.state.changes
 
-    try {
-      this.setState({
-        isLoadingMutation: true
-      })
+    this.setState({
+      isLoadingMutation: true
+    })
 
-      await saveExtension({
+    const parsedRelativeBlocks = getRelativeBlocksIds(
+      iframeCurrentPage,
+      iframeRuntime.extensions,
+      {
+        after: this.block.after,
+        around: this.block.around,
+        before: this.block.before,
+      }
+    )
+
+    try {
+      await updateBlock({
         variables: {
-          allMatches: true,
-          conditions: [],
-          configurationId,
-          device: 'any',
-          extensionName: iframeCurrentPage,
-          label: null,
-          path: iframeWindow.location.pathname,
-          propsJSON: JSON.stringify(extension.props),
-          routeId: 'store',
-          scope: 'route'
+          block: {
+            after: parsedRelativeBlocks.after,
+            around: parsedRelativeBlocks.around,
+            before: parsedRelativeBlocks.before,
+            blocks: extension.blocks,
+            propsJSON: JSON.stringify(extension.props),
+          },
+          blockPath: getBlockPath(
+            iframeRuntime.extensions,
+            iframeCurrentPage
+          ),
         }
       })
 
@@ -275,36 +294,35 @@ class ComponentList extends Component<Props, State> {
     const isSameTree = firstTargetParentTreePath === secondTargetParentTreePath
     const isChangingSameExtensionPoint = firstTargetName === secondTargetName
 
-    if (isSameTree && !isChangingSameExtensionPoint) {
-      const extension: Extension = this.props.iframeRuntime.extensions[
-        firstTargetParentTreePath
-      ]
+    const extension = this.props.iframeRuntime.extensions[
+      firstTargetParentTreePath
+    ]
+
+    if (isSameTree && !isChangingSameExtensionPoint && extension.blocks) {
+      const extensionPoints = extension.blocks.map(block => block.extensionPointId)
 
       const firstTargetIndex = findIndex(
         equals(firstTargetName),
-        extension.props.elements
+        extensionPoints
       )
       const secondTargetIndex = findIndex(
         equals(secondTargetName),
-        extension.props.elements
+        extensionPoints
       )
 
-      const oldOrder = clone(extension.props.elements)
+      const oldOrder = clone(extension.blocks)
 
       const target = firstTargetParentTreePath
 
       const newOrder = arrayMove(
-        extension.props.elements,
+        extension.blocks,
         firstTargetIndex,
         secondTargetIndex
       )
 
       this.props.iframeRuntime.updateExtension(firstTargetParentTreePath, {
         ...extension,
-        props: {
-          ...extension.props,
-          elements: newOrder
-        }
+        blocks: newOrder,
       })
 
       this.setState(prevState => ({
@@ -343,5 +361,5 @@ class ComponentList extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  graphql(SaveExtension, { name: 'saveExtension' })
+  graphql(UpdateBlock, { name: 'updateBlock' })
 )(ComponentList)
