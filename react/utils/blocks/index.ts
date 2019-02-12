@@ -1,3 +1,5 @@
+import { BlockRole } from './typings'
+
 export const getBlockRole = (treePathTail: string) => {
   const blockRoleMatch = treePathTail.match(/\$(after|around|before)_/)
 
@@ -5,7 +7,7 @@ export const getBlockRole = (treePathTail: string) => {
     return null
   }
 
-  return blockRoleMatch[1] as 'after' | 'around' | 'before'
+  return blockRoleMatch[1] as BlockRole
 }
 
 export const getBlockPath = (
@@ -62,7 +64,7 @@ export const getParentBlockId = (
     return null
   }
 
-  const blockRole = match[1] as 'after' | 'around' | 'before'
+  const blockRole = match[1] as BlockRole
   const blockIndex = parseInt(match[2], 10)
 
   const parentTreePath = splitTreePath
