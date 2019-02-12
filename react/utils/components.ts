@@ -98,7 +98,7 @@ export const getComponentSchema = (
 export const getExtension = (
   editTreePath: EditorContext['editTreePath'],
   extensions: RenderContext['extensions']
-): Extension => {
+): Required<Extension> => {
   const {
     after = [],
     around = [],
@@ -108,6 +108,7 @@ export const getExtension = (
     component = null,
     configurationsIds = [],
     props = {},
+    shouldRender = false,
   } = extensions[editTreePath!] || {}
 
   return {
@@ -119,6 +120,7 @@ export const getExtension = (
     component,
     configurationsIds,
     props: props || {},
+    shouldRender,
   }
 }
 
