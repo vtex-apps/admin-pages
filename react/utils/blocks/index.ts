@@ -58,14 +58,14 @@ export const getParentBlockId = (
 ) => {
   const treePathTail = splitTreePath[splitTreePath.length - 1]
 
-  const match = treePathTail.match(/\$(after|around|before)_(\d+)/)
+  const maybeBlockInfo = treePathTail.match(/\$(after|around|before)_(\d+)/)
 
-  if (!match) {
+  if (!maybeBlockInfo) {
     return null
   }
 
-  const blockRole = match[1] as BlockRole
-  const blockIndex = parseInt(match[2], 10)
+  const blockRole = maybeBlockInfo[1] as BlockRole
+  const blockIndex = parseInt(maybeBlockInfo[2], 10)
 
   const parentTreePath = splitTreePath
     .slice(0, splitTreePath.length - 1)
