@@ -92,12 +92,18 @@ class CollectionSelector extends Component<WidgetProps, State<Data>> {
                   } else {
                     this.setState({
                       data: { collectionSearch: [] as Collection[] },
-                      loading: true,
+                      loading: false,
                     })
                   }
                 }, 300 /* magic number: debounce time */)}
-                loadingMessage={
-                  'Write at least two letters' /* this is not showing up in the application, investigate */
+                noOptionsMessage={({
+                  inputValue: input,
+                }: {
+                  inputValue: string
+                }) =>
+                  input && input.length > 1
+                    ? 'No options found'
+                    : 'Type at least two letters'
                 }
               />
             )
