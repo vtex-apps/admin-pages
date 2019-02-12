@@ -12,17 +12,17 @@ export const getBlockPath = (
   extensions: RenderContext['extensions'],
   treePath: string
 ): BlockPath | null => {
-  const splittedTreePath = treePath.split('/')
+  const splitTreePath = treePath.split('/')
 
   const blockId = extensions[treePath].blockId
-  const blockRole = getBlockRole(splittedTreePath[splittedTreePath.length - 1])
+  const blockRole = getBlockRole(splitTreePath[splitTreePath.length - 1])
 
   if (!blockId) {
     return null
   }
 
-  const parentTreePath = splittedTreePath
-    .slice(0, splittedTreePath.length - 1)
+  const parentTreePath = splitTreePath
+    .slice(0, splitTreePath.length - 1)
     .join('/')
 
   const formattedBlock: FormattedBlock = {
@@ -52,9 +52,9 @@ export const getBlockPath = (
 
 export const getParentBlockId = (
   extensions: RenderContext['extensions'],
-  splittedTreePath: string[]
+  splitTreePath: string[]
 ) => {
-  const treePathTail = splittedTreePath[splittedTreePath.length - 1]
+  const treePathTail = splitTreePath[splitTreePath.length - 1]
 
   const match = treePathTail.match(/\$(after|around|before)_(\d+)/)
 
@@ -65,8 +65,8 @@ export const getParentBlockId = (
   const blockRole = match[1] as 'after' | 'around' | 'before'
   const blockIndex = parseInt(match[2], 10)
 
-  const parentTreePath = splittedTreePath
-    .slice(0, splittedTreePath.length - 1)
+  const parentTreePath = splitTreePath
+    .slice(0, splitTreePath.length - 1)
     .join('/')
 
   const parentBlock = extensions[parentTreePath]

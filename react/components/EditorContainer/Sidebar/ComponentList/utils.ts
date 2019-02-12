@@ -16,20 +16,20 @@ export const getParentTreePath = (treePath: string): string => {
 }
 
 export const isRootComponent = (component: SidebarComponent) => {
-  const splittedTreePath = component.treePath.split('/')
+  const splitTreePath = component.treePath.split('/')
 
   return (
-    splittedTreePath.length === 2 ||
-    (splittedTreePath.length === 3 && splittedTreePath[2].startsWith('$'))
+    splitTreePath.length === 2 ||
+    (splitTreePath.length === 3 && splitTreePath[2].startsWith('$'))
   )
 }
 
 export const isRootComponentRelative = (rootComponent: SidebarComponent) => {
-  const splittedTreePath = rootComponent.treePath.split('/')
+  const splitTreePath = rootComponent.treePath.split('/')
 
   return (
-    splittedTreePath[1].startsWith('$') ||
-    (splittedTreePath.length === 3 && splittedTreePath[2].startsWith('$'))
+    splitTreePath[1].startsWith('$') ||
+    (splitTreePath.length === 3 && splitTreePath[2].startsWith('$'))
   )
 }
 
@@ -43,9 +43,9 @@ export const normalize = (components: SidebarComponent[]) => {
 
   const normalizedRelativeRoots = relativeRoots.reduce<NormalizedRelativeRoot>(
     (acc, currRoot) => {
-      const splittedTreePath = currRoot.treePath.split('/')
+      const splitTreePath = currRoot.treePath.split('/')
 
-      const treePathTail = splittedTreePath[splittedTreePath.length - 1]
+      const treePathTail = splitTreePath[splitTreePath.length - 1]
 
       const blockRole = getBlockRole(treePathTail)
 
@@ -55,7 +55,7 @@ export const normalize = (components: SidebarComponent[]) => {
 
       const currNormalizedRoot = { ...currRoot, isSortable: false }
 
-      if (blockRole === 'around' && splittedTreePath.length === 3) {
+      if (blockRole === 'around' && splitTreePath.length === 3) {
         return {
           ...acc,
           nestedAround: [...acc.nestedAround, currNormalizedRoot],
