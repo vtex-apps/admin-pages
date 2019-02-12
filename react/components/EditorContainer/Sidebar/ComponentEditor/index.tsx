@@ -9,6 +9,7 @@ import {
   getIframeImplementation,
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
+import { ComponentEditorFormContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -22,10 +23,6 @@ interface CustomProps {
   props: object
   runtime: RenderContext
   shouldRenderSaveButton: boolean
-}
-
-export interface ComponentEditorFormContext {
-  isLayoutMode: boolean
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps

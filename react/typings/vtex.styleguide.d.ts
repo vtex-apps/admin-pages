@@ -1,5 +1,5 @@
 declare module 'vtex.styleguide' {
-  import { Component, ReactElement, v } from 'react'
+  import { Component, ReactElement } from 'react'
 
   interface TextareaProps extends React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>{
     error?: boolean

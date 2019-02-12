@@ -1,7 +1,7 @@
 import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { FieldTemplateProps } from 'react-jsonschema-form'
-import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/ComponentEditor'
+import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/typings'
 
 interface Props {
   children?: React.ReactElement<any>

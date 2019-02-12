@@ -1,7 +1,7 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
 import { ObjectFieldTemplateProps } from 'react-jsonschema-form'
-import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/ComponentEditor'
+import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/typings'
 
 const hasFieldToBeDisplayed = (
   field: JSONSchema6,

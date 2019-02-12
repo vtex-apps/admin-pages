@@ -26,3 +26,7 @@ export interface SidebarComponent {
   name: string
   treePath: string
 }
+
+export interface ComponentEditorFormContext {
+  isLayoutMode: boolean
+}
