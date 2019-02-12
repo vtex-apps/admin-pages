@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 
 import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
-import { getBlockPath } from '../../../../utils/blocks'
+import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
 import {
   getExtension,
   updateExtensionFromForm,
@@ -117,15 +117,25 @@ class TemplateEditor extends Component<Props> {
 
     const extensionProps = this.getExtensionProps()
 
+    const parsedRelativeBlocks = getRelativeBlocksIds(
+      editor.editTreePath!,
+      iframeRuntime.extensions,
+      {
+        after: this.block.after,
+        around: this.block.around,
+        before: this.block.before,
+      }
+    )
+
     formMeta.toggleLoading()
 
     try {
       await updateBlock({
         variables: {
           block: {
-            after: this.block.after,
-            around: this.block.around,
-            before: this.block.before,
+            after: parsedRelativeBlocks.after,
+            around: parsedRelativeBlocks.around,
+            before: parsedRelativeBlocks.before,
             blocks: this.block.blocks,
             propsJSON: JSON.stringify(extensionProps),
           },
