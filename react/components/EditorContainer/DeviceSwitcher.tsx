@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
 
-import ShowIcon from '../../images/ShowIcon.js'
+import ShowIcon from '../../images/ShowIcon'
 
 interface IconsProps {
   colorFill: string

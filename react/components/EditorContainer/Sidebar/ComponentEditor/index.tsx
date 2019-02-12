@@ -9,6 +9,7 @@ import {
   getIframeImplementation,
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
+import { ComponentEditorFormContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -51,7 +52,7 @@ const ComponentEditor: React.SFC<Props> = ({
     componentImplementation,
     extension.props,
     runtime,
-    intl,
+    intl
   )
 
   const schema = {
