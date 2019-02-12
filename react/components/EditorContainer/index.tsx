@@ -147,7 +147,9 @@ export default class EditorContainer extends Component<Props, State> {
                   visible ? 'calc--height-relative' : 'top-0 w-100 h-100'
                 }`}
               >
-                {storeEditMode && <StoreEditor mode={storeEditMode} />}
+                {visible && storeEditMode && (
+                  <StoreEditor mode={storeEditMode} />
+                )}
                 <div
                   id={APP_CONTENT_ELEMENT_ID}
                   className="relative w-100 h-100"
