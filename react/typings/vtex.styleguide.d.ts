@@ -159,18 +159,11 @@ declare module 'vtex.styleguide' {
   export const RadioGroup: ComponentType<any>
   export const Spinner: ComponentType<any>
   export class Textarea extends Component<TextareaProps> {}
-  export const Tab: ReactElement
-  export const Table: ReactElement
-  export const Tabs: ReactElement
-  export const Tag: ReactElement
-
-  export const ToastConsumer: ComponentType<ToastConsumerProps>
-
-  interface ToastProviderProps {
-    positioning: 'parent' | 'window'
-  }
-
-  export const ToastProvider: ComponentType<ToastProviderProps>
-
-  export const Toggle: ReactElement
+  export const Tab: ComponentType<any>
+  export const Table: ComponentType<any>
+  export const Tabs: ComponentType<any>
+  export const Tag: ComponentType<any>
+  export class ToastConsumer extends Component<ToastConsumerProps> {}
+  export class ToastProvider extends Component<ToastProviderProps> {}
+  export const Toggle: ComponentType<any>
 }
