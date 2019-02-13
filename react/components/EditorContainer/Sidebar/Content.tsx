@@ -1,5 +1,4 @@
-import React from 'react'
-import { Spinner } from 'vtex.styleguide'
+import React, { Component } from 'react'
 
 import { getIframeRenderComponents } from '../../../utils/components'
 
@@ -8,6 +7,7 @@ import ConfigurationList from './ConfigurationList'
 import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
 import TemplateEditor from './TemplateEditor'
+import { SidebarComponent } from './typings'
 import { getComponents } from './utils'
 
 interface Props {
@@ -16,61 +16,84 @@ interface Props {
   iframeRuntime: RenderContext
 }
 
-const Content: React.SFC<Props> = ({
-  editor,
-  highlightHandler,
-  iframeRuntime,
-}) => {
-  if (!iframeRuntime) {
+interface State {
+  components: SidebarComponent[]
+}
+
+class Content extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      components: getComponents(
+        props.iframeRuntime.extensions,
+        getIframeRenderComponents(),
+        props.iframeRuntime.page
+      ),
+    }
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    const prevPage = prevProps.iframeRuntime.page
+    const currPage = this.props.iframeRuntime.page
+
+    if (currPage !== prevPage) {
+      this.updateComponents()
+    }
+  }
+
+  public render() {
+    const { editor, highlightHandler, iframeRuntime } = this.props
+
+    if (editor.editTreePath === null) {
+      return (
+        <ComponentSelector
+          components={this.state.components}
+          editor={editor}
+          highlightHandler={highlightHandler}
+          iframeRuntime={iframeRuntime}
+        />
+      )
+    }
+
     return (
-      <div className="mt5 flex justify-center">
-        <Spinner />
-      </div>
+      <FormMetaConsumer>
+        {formMeta => (
+          <ModalConsumer>
+            {modal =>
+              editor.mode === 'layout' ? (
+                <TemplateEditor
+                  editor={editor}
+                  formMeta={formMeta}
+                  iframeRuntime={iframeRuntime}
+                  modal={modal}
+                />
+              ) : (
+                <ConfigurationList
+                  editor={editor}
+                  formMeta={formMeta}
+                  iframeRuntime={iframeRuntime}
+                  modal={modal}
+                />
+              )
+            }
+          </ModalConsumer>
+        )}
+      </FormMetaConsumer>
     )
   }
 
-  const components = getComponents(
-    iframeRuntime.extensions,
-    getIframeRenderComponents(),
-    iframeRuntime.page
-  )
+  private updateComponents = () => {
+    const { iframeRuntime } = this.props
 
-  if (editor.editTreePath === null) {
-    return (
-      <ComponentSelector
-        components={components}
-        editor={editor}
-        highlightHandler={highlightHandler}
-        iframeRuntime={iframeRuntime}
-      />
-    )
+    this.setState({
+      components: getComponents(
+        iframeRuntime.extensions,
+        getIframeRenderComponents(),
+        iframeRuntime.page
+      ),
+    })
   }
-
-  return (
-    <FormMetaConsumer>
-      {formMeta => (
-        <ModalConsumer>
-          {modal =>
-            editor.mode === 'layout' ? (
-              <TemplateEditor
-                editor={editor}
-                formMeta={formMeta}
-                iframeRuntime={iframeRuntime}
-                modal={modal}
-              />
-            ) : (
-              <ConfigurationList
-                editor={editor}
-                formMeta={formMeta}
-                iframeRuntime={iframeRuntime}
-                modal={modal}
-              />
-            )
-          }
-        </ModalConsumer>
-      )}
-    </FormMetaConsumer>
-  )
 }
 
 export default Content
