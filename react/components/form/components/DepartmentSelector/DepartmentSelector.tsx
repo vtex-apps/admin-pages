@@ -28,7 +28,7 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
 
   public render() {
     const {
-      schema: { title },
+      schema: { title, default: defaultValue },
     } = this.props
 
     const { errors, loading, data } = this.state
@@ -59,14 +59,11 @@ class DepartmentSelector extends Component<WidgetProps, State<Data>> {
                     : []
                 }
                 onChange={(option: Option) => {
-                  if (option) {
-                    const { value } = option
-
-                    this.setState({
-                      value,
-                    })
-                    this.props.onChange(value)
-                  }
+                  const value = option ? option.value : defaultValue
+                  this.setState({
+                    value,
+                  })
+                  this.props.onChange(value)
                 }}
                 loading={loading}
                 onSearchInputChange={debounce(async input => {
