@@ -10,10 +10,6 @@ import { formatOptions } from '../../utils/utils'
 import Categories from './queries/Categories.graphql'
 import { Category, Data } from './types/typings'
 
-interface CustomProps {
-  value: any
-}
-
 class CategorySelector extends Component<
   WidgetProps & ReactIntl.InjectedIntlProps,
   State<Data>

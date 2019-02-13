@@ -10,10 +10,6 @@ import { formatOptions } from '../../utils/utils'
 import Collections from './queries/Collections.graphql'
 import { Collection, Data } from './types/typings'
 
-interface CustomProps {
-  value: any
-}
-
 class CollectionSelector extends Component<
   WidgetProps & ReactIntl.InjectedIntlProps,
   State<Data>

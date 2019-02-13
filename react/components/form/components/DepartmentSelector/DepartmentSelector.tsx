@@ -10,10 +10,6 @@ import { formatOptions } from '../../utils/utils'
 import Departments from './queries/Departments.graphql'
 import { Data, Department } from './types/typings'
 
-interface CustomProps {
-  value: any
-}
-
 class DepartmentSelector extends Component<
   WidgetProps & ReactIntl.InjectedIntlProps,
   State<Data>

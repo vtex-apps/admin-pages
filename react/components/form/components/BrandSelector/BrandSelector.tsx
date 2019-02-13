@@ -10,10 +10,6 @@ import { formatOptions } from '../../utils/utils'
 import Brands from './queries/Brands.graphql'
 import { Brand, Data } from './types/typings'
 
-interface CustomProps {
-  value: any
-}
-
 class BrandSelector extends Component<
   WidgetProps & ReactIntl.InjectedIntlProps,
   State<Data>
