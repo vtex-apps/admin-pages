@@ -3,7 +3,7 @@ export interface Option {
   value: any
 }
 
-export interface State <T> {
+export interface State<T> {
   data: T
   errors: any
   loading: boolean
@@ -11,5 +11,6 @@ export interface State <T> {
 }
 
 export interface NativeType {
+  id: string
   name: string
 }
