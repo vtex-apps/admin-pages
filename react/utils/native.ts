@@ -50,7 +50,15 @@ export const nativeMap: Record<
   ComponentSchema | ComponentSchemaProperties
 > = {
   brand: {
-    default: 'Default Brand',
+    default: {
+      name: 'Default Brand',
+      id: 0,
+      active: true,
+      metaTagDescription: null,
+      cacheId: 'default',
+      slug: 'default',
+      titleTag: null,
+    },
     title: 'pages.editor.components.brand.title',
     type: 'string',
     widget: {
@@ -58,7 +66,17 @@ export const nativeMap: Record<
     },
   },
   category: {
-    default: 'Default Category',
+    default: {
+      name: 'Default Category',
+      id: 0,
+      cacheId: 'default',
+      href: null,
+      slug: 'default',
+      titleTag: null,
+      hasChildren: false,
+      metaTagDescription: null,
+      children: null,
+    },
     title: 'pages.editor.components.category.title',
     type: 'string',
     widget: {
@@ -66,7 +84,14 @@ export const nativeMap: Record<
     },
   },
   collection: {
-    default: 'Default Collection',
+    default: {
+      name: 'Default Collection',
+      id: 0,
+      searchable: true,
+      highlight: false,
+      dateFrom: '06/10/1998',
+      dateTo: '02/14/2019',
+    },
     title: 'pages.editor.components.collection.title',
     type: 'string',
     widget: {
@@ -74,7 +99,17 @@ export const nativeMap: Record<
     },
   },
   department: {
-    default: 'Default Department',
+    default: {
+      name: 'Default Department',
+      id: 0,
+      cacheId: 'default',
+      href: null,
+      slug: 'default',
+      titleTag: null,
+      hasChildren: false,
+      metaTagDescription: null,
+      children: null,
+    },
     title: 'pages.editor.components.department.title',
     type: 'string',
     widget: {
@@ -83,36 +118,30 @@ export const nativeMap: Record<
   },
   image: {
     description: {
-      default: 'pages.editor.components.image.description.default',
       title: 'pages.editor.components.image.description.title',
       type: 'string',
     },
     hasLink: {
       default: false,
-      title: 'pages.editor.components.image.hasLink.title',
+      title: 'pages.editor.components.link.hasLink.title',
       type: 'boolean',
     },
     externalRoute: {
-      default: 'rota interna',
-      enum: ['rota interna', 'rota externa'],
-      title: 'pages.editor.components.image.externalRoute.title',
-      type: 'string',
+      default: false,
+      title: 'pages.editor.components.link.externalRoute.title',
+      type: 'boolean',
     },
     url: {
-      default: '',
-      title: 'editor.carousel.bannerLink.url.title',
+      title: 'pages.editor.components.link.url.title',
       type: 'string',
     },
     page: {
-      default: '',
       enum: pages,
-      title: 'editor.carousel.bannerLink.page.title',
+      title: 'pages.editor.components.link.page.title',
       type: 'string',
     },
     params: {
-      default: '',
-      description: 'editor.carousel.bannerLink.params.description',
-      title: 'editor.carousel.bannerLink.params.title',
+      title: 'pages.editor.components.link.params.title',
       type: 'string',
     },
     desktop: {
@@ -136,57 +165,52 @@ export const nativeMap: Record<
   },
 
   link: {
+    hasLink: {
+      default: false,
+      title: 'pages.editor.components.link.hasLink.title',
+      type: 'boolean',
+    },
     externalRoute: {
       default: '',
       title: 'pages.editor.components.image.externalRoute.title',
       type: 'boolean',
     },
     url: {
-      default: '',
-      title: 'editor.carousel.bannerLink.url.title',
+      title: 'pages.editor.components.link.url.title',
       type: 'string',
     },
     page: {
-      default: '',
+      default: 'pages.editor.components.link.page.default',
       enum: pages,
-      title: 'editor.carousel.bannerLink.page.title',
+      title: 'pages.editor.components.link.page.title',
       type: 'string',
     },
     params: {
-      default: '',
-      description: 'editor.carousel.bannerLink.params.description',
-      title: 'editor.carousel.bannerLink.params.title',
+      default: 'editor.components.link.params.default',
+      title: 'pages.editor.components.link.params.title',
       type: 'string',
     },
   },
 
   text: {
-    content: {
-      default: 'pages.editor.components.text.content.default',
-      title: 'pages.editor.components.text.content.title',
-      type: 'string',
-      widget: {
-        'ui:widget': 'textarea',
-      },
+    title: 'pages.editor.components.text.title',
+    type: 'string',
+    widget: {
+      'ui:widget': 'textarea',
     },
   },
 
   video: {
-    content: {
-      default: '',
-      title: 'Vídeo',
+    url: {
+      title: 'pages.editor.components.video.url.title',
       type: 'string',
     },
-    // tslint:disable-next-line:object-literal-sort-keys
     title: {
-      default: 'título default do vídeo',
-      title: 'Título',
+      title: 'pages.editor.components.video.title.title',
       type: 'string',
     },
-    // tslint:disable-next-line:object-literal-sort-keys
     description: {
-      default: 'descrição do vídeo',
-      title: 'Descrição',
+      title: 'pages.editor.components.description.url.title',
       type: 'string',
       widget: {
         'ui:widget': 'textarea',
