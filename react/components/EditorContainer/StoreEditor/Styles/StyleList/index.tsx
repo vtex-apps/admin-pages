@@ -17,6 +17,7 @@ interface ListStylesQuery {
 }
 
 interface CustomProps {
+  startEditing: (style: Style) => void
   iframeWindow: Window
   listStylesQuery: ListStylesQuery
 }
@@ -27,6 +28,7 @@ class StyleList extends Component<Props, {}> {
   public render() {
     const {
       listStylesQuery: { listStyles, loading },
+      startEditing,
     } = this.props
 
     return loading ? (
@@ -53,6 +55,7 @@ class StyleList extends Component<Props, {}> {
               selectStyle={this.selectStyle}
               deleteStyle={this.deleteStyle}
               duplicateStyle={this.duplicateStyle}
+              startEditing={startEditing}
             />
           ))}
         </div>

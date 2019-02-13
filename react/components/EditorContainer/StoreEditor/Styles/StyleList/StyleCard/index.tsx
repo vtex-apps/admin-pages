@@ -4,12 +4,13 @@ import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 import Colors from '../../components/Colors'
 import Typography from '../../components/Typography'
 
-type StyleMutation = (style: Style) => void
+type StyleFunction = (style: Style) => void
 
 interface Props {
-  deleteStyle: StyleMutation
-  duplicateStyle: StyleMutation
-  selectStyle: StyleMutation
+  deleteStyle: StyleFunction
+  duplicateStyle: StyleFunction
+  selectStyle: StyleFunction
+  startEditing: StyleFunction
   style: Style
 }
 
@@ -17,6 +18,7 @@ const StyleCard: React.SFC<Props> = ({
   deleteStyle,
   duplicateStyle,
   selectStyle,
+  startEditing,
   style,
   style: { app: appId, name, selected, editable, config },
 }) => {
@@ -30,7 +32,11 @@ const StyleCard: React.SFC<Props> = ({
   const typography = config.typography.styles.heading_2
 
   const createMenuOptions = () => {
-    const mainOptions = [
+    const options = [
+      editable && {
+        label: 'Edit',
+        onClick: () => startEditing(style),
+      },
       {
         label: 'Select as store style',
         onClick: () => selectStyle(style),
@@ -39,20 +45,16 @@ const StyleCard: React.SFC<Props> = ({
         label: 'Duplicate',
         onClick: () => duplicateStyle(style),
       },
+      editable && {
+        label: 'Delete',
+        onClick: () => deleteStyle(style),
+      },
     ]
-    const editableStyleOptions = editable
-      ? [
-          {
-            label: 'Delete',
-            onClick: () => deleteStyle(style),
-          },
-        ]
-      : []
-    return [...mainOptions, ...editableStyleOptions]
+    return options.filter(option => option)
   }
 
   return (
-    <div className="ph3 pb3">
+    <div className="mh3 mb3">
       <Card noPadding>
         <div className="ph5 pt5 pb2">
           <div className="flex justify-between items-center mb4">
