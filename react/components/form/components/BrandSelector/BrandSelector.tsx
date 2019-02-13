@@ -28,6 +28,7 @@ class BrandSelector extends Component<
   public render() {
     const {
       schema: { title, default: defaultValue },
+      intl: { formatMessage },
     } = this.props
 
     const { errors, loading, data } = this.state
@@ -98,9 +99,19 @@ class BrandSelector extends Component<
                   inputValue: string
                 }) =>
                   input && input.length > 1
-                    ? 'No options found'
-                    : 'Type at least two letters'
+                    ? formatMessage({
+                        id:
+                          'pages.editor.components.configurations.selector.options',
+                      })
+                    : formatMessage({
+                        id:
+                          'pages.editor.components.configurations.selector.minimum',
+                      })
                 }
+                placeholder={formatMessage({
+                  id:
+                    'pages.editor.components.configurations.selector.placeholder',
+                })}
               />
             )
           }}
