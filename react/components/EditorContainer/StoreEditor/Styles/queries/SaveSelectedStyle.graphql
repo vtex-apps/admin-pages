@@ -1,0 +1,7 @@
+mutation SaveSelectedStyle($id: String) {
+  saveSelectedStyle(id: $id) {
+    id
+    app
+    name
+  }
+}
