@@ -80,12 +80,7 @@ const StyleCard: React.SFC<Props> = ({
               <Typography typography={typography} />
               <div className="pl5">
                 <Colors
-                  colors={{
-                    action_primary,
-                    action_secondary,
-                    base,
-                    emphasis,
-                  }}
+                  colors={[emphasis, action_primary, action_secondary, base]}
                 />
               </div>
             </div>
