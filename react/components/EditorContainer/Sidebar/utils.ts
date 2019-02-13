@@ -3,19 +3,11 @@ import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { SidebarComponent } from './typings'
 
-const isSamePageGetter = (page: string, pages: string[]) => (
-  treePath: string
-) => {
-  if (treePath.startsWith(page)) {
-    return true
-  }
+const isSamePage = (page: string, treePath: string) => {
+  const pageHead = page.split('/')[0]
+  const treePathHead = treePath.split('/')[0]
 
-  const currentPageLevel = page.split('/').length
-  const sameLevelPages = pages.filter(
-    (p: string) => p.split('/').length === currentPageLevel
-  )
-
-  return !sameLevelPages.find((p: string) => treePath.startsWith(p))
+  return treePathHead === pageHead
 }
 
 const getParentContainerPropsGetter = (extensions: Extensions) => (
@@ -48,22 +40,17 @@ const getComponentSchemaGetter = (
 export function getComponents(
   extensions: Extensions,
   components: ComponentsRegistry | null,
-  page: string,
-  pages: string[]
+  page: string
 ) {
   const getParentContainerProps = getParentContainerPropsGetter(extensions)
 
   const getComponentSchema = getComponentSchemaGetter(components, extensions)
 
   return Object.keys(extensions)
-    .filter(isSamePageGetter(page, pages))
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
-      return (
-        isSamePageGetter(page, pages)(treePath) &&
-        !!schema &&
-        !!has('title', schema)
-      )
+
+      return isSamePage(page, treePath) && !!schema && has('title', schema)
     })
     .sort((treePathA, treePathB) => {
       const parentPathA = `${treePathA.split('/')[0]}/${
