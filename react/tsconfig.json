@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-    "types": [
-      "node",
-      "jest"
-    ],
-    "allowJs": true,
+    "types": ["node", "jest"],
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "lib": ["es2017", "dom"],
@@ -19,10 +15,6 @@
   "typeAcquisition": {
     "enable": false
   },
-  "include": [
-    "./**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["./**/*"],
+  "exclude": ["node_modules"]
 }
