@@ -32,8 +32,7 @@ const Content: React.SFC<Props> = ({
   const components = getComponents(
     iframeRuntime.extensions,
     getIframeRenderComponents(),
-    iframeRuntime.page,
-    Object.keys(iframeRuntime.pages)
+    iframeRuntime.page
   )
 
   if (editor.editTreePath === null) {
