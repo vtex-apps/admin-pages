@@ -1,7 +1,7 @@
 import debounce from 'lodash.debounce'
 import React, { Component, Fragment } from 'react'
 import { ApolloConsumer } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { EXPERIMENTAL_Select } from 'vtex.styleguide'
 
@@ -14,8 +14,11 @@ interface CustomProps {
   value: any
 }
 
-class CollectionSelector extends Component<WidgetProps, State<Data>> {
-  constructor(props: WidgetProps) {
+class CollectionSelector extends Component<
+  WidgetProps & ReactIntl.InjectedIntlProps,
+  State<Data>
+> {
+  constructor(props: WidgetProps & ReactIntl.InjectedIntlProps) {
     super(props)
 
     this.state = {
@@ -111,4 +114,4 @@ class CollectionSelector extends Component<WidgetProps, State<Data>> {
   }
 }
 
-export default CollectionSelector
+export default injectIntl(CollectionSelector)
