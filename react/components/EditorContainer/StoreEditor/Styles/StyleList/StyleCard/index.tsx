@@ -1,8 +1,8 @@
 import React from 'react'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
-import Colors from './Colors'
-import Typography from './Typography'
+import Colors from '../../components/Colors'
+import Typography from '../../components/Typography'
 
 type StyleMutation = (style: Style) => void
 
