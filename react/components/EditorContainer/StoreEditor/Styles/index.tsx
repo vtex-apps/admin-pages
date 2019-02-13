@@ -34,9 +34,9 @@ class Styles extends Component<Props, {}> {
         <Spinner />
       </div>
     ) : (
-      <div className="ph3">
-        <div className="flex justify-between items-center">
-          <div className="pa3 mv5 f3">Styles</div>
+      <div className="flex flex-column ph3 h-100">
+        <div className="flex justify-between mv5 ml5 items-center">
+          <span className="f3">Styles</span>
           <ButtonWithIcon
             icon={<CreateNewIcon />}
             variation="tertiary"
@@ -45,15 +45,17 @@ class Styles extends Component<Props, {}> {
             New
           </ButtonWithIcon>
         </div>
-        {listStyles.map(style => (
-          <StyleCard
-            key={style.id}
-            style={style}
-            selectStyle={this.selectStyle}
-            deleteStyle={this.deleteStyle}
-            duplicateStyle={this.duplicateStyle}
-          />
-        ))}
+        <div className="flex flex-column flex-grow-1 overflow-scroll">
+          {listStyles.map(style => (
+            <StyleCard
+              key={style.id}
+              style={style}
+              selectStyle={this.selectStyle}
+              deleteStyle={this.deleteStyle}
+              duplicateStyle={this.duplicateStyle}
+            />
+          ))}
+        </div>
       </div>
     )
   }
