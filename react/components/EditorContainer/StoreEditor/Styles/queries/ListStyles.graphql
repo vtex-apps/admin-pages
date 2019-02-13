@@ -1,0 +1,31 @@
+query ListStyles {
+  listStyles {
+    id
+    app
+    name
+    path
+    editable
+    selected
+    config {
+      semanticColors {
+        background {
+          emphasis
+          action_primary
+          action_secondary
+          base
+        }
+      }
+      typography {
+        styles {
+          heading_2 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+        }
+      }
+    }
+  }
+}
