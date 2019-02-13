@@ -1,4 +1,4 @@
-import { clone, equals, findIndex, last, path } from 'ramda'
+import { clone, equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
@@ -310,25 +310,28 @@ class ComponentList extends Component<Props, State> {
         extensionPoints
       )
 
-      const oldOrder = clone(extension.blocks)
-
       const target = firstTargetParentTreePath
 
-      const newOrder = arrayMove(
-        extension.blocks,
+      const oldBlocks = clone(extension.blocks)
+
+      const newBlocks = arrayMove(
+        oldBlocks,
         firstTargetIndex,
         secondTargetIndex
       )
 
       this.props.iframeRuntime.updateExtension(firstTargetParentTreePath, {
         ...extension,
-        blocks: newOrder,
+        blocks: newBlocks,
       })
 
       this.setState(prevState => ({
         ...prevState,
-        changes: [...prevState.changes, { order: oldOrder, target }],
-        components: arrayMove(prevState.components, oldIndex, newIndex)
+        changes: [
+          ...prevState.changes,
+          { blocks: newBlocks, components: prevState.components, target },
+        ],
+        components: arrayMove(prevState.components, oldIndex, newIndex),
       }))
     }
   }
@@ -337,26 +340,24 @@ class ComponentList extends Component<Props, State> {
     const lastChange = last(this.state.changes)
 
     if (lastChange) {
-      const { target, order } = lastChange
+      const { blocks, components, target } = lastChange
 
       const extension = this.props.iframeRuntime.extensions[target]
 
-      const changes = this.state.changes.slice(
-        0,
-        this.state.changes.length - 1
-      )
-
+      if (extension.blocks) {
       this.props.iframeRuntime.updateExtension(target, {
         ...extension,
-        props: {
-          ...extension.props,
-          elements: order
-        }
+          blocks,
       })
 
-      this.setState({ changes })
+      this.setState(prevState => ({
+        ...prevState,
+        changes: prevState.changes.slice(0, prevState.changes.length - 1),
+          components,
+      }))
     }
   }
+}
 }
 
 export default compose(
