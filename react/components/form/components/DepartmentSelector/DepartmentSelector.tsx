@@ -46,7 +46,6 @@ class DepartmentSelector extends Component<
         <ApolloConsumer>
           {client => {
             if (errors) {
-              console.log(errors)
               return <p> Error! </p>
             }
 
@@ -67,10 +66,7 @@ class DepartmentSelector extends Component<
                 }}
                 loading={loading}
                 onSearchInputChange={debounce(async input => {
-                  if (
-                    input.length >=
-                    2 /* magic number: min. number of letters needed to search */
-                  ) {
+                  if (input.length > 1) {
                     const {
                       data: newData,
                       errors: newErrors,
@@ -92,7 +88,7 @@ class DepartmentSelector extends Component<
                       loading: false,
                     })
                   }
-                }, 300 /* magic number: debounce time */)}
+                }, 300)}
                 noOptionsMessage={({
                   inputValue: input,
                 }: {
