@@ -112,7 +112,7 @@ class StyleList extends Component<Props, {}> {
     await this.createStyle(`Copy of ${style.name}`, style.config)
   }
 
-  private createStyle = async (name?: string, config?: any) => {
+  private createStyle = async (name?: string, config?: TachyonsConfig) => {
     const {
       client,
       listStylesQuery: { refetch },
