@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import StyleEditor from './StyleEditor'
 import StyleList from './StyleList'
 
 interface Props {
@@ -22,12 +23,14 @@ export default class Styles extends Component<Props, State> {
   public render() {
     const { iframeWindow } = this.props
     const { editing } = this.state
-    return editing ? null : (
+    return editing ? (
+      <StyleEditor style={editing} stopEditing={() => this.startEditing()} />
+    ) : (
       <StyleList iframeWindow={iframeWindow} startEditing={this.startEditing} />
     )
   }
 
-  private startEditing = (style: Style) => {
+  private startEditing = (style?: Style) => {
     this.setState({
       editing: style,
     })
