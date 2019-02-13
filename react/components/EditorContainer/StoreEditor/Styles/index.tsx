@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
-import { Spinner } from 'vtex.styleguide'
+import { ButtonWithIcon, Spinner } from 'vtex.styleguide'
 
 import CreateStyle from './queries/CreateStyle.graphql'
 import DeleteStyle from './queries/DeleteStyle.graphql'
 import ListStyles from './queries/ListStyles.graphql'
 import SaveSelectedStyle from './queries/SaveSelectedStyle.graphql'
 
+import CreateNewIcon from './icons/CreateNewIcon'
 import StyleCard from './StyleCard'
 
 interface ListStylesQuery {
@@ -34,7 +35,16 @@ class Styles extends Component<Props, {}> {
       </div>
     ) : (
       <div className="ph3">
-        <div className="pa3 mv5 f3">Styles</div>
+        <div className="flex justify-between items-center">
+          <div className="pa3 mv5 f3">Styles</div>
+          <ButtonWithIcon
+            icon={<CreateNewIcon />}
+            variation="tertiary"
+            onClick={() => this.createStyle()}
+          >
+            New
+          </ButtonWithIcon>
+        </div>
         {listStyles.map(style => (
           <StyleCard
             key={style.id}
@@ -97,6 +107,10 @@ class Styles extends Component<Props, {}> {
   }
 
   private duplicateStyle = async (style: Style) => {
+    await this.createStyle(`Copy of ${style.name}`, style.config)
+  }
+
+  private createStyle = async (name?: string, config?: any) => {
     const {
       client,
       listStylesQuery: { refetch },
@@ -106,8 +120,8 @@ class Styles extends Component<Props, {}> {
       await client.mutate<{ createStyle: BasicStyle }>({
         mutation: CreateStyle,
         variables: {
-          config: style.config,
-          name: `copy of ${style.name}`,
+          config: config || {},
+          name: name || 'Untitled',
         },
       })
       refetch()
