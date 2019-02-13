@@ -22,6 +22,14 @@ export default class Styles extends Component<Props, State> {
   public render() {
     const { iframeWindow } = this.props
     const { editing } = this.state
-    return editing ? null : <StyleList iframeWindow={iframeWindow} />
+    return editing ? null : (
+      <StyleList iframeWindow={iframeWindow} startEditing={this.startEditing} />
+    )
+  }
+
+  private startEditing = (style: Style) => {
+    this.setState({
+      editing: style,
+    })
   }
 }
