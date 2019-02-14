@@ -10,12 +10,13 @@ import Item from './Item'
 interface Props extends SortableElementProps {
   component: NormalizedComponent
   editor: EditorContext
+  onDelete: (treePath: string) => void
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
   onMouseLeave: () => void
-  shouldRenderDragHandle: boolean
+  shouldRenderOptions: boolean
 }
 
 interface State {
@@ -27,7 +28,7 @@ class SortableListItem extends Component<Props, State> {
     super(props)
 
     this.state = {
-      isExpanded: false
+      isExpanded: false,
     }
   }
 
@@ -35,10 +36,11 @@ class SortableListItem extends Component<Props, State> {
     const {
       component,
       editor,
+      onDelete,
       onEdit,
       onMouseEnter,
       onMouseLeave,
-      shouldRenderDragHandle
+      shouldRenderOptions,
     } = this.props
 
     const subitems = component.components
@@ -51,13 +53,13 @@ class SortableListItem extends Component<Props, State> {
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {shouldRenderDragHandle && component.isSortable && (
+          {shouldRenderOptions && component.isSortable && (
             <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
           <Item
             hasLeftPadding={
               editor.mode === 'content' ||
-              (shouldRenderDragHandle && !component.isSortable)
+              (shouldRenderOptions && !component.isSortable)
             }
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
@@ -70,6 +72,9 @@ class SortableListItem extends Component<Props, State> {
               isExpanded={this.state.isExpanded}
               onClick={this.toggleExpansion}
             />
+          )}
+          {shouldRenderOptions && component.isSortable && (
+            <div onClick={this.handleDelete}>delete</div>
           )}
         </div>
         {this.state.isExpanded && subitems && (
@@ -106,11 +111,17 @@ class SortableListItem extends Component<Props, State> {
     )
   }
 
+  private handleDelete = () => {
+    const { component, onDelete } = this.props
+
+    onDelete(component.treePath)
+  }
+
   private handleMouseEnter = () => {
     if (this.props.component.isSortable) {
       if (this.state.isExpanded) {
         this.setState({
-          isExpanded: false
+          isExpanded: false,
         })
       }
     }
@@ -119,7 +130,7 @@ class SortableListItem extends Component<Props, State> {
   private toggleExpansion = () => {
     this.setState(prevState => ({
       ...prevState,
-      isExpanded: !prevState.isExpanded
+      isExpanded: !prevState.isExpanded,
     }))
   }
 }

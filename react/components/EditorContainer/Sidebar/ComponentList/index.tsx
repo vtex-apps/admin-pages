@@ -14,7 +14,7 @@ import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
 import { NormalizedComponent, ReorderChange } from './typings'
-import { getParentTreePath, normalize } from './utils'
+import { getParentTreePath, noop, normalize, pureSplice } from './utils'
 
 interface CustomProps {
   components: SidebarComponent[]
@@ -26,11 +26,13 @@ interface CustomProps {
   ) => void
   onMouseLeaveComponent: () => void
   updateBlock: MutationFn
+  updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
 type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
 
 interface State {
+  blocks: Extension['blocks']
   changes: ReorderChange[]
   components: NormalizedComponent[]
   handleCancelModal: () => void
@@ -39,10 +41,6 @@ interface State {
   isModalOpen: boolean
   modalCancelMessageId: string
   modalTextMessageId: string
-}
-
-const noop = () => {
-  return
 }
 
 class ComponentList extends Component<Props, State> {
@@ -65,6 +63,7 @@ class ComponentList extends Component<Props, State> {
     this.block = getExtension(iframeRuntime.page, iframeRuntime.extensions)
 
     this.state = {
+      blocks: this.block.blocks,
       changes: [],
       components: normalize(props.components),
       handleCancelModal: noop,
@@ -94,7 +93,7 @@ class ComponentList extends Component<Props, State> {
       <Fragment>
         <Modal
           isActionLoading={this.state.isLoadingMutation}
-          onClickAction={this.handleSaveReorder}
+          onClickAction={this.handleSave}
           onClickCancel={this.state.handleCancelModal}
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
@@ -115,6 +114,7 @@ class ComponentList extends Component<Props, State> {
             editor={editor}
             isSortable={isSortable}
             lockAxis="y"
+            onDelete={this.handleDelete}
             onEdit={this.handleEdit}
             onMouseEnter={onMouseEnterComponent}
             onMouseLeave={onMouseLeaveComponent}
@@ -162,6 +162,64 @@ class ComponentList extends Component<Props, State> {
     })
   }
 
+  private handleDelete = async (treePath: string) => {
+    if (!this.state.isLoadingMutation) {
+      const { iframeRuntime } = this.props
+
+      const splitTreePath = treePath.split('/')
+
+      const parentTreePath = splitTreePath
+        .slice(0, splitTreePath.length - 1)
+        .join('/')
+
+      const parentExtension = iframeRuntime.extensions[parentTreePath]
+
+      const targetExtensionPointId = splitTreePath[splitTreePath.length - 1]
+
+      const parentBlocks = parentExtension.blocks
+
+      if (parentBlocks) {
+        const targetBlockIndex = parentBlocks.findIndex(
+          block => block.extensionPointId === targetExtensionPointId
+        )
+
+        const newParentBlocks = pureSplice(targetBlockIndex, parentBlocks)
+
+      const newParentExtension = {
+        ...parentExtension,
+          blocks: newParentBlocks,
+      }
+
+        iframeRuntime.updateExtension(parentTreePath, newParentExtension)
+
+        const targetComponentIndex = this.state.components.findIndex(
+          component => component.treePath === treePath
+        )
+
+        const newParentComponents = pureSplice(
+          targetComponentIndex,
+          this.state.components
+        )
+
+        this.setState(prevState => ({
+          ...prevState,
+          blocks: newParentBlocks,
+          changes: [
+            ...prevState.changes,
+            {
+              blocks: prevState.blocks,
+              components: prevState.components,
+              target: parentTreePath,
+            },
+          ],
+          components: newParentComponents,
+        }))
+
+        this.props.updateSidebarComponents(newParentComponents)
+      }
+    }
+  }
+
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     if (this.state.changes.length > 0) {
       const handleCancelModal = () => {
@@ -205,7 +263,11 @@ class ComponentList extends Component<Props, State> {
     })
   }
 
-  private handleSaveReorder = async () => {
+  private handleSave = async (
+    _?: Event,
+    blocks?: Extension['blocks'],
+    successCallback?: () => void
+  ) => {
     const { iframeRuntime, intl, updateBlock } = this.props
 
     const iframeWindow = (document.getElementById(
@@ -243,7 +305,7 @@ class ComponentList extends Component<Props, State> {
             after: parsedRelativeBlocks.after,
             around: parsedRelativeBlocks.around,
             before: parsedRelativeBlocks.before,
-            blocks: extension.blocks,
+            blocks: blocks || extension.blocks,
             propsJSON: JSON.stringify(extension.props),
           },
           blockPath: getBlockPath(
@@ -273,6 +335,10 @@ class ComponentList extends Component<Props, State> {
         changes,
         isLoadingMutation: false
       })
+
+      if (successCallback) {
+        successCallback()
+      }
     }
   }
 
@@ -327,9 +393,14 @@ class ComponentList extends Component<Props, State> {
 
       this.setState(prevState => ({
         ...prevState,
+        blocks: newBlocks,
         changes: [
           ...prevState.changes,
-          { blocks: newBlocks, components: prevState.components, target },
+          {
+            blocks: prevState.blocks,
+            components: prevState.components,
+            target,
+          },
         ],
         components: arrayMove(prevState.components, oldIndex, newIndex),
       }))
@@ -345,19 +416,24 @@ class ComponentList extends Component<Props, State> {
       const extension = this.props.iframeRuntime.extensions[target]
 
       if (extension.blocks) {
-      this.props.iframeRuntime.updateExtension(target, {
-        ...extension,
+        const { iframeRuntime, updateSidebarComponents } = this.props
+
+        iframeRuntime.updateExtension(target, {
+          ...extension,
           blocks,
       })
 
       this.setState(prevState => ({
         ...prevState,
+          blocks,
         changes: prevState.changes.slice(0, prevState.changes.length - 1),
           components,
-      }))
+        }))
+
+        updateSidebarComponents(components)
+      }
     }
   }
-}
 }
 
 export default compose(

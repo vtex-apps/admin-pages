@@ -13,7 +13,7 @@ export interface NormalizedRelativeRoot {
 }
 
 export interface ReorderChange {
-  blocks: InnerBlock[]
+  blocks: Extension['blocks']
   components: NormalizedComponent[]
   target: string
 }

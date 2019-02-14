@@ -33,6 +33,8 @@ export const isRootComponentRelative = (rootComponent: SidebarComponent) => {
   )
 }
 
+export const noop = () => undefined
+
 export const normalize = (components: SidebarComponent[]) => {
   const [roots, leaves] = partition(isRootComponent, components)
 
@@ -97,13 +99,18 @@ export const normalize = (components: SidebarComponent[]) => {
         acc.map(root =>
           leaf.treePath.startsWith(root.treePath)
             ? {
-              ...root,
-              components: root.components
-                ? [...root.components, leaf]
-                : [leaf],
-            }
+                ...root,
+                components: root.components
+                  ? [...root.components, leaf]
+                  : [leaf],
+              }
             : root
         ),
       sortedRoots
     )
 }
+
+export const pureSplice = <T>(index: number, target: T[]) => [
+  ...target.slice(0, index),
+  ...target.slice(index + 1, target.length),
+]
