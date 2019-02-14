@@ -1,4 +1,11 @@
-import { filter, has, mapObjIndexed, merge, mergeDeepRight } from 'ramda'
+import {
+  filter,
+  has,
+  mapObjIndexed,
+  merge,
+  mergeDeepRight,
+  partition,
+} from 'ramda'
 
 export const isNativeProperty = (property: ComponentSchema) => {
   return !!property.type && Object.keys(nativeMap).includes(property.type)
@@ -6,14 +13,10 @@ export const isNativeProperty = (property: ComponentSchema) => {
 
 export const translateFromNative = (schema: ComponentSchema) => {
   if (has('properties', schema) && schema.properties) {
-    const nativeProperties = filter(
+    const [nativeProperties, nonNativeProperties] = partition(
       isNativeProperty,
       schema.properties
-    ) as ComponentSchemaProperties
-    const nonNativeProperties = filter(
-      (property: ComponentSchema) => !isNativeProperty(property),
-      schema.properties
-    ) as ComponentSchemaProperties
+    ) as [ComponentSchemaProperties, ComponentSchemaProperties]
 
     const translatedNativeProperties = mapObjIndexed(
       (property: ComponentSchema) => {
