@@ -12,11 +12,18 @@ interface Props {
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
+  updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
 class ComponentSelector extends PureComponent<Props> {
   public render() {
-    const { components, editor, highlightHandler, iframeRuntime } = this.props
+    const {
+      components,
+      editor,
+      highlightHandler,
+      iframeRuntime,
+      updateSidebarComponents,
+    } = this.props
 
     return (
       <Fragment>
@@ -43,6 +50,7 @@ class ComponentSelector extends PureComponent<Props> {
               onMouseLeaveComponent={this.handleMouseLeave}
               iframeRuntime={iframeRuntime}
               showToast={showToast}
+              updateSidebarComponents={updateSidebarComponents}
             />
           )}
         </ToastConsumer>

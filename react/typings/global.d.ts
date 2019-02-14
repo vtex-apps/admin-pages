@@ -253,9 +253,9 @@ declare global {
   }
 
   type BlockPath = FormattedBlock[]
-}
 
-interface InnerBlock {
-  blockId: string
-  extensionPointId: string
+  interface InnerBlock {
+    blockId: string
+    extensionPointId: string
+  }
 }

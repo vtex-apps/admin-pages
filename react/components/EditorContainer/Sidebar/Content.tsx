@@ -34,11 +34,14 @@ class Content extends Component<Props, State> {
   }
 
   public componentDidUpdate(prevProps: Props) {
-    const prevPage = prevProps.iframeRuntime.page
-    const currPage = this.props.iframeRuntime.page
+    const prevRuntime = prevProps.iframeRuntime
+    const currRuntime = this.props.iframeRuntime
+
+    const prevPage = prevRuntime.page
+    const currPage = currRuntime.page
 
     if (currPage !== prevPage) {
-      this.updateComponents()
+      this.resetComponents()
     }
   }
 
@@ -52,6 +55,7 @@ class Content extends Component<Props, State> {
           editor={editor}
           highlightHandler={highlightHandler}
           iframeRuntime={iframeRuntime}
+          updateSidebarComponents={this.updateComponents}
         />
       )
     }
@@ -83,7 +87,7 @@ class Content extends Component<Props, State> {
     )
   }
 
-  private updateComponents = () => {
+  private resetComponents = () => {
     const { iframeRuntime } = this.props
 
     this.setState({
@@ -93,6 +97,10 @@ class Content extends Component<Props, State> {
         iframeRuntime.page
       ),
     })
+  }
+
+  private updateComponents = (components: SidebarComponent[]) => {
+    this.setState({ components })
   }
 }
 
