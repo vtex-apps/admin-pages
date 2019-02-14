@@ -150,7 +150,7 @@ export const nativeMap: Record<
     desktop: {
       default:
         'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
-      title: 'pages.editor.components.image.image.desktopImage.title',
+      title: 'pages.editor.components.image.desktop.title',
       type: 'string',
       widget: {
         'ui:widget': 'image-uploader',
@@ -159,7 +159,7 @@ export const nativeMap: Record<
     mobile: {
       default:
         'https://openclipart.org/image/2400px/svg_to_png/281769/1497791035.png',
-      title: 'pages.editor.components.image.image.mobileImage.title',
+      title: 'pages.editor.components.image.mobile.title',
       type: 'string',
       widget: {
         'ui:widget': 'image-uploader',
@@ -174,8 +174,8 @@ export const nativeMap: Record<
       type: 'boolean',
     },
     externalRoute: {
-      default: '',
-      title: 'pages.editor.components.image.externalRoute.title',
+      default: false,
+      title: 'pages.editor.components.link.externalRoute.title',
       type: 'boolean',
     },
     url: {
@@ -183,13 +183,11 @@ export const nativeMap: Record<
       type: 'string',
     },
     page: {
-      default: 'pages.editor.components.link.page.default',
       enum: pages,
       title: 'pages.editor.components.link.page.title',
       type: 'string',
     },
     params: {
-      default: 'editor.components.link.params.default',
       title: 'pages.editor.components.link.params.title',
       type: 'string',
     },
