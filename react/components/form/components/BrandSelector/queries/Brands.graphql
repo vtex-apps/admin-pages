@@ -1,8 +1,11 @@
-query Brands ($query: String!) {
-  brandSearch (query: $query) {
+query Brands($query: String = "") {
+  brandSearch(query: $query) {
     name
     id
-    # active
-    # metaTagDescription
+    active
+    metaTagDescription
+    cacheId
+    slug
+    titleTag
   }
 }

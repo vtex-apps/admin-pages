@@ -1,6 +1,22 @@
-query Departments($query: String) {
+query Departments($query: String = "") {
   departmentSearch(query: $query) {
-    name
+    cacheId
+    href
+    slug
     id
+    name
+    titleTag
+    hasChildren
+    metaTagDescription
+    children {
+      cacheId
+      href
+      slug
+      id
+      name
+      titleTag
+      hasChildren
+      metaTagDescription
+    }
   }
 }

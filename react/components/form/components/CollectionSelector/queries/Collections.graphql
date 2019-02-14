@@ -1,6 +1,10 @@
-query Collections ($query: String) {
-  collectionSearch (query: $query) {
+query Collections($query: String = "") {
+  collectionSearch(query: $query) {
     name
     id
+    searchable
+    highlight
+    dateFrom
+    dateTo
   }
 }
