@@ -87,6 +87,7 @@
   "pages.editor.components.modal.button.discard": "Discard",
   "pages.editor.components.modal.text": "You have unsaved modifications.",
   "pages.editor.components.title": "Blocks",
+  "pages.editor.component-list.action-menu.delete": "Delete",
   "pages.editor.component-list.button.save": "Save",
   "pages.editor.component-list.button.undo": "Undo",
   "pages.editor.component-list.save.modal.button.cancel": "Cancel",

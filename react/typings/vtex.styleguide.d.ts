@@ -133,6 +133,7 @@ declare module 'vtex.styleguide' {
   > &
     StyleguideDatePickerCustomProps
 
+  export const ActionMenu: ComponentType<any>
   export const Alert: ComponentType<any>
   export const Box: ComponentType<any>
   export const Button: ComponentType<any>

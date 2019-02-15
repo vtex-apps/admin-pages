@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
+import { injectIntl } from 'react-intl'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../../typings'
 
+import ActionMenu from './ActionMenu'
 import DragHandle from './DragHandle'
 import ExpandArrow from './ExpandArrow'
 import Item from './Item'
+import { ActionMenuOption } from './typings'
 
-interface Props extends SortableElementProps {
+interface CustomProps extends SortableElementProps {
   component: NormalizedComponent
   editor: EditorContext
   onDelete: (treePath: string) => void
@@ -19,13 +22,26 @@ interface Props extends SortableElementProps {
   shouldRenderOptions: boolean
 }
 
+type Props = CustomProps & ReactIntl.InjectedIntlProps
+
 interface State {
   isExpanded: boolean
 }
 
 class SortableListItem extends Component<Props, State> {
+  private actionMenuOptions: ActionMenuOption[]
+
   constructor(props: Props) {
     super(props)
+
+    this.actionMenuOptions = [
+      {
+        label: props.intl.formatMessage({
+          id: 'pages.editor.component-list.action-menu.delete',
+        }),
+        onClick: this.handleDelete,
+      },
+    ]
 
     this.state = {
       isExpanded: false,
@@ -36,7 +52,6 @@ class SortableListItem extends Component<Props, State> {
     const {
       component,
       editor,
-      onDelete,
       onEdit,
       onMouseEnter,
       onMouseLeave,
@@ -74,7 +89,7 @@ class SortableListItem extends Component<Props, State> {
             />
           )}
           {shouldRenderOptions && component.isSortable && (
-            <div onClick={this.handleDelete}>delete</div>
+            <ActionMenu options={this.actionMenuOptions} />
           )}
         </div>
         {this.state.isExpanded && subitems && (
@@ -135,4 +150,4 @@ class SortableListItem extends Component<Props, State> {
   }
 }
 
-export default SortableElement(SortableListItem)
+export default injectIntl(SortableElement(SortableListItem))
