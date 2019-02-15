@@ -21,6 +21,7 @@
     "component": "PageEditor"
   },
   "highlight-overlay.cms": {
-    "component": "HighlightOverlay"
+    "component": "HighlightOverlay",
+    "extensible": "vtex"
   }
 }
