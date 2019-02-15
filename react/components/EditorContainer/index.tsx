@@ -148,7 +148,7 @@ export default class EditorContainer extends Component<Props, State> {
                 }`}
               >
                 {visible && storeEditMode && (
-                  <StoreEditor mode={storeEditMode} />
+                  <StoreEditor editor={editor} mode={storeEditMode} />
                 )}
                 <div
                   id={APP_CONTENT_ELEMENT_ID}
