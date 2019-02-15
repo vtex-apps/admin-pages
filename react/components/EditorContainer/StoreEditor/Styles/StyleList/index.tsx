@@ -1,3 +1,4 @@
+import { find } from 'ramda'
 import React, { Component } from 'react'
 import { compose, graphql, withApollo, WithApolloClient } from 'react-apollo'
 import { ButtonWithIcon, Spinner } from 'vtex.styleguide'
@@ -30,6 +31,11 @@ class StyleList extends Component<Props, {}> {
       listStylesQuery: { listStyles, loading },
       startEditing,
     } = this.props
+
+    const selected = listStyles && find(style => style.selected, listStyles)
+    if (selected) {
+      this.updateStyleTag(selected.path)
+    }
 
     return loading ? (
       <div className="pt7 flex justify-around">
@@ -65,18 +71,9 @@ class StyleList extends Component<Props, {}> {
 
   private selectStyle = async (style: Style) => {
     const {
-      iframeWindow,
       client,
       listStylesQuery: { refetch },
     } = this.props
-
-    const styleLinkElement =
-      iframeWindow &&
-      iframeWindow.document &&
-      iframeWindow.document.getElementById('style_link')
-    if (styleLinkElement) {
-      styleLinkElement.setAttribute('href', style.path)
-    }
 
     try {
       await client.mutate<{ saveSelectedStyle: BasicStyle }>({
@@ -132,6 +129,14 @@ class StyleList extends Component<Props, {}> {
       refetch()
     } catch (err) {
       console.error(err)
+    }
+  }
+
+  private updateStyleTag(path: string) {
+    const { iframeWindow } = this.props
+    const styleLinkElement = iframeWindow.document.getElementById('style_link')
+    if (styleLinkElement) {
+      styleLinkElement.setAttribute('href', path)
     }
   }
 }
