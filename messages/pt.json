@@ -63,6 +63,7 @@
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.components.modal.text": "Você tem modificações não salvas.",
   "pages.editor.components.title": "Blocos",
+  "pages.editor.component-list.action-menu.delete": "Remover",
   "pages.editor.component-list.button.save": "Salvar",
   "pages.editor.component-list.button.undo": "Desfazer",
   "pages.editor.component-list.save.modal.button.cancel": "Cancelar",

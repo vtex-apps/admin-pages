@@ -9,6 +9,7 @@ declare module 'vtex.styleguide' {
     label?: string
   }
 
+  export const ActionMenu: ReactElement
   export const Alert: ReactElement
   export const Box: ReactElement
   export const Button: ReactElement
@@ -21,6 +22,7 @@ declare module 'vtex.styleguide' {
   export const IconCaretDown: ReactElement
   export const IconCaretUp: ReactElement
   export const IconClose: ReactElement
+  export const IconOptionsDots: ReactElement
   export const Input: ReactElement
   export const Modal: ReactElement
   export const PageHeader: ReactElement
