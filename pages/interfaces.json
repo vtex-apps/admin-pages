@@ -19,5 +19,8 @@
   },
   "admin.cms-storefront": {
     "component": "PageEditor"
+  },
+  "highlight-overlay.cms": {
+    "component": "HighlightOverlay"
   }
 }
