@@ -1,7 +1,7 @@
 import React from 'react'
 
 interface Props {
-  typography: StyleTypography
+  typography: Font
 }
 
 const Typography: React.SFC<Props> = ({
@@ -9,8 +9,8 @@ const Typography: React.SFC<Props> = ({
     fontFamily,
     fontSize,
     fontWeight,
-    textTransform,
     letterSpacing,
+    textTransform,
   },
 }) => {
   return (
