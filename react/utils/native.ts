@@ -211,7 +211,7 @@ export const nativeMap: Record<
       type: 'string',
     },
     description: {
-      title: 'pages.editor.components.description.url.title',
+      title: 'pages.editor.components.video.description.title',
       type: 'string',
       widget: {
         'ui:widget': 'textarea',
