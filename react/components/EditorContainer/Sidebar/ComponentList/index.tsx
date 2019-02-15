@@ -48,7 +48,7 @@ class ComponentList extends Component<Props, State> {
     if (!equals(props.components, state.initialComponents)) {
       return {
         components: normalize(props.components),
-        initialComponents: props.components
+        initialComponents: props.components,
       }
     }
   }
@@ -72,7 +72,7 @@ class ComponentList extends Component<Props, State> {
       isModalOpen: false,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text'
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     }
   }
 
@@ -82,7 +82,7 @@ class ComponentList extends Component<Props, State> {
       intl,
       onMouseEnterComponent,
       onMouseLeaveComponent,
-      showToast
+      showToast,
     } = this.props
 
     const hasChanges = this.state.changes.length > 0
@@ -98,13 +98,13 @@ class ComponentList extends Component<Props, State> {
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
           textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.button.save'
+            id: 'pages.editor.component-list.button.save',
           })}
           textButtonCancel={intl.formatMessage({
-            id: this.state.modalCancelMessageId
+            id: this.state.modalCancelMessageId,
           })}
           textMessage={intl.formatMessage({
-            id: this.state.modalTextMessageId
+            id: this.state.modalTextMessageId,
           })}
         />
         <div className="bb bw1 b--light-silver" />
@@ -158,7 +158,7 @@ class ComponentList extends Component<Props, State> {
   private handleCloseModal = () => {
     this.setState({
       handleCancelModal: noop,
-      isModalOpen: false
+      isModalOpen: false,
     })
   }
 
@@ -185,10 +185,10 @@ class ComponentList extends Component<Props, State> {
 
         const newParentBlocks = pureSplice(targetBlockIndex, parentBlocks)
 
-      const newParentExtension = {
-        ...parentExtension,
+        const newParentExtension = {
+          ...parentExtension,
           blocks: newParentBlocks,
-      }
+        }
 
         iframeRuntime.updateExtension(parentTreePath, newParentExtension)
 
@@ -227,7 +227,7 @@ class ComponentList extends Component<Props, State> {
           prevState => ({
             ...prevState,
             changes: [prevState.changes[0]],
-            isModalOpen: false
+            isModalOpen: false,
           }),
           () => {
             this.handleUndo()
@@ -240,7 +240,7 @@ class ComponentList extends Component<Props, State> {
         isModalOpen: true,
         modalCancelMessageId:
           'pages.editor.component-list.undo.modal.button.cancel',
-        modalTextMessageId: 'pages.editor.component-list.undo.modal.text'
+        modalTextMessageId: 'pages.editor.component-list.undo.modal.text',
       })
     } else {
       const { editor, highlightHandler } = this.props
@@ -259,7 +259,7 @@ class ComponentList extends Component<Props, State> {
       isModalOpen: true,
       modalCancelMessageId:
         'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text'
+      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     })
   }
 
@@ -285,7 +285,7 @@ class ComponentList extends Component<Props, State> {
     let changes = this.state.changes
 
     this.setState({
-      isLoadingMutation: true
+      isLoadingMutation: true,
     })
 
     const parsedRelativeBlocks = getRelativeBlocksIds(
@@ -308,16 +308,13 @@ class ComponentList extends Component<Props, State> {
             blocks: blocks || extension.blocks,
             propsJSON: JSON.stringify(extension.props),
           },
-          blockPath: getBlockPath(
-            iframeRuntime.extensions,
-            iframeCurrentPage
-          ),
-        }
+          blockPath: getBlockPath(iframeRuntime.extensions, iframeCurrentPage),
+        },
       })
 
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.success'
+          id: 'pages.editor.component-list.save.toast.success',
         })
       )
 
@@ -325,7 +322,7 @@ class ComponentList extends Component<Props, State> {
     } catch (e) {
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.error'
+          id: 'pages.editor.component-list.save.toast.error',
         })
       )
     } finally {
@@ -333,7 +330,7 @@ class ComponentList extends Component<Props, State> {
 
       this.setState({
         changes,
-        isLoadingMutation: false
+        isLoadingMutation: false,
       })
 
       if (successCallback) {
@@ -365,7 +362,9 @@ class ComponentList extends Component<Props, State> {
     ]
 
     if (isSameTree && !isChangingSameExtensionPoint && extension.blocks) {
-      const extensionPoints = extension.blocks.map(block => block.extensionPointId)
+      const extensionPoints = extension.blocks.map(
+        block => block.extensionPointId
+      )
 
       const firstTargetIndex = findIndex(
         equals(firstTargetName),
@@ -421,12 +420,12 @@ class ComponentList extends Component<Props, State> {
         iframeRuntime.updateExtension(target, {
           ...extension,
           blocks,
-      })
+        })
 
-      this.setState(prevState => ({
-        ...prevState,
+        this.setState(prevState => ({
+          ...prevState,
           blocks,
-        changes: prevState.changes.slice(0, prevState.changes.length - 1),
+          changes: prevState.changes.slice(0, prevState.changes.length - 1),
           components,
         }))
 

@@ -230,7 +230,7 @@ declare global {
     __provideRuntime?: (
       runtime: RenderContext,
       messages?: Record<string, string>,
-      shouldUpdateRuntime?: boolean,
+      shouldUpdateRuntime?: boolean
     ) => void
   }
 
