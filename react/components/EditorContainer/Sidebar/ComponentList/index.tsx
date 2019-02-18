@@ -5,9 +5,9 @@ import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
 
+import SaveExtension from '../../../../queries/SaveExtension.graphql'
 import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
-import SaveExtension from '../../../queries/SaveExtension.graphql'
 import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
@@ -113,7 +113,6 @@ class ComponentList extends Component<Props, State> {
             showToast={showToast}
             useDragHandle={isSortable}
           />
-          )}
           <div className="bt b--light-silver" />
           <div
             className="bt bw1 b--light-silver w-100"
