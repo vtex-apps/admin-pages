@@ -58,6 +58,8 @@ class SortableListItem extends Component<Props, State> {
       shouldRenderOptions,
     } = this.props
 
+    const shouldRenderActionMenu = shouldRenderOptions && component.isSortable
+
     const subitems = component.components
 
     return (
@@ -84,11 +86,14 @@ class SortableListItem extends Component<Props, State> {
           />
           {subitems && (
             <ExpandArrow
+              hasRightMargin={
+                editor.mode === 'layout' && !shouldRenderActionMenu
+              }
               isExpanded={this.state.isExpanded}
               onClick={this.toggleExpansion}
             />
           )}
-          {shouldRenderOptions && component.isSortable && (
+          {shouldRenderActionMenu && (
             <ActionMenu options={this.actionMenuOptions} />
           )}
         </div>
