@@ -1,5 +1,6 @@
 import { has, path, pathOr } from 'ramda'
-import { ComponentsRegistry } from 'render'
+import { ComponentsRegistry } from 'vtex.render-runtime'
+
 import { SidebarComponent } from './typings'
 
 const isSamePageGetter = (page: string, pages: string[]) => (
