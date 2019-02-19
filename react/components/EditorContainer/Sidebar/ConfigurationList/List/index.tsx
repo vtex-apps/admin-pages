@@ -13,19 +13,16 @@ interface Props {
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onClose: () => void
   onCreate: (event: Event) => void
-  onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
   title?: string
 }
 
 const List: React.SFC<Props> = ({
-  activeConfiguration,
   configurations,
   editor,
   isDisabledChecker,
   onClose,
   onCreate,
-  onEdit,
   onSelect,
   title,
 }) => (
@@ -35,11 +32,9 @@ const List: React.SFC<Props> = ({
       (configuration: AdaptedExtensionConfiguration, index: number) => (
         <Fragment key={index}>
           <Card
-            activeConfiguration={activeConfiguration}
             configuration={configuration}
             isDisabled={isDisabledChecker(configuration)}
             onClick={onSelect}
-            onEdit={onEdit}
           />
         </Fragment>
       )

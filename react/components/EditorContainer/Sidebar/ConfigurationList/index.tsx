@@ -121,7 +121,6 @@ class ConfigurationList extends Component<Props, State> {
     ) {
       return (
         <List
-          activeConfiguration={this.state.configuration}
           configurations={extensionConfigurationsQuery.extensionConfigurations.map(
             configuration => ({
               ...configuration,
@@ -136,8 +135,7 @@ class ConfigurationList extends Component<Props, State> {
           isDisabledChecker={this.isConfigurationDisabled}
           onClose={this.handleQuit}
           onCreate={this.handleConfigurationCreation}
-          onEdit={this.handleConfigurationOpen}
-          onSelect={this.handleConfigurationSelection}
+          onSelect={this.handleConfigurationOpen}
           title={componentSchema.title}
         />
       )
