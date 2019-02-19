@@ -1,19 +1,19 @@
-query Routes {
-  routes {
-    id
-    declarer
-    path
-    cname
-    context
-    login
-    pages {
-      declarer
-      name
-      template
-      device
-      conditions
-      allMatches
-      configurationId
-    }
+query Routes($domain: String) {
+  routes(domain: $domain) {
+  auth
+  blockId
+  context
+  declarer
+  domain
+  interfaceId
+  path
+  routeId
+  uuid
+  pages {
+    pageId
+    conditions
+    template
   }
+  title
+}
 }

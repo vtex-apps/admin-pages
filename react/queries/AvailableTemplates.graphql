@@ -1,6 +1,5 @@
-query AvailableTemplates($routeId: String, $renderMajor: Int){
-  availableTemplates(routeId: $routeId, renderMajor: $renderMajor, production: false) {
-    id,
-    context,
+query AvailableTemplates($interfaceId: String){
+  availableTemplates(interfaceId: $interfaceId) {
+    id
   }
 }
