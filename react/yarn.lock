@@ -53,6 +53,18 @@
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-6.0.1.tgz#a761975746f1c1b2579c62e3a4b5e88f986f7e2e"
 
+"@types/lodash.startcase@^4.4.4":
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/@types/lodash.startcase/-/lodash.startcase-4.4.4.tgz#d8df99ea6940395cb894cfb2273d993bec46c997"
+  integrity sha512-ersJi0PC3TlUXvDExRg3R/EBDnzyVXcwHZ8VkdeTrj5KD4SKDsA2HO5rdWJA3z7a8LV8sS/+vpJ3xwcFs5juFw==
+  dependencies:
+    "@types/lodash" "*"
+
+"@types/lodash@*":
+  version "4.14.121"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.121.tgz#9327e20d49b95fc2bf983fc2f045b2c6effc80b9"
+  integrity sha512-ORj7IBWj13iYufXt/VXrCNMbUuCTJfhzme5kx9U/UtcIPdJYuvPDUAlHlbNhz/8lKCLy9XGIZnGrqXOtQbPGoQ==
+
 "@types/node@*":
   version "9.6.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.6.tgz#439b91f9caf3983cad2eef1e11f6bedcbf9431d2"
@@ -70,12 +82,12 @@
   version "0.25.0"
   resolved "https://codeload.github.com/types/npm-ramda/tar.gz/068584583f1c940b28a1ec4d64eec770d7858fb8"
 
-"@types/react-datepicker@^1.1.7":
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-1.1.7.tgz#0722040fbd0d3d39c3fdec21d2559acb9b15ec0a"
+"@types/react-datepicker@^2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-2.0.3.tgz#f45747168d04e3a1c82aeec539d11510783923af"
+  integrity sha512-qBU5C4GZxCGl640rj/j/P0S8hTV0Xi0GD4mJKHDTmN03XXp4VA2uJJNuMBQyWlOgWhYB81ejnVRQgXJC5jyhaQ==
   dependencies:
     "@types/react" "*"
-    moment ">=2.14.0"
     popper.js "^1.14.1"
 
 "@types/react-dom@^16.8.0":
@@ -3115,6 +3127,11 @@ lodash.sortby@^4.7.0:
   version "4.7.0"
   resolved "https://registry.yarnpkg.com/lodash.sortby/-/lodash.sortby-4.7.0.tgz#edd14c824e2cc9c1e0b0a1b42bb5210516a42438"
 
+lodash.startcase@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.startcase/-/lodash.startcase-4.4.0.tgz#9436e34ed26093ed7ffae1936144350915d9add8"
+  integrity sha1-lDbjTtJgk+1/+uGTYUQ1CRXZrdg=
+
 lodash.topath@^4.5.2:
   version "4.5.2"
   resolved "https://registry.yarnpkg.com/lodash.topath/-/lodash.topath-4.5.2.tgz#3616351f3bba61994a0931989660bd03254fd009"
@@ -3271,7 +3288,7 @@ mkdirp@0.x, mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
-moment@>=2.14.0, moment@^2.22.2:
+moment@^2.22.2:
   version "2.22.2"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.22.2.tgz#3c257f9839fc0e93ff53149632239eb90783ff66"
 

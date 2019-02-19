@@ -1,5 +1,9 @@
 declare module 'vtex.styleguide' {
-  import { Component, ComponentType } from 'react'
+  import { Component, ComponentType, ReactNode } from 'react'
+   // Remove this dependency from admin-pages when styleguide is properly typed.
+  import { ReactDatePickerProps } from 'react-datepicker'
+
+  type StyleguideSizes = 'small' | 'regular' | 'large'
 
   interface TextareaProps
     extends React.DetailedHTMLProps<
@@ -13,13 +17,101 @@ declare module 'vtex.styleguide' {
     label?: string
   }
 
+  interface ToastProviderProps {
+    children?: ReactNode
+    positioning?: 'parent' | 'window'
+  }
+
+  interface ShowToastOptions {
+    message: string
+    duration?: number
+    horizontalPosition?: 'right' | 'left'
+  }
+
+  export interface ToastConsumerFunctions {
+    showToast: (a: ShowToastOptions | string) => void
+    hideToast: () => void
+  }
+  interface ToastConsumerProps {
+    children: (mutations: ToastConsumerFunctions) => React.ReactNode
+  }
+
+  interface Statement {
+    subject: string
+    verb: string
+    object: any
+    error: any
+  }
+
+  type ConditionsOperator = 'any' | 'all'
+  interface ConditionsLabels {
+    addNewCondition: string
+    addConditionBtn: string
+    delete: string
+    noConditions: string
+    operatorAll: string
+    operatorAnd: string
+    operatorAny: string
+    operatorOr: string
+    headerPrefix: string
+    headerSufix: string
+  }
+
+  export interface ConditionsProps {
+    canDelete?: boolean
+    operator?: ConditionsOperator
+    statements?: Statement[]
+    options: Record<string, any>
+    subjectPlaceholder: string
+    isFullWidth?: boolean
+    onChangeStatements?: (s: Statement[]) => void
+    onChangeOperator?: (o: {operator: ConditionsOperator}) => void
+    isRtl?: boolean
+    showOperator?: boolean
+    labels?: ConditionsLabels
+  }
+
+  interface StyleguideDatePickerCustomProps {
+    error?: boolean
+    errorMessage?: string
+    helpText?: ReactNode
+    label?: string
+    locale: string
+    placeholder?: string
+    size?: StyleguideSizes
+    value: Date
+    useTime?: boolean
+  }
+
+  type DatePickerProps = Pick<ReactDatePickerProps,
+    'autoFocus' |
+    'disabled' |
+    'excludeDates' |
+    'excludeTimes' |
+    'id' |
+    'includeDates' |
+    'includeTimes' |
+    'maxDate' |
+    'minDate' |
+    'name' |
+    'onChange' |
+    'onFocus' |
+    'onBlur' |
+    'readOnly' |
+    'required' |
+    'tabIndex' |
+    'timeIntervals'
+  > & StyleguideDatePickerCustomProps
+
   export const Alert: ComponentType<any>
   export const Box: ComponentType<any>
   export const Button: ComponentType<any>
   export const Card: ComponentType<any>
   export const Checkbox: ComponentType<any>
+  export class DatePicker extends Component<DatePickerProps> {}
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
+  export class EXPERIMENTAL_Conditions extends Component<ConditionsProps>{}
   export const IconArrowBack: ComponentType<any>
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
@@ -37,4 +129,6 @@ declare module 'vtex.styleguide' {
   export const Tabs: ComponentType<any>
   export const Tag: ComponentType<any>
   export const Toggle: ComponentType<any>
+  export class ToastConsumer extends Component<ToastConsumerProps>{}
+  export class ToastProvider extends Component<ToastProviderProps>{}
 }

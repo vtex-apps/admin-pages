@@ -27,5 +27,7 @@ declare module 'vtex.render-runtime' {
     __RENDER_8_COMPONENTS__: ComponentsRegistry
   }
 
+  export const buildCacheLocator = (app: string, type: string, cacheId: string) => string
+
   const global: Window
 }
