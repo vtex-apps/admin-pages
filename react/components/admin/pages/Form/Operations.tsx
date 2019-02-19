@@ -12,11 +12,11 @@ import { updateStoreAfterDelete, updateStoreAfterSave } from './utils'
 import { Query, QueryResult } from 'react-apollo'
 
 interface TemplateVariables {
-  renderMajor: number
-  routeId: string | null
+  interfaceId: string
 }
 
 interface Props {
+  interfaceId: string
   children: (mutations: OperationsObj) => React.ReactNode
 }
 
@@ -27,20 +27,20 @@ interface OperationsObj {
   templatesResults: QueryResult<any, TemplateVariables>
 }
 
-const Operations = (props: Props) => (
-  <Query
+const Operations = ({interfaceId, children}: Props) => (
+  <Query<Template[], TemplateVariables>
     query={AvailableTemplates}
-    variables={{ renderMajor: 7, routeId: null } as TemplateVariables}
+    variables={{ interfaceId }}
   >
     {templatesResults => (
-      <Query query={AvailableConditions}>
-        {conditionsResults => (
+      /*<Query query={AvailableConditions}>
+        {conditionsResults => ( */
           <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
             {deleteRoute => (
               <Mutation mutation={SaveRoute} update={updateStoreAfterSave}>
                 {saveRoute =>
-                  props.children({
-                    conditionsResults,
+                  children({
+                    // conditionsResults,
                     deleteRoute,
                     saveRoute,
                     templatesResults,
@@ -49,8 +49,8 @@ const Operations = (props: Props) => (
               </Mutation>
             )}
           </Mutation>
-        )}
-      </Query>
+        /* )}
+      </Query>  */
     )}
   </Query>
 )
