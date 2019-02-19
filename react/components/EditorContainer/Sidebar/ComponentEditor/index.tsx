@@ -9,7 +9,6 @@ import {
   getIframeImplementation
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
-import { ComponentEditorFormContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -22,7 +21,7 @@ interface CustomProps {
   onClose: () => void
   onSave: () => void
   props: object
-  shouldRenderSaveButton: boolean
+  shouldDisableSaveButton: boolean
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -37,7 +36,7 @@ const ComponentEditor: React.SFC<Props> = ({
   onClose,
   onSave,
   props,
-  shouldRenderSaveButton
+  shouldDisableSaveButton
 }) => {
   const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
@@ -69,7 +68,7 @@ const ComponentEditor: React.SFC<Props> = ({
         isLoading={isLoading}
         onClose={onClose}
         onSave={onSave}
-        shouldRenderSaveButton={shouldRenderSaveButton}
+        shouldDisableSaveButton={shouldDisableSaveButton}
         title={componentSchema.title}
       />
       <div className="ph5 h-100 overflow-y-auto">

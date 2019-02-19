@@ -7,7 +7,7 @@ interface Props {
   isLoading?: boolean
   onClose: () => void
   onSave?: () => void
-  shouldRenderSaveButton?: boolean
+  shouldDisableSaveButton?: boolean
   title?: string
 }
 
@@ -15,7 +15,7 @@ const EditorHeader: React.SFC<Props> = ({
   isLoading,
   onClose,
   onSave,
-  shouldRenderSaveButton,
+  shouldDisableSaveButton = false,
   title,
 }) => (
   <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
@@ -28,8 +28,9 @@ const EditorHeader: React.SFC<Props> = ({
           {title}
         </h4>
       )}
-      {shouldRenderSaveButton && onSave && (
+      {onSave && (
         <SaveButton
+          isDisabled={shouldDisableSaveButton}
           isLoading={isLoading || false}
           onClick={onSave}
           variation="tertiary"

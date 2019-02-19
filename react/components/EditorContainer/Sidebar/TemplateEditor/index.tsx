@@ -48,7 +48,7 @@ class TemplateEditor extends Component<Props> {
         onClose={this.handleExit}
         onSave={this.handleSave}
         props={this.getExtensionProps()}
-        shouldRenderSaveButton={formMeta.wasModified}
+        shouldDisableSaveButton={!formMeta.wasModified}
       />
     )
   }

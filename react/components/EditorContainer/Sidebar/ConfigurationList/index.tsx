@@ -86,7 +86,7 @@ class ConfigurationList extends Component<Props, State> {
       intl,
     )
 
-    const shouldRenderSaveButton =
+    const shouldEnableSaveButton =
       (this.state.isEditMode &&
         (formMeta.wasModified ||
           (this.state.configuration &&
@@ -148,7 +148,7 @@ class ConfigurationList extends Component<Props, State> {
         onScopeChange={this.handleScopeChange}
         onLabelChange={this.handleConfigurationLabelChange}
         onSave={this.handleConfigurationSave}
-        shouldRenderSaveButton={shouldRenderSaveButton}
+        shouldDisableSaveButton={!shouldEnableSaveButton}
       />
     )
   }

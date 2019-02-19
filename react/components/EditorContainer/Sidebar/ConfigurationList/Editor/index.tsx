@@ -23,7 +23,7 @@ interface Props {
     event: React.ChangeEvent<HTMLSelectElement>,
     newScope: ConfigurationScope
   ) => void
-  shouldRenderSaveButton: boolean
+  shouldDisableSaveButton: boolean
 }
 
 const Editor: React.SFC<Props> = ({
@@ -39,7 +39,7 @@ const Editor: React.SFC<Props> = ({
   onLabelChange,
   onSave,
   onScopeChange,
-  shouldRenderSaveButton
+  shouldDisableSaveButton
 }) => {
   const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
@@ -64,7 +64,7 @@ const Editor: React.SFC<Props> = ({
       onClose={onClose}
       onSave={onSave}
       props={props}
-      shouldRenderSaveButton={shouldRenderSaveButton}
+      shouldDisableSaveButton={shouldDisableSaveButton}
     >
       <div className="mt5">
         <LabelEditor
