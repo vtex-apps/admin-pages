@@ -7,3 +7,7 @@ src/
 package.json
 README.md
 CHANGELOG.md
+
+**/tests/**
+**/*.(test|spec).ts
+**/__fixtures__
