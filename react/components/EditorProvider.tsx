@@ -4,8 +4,6 @@ import React, { Component } from 'react'
 import { compose, DataProps, graphql } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 
-import AvailableConditions from '../queries/AvailableConditions.graphql'
-
 import EditorContainer, {
   APP_CONTENT_ELEMENT_ID,
 } from './EditorContainer'
@@ -273,7 +271,7 @@ class EditorProvider extends Component<Props, State> {
       activeConditions,
       addCondition: this.handleAddCondition,
       allMatches,
-      conditions: this.props.data.availableConditions || [],
+      conditions:  this.props.data && this.props.data.availableConditions || [],
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
@@ -316,6 +314,5 @@ const EditorWithMessageContext = (props: Props) => (
 )
 
 export default compose(
-  graphql(AvailableConditions),
   withRuntimeContext,
 )(EditorWithMessageContext)
