@@ -3,14 +3,14 @@ import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 
-import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
-import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
+import UpdateBlock from '../../../../../queries/UpdateBlock.graphql'
+import { getBlockPath, getRelativeBlocksIds } from '../../../../../utils/blocks'
 import {
   getExtension,
   updateExtensionFromForm,
-} from '../../../../utils/components'
-import ComponentEditor from '../ComponentEditor'
-import { FormMetaContext, ModalContext } from '../typings'
+} from '../../../../../utils/components'
+import ComponentEditor from '../../ComponentEditor'
+import { FormMetaContext, ModalContext } from '../../typings'
 
 interface Props extends ReactIntl.InjectedIntlProps {
   editor: EditorContext
@@ -54,7 +54,7 @@ class TemplateEditor extends Component<Props> {
   }
 
   private exit = () => {
-    this.props.editor.editExtensionPoint(null)
+    this.props.editor.setMode('content')
   }
 
   private getExtensionProps() {

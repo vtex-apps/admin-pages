@@ -26,7 +26,7 @@ interface Props {
   shouldDisableSaveButton: boolean
 }
 
-const Editor: React.SFC<Props> = ({
+const ContentEditor: React.SFC<Props> = ({
   conditions,
   configuration,
   editor,
@@ -90,4 +90,4 @@ const Editor: React.SFC<Props> = ({
   )
 }
 
-export default Editor
+export default ContentEditor

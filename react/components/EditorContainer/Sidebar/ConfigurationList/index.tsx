@@ -15,8 +15,9 @@ import {
 } from '../../../../utils/components'
 import { FormMetaContext, ModalContext } from '../typings'
 
-import Editor from './Editor'
+import ContentEditor from './ContentEditor'
 import List from './List'
+import TemplateEditor from './TemplateEditor'
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -102,6 +103,17 @@ class ConfigurationList extends Component<Props, State> {
       )
     }
 
+    if (editor.mode === 'layout') {
+      return (
+        <TemplateEditor
+          editor={editor}
+          formMeta={formMeta}
+          iframeRuntime={iframeRuntime}
+          modal={modal}
+        />
+      )
+    }
+
     if (
       extensionConfigurationsQuery.extensionConfigurations &&
       extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
@@ -119,6 +131,7 @@ class ConfigurationList extends Component<Props, State> {
               ),
             }),
           )}
+          editor={editor}
           iframeWindow={this.props.editor.iframeWindow}
           isDisabledChecker={this.isConfigurationDisabled}
           onClose={this.handleQuit}
@@ -131,7 +144,7 @@ class ConfigurationList extends Component<Props, State> {
     }
 
     return (
-      <Editor
+      <ContentEditor
         conditions={this.state.conditions}
         configuration={this.state.configuration}
         editor={editor}

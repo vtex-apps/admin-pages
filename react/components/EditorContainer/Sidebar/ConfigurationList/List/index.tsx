@@ -8,6 +8,7 @@ import CreateButton from './CreateButton'
 interface Props {
   activeConfiguration?: AdaptedExtensionConfiguration
   configurations: AdaptedExtensionConfiguration[]
+  editor: EditorContext
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onClose: () => void
@@ -20,6 +21,7 @@ interface Props {
 const List: React.SFC<Props> = ({
   activeConfiguration,
   configurations,
+  editor,
   isDisabledChecker,
   onClose,
   onCreate,
@@ -28,7 +30,7 @@ const List: React.SFC<Props> = ({
   title,
 }) => (
   <Fragment>
-    <EditorHeader onClose={onClose} title={title} />
+    <EditorHeader editor={editor} onClose={onClose} title={title} />
     {configurations.map(
       (configuration: AdaptedExtensionConfiguration, index: number) => (
         <Fragment key={index}>
@@ -40,7 +42,7 @@ const List: React.SFC<Props> = ({
             onEdit={onEdit}
           />
         </Fragment>
-      ),
+      )
     )}
     <CreateButton onClick={onCreate} />
   </Fragment>
