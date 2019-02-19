@@ -131,7 +131,7 @@ export default class EditorContainer extends Component<Props, State> {
               />
             )}
             <div className="calc--height-ns flex-grow-1 db-ns dn">
-              {visible && (
+              {visible && runtime && (
                 <Topbar
                   changeMode={(mode?: StoreEditMode) => {
                     this.setState({
@@ -144,10 +144,12 @@ export default class EditorContainer extends Component<Props, State> {
               )}
               <div
                 className={`pa5 bg-muted-5 flex items-center z-0 center-m left-0-m overflow-x-auto-m ${
-                  visible ? 'calc--height-relative' : 'top-0 w-100 h-100'
+                  visible && runtime
+                    ? 'calc--height-relative'
+                    : 'top-0 w-100 h-100'
                 }`}
               >
-                {visible && storeEditMode && (
+                {visible && runtime && storeEditMode && (
                   <StoreEditor editor={editor} mode={storeEditMode} />
                 )}
                 <div
