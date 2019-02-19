@@ -16,8 +16,16 @@ query Route(
     routeId
     uuid
     pages {
+      condition {
+        allMatches
+        id
+        statements {
+          subject
+          verb
+          objectJSON
+        }
+      }
       pageId
-      conditions
       template
     }
     title
