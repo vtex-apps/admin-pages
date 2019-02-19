@@ -61,7 +61,7 @@
   "pages.editor.components.labelEditor.label": "Nombre de la configuración",
   "pages.editor.components.modal.button.discard": "Descartar",
   "pages.editor.components.modal.text": "Tiene modificaciones no guardadas.",
-  "pages.editor.components.title": "Componentes",
+  "pages.editor.components.title": "Bloques",
   "pages.editor.component-list.button.save": "Salvar",
   "pages.editor.component-list.button.undo": "Deshacer",
   "pages.editor.component-list.save.modal.button.cancel": "Cancelar",
