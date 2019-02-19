@@ -4,8 +4,8 @@ import ReactDatePicker from 'react-datepicker'
 
 interface Props {
   locale: string
-  onChange: (value: Moment) => void
-  selected?: Moment
+  onChange: (value: Date) => void
+  selected?: Date
 }
 
 const DatePicker = ({ locale, onChange, selected }: Props) => (
@@ -14,13 +14,13 @@ const DatePicker = ({ locale, onChange, selected }: Props) => (
     fixedHeight
     inline
     locale={locale}
-    maxTime={moment().endOf('day')}
-    minDate={moment()}
+    maxTime={moment().endOf('day').toDate()}
+    minDate={moment().toDate()}
     minTime={
-      moment().isSame(selected, 'day') ? moment() : moment().startOf('day')
+      (moment().isSame(selected, 'day') ? moment() : moment().startOf('day')).toDate()
     }
     onChange={onChange}
-    selected={selected || moment().add(1, 'days')}
+    selected={selected || moment().add(1, 'days').toDate()}
     showTimeSelect
     timeFormat="HH:mm"
     timeIntervals={15}

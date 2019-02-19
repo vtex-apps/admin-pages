@@ -2,7 +2,8 @@ import React from 'react'
 import { Dropdown } from 'vtex.styleguide'
 import { ConditionalTemplatePicker, ConditionalTemplatePickerProps } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
-import { PageWithUniqueId } from './typings'
+
+import { PagesFormData } from 'pages'
 
 export interface ConditionalTemplateSectionProps extends ConditionalTemplatePickerProps {
   detailChangeHandlerGetter: (
@@ -10,7 +11,7 @@ export interface ConditionalTemplateSectionProps extends ConditionalTemplatePick
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   formErrors: Partial<{ [key in keyof Route]: string }>
   onAddConditionalTemplate: () => void
-  pages: PageWithUniqueId[]
+  pages: PagesFormData[]
   blockId: string
   templates: Template[]
 }

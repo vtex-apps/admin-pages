@@ -3,7 +3,9 @@ import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Box, ToastConsumer } from 'vtex.styleguide'
+import { Box, ConditionsOperator, ToastConsumer } from 'vtex.styleguide'
+
+import { RouteFormData } from 'pages'
 
 import AdminWrapper from './components/admin/AdminWrapper'
 import { NEW_ROUTE_ID, ROUTES_LIST, WRAPPER_PATH } from './components/admin/pages/consts'
@@ -27,22 +29,63 @@ interface CustomProps {
 type Props = WithApolloClient<CustomProps & RenderContextProps>
 
 interface State {
-  formData: Route
+  formData: RouteFormData
   isLoading: boolean
   routeId: string
 }
 
-const pagesWithUniqueId = (route: Route) => ({
-  ...route,
-  pages: (route.pages || []).map((page, uniqueId) => ({
-    ...page,
-    uniqueId: page.pageId || uniqueId,
-  })),
-})
+type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
+
+interface DateInfoFormat {
+  date: string
+  to: string
+  from: string
+}
+type DateStatementFormat = Record<keyof DateInfoFormat, Date>
+
+const getConditionStatementObject = (objectJson: string, verb: DateVerbOptions): Partial<DateStatementFormat> => {
+  const dateInfoStringValues: DateInfoFormat = JSON.parse(objectJson)
+
+  return {
+    between: {
+      from: new Date(dateInfoStringValues.from),
+      to: new Date(dateInfoStringValues.to),
+    },
+    from: {
+      date: new Date(dateInfoStringValues.from)
+    },
+    is: {
+      date: new Date(dateInfoStringValues.from),
+    },
+    to: {
+      date: new Date(dateInfoStringValues.to)
+    }
+  }[verb]
+}
+
+const formatToFormData = (route: Route): RouteFormData => {
+  return {
+    ...route,
+    pages: route.pages.map((page, index) => ({
+      ...page,
+      condition: {
+        ...page.condition,
+        statements: page.condition.statements.map(({verb, subject, objectJSON}) => ({
+          error: '',
+          object: getConditionStatementObject(objectJSON, verb as DateVerbOptions),
+          subject,
+          verb,
+        })),
+      },
+      operator: page.condition.allMatches ? 'all' : 'any' as ConditionsOperator,
+      uniqueId: index,
+    })),
+  }
+}
 
 class PageForm extends Component<Props, State> {
   private isNew: boolean
-  private defaultFormData: Route = {
+  private defaultFormData: RouteFormData = {
     auth: false,
     blockId: '',
     context: null,
@@ -68,7 +111,6 @@ class PageForm extends Component<Props, State> {
     try {
       const { routes } = client.readQuery<{routes: Route[]}>({query: RoutesQuery, variables: {domain: 'store'}}) || { routes: [] }
       currentRoute = routes.find(({routeId: routeIdFromRoute}) => routeIdFromRoute === routeId)
-      // console.log({routes, currentRoute})
     } catch (e) {
       // console.error(e)
     }
@@ -76,7 +118,7 @@ class PageForm extends Component<Props, State> {
     this.isNew = routeId === NEW_ROUTE_ID
 
     this.state = {
-      formData: currentRoute ? pagesWithUniqueId(currentRoute) : this.defaultFormData,
+      formData: currentRoute ? formatToFormData(currentRoute) : this.defaultFormData,
       isLoading: !this.isNew,
       routeId
     }
@@ -99,15 +141,8 @@ class PageForm extends Component<Props, State> {
         })
 
         if (route) {
-          const routeWithPagesUniqueId = {
-            ...route,
-            pages: (route.pages || []).map((page, uniqueId) => ({
-              ...page,
-              uniqueId: page.pageId || uniqueId,
-            })),
-          }
           this.setState({
-            formData: routeWithPagesUniqueId,
+            formData: formatToFormData(route),
             isLoading: false,
           })
         } else {

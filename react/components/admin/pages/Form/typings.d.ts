@@ -23,4 +23,22 @@ export interface ClientSideUniqueId {
   operator: ConditionsProps['operator']
 }
 
+interface StatementsOnSaveRoute {
+  subject: string
+  verb: string
+  objectJSON: string
+}
+
+interface ConditionsOnSaveRouteVariables {
+  id?: string
+  allMatches: boolean
+  statements: StatementsOnSaveRoute[]
+}
+
+export interface SaveRouteVariables {
+  route: Route
+}
+
+export type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
+
 export type PageWithUniqueId = Page & ClientSideUniqueId

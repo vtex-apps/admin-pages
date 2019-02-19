@@ -1,22 +1,16 @@
 import React from 'react'
 import { ConditionsProps, DatePicker, EXPERIMENTAL_Conditions as Conditions } from 'vtex.styleguide'
 
+import { ConditionFormsData } from 'pages'
+
 interface Props {
-  condition: ConditionArg
+  condition: ConditionFormsData
   operator: ConditionsProps['operator']
   onChangeOperator: ConditionsProps['onChangeOperator']
   onChangeStatements: (statements: ConditionStatementArg[]) => void
 }
 
 class SelectConditions extends React.Component<Props> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      statements: [{subject: 'date', verb: '=', error: null, object: null}],
-    }
-  }
-
   public render() {
     const options = {
       date: {
@@ -29,7 +23,7 @@ class SelectConditions extends React.Component<Props> {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
             },
-            value: '=',
+            value: 'is',
           },
           {
             label: 'is between',

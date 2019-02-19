@@ -2,11 +2,11 @@ import { path } from 'ramda'
 import React from 'react'
 import { ConditionsProps, Dropdown, IconClose } from 'vtex.styleguide'
 
+import { ConditionFormsData } from 'pages'
 import SelectConditions from './SelectConditions'
 
 export interface ConditionalTemplatePickerProps {
-  availableConditions: Condition[]
-  condition: ConditionArg
+  condition: ConditionFormsData
   formErrors: Partial<{ [key in keyof Route]: string }>
   onChangeOperatorConditionalTemplate: (
     uniqueId: number,

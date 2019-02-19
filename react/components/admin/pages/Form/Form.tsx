@@ -2,6 +2,7 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Button, Checkbox, Input } from 'vtex.styleguide'
 
+import { RouteFormData } from 'pages'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
 import { isNewRoute } from '../utils'
@@ -12,7 +13,7 @@ import { ConditionalTemplateSection, ConditionalTemplateSectionProps } from './C
 import { PageWithUniqueId } from './typings'
 
 interface CustomProps extends ConditionalTemplateSectionProps {
-  data: Route
+  data: RouteFormData
   detailChangeHandlerGetter: (
     detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -113,7 +114,7 @@ const Form: React.SFC<Props> = ({
       <ConditionalTemplateSection
         intl={intl}
         detailChangeHandlerGetter={detailChangeHandlerGetter}
-        pages={data.pages as PageWithUniqueId[]}
+        pages={data.pages}
         templates={templates}
         blockId={data.blockId}
         onAddConditionalTemplate={onAddConditionalTemplate}

@@ -1,14 +1,13 @@
 import React from 'react'
-import { Mutation, MutationFn } from 'react-apollo'
+import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 
+import { SaveRouteVariables } from './typings'
 import { updateStoreAfterDelete, updateStoreAfterSave } from './utils'
-
-import { Query, QueryResult } from 'react-apollo'
 
 interface TemplateVariables {
   interfaceId: string
@@ -21,7 +20,7 @@ interface Props {
 
 interface OperationsObj {
   deleteRoute: MutationFn
-  saveRoute: MutationFn
+  saveRoute: MutationFn<any, SaveRouteVariables>
   templatesResults: QueryResult<any, TemplateVariables>
 }
 
@@ -33,7 +32,7 @@ const Operations = ({interfaceId, children}: Props) => (
     {templatesResults => (
       <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
         {deleteRoute => (
-          <Mutation mutation={SaveRoute} update={updateStoreAfterSave}>
+          <Mutation<any, SaveRouteVariables> mutation={SaveRoute} update={updateStoreAfterSave}>
             {saveRoute =>
               children({
                 deleteRoute,

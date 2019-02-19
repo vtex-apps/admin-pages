@@ -26,7 +26,7 @@ export const getAddConditionalTemplateState = (prevState: State) => {
     condition: {
       allMatches: true,
       id: '',
-      statements: [{subject: 'date', verb: '=', objectJSON: JSON.stringify({date: now}), object: {date: now}, error: ''}]
+      statements: [{subject: 'date', verb: 'is', objectJSON: JSON.stringify({date: now}), object: {date: now}, error: ''}]
     },
     operator: 'all',
     pageId: '',
@@ -137,19 +137,17 @@ const validateFalsyPath = (path: keyof Route) => (data: Route) =>
 
 const validateConditionalTemplates = (data: Route) => {
   return (data.pages as PageWithUniqueId[]).reduce(
-    (acc, { uniqueId, pageId, condition, template }) => {
+    (acc, { uniqueId, condition, template }) => {
       const templateError = !template && { template: requiredMessage }
-      const pageIdError = !pageId && { pageId: requiredMessage }
       const conditionsError = !condition.statements.length && {
         conditions: requiredMessage,
       }
 
-      if (templateError || pageIdError || conditionsError) {
+      if (templateError || conditionsError) {
         acc.pages = {
           ...acc.pages,
           [uniqueId]: {
             ...templateError,
-            ...pageIdError,
             ...conditionsError,
           },
         }
