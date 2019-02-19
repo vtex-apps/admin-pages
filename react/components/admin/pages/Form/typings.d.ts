@@ -40,5 +40,3 @@ export interface SaveRouteVariables {
 }
 
 export type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
-
-export type PageWithUniqueId = Page & ClientSideUniqueId

@@ -9,13 +9,15 @@ import { isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
 
-import { ConditionalTemplateSection, ConditionalTemplateSectionProps } from './ConditionalTemplateSection'
-import { PageWithUniqueId } from './typings'
+import {
+  ConditionalTemplateSection,
+  ConditionalTemplateSectionProps,
+} from './ConditionalTemplateSection'
 
 interface CustomProps extends ConditionalTemplateSectionProps {
   data: RouteFormData
   detailChangeHandlerGetter: (
-    detailName: keyof Route,
+    detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   formErrors: Partial<{ [key in keyof Route]: string }>
   isLoading: boolean
@@ -26,11 +28,11 @@ interface CustomProps extends ConditionalTemplateSectionProps {
   onAddConditionalTemplate: () => void
   onChangeConditionsConditionalTemplate: (
     uniqueId: number,
-    conditions: string[],
+    conditions: string[]
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
-    template: string,
+    template: string
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
   templates: Template[]
@@ -122,8 +124,12 @@ const Form: React.SFC<Props> = ({
         onChangeTemplateConditionalTemplate={
           onChangeTemplateConditionalTemplate
         }
-        onChangeOperatorConditionalTemplate={onChangeOperatorConditionalTemplate}
-        onChangeStatementsConditionalTemplate={onChangeStatementsConditionalTemplate}
+        onChangeOperatorConditionalTemplate={
+          onChangeOperatorConditionalTemplate
+        }
+        onChangeStatementsConditionalTemplate={
+          onChangeStatementsConditionalTemplate
+        }
         formErrors={formErrors}
       />
       <SeparatorWithLine />
@@ -132,7 +138,6 @@ const Form: React.SFC<Props> = ({
         {isDeletable && (
           <Button
             disabled={isLoading}
-            isLoading={isLoading}
             onClick={onDelete}
             size="small"
             variation="danger"

@@ -1,5 +1,11 @@
 import React from 'react'
-import { ConditionsProps, DatePicker, EXPERIMENTAL_Conditions as Conditions } from 'vtex.styleguide'
+import {
+  ConditionsProps,
+  ConditionsRenderFn,
+  ConditionsStatement,
+  DatePicker,
+  EXPERIMENTAL_Conditions as Conditions,
+} from 'vtex.styleguide'
 
 import { ConditionFormsData } from 'pages'
 
@@ -7,12 +13,16 @@ interface Props {
   condition: ConditionFormsData
   operator: ConditionsProps['operator']
   onChangeOperator: ConditionsProps['onChangeOperator']
-  onChangeStatements: (statements: ConditionStatementArg[]) => void
+  onChangeStatements: (statements: ConditionsStatement[]) => void
 }
 
 class SelectConditions extends React.Component<Props> {
-  public render() {
-    const options = {
+  private options: ConditionsProps['options']
+
+  constructor(props: Props) {
+    super(props)
+
+    this.options = {
       date: {
         label: 'Date',
         unique: true,
@@ -52,33 +62,38 @@ class SelectConditions extends React.Component<Props> {
         ],
       },
     }
+  }
 
+  public render() {
     return (
       <Conditions
-        options={options}
+        options={this.options}
         subjectPlaceholder="Select subject"
         statements={this.props.condition.statements}
         operator={this.props.operator}
         onChangeOperator={this.handleToggleOperator}
         onChangeStatements={statements => {
-          this.props.onChangeStatements(statements.map((statement) => ({...statement, objectJSON: JSON.stringify(statement.object || null)})))
+          this.props.onChangeStatements(
+            statements.map(statement => ({
+              ...statement,
+              objectJSON: JSON.stringify(statement.object || null),
+            }))
+          )
         }}
       />
     )
   }
 
-  private handleToggleOperator: ConditionsProps['onChangeOperator'] = (operatorObj) => {
+  private handleToggleOperator: ConditionsProps['onChangeOperator'] = operatorObj => {
     if (typeof this.props.onChangeOperator === 'function') {
       this.props.onChangeOperator(operatorObj)
     }
   }
 
-  private complexDatePickerObject = ({
+  private complexDatePickerObject: ConditionsRenderFn = ({
     statements,
     values,
     statementIndex,
-    error,
-    extraParams,
   }) => {
     return (
       <DatePicker
@@ -87,10 +102,9 @@ class SelectConditions extends React.Component<Props> {
           const newStatements = statements.map((statement, index) => {
             return {
               ...statement,
-              object: index === statementIndex ? { date } : statement.object
+              object: index === statementIndex ? { date } : statement.object,
             }
           })
-          console.log({newStatements})
           this.props.onChangeStatements(newStatements)
         }}
         locale="en-US"
@@ -98,12 +112,10 @@ class SelectConditions extends React.Component<Props> {
     )
   }
 
-  private complexDatePickerRangeObject = ({
+  private complexDatePickerRangeObject: ConditionsRenderFn = ({
     statements,
     values,
     statementIndex,
-    error,
-    extraParams,
   }) => {
     return (
       <div className="flex">
@@ -123,8 +135,8 @@ class SelectConditions extends React.Component<Props> {
                   ...statement,
                   object: {
                     ...statement.object,
-                    ...(index === statementIndex ? {from: date} : null),
-                  }
+                    ...(index === statementIndex ? { from: date } : null),
+                  },
                 }
               })
               this.props.onChangeStatements(newStatements)
@@ -144,8 +156,8 @@ class SelectConditions extends React.Component<Props> {
                   ...statement,
                   object: {
                     ...statement.object,
-                    ...(index === statementIndex ? {to: date} : null),
-                  }
+                    ...(index === statementIndex ? { to: date } : null),
+                  },
                 }
               })
               this.props.onChangeStatements(newStatements)
@@ -156,7 +168,6 @@ class SelectConditions extends React.Component<Props> {
       </div>
     )
   }
-
 }
 
 export default SelectConditions

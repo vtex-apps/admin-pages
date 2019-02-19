@@ -1,13 +1,25 @@
 import React from 'react'
 import { Dropdown } from 'vtex.styleguide'
-import { ConditionalTemplatePicker, ConditionalTemplatePickerProps } from './ConditionalTemplatePicker'
+import {
+  ConditionalTemplatePicker,
+  ConditionalTemplatePickerProps,
+} from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
 
 import { PagesFormData } from 'pages'
 
-export interface ConditionalTemplateSectionProps extends ConditionalTemplatePickerProps {
+type TemplatePickerCallbacks = Pick<
+  ConditionalTemplatePickerProps,
+  | 'onChangeOperatorConditionalTemplate'
+  | 'onChangeStatementsConditionalTemplate'
+  | 'onChangeTemplateConditionalTemplate'
+  | 'onRemoveConditionalTemplate'
+>
+
+export interface ConditionalTemplateSectionProps
+  extends TemplatePickerCallbacks {
   detailChangeHandlerGetter: (
-    detailName: keyof Route,
+    detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   formErrors: Partial<{ [key in keyof Route]: string }>
   onAddConditionalTemplate: () => void
@@ -81,7 +93,7 @@ export const ConditionalTemplateSection: React.SFC<Props> = ({
       className="bg-transparent bn mt4 pl0 pointer"
       onClick={onAddConditionalTemplate}
     >
-      <span className="c-action-primary f4 mr2 v-mid">+</span>{' '}
+      <span className="c-action-primary f4 mr2 v-mid">+</span>
       <span className="f6 v-mid">
         {intl.formatMessage({
           id: 'pages.admin.pages.form.templates.conditional.addButton',
