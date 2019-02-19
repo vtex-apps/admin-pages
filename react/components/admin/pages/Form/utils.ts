@@ -44,7 +44,7 @@ export const updateStoreAfterDelete = (
         deletedPageId &&
         routesKeys.reduce(
           (acc, currKey) =>
-            routes[currKey].id === deletedPageId
+            routes[currKey].uuid === deletedPageId
               ? acc
               : { ...acc, [currKey]: routes[currKey] },
           {},
@@ -74,7 +74,7 @@ export const updateStoreAfterSave = (
     if (queryData) {
       const routes = queryData.routes
 
-      const newRoutes = savedRoute && { ...routes, [savedRoute.id]: savedRoute }
+      const newRoutes = savedRoute && { ...routes, [savedRoute.uuid || '']: savedRoute }
 
       const newData = {
         ...queryData,

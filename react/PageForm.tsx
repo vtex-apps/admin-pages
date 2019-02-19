@@ -1,8 +1,9 @@
+import { equals } from 'ramda'
 import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Box } from 'vtex.styleguide'
+import { Box, ToastConsumer } from 'vtex.styleguide'
 
 import AdminWrapper from './components/admin/AdminWrapper'
 import { NEW_ROUTE_ID, ROUTES_LIST, WRAPPER_PATH } from './components/admin/pages/consts'
@@ -11,11 +12,10 @@ import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
 import {
   getRouteTitle,
-  isNewRoute,
-  isStoreRoute,
 } from './components/admin/pages/utils'
 import Loader from './components/Loader'
 import RouteQuery from './queries/Route.graphql'
+import RoutesQuery from './queries/Routes.graphql'
 
 interface CustomProps {
   params: {
@@ -27,53 +27,74 @@ interface CustomProps {
 type Props = WithApolloClient<CustomProps & RenderContextProps>
 
 interface State {
-  formData?: Route
+  formData: Route
   isLoading: boolean
+  routeId: string
 }
+
+const pagesWithUniqueId = (route: Route) => ({
+  ...route,
+  pages: (route.pages || []).map((page, uniqueId) => ({
+    ...page,
+    uniqueId: page.pageId || uniqueId,
+  })),
+})
 
 class PageForm extends Component<Props, State> {
   private isNew: boolean
+  private defaultFormData: Route = {
+    auth: false,
+    blockId: '',
+    context: null,
+    declarer: null,
+    domain: 'store',
+    interfaceId: 'vtex.store@2.x:store.custom',
+    pages: [],
+    path: '',
+    routeId: '',
+    title: '',
+    uuid: undefined,
+  }
 
   constructor(props: Props) {
     super(props)
 
-    const routeId = props.params.id
+    const routeId = decodeURIComponent(props.params.id)
 
-    if (!isStoreRoute(routeId) && !isNewRoute(routeId)) {
-      this.exit()
+    const { client } = props
+    let currentRoute = null
+
+    // Find route from cache
+    try {
+      const { routes } = client.readQuery<{routes: Route[]}>({query: RoutesQuery, variables: {domain: 'store'}}) || { routes: [] }
+      currentRoute = routes.find(({routeId: routeIdFromRoute}) => routeIdFromRoute === routeId)
+      // console.log({routes, currentRoute})
+    } catch (e) {
+      // console.error(e)
     }
 
-    const defaultFormData = {
-      context: '',
-      declarer: '',
-      id: NEW_ROUTE_ID,
-      login: false,
-      pages: [],
-      path: '',
-      template: '',
-      title: '',
-    }
-
-    this.isNew = isNewRoute(routeId)
+    this.isNew = routeId === NEW_ROUTE_ID
 
     this.state = {
-      formData: this.isNew ? defaultFormData : undefined,
+      formData: currentRoute ? pagesWithUniqueId(currentRoute) : this.defaultFormData,
       isLoading: !this.isNew,
+      routeId
     }
   }
 
   public async componentDidMount() {
-    const { client, params } = this.props
+    const { client } = this.props
     const { formData } = this.state
 
-    if (!formData) {
+    if (equals(formData, this.defaultFormData) && !this.isNew) { // didnt find in cache
       try {
         const {
           data: { route },
         } = await client.query<{ route: Route }>({
           query: RouteQuery,
           variables: {
-            id: params.id,
+            domain: 'store',
+            routeId: this.state.routeId,
           },
         })
 
@@ -82,7 +103,7 @@ class PageForm extends Component<Props, State> {
             ...route,
             pages: (route.pages || []).map((page, uniqueId) => ({
               ...page,
-              uniqueId: page.configurationId || uniqueId,
+              uniqueId: page.pageId || uniqueId,
             })),
           }
           this.setState({
@@ -90,11 +111,14 @@ class PageForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-          this.exit()
+           this.exit()
         }
       } catch (err) {
+        console.error(err)
         this.exit()
       }
+    } else {
+      this.setState({isLoading: false})
     }
   }
 
@@ -103,40 +127,45 @@ class PageForm extends Component<Props, State> {
 
     return (
       <AdminWrapper path={WRAPPER_PATH}>
-        <Operations>
-          {({
-            conditionsResults,
-            deleteRoute,
-            saveRoute,
-            templatesResults,
-          }) => {
-            const templates = templatesResults.data.availableTemplates || []
-            const conditions = conditionsResults.data.availableConditions || []
-            const loading =
-              isLoading || templatesResults.loading || conditionsResults.loading
-            return loading ? (
-              <Loader />
-            ) : (
-              <Box>
-                {this.isNew ? (
-                  <FormattedMessage id="pages.admin.pages.form.title.new">
-                    {text => <Title>{text}</Title>}
-                  </FormattedMessage>
-                ) : (
-                  formData && <Title>{getRouteTitle(formData)}</Title>
-                )}
-                <Form
-                  initialData={formData}
-                  onDelete={deleteRoute}
-                  onExit={this.exit}
-                  onSave={saveRoute}
-                  templates={templates}
-                  conditions={conditions}
-                />
-              </Box>
-            )
-          }}
-        </Operations>
+        { isLoading ? <Loader /> :
+          <Operations interfaceId={formData.interfaceId}>
+            {({
+              deleteRoute,
+              saveRoute,
+              templatesResults,
+            }) => {
+              const templates = templatesResults.data.availableTemplates || []
+              const loading = templatesResults.loading
+              return loading ? (
+                <Loader />
+              ) : (
+                <Box>
+                  {this.isNew ? (
+                    <FormattedMessage id="pages.admin.pages.form.title.new">
+                      {text => <Title>{text}</Title>}
+                    </FormattedMessage>
+                  ) : (
+                    formData && <Title>{getRouteTitle(formData)}</Title>
+                  )}
+                  <ToastConsumer>
+                    {({showToast, hideToast}) => (
+                      <Form
+                        initialData={formData}
+                        onDelete={deleteRoute}
+                        onExit={this.exit}
+                        onSave={saveRoute}
+                        templates={templates}
+                        showToast={showToast}
+                        hideToast={hideToast}
+                      />
+                    )}
+                  </ToastConsumer>
+                </Box>
+              )
+            }}
+          </Operations>
+
+        }
       </AdminWrapper>
     )
   }

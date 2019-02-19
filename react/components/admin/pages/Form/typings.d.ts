@@ -1,3 +1,5 @@
+import { ConditionsProps } from 'vtex.styleguide'
+
 export interface DeleteMutationResult {
   data?: {
     deleteRoute: string
@@ -18,6 +20,7 @@ export interface RoutesQuery {
 
 export interface ClientSideUniqueId {
   uniqueId: number
+  operator: ConditionsProps['operator']
 }
 
 export type PageWithUniqueId = Page & ClientSideUniqueId

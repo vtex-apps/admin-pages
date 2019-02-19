@@ -1,3 +1,4 @@
+import { ConditionsProps } from 'vtex.styleguide'
 import { State } from './index'
 import { ClientSideUniqueId, PageWithUniqueId } from './typings'
 
@@ -14,20 +15,21 @@ export const getLoginToggleState = (prevState: State) => ({
   ...prevState,
   data: {
     ...prevState.data,
-    login: !!prevState.data && !prevState.data.login,
+    auth: !!prevState.data && !prevState.data.auth,
   },
 })
 
 export const getAddConditionalTemplateState = (prevState: State) => {
   const maxUniqueId = getMaxUniqueId(prevState.data.pages as PageWithUniqueId[])
-  const newPage: Page & ClientSideUniqueId = {
-    allMatches: false,
-    conditions: [],
-    configurationId: '',
-    declarer: null,
-    device: '',
-    name: '',
-    params: {},
+  const now = new Date()
+  const newPage: Page & ClientSideUniqueId & { operator: 'all' | 'any' } = {
+    condition: {
+      allMatches: true,
+      id: '',
+      statements: [{subject: 'date', verb: '=', objectJSON: JSON.stringify({date: now}), object: {date: now}, error: ''}]
+    },
+    operator: 'all',
+    pageId: '',
     template: '',
     uniqueId: maxUniqueId + 1,
   }
@@ -51,6 +53,59 @@ export const getRemoveConditionalTemplateState = (uniqueId: number) => (
   }
 }
 
+export const getChangeOperatorConditionalTemplateState = (uniqueId: number, operator: ConditionsProps['operator']) => (
+  prevState: State,
+) => {
+  const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
+    if (page.uniqueId === uniqueId) {
+      return {
+        ...page,
+        condition: {
+          ...page.condition,
+          allMatches: operator === 'all'
+        },
+        operator,
+      }
+    }
+    return page
+  })
+
+  return {
+    ...prevState,
+    data: {
+      ...prevState.data,
+      pages: newPages,
+    },
+    formErrors: {},
+  }
+}
+
+export const getChangeStatementsConditionalTemplate = (uniqueId: number, statements: any[]) => (
+  prevState: State,
+) => {
+  const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
+    if (page.uniqueId === uniqueId) {
+      return {
+        ...page,
+        condition: {
+          ...page.condition,
+          statements
+        },
+      }
+    }
+    return page
+  })
+
+  return {
+    ...prevState,
+    data: {
+      ...prevState.data,
+      pages: newPages,
+    },
+    formErrors: {},
+  }
+}
+
 export const getChangeTemplateConditionalTemplateState = (
   uniqueId: number,
   template: string,
@@ -64,29 +119,7 @@ export const getChangeTemplateConditionalTemplateState = (
     }
     return page
   })
-  return {
-    ...prevState,
-    data: {
-      ...prevState.data,
-      pages: newPages,
-    },
-    formErrors: {},
-  }
-}
 
-export const getChangeConditionsConditionalTemplateState = (
-  uniqueId: number,
-  conditions: string[],
-) => (prevState: State) => {
-  const newPages = (prevState.data.pages as PageWithUniqueId[]).map(page => {
-    if (page.uniqueId === uniqueId) {
-      return {
-        ...page,
-        conditions,
-      }
-    }
-    return page
-  })
   return {
     ...prevState,
     data: {
@@ -104,16 +137,19 @@ const validateFalsyPath = (path: keyof Route) => (data: Route) =>
 
 const validateConditionalTemplates = (data: Route) => {
   return (data.pages as PageWithUniqueId[]).reduce(
-    (acc, { uniqueId, template, conditions }) => {
+    (acc, { uniqueId, pageId, condition, template }) => {
       const templateError = !template && { template: requiredMessage }
-      const conditionsError = !conditions.length && {
+      const pageIdError = !pageId && { pageId: requiredMessage }
+      const conditionsError = !condition.statements.length && {
         conditions: requiredMessage,
       }
-      if (templateError || conditionsError) {
+
+      if (templateError || pageIdError || conditionsError) {
         acc.pages = {
           ...acc.pages,
           [uniqueId]: {
             ...templateError,
+            ...pageIdError,
             ...conditionsError,
           },
         }
@@ -130,7 +166,7 @@ export const getValidateFormState = (prevState: State) => {
     formErrors: {
       ...prevState.formErrors,
       ...validateFalsyPath('path')(prevState.data),
-      ...validateFalsyPath('template')(prevState.data),
+      ...validateFalsyPath('blockId')(prevState.data),
       ...validateFalsyPath('title')(prevState.data),
       ...validateConditionalTemplates(prevState.data),
     },

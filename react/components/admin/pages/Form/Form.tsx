@@ -1,18 +1,17 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { injectIntl } from 'react-intl'
 import { Button, Checkbox, Input } from 'vtex.styleguide'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
-import { getRouteTitle, isNewRoute } from '../utils'
+import { isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
 
-import { ConditionalTemplateSection } from './ConditionalTemplateSection'
+import { ConditionalTemplateSection, ConditionalTemplateSectionProps } from './ConditionalTemplateSection'
 import { PageWithUniqueId } from './typings'
 
-interface CustomProps {
-  conditions: Condition[]
+interface CustomProps extends ConditionalTemplateSectionProps {
   data: Route
   detailChangeHandlerGetter: (
     detailName: keyof Route,
@@ -39,14 +38,14 @@ interface CustomProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const Form: React.SFC<Props> = ({
-  conditions,
   data,
   detailChangeHandlerGetter,
   formErrors,
   intl,
   isLoading,
   onAddConditionalTemplate,
-  onChangeConditionsConditionalTemplate,
+  onChangeOperatorConditionalTemplate,
+  onChangeStatementsConditionalTemplate,
   onChangeTemplateConditionalTemplate,
   onDelete,
   onExit,
@@ -55,12 +54,12 @@ const Form: React.SFC<Props> = ({
   onSave,
   templates,
 }) => {
-  const { declarer } = data.pages[0] || { declarer: null }
+  const { declarer } = data || { declarer: null }
 
-  const isNew = isNewRoute(data.id)
+  const isNew = isNewRoute(data)
 
-  const isDeletable = !declarer && !isNew
-  const isInfoEditable = !declarer || isNew
+  const isDeletable = declarer !== 'vtex.store@2.x' && !isNew
+  const isInfoEditable = declarer !== 'vtex.store@2.x' || isNew
 
   const path = data.path || ''
 
@@ -74,7 +73,7 @@ const Form: React.SFC<Props> = ({
         })}
         onChange={detailChangeHandlerGetter('title')}
         required
-        value={getRouteTitle(data)}
+        value={data.title}
         errorMessage={
           formErrors.title &&
           intl.formatMessage({
@@ -100,7 +99,7 @@ const Form: React.SFC<Props> = ({
       />
       <FormFieldSeparator />
       <Checkbox
-        checked={!!data.login}
+        checked={!!data.auth}
         disabled={!isInfoEditable}
         label={intl.formatMessage({
           id: 'pages.admin.pages.form.field.login',
@@ -116,16 +115,14 @@ const Form: React.SFC<Props> = ({
         detailChangeHandlerGetter={detailChangeHandlerGetter}
         pages={data.pages as PageWithUniqueId[]}
         templates={templates}
-        template={data.template}
-        conditions={conditions}
+        blockId={data.blockId}
         onAddConditionalTemplate={onAddConditionalTemplate}
         onRemoveConditionalTemplate={onRemoveConditionalTemplate}
         onChangeTemplateConditionalTemplate={
           onChangeTemplateConditionalTemplate
         }
-        onChangeConditionsConditionalTemplate={
-          onChangeConditionsConditionalTemplate
-        }
+        onChangeOperatorConditionalTemplate={onChangeOperatorConditionalTemplate}
+        onChangeStatementsConditionalTemplate={onChangeStatementsConditionalTemplate}
         formErrors={formErrors}
       />
       <SeparatorWithLine />

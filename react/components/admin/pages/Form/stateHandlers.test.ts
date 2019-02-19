@@ -1,7 +1,8 @@
 import { State } from './index'
 import {
   getAddConditionalTemplateState,
-  getChangeConditionsConditionalTemplateState,
+  getChangeOperatorConditionalTemplateState,
+  getChangeStatementsConditionalTemplate,
   getChangeTemplateConditionalTemplateState,
   getLoginToggleState,
   getRemoveConditionalTemplateState,
@@ -9,14 +10,9 @@ import {
 } from './stateHandlers'
 
 const newPage = {
-  allMatches: false,
   conditions: [],
-  configurationId: '',
-  declarer: null,
-  device: '',
-  name: '',
-  params: {},
-  template: '',
+  pageId: '',
+  template: ''
 }
 
 describe('getAddConditionalTemplateState', () => {
@@ -102,12 +98,12 @@ describe('getLoginToggleState', () => {
   it('should negate data.login value', () => {
     const mockState = {
       data: {
-        login: true,
+        auth: true,
       },
     } as State
 
     expect(getLoginToggleState(mockState)).toEqual(
-      expect.objectContaining({ data: { login: false } }),
+      expect.objectContaining({ data: { auth: false } }),
     )
   })
 })
@@ -257,8 +253,8 @@ describe('getChangeTemplateConditionalTemplateState', () => {
   })
 })
 
-describe('getChangeConditionsConditionalTemplateState', () => {
-  it('should modify conditions given a unique ID', () => {
+describe('getChangeOperatorConditionalTemplateState', () => {
+  it('should modify operator given a unique ID', () => {
     const mockState = {
       data: {
         pages: [
@@ -279,10 +275,52 @@ describe('getChangeConditionsConditionalTemplateState', () => {
     } as State
 
     expect(
-      getChangeConditionsConditionalTemplateState(3, [
-        'condition1',
-        'condition2',
-      ])(mockState),
+      getChangeOperatorConditionalTemplateState(3, 'all')(mockState),
+    ).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 10,
+            },
+            expect.objectContaining({
+              ...newPage,
+              operator: 'all',
+              uniqueId: 3,
+            }),
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+
+  it('should set allMatches boolean to true given "all" as operator', () => {
+    const mockState = {
+      data: {
+        pages: [
+          {
+            ...newPage,
+            uniqueId: 10,
+          },
+          {
+            ...newPage,
+            uniqueId: 3,
+          },
+          {
+            ...newPage,
+            uniqueId: 5,
+          },
+        ] as any[],
+      },
+    } as State
+
+    expect(
+      getChangeOperatorConditionalTemplateState(3, 'all')(mockState),
     ).toEqual(
       expect.objectContaining({
         data: {
@@ -293,7 +331,58 @@ describe('getChangeConditionsConditionalTemplateState', () => {
             },
             {
               ...newPage,
-              conditions: ['condition1', 'condition2'],
+              condition: {
+                allMatches: true,
+              },
+              operator: 'all',
+              uniqueId: 3,
+            },
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+
+  it('should set allMatches boolean to false given "any" as operator', () => {
+    const mockState = {
+      data: {
+        pages: [
+          {
+            ...newPage,
+            uniqueId: 10,
+          },
+          {
+            ...newPage,
+            uniqueId: 3,
+          },
+          {
+            ...newPage,
+            uniqueId: 5,
+          },
+        ] as any[],
+      },
+    } as State
+
+    expect(
+      getChangeOperatorConditionalTemplateState(3, 'any')(mockState),
+    ).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 10,
+            },
+            {
+              ...newPage,
+              condition: {
+                allMatches: false,
+              },
+              operator: 'any',
               uniqueId: 3,
             },
             {
@@ -330,32 +419,102 @@ describe('getChangeConditionsConditionalTemplateState', () => {
     } as State
 
     expect(
-      getChangeConditionsConditionalTemplateState(3, [
-        'condition1',
-        'condition2',
-      ])(mockState),
+      getChangeOperatorConditionalTemplateState(3, 'all')(mockState),
     ).toEqual(
       expect.objectContaining({
         formErrors: {},
       }),
     )
   })
-
 })
 
-describe('getValidateFormState', () => {
-  it('should return empty object if there are no errors', () => {
+describe('getChangeStatementsConditionalTemplate', () => {
+  it('should change statement inside condition given a page uniqueId', () => {
     const mockState = {
       data: {
         pages: [
           {
+            ...newPage,
+            uniqueId: 10,
+          },
+          {
+            ...newPage,
+            condition: {
+              statements: []
+            },
+            uniqueId: 3,
+          },
+          {
+            ...newPage,
+            uniqueId: 5,
+          },
+        ] as any[],
+      },
+    } as State
+
+    expect(
+      getChangeStatementsConditionalTemplate(3, [{subject: 'Date', verb: '='}])(mockState),
+    ).toEqual(
+      expect.objectContaining({
+        data: {
+          pages: [
+            {
+              ...newPage,
+              uniqueId: 10,
+            },
+            {
+              ...newPage,
+              condition: {
+                statements: [{subject: 'Date', verb: '='}]
+              },
+              uniqueId: 3,
+            },
+            {
+              ...newPage,
+              uniqueId: 5,
+            },
+          ],
+        },
+      }),
+    )
+  })
+})
+
+describe('getValidateFormState', () => {
+  const baseMockState = {
+    data: {
+      auth: false,
+      blockId: 'test.app@1.x:store.home#cool-home',
+      context: null,
+      declarer: 'user',
+      domain: 'store',
+      interfaceId: 'test.app@1.x:store.home',
+      pages: [],
+      path: '/',
+      routeId: 'store.home#cool-home',
+      title: null,
+      uuid: undefined,
+    },
+    formErrors: {},
+    isLoading: false
+  }
+
+  it('should return empty object if there are no errors', () => {
+    const mockState = {
+      ...baseMockState,
+      data: {
+        ...baseMockState.data,
+        pages: [
+          {
             conditions: ['my-test'],
-            template: 'myTemplate',
+            pageId: 'myTemplate',
+            template: 'oi',
             uniqueId: 10,
           },
           {
             conditions: ['my-test-5'],
-            template: 'myTemplate2',
+            pageId: 'myTemplate2',
+            template: 'oi2',
             uniqueId: 5,
           },
         ] as any[],
@@ -363,7 +522,6 @@ describe('getValidateFormState', () => {
         template: 'defaultTemplate',
         title: 'test',
       },
-      formErrors: {},
     } as State
 
     expect(getValidateFormState(mockState)).toEqual(
@@ -373,24 +531,25 @@ describe('getValidateFormState', () => {
 
   it('should return error if path is falsy', () => {
     const mockState = {
+      ...baseMockState,
       data: {
+        ...baseMockState.data,
+        blockId: '',
         pages: [
           {
             conditions: ['my-test'],
-            template: 'myTemplate',
+            pageId: 'myTemplate',
             uniqueId: 10,
           },
           {
             conditions: ['my-test-5'],
-            template: 'myTemplate2',
+            pageId: 'myTemplate2',
             uniqueId: 5,
           },
         ] as any[],
         path: '',
-        template: 'defaultTemplate',
         title: 'test',
       },
-      formErrors: {},
     } as State
 
     expect(getValidateFormState(mockState)).toEqual(
@@ -402,23 +561,25 @@ describe('getValidateFormState', () => {
     )
   })
 
-  it('should return error if template is falsy', () => {
+  it('should return error if pageId is falsy', () => {
     const mockState = {
+      ...baseMockState,
       data: {
+        ...baseMockState.data,
+        blockId: '',
         pages: [
           {
             conditions: ['my-test'],
-            template: 'myTemplate',
+            pageId: 'myTemplate',
             uniqueId: 10,
           },
           {
             conditions: ['my-test-5'],
-            template: 'myTemplate2',
+            pageId: 'myTemplate2',
             uniqueId: 5,
           },
         ] as any[],
         path: '/test',
-        template: '',
         title: 'test',
       },
     } as State
@@ -426,7 +587,7 @@ describe('getValidateFormState', () => {
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
-          template: 'pages.admin.pages.form.templates.field.required',
+          blockId: 'pages.admin.pages.form.templates.field.required',
         }),
       }),
     )
@@ -434,16 +595,18 @@ describe('getValidateFormState', () => {
 
   it('should return error if title is falsy', () => {
     const mockState = {
+      ...baseMockState,
       data: {
+        ...baseMockState.data,
         pages: [
           {
             conditions: ['my-test'],
-            template: 'myTemplate',
+            pageId: 'myPageId',
             uniqueId: 10,
           },
           {
             conditions: ['my-test-5'],
-            template: 'myTemplate2',
+            pageId: 'myPageId2',
             uniqueId: 5,
           },
         ] as any[],
@@ -465,21 +628,23 @@ describe('getValidateFormState', () => {
   describe('pages[] field errors', () => {
     it('should return error with if template of conditional template is falsy', () => {
       const mockState = {
+        ...baseMockState,
         data: {
+          ...baseMockState.data,
           pages: [
             {
               conditions: ['my-test'],
-              template: 'myTemplate',
+              pageId: 'myTemplate',
+              template: 'teste',
               uniqueId: 10,
             },
             {
               conditions: ['my-test-5'],
-              template: '',
+              pageId: 'lala',
               uniqueId: 5,
             },
           ] as any[],
           path: '/test',
-          template: 'defaultTemplate',
           title: 'defaultTemplate',
         },
       } as State
@@ -499,21 +664,24 @@ describe('getValidateFormState', () => {
 
     it('should return error with if template of conditional template is falsy', () => {
       const mockState = {
+        ...baseMockState,
         data: {
+          ...baseMockState.data,
           pages: [
             {
               conditions: [],
-              template: 'myTemplate',
+              pageId: 'pageId',
+              template: 'template',
               uniqueId: 10,
             },
             {
               conditions: ['my-test-5'],
-              template: 'myTemplate',
+              pageId: 'page-id',
+              template: 'template',
               uniqueId: 5,
             },
           ] as any[],
           path: '/test',
-          template: 'defaultTemplate',
           title: 'defaultTemplate',
         },
       } as State
@@ -533,21 +701,24 @@ describe('getValidateFormState', () => {
 
     it('should return error for more than one page and field', () => {
       const mockState = {
+        ...baseMockState,
         data: {
+          ...baseMockState.data,
           pages: [
             {
               conditions: [],
+              pageId: '',
               template: '',
               uniqueId: 10,
             },
             {
               conditions: [],
+              pageId: '',
               template: '',
               uniqueId: 5,
             },
           ] as any[],
           path: '/test',
-          template: 'defaultTemplate',
           title: 'defaultTemplate',
         },
       } as State
@@ -558,10 +729,12 @@ describe('getValidateFormState', () => {
             pages: {
               5: {
                 conditions: 'pages.admin.pages.form.templates.field.required',
+                pageId: 'pages.admin.pages.form.templates.field.required',
                 template: 'pages.admin.pages.form.templates.field.required',
               },
               10: {
                 conditions: 'pages.admin.pages.form.templates.field.required',
+                pageId: 'pages.admin.pages.form.templates.field.required',
                 template: 'pages.admin.pages.form.templates.field.required',
               },
             },

@@ -1,43 +1,33 @@
 import React from 'react'
 import { Dropdown } from 'vtex.styleguide'
-import { ConditionalTemplatePicker } from './ConditionalTemplatePicker'
+import { ConditionalTemplatePicker, ConditionalTemplatePickerProps } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
 import { PageWithUniqueId } from './typings'
 
-interface ConditionalTemplateSectionProps {
-  conditions: Condition[]
+export interface ConditionalTemplateSectionProps extends ConditionalTemplatePickerProps {
   detailChangeHandlerGetter: (
     detailName: keyof Route,
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
   formErrors: Partial<{ [key in keyof Route]: string }>
   onAddConditionalTemplate: () => void
-  onChangeConditionsConditionalTemplate: (
-    uniqueId: number,
-    conditions: string[],
-  ) => void
-  onChangeTemplateConditionalTemplate: (
-    uniqueId: number,
-    template: string,
-  ) => void
-  onRemoveConditionalTemplate: (uniqueId: number) => void
   pages: PageWithUniqueId[]
-  template: string
+  blockId: string
   templates: Template[]
 }
 
 type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
 
 export const ConditionalTemplateSection: React.SFC<Props> = ({
-  conditions,
   detailChangeHandlerGetter,
   formErrors,
   intl,
   onAddConditionalTemplate,
-  onChangeConditionsConditionalTemplate,
+  onChangeOperatorConditionalTemplate,
+  onChangeStatementsConditionalTemplate,
   onChangeTemplateConditionalTemplate,
   onRemoveConditionalTemplate,
   pages,
-  template,
+  blockId,
   templates,
 }) => (
   <React.Fragment>
@@ -47,10 +37,10 @@ export const ConditionalTemplateSection: React.SFC<Props> = ({
         id: 'pages.admin.pages.form.templates.field.default',
       })}
       options={templates.map(({ id }) => ({ value: id, label: id }))}
-      onChange={detailChangeHandlerGetter('template')}
-      value={template}
+      onChange={detailChangeHandlerGetter('blockId')}
+      value={blockId}
       errorMessage={
-        formErrors.template && intl.formatMessage({ id: formErrors.template })
+        formErrors.blockId && intl.formatMessage({ id: formErrors.blockId })
       }
     />
     <h2 className="mt7 f5 normal">
@@ -66,15 +56,18 @@ export const ConditionalTemplateSection: React.SFC<Props> = ({
     {pages.map(page => (
       <ConditionalTemplatePicker
         key={page.uniqueId}
-        availableConditions={conditions}
-        conditions={page.conditions}
+        condition={page.condition}
         intl={intl}
-        onChangeConditionsConditionalTemplate={
-          onChangeConditionsConditionalTemplate
-        }
         onChangeTemplateConditionalTemplate={
           onChangeTemplateConditionalTemplate
         }
+        onChangeOperatorConditionalTemplate={
+          onChangeOperatorConditionalTemplate
+        }
+        onChangeStatementsConditionalTemplate={
+          onChangeStatementsConditionalTemplate
+        }
+        operator={page.operator}
         onRemoveConditionalTemplate={onRemoveConditionalTemplate}
         pageId={page.uniqueId}
         template={page.template}

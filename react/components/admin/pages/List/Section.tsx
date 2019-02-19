@@ -39,7 +39,7 @@ const Section = ({ hasCreateButton, routes, runtime, titleId }: Props) => (
       )}
     </div>
     {routes.map(route => (
-      <Fragment key={route.id}>
+      <Fragment key={route.path}>
         <SeparatorWithLine />
         <Entry route={route} />
       </Fragment>

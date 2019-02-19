@@ -1,20 +1,23 @@
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
-import { MutationFn } from 'react-apollo'
+import { compose, MutationFn } from 'react-apollo'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
+import { ConditionsProps, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import Form from './Form'
 import {
   getAddConditionalTemplateState,
-  getChangeConditionsConditionalTemplateState,
+  getChangeOperatorConditionalTemplateState,
+  getChangeStatementsConditionalTemplate,
   getChangeTemplateConditionalTemplateState,
   getLoginToggleState,
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
 
-interface Props {
+interface ComponentProps {
   conditions: Condition[]
   initialData: Route
   onDelete: MutationFn
@@ -22,7 +25,11 @@ interface Props {
   onSave: MutationFn
   runtime: RenderContext
   templates: Template[]
+  showToast: ToastConsumerFunctions['showToast']
+  hideToast: ToastConsumerFunctions['hideToast']
 }
+
+type Props = ComponentProps & InjectedIntlProps
 
 export interface State {
   data: Route
@@ -69,8 +76,11 @@ class FormContainer extends Component<Props, State> {
         onChangeTemplateConditionalTemplate={
           this.handleChangeTemplateConditionalTemplate
         }
-        onChangeConditionsConditionalTemplate={
-          this.handleChangeConditionsConditionalTemplate
+        onChangeOperatorConditionalTemplate={
+          this.handleChangeOperatorConditionalTemplate
+        }
+        onChangeStatementsConditionalTemplate={
+          this.handleChangeStatementsConditionalTemplate
         }
         formErrors={formErrors}
       />
@@ -92,12 +102,19 @@ class FormContainer extends Component<Props, State> {
     this.setState(getChangeTemplateConditionalTemplateState(uniqueId, template))
   }
 
-  private handleChangeConditionsConditionalTemplate = (
+  private handleChangeOperatorConditionalTemplate = (
     uniqueId: number,
-    conditions: string[],
+    operator: ConditionsProps['operator'],
+  ) => {
+    this.setState(getChangeOperatorConditionalTemplateState(uniqueId, operator))
+  }
+
+  private handleChangeStatementsConditionalTemplate = (
+    uniqueId: number,
+    statements: ConditionStatementArg[],
   ) => {
     this.setState(
-      getChangeConditionsConditionalTemplateState(uniqueId, conditions),
+      getChangeStatementsConditionalTemplate(uniqueId, statements),
     )
   }
 
@@ -117,23 +134,24 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleDelete = () => {
-    const { onDelete, onExit } = this.props
+    const { showToast, intl, onDelete, onExit } = this.props
     const { data } = this.state
 
     this.setState({ isLoading: true }, async () => {
       try {
         await onDelete({
           variables: {
-            id: data.id,
+            uuid: data.uuid,
           },
         })
+        showToast({message: intl.formatMessage({id: 'pages.admin.pages.form.delete.success'}), horizontalPosition: 'right'})
 
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
           console.log(err)
 
-          alert('Error: route could not be deleted.')
+          showToast({message: intl.formatMessage({ id: 'pages.admin.pages.form.delete.error' }), horizontalPosition: 'right'})
         })
       }
     })
@@ -144,7 +162,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { onExit, onSave } = this.props
+    const { intl, onExit, onSave, showToast } = this.props
 
     event.preventDefault()
 
@@ -157,18 +175,16 @@ class FormContainer extends Component<Props, State> {
             variables: {
               route: {
                 ...this.state.data,
-                id:
-                  this.state.data.id === 'new' ? undefined : this.state.data.id,
               },
             },
           })
-
+          showToast({message: intl.formatMessage({id: 'pages.admin.pages.form.save.success'}), horizontalPosition: 'right'})
           onExit()
         } catch (err) {
           this.setState({ isLoading: false }, () => {
-            console.log(err)
+            console.error(err)
 
-            alert('Error: route could not be saved.')
+            showToast({message: intl.formatMessage({ id: 'pages.admin.pages.form.save.error' }), horizontalPosition: 'right'})
           })
         }
       })
@@ -178,4 +194,4 @@ class FormContainer extends Component<Props, State> {
   }
 }
 
-export default withRuntimeContext(FormContainer)
+export default compose(withRuntimeContext, injectIntl)(FormContainer)
