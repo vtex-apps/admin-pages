@@ -73,7 +73,7 @@
   "pages.editor.components.conditions.custom.label": "Adicionar condições customizadas",
   "pages.editor.components.conditions.custom.placeholder": "Selecionar condições...",
   "pages.editor.components.conditions.native.label": "Aplicar configurações para",
-  "pages.editor.components.configurations.button.create": "Criar configuração",
+  "pages.editor.components.configurations.button.create": "Adicionar conteúdo",
   "pages.editor.components.configurations.button.edit": "Editar",
   "pages.editor.components.configurations.customConditions": "Condições customizadas:",
   "pages.editor.components.configurations.defaultTitle": "Sem título",

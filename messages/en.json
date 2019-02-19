@@ -79,7 +79,7 @@
   "pages.editor.components.conditions.custom.label": "Add custom conditions",
   "pages.editor.components.conditions.custom.placeholder": "Select conditions...",
   "pages.editor.components.conditions.native.label": "Apply configurations to",
-  "pages.editor.components.configurations.button.create": "Create configuration",
+  "pages.editor.components.configurations.button.create": "Add content",
   "pages.editor.components.configurations.button.edit": "Edit",
   "pages.editor.components.configurations.customConditions": "Custom conditions:",
   "pages.editor.components.configurations.defaultTitle": "Untitled",

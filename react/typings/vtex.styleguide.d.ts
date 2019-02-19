@@ -137,6 +137,7 @@ declare module 'vtex.styleguide' {
   export const Alert: ComponentType<any>
   export const Box: ComponentType<any>
   export const Button: ComponentType<any>
+  export const ButtonWithIcon: ComponentType<any>
   export const Card: ComponentType<any>
   export const Checkbox: ComponentType<any>
   export class DatePicker extends Component<DatePickerProps> {}
@@ -148,6 +149,7 @@ declare module 'vtex.styleguide' {
   export const IconCaretDown: ComponentType<any>
   export const IconCaretUp: ComponentType<any>
   export const IconClose: ComponentType<any>
+  export const IconOptionsDots: ComponentType<any>
   export const Input: ComponentType<any>
   export const Modal: ComponentType<any>
   export const PageHeader: ComponentType<any>

@@ -1,6 +1,8 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
-import { Button } from 'vtex.styleguide'
+import { ButtonWithIcon } from 'vtex.styleguide'
+
+import AddIcon from '../../../../icons/AddIcon'
 
 interface Props {
   onClick: (event: Event) => void
@@ -11,11 +13,16 @@ const CreateButton = ({
   onClick,
 }: Props & ReactIntl.InjectedIntlProps) => (
   <div className="mh5 mt5">
-    <Button block onClick={onClick} variation="tertiary">
+    <ButtonWithIcon
+      block
+      icon={<AddIcon />}
+      onClick={onClick}
+      variation="tertiary"
+    >
       {intl.formatMessage({
         id: 'pages.editor.components.configurations.button.create',
       })}
-    </Button>
+    </ButtonWithIcon>
   </div>
 )
 
