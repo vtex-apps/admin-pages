@@ -12,14 +12,12 @@ import { ActionMenuOption } from './typings'
 
 interface CustomProps extends SortableElementProps {
   component: NormalizedComponent
-  editor: EditorContext
   onDelete: (treePath: string) => void
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
   onMouseLeave: () => void
-  shouldRenderOptions: boolean
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -49,16 +47,7 @@ class SortableListItem extends Component<Props, State> {
   }
 
   public render() {
-    const {
-      component,
-      editor,
-      onEdit,
-      onMouseEnter,
-      onMouseLeave,
-      shouldRenderOptions,
-    } = this.props
-
-    const shouldRenderActionMenu = shouldRenderOptions && component.isSortable
+    const { component, onEdit, onMouseEnter, onMouseLeave } = this.props
 
     const subitems = component.components
 
@@ -70,14 +59,11 @@ class SortableListItem extends Component<Props, State> {
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
-          {shouldRenderOptions && component.isSortable && (
+          {component.isSortable && (
             <DragHandle onMouseEnter={this.handleMouseEnter} />
           )}
           <Item
-            hasLeftPadding={
-              editor.mode === 'content' ||
-              (shouldRenderOptions && !component.isSortable)
-            }
+            hasLeftPadding={!component.isSortable}
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
@@ -86,14 +72,12 @@ class SortableListItem extends Component<Props, State> {
           />
           {subitems && (
             <ExpandArrow
-              hasRightMargin={
-                editor.mode === 'layout' && !shouldRenderActionMenu
-              }
+              hasRightMargin={!component.isSortable}
               isExpanded={this.state.isExpanded}
               onClick={this.toggleExpansion}
             />
           )}
-          {shouldRenderActionMenu && (
+          {component.isSortable && (
             <ActionMenu options={this.actionMenuOptions} />
           )}
         </div>

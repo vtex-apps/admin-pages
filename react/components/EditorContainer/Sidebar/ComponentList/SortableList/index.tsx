@@ -8,8 +8,6 @@ import SortableListItem from './SortableListItem'
 
 interface CustomProps {
   components: NormalizedComponent[]
-  editor: EditorContext
-  isSortable: boolean
   onDelete: (treePath: string) => void
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseEnter: (
@@ -23,8 +21,6 @@ type Props = CustomProps & ToastConsumerRenderProps
 const SortableList = SortableContainer<Props>(
   ({
     components,
-    editor,
-    isSortable,
     onDelete,
     onEdit,
     onMouseEnter,
@@ -34,15 +30,13 @@ const SortableList = SortableContainer<Props>(
       {components.map((component, index) => (
         <SortableListItem
           component={component}
-          disabled={!isSortable || !component.isSortable}
-          editor={editor}
+          disabled={!component.isSortable}
           index={index}
           key={component.treePath}
           onDelete={onDelete}
           onEdit={onEdit}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
-          shouldRenderOptions={isSortable}
         />
       ))}
     </ul>

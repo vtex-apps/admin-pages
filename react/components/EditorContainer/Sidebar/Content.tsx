@@ -6,7 +6,6 @@ import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
 import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
-import TemplateEditor from './TemplateEditor'
 import { SidebarComponent } from './typings'
 import { getComponents } from './utils'
 
@@ -64,23 +63,14 @@ class Content extends Component<Props, State> {
       <FormMetaConsumer>
         {formMeta => (
           <ModalConsumer>
-            {modal =>
-              editor.mode === 'layout' ? (
-                <TemplateEditor
-                  editor={editor}
-                  formMeta={formMeta}
-                  iframeRuntime={iframeRuntime}
-                  modal={modal}
-                />
-              ) : (
-                <ConfigurationList
-                  editor={editor}
-                  formMeta={formMeta}
-                  iframeRuntime={iframeRuntime}
-                  modal={modal}
-                />
-              )
-            }
+            {modal => (
+              <ConfigurationList
+                editor={editor}
+                formMeta={formMeta}
+                iframeRuntime={iframeRuntime}
+                modal={modal}
+              />
+            )}
           </ModalConsumer>
         )}
       </FormMetaConsumer>

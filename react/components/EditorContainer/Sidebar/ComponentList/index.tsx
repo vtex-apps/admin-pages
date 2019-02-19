@@ -78,7 +78,6 @@ class ComponentList extends Component<Props, State> {
 
   public render() {
     const {
-      editor,
       intl,
       onMouseEnterComponent,
       onMouseLeaveComponent,
@@ -86,8 +85,6 @@ class ComponentList extends Component<Props, State> {
     } = this.props
 
     const hasChanges = this.state.changes.length > 0
-
-    const isSortable = editor.mode === 'layout'
 
     return (
       <Fragment>
@@ -111,8 +108,6 @@ class ComponentList extends Component<Props, State> {
         <div className="flex flex-column justify-between flex-grow-1">
           <SortableList
             components={this.state.components}
-            editor={editor}
-            isSortable={isSortable}
             lockAxis="y"
             onDelete={this.handleDelete}
             onEdit={this.handleEdit}
@@ -120,7 +115,7 @@ class ComponentList extends Component<Props, State> {
             onMouseLeave={onMouseLeaveComponent}
             onSortEnd={this.handleSortEnd}
             showToast={showToast}
-            useDragHandle={isSortable}
+            useDragHandle
           />
           <div className="bt b--light-silver" />
           <div
