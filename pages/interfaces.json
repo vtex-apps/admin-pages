@@ -1,27 +1,33 @@
 {
-  "admin.cms-pages": {
+  "admin.cms": {
+    "around": ["wrapper"]
+  },
+  "admin.cms.pages": {
     "component": "PageList"
   },
-  "admin.cms-page-details": {
+  "admin.cms.page-details": {
     "component": "PageForm"
   },
-  "admin.cms-redirects": {
+  "admin.cms.redirects": {
     "component": "RedirectList"
   },
-  "admin.cms-redirect-details": {
+  "admin.cms.redirect-details": {
     "component": "RedirectForm"
   },
-  "admin.cms-settings": {
+  "admin.cms.settings": {
     "component": "Settings"
   },
-  "admin.cms-storefront-home": {
+  "admin.cms.storefront-home": {
     "component": "PageEditor"
   },
-  "admin.cms-storefront": {
+  "admin.cms.storefront": {
     "component": "PageEditor"
   },
   "highlight-overlay.cms": {
     "component": "HighlightOverlay",
     "extensible": "vtex"
+  },
+  "wrapper": {
+    "component": "Wrapper"
   }
 }
