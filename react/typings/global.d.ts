@@ -35,18 +35,16 @@ declare global {
     subject: string
     verb: string
     objectJSON: string
-    object: any
-    error: any
   }
 
   interface ConditionArg {
-    id: string
+    id?: string
     allMatches: boolean
     statements: ConditionStatementArg[]
   }
 
   interface Page {
-    pageId: string
+    pageId?: string
     condition: ConditionArg
     template: string
   }
@@ -241,4 +239,7 @@ declare global {
     startLoading: () => void
     stopLoading: () => void
   }
+
+  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
 }
