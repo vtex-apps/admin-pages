@@ -1,6 +1,11 @@
 import { path } from 'ramda'
 import React from 'react'
-import { ConditionsProps, Dropdown, IconClose } from 'vtex.styleguide'
+import {
+  ConditionsProps,
+  ConditionsStatement,
+  Dropdown,
+  IconClose,
+} from 'vtex.styleguide'
 
 import { ConditionFormsData } from 'pages'
 import SelectConditions from './SelectConditions'
@@ -10,15 +15,15 @@ export interface ConditionalTemplatePickerProps {
   formErrors: Partial<{ [key in keyof Route]: string }>
   onChangeOperatorConditionalTemplate: (
     uniqueId: number,
-    operator: ConditionsProps['operator'],
+    operator: ConditionsProps['operator']
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
-    template: string,
+    template: string
   ) => void
   onChangeStatementsConditionalTemplate: (
     uniqueId: number,
-    statements: ConditionStatementArg[],
+    statements: ConditionsStatement[]
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
   operator: ConditionsProps['operator']
@@ -74,7 +79,7 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
         />
         <div className="flex flex-column w-100 mt5">
           <SelectConditions
-            onChangeOperator={({operator: newOperator}) => {
+            onChangeOperator={({ operator: newOperator }) => {
               onChangeOperatorConditionalTemplate(pageId, newOperator)
             }}
             operator={operator}
