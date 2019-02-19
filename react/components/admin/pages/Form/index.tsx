@@ -4,7 +4,11 @@ import React, { Component } from 'react'
 import { compose, MutationFn } from 'react-apollo'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { ConditionsProps, ToastConsumerFunctions } from 'vtex.styleguide'
+import {
+  ConditionsProps,
+  ConditionsStatement,
+  ToastConsumerFunctions,
+} from 'vtex.styleguide'
 
 import { RouteFormData } from 'pages'
 
@@ -98,29 +102,27 @@ class FormContainer extends Component<Props, State> {
 
   private handleChangeTemplateConditionalTemplate = (
     uniqueId: number,
-    template: string,
+    template: string
   ) => {
     this.setState(getChangeTemplateConditionalTemplateState(uniqueId, template))
   }
 
   private handleChangeOperatorConditionalTemplate = (
     uniqueId: number,
-    operator: ConditionsProps['operator'],
+    operator: NonNullable<ConditionsProps['operator']>
   ) => {
     this.setState(getChangeOperatorConditionalTemplateState(uniqueId, operator))
   }
 
   private handleChangeStatementsConditionalTemplate = (
     uniqueId: number,
-    statements: ConditionStatementArg[],
+    statements: ConditionsStatement[]
   ) => {
-    this.setState(
-      getChangeStatementsConditionalTemplate(uniqueId, statements),
-    )
+    this.setState(getChangeStatementsConditionalTemplate(uniqueId, statements))
   }
 
   private getDetailChangeHandler = (detailName: string) => (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newDetailValue = e.target.value
 
@@ -145,14 +147,25 @@ class FormContainer extends Component<Props, State> {
             uuid: data.uuid,
           },
         })
-        showToast({message: intl.formatMessage({id: 'pages.admin.pages.form.delete.success'}), horizontalPosition: 'right'})
+
+        showToast({
+          horizontalPosition: 'right',
+          message: intl.formatMessage({
+            id: 'pages.admin.pages.form.delete.success',
+          }),
+        })
 
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
           console.log(err)
 
-          showToast({message: intl.formatMessage({ id: 'pages.admin.pages.form.delete.error' }), horizontalPosition: 'right'})
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage({
+              id: 'pages.admin.pages.form.delete.error',
+            }),
+          })
         })
       }
     })
@@ -169,24 +182,41 @@ class FormContainer extends Component<Props, State> {
 
     const nextState = getValidateFormState(this.state)
     if (isEmpty(nextState.formErrors)) {
-      const {auth, blockId, context, declarer, domain, interfaceId, pages, path, routeId, title, uuid} = this.state.data
+      const {
+        auth,
+        blockId,
+        context,
+        declarer,
+        domain,
+        interfaceId,
+        pages,
+        path,
+        routeId,
+        title,
+        uuid,
+      } = this.state.data
 
-      const getObjectJson = (dateInfo: { date: Date, to: Date, from: Date }, verb: DateVerbOptions) => {
-        return JSON.stringify({
-          between: {
-            from: dateInfo.from,
-            to: dateInfo.to,
-          },
-          from: {
-            from: dateInfo.date
-          },
-          is: {
-            from: dateInfo.date,
-          },
-          to: {
-            to: dateInfo.date
-          }
-        }[verb])
+      const getObjectJson = (
+        dateInfo: { date: Date; to: Date; from: Date },
+        verb: DateVerbOptions
+      ) => {
+        return JSON.stringify(
+          {
+            between: {
+              from: dateInfo.from,
+              to: dateInfo.to,
+            },
+            from: {
+              from: dateInfo.date,
+            },
+            is: {
+              from: dateInfo.date,
+            },
+            to: {
+              to: dateInfo.date,
+            },
+          }[verb]
+        )
       }
 
       this.setState({ isLoading: true }, async () => {
@@ -200,39 +230,52 @@ class FormContainer extends Component<Props, State> {
                 declarer,
                 domain,
                 interfaceId,
-                pages: pages.map((page) => {
+                pages: pages.map(page => {
                   return {
                     condition: {
                       allMatches: page.condition.allMatches,
                       id: page.condition.id || undefined,
-                      statements: page.condition.statements.map(({
-                        object,
-                        subject,
-                        verb,
-                      }) => ({
-                        objectJSON: getObjectJson(object, verb as DateVerbOptions),
-                        subject,
-                        verb,
-                      }))
+                      statements: page.condition.statements.map(
+                        ({ object, subject, verb }) => ({
+                          objectJSON: getObjectJson(
+                            object,
+                            verb as DateVerbOptions
+                          ),
+                          subject,
+                          verb,
+                        })
+                      ),
                     },
                     pageId: page.pageId || undefined,
-                    template: page.template
+                    template: page.template,
                   }
                 }),
                 path,
                 routeId: routeId || `${interfaceId}#${path.replace('/', '')}`,
                 title,
                 uuid,
-              }
-            }
+              },
+            },
           })
-          showToast({message: intl.formatMessage({id: 'pages.admin.pages.form.save.success'}), horizontalPosition: 'right'})
+
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage({
+              id: 'pages.admin.pages.form.save.success',
+            }),
+          })
+
           onExit()
         } catch (err) {
           this.setState({ isLoading: false }, () => {
             console.error(err)
 
-            showToast({message: intl.formatMessage({ id: 'pages.admin.pages.form.save.error' }), horizontalPosition: 'right'})
+            showToast({
+              horizontalPosition: 'right',
+              message: intl.formatMessage({
+                id: 'pages.admin.pages.form.save.error',
+              }),
+            })
           })
         }
       })
@@ -242,4 +285,7 @@ class FormContainer extends Component<Props, State> {
   }
 }
 
-export default compose(withRuntimeContext, injectIntl)(FormContainer)
+export default compose(
+  withRuntimeContext,
+  injectIntl
+)(FormContainer)

@@ -3,7 +3,7 @@ import { State } from '../index'
 
 export const getChangeOperatorConditionalTemplateState = (
   uniqueId: number,
-  operator: ConditionsProps['operator']
+  operator: NonNullable<ConditionsProps['operator']>
 ) => (prevState: State) => {
   const newPages = prevState.data.pages.map(page => {
     if (page.uniqueId === uniqueId) {

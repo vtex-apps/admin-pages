@@ -14,7 +14,11 @@ import {
   ConditionalTemplateSectionProps,
 } from './ConditionalTemplateSection'
 
-interface CustomProps extends ConditionalTemplateSectionProps {
+type TemplateSectionProps = Omit<
+  ConditionalTemplateSectionProps,
+  'pages' | 'blockId'
+>
+interface CustomProps extends TemplateSectionProps {
   data: RouteFormData
   detailChangeHandlerGetter: (
     detailName: keyof Route
@@ -26,10 +30,6 @@ interface CustomProps extends ConditionalTemplateSectionProps {
   onLoginToggle: () => void
   onSave: (event: React.FormEvent) => void
   onAddConditionalTemplate: () => void
-  onChangeConditionsConditionalTemplate: (
-    uniqueId: number,
-    conditions: string[]
-  ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
     template: string

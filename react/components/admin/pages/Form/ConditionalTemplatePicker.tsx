@@ -15,7 +15,7 @@ export interface ConditionalTemplatePickerProps {
   formErrors: Partial<{ [key in keyof Route]: string }>
   onChangeOperatorConditionalTemplate: (
     uniqueId: number,
-    operator: ConditionsProps['operator']
+    operator: NonNullable<ConditionsProps['operator']>
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
