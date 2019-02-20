@@ -2,6 +2,7 @@ import React from 'react'
 
 interface Props {
   typography: Font
+  textColor?: string
 }
 
 const Typography: React.SFC<Props> = ({
@@ -12,10 +13,12 @@ const Typography: React.SFC<Props> = ({
     letterSpacing,
     textTransform,
   },
+  textColor,
 }) => {
   return (
     <div
       style={{
+        color: textColor || 'black',
         fontFamily,
         fontSize,
         fontWeight,
