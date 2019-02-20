@@ -1,4 +1,6 @@
 import React from 'react'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ConditionsProps,
   ConditionsRenderFn,
@@ -9,7 +11,7 @@ import {
 
 import { ConditionFormsData } from 'pages'
 
-interface Props {
+interface ComponentProps {
   condition: ConditionFormsData
   errorMessage?: string
   operator: ConditionsProps['operator']
@@ -17,19 +19,60 @@ interface Props {
   onChangeStatements: (statements: ConditionsStatement[]) => void
 }
 
+type Props = ComponentProps & RenderContextProps & InjectedIntlProps
+
 class SelectConditions extends React.Component<Props> {
   private options: ConditionsProps['options']
+  private labels: ConditionsProps['labels']
 
   constructor(props: Props) {
     super(props)
 
+    const intl = props.intl
+    const translate = (id: string) => intl.formatMessage({ id })
+
+    this.labels = {
+      addConditionBtn: translate(
+        'pages.admin.pages.form.templates.simple.conditions.add-button'
+      ),
+      addNewCondition: translate(
+        'pages.admin.pages.form.templates.simple.conditions.add-button'
+      ),
+      delete: translate('pages.admin.pages.form.button.delete'),
+      headerPrefix: translate(
+        'pages.admin.pages.form.templates.simple.conditions.header-prefix'
+      ),
+      headerSufix: translate(
+        'pages.admin.pages.form.templates.simple.conditions.header-suffix'
+      ),
+      noConditions: translate(
+        'pages.admin.pages.form.templates.simple.conditions.no-conditions'
+      ),
+      operatorAll: translate(
+        'pages.admin.pages.form.templates.simple.conditions.operator-all'
+      ),
+      operatorAnd: translate(
+        'pages.admin.pages.form.templates.simple.conditions.operator-and'
+      ),
+      operatorAny: translate(
+        'pages.admin.pages.form.templates.simple.conditions.operator-any'
+      ),
+      operatorOr: translate(
+        'pages.admin.pages.form.templates.simple.conditions.operator-or'
+      ),
+    }
+
     this.options = {
       date: {
-        label: 'Date',
+        label: translate(
+          'pages.admin.pages.form.templates.simple.conditions.date'
+        ),
         unique: true,
         verbs: [
           {
-            label: 'is',
+            label: translate(
+              'pages.admin.pages.form.templates.simple.conditions.date.equals'
+            ),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -37,7 +80,9 @@ class SelectConditions extends React.Component<Props> {
             value: 'is',
           },
           {
-            label: 'is between',
+            label: translate(
+              'pages.admin.pages.form.templates.simple.conditions.date.range'
+            ),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerRangeObject,
@@ -45,7 +90,9 @@ class SelectConditions extends React.Component<Props> {
             value: 'between',
           },
           {
-            label: 'to',
+            label: translate(
+              'pages.admin.pages.form.templates.simple.conditions.date.to'
+            ),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -53,7 +100,9 @@ class SelectConditions extends React.Component<Props> {
             value: 'to',
           },
           {
-            label: 'from',
+            label: translate(
+              'pages.admin.pages.form.templates.simple.conditions.date.from'
+            ),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -69,8 +118,12 @@ class SelectConditions extends React.Component<Props> {
     return (
       <>
         <Conditions
+          labels={this.labels}
           options={this.options}
-          subjectPlaceholder="Select subject"
+          subjectPlaceholder={this.props.intl.formatMessage({
+            id:
+              'pages.admin.pages.form.templates.simple.conditions.category-placeholder',
+          })}
           statements={this.props.condition.statements}
           operator={this.props.operator}
           onChangeOperator={this.handleToggleOperator}
@@ -101,6 +154,9 @@ class SelectConditions extends React.Component<Props> {
     values,
     statementIndex,
   }) => {
+    const {
+      culture: { locale },
+    } = this.props.runtime
     return (
       <DatePicker
         value={values && values.date}
@@ -113,7 +169,7 @@ class SelectConditions extends React.Component<Props> {
           })
           this.props.onChangeStatements(newStatements)
         }}
-        locale="en-US"
+        locale={locale}
       />
     )
   }
@@ -123,18 +179,14 @@ class SelectConditions extends React.Component<Props> {
     values,
     statementIndex,
   }) => {
+    const {
+      culture: { locale },
+    } = this.props.runtime
     return (
       <div className="flex">
         <div style={{ maxWidth: 140 }}>
           <DatePicker
             value={values && values.from}
-            errorMessage={
-              statements[statementIndex].object &&
-              statements[statementIndex].object.from >=
-                statements[statementIndex].object.to
-                ? 'Must be before end date'
-                : ''
-            }
             onChange={date => {
               const newStatements = statements.map((statement, index) => {
                 return {
@@ -147,7 +199,7 @@ class SelectConditions extends React.Component<Props> {
               })
               this.props.onChangeStatements(newStatements)
             }}
-            locale="en-US"
+            locale={locale}
           />
         </div>
 
@@ -168,7 +220,7 @@ class SelectConditions extends React.Component<Props> {
               })
               this.props.onChangeStatements(newStatements)
             }}
-            locale="en-US"
+            locale={locale}
           />
         </div>
       </div>
@@ -176,4 +228,4 @@ class SelectConditions extends React.Component<Props> {
   }
 }
 
-export default SelectConditions
+export default withRuntimeContext(injectIntl(SelectConditions))
