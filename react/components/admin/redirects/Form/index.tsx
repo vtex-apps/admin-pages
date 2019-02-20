@@ -1,17 +1,15 @@
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Button, Input, Toggle } from 'vtex.styleguide'
+import { Button, DatePicker, Input, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-
-import DatePicker from './DatePicker'
 
 interface CustomProps {
   initialData: Redirect
@@ -141,7 +139,8 @@ class Form extends Component<Props, State> {
                   <DatePicker
                     locale={locale}
                     onChange={this.updateEndDate}
-                    selected={
+                    useTime={true}
+                    value={
                       data.endDate
                         ? moment(data.endDate).toDate()
                         : moment()
@@ -280,8 +279,8 @@ class Form extends Component<Props, State> {
     }))
   }
 
-  private updateEndDate = (value: Moment) => {
-    this.handleInputChange({ endDate: value.utc().format() })
+  private updateEndDate = (value: Date) => {
+    this.handleInputChange({ endDate: value })
   }
 
   private updateFrom = (event: Event) => {

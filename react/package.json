@@ -8,11 +8,9 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
-    "date-fns": "2.0.0-alpha.27",
     "exenv": "^1.2.2",
     "lodash.startcase": "^4.4.0",
     "ramda": "^0.25.0",
-    "react-datepicker": "^2.1.0",
     "react-draggable": "^3.0.5",
     "react-dropzone": "^4.2.13",
     "react-jsonschema-form": "^1.0.1",
