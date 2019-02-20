@@ -1,7 +1,5 @@
-mutation SaveRoute(
-  $route: NewRouteInput
-) {
-  saveRoute(
-    route: $route
-  )
+mutation SaveRoute($route: NewRouteInput) {
+  saveRoute(route: $route) {
+    uuid
+  }
 }
