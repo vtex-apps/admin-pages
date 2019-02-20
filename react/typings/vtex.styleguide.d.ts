@@ -139,7 +139,6 @@ declare module 'vtex.styleguide' {
   export const Card: ComponentType<any>
   export const Checkbox: ComponentType<any>
   export class DatePicker extends Component<DatePickerProps> {}
-<<<<<<< HEAD
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
   export class EXPERIMENTAL_Conditions extends Component<ConditionsProps>{}
