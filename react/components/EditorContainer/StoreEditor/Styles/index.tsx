@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
 
 import StyleEditor from './StyleEditor'
 import StyleList from './StyleList'
@@ -7,36 +7,20 @@ interface Props {
   iframeWindow: Window
 }
 
-interface State {
-  editing?: Style
+type EditingState = Style | undefined
+
+const Styles: React.SFC<Props> = ({ iframeWindow }) => {
+  const [editing, setEditing] = useState<EditingState>(undefined)
+
+  return editing ? (
+    <StyleEditor
+      iframeWindow={iframeWindow}
+      style={editing}
+      stopEditing={() => setEditing(undefined)}
+    />
+  ) : (
+    <StyleList iframeWindow={iframeWindow} startEditing={setEditing} />
+  )
 }
 
-export default class Styles extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      editing: undefined,
-    }
-  }
-
-  public render() {
-    const { iframeWindow } = this.props
-    const { editing } = this.state
-    return editing ? (
-      <StyleEditor
-        iframeWindow={iframeWindow}
-        style={editing}
-        stopEditing={() => this.startEditing()}
-      />
-    ) : (
-      <StyleList iframeWindow={iframeWindow} startEditing={this.startEditing} />
-    )
-  }
-
-  private startEditing = (style?: Style) => {
-    this.setState({
-      editing: style,
-    })
-  }
-}
+export default Styles
