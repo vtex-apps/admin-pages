@@ -1,56 +1,48 @@
 import React from 'react'
-import { Mutation, MutationFn } from 'react-apollo'
+import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
-import AvailableConditions from '../../../../queries/AvailableConditions.graphql'
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 
+import { SaveRouteVariables } from './typings'
 import { updateStoreAfterDelete, updateStoreAfterSave } from './utils'
 
-import { Query, QueryResult } from 'react-apollo'
-
 interface TemplateVariables {
-  renderMajor: number
-  routeId: string | null
+  interfaceId: string
 }
 
 interface Props {
+  interfaceId: string
   children: (mutations: OperationsObj) => React.ReactNode
 }
 
 interface OperationsObj {
   deleteRoute: MutationFn
-  saveRoute: MutationFn
-  conditionsResults: QueryResult
+  saveRoute: MutationFn<any, SaveRouteVariables>
   templatesResults: QueryResult<any, TemplateVariables>
 }
 
-const Operations = (props: Props) => (
-  <Query
+const Operations = ({interfaceId, children}: Props) => (
+  <Query<Template[], TemplateVariables>
     query={AvailableTemplates}
-    variables={{ renderMajor: 7, routeId: null } as TemplateVariables}
+    variables={{ interfaceId }}
   >
     {templatesResults => (
-      <Query query={AvailableConditions}>
-        {conditionsResults => (
-          <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
-            {deleteRoute => (
-              <Mutation mutation={SaveRoute} update={updateStoreAfterSave}>
-                {saveRoute =>
-                  props.children({
-                    conditionsResults,
-                    deleteRoute,
-                    saveRoute,
-                    templatesResults,
-                  })
-                }
-              </Mutation>
-            )}
+      <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
+        {deleteRoute => (
+          <Mutation<any, SaveRouteVariables> mutation={SaveRoute} update={updateStoreAfterSave}>
+            {saveRoute =>
+              children({
+                deleteRoute,
+                saveRoute,
+                templatesResults,
+              })
+            }
           </Mutation>
         )}
-      </Query>
+      </Mutation>
     )}
   </Query>
 )

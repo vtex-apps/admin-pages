@@ -18,7 +18,7 @@ const Entry = ({ route, runtime }: Props) => (
       onClick={() => {
         runtime.navigate({
           page: ROUTES_FORM,
-          params: { id: route.id },
+          params: { id: encodeURIComponent(route.routeId) },
         })
       }}
     >

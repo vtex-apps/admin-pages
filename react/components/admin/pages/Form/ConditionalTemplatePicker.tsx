@@ -1,22 +1,32 @@
 import { path } from 'ramda'
 import React from 'react'
-import { Dropdown, IconClose } from 'vtex.styleguide'
+import {
+  ConditionsProps,
+  ConditionsStatement,
+  Dropdown,
+  IconClose,
+} from 'vtex.styleguide'
 
-import Select from '../../../Select'
+import { ConditionFormsData } from 'pages'
+import SelectConditions from './SelectConditions'
 
-interface ConditionalTemplatePickerProps {
-  availableConditions: Condition[]
-  conditions: string[]
-  onChangeConditionsConditionalTemplate: (
+export interface ConditionalTemplatePickerProps {
+  condition: ConditionFormsData
+  formErrors: Partial<{ [key in keyof Route]: string }>
+  onChangeOperatorConditionalTemplate: (
     uniqueId: number,
-    conditions: string[],
+    operator: NonNullable<ConditionsProps['operator']>
   ) => void
   onChangeTemplateConditionalTemplate: (
     uniqueId: number,
-    template: string,
+    template: string
+  ) => void
+  onChangeStatementsConditionalTemplate: (
+    uniqueId: number,
+    statements: ConditionsStatement[]
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  operator: ConditionsProps['operator']
   pageId: number
   template: string
   templates: Template[]
@@ -25,19 +35,20 @@ interface ConditionalTemplatePickerProps {
 type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
 
 export const ConditionalTemplatePicker: React.SFC<Props> = ({
-  availableConditions,
-  conditions,
+  condition,
   formErrors,
   intl,
-  onChangeConditionsConditionalTemplate,
+  onChangeOperatorConditionalTemplate,
+  onChangeStatementsConditionalTemplate,
   onChangeTemplateConditionalTemplate,
+  operator,
   onRemoveConditionalTemplate,
   pageId,
   template,
   templates,
 }) => {
   const hasError =
-    !!path(['pages', pageId, 'conditions'], formErrors) ||
+    !!path(['pages', pageId, 'condition'], formErrors) ||
     !!path(['pages', pageId, 'template'], formErrors)
 
   const closeButtonStyle = hasError
@@ -48,8 +59,8 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
     : undefined
 
   return (
-    <div className={`flex ${!hasError && 'items-center'} mv5 mw7`}>
-      <div className="flex-grow-1">
+    <div className={`flex ${!hasError ? 'items-center' : ''} mv5`}>
+      <div className="flex flex-column flex-grow-1 mr4 ph4">
         <Dropdown
           label={intl.formatMessage({
             id: 'pages.admin.pages.form.templates.conditional.template.label',
@@ -66,29 +77,24 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
             })
           }
         />
-      </div>
-      <div className="flex flex-column w-50 mh5">
-        <label>
-          <span className="dib mb3 w-100 f6">
-            <span>
-              {intl.formatMessage({
-                id:
-                  'pages.admin.pages.form.templates.conditional.conditions.label',
-              })}
-            </span>
-          </span>
-        </label>
-        <Select
-          errorMessage={path(['pages', pageId, 'conditions'], formErrors)}
-          onChange={values => {
-            onChangeConditionsConditionalTemplate(pageId, values)
-          }}
-          options={availableConditions.map(({ conditionId }) => ({
-            label: conditionId,
-            value: conditionId,
-          }))}
-          value={conditions}
-        />
+        <div className="flex flex-column w-100 mt5">
+          <SelectConditions
+            onChangeOperator={({ operator: newOperator }) => {
+              onChangeOperatorConditionalTemplate(pageId, newOperator)
+            }}
+            operator={operator}
+            condition={condition}
+            onChangeStatements={statements => {
+              onChangeStatementsConditionalTemplate(pageId, statements)
+            }}
+            errorMessage={
+              path(['pages', pageId, 'condition'], formErrors) &&
+              intl.formatMessage({
+                id: path(['pages', pageId, 'condition'], formErrors) as string,
+              })
+            }
+          />
+        </div>
       </div>
       <button
         type="button"

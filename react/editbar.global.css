@@ -1,8 +1,7 @@
 @import '~react-select/dist/react-select.css';
 
-@import 'datePicker.css';
-
-html, body {
+html,
+body {
   height: 100%;
 }
 

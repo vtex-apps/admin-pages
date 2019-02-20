@@ -1,16 +1,22 @@
 /* Typings for `render-runtime` */
 declare module 'vtex.render-runtime' {
-  import { Component, ReactElement } from 'react'
+  import { Component, ComponentType, ReactElement } from 'react'
 
   export const ExtensionPoint: ReactElement
-  export const Helmet: ReactElement
+  export const Helmet: ComponentType<any>
   export const Link: ReactElement
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
+  // type WithoutRenderContextProps<T extends RenderContextProps> =
   export const withRuntimeContext: <TOriginalProps extends {}>(
-    Component: ComponentType<TOriginalProps & RenderContextProps>,
-  ) => ComponentType<TOriginalProps>
+    Component: ComponentType<TOriginalProps & RenderContextProps>
+  ) => ComponentType<
+    Pick<
+      TOriginalProps,
+      Exclude<keyof TOriginalProps, keyof RenderContextProps>
+    >
+  >
 
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
     getCustomMessages?: (locale: string) => any
@@ -26,6 +32,12 @@ declare module 'vtex.render-runtime' {
   export interface Window extends Window {
     __RENDER_8_COMPONENTS__: ComponentsRegistry
   }
+
+  export const buildCacheLocator = (
+    app: string,
+    type: string,
+    cacheId: string
+  ) => string
 
   const global: Window
 }

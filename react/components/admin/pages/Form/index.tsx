@@ -1,31 +1,44 @@
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
-import { MutationFn } from 'react-apollo'
+import { compose, MutationFn } from 'react-apollo'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
+import {
+  ConditionsProps,
+  ConditionsStatement,
+  ToastConsumerFunctions,
+} from 'vtex.styleguide'
+
+import { RouteFormData } from 'pages'
 
 import Form from './Form'
 import {
   getAddConditionalTemplateState,
-  getChangeConditionsConditionalTemplateState,
+  getChangeOperatorConditionalTemplateState,
+  getChangeStatementsConditionalTemplate,
   getChangeTemplateConditionalTemplateState,
   getLoginToggleState,
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
+import { DateVerbOptions, SaveRouteVariables } from './typings'
 
-interface Props {
-  conditions: Condition[]
-  initialData: Route
+interface ComponentProps {
+  initialData: RouteFormData
   onDelete: MutationFn
   onExit: () => void
-  onSave: MutationFn
+  onSave: MutationFn<any, SaveRouteVariables>
   runtime: RenderContext
   templates: Template[]
+  showToast: ToastConsumerFunctions['showToast']
+  hideToast: ToastConsumerFunctions['hideToast']
 }
 
+type Props = ComponentProps & InjectedIntlProps
+
 export interface State {
-  data: Route
+  data: RouteFormData
   isLoading: boolean
   formErrors: Partial<{ [key in keyof Route]: string }>
 }
@@ -50,7 +63,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public render() {
-    const { conditions, templates, onExit } = this.props
+    const { templates, onExit } = this.props
     const { data, formErrors, isLoading } = this.state
 
     return (
@@ -63,14 +76,16 @@ class FormContainer extends Component<Props, State> {
         onLoginToggle={this.handleLoginToggle}
         onSave={this.handleSave}
         templates={templates}
-        conditions={conditions}
         onAddConditionalTemplate={this.handleAddConditionalTemplate}
         onRemoveConditionalTemplate={this.handleRemoveConditionalTemplate}
         onChangeTemplateConditionalTemplate={
           this.handleChangeTemplateConditionalTemplate
         }
-        onChangeConditionsConditionalTemplate={
-          this.handleChangeConditionsConditionalTemplate
+        onChangeOperatorConditionalTemplate={
+          this.handleChangeOperatorConditionalTemplate
+        }
+        onChangeStatementsConditionalTemplate={
+          this.handleChangeStatementsConditionalTemplate
         }
         formErrors={formErrors}
       />
@@ -87,22 +102,27 @@ class FormContainer extends Component<Props, State> {
 
   private handleChangeTemplateConditionalTemplate = (
     uniqueId: number,
-    template: string,
+    template: string
   ) => {
     this.setState(getChangeTemplateConditionalTemplateState(uniqueId, template))
   }
 
-  private handleChangeConditionsConditionalTemplate = (
+  private handleChangeOperatorConditionalTemplate = (
     uniqueId: number,
-    conditions: string[],
+    operator: NonNullable<ConditionsProps['operator']>
   ) => {
-    this.setState(
-      getChangeConditionsConditionalTemplateState(uniqueId, conditions),
-    )
+    this.setState(getChangeOperatorConditionalTemplateState(uniqueId, operator))
+  }
+
+  private handleChangeStatementsConditionalTemplate = (
+    uniqueId: number,
+    statements: ConditionsStatement[]
+  ) => {
+    this.setState(getChangeStatementsConditionalTemplate(uniqueId, statements))
   }
 
   private getDetailChangeHandler = (detailName: string) => (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newDetailValue = e.target.value
 
@@ -117,15 +137,22 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleDelete = () => {
-    const { onDelete, onExit } = this.props
+    const { showToast, intl, onDelete, onExit } = this.props
     const { data } = this.state
 
     this.setState({ isLoading: true }, async () => {
       try {
         await onDelete({
           variables: {
-            id: data.id,
+            uuid: data.uuid,
           },
+        })
+
+        showToast({
+          horizontalPosition: 'right',
+          message: intl.formatMessage({
+            id: 'pages.admin.pages.form.delete.success',
+          }),
         })
 
         onExit()
@@ -133,7 +160,12 @@ class FormContainer extends Component<Props, State> {
         this.setState({ isLoading: false }, () => {
           console.log(err)
 
-          alert('Error: route could not be deleted.')
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage({
+              id: 'pages.admin.pages.form.delete.error',
+            }),
+          })
         })
       }
     })
@@ -144,31 +176,106 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { onExit, onSave } = this.props
+    const { intl, onExit, onSave, showToast } = this.props
 
     event.preventDefault()
 
     const nextState = getValidateFormState(this.state)
-
     if (isEmpty(nextState.formErrors)) {
+      const {
+        auth,
+        blockId,
+        context,
+        declarer,
+        domain,
+        interfaceId,
+        pages,
+        path,
+        routeId,
+        title,
+        uuid,
+      } = this.state.data
+
+      const getObjectJson = (
+        dateInfo: { date: Date; to: Date; from: Date },
+        verb: DateVerbOptions
+      ) => {
+        return JSON.stringify(
+          {
+            between: {
+              from: dateInfo.from,
+              to: dateInfo.to,
+            },
+            from: {
+              from: dateInfo.date,
+            },
+            is: {
+              from: dateInfo.date,
+            },
+            to: {
+              to: dateInfo.date,
+            },
+          }[verb]
+        )
+      }
+
       this.setState({ isLoading: true }, async () => {
         try {
           await onSave({
             variables: {
               route: {
-                ...this.state.data,
-                id:
-                  this.state.data.id === 'new' ? undefined : this.state.data.id,
+                auth,
+                blockId,
+                context,
+                declarer,
+                domain,
+                interfaceId,
+                pages: pages.map(page => {
+                  return {
+                    condition: {
+                      allMatches: page.condition.allMatches,
+                      id: page.condition.id || undefined,
+                      statements: page.condition.statements.map(
+                        ({ object, subject, verb }) => ({
+                          objectJSON: getObjectJson(
+                            object,
+                            verb as DateVerbOptions
+                          ),
+                          subject,
+                          verb,
+                        })
+                      ),
+                    },
+                    pageId: page.pageId || undefined,
+                    template: page.template,
+                  }
+                }),
+                path,
+                routeId: routeId || `${interfaceId}#${path.replace('/', '')}`,
+                title,
+                uuid,
               },
             },
+          })
+
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage({
+              id: 'pages.admin.pages.form.save.success',
+            }),
           })
 
           onExit()
         } catch (err) {
           this.setState({ isLoading: false }, () => {
-            console.log(err)
+            console.error(err)
 
-            alert('Error: route could not be saved.')
+            showToast({
+              horizontalPosition: 'right',
+              message: intl.formatMessage({
+                id: 'pages.admin.pages.form.save.error',
+              }),
+            })
           })
         }
       })
@@ -178,4 +285,7 @@ class FormContainer extends Component<Props, State> {
   }
 }
 
-export default withRuntimeContext(FormContainer)
+export default compose(
+  withRuntimeContext,
+  injectIntl
+)(FormContainer)

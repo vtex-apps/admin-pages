@@ -79,24 +79,4 @@ BaseInput.defaultProps = {
   required: false,
 }
 
-BaseInput.propTypes = {
-  autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  max: PropTypes.number,
-  min: PropTypes.number,
-  onBlur: PropTypes.func,
-  onChange: PropTypes.func,
-  onFocus: PropTypes.func,
-  options: PropTypes.object,
-  placeholder: PropTypes.string,
-  rawErrors: PropTypes.arrayOf(PropTypes.string),
-  readonly: PropTypes.bool,
-  required: PropTypes.bool,
-  schema: PropTypes.object.isRequired,
-  type: PropTypes.string,
-  value: PropTypes.any,
-}
-
 export default BaseInput

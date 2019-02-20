@@ -1,15 +1,14 @@
-import { NEW_ROUTE_ID } from './consts'
+import startCase from 'lodash.startcase'
 
-export const isNewRoute = (routeId: string) => routeId === NEW_ROUTE_ID
+type NewRouteTypeArg = Pick<Route, 'uuid' | 'declarer'>
+export const isNewRoute = (route: NewRouteTypeArg) => !route.uuid && !route.declarer
 
-const capitalize = (word: string) =>
-  word.charAt(0).toUpperCase() + word.slice(1)
+type GetRouteTitleArg = Pick<Route, 'title' | 'blockId' | 'interfaceId'> & NewRouteTypeArg
+export const getRouteTitle = (route: GetRouteTitleArg) => {
+  if(isNewRoute(route)) {
+    return route.title || ''
+  }
+  return route.title || startCase(route.blockId.split('#')[1] || route.interfaceId.split('.')[route.interfaceId.split('.').length - 1])
+}
 
-export const getRouteTitle = (route: Route) =>
-  route.title ||
-  (!isNewRoute(route.id) && isStoreRoute(route.id)
-    ? capitalize(route.id.split('store/')[1])
-    : '')
-
-export const isStoreRoute = (routeId: string) =>
-  /^store\/.+$/.test(routeId)
+export const isStoreRoute = (domain: Route['domain']) => domain === 'store'

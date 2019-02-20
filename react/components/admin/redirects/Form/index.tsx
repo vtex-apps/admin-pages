@@ -1,17 +1,15 @@
-import moment, { Moment } from 'moment'
+import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
 import { MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Button, Input, Toggle } from 'vtex.styleguide'
+import { Button, DatePicker, Input, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-
-import DatePicker from './DatePicker'
 
 interface CustomProps {
   initialData: Redirect
@@ -134,19 +132,24 @@ class Form extends Component<Props, State> {
                   value={getFormattedLocalizedDate(data.endDate, locale)}
                 />
               ) : (
-                  <Fragment>
-                    <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                      {text => <div className="mb3 w-100 f6">{text}</div>}
-                    </FormattedMessage>
-                    <DatePicker
-                      locale={locale}
-                      onChange={this.updateEndDate}
-                      selected={
-                        data.endDate ? moment(data.endDate) : undefined
-                      }
-                    />
-                  </Fragment>
-                )}
+                <Fragment>
+                  <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                    {text => <div className="mb3 w-100 f6">{text}</div>}
+                  </FormattedMessage>
+                  <DatePicker
+                    locale={locale}
+                    onChange={this.updateEndDate}
+                    useTime={true}
+                    value={
+                      data.endDate
+                        ? moment(data.endDate).toDate()
+                        : moment()
+                            .add(1, 'days')
+                            .toDate()
+                    }
+                  />
+                </Fragment>
+              )}
               <FormFieldSeparator />
             </Fragment>
           )}
@@ -176,12 +179,12 @@ class Form extends Component<Props, State> {
                 })}
               </Button>
             ) : (
-                <Button isLoading={isLoading} size="small" type="submit">
-                  {intl.formatMessage({
-                    id: 'pages.admin.redirects.form.button.create',
-                  })}
-                </Button>
-              )}
+              <Button isLoading={isLoading} size="small" type="submit">
+                {intl.formatMessage({
+                  id: 'pages.admin.redirects.form.button.create',
+                })}
+              </Button>
+            )}
           </div>
         </form>
       </Fragment>
@@ -265,7 +268,7 @@ class Form extends Component<Props, State> {
             ? moment().add(1, 'days')
             : '',
         })
-      },
+      }
     )
   }
 
@@ -276,8 +279,8 @@ class Form extends Component<Props, State> {
     }))
   }
 
-  private updateEndDate = (value: Moment) => {
-    this.handleInputChange({ endDate: value.utc().format() })
+  private updateEndDate = (value: Date) => {
+    this.handleInputChange({ endDate: value })
   }
 
   private updateFrom = (event: Event) => {

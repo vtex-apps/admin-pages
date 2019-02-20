@@ -44,16 +44,4 @@ Toggle.defaultProps = {
   readonly: false,
 }
 
-Toggle.propTypes = {
-  autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
-  id: PropTypes.string.isRequired,
-  onChange: PropTypes.func,
-  readonly: PropTypes.bool,
-  schema: PropTypes.shape({
-    disabled: PropTypes.bool,
-  }).isRequired,
-  value: PropTypes.bool,
-}
-
 export default Toggle

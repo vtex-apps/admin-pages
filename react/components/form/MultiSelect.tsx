@@ -47,7 +47,7 @@ const MultiSelect: React.SFC<Props> = ({
       multi
       onChange={optionValues => {
         const formattedValue = (optionValues as Option[]).map(
-          (item: Option) => item.value as string,
+          (item: Option) => item.value as string
         )
         onChange(formattedValue)
       }}
@@ -63,28 +63,6 @@ MultiSelect.defaultProps = {
   disabled: false,
   placeholder: '',
   value: [],
-}
-
-MultiSelect.propTypes = {
-  autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
-  id: PropTypes.string,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  options: PropTypes.shape({
-    enumOptions: PropTypes.arrayOf(
-      PropTypes.shape({
-        label: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-  }).isRequired,
-  placeholder: PropTypes.string,
-  schema: PropTypes.shape({
-    disabled: PropTypes.bool,
-    title: PropTypes.string.isRequired,
-  }),
-  value: PropTypes.arrayOf(PropTypes.string),
 }
 
 export default MultiSelect

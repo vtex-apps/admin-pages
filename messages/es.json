@@ -10,6 +10,7 @@
   "pages.admin.pages.form.field.login": "Requiere autenticación",
   "pages.admin.pages.form.field.path": "URL",
   "pages.admin.pages.form.field.title": "Título",
+  "pages.admin.pages.form.templates.simple.conditions.add-button": "Añadir nueva condición",
   "pages.admin.pages.form.templates.conditional.addButton": "Añadir template condicional",
   "pages.admin.pages.form.templates.conditional.conditions.label": "Condiciones",
   "pages.admin.pages.form.templates.conditional.description": "Un template condicional permite el uso de un diseño diferente en su página. Este diseño aparecerá cuando corresponda a las condiciones definidas.",

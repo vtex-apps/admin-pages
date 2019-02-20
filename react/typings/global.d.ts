@@ -29,32 +29,38 @@ declare global {
 
   interface Template {
     id: string
-    context: string
+  }
+
+  interface ConditionStatementArg {
+    subject: string
+    verb: string
+    objectJSON: string
+  }
+
+  interface ConditionArg {
+    id?: string
+    allMatches: boolean
+    statements: ConditionStatementArg[]
   }
 
   interface Page {
-    name: string
-    conditions: string[]
+    pageId?: string
+    condition: ConditionArg
     template: string
-    device: string
-    params: Record<string, any>
-    configurationId: string
-    allMatches: boolean
-    declarer: string | null
   }
 
   interface Route {
-    id: string
+    auth: boolean
+    blockId: string
+    context: string | null
+    declarer: string | null
+    domain: string
+    interfaceId: string
+    pages: Page[],
     path: string
-    context: string
-    login: boolean | null
-    cname?: string
-    params?: any
-    disableExternals?: string[]
-    declarer: string
-    template: string
-    title: string
-    pages: Page[]
+    routeId: string
+    title: string | null
+    uuid?: string
   }
 
   interface Routes {
@@ -233,4 +239,7 @@ declare global {
     startLoading: () => void
     stopLoading: () => void
   }
+
+  type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
 }

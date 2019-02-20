@@ -10,11 +10,8 @@ import { isStoreRoute } from './components/admin/pages/utils'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
-interface QueryResponse {
-  data?: {
-    routes: Route[]
-  }
-  loading: boolean
+interface QueryData {
+  routes: Route[]
 }
 
 class PageList extends PureComponent {
@@ -28,8 +25,8 @@ class PageList extends PureComponent {
 
     return (
       <AdminWrapper path={WRAPPER_PATH}>
-        <Query query={RoutesQuery}>
-          {({ data, loading: isLoading }: QueryResponse) => {
+        <Query<QueryData> query={RoutesQuery} variables={{domain: 'store'}}>
+          {({ data, loading: isLoading }) => {
             if (isLoading) {
               startLoading()
 
@@ -41,21 +38,21 @@ class PageList extends PureComponent {
             const routes = data && data.routes
 
             const storeRoutes = routes
-              ? routes.filter(route => isStoreRoute(route.id))
+              ? routes.filter(route => isStoreRoute(route.domain))
               : []
 
             const categorizedRoutes = storeRoutes.reduce(
               (acc: CategorizedRoutes, currRoute: Route) => {
                 const currRouteContext = currRoute.context || ''
 
-                if (currRouteContext.endsWith('ProductSearchContextProvider')) {
+                if (currRouteContext.endsWith('SearchContext')) {
                   return {
                     ...acc,
                     multipleProducts: [...acc.multipleProducts, currRoute],
                   }
                 }
 
-                if (currRouteContext.endsWith('ProductContextProvider')) {
+                if (currRouteContext.endsWith('ProductContext')) {
                   return {
                     ...acc,
                     singleProduct: [...acc.singleProduct, currRoute],
