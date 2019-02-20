@@ -1,4 +1,4 @@
-import { fromPairs, groupBy, mapObjIndexed, toPairs } from 'ramda'
+import { fromPairs, groupBy, toPairs } from 'ramda'
 import React, { useState } from 'react'
 
 import fromTachyonsConfig from '../utils/colors'
@@ -56,31 +56,27 @@ const ColorsEditor: React.SFC<Props> = ({
 
   return (
     <div className="flex-grow-1 overflow-scroll">
-      {Object.values(
-        mapObjIndexed(
-          (group: Array<[string, ColorInfo[]]>, groupName: string) => {
-            return (
-              <ColorGroup
-                groupName={groupName}
-                font={font}
-                semanticColors={semanticColors}
-                startEditing={(token: string) => {
-                  startEditing(token)
-                  addNavigation({
-                    backButton: {
-                      action: () => startEditing(undefined),
-                      text: 'Back to Colors',
-                    },
-                    title: token,
-                  })
-                }}
-                colorsInfo={fromPairs(group)}
-              />
-            )
-          },
-          groups
+      {toPairs(groups).map(groupInfo => {
+        const [groupName, group] = groupInfo
+        return (
+          <ColorGroup
+            groupName={groupName}
+            font={font}
+            semanticColors={semanticColors}
+            startEditing={(token: string) => {
+              startEditing(token)
+              addNavigation({
+                backButton: {
+                  action: () => startEditing(undefined),
+                  text: 'Back to Colors',
+                },
+                title: token,
+              })
+            }}
+            colorsInfo={fromPairs(group)}
+          />
         )
-      )}
+      })}
     </div>
   )
 }
