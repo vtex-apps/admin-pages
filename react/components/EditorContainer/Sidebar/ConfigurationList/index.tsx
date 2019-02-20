@@ -41,7 +41,6 @@ interface Props {
 interface State {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
-  isEditMode: boolean
   newLabel?: string
 }
 
@@ -56,7 +55,6 @@ class ConfigurationList extends Component<Props, State> {
 
     this.state = {
       conditions: [],
-      isEditMode: false,
     }
   }
 
@@ -88,11 +86,9 @@ class ConfigurationList extends Component<Props, State> {
     )
 
     const shouldEnableSaveButton =
-      (this.state.isEditMode &&
-        (formMeta.wasModified ||
           (this.state.configuration &&
-            this.state.configuration.configurationId ===
-              NEW_CONFIGURATION_ID))) ||
+        (formMeta.wasModified ||
+          this.state.configuration.configurationId === NEW_CONFIGURATION_ID)) ||
       false
 
     if (extensionConfigurationsQuery.loading) {
@@ -117,7 +113,7 @@ class ConfigurationList extends Component<Props, State> {
     if (
       extensionConfigurationsQuery.extensionConfigurations &&
       extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-      !this.state.isEditMode
+      !this.state.configuration
     ) {
       return (
         <List
@@ -150,7 +146,7 @@ class ConfigurationList extends Component<Props, State> {
         isLoading={formMeta.isLoading && !modal.isOpen}
         newLabel={this.state.newLabel}
         onClose={
-          this.state.isEditMode
+          this.state.configuration
             ? this.handleConfigurationClose
             : this.handleQuit
         }
@@ -237,13 +233,8 @@ class ConfigurationList extends Component<Props, State> {
     if (formMeta.wasModified) {
       modal.open()
     } else {
-      this.setState({ isEditMode: false, newLabel: undefined }, () => {
-        if (
-          configurations.length > 0 &&
-          !this.isConfigurationDisabled(configurations[0])
-        ) {
-          this.handleConfigurationChange(configurations[0])
-        } else {
+      this.setState({ configuration: undefined, newLabel: undefined }, () => {
+        if (configurations.length === 0) {
           this.handleQuit()
         }
 
@@ -261,18 +252,13 @@ class ConfigurationList extends Component<Props, State> {
   private handleConfigurationDefaultState = () => {
     const extensionConfigurationsQuery = this.props.extensionConfigurations
     const configurations = extensionConfigurationsQuery.extensionConfigurations
+
     if (
       !this.state.configuration &&
       !extensionConfigurationsQuery.loading &&
       !extensionConfigurationsQuery.error
     ) {
-      if (
-        configurations &&
-        configurations.length > 0 &&
-        !this.isConfigurationDisabled(configurations[0])
-      ) {
-        this.handleConfigurationChange(configurations[0])
-      } else {
+      if (!configurations || configurations.length === 0) {
         this.handleConfigurationCreation()
       }
     }
@@ -302,7 +288,7 @@ class ConfigurationList extends Component<Props, State> {
       this.handleConfigurationChange(configuration)
     }
 
-    this.setState({ isEditMode: true })
+    this.setState({ configuration })
   }
 
   private handleConfigurationSave = async () => {
@@ -386,19 +372,6 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleConfigurationSelection = (
-    newConfiguration: ExtensionConfiguration,
-  ) => {
-    const { configuration: currConfiguration } = this.state
-
-    if (
-      !currConfiguration ||
-      newConfiguration.configurationId !== currConfiguration.configurationId
-    ) {
-      this.handleConfigurationChange(newConfiguration)
-    }
-  }
-
   private handleFormChange = (event: IChangeEvent) => {
     const {
       formMeta,
@@ -453,6 +426,7 @@ class ConfigurationList extends Component<Props, State> {
 
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
     const { iframeWindow } = this.props.editor
+
     return (
       configuration.scope === 'url' &&
       configuration.url !== iframeWindow.location.pathname
