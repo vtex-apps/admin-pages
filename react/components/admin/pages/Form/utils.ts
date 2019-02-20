@@ -11,6 +11,9 @@ import {
 
 const cacheAccessParameters = {
   query: Routes,
+  variables: {
+    domain: 'store',
+  },
 }
 
 const logCacheError = () => {
@@ -29,7 +32,7 @@ const writeRedirectsToStore = (newData: RoutesQuery, store: DataProxy) => {
 
 export const updateStoreAfterDelete = (
   store: DataProxy,
-  result: DeleteMutationResult,
+  result: DeleteMutationResult
 ) => {
   const deletedPageId = result.data && result.data.deleteRoute
 
@@ -38,17 +41,8 @@ export const updateStoreAfterDelete = (
 
     if (queryData) {
       const routes = queryData.routes
-      const routesKeys = Object.keys(routes)
 
-      const newRoutes =
-        deletedPageId &&
-        routesKeys.reduce(
-          (acc, currKey) =>
-            routes[currKey].uuid === deletedPageId
-              ? acc
-              : { ...acc, [currKey]: routes[currKey] },
-          {},
-        )
+      const newRoutes = routes.filter(({ uuid }) => uuid !== deletedPageId)
 
       const newData = {
         ...queryData,
@@ -64,7 +58,7 @@ export const updateStoreAfterDelete = (
 
 export const updateStoreAfterSave = (
   store: DataProxy,
-  result: SaveMutationResult,
+  result: SaveMutationResult
 ) => {
   const savedRoute = result.data && result.data.saveRoute
 
@@ -74,7 +68,7 @@ export const updateStoreAfterSave = (
     if (queryData) {
       const routes = queryData.routes
 
-      const newRoutes = savedRoute && { ...routes, [savedRoute.uuid || '']: savedRoute }
+      const newRoutes = savedRoute && [...routes, savedRoute]
 
       const newData = {
         ...queryData,

@@ -15,7 +15,7 @@ export interface SaveMutationResult {
 export type QueryData = RoutesQuery | null
 
 export interface RoutesQuery {
-  routes: Routes
+  routes: Route[]
 }
 
 export interface ClientSideUniqueId {

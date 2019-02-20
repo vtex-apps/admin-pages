@@ -1,5 +1,27 @@
 mutation SaveRoute($route: NewRouteInput) {
   saveRoute(route: $route) {
+    auth
+    blockId
+    context
+    declarer
+    domain
+    interfaceId
+    path
+    routeId
     uuid
+    pages {
+      condition {
+        allMatches
+        id
+        statements {
+          subject
+          verb
+          objectJSON
+        }
+      }
+      pageId
+      template
+    }
+    title
   }
 }
