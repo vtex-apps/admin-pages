@@ -48,7 +48,7 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
   templates,
 }) => {
   const hasError =
-    !!path(['pages', pageId, 'conditions'], formErrors) ||
+    !!path(['pages', pageId, 'condition'], formErrors) ||
     !!path(['pages', pageId, 'template'], formErrors)
 
   const closeButtonStyle = hasError
@@ -87,6 +87,12 @@ export const ConditionalTemplatePicker: React.SFC<Props> = ({
             onChangeStatements={statements => {
               onChangeStatementsConditionalTemplate(pageId, statements)
             }}
+            errorMessage={
+              path(['pages', pageId, 'condition'], formErrors) &&
+              intl.formatMessage({
+                id: path(['pages', pageId, 'condition'], formErrors) as string,
+              })
+            }
           />
         </div>
       </div>

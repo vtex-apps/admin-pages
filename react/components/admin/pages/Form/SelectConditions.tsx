@@ -11,6 +11,7 @@ import { ConditionFormsData } from 'pages'
 
 interface Props {
   condition: ConditionFormsData
+  errorMessage?: string
   operator: ConditionsProps['operator']
   onChangeOperator: ConditionsProps['onChangeOperator']
   onChangeStatements: (statements: ConditionsStatement[]) => void
@@ -66,21 +67,26 @@ class SelectConditions extends React.Component<Props> {
 
   public render() {
     return (
-      <Conditions
-        options={this.options}
-        subjectPlaceholder="Select subject"
-        statements={this.props.condition.statements}
-        operator={this.props.operator}
-        onChangeOperator={this.handleToggleOperator}
-        onChangeStatements={statements => {
-          this.props.onChangeStatements(
-            statements.map(statement => ({
-              ...statement,
-              objectJSON: JSON.stringify(statement.object || null),
-            }))
-          )
-        }}
-      />
+      <>
+        <Conditions
+          options={this.options}
+          subjectPlaceholder="Select subject"
+          statements={this.props.condition.statements}
+          operator={this.props.operator}
+          onChangeOperator={this.handleToggleOperator}
+          onChangeStatements={statements => {
+            this.props.onChangeStatements(
+              statements.map(statement => ({
+                ...statement,
+                objectJSON: JSON.stringify(statement.object || null),
+              }))
+            )
+          }}
+        />
+        <span className="c-danger t-small mt3 lh-title">
+          {this.props.errorMessage}
+        </span>
+      </>
     )
   }
 
