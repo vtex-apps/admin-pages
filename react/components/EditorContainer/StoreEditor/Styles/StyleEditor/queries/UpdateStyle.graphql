@@ -1,0 +1,5 @@
+mutation UpdateStyle($id: String, $config: ConfigInput) {
+  updateStyle(id: $id, config: $config) {
+    id
+  }
+}

@@ -1,10 +1,13 @@
+import { mergeDeepRight } from 'ramda'
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { IconArrowBack } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
 import ColorsEditor from './ColorsEditor'
 import GenerateStyleSheet from './queries/GenerateStyleSheet.graphql'
+import UpdateStyle from './queries/UpdateStyle.graphql'
+
+import StyleEditorTools from './StyleEditorTools'
 
 const STYLE_TAG_ID = 'style_edit'
 
@@ -22,6 +25,7 @@ interface State {
   config: TachyonsConfig
   mode?: EditMode
   name: string
+  navigation: NavigationInfo[]
 }
 
 class StyleEditor extends Component<Props, State> {
@@ -29,6 +33,7 @@ class StyleEditor extends Component<Props, State> {
     super(props)
 
     const {
+      stopEditing,
       style: { name, config },
     } = this.props
 
@@ -36,6 +41,15 @@ class StyleEditor extends Component<Props, State> {
       config,
       mode: undefined,
       name,
+      navigation: [
+        {
+          backButton: {
+            action: stopEditing,
+            text: 'Back',
+          },
+          title: name,
+        },
+      ],
     }
   }
 
@@ -68,10 +82,31 @@ class StyleEditor extends Component<Props, State> {
   }
 
   public render() {
-    const { stopEditing } = this.props
+    const { navigation } = this.state
+    const {
+      backButton: { text },
+      title,
+    } = navigation.slice(-1)[0]
+
+    return (
+      <StyleEditorTools
+        backText={text}
+        goBack={this.navigateBack}
+        saveStyle={this.saveStyle}
+        title={title}
+      >
+        {this.renderEditor()}
+      </StyleEditorTools>
+    )
+  }
+
+  private renderEditor() {
     const {
       mode,
       config: {
+        typography: {
+          styles: { heading_6 },
+        },
         semanticColors,
         semanticColors: {
           background: { emphasis, action_primary },
@@ -83,24 +118,15 @@ class StyleEditor extends Component<Props, State> {
       case 'colors':
         return (
           <ColorsEditor
+            font={heading_6}
             semanticColors={semanticColors}
-            updateColors={this.updateColors}
+            updateStyle={this.updateStyle}
+            addNavigation={this.addNavigation}
           />
         )
       default:
-        const {
-          style: { name },
-        } = this.props
         return (
-          <div className="flex flex-column ma6">
-            <div
-              className="pointer flex items-center mv3 c-action-primary"
-              onClick={stopEditing}
-            >
-              <IconArrowBack />
-              <span className="ml2 f5">Back</span>
-            </div>
-            <span className="f3">{name}</span>
+          <div className="ph6">
             <div
               className="pointer flex justify-between items-center pv6 bb b--muted-4"
               onClick={() => this.setEditMode('colors')}
@@ -131,22 +157,71 @@ class StyleEditor extends Component<Props, State> {
     }
   }
 
-  private updateColors = (semanticColors: SemanticColors) => {
+  private updateStyle = (partialConfig: Partial<TachyonsConfig>) => {
     const { config } = this.state
     this.setState(
       {
-        config: {
-          ...config,
-          semanticColors,
-        },
+        config: mergeDeepRight(config, partialConfig as TachyonsConfig),
       },
       this.updateStyleTag
     )
   }
 
-  private setEditMode(mode?: EditMode) {
+  private setEditMode = (mode?: EditMode) => {
     this.setState({
       mode,
+    })
+    if (mode) {
+      this.addNavigation({
+        backButton: {
+          action: () => this.setEditMode(),
+          text: 'Back',
+        },
+        title: mode,
+      })
+    }
+  }
+
+  private navigateBack = () => {
+    const { navigation } = this.state
+
+    const navigationInfo = navigation.splice(-1, 1)
+    const {
+      backButton: { action },
+    } = navigationInfo[0]
+
+    action()
+
+    this.setState({
+      navigation,
+    })
+  }
+
+  private addNavigation = (newNavigation: NavigationInfo) => {
+    const { navigation } = this.state
+
+    this.setState({
+      navigation: [...navigation, newNavigation],
+    })
+  }
+
+  private saveStyle = async () => {
+    const {
+      client,
+      style: { id },
+    } = this.props
+    const { config } = this.state
+
+    interface UpdateStyleQuery {
+      id: string
+    }
+
+    client.mutate<{ updateStyle: UpdateStyleQuery }>({
+      mutation: UpdateStyle,
+      variables: {
+        config,
+        id,
+      },
     })
   }
 }

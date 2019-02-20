@@ -1,35 +1,103 @@
-import React, { Component } from 'react'
-import { Input } from 'vtex.styleguide'
+import { fromPairs, groupBy, mapObjIndexed, toPairs } from 'ramda'
+import React, { useState } from 'react'
+
+import fromTachyonsConfig from '../utils/colors'
+import ColorEditor from './ColorEditor'
+import ColorGroup from './ColorGroup'
 
 interface Props {
-  updateColors: (colors: SemanticColors) => void
+  updateStyle: (partialConfig: Partial<TachyonsConfig>) => void
   semanticColors: SemanticColors
+  font: Font
+  addNavigation: (navigation: NavigationInfo) => void
 }
 
-export default class ColorsEditor extends Component<Props, {}> {
-  public render() {
-    const {
-      semanticColors,
-      semanticColors: {
-        background,
-        background: { base },
-      },
-      updateColors,
-    } = this.props
+type EditMode = string | undefined
 
+const ColorsEditor: React.SFC<Props> = ({
+  addNavigation,
+  font,
+  semanticColors,
+  updateStyle,
+}) => {
+  const [editing, startEditing] = useState<EditMode>(undefined)
+
+  const info = fromTachyonsConfig(semanticColors)
+
+  if (editing) {
     return (
-      <Input
-        value={base}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-          updateColors({
-            ...semanticColors,
-            background: {
-              ...background,
-              base: event.target.value,
-            },
-          })
-        }}
-      />
+      <div className="flex-grow-1 overflow-scroll">
+        <ColorEditor
+          updateColor={updateColor(updateStyle)}
+          token={editing}
+          colorInfo={info[editing]}
+        />
+      </div>
     )
   }
+
+  const groups = groupBy(([token]) => {
+    if (token === 'emphasis') {
+      return 'emphasis'
+    } else if (token.startsWith('base')) {
+      return 'base'
+    } else if (token.startsWith('muted')) {
+      return 'muted'
+    } else if (
+      token.startsWith('action') ||
+      token === 'link' ||
+      token === 'disabled'
+    ) {
+      return 'action'
+    } else {
+      return 'feedback'
+    }
+  }, toPairs(info))
+
+  return (
+    <div className="flex-grow-1 overflow-scroll">
+      {Object.values(
+        mapObjIndexed(
+          (group: Array<[string, ColorInfo[]]>, groupName: string) => {
+            return (
+              <ColorGroup
+                groupName={groupName}
+                font={font}
+                semanticColors={semanticColors}
+                startEditing={(token: string) => {
+                  startEditing(token)
+                  addNavigation({
+                    backButton: {
+                      action: () => startEditing(undefined),
+                      text: 'Back to Colors',
+                    },
+                    title: token,
+                  })
+                }}
+                colorsInfo={fromPairs(group)}
+              />
+            )
+          },
+          groups
+        )
+      )}
+    </div>
+  )
 }
+
+const updateColor = (updateStyle: Props['updateStyle']) => (
+  token: string,
+  colorInfo: ColorInfo
+) => {
+  const { configField, color } = colorInfo
+  const partialConfig = {
+    semanticColors: {
+      [configField]: {
+        [token]: color,
+      },
+    },
+  }
+  updateStyle(partialConfig)
+}
+
+export default ColorsEditor
