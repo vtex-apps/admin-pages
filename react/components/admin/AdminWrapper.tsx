@@ -26,10 +26,9 @@ interface FieldInfo {
 
 interface CustomProps {
   path: string
-  runtime: RenderContext
 }
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps
+type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
 
 const AdminWrapper: React.SFC<Props> = ({ children, intl, path, runtime }) => (
   <div className="h-100 overflow-y-auto bg-light-silver">
@@ -52,8 +51,8 @@ const AdminWrapper: React.SFC<Props> = ({ children, intl, path, runtime }) => (
                   }}
                 />
               ),
-              fields,
-            ),
+              fields
+            )
           )}
         </Tabs>
       </div>

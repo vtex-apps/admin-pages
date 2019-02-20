@@ -134,19 +134,23 @@ class Form extends Component<Props, State> {
                   value={getFormattedLocalizedDate(data.endDate, locale)}
                 />
               ) : (
-                  <Fragment>
-                    <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                      {text => <div className="mb3 w-100 f6">{text}</div>}
-                    </FormattedMessage>
-                    <DatePicker
-                      locale={locale}
-                      onChange={this.updateEndDate}
-                      selected={
-                        data.endDate ? moment(data.endDate) : undefined
-                      }
-                    />
-                  </Fragment>
-                )}
+                <Fragment>
+                  <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                    {text => <div className="mb3 w-100 f6">{text}</div>}
+                  </FormattedMessage>
+                  <DatePicker
+                    locale={locale}
+                    onChange={this.updateEndDate}
+                    selected={
+                      data.endDate
+                        ? moment(data.endDate).toDate()
+                        : moment()
+                            .add(1, 'days')
+                            .toDate()
+                    }
+                  />
+                </Fragment>
+              )}
               <FormFieldSeparator />
             </Fragment>
           )}
@@ -176,12 +180,12 @@ class Form extends Component<Props, State> {
                 })}
               </Button>
             ) : (
-                <Button isLoading={isLoading} size="small" type="submit">
-                  {intl.formatMessage({
-                    id: 'pages.admin.redirects.form.button.create',
-                  })}
-                </Button>
-              )}
+              <Button isLoading={isLoading} size="small" type="submit">
+                {intl.formatMessage({
+                  id: 'pages.admin.redirects.form.button.create',
+                })}
+              </Button>
+            )}
           </div>
         </form>
       </Fragment>
@@ -265,7 +269,7 @@ class Form extends Component<Props, State> {
             ? moment().add(1, 'days')
             : '',
         })
-      },
+      }
     )
   }
 

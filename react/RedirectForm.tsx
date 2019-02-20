@@ -109,7 +109,7 @@ class RedirectForm extends Component<Props, State> {
                 <Loader />
               ) : (
                 <Form
-                  initialData={formData}
+                  initialData={formData as Redirect}
                   onDelete={deleteRedirect}
                   onSave={saveRedirect}
                 />
@@ -125,5 +125,5 @@ class RedirectForm extends Component<Props, State> {
 export default compose(
   injectIntl,
   withApollo,
-  withRuntimeContext,
+  withRuntimeContext
 )(RedirectForm)

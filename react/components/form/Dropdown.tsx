@@ -21,7 +21,7 @@ type DropdownProps = WidgetProps & Props
 
 const getChangeHandler = (
   onChange: (value?: string) => void,
-  emptyValue?: string,
+  emptyValue?: string
 ) => ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
   onChange(!value ? emptyValue : value)
 
@@ -62,23 +62,6 @@ Dropdown.defaultProps = {
   disabled: false,
   readonly: false,
   required: false,
-}
-
-Dropdown.propTypes = {
-  autofocus: PropTypes.bool,
-  disabled: PropTypes.bool,
-  id: PropTypes.string,
-  label: PropTypes.string,
-  onChange: PropTypes.func,
-  onClose: PropTypes.func,
-  onOpen: PropTypes.func,
-  options: PropTypes.object,
-  readonly: PropTypes.bool,
-  required: PropTypes.bool,
-  schema: PropTypes.shape({
-    disabled: PropTypes.bool,
-  }),
-  value: PropTypes.any,
 }
 
 export default Dropdown

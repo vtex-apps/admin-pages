@@ -8,13 +8,15 @@ import { Box, ConditionsOperator, ToastConsumer } from 'vtex.styleguide'
 import { RouteFormData } from 'pages'
 
 import AdminWrapper from './components/admin/AdminWrapper'
-import { NEW_ROUTE_ID, ROUTES_LIST, WRAPPER_PATH } from './components/admin/pages/consts'
+import {
+  NEW_ROUTE_ID,
+  ROUTES_LIST,
+  WRAPPER_PATH,
+} from './components/admin/pages/consts'
 import Form from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
-import {
-  getRouteTitle,
-} from './components/admin/pages/utils'
+import { getRouteTitle } from './components/admin/pages/utils'
 import Loader from './components/Loader'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
@@ -43,7 +45,10 @@ interface DateInfoFormat {
 }
 type DateStatementFormat = Record<keyof DateInfoFormat, Date>
 
-const getConditionStatementObject = (objectJson: string, verb: DateVerbOptions): Partial<DateStatementFormat> => {
+const getConditionStatementObject = (
+  objectJson: string,
+  verb: DateVerbOptions
+): Partial<DateStatementFormat> => {
   const dateInfoStringValues: DateInfoFormat = JSON.parse(objectJson)
 
   return {
@@ -52,14 +57,14 @@ const getConditionStatementObject = (objectJson: string, verb: DateVerbOptions):
       to: new Date(dateInfoStringValues.to),
     },
     from: {
-      date: new Date(dateInfoStringValues.from)
+      date: new Date(dateInfoStringValues.from),
     },
     is: {
       date: new Date(dateInfoStringValues.from),
     },
     to: {
-      date: new Date(dateInfoStringValues.to)
-    }
+      date: new Date(dateInfoStringValues.to),
+    },
   }[verb]
 }
 
@@ -70,14 +75,21 @@ const formatToFormData = (route: Route): RouteFormData => {
       ...page,
       condition: {
         ...page.condition,
-        statements: page.condition.statements.map(({verb, subject, objectJSON}) => ({
-          error: '',
-          object: getConditionStatementObject(objectJSON, verb as DateVerbOptions),
-          subject,
-          verb,
-        })),
+        statements: page.condition.statements.map(
+          ({ verb, subject, objectJSON }) => ({
+            error: '',
+            object: getConditionStatementObject(
+              objectJSON,
+              verb as DateVerbOptions
+            ),
+            subject,
+            verb,
+          })
+        ),
       },
-      operator: page.condition.allMatches ? 'all' : 'any' as ConditionsOperator,
+      operator: page.condition.allMatches
+        ? 'all'
+        : ('any' as ConditionsOperator),
       uniqueId: index,
     })),
   }
@@ -109,8 +121,13 @@ class PageForm extends Component<Props, State> {
 
     // Find route from cache
     try {
-      const { routes } = client.readQuery<{routes: Route[]}>({query: RoutesQuery, variables: {domain: 'store'}}) || { routes: [] }
-      currentRoute = routes.find(({routeId: routeIdFromRoute}) => routeIdFromRoute === routeId)
+      const { routes } = client.readQuery<{ routes: Route[] }>({
+        query: RoutesQuery,
+        variables: { domain: 'store' },
+      }) || { routes: [] }
+      currentRoute = routes.find(
+        ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId
+      )
     } catch (e) {
       // console.error(e)
     }
@@ -118,9 +135,11 @@ class PageForm extends Component<Props, State> {
     this.isNew = routeId === NEW_ROUTE_ID
 
     this.state = {
-      formData: currentRoute ? formatToFormData(currentRoute) : this.defaultFormData,
+      formData: currentRoute
+        ? formatToFormData(currentRoute)
+        : this.defaultFormData,
       isLoading: !this.isNew,
-      routeId
+      routeId,
     }
   }
 
@@ -128,7 +147,8 @@ class PageForm extends Component<Props, State> {
     const { client } = this.props
     const { formData } = this.state
 
-    if (equals(formData, this.defaultFormData) && !this.isNew) { // didnt find in cache
+    if (equals(formData, this.defaultFormData) && !this.isNew) {
+      // didnt find in cache
       try {
         const {
           data: { route },
@@ -146,14 +166,14 @@ class PageForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-           this.exit()
+          this.exit()
         }
       } catch (err) {
         console.error(err)
         this.exit()
       }
     } else {
-      this.setState({isLoading: false})
+      this.setState({ isLoading: false })
     }
   }
 
@@ -162,13 +182,11 @@ class PageForm extends Component<Props, State> {
 
     return (
       <AdminWrapper path={WRAPPER_PATH}>
-        { isLoading ? <Loader /> :
+        {isLoading ? (
+          <Loader />
+        ) : (
           <Operations interfaceId={formData.interfaceId}>
-            {({
-              deleteRoute,
-              saveRoute,
-              templatesResults,
-            }) => {
+            {({ deleteRoute, saveRoute, templatesResults }) => {
               const templates = templatesResults.data.availableTemplates || []
               const loading = templatesResults.loading
               return loading ? (
@@ -183,7 +201,7 @@ class PageForm extends Component<Props, State> {
                     formData && <Title>{getRouteTitle(formData)}</Title>
                   )}
                   <ToastConsumer>
-                    {({showToast, hideToast}) => (
+                    {({ showToast, hideToast }) => (
                       <Form
                         initialData={formData}
                         onDelete={deleteRoute}
@@ -199,8 +217,7 @@ class PageForm extends Component<Props, State> {
               )
             }}
           </Operations>
-
-        }
+        )}
       </AdminWrapper>
     )
   }
@@ -212,5 +229,5 @@ class PageForm extends Component<Props, State> {
 
 export default compose(
   withApollo,
-  withRuntimeContext,
+  withRuntimeContext
 )(PageForm)

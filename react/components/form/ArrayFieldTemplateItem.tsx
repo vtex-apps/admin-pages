@@ -11,7 +11,9 @@ import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 import SimpleFormattedMessage from './SimpleFormattedMessage'
 
-const stopPropagation = (fn: (e: React.MouseEvent) => void) => (e: React.MouseEvent) => {
+const stopPropagation = (fn: (e: React.MouseEvent) => void) => (
+  e: React.MouseEvent
+) => {
   e.stopPropagation()
   return fn(e)
 }
@@ -21,7 +23,7 @@ const Handle = SortableHandle(() => (
 ))
 
 interface IProps {
-  children?: React.ReactElement<{ formData: number }>
+  children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
   isOpen: boolean
@@ -41,18 +43,6 @@ type PropsFromItemTemplateProps = Pick<
 type Props = IProps & SortableElementProps & PropsFromItemTemplateProps
 
 class ArrayFieldTemplateItem extends Component<Props, State> {
-  public static propTypes = {
-    children: PropTypes.node,
-    formIndex: PropTypes.number,
-    hasRemove: PropTypes.bool,
-    isOpen: PropTypes.bool,
-    onClose: PropTypes.func,
-    onDropIndexClick: PropTypes.func,
-    onOpen: PropTypes.func,
-    schema: PropTypes.object,
-    showDragHandle: PropTypes.bool,
-  }
-
   public render() {
     const {
       children,
@@ -127,4 +117,4 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
   )
 }
 
-export default SortableElement(ArrayFieldTemplateItem)
+export default SortableElement<Props>(ArrayFieldTemplateItem)

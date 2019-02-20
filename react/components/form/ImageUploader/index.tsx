@@ -28,6 +28,10 @@ interface State {
   isLoading: boolean
 }
 
+interface MutationData {
+  uploadFile: { fileUrl: string }
+}
+
 class ImageUploader extends Component<Props, State> {
   public static defaultProps = {
     disabled: false,
@@ -133,7 +137,9 @@ class ImageUploader extends Component<Props, State> {
   }
 
   private handleImageDrop = async (acceptedFiles: ImageFile[]) => {
-    const { uploadFile } = this.props as { uploadFile: MutationFunc }
+    const { uploadFile } = this.props as {
+      uploadFile: MutationFunc<MutationData>
+    }
 
     if (acceptedFiles && acceptedFiles[0]) {
       this.setState({ isLoading: true })
@@ -143,9 +149,9 @@ class ImageUploader extends Component<Props, State> {
           data: {
             uploadFile: { fileUrl },
           },
-        } = await uploadFile({
+        } = (await uploadFile({
           variables: { file: acceptedFiles[0] },
-        })
+        })) as { data: MutationData }
 
         if (fileUrl) {
           const fileUrlObj = new URL(fileUrl)
