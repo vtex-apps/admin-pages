@@ -16,7 +16,6 @@ const compareStyles = (a: Style, b: Style) => {
   const toArray = ({ selected, editable, app, name, id }: Style) => {
     return [selected ? 0 : 1, editable ? 0 : 1, app, name, id]
   }
-  const zipped = zip(toArray(a), toArray(b))
   return zip(toArray(a), toArray(b)).reduce((acc, [value1, value2]) => {
     if (acc !== 0) {
       return acc
