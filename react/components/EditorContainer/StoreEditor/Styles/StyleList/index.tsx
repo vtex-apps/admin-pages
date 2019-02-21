@@ -9,7 +9,7 @@ import StyleCard from './StyleCard'
 
 interface Props {
   startEditing: (style: Style) => void
-  iframeWindow: Window
+  setStyleAsset: (asset: StyleAssetInfo) => void
 }
 
 const compareStyles = (a: Style, b: Style) => {
@@ -30,7 +30,7 @@ const compareStyles = (a: Style, b: Style) => {
   }, 0)
 }
 
-const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
+const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
   return (
     <Operations>
       {({
@@ -44,7 +44,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
 
         const selected = listStyles && find(style => style.selected, listStyles)
         if (selected) {
-          updateStyleTag(selected.path, iframeWindow)
+          setStyleAsset({ type: 'path', value: selected.path })
         }
 
         return loading ? (
@@ -110,13 +110,6 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
       }}
     </Operations>
   )
-}
-
-const updateStyleTag = (path: string, iframeWindow: Window) => {
-  const styleLinkElement = iframeWindow.document.getElementById('style_link')
-  if (styleLinkElement) {
-    styleLinkElement.setAttribute('href', path)
-  }
 }
 
 export default StyleList
