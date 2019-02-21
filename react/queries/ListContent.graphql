@@ -1,7 +1,7 @@
 query ListContent(
   $pageContext: PageContextInput
-  $template: string
-  $treePath: string
+  $template: String
+  $treePath: String
 ) {
   listContent(
     pageContext: $pageContext

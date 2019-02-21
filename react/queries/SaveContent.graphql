@@ -1,7 +1,7 @@
 mutation saveContent (
   $configuration: ContentConfigurationInput
-  $template: string
-  $treePath: string
+  $template: String
+  $treePath: String
 ) {
   saveContent(
     configuration: $configuration

@@ -33,12 +33,14 @@ const ScopeSelector: React.SFC<Props> = ({
         onChange={onChange}
         options={
           isSitewide
-            ? {
-                label: intl.formatMessage({
-                  id: 'pages.editor.components.condition.scope.sitewide',
-                }),
-                value: 'sitewide',
-              }
+            ? [
+                {
+                  label: intl.formatMessage({
+                    id: 'pages.editor.components.condition.scope.sitewide',
+                  }),
+                  value: 'sitewide',
+                },
+              ]
             : standardOptions
         }
         value={scope}

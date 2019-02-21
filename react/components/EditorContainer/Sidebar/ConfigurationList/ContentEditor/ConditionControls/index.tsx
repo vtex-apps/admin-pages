@@ -17,12 +17,11 @@ class ConditionControls extends Component<Props> {
   public render() {
     const { condition, isSitewide, pageContext } = this.props
 
-    const scope =
-      condition.pageContext.type === '*'
-        ? 'sitewide'
-        : condition.pageContext.id === '*'
-        ? 'generic'
-        : 'specific'
+    const scope = isSitewide
+      ? 'sitewide'
+      : condition.pageContext.id === '*'
+      ? 'generic'
+      : 'specific'
 
     return (
       <Fragment>
