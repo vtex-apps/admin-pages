@@ -6,8 +6,8 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 
 interface Props {
-  activeConfiguration?: AdaptedExtensionConfiguration
-  configurations: AdaptedExtensionConfiguration[]
+  activeConfiguration?: ExtensionConfiguration
+  configurations: ExtensionConfiguration[]
   editor: EditorContext
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
@@ -29,7 +29,7 @@ const List: React.SFC<Props> = ({
   <Fragment>
     <EditorHeader editor={editor} onClose={onClose} title={title} />
     {configurations.map(
-      (configuration: AdaptedExtensionConfiguration, index: number) => (
+      (configuration: ExtensionConfiguration, index: number) => (
         <Fragment key={index}>
           <Card
             configuration={configuration}

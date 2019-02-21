@@ -4,7 +4,7 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import Tag from './Tag'
 
 interface Props {
-  configuration: AdaptedExtensionConfiguration
+  configuration: ExtensionConfiguration
   isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
 }
@@ -16,7 +16,7 @@ const Card = ({
   onClick,
 }: Props & ReactIntl.InjectedIntlProps) => (
   <div
-    className="mh5 mt5 pointer"
+    className={`mh5 mt5 ${!isDisabled ? 'pointer' : ''}`}
     onClick={() => {
       if (!isDisabled) {
         onClick(configuration)
@@ -36,18 +36,16 @@ const Card = ({
           bgColor={isDisabled ? 'transparent' : 'light-gray'}
           borderColor="mid-gray"
           hasBorder={isDisabled}
-          text={intl.formatMessage({
-            id: `pages.conditions.scope.${configuration.scope}`,
-          })}
+          // TODO
+          // text={intl.formatMessage({
+          //   id: `pages.conditions.scope.${
+          //     configuration.condition.context.type === 'route' ? 'route' : 'entity'
+          //   }`,
+          // })}
+          text="test"
           textColor="mid-gray"
         />
       </div>
-      {configuration.conditions.length > 0 && (
-        <div className="mt5">
-          <FormattedMessage id="pages.editor.components.configurations.customConditions" />
-          <div>{configuration.conditions.join(', ')}</div>
-        </div>
-      )}
     </div>
   </div>
 )

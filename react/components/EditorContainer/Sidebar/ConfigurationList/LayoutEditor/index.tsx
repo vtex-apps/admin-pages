@@ -20,7 +20,7 @@ interface Props extends ReactIntl.InjectedIntlProps {
   updateBlock: MutationFn
 }
 
-class TemplateEditor extends Component<Props> {
+class LayoutEditor extends Component<Props> {
   private block: Extension
 
   constructor(props: Props) {
@@ -41,13 +41,13 @@ class TemplateEditor extends Component<Props> {
 
     return (
       <ComponentEditor
+        data={this.getExtensionProps()}
         editor={editor}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         onChange={this.handleChange}
         onClose={this.handleExit}
         onSave={this.handleSave}
-        props={this.getExtensionProps()}
         shouldDisableSaveButton={!formMeta.wasModified}
       />
     )
@@ -166,4 +166,4 @@ export default compose(
   graphql(UpdateBlock, {
     name: 'updateBlock',
   })
-)(TemplateEditor)
+)(LayoutEditor)

@@ -1,5 +1,3 @@
-import { BlockRole, RelativeBlocks } from './typings'
-
 export const getBlockRole = (treePathTail: string) => {
   const blockRoleMatch = treePathTail.match(/\$(after|around|before)_/)
 

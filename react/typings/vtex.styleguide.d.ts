@@ -155,6 +155,7 @@ declare module 'vtex.styleguide' {
   export const PageHeader: ComponentType<any>
   export const Pagination: ComponentType<any>
   export const Radio: ComponentType<any>
+  export const RadioGroup: ComponentType<any>
   export const Spinner: ComponentType<any>
   export class Textarea extends Component<TextareaProps> {}
   export const Tab: ReactElement

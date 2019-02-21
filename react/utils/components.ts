@@ -12,14 +12,14 @@ import { global, RenderComponent, Window } from 'vtex.render-runtime'
  */
 export const getComponentSchema = (
   component: RenderComponent<any, any> | null,
-  props: any,
+  propsOrContent: object,
   runtime: RenderContext,
   intl: ReactIntl.InjectedIntl
 ): ComponentSchema => {
   const componentSchema: ComponentSchema = (component &&
     (component.schema ||
       (component.getSchema &&
-        component.getSchema(props, { routes: runtime.pages })))) || {
+        component.getSchema(propsOrContent, { routes: runtime.pages })))) || {
     properties: {},
     type: 'object',
   }
@@ -107,6 +107,9 @@ export const getExtension = (
     blocks = [],
     component = null,
     configurationsIds = [],
+    content = {},
+    implementationIndex = 0,
+    implements: extensionImplements = [],
     props = {},
     shouldRender = false,
   } = extensions[editTreePath!] || {}
@@ -119,6 +122,9 @@ export const getExtension = (
     blocks,
     component,
     configurationsIds,
+    content,
+    implementationIndex,
+    implements: extensionImplements,
     props: props || {},
     shouldRender,
   }
@@ -150,9 +156,9 @@ export function getImplementation(component: string) {
   return global.__RENDER_8_COMPONENTS__[component]
 }
 
-export const getSchemaProps = (
+export const getSchemaPropsOrContent = (
   component: RenderComponent<any, any> | null,
-  props: object,
+  propsOrContent: object,
   runtime: RenderContext,
   intl: ReactIntl.InjectedIntl
 ) => {
@@ -161,42 +167,43 @@ export const getSchemaProps = (
   }
 
   /**
-   * Recursively get the props defined in the properties.
+   * Recursively get the props or content defined in the properties.
    *
    * @param {object} properties The schema properties
-   * @param {object} prevProps The previous props passed to the component
-   * @return {object} Actual component props
+   * @param {object} prevPropsOrContent The previous props or content passed to the component
+   * @return {object} Actual component props or content
    */
-  const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
+  const getPropsOrContentFromSchema = (properties: any = {}, prevPropsOrContent: any): object =>
     reduce(
-      (nextProps, key) =>
-        merge(nextProps, {
+      (nextPropsOrContent, key) =>
+        merge(nextPropsOrContent, {
           [key]:
             properties[key].type === 'object'
-              ? getPropsFromSchema(properties[key].properties, prevProps[key])
-              : prevProps[key],
+              ? getPropsOrContentFromSchema(properties[key].properties, prevPropsOrContent[key])
+              : prevPropsOrContent[key],
         }),
       {},
-      filter(v => prevProps[v] !== undefined, keys(properties))
+      filter(v => prevPropsOrContent[v] !== undefined, keys(properties))
     )
 
-  const componentSchema = getComponentSchema(component, props, runtime, intl)
+  const componentSchema = getComponentSchema(component, propsOrContent, runtime, intl)
 
-  return getPropsFromSchema(componentSchema.properties, props)
+  return getPropsOrContentFromSchema(componentSchema.properties, propsOrContent)
 }
 
 export const updateExtensionFromForm = (
   editTreePath: EditorContext['editTreePath'],
   event: IChangeEvent,
   intl: ReactIntl.InjectedIntl,
-  runtime: RenderContext
+  runtime: RenderContext,
+  isContent?: boolean
 ) => {
   const { component: enumComponent } = event.formData
   const component = enumComponent && enumComponent !== '' ? enumComponent : null
   const componentImplementation =
     component && getIframeImplementation(component)
 
-  const props = getSchemaProps(
+  const propsOrContent = getSchemaPropsOrContent(
     componentImplementation,
     event.formData,
     runtime,
@@ -205,6 +212,6 @@ export const updateExtensionFromForm = (
 
   runtime.updateExtension(editTreePath as string, {
     ...runtime.extensions[editTreePath!],
-    props,
+    [isContent ? 'content' : 'props']: propsOrContent,
   })
 }

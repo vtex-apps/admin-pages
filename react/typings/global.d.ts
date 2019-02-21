@@ -24,7 +24,10 @@ declare global {
     blocks?: InnerBlock[]
     component: string | null
     configurationsIds?: string[]
-    props?: any
+    content: object
+    implementationIndex: number
+    implements: string[]
+    props: object
     shouldRender?: boolean
   }
 
@@ -87,7 +90,9 @@ declare global {
     page: RenderRuntime['page']
     pages: RenderRuntime['pages']
     prefetchPage: (name: string) => Promise<void>
+    preview: RenderRuntime['preview']
     production: RenderRuntime['production']
+    route: RenderRuntime['route']
     setDevice: (device: ConfigurationDevice) => void
     updateComponentAssets: (availableComponents: Components) => void
     updateExtension: (name: string, extension: Extension) => void
@@ -109,10 +114,6 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type ServerConfigurationScope = 'url' | 'route'
-
-  type ConfigurationScope = ServerConfigurationScope | 'site'
-
   type EditorMode = 'content' | 'layout'
 
   interface EditorConditionSection {
@@ -128,11 +129,9 @@ declare global {
     editTreePath: string | null
     iframeWindow: Window
     mode: EditorMode
-    scope: ConfigurationScope
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
     setMode: (mode: EditorMode) => void
-    setScope: (scope: ConfigurationScope) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
@@ -155,6 +154,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
+    route: { pageContext: PageContext }
     routes: Routes
     extensions: Extensions
     production: boolean
@@ -168,7 +168,10 @@ declare global {
       [app: string]: any
     }
     cacheHints: CacheHints
+    preview?: boolean
   }
+
+  type ConfigurationScope = 'entity' | 'route' | '*'
 
   interface PageContextOptions {
     scope?: ConfigurationScope
@@ -177,25 +180,34 @@ declare global {
     template?: string
   }
 
-  interface ServerExtensionConfiguration {
-    allMatches: boolean
-    conditions: string[]
-    configurationId: string
-    device: string
+  interface PageContext {
+    id: string
+    type:
+      | 'brand'
+      | 'category'
+      | 'department'
+      | 'product'
+      | 'route'
+      | 'search'
+      | 'subcategory'
+      | '*'
+  }
+
+  interface ExtensionConfiguration {
+    condition: {
+      allMatches: boolean
+      id: string
+      pageContext: RenderRuntime['route']['pageContext']
+      statements: Array<{
+        object: any
+        subject: string
+        verb: string
+      }>
+    }
+    contentId: string
+    contentJSON: string
     label?: string
-    propsJSON: string
-    routeId: string
-    scope: ServerConfigurationScope
-    url: string
   }
-
-  interface AdaptedExtensionConfiguration extends ServerExtensionConfiguration {
-    scope: ConfigurationScope
-  }
-
-  type ExtensionConfiguration =
-    | ServerExtensionConfiguration
-    | AdaptedExtensionConfiguration
 
   interface Redirect {
     cacheId: string
@@ -254,8 +266,24 @@ declare global {
 
   type BlockPath = FormattedBlock[]
 
+  interface FormattedInterface extends FormattedBlock {
+    index: number
+  }
+
+  type InterfacePath = FormattedInterface[]
+
   interface InnerBlock {
     blockId: string
     extensionPointId: string
   }
+
+  type BlockRole = 'after' | 'around' | 'before'
+
+  interface RelativeBlocks {
+    [role: string]: string[] | undefined
+  }
+
+  type InterfaceRole = BlockRole
+
+  type RelativeInterfaces = RelativeBlocks
 }

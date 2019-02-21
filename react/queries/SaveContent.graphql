@@ -1,0 +1,28 @@
+mutation saveContent (
+  $configuration: ContentConfigurationInput
+  $interfacePath: [InterfacePathItem]
+) {
+  saveContent(
+    configuration: $configuration
+    interfacePath: $interfacePath
+  ) {
+    # Available fields:
+    # condition {
+    #   allMatches
+    #   id
+    #   pageContext {
+    #     id
+    #     type
+    #   }
+    #   statements {
+    #     objectJSON
+    #     subject
+    #     verb
+    #   }
+    # }
+    # contentJSON
+    # contentId
+    # label
+    contentId
+  }
+}

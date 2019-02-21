@@ -112,7 +112,7 @@ export default class EditorContainer extends Component<Props, State> {
 
     return (
       <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-white bb bw1 b--light-silver">
-        {runtime && visible && (
+        {runtime && !runtime.preview && visible && (
           <Sidebar
             editor={editor}
             highlightHandler={this.highlightExtensionPoint}

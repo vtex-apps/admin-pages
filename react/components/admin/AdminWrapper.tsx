@@ -25,12 +25,17 @@ interface FieldInfo {
 }
 
 interface CustomProps {
-  path: string
+  targetPath: string
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
 
-const AdminWrapper: React.SFC<Props> = ({ children, intl, path, runtime }) => (
+const AdminWrapper: React.SFC<Props> = ({
+  children,
+  intl,
+  targetPath,
+  runtime,
+}) => (
   <div className="h-100 overflow-y-auto bg-light-silver">
     <div className="center mw8">
       <PageHeader title="CMS" />
@@ -41,8 +46,8 @@ const AdminWrapper: React.SFC<Props> = ({ children, intl, path, runtime }) => (
               (info: FieldInfo, key: string) => (
                 <Tab
                   active={
-                    path.startsWith(info.path) &&
-                    (path === '' ? path === info.path : true)
+                    targetPath.startsWith(info.path) &&
+                    (targetPath === '' ? targetPath === info.path : true)
                   }
                   key={key}
                   label={intl.formatMessage({ id: info.titleId })}

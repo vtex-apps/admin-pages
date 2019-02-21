@@ -1,0 +1,26 @@
+query ListContent(
+  $interfacePath: [InterfacePathItem]
+  $pageContext: PageContextInput
+) {
+  listContent(
+    interfacePath: $interfacePath
+    pageContext: $pageContext
+  ) {
+    condition {
+      allMatches
+      id
+      pageContext {
+        id
+        type
+      }
+      statements {
+        objectJSON
+        subject
+        verb
+      }
+    }
+    contentId
+    contentJSON
+    label
+  }
+}

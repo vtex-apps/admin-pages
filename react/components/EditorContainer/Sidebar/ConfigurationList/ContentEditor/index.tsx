@@ -4,89 +4,73 @@ import { IChangeEvent } from 'react-jsonschema-form'
 import { getExtension } from '../../../../../utils/components'
 import ComponentEditor from '../../ComponentEditor'
 
-import ConditionsSelector from './ConditionsSelector'
-import LabelEditor from './LabelEditor'
+import ConditionControls from './ConditionControls'
 
 interface Props {
-  conditions: string[]
-  configuration?: AdaptedExtensionConfiguration
+  condition: ExtensionConfiguration['condition']
+  configuration?: ExtensionConfiguration
   editor: EditorContext
   iframeRuntime: RenderContext
   isLoading: boolean
-  newLabel?: string
+  label?: string
   onClose: () => void
-  onConditionsChange: (newConditions: string[]) => void
+  onConditionChange: (
+    changes: Partial<ExtensionConfiguration['condition']>
+  ) => void
   onFormChange: (event: IChangeEvent) => void
   onLabelChange: (event: Event) => void
   onSave: () => void
-  onScopeChange: (
-    event: React.ChangeEvent<HTMLSelectElement>,
-    newScope: ConfigurationScope
-  ) => void
   shouldDisableSaveButton: boolean
 }
 
 const ContentEditor: React.SFC<Props> = ({
-  conditions,
+  condition,
   configuration,
   editor,
   iframeRuntime,
   isLoading,
-  newLabel,
+  label,
   onClose,
-  onConditionsChange,
+  onConditionChange,
   onFormChange,
   onLabelChange,
   onSave,
-  onScopeChange,
-  shouldDisableSaveButton
+  shouldDisableSaveButton,
 }) => {
   const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
-  const extensionProps = {
+  const extensionContent = {
     component: extension.component || null,
-    ...extension.props
+    ...extension.content,
   }
 
-  const props = configuration
+  const content = configuration
     ? {
-        ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
-        ...extensionProps
+        ...(configuration.contentJSON && JSON.parse(configuration.contentJSON)),
+        ...extensionContent,
       }
-    : extensionProps
+    : extensionContent
 
   return (
     <ComponentEditor
+      after={
+        <ConditionControls
+          condition={condition}
+          label={label}
+          onConditionChange={onConditionChange}
+          onLabelChange={onLabelChange}
+        />
+      }
+      data={content}
       editor={editor}
       iframeRuntime={iframeRuntime}
+      isContent
       isLoading={isLoading}
       onChange={onFormChange}
       onClose={onClose}
       onSave={onSave}
-      props={props}
       shouldDisableSaveButton={shouldDisableSaveButton}
-    >
-      <div className="mt5">
-        <LabelEditor
-          onChange={onLabelChange}
-          value={
-            newLabel !== undefined
-              ? newLabel
-              : configuration && configuration.label
-          }
-        />
-      </div>
-      <div className="mt5 pb5 bb bw1 b--light-silver">
-        <ConditionsSelector
-          editor={editor}
-          iframeRuntime={iframeRuntime}
-          onCustomConditionsChange={onConditionsChange}
-          onScopeChange={onScopeChange}
-          scope={configuration && configuration.scope}
-          selectedConditions={conditions}
-        />
-      </div>
-    </ComponentEditor>
+    />
   )
 }
 

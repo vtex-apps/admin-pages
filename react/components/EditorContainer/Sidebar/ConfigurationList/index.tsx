@@ -1,46 +1,47 @@
 import React, { Component } from 'react'
-import { compose, graphql } from 'react-apollo'
+import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner } from 'vtex.styleguide'
 
-import ExtensionConfigurations from '../../../../queries/ExtensionConfigurations.graphql'
-import SaveExtension from '../../../../queries/SaveExtension.graphql'
+import ListContent from '../../../../queries/ListContent.graphql'
+import SaveContent from '../../../../queries/SaveContent.graphql'
 import {
   getComponentSchema,
   getExtension,
   getIframeImplementation,
-  getSchemaProps,
+  getSchemaPropsOrContent,
   updateExtensionFromForm,
 } from '../../../../utils/components'
+import { getInterfacePath } from '../../../../utils/interfaces'
 import { FormMetaContext, ModalContext } from '../typings'
 
 import ContentEditor from './ContentEditor'
+import LayoutEditor from './LayoutEditor'
 import List from './List'
-import TemplateEditor from './TemplateEditor'
 
 const NEW_CONFIGURATION_ID = 'new'
 
-interface ExtensionConfigurationsQuery {
+interface ListContentQuery {
   error: object
-  extensionConfigurations: ExtensionConfiguration[]
+  listContent: ExtensionConfiguration[]
   loading: boolean
   refetch: (variables?: object) => void
 }
 
 interface Props {
   editor: EditorContext
-  extensionConfigurations: ExtensionConfigurationsQuery
+  listContent: ListContentQuery
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   formMeta: FormMetaContext
   modal: ModalContext
-  saveExtension: any
+  saveContent: MutationFn
 }
 
 interface State {
-  conditions: string[]
-  configuration?: AdaptedExtensionConfiguration
+  condition: ExtensionConfiguration['condition']
+  configuration?: ExtensionConfiguration
   newLabel?: string
 }
 
@@ -54,44 +55,36 @@ class ConfigurationList extends Component<Props, State> {
     })
 
     this.state = {
-      conditions: [],
+      condition: this.getDefaultCondition(),
     }
-  }
-
-  public componentDidMount() {
-    this.handleConfigurationDefaultState()
-  }
-
-  public componentDidUpdate() {
-    this.handleConfigurationDefaultState()
   }
 
   public render() {
     const { editor, formMeta, intl, modal, iframeRuntime } = this.props
 
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
+    const listContentQuery = this.props.listContent
 
-    const { component, props } = getExtension(
+    const { component, content } = getExtension(
       editor.editTreePath,
-      iframeRuntime.extensions,
+      iframeRuntime.extensions
     )
 
     const componentImplementation = getIframeImplementation(component)
 
     const componentSchema = getComponentSchema(
       componentImplementation,
-      props,
+      content,
       iframeRuntime,
-      intl,
+      intl
     )
 
     const shouldEnableSaveButton =
-          (this.state.configuration &&
+      (this.state.configuration &&
         (formMeta.wasModified ||
-          this.state.configuration.configurationId === NEW_CONFIGURATION_ID)) ||
+          this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
       false
 
-    if (extensionConfigurationsQuery.loading) {
+    if (listContentQuery.loading) {
       return (
         <div className="mt5 flex justify-center">
           <Spinner />
@@ -101,7 +94,7 @@ class ConfigurationList extends Component<Props, State> {
 
     if (editor.mode === 'layout') {
       return (
-        <TemplateEditor
+        <LayoutEditor
           editor={editor}
           formMeta={formMeta}
           iframeRuntime={iframeRuntime}
@@ -110,22 +103,10 @@ class ConfigurationList extends Component<Props, State> {
       )
     }
 
-    if (
-      extensionConfigurationsQuery.extensionConfigurations &&
-      extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-      !this.state.configuration
-    ) {
+    if (!this.state.configuration) {
       return (
         <List
-          configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-            configuration => ({
-              ...configuration,
-              scope: this.getEncodedScope(
-                configuration.scope,
-                configuration.routeId,
-              ),
-            }),
-          )}
+          configurations={listContentQuery.listContent}
           editor={editor}
           iframeWindow={this.props.editor.iframeWindow}
           isDisabledChecker={this.isConfigurationDisabled}
@@ -137,22 +118,26 @@ class ConfigurationList extends Component<Props, State> {
       )
     }
 
+    const label =
+      this.state.newLabel !== undefined
+        ? this.state.newLabel
+        : this.state.configuration && this.state.configuration.label
+
     return (
       <ContentEditor
-        conditions={this.state.conditions}
+        condition={this.state.condition}
         configuration={this.state.configuration}
         editor={editor}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
-        newLabel={this.state.newLabel}
+        label={label}
         onClose={
           this.state.configuration
             ? this.handleConfigurationClose
             : this.handleQuit
         }
-        onConditionsChange={this.handleConditionsChange}
+        onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
-        onScopeChange={this.handleScopeChange}
         onLabelChange={this.handleConfigurationLabelChange}
         onSave={this.handleConfigurationSave}
         shouldDisableSaveButton={!shouldEnableSaveButton}
@@ -160,84 +145,68 @@ class ConfigurationList extends Component<Props, State> {
     )
   }
 
-  private getDecodedRouteId = (scope: ConfigurationScope, routeId: string) =>
-    scope === 'site' ? 'store' : routeId
+  private getDefaultCondition = () => ({
+    allMatches: true,
+    id: '',
+    pageContext: this.props.iframeRuntime.route.pageContext,
+    statements: [],
+  })
 
-  private getDecodedScope = (scope: ConfigurationScope) =>
-    scope === 'site' ? 'route' : scope
+  private getDefaultConfiguration = (): ExtensionConfiguration => ({
+    condition: this.getDefaultCondition(),
+    contentId: NEW_CONFIGURATION_ID,
+    contentJSON: '{}',
+  })
 
-  private getEncodedScope = (
-    scope: ServerConfigurationScope | ConfigurationScope,
-    routeId: string,
-  ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
-
-  private getDefaultConfiguration = (): ExtensionConfiguration => {
-    const {
-      iframeRuntime,
-      editor: { iframeWindow },
-    } = this.props
-
-    return {
-      allMatches: true,
-      conditions: [],
-      configurationId: NEW_CONFIGURATION_ID,
-      device: iframeRuntime.device,
-      propsJSON: '{}',
-      routeId: iframeRuntime.page,
-      scope: 'route',
-      url: iframeWindow.location.pathname,
-    }
-  }
-
-  private handleConditionsChange = (newConditions: string[]) => {
-    this.setState({ conditions: newConditions })
+  private handleConditionChange = (
+    changes: Partial<ExtensionConfiguration['condition']>
+  ) => {
+    this.setState(prevState => ({
+      ...prevState,
+      condition: {
+        ...prevState.condition,
+        ...changes,
+      },
+    }))
 
     this.props.formMeta.setWasModified(true)
   }
 
   private handleConfigurationChange = (
-    newConfiguration: ExtensionConfiguration,
+    newConfiguration: ExtensionConfiguration
   ) => {
     const { editor, iframeRuntime } = this.props
 
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
+
     this.setState(
       {
-        conditions: newConfiguration.conditions,
-        configuration: {
-          ...newConfiguration,
-          scope: this.getEncodedScope(
-            newConfiguration.scope,
-            newConfiguration.routeId,
-          ),
-        },
+        condition: newConfiguration.condition,
+        configuration: newConfiguration,
       },
       () => {
         iframeRuntime.updateExtension(editor.editTreePath!, {
-          component: getExtension(editor.editTreePath, iframeRuntime.extensions)
-            .component,
-          props: JSON.parse(newConfiguration.propsJSON),
+          ...iframeRuntime.extensions[editor.editTreePath!],
+          component: extension.component,
+          content:
+            newConfiguration.contentId === NEW_CONFIGURATION_ID
+              ? extension.content
+              : JSON.parse(newConfiguration.contentJSON),
         })
-      },
+      }
     )
   }
 
   private handleConfigurationClose = () => {
-    const {
-      extensionConfigurations: extensionConfigurationsQuery,
-      formMeta,
-      modal,
-    } = this.props
-
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
+    const { formMeta, modal } = this.props
 
     if (formMeta.wasModified) {
       modal.open()
     } else {
       this.setState({ configuration: undefined, newLabel: undefined }, () => {
-        if (configurations.length === 0) {
-          this.handleQuit()
-        }
-
         if (modal.isOpen) {
           modal.close()
         }
@@ -247,21 +216,6 @@ class ConfigurationList extends Component<Props, State> {
 
   private handleConfigurationCreation = () => {
     this.handleConfigurationOpen(this.getDefaultConfiguration())
-  }
-
-  private handleConfigurationDefaultState = () => {
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
-
-    if (
-      !this.state.configuration &&
-      !extensionConfigurationsQuery.loading &&
-      !extensionConfigurationsQuery.error
-    ) {
-      if (!configurations || configurations.length === 0) {
-        this.handleConfigurationCreation()
-      }
-    }
   }
 
   private handleConfigurationDiscard = () => {
@@ -283,7 +237,7 @@ class ConfigurationList extends Component<Props, State> {
 
     if (
       !currConfiguration ||
-      currConfiguration.configurationId !== configuration.configurationId
+      currConfiguration.contentId !== configuration.contentId
     ) {
       this.handleConfigurationChange(configuration)
     }
@@ -294,68 +248,68 @@ class ConfigurationList extends Component<Props, State> {
   private handleConfigurationSave = async () => {
     const {
       editor,
-      editor: { iframeWindow },
       formMeta,
       intl,
       modal,
       iframeRuntime,
-      saveExtension,
+      saveContent,
     } = this.props
 
-    const { conditions, configuration } = this.state
-
-    const { allMatches, device } = configuration!
-
-    const configurationId =
-      configuration!.configurationId === NEW_CONFIGURATION_ID
-        ? undefined
-        : configuration!.configurationId
-
-    const { component, props = {} } = getExtension(
+    const { component, content = {} } = getExtension(
       editor.editTreePath,
-      iframeRuntime.extensions,
+      iframeRuntime.extensions
     )
 
     const componentImplementation = component
       ? getIframeImplementation(component)
       : null
 
-    const pickedProps = getSchemaProps(
+    const pickedContent = getSchemaPropsOrContent(
       componentImplementation,
-      props,
+      content,
       iframeRuntime,
-      intl,
+      intl
     )
+
+    const contentId =
+      this.state.configuration!.contentId === NEW_CONFIGURATION_ID
+        ? null
+        : this.state.configuration!.contentId
+
+    const label =
+      this.state.newLabel !== undefined
+        ? this.state.newLabel
+        : this.state.configuration!.label
+
+    const configuration = {
+      ...this.state.configuration,
+      condition: this.state.condition,
+      contentId,
+      contentJSON: JSON.stringify(pickedContent),
+      label,
+    }
 
     formMeta.toggleLoading()
 
     try {
-      await saveExtension({
+      await saveContent({
         variables: {
-          allMatches,
-          conditions,
-          configurationId,
-          device,
-          extensionName: editor.editTreePath,
-          label:
-            this.state.newLabel !== undefined
-              ? this.state.newLabel
-              : configuration!.label,
-          path: iframeWindow.location.pathname,
-          propsJSON: JSON.stringify(pickedProps),
-          routeId: this.getDecodedRouteId(configuration!.scope, iframeRuntime.page),
-          scope: this.getDecodedScope(configuration!.scope),
+          configuration,
+          interfacePath: getInterfacePath(
+            iframeRuntime.extensions,
+            editor.editTreePath!
+          ),
         },
       })
 
-      const extensionConfigurationsQuery = this.props.extensionConfigurations
+      const listContentQuery = this.props.listContent
 
-      await extensionConfigurationsQuery.refetch({
-        configurationsIds:
-          iframeRuntime.extensions[editor.editTreePath as string].configurationsIds,
-        routeId: iframeRuntime.page,
-        treePath: editor.editTreePath,
-        url: iframeWindow.location.pathname,
+      await listContentQuery.refetch({
+        interfacePath: getInterfacePath(
+          iframeRuntime.extensions,
+          editor.editTreePath!
+        ),
+        pageContext: iframeRuntime.route.pageContext,
       })
 
       formMeta.toggleLoading(this.handleConfigurationDiscard)
@@ -384,12 +338,7 @@ class ConfigurationList extends Component<Props, State> {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(
-      editTreePath,
-      event,
-      intl,
-      iframeRuntime,
-    )
+    updateExtensionFromForm(editTreePath, event, intl, iframeRuntime, true)
   }
 
   private handleQuit = (event?: any) => {
@@ -401,54 +350,45 @@ class ConfigurationList extends Component<Props, State> {
 
     iframeRuntime.updateRuntime({
       conditions: editor.activeConditions,
-      scope: editor.scope,
     })
 
     editor.editExtensionPoint(null)
   }
 
-  private handleScopeChange = (
-    _: React.ChangeEvent<HTMLSelectElement>,
-    newScope: ConfigurationScope,
-  ) => {
-    if (
-      this.state.configuration &&
-      newScope !== this.state.configuration.scope
-    ) {
-      this.setState(prevState => ({
-        ...prevState,
-        conditions: newScope === 'site' ? [] : prevState.conditions,
-        configuration: { ...prevState.configuration!, scope: newScope },
-        wasModified: true,
-      }))
-    }
-  }
-
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
-    const { iframeWindow } = this.props.editor
+    const configurationPageContext = configuration.condition.pageContext
 
-    return (
-      configuration.scope === 'url' &&
-      configuration.url !== iframeWindow.location.pathname
-    )
+    const iframeRuntimePageContext = this.props.iframeRuntime.route.pageContext
+
+    if (configurationPageContext.type === '*') {
+      return false
+    }
+
+    if (configurationPageContext.type !== iframeRuntimePageContext.type) {
+      return true
+    }
+
+    if (configurationPageContext.id === '*') {
+      return false
+    }
+
+    return configurationPageContext.id !== iframeRuntimePageContext.id
   }
 }
 
 export default compose(
   injectIntl,
-  graphql(SaveExtension, { name: 'saveExtension' }),
-  graphql(ExtensionConfigurations, {
-    name: 'extensionConfigurations',
-    options: ({
-      editor: { editTreePath, iframeWindow },
-      iframeRuntime: { extensions, page },
-    }: Props) => ({
+  graphql(ListContent, {
+    name: 'listContent',
+    options: ({ editor, iframeRuntime }: Props) => ({
       variables: {
-        configurationsIds: extensions[editTreePath as string].configurationsIds,
-        routeId: page,
-        treePath: editTreePath,
-        url: iframeWindow.location.pathname,
+        interfacePath: getInterfacePath(
+          iframeRuntime.extensions,
+          editor.editTreePath!
+        ),
+        pageContext: iframeRuntime.route.pageContext,
       },
     }),
   }),
+  graphql(SaveContent, { name: 'saveContent' })
 )(ConfigurationList)

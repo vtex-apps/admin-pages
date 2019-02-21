@@ -23,7 +23,6 @@ interface State {
   iframeRuntime: RenderContext | null
   iframeWindow: Window
   mode: EditorMode
-  scope: ConfigurationScope
   showAdminControls: boolean
   template?: string
   viewport: Viewport
@@ -54,7 +53,6 @@ class EditorProvider extends Component<Props, State> {
       iframeRuntime: null,
       iframeWindow: window,
       mode: 'content',
-      scope: 'url',
       showAdminControls: true,
       template: undefined,
       viewport: 'desktop',
@@ -186,7 +184,6 @@ class EditorProvider extends Component<Props, State> {
         this.props.runtime.updateRuntime({
           conditions: this.state.activeConditions,
           device: this.props.runtime.device,
-          scope: this.state.scope,
           template: this.state.template,
         })
       }
@@ -202,14 +199,9 @@ class EditorProvider extends Component<Props, State> {
       this.props.runtime.updateRuntime({
         conditions: this.state.activeConditions,
         device: this.props.runtime.device,
-        scope: this.state.scope,
         template: this.state.template,
       })
     })
-  }
-
-  public handleSetScope = (scope: ConfigurationScope) => {
-    this.setState({ scope })
   }
 
   public getViewport = (device: ConfigurationDevice) => {
@@ -229,7 +221,6 @@ class EditorProvider extends Component<Props, State> {
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
-      scope: this.state.scope,
       template: this.state.template,
     })
   }
@@ -267,7 +258,6 @@ class EditorProvider extends Component<Props, State> {
       iframeRuntime,
       iframeWindow,
       mode,
-      scope,
       showAdminControls,
       viewport,
     } = this.state
@@ -283,10 +273,8 @@ class EditorProvider extends Component<Props, State> {
       iframeWindow,
       mode,
       removeCondition: this.handleRemoveCondition,
-      scope,
       setDevice: this.handleSetDevice,
       setMode: this.handleSetMode,
-      setScope: this.handleSetScope,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,
       viewport,
