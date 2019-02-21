@@ -5,6 +5,7 @@ import { Mutation, Query, QueryResult } from 'react-apollo'
 import Colors from '../components/Colors'
 import ColorsEditor from './ColorsEditor'
 import GenerateStyleSheet from './queries/GenerateStyleSheet.graphql'
+import RenameStyle from './queries/RenameStyle.graphql'
 import UpdateStyle from './queries/UpdateStyle.graphql'
 
 import StyleEditorTools from './StyleEditorTools'
@@ -122,29 +123,39 @@ const StyleEditor: React.SFC<Props> = ({
   const [name, setName] = useState<string>(style.name)
 
   return (
-    <Mutation mutation={UpdateStyle}>
-      {updateStyle => (
-        <StyleEditorTools
-          initialState={{
-            backButton: {
-              action: stopEditing,
-              text: 'Back',
-            },
-            title: name,
-          }}
-          saveStyle={() => updateStyle({ variables: { id: style.id, config } })}
-        >
-          {updateNavigation => (
-            <Editor
-              config={config}
-              updateConfig={updateConfig}
-              addNavigation={(info: NavigationInfo) => {
-                updateNavigation({ info, type: 'push' })
+    <Mutation mutation={RenameStyle}>
+      {renameStyle => (
+        <Mutation mutation={UpdateStyle}>
+          {updateStyle => (
+            <StyleEditorTools
+              initialState={{
+                backButton: {
+                  action: stopEditing,
+                  text: 'Back',
+                },
+                title: name,
               }}
-              iframeWindow={iframeWindow}
-            />
+              saveStyle={() => {
+                if (name !== style.name) {
+                  renameStyle({ variables: { id: style.id, name } })
+                }
+                updateStyle({ variables: { id: style.id, config } })
+              }}
+              setName={setName}
+            >
+              {updateNavigation => (
+                <Editor
+                  config={config}
+                  updateConfig={updateConfig}
+                  addNavigation={(info: NavigationInfo) => {
+                    updateNavigation({ info, type: 'push' })
+                  }}
+                  iframeWindow={iframeWindow}
+                />
+              )}
+            </StyleEditorTools>
           )}
-        </StyleEditorTools>
+        </Mutation>
       )}
     </Mutation>
   )

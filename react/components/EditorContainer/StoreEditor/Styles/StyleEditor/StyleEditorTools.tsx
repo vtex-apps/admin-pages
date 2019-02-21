@@ -1,5 +1,5 @@
-import React, { useReducer } from 'react'
-import { Button, IconArrowBack } from 'vtex.styleguide'
+import React, { useReducer, useState } from 'react'
+import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
   initialState: NavigationInfo
@@ -7,6 +7,7 @@ interface Props {
   children: (
     updateNavigation: React.Dispatch<NavigationUpdate>
   ) => React.ReactNode
+  setName: (name: string) => void
 }
 
 type NavigationReducer = (
@@ -18,10 +19,15 @@ const StyleEditorTools: React.SFC<Props> = ({
   children,
   initialState,
   saveStyle,
+  setName,
 }) => {
+  const [editing, setEditing] = useState(false)
   const [navigation, updateNavigation] = useReducer<NavigationReducer>(
     (state, update) => {
       const newInfo = update.info ? [update.info] : []
+      if (update.type === 'pop' || update.type === 'push') {
+        setEditing(false)
+      }
 
       switch (update.type) {
         case 'pop':
@@ -57,8 +63,34 @@ const StyleEditorTools: React.SFC<Props> = ({
           <span className="ml4">{text}</span>
         </div>
         <div className="flex justify-between items-center mv4">
-          <span className="f3">{title}</span>
-          <Button variation="tertiary" size="small" onClick={saveStyle}>
+          {editing && navigation.length === 1 ? (
+            <Input
+              value={title}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                const newTitle = event.target.value
+                setName(newTitle)
+                updateNavigation({
+                  info: {
+                    ...navInfo,
+                    title: newTitle,
+                  },
+                  type: 'update',
+                })
+              }}
+            />
+          ) : (
+            <span className="f3" onDoubleClick={() => setEditing(true)}>
+              {title}
+            </span>
+          )}
+          <Button
+            variation="tertiary"
+            size="small"
+            onClick={() => {
+              setEditing(false)
+              saveStyle()
+            }}
+          >
             Save
           </Button>
         </div>
