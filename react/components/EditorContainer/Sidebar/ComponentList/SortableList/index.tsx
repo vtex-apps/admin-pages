@@ -1,6 +1,5 @@
 import React from 'react'
 import { SortableContainer } from 'react-sortable-hoc'
-import { ToastConsumerRenderProps } from 'vtex.styleguide'
 
 import { NormalizedComponent } from '../typings'
 
@@ -16,16 +15,10 @@ interface CustomProps {
   onMouseLeave: () => void
 }
 
-type Props = CustomProps & ToastConsumerRenderProps
+type Props = CustomProps
 
 const SortableList = SortableContainer<Props>(
-  ({
-    components,
-    onDelete,
-    onEdit,
-    onMouseEnter,
-    onMouseLeave,
-  }) => (
+  ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }) => (
     <ul className="mv0 pl0 overflow-y-auto pointer">
       {components.map((component, index) => (
         <SortableListItem

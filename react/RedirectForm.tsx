@@ -102,7 +102,7 @@ class RedirectForm extends Component<Props, State> {
             })}
           </title>
         </Helmet>
-        <AdminWrapper path={WRAPPER_PATH}>
+        <AdminWrapper targetPath={WRAPPER_PATH}>
           <Operations>
             {({ deleteRedirect, saveRedirect }) =>
               isLoading ? (

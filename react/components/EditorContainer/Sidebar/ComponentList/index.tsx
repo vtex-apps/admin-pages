@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import { Button, ToastConsumerRenderProps } from 'vtex.styleguide'
+import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
@@ -29,7 +29,9 @@ interface CustomProps {
   updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
-type Props = CustomProps & InjectedIntlProps & ToastConsumerRenderProps
+type Props = CustomProps &
+  InjectedIntlProps &
+  Pick<ToastConsumerFunctions, 'showToast'>
 
 interface State {
   blocks: Extension['blocks']
@@ -77,12 +79,7 @@ class ComponentList extends Component<Props, State> {
   }
 
   public render() {
-    const {
-      intl,
-      onMouseEnterComponent,
-      onMouseLeaveComponent,
-      showToast,
-    } = this.props
+    const { intl, onMouseEnterComponent, onMouseLeaveComponent } = this.props
 
     const hasChanges = this.state.changes.length > 0
 
@@ -114,7 +111,6 @@ class ComponentList extends Component<Props, State> {
             onMouseEnter={onMouseEnterComponent}
             onMouseLeave={onMouseLeaveComponent}
             onSortEnd={this.handleSortEnd}
-            showToast={showToast}
             useDragHandle
           />
           <div className="bt b--light-silver" />

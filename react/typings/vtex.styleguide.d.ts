@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file, class-name*/
 declare module 'vtex.styleguide' {
   import { Component, ComponentType, ReactNode } from 'react'
   // Remove this dependency from admin-pages when styleguide is properly typed.
@@ -143,7 +144,7 @@ declare module 'vtex.styleguide' {
   export class DatePicker extends Component<DatePickerProps> {}
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
-  export class EXPERIMENTAL_Conditions extends Component<ConditionsProps>{}
+  export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
   export const IconArrowBack: ComponentType<any>
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
@@ -163,13 +164,9 @@ declare module 'vtex.styleguide' {
   export const Tabs: ReactElement
   export const Tag: ReactElement
 
-  export type ToastConsumerRenderProps = { showToast: (text: string) => void }
+  export const ToastConsumer: ComponentType<ToastConsumerProps>
 
-  export const ToastConsumer: ComponentType<{
-    children: (props: ToastConsumerRenderProps) => React.ReactNode
-  }>
-
-  type ToastProviderProps = {
+  interface ToastProviderProps {
     positioning: 'parent' | 'window'
   }
 

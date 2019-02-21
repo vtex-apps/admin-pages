@@ -181,7 +181,7 @@ class PageForm extends Component<Props, State> {
     const { formData, isLoading } = this.state
 
     return (
-      <AdminWrapper path={WRAPPER_PATH}>
+      <AdminWrapper targetPath={WRAPPER_PATH}>
         {isLoading ? (
           <Loader />
         ) : (

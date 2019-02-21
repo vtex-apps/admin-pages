@@ -54,11 +54,7 @@ const mockComponents = {
 describe('getComponents', () => {
   it('should filter out components without either a schema or a title', () => {
     expect(
-      getComponents(
-        mockExtensions,
-        mockComponents as any,
-        'store/home'
-      )
+      getComponents(mockExtensions as any, mockComponents as any, 'store/home')
     ).toEqual([
       {
         name: 'Carousel',
@@ -90,7 +86,7 @@ describe('getComponents', () => {
               elements: ['shelf', 'carousel'],
             },
           },
-        },
+        } as any,
         mockComponents as any,
         'store/home'
       )
@@ -128,7 +124,7 @@ describe('getComponents', () => {
       },
     }
     expect(
-      getComponents(extensions, components as any, 'store/home')
+      getComponents(extensions as any, components as any, 'store/home')
     ).toEqual([
       {
         name: 'Shelf',
