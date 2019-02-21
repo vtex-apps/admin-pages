@@ -22,7 +22,7 @@ interface OperationsObj {
 }
 
 const Operations = (props: Props) => (
-  <Query query={ListStyles} fetchPolicy={'no-cache'}>
+  <Query query={ListStyles} fetchPolicy={'network-only'}>
     {listStyles => (
       <Mutation
         mutation={SaveSelectedStyle}
@@ -33,6 +33,7 @@ const Operations = (props: Props) => (
           <Mutation
             mutation={CreateStyle}
             refetchQueries={() => [{ query: ListStyles }]}
+            awaitRefetchQueries
           >
             {createStyle => (
               <Mutation
