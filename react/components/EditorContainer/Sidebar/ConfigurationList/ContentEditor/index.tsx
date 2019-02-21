@@ -13,6 +13,7 @@ interface Props {
   editor: EditorContext
   iframeRuntime: RenderContext
   isLoading: boolean
+  isSitewide: boolean
   label?: string
   onClose: () => void
   onConditionChange: (
@@ -29,6 +30,7 @@ const ContentEditor: React.SFC<Props> = ({
   configuration,
   editor,
   iframeRuntime,
+  isSitewide,
   isLoading,
   label,
   onClose,
@@ -52,8 +54,6 @@ const ContentEditor: React.SFC<Props> = ({
       }
     : extensionContent
 
-  const shouldEnableSitewide = true
-
   return (
     <ComponentEditor
       after={
@@ -63,9 +63,9 @@ const ContentEditor: React.SFC<Props> = ({
           </div>
           <ConditionControls
             condition={condition}
+            isSitewide={isSitewide}
             pageContext={iframeRuntime.route.pageContext}
             onConditionChange={onConditionChange}
-            shouldEnableSitewide={shouldEnableSitewide}
           />
         </Fragment>
       }

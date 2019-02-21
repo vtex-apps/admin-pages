@@ -6,6 +6,7 @@ import { Spinner } from 'vtex.styleguide'
 
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
+import { getBlockPath } from '../../../../utils/blocks'
 import {
   getComponentSchema,
   getExtension,
@@ -46,6 +47,8 @@ interface State {
 }
 
 class ConfigurationList extends Component<Props, State> {
+  private isSitewide: boolean
+
   constructor(props: Props) {
     super(props)
 
@@ -53,6 +56,16 @@ class ConfigurationList extends Component<Props, State> {
       actionHandler: this.handleConfigurationSave,
       cancelHandler: this.handleConfigurationDiscard,
     })
+
+    const blockPath = getBlockPath(
+      props.iframeRuntime.extensions,
+      props.editor.editTreePath!
+    )
+
+    this.isSitewide =
+      (blockPath &&
+        ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
+      false
 
     this.state = {
       condition: this.getDefaultCondition(),
@@ -130,6 +143,7 @@ class ConfigurationList extends Component<Props, State> {
         editor={editor}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
+        isSitewide={this.isSitewide}
         label={label}
         onClose={
           this.state.configuration
@@ -148,7 +162,12 @@ class ConfigurationList extends Component<Props, State> {
   private getDefaultCondition = () => ({
     allMatches: true,
     id: '',
-    pageContext: this.props.iframeRuntime.route.pageContext,
+    pageContext: this.isSitewide
+      ? this.props.iframeRuntime.route.pageContext
+      : ({
+          id: '*',
+          type: '*',
+        } as ExtensionConfiguration['condition']['pageContext']),
     statements: [],
   })
 

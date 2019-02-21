@@ -6,16 +6,16 @@ import ScopeSelector from './ScopeSelector'
 
 interface Props {
   condition: ExtensionConfiguration['condition']
+  isSitewide: boolean
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   pageContext: RenderRuntime['route']['pageContext']
-  shouldEnableSitewide: boolean
 }
 
 class ConditionControls extends Component<Props> {
   public render() {
-    const { condition, pageContext, shouldEnableSitewide } = this.props
+    const { condition, isSitewide, pageContext } = this.props
 
     const scope =
       condition.pageContext.type === '*'
@@ -36,10 +36,10 @@ class ConditionControls extends Component<Props> {
         <div className="mv5 bt bw1 b--light-silver">
           <div className="pa5">
             <ScopeSelector
+              isSitewide={isSitewide}
               onChange={this.handleScopeChange}
               pageContext={pageContext}
               scope={scope}
-              shouldEnableSitewide={shouldEnableSitewide}
             />
           </div>
           {/* <div className="pt5 ph5 bb b--light-silver">
