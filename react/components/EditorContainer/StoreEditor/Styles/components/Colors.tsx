@@ -6,8 +6,9 @@ interface Props {
 
 const Colors: React.SFC<Props> = ({ colors }) => (
   <div className="flex ba br2 b--muted-5 bg-muted-5 overflow-hidden">
-    {colors.map(color => (
+    {colors.map((color, index) => (
       <div
+        key={index}
         className={`w2 h2`}
         style={{
           backgroundColor: color,
