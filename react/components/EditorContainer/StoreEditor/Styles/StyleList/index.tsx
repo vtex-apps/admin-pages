@@ -76,17 +76,18 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
                           saveSelectedStyle({ variables: { id } })
                         }
                         deleteStyle={({ config, name, id }: Style) => {
-                          showToast({
-                            action: {
-                              label: 'Undo',
-                              onClick: () => {
-                                createStyle({ variables: { name, config } })
+                          deleteStyle({ variables: { id } }).then(() => {
+                            showToast({
+                              action: {
+                                label: 'Undo',
+                                onClick: () => {
+                                  createStyle({ variables: { name, config } })
+                                },
                               },
-                            },
-                            duration: Infinity,
-                            message: `Style ${name} was deleted.`,
+                              duration: Infinity,
+                              message: `Style ${name} was deleted.`,
+                            })
                           })
-                          deleteStyle({ variables: { id } })
                         }}
                         duplicateStyle={({ name, config }: Style) =>
                           createStyle({
