@@ -75,6 +75,11 @@ declare global {
     [name: string]: Route
   }
 
+  type RuntimeHistory = History & {
+    block: (s: string) => () => void
+    listen: (listenCb: (location: string, action: string) => void) => () => void
+  }
+
   interface RenderContext {
     account: RenderRuntime['account']
     components: RenderRuntime['components']
@@ -84,7 +89,7 @@ declare global {
     extensions: RenderRuntime['extensions']
     fetchComponent: (component: string) => Promise<void>
     getSettings: (app: string) => any
-    history: History | null
+    history: RuntimeHistory | null
     navigate: (options: NavigateOptions) => boolean
     onPageChanged: (location: Location) => void
     page: RenderRuntime['page']
