@@ -58,9 +58,10 @@ const ColorsEditor: React.SFC<Props> = ({
     <div className="flex-grow-1 overflow-scroll">
       {toPairs(groups).map(groupInfo => {
         const [groupName, group] = groupInfo
+
         return (
           <ColorGroup
-            groupName={groupName}
+            groupName={groupName as string}
             font={font}
             semanticColors={semanticColors}
             startEditing={(token: string) => {
