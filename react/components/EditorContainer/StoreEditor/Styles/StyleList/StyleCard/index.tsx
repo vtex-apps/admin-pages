@@ -37,7 +37,7 @@ const StyleCard: React.SFC<Props> = ({
         label: 'Edit',
         onClick: () => startEditing(style),
       },
-      {
+      !selected && {
         label: 'Select as store style',
         onClick: () => selectStyle(style),
       },
@@ -45,10 +45,11 @@ const StyleCard: React.SFC<Props> = ({
         label: 'Duplicate',
         onClick: () => duplicateStyle(style),
       },
-      editable && {
-        label: 'Delete',
-        onClick: () => deleteStyle(style),
-      },
+      !selected &&
+        editable && {
+          label: 'Delete',
+          onClick: () => deleteStyle(style),
+        },
     ]
     return options.filter(option => option)
   }
