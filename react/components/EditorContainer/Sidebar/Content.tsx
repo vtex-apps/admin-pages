@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import { getIframeRenderComponents } from '../../../utils/components'
 
@@ -64,31 +65,17 @@ class Content extends Component<Props, State> {
         {formMeta => (
           <ModalConsumer>
             {modal => (
-              <ConfigurationList
-                editor={editor}
-                // extensionConfigurations={{
-                //   error: {},
-                //   extensionConfigurations: [
-                //     {
-                //       condition: {
-                //         allMatches: false,
-                //         context: { id: '/a/b', type: 'route' },
-                //         id: 'lalala',
-                //         statements: [],
-                //       },
-                //       contentJSON: '{}',
-                //       interfacePath: [],
-                //       interfacePathId: 'pqpqpq',
-                //       label: 'meu label :top:',
-                //     },
-                //   ],
-                //   loading: false,
-                //   refetch: () => [],
-                // }}
-                formMeta={formMeta}
-                iframeRuntime={iframeRuntime}
-                modal={modal}
-              />
+              <ToastConsumer>
+                {({ showToast }) => (
+                  <ConfigurationList
+                    editor={editor}
+                    formMeta={formMeta}
+                    iframeRuntime={iframeRuntime}
+                    modal={modal}
+                    showToast={showToast}
+                  />
+                )}
+              </ToastConsumer>
             )}
           </ModalConsumer>
         )}

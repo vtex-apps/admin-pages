@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
-import { Spinner } from 'vtex.styleguide'
+import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
@@ -38,6 +38,7 @@ interface Props {
   formMeta: FormMetaContext
   modal: ModalContext
   saveContent: MutationFn
+  showToast: ToastConsumerFunctions['showToast']
 }
 
 interface State {
@@ -338,7 +339,10 @@ class ConfigurationList extends Component<Props, State> {
           modal.close()
         }
 
-        alert('Something went wrong. Please try again.')
+        this.props.showToast({
+          horizontalPosition: 'right',
+          message: 'Something went wrong. Please try again.',
+        })
 
         console.log(err)
       })
