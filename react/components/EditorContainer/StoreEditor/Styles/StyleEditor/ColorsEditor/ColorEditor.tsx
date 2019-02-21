@@ -1,3 +1,4 @@
+import startCase from 'lodash.startcase'
 import { groupBy, mapObjIndexed } from 'ramda'
 import React from 'react'
 import { ColorPicker } from 'vtex.styleguide'
@@ -22,9 +23,24 @@ const sixDigitsColors = (color: string) => {
   return color
 }
 
+const fieldName = (id: string) => {
+  switch (id) {
+    case 'background':
+      return 'Background'
+    case 'on':
+      return 'Text on background'
+    case 'text':
+      return 'Text'
+    case 'border':
+      return 'Border'
+    default:
+      return ''
+  }
+}
+
 const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
   const groups = groupBy(info => {
-    return info.path.split('.')[0]
+    return fieldName(info.path.split('.')[0])
   }, colorInfo)
   return (
     <div className="overflow-scroll">
@@ -37,7 +53,7 @@ const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
                 {group.map(info => {
                   return (
                     <ColorPicker
-                      label={info.path.split('.')[1]}
+                      label={startCase(info.path.split('.')[1])}
                       color={{ hex: sixDigitsColors(info.color) }}
                       colorHistory={[]}
                       onChange={({ hex }: ColorPickerColors) => {

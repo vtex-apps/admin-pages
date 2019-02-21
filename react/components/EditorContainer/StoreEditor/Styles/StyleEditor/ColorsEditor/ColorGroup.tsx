@@ -1,3 +1,4 @@
+import startCase from 'lodash.startcase'
 import { find, mapObjIndexed, propEq } from 'ramda'
 import React from 'react'
 
@@ -88,7 +89,7 @@ const ColorPreview: React.SFC<ColorPreviewProps> = ({
           textColor={(textColor && textColor.color) || previewInfo.textColor}
         />
       </div>
-      <div className="ml3">{token}</div>
+      <div className="ml3">{startCase(token)}</div>
     </div>
   )
 }
