@@ -12,6 +12,9 @@ const fromSemanticColors = (semanticColors: SemanticColors): Colors => {
   const colors: Colors = {}
   forEachObjIndexed((tokens: Tokens, field: string) => {
     forEachObjIndexed((color: string, token: string) => {
+      if (token.startsWith('__')) {
+        return
+      }
       const info: ColorInfo = {
         color,
         configField: field,
