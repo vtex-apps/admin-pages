@@ -37,6 +37,7 @@ const Operations = (props: Props) => (
               <Mutation
                 mutation={DeleteStyle}
                 refetchQueries={() => [{ query: ListStyles }]}
+                awaitRefetchQueries
               >
                 {deleteStyle =>
                   props.children({
