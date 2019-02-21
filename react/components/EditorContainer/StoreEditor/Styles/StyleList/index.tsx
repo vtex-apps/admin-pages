@@ -22,7 +22,6 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
         deleteStyle,
       }) => {
         const listStyles = data && data.listStyles
-        console.log({ listStyles })
 
         const selected = listStyles && find(style => style.selected, listStyles)
         if (selected) {

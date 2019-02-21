@@ -4,6 +4,4 @@ interface ColorInfo {
   configField: string
 }
 
-interface Colors {
-  [token: string]: Array<ColorInfo>
-}
+type Colors = Record<string, ColorInfo[]>
