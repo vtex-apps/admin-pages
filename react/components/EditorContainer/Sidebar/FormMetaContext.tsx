@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react'
+import React, { Component, createContext, useContext } from 'react'
 
 import { FormMetaContext } from './typings'
 
@@ -17,6 +17,8 @@ const defaultExternalState: FormMetaContext = {
 }
 
 const FormMetaContext = createContext(defaultExternalState)
+
+export const useFormMetaContext = () => useContext(FormMetaContext)
 
 export const FormMetaConsumer = FormMetaContext.Consumer
 
@@ -63,7 +65,7 @@ export class FormMetaProvider extends Component<{}, State> {
         if (callback) {
           callback()
         }
-      },
+      }
     )
   }
 }
