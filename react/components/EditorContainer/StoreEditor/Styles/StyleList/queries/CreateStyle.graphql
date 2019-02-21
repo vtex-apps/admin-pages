@@ -1,0 +1,7 @@
+mutation CreateStyle($name: String, $config: ConfigInput) {
+  createStyle(name: $name, config: $config) {
+    id
+    app
+    name
+  }
+}

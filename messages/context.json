@@ -98,5 +98,9 @@
   "pages.editor.empty-extension.edit": "pages.editor.empty-extension.edit",
   "pages.editor.empty-extension.title": "pages.editor.empty-extension.title",
   "pages.editor.info.page": "pages.editor.info.page",
-  "pages.editor.info.title": "pages.editor.info.title"
+  "pages.editor.info.title": "pages.editor.info.title",
+  "pages.editor.store.button.settings.title": "pages.editor.store.button.settings.title",
+  "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title",
+  "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
+  "pages.editor.store.button.back.title": "pages.editor.store.button.back.title"
 }

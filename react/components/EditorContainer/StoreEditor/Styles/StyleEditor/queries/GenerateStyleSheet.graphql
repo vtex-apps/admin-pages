@@ -1,0 +1,3 @@
+query GenerateStyleSheet($config: ConfigInput) {
+  generateStyleSheet(config: $config)
+}

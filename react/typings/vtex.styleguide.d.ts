@@ -24,6 +24,10 @@ declare module 'vtex.styleguide' {
   }
 
   interface ShowToastOptions {
+    action?: {
+      label: string
+      onClick: () => void
+    }
     message: string
     duration?: number
     horizontalPosition?: 'right' | 'left'
@@ -142,6 +146,7 @@ declare module 'vtex.styleguide' {
   export const Card: ComponentType<any>
   export const Checkbox: ComponentType<any>
   export class DatePicker extends Component<DatePickerProps> {}
+  export const ColorPicker: ComponentType<any>
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
   export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
@@ -159,18 +164,11 @@ declare module 'vtex.styleguide' {
   export const RadioGroup: ComponentType<any>
   export const Spinner: ComponentType<any>
   export class Textarea extends Component<TextareaProps> {}
-  export const Tab: ReactElement
-  export const Table: ReactElement
-  export const Tabs: ReactElement
-  export const Tag: ReactElement
-
-  export const ToastConsumer: ComponentType<ToastConsumerProps>
-
-  interface ToastProviderProps {
-    positioning: 'parent' | 'window'
-  }
-
-  export const ToastProvider: ComponentType<ToastProviderProps>
-
-  export const Toggle: ReactElement
+  export const Tab: ComponentType<any>
+  export const Table: ComponentType<any>
+  export const Tabs: ComponentType<any>
+  export const Tag: ComponentType<any>
+  export class ToastConsumer extends Component<ToastConsumerProps> {}
+  export class ToastProvider extends Component<ToastProviderProps> {}
+  export const Toggle: ComponentType<any>
 }
