@@ -18,9 +18,11 @@ const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
     if (pathStyleTag) {
       pathStyleTag.setAttribute('href', asset.value)
     }
-    const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)
-    if (sheetStyleTag) {
-      sheetStyleTag.innerHTML = ''
+    if (!asset.keepSheet) {
+      const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)
+      if (sheetStyleTag) {
+        sheetStyleTag.innerHTML = ''
+      }
     }
   } else {
     const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)

@@ -123,7 +123,17 @@ const StyleEditor: React.SFC<Props> = ({
                   }}
                   saveStyle={async () => {
                     await renameStyle({ variables: { id: style.id, name } })
-                    await updateStyle({ variables: { id: style.id, config } })
+                    const result = await updateStyle({
+                      variables: { id: style.id, config },
+                    })
+                    const {
+                      updateStyle: { path },
+                    } = result && result.data
+                    setStyleAsset({
+                      keepSheet: true,
+                      type: 'path',
+                      value: path,
+                    })
                     showToast({
                       horizontalPosition: 'right',
                       message: 'Style saved successfully.',
