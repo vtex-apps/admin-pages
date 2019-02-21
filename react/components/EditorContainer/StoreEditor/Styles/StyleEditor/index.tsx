@@ -67,7 +67,7 @@ const Editor: React.SFC<EditorProps> = ({
 
   return (
     <Query query={GenerateStyleSheet} variables={{ config }}>
-      {({ loading, data }: QueryResult<{ generateStyleSheet: string }>) => {
+      {({ data }: QueryResult<{ generateStyleSheet: string }>) => {
         const stylesheet = (data && data.generateStyleSheet) || ''
 
         const styleTag = iframeWindow.document.getElementById(STYLE_TAG_ID)
