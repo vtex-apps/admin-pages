@@ -1,4 +1,4 @@
-/* tslint:disable:max-classes-per-file, class-name*/
+/* tslint:disable:max-classes-per-file class-name*/
 declare module 'vtex.styleguide' {
   import { Component, ComponentType, ReactNode } from 'react'
   // Remove this dependency from admin-pages when styleguide is properly typed.
