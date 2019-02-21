@@ -1,6 +1,7 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useEffect, useReducer, useState } from 'react'
 import { Mutation, Query, QueryResult } from 'react-apollo'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
 import ColorsEditor from './ColorsEditor'
@@ -127,33 +128,41 @@ const StyleEditor: React.SFC<Props> = ({
       {renameStyle => (
         <Mutation mutation={UpdateStyle}>
           {updateStyle => (
-            <StyleEditorTools
-              initialState={{
-                backButton: {
-                  action: stopEditing,
-                  text: 'Back',
-                },
-                title: name,
-              }}
-              saveStyle={() => {
-                if (name !== style.name) {
-                  renameStyle({ variables: { id: style.id, name } })
-                }
-                updateStyle({ variables: { id: style.id, config } })
-              }}
-              setName={setName}
-            >
-              {updateNavigation => (
-                <Editor
-                  config={config}
-                  updateConfig={updateConfig}
-                  addNavigation={(info: NavigationInfo) => {
-                    updateNavigation({ info, type: 'push' })
+            <ToastConsumer>
+              {({ showToast }) => (
+                <StyleEditorTools
+                  initialState={{
+                    backButton: {
+                      action: stopEditing,
+                      text: 'Back',
+                    },
+                    title: name,
                   }}
-                  iframeWindow={iframeWindow}
-                />
+                  saveStyle={() => {
+                    Promise.all([
+                      renameStyle({ variables: { id: style.id, name } }),
+                      updateStyle({ variables: { id: style.id, config } }),
+                    ]).then(() => {
+                      showToast({
+                        message: 'Style saved successfully.',
+                      })
+                    })
+                  }}
+                  setName={setName}
+                >
+                  {updateNavigation => (
+                    <Editor
+                      config={config}
+                      updateConfig={updateConfig}
+                      addNavigation={(info: NavigationInfo) => {
+                        updateNavigation({ info, type: 'push' })
+                      }}
+                      iframeWindow={iframeWindow}
+                    />
+                  )}
+                </StyleEditorTools>
               )}
-            </StyleEditorTools>
+            </ToastConsumer>
           )}
         </Mutation>
       )}
