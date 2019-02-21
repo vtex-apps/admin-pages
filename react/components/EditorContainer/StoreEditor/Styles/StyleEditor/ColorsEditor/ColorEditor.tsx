@@ -43,7 +43,7 @@ const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
     return fieldName(info.path.split('.')[0])
   }, colorInfo)
   return (
-    <div className="overflow-scroll">
+    <div className="overflow-scroll h-100">
       {Object.values(
         mapObjIndexed((group: ColorInfo[], field: string) => {
           return (
