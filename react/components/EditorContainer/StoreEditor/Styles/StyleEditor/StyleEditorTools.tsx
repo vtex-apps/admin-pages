@@ -50,17 +50,19 @@ const StyleEditorTools: React.SFC<Props> = ({
   return (
     <div className="h-100 flex flex-column">
       <div className="mh6 mt6">
-        <div
-          className="pointer flex items-center"
-          onClick={() => {
-            action()
-            updateNavigation({
-              type: 'pop',
-            })
-          }}
-        >
-          <IconArrowBack />
-          <span className="ml4">{text}</span>
+        <div className="flex">
+          <div
+            className="pointer flex items-center"
+            onClick={() => {
+              action()
+              updateNavigation({
+                type: 'pop',
+              })
+            }}
+          >
+            <IconArrowBack />
+            <span className="ml4">{text}</span>
+          </div>
         </div>
         <div className="flex justify-between items-center mv4">
           {editing && navigation.length === 1 ? (
