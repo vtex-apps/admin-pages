@@ -6,7 +6,6 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 
 interface Props {
-  activeConfiguration?: ExtensionConfiguration
   configurations: ExtensionConfiguration[]
   editor: EditorContext
   iframeWindow: Window

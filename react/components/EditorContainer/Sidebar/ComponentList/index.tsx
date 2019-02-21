@@ -14,7 +14,7 @@ import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
 import { NormalizedComponent, ReorderChange } from './typings'
-import { getParentTreePath, noop, normalize, pureSplice } from './utils'
+import { getParentTreePath, normalize, pureSplice } from './utils'
 
 interface CustomProps {
   components: SidebarComponent[]

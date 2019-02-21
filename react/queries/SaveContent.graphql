@@ -1,10 +1,12 @@
 mutation saveContent (
   $configuration: ContentConfigurationInput
-  $interfacePath: [InterfacePathItem]
+  $template: string
+  $treePath: string
 ) {
   saveContent(
     configuration: $configuration
-    interfacePath: $interfacePath
+    template: $template
+    treePath: $treePath
   ) {
     # Available fields:
     # condition {

@@ -33,8 +33,6 @@ export const isRootComponentRelative = (rootComponent: SidebarComponent) => {
   )
 }
 
-export const noop = () => undefined
-
 export const normalize = (components: SidebarComponent[]) => {
   const [roots, leaves] = partition(isRootComponent, components)
 

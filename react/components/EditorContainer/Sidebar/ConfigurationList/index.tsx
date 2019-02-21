@@ -14,7 +14,6 @@ import {
   getSchemaPropsOrContent,
   updateExtensionFromForm,
 } from '../../../../utils/components'
-import { getInterfacePath } from '../../../../utils/interfaces'
 import { FormMetaContext, ModalContext } from '../typings'
 
 import ContentEditor from './ContentEditor'
@@ -315,20 +314,15 @@ class ConfigurationList extends Component<Props, State> {
       await saveContent({
         variables: {
           configuration,
-          interfacePath: getInterfacePath(
-            iframeRuntime.extensions,
-            editor.editTreePath!
-          ),
+          template: iframeRuntime.pages[iframeRuntime.page].blockId,
+          treePath: editor.editTreePath,
         },
       })
 
       const listContentQuery = this.props.listContent
 
       await listContentQuery.refetch({
-        interfacePath: getInterfacePath(
-          iframeRuntime.extensions,
-          editor.editTreePath!
-        ),
+        
         pageContext: iframeRuntime.route.pageContext,
       })
 
@@ -405,11 +399,9 @@ export default compose(
     name: 'listContent',
     options: ({ editor, iframeRuntime }: Props) => ({
       variables: {
-        interfacePath: getInterfacePath(
-          iframeRuntime.extensions,
-          editor.editTreePath!
-        ),
         pageContext: iframeRuntime.route.pageContext,
+        template: iframeRuntime.pages[iframeRuntime.page],
+        treePath: editor.editTreePath,
       },
     }),
   }),

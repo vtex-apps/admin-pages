@@ -1,10 +1,12 @@
 query ListContent(
-  $interfacePath: [InterfacePathItem]
   $pageContext: PageContextInput
+  $template: string
+  $treePath: string
 ) {
   listContent(
-    interfacePath: $interfacePath
     pageContext: $pageContext
+    template: $template
+    treePath: $treePath
   ) {
     condition {
       allMatches

@@ -271,24 +271,8 @@ declare global {
 
   type BlockPath = FormattedBlock[]
 
-  interface FormattedInterface extends FormattedBlock {
-    index: number
-  }
-
-  type InterfacePath = FormattedInterface[]
-
   interface InnerBlock {
     blockId: string
     extensionPointId: string
   }
-
-  type BlockRole = 'after' | 'around' | 'before'
-
-  interface RelativeBlocks {
-    [role: string]: string[] | undefined
-  }
-
-  type InterfaceRole = BlockRole
-
-  type RelativeInterfaces = RelativeBlocks
 }
