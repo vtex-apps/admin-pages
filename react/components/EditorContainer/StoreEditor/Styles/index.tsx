@@ -1,7 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import StyleEditor from './StyleEditor'
 import StyleList from './StyleList'
+
+const PATH_STYLE_TAG_ID = 'style_link'
+const SHEET_STYLE_TAG_ID = 'style_edit'
 
 interface Props {
   iframeWindow: Window
@@ -9,17 +12,52 @@ interface Props {
 
 type EditingState = Style | undefined
 
+const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
+  if (asset.type === 'path') {
+    const pathStyleTag = window.document.getElementById(PATH_STYLE_TAG_ID)
+    if (pathStyleTag) {
+      pathStyleTag.setAttribute('href', asset.value)
+    }
+    const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)
+    if (sheetStyleTag) {
+      sheetStyleTag.innerHTML = ''
+    }
+  } else {
+    const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)
+    if (sheetStyleTag) {
+      sheetStyleTag.innerHTML = asset.value
+    }
+  }
+}
+
 const Styles: React.SFC<Props> = ({ iframeWindow }) => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
+  useEffect(() => {
+    const styleTag = iframeWindow.document.createElement('style')
+    styleTag.setAttribute('id', SHEET_STYLE_TAG_ID)
+    if (iframeWindow.document.head) {
+      iframeWindow.document.head.append(styleTag)
+    }
+
+    return () => {
+      if (styleTag && iframeWindow.document.head) {
+        iframeWindow.document.head.removeChild(styleTag)
+      }
+    }
+  }, [])
+
   return editing ? (
     <StyleEditor
-      iframeWindow={iframeWindow}
       style={editing}
       stopEditing={() => setEditing(undefined)}
+      setStyleAsset={setStyleAsset(iframeWindow)}
     />
   ) : (
-    <StyleList iframeWindow={iframeWindow} startEditing={setEditing} />
+    <StyleList
+      startEditing={setEditing}
+      setStyleAsset={setStyleAsset(iframeWindow)}
+    />
   )
 }
 

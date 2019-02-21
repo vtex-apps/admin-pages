@@ -1,5 +1,5 @@
 import { mergeDeepRight } from 'ramda'
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useReducer, useState } from 'react'
 import { Mutation, Query, QueryResult } from 'react-apollo'
 import { ToastConsumer } from 'vtex.styleguide'
 
@@ -11,21 +11,19 @@ import UpdateStyle from './queries/UpdateStyle.graphql'
 
 import StyleEditorTools from './StyleEditorTools'
 
-const STYLE_TAG_ID = 'style_edit'
-
 type EditMode = 'colors' | undefined
 
 interface Props {
-  iframeWindow: Window
   style: Style
   stopEditing: () => void
+  setStyleAsset: (asset: StyleAssetInfo) => void
 }
 
 interface EditorProps {
-  iframeWindow: Window
   config: TachyonsConfig
   addNavigation: (info: NavigationInfo) => void
   updateConfig: React.Dispatch<Partial<TachyonsConfig>>
+  setStyleAsset: (asset: StyleAssetInfo) => void
 }
 
 type ConfigReducer = (
@@ -36,24 +34,10 @@ type ConfigReducer = (
 const Editor: React.SFC<EditorProps> = ({
   addNavigation,
   config,
-  iframeWindow,
   updateConfig,
+  setStyleAsset,
 }) => {
   const [mode, setMode] = useState<EditMode>(undefined)
-
-  useEffect(() => {
-    const styleTag = iframeWindow.document.createElement('style')
-    styleTag.setAttribute('id', STYLE_TAG_ID)
-    if (iframeWindow.document.head) {
-      iframeWindow.document.head.append(styleTag)
-    }
-
-    return () => {
-      if (styleTag && iframeWindow.document.head) {
-        iframeWindow.document.head.removeChild(styleTag)
-      }
-    }
-  }, [])
 
   const {
     typography: {
@@ -68,11 +52,10 @@ const Editor: React.SFC<EditorProps> = ({
   return (
     <Query query={GenerateStyleSheet} variables={{ config }}>
       {({ data }: QueryResult<{ generateStyleSheet: string }>) => {
-        const stylesheet = (data && data.generateStyleSheet) || ''
+        const stylesheet = data && data.generateStyleSheet
 
-        const styleTag = iframeWindow.document.getElementById(STYLE_TAG_ID)
-        if (styleTag) {
-          styleTag.innerHTML = stylesheet
+        if (stylesheet) {
+          setStyleAsset({ type: 'stylesheet', value: stylesheet })
         }
 
         switch (mode) {
@@ -113,9 +96,9 @@ const Editor: React.SFC<EditorProps> = ({
 }
 
 const StyleEditor: React.SFC<Props> = ({
-  iframeWindow,
   stopEditing,
   style,
+  setStyleAsset,
 }) => {
   const [config, updateConfig] = useReducer<ConfigReducer>(
     mergeDeepRight as ConfigReducer,
@@ -138,15 +121,12 @@ const StyleEditor: React.SFC<Props> = ({
                     },
                     title: name,
                   }}
-                  saveStyle={() => {
-                    Promise.all([
-                      renameStyle({ variables: { id: style.id, name } }),
-                      updateStyle({ variables: { id: style.id, config } }),
-                    ]).then(() => {
-                      showToast({
-                        horizontalPosition: 'right',
-                        message: 'Style saved successfully.',
-                      })
+                  saveStyle={async () => {
+                    await renameStyle({ variables: { id: style.id, name } })
+                    await updateStyle({ variables: { id: style.id, config } })
+                    showToast({
+                      horizontalPosition: 'right',
+                      message: 'Style saved successfully.',
                     })
                   }}
                   setName={setName}
@@ -158,7 +138,7 @@ const StyleEditor: React.SFC<Props> = ({
                       addNavigation={(info: NavigationInfo) => {
                         updateNavigation({ info, type: 'push' })
                       }}
-                      iframeWindow={iframeWindow}
+                      setStyleAsset={setStyleAsset}
                     />
                   )}
                 </StyleEditorTools>

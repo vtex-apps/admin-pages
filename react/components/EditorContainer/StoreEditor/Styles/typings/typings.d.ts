@@ -15,3 +15,8 @@ interface ActionMenuOption {
   label: string
   onClick: (style: Style) => void
 }
+
+interface StyleAssetInfo {
+  type: 'path' | 'stylesheet'
+  value: string
+}
