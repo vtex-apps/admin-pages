@@ -65,44 +65,44 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
               </ButtonWithIcon>
             </div>
             <div className="flex flex-column flex-grow-1 overflow-scroll">
-              {listStyles &&
-                listStyles.map(style => (
-                  <ToastConsumer>
-                    {({ showToast }) => (
-                      <StyleCard
-                        key={style.id}
-                        style={style}
-                        selectStyle={({ id, name }: Style) =>
-                          saveSelectedStyle({ variables: { id } }).then(() => {
-                            showToast({
-                              message: `Style '${name}' was selected.`,
-                            })
+              <ToastConsumer>
+                {({ showToast }) =>
+                  listStyles &&
+                  listStyles.map(style => (
+                    <StyleCard
+                      key={style.id}
+                      style={style}
+                      selectStyle={({ id, name }: Style) =>
+                        saveSelectedStyle({ variables: { id } }).then(() => {
+                          showToast({
+                            message: `Style '${name}' was selected.`,
                           })
-                        }
-                        deleteStyle={({ config, name, id }: Style) => {
-                          deleteStyle({ variables: { id } }).then(() => {
-                            showToast({
-                              action: {
-                                label: 'Undo',
-                                onClick: () => {
-                                  createStyle({ variables: { name, config } })
-                                },
+                        })
+                      }
+                      deleteStyle={({ config, name, id }: Style) => {
+                        deleteStyle({ variables: { id } }).then(() => {
+                          showToast({
+                            action: {
+                              label: 'Undo',
+                              onClick: () => {
+                                createStyle({ variables: { name, config } })
                               },
-                              duration: Infinity,
-                              message: `Style '${name}' was deleted.`,
-                            })
+                            },
+                            duration: Infinity,
+                            message: `Style '${name}' was deleted.`,
                           })
-                        }}
-                        duplicateStyle={({ name, config }: Style) =>
-                          createStyle({
-                            variables: { name: `Copy of ${name}`, config },
-                          })
-                        }
-                        startEditing={startEditing}
-                      />
-                    )}
-                  </ToastConsumer>
-                ))}
+                        })
+                      }}
+                      duplicateStyle={({ name, config }: Style) =>
+                        createStyle({
+                          variables: { name: `Copy of ${name}`, config },
+                        })
+                      }
+                      startEditing={startEditing}
+                    />
+                  ))
+                }
+              </ToastConsumer>
             </div>
           </div>
         )

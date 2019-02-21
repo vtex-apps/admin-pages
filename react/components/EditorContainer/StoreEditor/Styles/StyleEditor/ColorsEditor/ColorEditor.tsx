@@ -47,13 +47,16 @@ const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
       {Object.values(
         mapObjIndexed((group: ColorInfo[], field: string) => {
           return (
-            <div className="ph6 bt b--muted-5">
+            <div className="ph6 bt b--muted-5" key={field}>
               <div className="f4 bb b--muted-5 pv6">{field}</div>
               <div className="pv4">
                 {group.map(info => {
+                  const key = info.path.split('.')[1]
+
                   return (
                     <ColorPicker
-                      label={startCase(info.path.split('.')[1])}
+                      key={key}
+                      label={startCase(key)}
                       color={{ hex: sixDigitsColors(info.color) }}
                       colorHistory={[]}
                       onChange={({ hex }: ColorPickerColors) => {
