@@ -37,12 +37,9 @@ interface State {
   blocks: Extension['blocks']
   changes: ReorderChange[]
   components: NormalizedComponent[]
-  handleCancelModal: () => void
   initialComponents: SidebarComponent[]
   isLoadingMutation: boolean
   isModalOpen: boolean
-  modalCancelMessageId: string
-  modalTextMessageId: string
 }
 
 class ComponentList extends Component<Props, State> {
@@ -68,13 +65,9 @@ class ComponentList extends Component<Props, State> {
       blocks: this.block.blocks,
       changes: [],
       components: normalize(props.components),
-      handleCancelModal: noop,
       initialComponents: props.components,
       isLoadingMutation: false,
       isModalOpen: false,
-      modalCancelMessageId:
-        'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
     }
   }
 
@@ -88,17 +81,17 @@ class ComponentList extends Component<Props, State> {
         <Modal
           isActionLoading={this.state.isLoadingMutation}
           onClickAction={this.handleSave}
-          onClickCancel={this.state.handleCancelModal}
+          onClickCancel={this.handleDiscard}
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
           textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.button.save',
+            id: 'pages.editor.component-list.modal.button.save',
           })}
           textButtonCancel={intl.formatMessage({
-            id: this.state.modalCancelMessageId,
+            id: 'pages.editor.component-list.modal.button.cancel',
           })}
           textMessage={intl.formatMessage({
-            id: this.state.modalTextMessageId,
+            id: 'pages.editor.component-list.modal.text',
           })}
         />
         <div className="bb bw1 b--light-silver" />
@@ -125,7 +118,7 @@ class ComponentList extends Component<Props, State> {
                   block
                   disabled={!hasChanges}
                   isLoading={this.state.isLoadingMutation}
-                  onClick={this.handleOpenSaveChangesModal}
+                  onClick={this.handleSave}
                   variation="tertiary"
                 >
                   <FormattedMessage id="pages.editor.component-list.button.save" />
@@ -151,7 +144,6 @@ class ComponentList extends Component<Props, State> {
 
   private handleCloseModal = () => {
     this.setState({
-      handleCancelModal: noop,
       isModalOpen: false,
     })
   }
@@ -214,27 +206,23 @@ class ComponentList extends Component<Props, State> {
     }
   }
 
+  private handleDiscard = () => {
+    this.setState(
+      prevState => ({
+        ...prevState,
+        changes: [prevState.changes[0]],
+        isModalOpen: false,
+      }),
+      () => {
+        this.handleUndo()
+      }
+    )
+  }
+
   private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
     if (this.state.changes.length > 0) {
-      const handleCancelModal = () => {
-        this.setState(
-          prevState => ({
-            ...prevState,
-            changes: [prevState.changes[0]],
-            isModalOpen: false,
-          }),
-          () => {
-            this.handleUndo()
-          }
-        )
-      }
-
       this.setState({
-        handleCancelModal,
         isModalOpen: true,
-        modalCancelMessageId:
-          'pages.editor.component-list.undo.modal.button.cancel',
-        modalTextMessageId: 'pages.editor.component-list.undo.modal.text',
       })
     } else {
       const { editor, highlightHandler } = this.props
@@ -245,16 +233,6 @@ class ComponentList extends Component<Props, State> {
 
       highlightHandler(null)
     }
-  }
-
-  private handleOpenSaveChangesModal = () => {
-    this.setState({
-      handleCancelModal: this.handleCloseModal,
-      isModalOpen: true,
-      modalCancelMessageId:
-        'pages.editor.component-list.save.modal.button.cancel',
-      modalTextMessageId: 'pages.editor.component-list.save.modal.text',
-    })
   }
 
   private handleSave = async (
@@ -308,7 +286,7 @@ class ComponentList extends Component<Props, State> {
 
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.success',
+          id: 'pages.editor.component-list.toast.success',
         })
       )
 
@@ -316,7 +294,7 @@ class ComponentList extends Component<Props, State> {
     } catch (e) {
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.save.toast.error',
+          id: 'pages.editor.component-list.toast.error',
         })
       )
     } finally {
