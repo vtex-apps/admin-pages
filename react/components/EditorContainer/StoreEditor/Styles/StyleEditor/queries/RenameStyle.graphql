@@ -1,0 +1,5 @@
+mutation RenameStyle($id: String, $name: String) {
+  renameStyle(id: $id, name: $name) {
+    id
+  }
+}

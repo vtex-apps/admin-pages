@@ -1,77 +1,314 @@
-import { equals, findIndex, last } from 'ramda'
+import { clone, equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
-
+import { compose, graphql, MutationFn } from 'react-apollo'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
+import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
 
+import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
+import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
+import { getExtension } from '../../../../utils/components'
+import UndoIcon from '../../../icons/UndoIcon'
+import Modal from '../../../Modal'
 import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
-import { NormalizedComponent } from './typings'
-import { getParentTreePath, normalizeComponents } from './utils'
+import { NormalizedComponent, ReorderChange } from './typings'
+import { getParentTreePath, normalize, pureSplice } from './utils'
 
-interface Props {
+interface CustomProps {
   components: SidebarComponent[]
   editor: EditorContext
-  highlightExtensionPoint: (treePath: string | null) => void
+  highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
-  onMouseEnterComponent: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onMouseEnterComponent: (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
+  ) => void
   onMouseLeaveComponent: () => void
+  updateBlock: MutationFn
+  updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
+type Props = CustomProps &
+  InjectedIntlProps &
+  Pick<ToastConsumerFunctions, 'showToast'>
+
 interface State {
+  blocks: Extension['blocks']
+  changes: ReorderChange[]
   components: NormalizedComponent[]
   initialComponents: SidebarComponent[]
+  isLoadingMutation: boolean
+  isModalOpen: boolean
 }
 
 class ComponentList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
     if (!equals(props.components, state.initialComponents)) {
       return {
-        components: normalizeComponents(props.components),
+        components: normalize(props.components),
         initialComponents: props.components,
       }
     }
   }
 
+  private block: Extension
+
   constructor(props: Props) {
     super(props)
 
+    const { iframeRuntime } = props
+
+    this.block = getExtension(iframeRuntime.page, iframeRuntime.extensions)
+
     this.state = {
-      components: normalizeComponents(props.components),
+      blocks: this.block.blocks,
+      changes: [],
+      components: normalize(props.components),
       initialComponents: props.components,
+      isLoadingMutation: false,
+      isModalOpen: false,
     }
   }
 
   public render() {
-    const { editor, onMouseEnterComponent, onMouseLeaveComponent } = this.props
+    const { intl, onMouseEnterComponent, onMouseLeaveComponent } = this.props
 
-    const isSortable = editor.mode === 'layout'
+    const hasChanges = this.state.changes.length > 0
 
     return (
       <Fragment>
-        <div className="bb bw1 b--light-silver" />
-        <SortableList
-          components={this.state.components}
-          isSortable={isSortable}
-          lockAxis="y"
-          onEdit={this.handleEdit}
-          onMouseEnter={onMouseEnterComponent}
-          onMouseLeave={onMouseLeaveComponent}
-          onSortEnd={this.handleSortEnd}
-          useDragHandle={isSortable}
+        <Modal
+          isActionLoading={this.state.isLoadingMutation}
+          onClickAction={this.handleSave}
+          onClickCancel={this.handleDiscard}
+          onClose={this.handleCloseModal}
+          isOpen={this.state.isModalOpen}
+          textButtonAction={intl.formatMessage({
+            id: 'pages.editor.component-list.modal.button.save',
+          })}
+          textButtonCancel={intl.formatMessage({
+            id: 'pages.editor.component-list.modal.button.cancel',
+          })}
+          textMessage={intl.formatMessage({
+            id: 'pages.editor.component-list.modal.text',
+          })}
         />
+        <div className="bb bw1 b--light-silver" />
+        <div className="flex flex-column flex-grow-1">
+          {hasChanges && (
+            <div className="bb bw1 b--light-silver w-100">
+              <div className="w-50 fl tc bw1 br b--light-silver">
+                <ButtonWithIcon
+                  block
+                  disabled={!hasChanges}
+                  icon={
+                    <UndoIcon color={!hasChanges ? '#979899' : undefined} />
+                  }
+                  onClick={this.handleUndo}
+                  variation="tertiary"
+                >
+                  <FormattedMessage id="pages.editor.component-list.button.undo">
+                    {text => <span className="pl3">{text}</span>}
+                  </FormattedMessage>
+                </ButtonWithIcon>
+              </div>
+              <div className="w-50 fl tc">
+                <Button
+                  block
+                  disabled={!hasChanges}
+                  isLoading={this.state.isLoadingMutation}
+                  onClick={this.handleSave}
+                  variation="tertiary"
+                >
+                  <FormattedMessage id="pages.editor.component-list.button.save" />
+                </Button>
+              </div>
+            </div>
+          )}
+          <SortableList
+            components={this.state.components}
+            lockAxis="y"
+            onDelete={this.handleDelete}
+            onEdit={this.handleEdit}
+            onMouseEnter={onMouseEnterComponent}
+            onMouseLeave={onMouseLeaveComponent}
+            onSortEnd={this.handleSortEnd}
+            useDragHandle
+          />
+          <div className="bt b--light-silver" />
+        </div>
       </Fragment>
     )
   }
 
-  private handleEdit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { editor, highlightExtensionPoint } = this.props
+  private handleCloseModal = () => {
+    this.setState({
+      isModalOpen: false,
+    })
+  }
 
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
+  private handleDelete = async (treePath: string) => {
+    if (!this.state.isLoadingMutation) {
+      const { iframeRuntime } = this.props
 
-    editor.editExtensionPoint(treePath as string)
+      const splitTreePath = treePath.split('/')
 
-    highlightExtensionPoint(null)
+      const parentTreePath = splitTreePath
+        .slice(0, splitTreePath.length - 1)
+        .join('/')
+
+      const parentExtension = iframeRuntime.extensions[parentTreePath]
+
+      const targetExtensionPointId = splitTreePath[splitTreePath.length - 1]
+
+      const parentBlocks = parentExtension.blocks
+
+      if (parentBlocks) {
+        const targetBlockIndex = parentBlocks.findIndex(
+          block => block.extensionPointId === targetExtensionPointId
+        )
+
+        const newParentBlocks = pureSplice(targetBlockIndex, parentBlocks)
+
+        const newParentExtension = {
+          ...parentExtension,
+          blocks: newParentBlocks,
+        }
+
+        iframeRuntime.updateExtension(parentTreePath, newParentExtension)
+
+        const targetComponentIndex = this.state.components.findIndex(
+          component => component.treePath === treePath
+        )
+
+        const newParentComponents = pureSplice(
+          targetComponentIndex,
+          this.state.components
+        )
+
+        this.setState(prevState => ({
+          ...prevState,
+          blocks: newParentBlocks,
+          changes: [
+            ...prevState.changes,
+            {
+              blocks: prevState.blocks,
+              components: prevState.components,
+              target: parentTreePath,
+            },
+          ],
+          components: newParentComponents,
+        }))
+
+        this.props.updateSidebarComponents(newParentComponents)
+      }
+    }
+  }
+
+  private handleDiscard = () => {
+    this.setState(
+      prevState => ({
+        ...prevState,
+        changes: [prevState.changes[0]],
+        isModalOpen: false,
+      }),
+      () => {
+        this.handleUndo()
+      }
+    )
+  }
+
+  private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (this.state.changes.length > 0) {
+      this.setState({
+        isModalOpen: true,
+      })
+    } else {
+      const { editor, highlightHandler } = this.props
+
+      const treePath = event.currentTarget.getAttribute('data-tree-path')
+
+      editor.editExtensionPoint(treePath)
+
+      highlightHandler(null)
+    }
+  }
+
+  private handleSave = async (
+    _?: Event,
+    blocks?: Extension['blocks'],
+    successCallback?: () => void
+  ) => {
+    const { iframeRuntime, intl, updateBlock } = this.props
+
+    const iframeWindow = (document.getElementById(
+      'store-iframe'
+    ) as HTMLIFrameElement).contentWindow
+
+    const iframeCurrentPage = iframeRuntime.page
+
+    const extension = iframeRuntime.extensions[iframeCurrentPage]
+
+    if (iframeWindow === null) {
+      throw new Error('iframeWindow is null')
+    }
+
+    let changes = this.state.changes
+
+    this.setState({
+      isLoadingMutation: true,
+    })
+
+    const parsedRelativeBlocks = getRelativeBlocksIds(
+      iframeCurrentPage,
+      iframeRuntime.extensions,
+      {
+        after: this.block.after,
+        around: this.block.around,
+        before: this.block.before,
+      }
+    )
+
+    try {
+      await updateBlock({
+        variables: {
+          block: {
+            after: parsedRelativeBlocks.after,
+            around: parsedRelativeBlocks.around,
+            before: parsedRelativeBlocks.before,
+            blocks: blocks || extension.blocks,
+            propsJSON: JSON.stringify(extension.props),
+          },
+          blockPath: getBlockPath(iframeRuntime.extensions, iframeCurrentPage),
+        },
+      })
+
+      this.props.showToast(
+        intl.formatMessage({
+          id: 'pages.editor.component-list.toast.success',
+        })
+      )
+
+      changes = []
+    } catch (e) {
+      this.props.showToast(
+        intl.formatMessage({
+          id: 'pages.editor.component-list.toast.error',
+        })
+      )
+    } finally {
+      this.handleCloseModal()
+
+      this.setState({
+        changes,
+        isLoadingMutation: false,
+      })
+
+      if (successCallback) {
+        successCallback()
+      }
+    }
   }
 
   private handleSortEnd: SortEndHandler = ({ oldIndex, newIndex }) => {
@@ -92,39 +329,85 @@ class ComponentList extends Component<Props, State> {
     const isSameTree = firstTargetParentTreePath === secondTargetParentTreePath
     const isChangingSameExtensionPoint = firstTargetName === secondTargetName
 
-    if (isSameTree && !isChangingSameExtensionPoint) {
-      const extension: Extension = this.props.iframeRuntime.extensions[
-        firstTargetParentTreePath
-      ]
+    const extension = this.props.iframeRuntime.extensions[
+      firstTargetParentTreePath
+    ]
+
+    if (isSameTree && !isChangingSameExtensionPoint && extension.blocks) {
+      const extensionPoints = extension.blocks.map(
+        block => block.extensionPointId
+      )
 
       const firstTargetIndex = findIndex(
         equals(firstTargetName),
-        extension.props.elements
+        extensionPoints
       )
       const secondTargetIndex = findIndex(
         equals(secondTargetName),
-        extension.props.elements
+        extensionPoints
       )
 
-      const newOrder = arrayMove(
-        extension.props.elements,
+      const target = firstTargetParentTreePath
+
+      const oldBlocks = clone(extension.blocks)
+
+      const newBlocks = arrayMove(
+        oldBlocks,
         firstTargetIndex,
         secondTargetIndex
       )
 
       this.props.iframeRuntime.updateExtension(firstTargetParentTreePath, {
         ...extension,
-        props: {
-          ...extension.props,
-          elements: newOrder,
-        },
+        blocks: newBlocks,
       })
 
-      this.setState({
-        components: arrayMove(this.state.components, oldIndex, newIndex),
-      })
+      this.setState(prevState => ({
+        ...prevState,
+        blocks: newBlocks,
+        changes: [
+          ...prevState.changes,
+          {
+            blocks: prevState.blocks,
+            components: prevState.components,
+            target,
+          },
+        ],
+        components: arrayMove(prevState.components, oldIndex, newIndex),
+      }))
+    }
+  }
+
+  private handleUndo = () => {
+    const lastChange = last(this.state.changes)
+
+    if (lastChange) {
+      const { blocks, components, target } = lastChange
+
+      const extension = this.props.iframeRuntime.extensions[target]
+
+      if (extension.blocks) {
+        const { iframeRuntime, updateSidebarComponents } = this.props
+
+        iframeRuntime.updateExtension(target, {
+          ...extension,
+          blocks,
+        })
+
+        this.setState(prevState => ({
+          ...prevState,
+          blocks,
+          changes: prevState.changes.slice(0, prevState.changes.length - 1),
+          components,
+        }))
+
+        updateSidebarComponents(components)
+      }
     }
   }
 }
 
-export default ComponentList
+export default compose(
+  injectIntl,
+  graphql(UpdateBlock, { name: 'updateBlock' })
+)(ComponentList)

@@ -1,0 +1,30 @@
+mutation saveContent (
+  $configuration: ContentConfigurationInput
+  $template: String
+  $treePath: String
+) {
+  saveContent(
+    configuration: $configuration
+    template: $template
+    treePath: $treePath
+  ) {
+    # Available fields:
+    # condition {
+    #   allMatches
+    #   id
+    #   pageContext {
+    #     id
+    #     type
+    #   }
+    #   statements {
+    #     objectJSON
+    #     subject
+    #     verb
+    #   }
+    # }
+    # contentJSON
+    # contentId
+    # label
+    contentId
+  }
+}

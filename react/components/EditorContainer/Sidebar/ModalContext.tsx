@@ -1,4 +1,4 @@
-import React, { Component, createContext } from 'react'
+import React, { Component, createContext, useContext } from 'react'
 
 import { ModalContext } from './typings'
 
@@ -22,6 +22,8 @@ const defaultExternalState: ModalContext = {
 }
 
 const ModalContext = createContext(defaultExternalState)
+
+export const useModalContext = () => useContext(ModalContext)
 
 export const ModalConsumer = ModalContext.Consumer
 
@@ -58,7 +60,7 @@ export class ModalProvider extends Component<{}, State> {
 
           this.setState({ closeCallbackHandler: undefined })
         }
-      },
+      }
     )
   }
 

@@ -3,39 +3,37 @@ import { SortableContainer } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../typings'
 
-import SortableButton from './SortableButton'
+import SortableListItem from './SortableListItem'
 
-interface Props {
+interface CustomProps {
   components: NormalizedComponent[]
-  isSortable: boolean
-  onEdit: (event: React.MouseEvent<HTMLButtonElement>) => void
-  onMouseEnter: (event: React.MouseEvent<HTMLButtonElement>) => void
+  onDelete: (treePath: string) => void
+  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onMouseEnter: (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
+  ) => void
   onMouseLeave: () => void
 }
 
+type Props = CustomProps
+
 const SortableList = SortableContainer<Props>(
-  ({
-    components,
-    isSortable,
-    onEdit,
-    onMouseEnter,
-    onMouseLeave,
-  }) => (
-    <ul className="mv0 pl0">
+  ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }) => (
+    <ul className="mv0 pl0 overflow-y-auto pointer">
       {components.map((component, index) => (
-        <SortableButton
+        <SortableListItem
           component={component}
-          disabled={!isSortable || !component.isSortable}
+          disabled={!component.isSortable}
           index={index}
           key={component.treePath}
+          onDelete={onDelete}
           onEdit={onEdit}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
-          shouldRenderDragHandle={isSortable}
         />
       ))}
     </ul>
-  ),
+  )
 )
 
 export default SortableList

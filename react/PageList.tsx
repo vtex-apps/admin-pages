@@ -24,8 +24,8 @@ class PageList extends PureComponent {
     const { startLoading, stopLoading } = this.context
 
     return (
-      <AdminWrapper path={WRAPPER_PATH}>
-        <Query<QueryData> query={RoutesQuery} variables={{domain: 'store'}}>
+      <AdminWrapper targetPath={WRAPPER_PATH}>
+        <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
           {({ data, loading: isLoading }) => {
             if (isLoading) {
               startLoading()
@@ -65,7 +65,7 @@ class PageList extends PureComponent {
                 multipleProducts: [],
                 noProducts: [],
                 singleProduct: [],
-              },
+              }
             )
 
             return <List categorizedRoutes={categorizedRoutes} />

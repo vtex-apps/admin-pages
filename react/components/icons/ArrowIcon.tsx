@@ -2,10 +2,15 @@ import React from 'react'
 
 const ArrowIcon: React.SFC = () => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-    <path
-      d="M3.41 4.80005L8 9.12663L12.59 4.80005L14 6.13203L8 11.8L2 6.13203L3.41 4.80005Z"
-      fill="#C4C8CC"
-    />
+    <g clipPath="url(#clip0)">
+      <rect width="16" height="16" fill="none" />
+      <path d="M8 10.5L11.5 7L4.5 7L8 10.5Z" fill="#727273" />
+    </g>
+    <defs>
+      <clipPath id="clip0">
+        <rect width="16" height="16" fill="none" />
+      </clipPath>
+    </defs>
   </svg>
 )
 

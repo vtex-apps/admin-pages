@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import AdminWrapper from './components/admin/AdminWrapper'
 import {
@@ -102,17 +103,22 @@ class RedirectForm extends Component<Props, State> {
             })}
           </title>
         </Helmet>
-        <AdminWrapper path={WRAPPER_PATH}>
+        <AdminWrapper targetPath={WRAPPER_PATH}>
           <Operations>
             {({ deleteRedirect, saveRedirect }) =>
               isLoading ? (
                 <Loader />
               ) : (
-                <Form
-                  initialData={formData as Redirect}
-                  onDelete={deleteRedirect}
-                  onSave={saveRedirect}
-                />
+                <ToastConsumer>
+                  {({ showToast }) => (
+                    <Form
+                      initialData={formData as Redirect}
+                      onDelete={deleteRedirect}
+                      onSave={saveRedirect}
+                      showToast={showToast}
+                    />
+                  )}
+                </ToastConsumer>
               )
             }
           </Operations>

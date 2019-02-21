@@ -12,14 +12,14 @@ import { global, RenderComponent, Window } from 'vtex.render-runtime'
  */
 export const getComponentSchema = (
   component: RenderComponent<any, any> | null,
-  props: any,
+  propsOrContent: object,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl,
+  intl: ReactIntl.InjectedIntl
 ): ComponentSchema => {
   const componentSchema: ComponentSchema = (component &&
     (component.schema ||
       (component.getSchema &&
-        component.getSchema(props, { routes: runtime.pages })))) || {
+        component.getSchema(propsOrContent, { routes: runtime.pages })))) || {
     properties: {},
     type: 'object',
   }
@@ -32,10 +32,10 @@ export const getComponentSchema = (
    * @return {object} Schema with title, description and enumNames properties translated
    */
   const traverseAndTranslate: (
-    schema: ComponentSchema,
+    schema: ComponentSchema
   ) => ComponentSchema = schema => {
     const translate: (
-      value: string | { id: string; values?: { [key: string]: string } },
+      value: string | { id: string; values?: { [key: string]: string } }
     ) => string = value =>
       typeof value === 'string'
         ? intl.formatMessage({ id: value })
@@ -44,7 +44,7 @@ export const getComponentSchema = (
     const translatedSchema: ComponentSchema = map(
       (value: any): any =>
         Array.isArray(value) ? map(translate, value) : translate(value),
-      pick(['title', 'description', 'enumNames'], schema) as object,
+      pick(['title', 'description', 'enumNames'], schema) as object
     )
 
     if (has('widget', schema)) {
@@ -54,9 +54,9 @@ export const getComponentSchema = (
           translate,
           pick(
             ['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'],
-            schema.widget,
-          ),
-        ),
+            schema.widget
+          )
+        )
       )
     }
 
@@ -68,7 +68,7 @@ export const getComponentSchema = (
             [key]: traverseAndTranslate(schema.properties[key]),
           }),
         {},
-        keys(schema.properties),
+        keys(schema.properties)
       )
     }
 
@@ -97,16 +97,37 @@ export const getComponentSchema = (
 
 export const getExtension = (
   editTreePath: EditorContext['editTreePath'],
-  extensions: RenderContext['extensions'],
-): Extension => {
-  const { component = null, configurationsIds = [], props = {} } =
-    extensions[editTreePath as string] || {}
+  extensions: RenderContext['extensions']
+): Required<Extension> => {
+  const {
+    after = [],
+    around = [],
+    before = [],
+    blockId = '',
+    blocks = [],
+    component = null,
+    configurationsIds = [],
+    content = {},
+    implementationIndex = 0,
+    implements: extensionImplements = [],
+    props = {},
+    shouldRender = false,
+  } = extensions[editTreePath!] || {}
 
-  return { component, configurationsIds, props: props || {} }
-}
-
-export function getImplementation(component: string) {
-  return global.__RENDER_8_COMPONENTS__[component]
+  return {
+    after,
+    around,
+    before,
+    blockId,
+    blocks,
+    component,
+    configurationsIds,
+    content,
+    implementationIndex,
+    implements: extensionImplements,
+    props: props || {},
+    shouldRender,
+  }
 }
 
 export function getIframeImplementation(component: string | null) {
@@ -114,95 +135,83 @@ export function getIframeImplementation(component: string | null) {
     return null
   }
 
-  const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
+  const iframeRenderComponents = getIframeRenderComponents()
 
+  return iframeRenderComponents && iframeRenderComponents[component]
+}
+
+export function getIframeRenderComponents() {
+  const iframe = document.getElementById('store-iframe') as HTMLIFrameElement
   if (!iframe) {
     return null
   }
-
   const window = iframe.contentWindow as Window | null
-
   if (!window) {
     return null
   }
-
-  return (
-    window.__RENDER_8_COMPONENTS__ && window.__RENDER_8_COMPONENTS__[component]
-  )
+  return window.__RENDER_8_COMPONENTS__
 }
 
-export const getSchemaProps = (
+export function getImplementation(component: string) {
+  return global.__RENDER_8_COMPONENTS__[component]
+}
+
+export const getSchemaPropsOrContent = (
   component: RenderComponent<any, any> | null,
-  props: object,
+  propsOrContent: object,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl,
+  intl: ReactIntl.InjectedIntl
 ) => {
   if (!component) {
     return null
   }
 
   /**
-   * Recursively get the props defined in the properties.
+   * Recursively get the props or content defined in the properties.
    *
    * @param {object} properties The schema properties
-   * @param {object} prevProps The previous props passed to the component
-   * @return {object} Actual component props
+   * @param {object} prevPropsOrContent The previous props or content passed to the component
+   * @return {object} Actual component props or content
    */
-  const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
+  const getPropsOrContentFromSchema = (properties: any = {}, prevPropsOrContent: any): object =>
     reduce(
-      (nextProps, key) =>
-        merge(nextProps, {
+      (nextPropsOrContent, key) =>
+        merge(nextPropsOrContent, {
           [key]:
             properties[key].type === 'object'
-              ? getPropsFromSchema(properties[key].properties, prevProps[key])
-              : prevProps[key],
+              ? getPropsOrContentFromSchema(properties[key].properties, prevPropsOrContent[key])
+              : prevPropsOrContent[key],
         }),
       {},
-      filter(v => prevProps[v] !== undefined, keys(properties)),
+      filter(v => prevPropsOrContent[v] !== undefined, keys(properties))
     )
 
-  const componentSchema = getComponentSchema(component, props, runtime, intl)
+  const componentSchema = getComponentSchema(component, propsOrContent, runtime, intl)
 
-  return getPropsFromSchema(componentSchema.properties, props)
+  return getPropsOrContentFromSchema(componentSchema.properties, propsOrContent)
 }
 
 export const updateExtensionFromForm = (
-  availableComponents: object[],
   editTreePath: EditorContext['editTreePath'],
   event: IChangeEvent,
   intl: ReactIntl.InjectedIntl,
   runtime: RenderContext,
+  isContent?: boolean
 ) => {
   const { component: enumComponent } = event.formData
   const component = enumComponent && enumComponent !== '' ? enumComponent : null
   const componentImplementation =
     component && getIframeImplementation(component)
 
-  if (component && !componentImplementation) {
-    const allComponents = reduce(
-      (acc: { [key: string]: any }, currComponent: any) => {
-        acc[currComponent.name] = {
-          assets: currComponent.assets,
-          dependencies: currComponent.dependencies,
-        }
-        return acc
-      },
-      {},
-      availableComponents,
-    )
-
-    runtime.updateComponentAssets(allComponents)
-  }
-
-  const props = getSchemaProps(
+  const propsOrContent = getSchemaPropsOrContent(
     componentImplementation,
     event.formData,
     runtime,
-    intl,
+    intl
   )
 
   runtime.updateExtension(editTreePath as string, {
-    component,
-    props,
+    ...runtime.extensions[editTreePath!],
+    [isContent ? 'content' : 'props']: propsOrContent,
   })
 }

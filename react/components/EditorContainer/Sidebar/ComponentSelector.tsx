@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import SelectionIcon from '../../../images/SelectionIcon'
 
@@ -11,16 +12,23 @@ interface Props {
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
+  updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
 class ComponentSelector extends PureComponent<Props> {
   public render() {
-    const { components, editor, highlightHandler, iframeRuntime } = this.props
+    const {
+      components,
+      editor,
+      highlightHandler,
+      iframeRuntime,
+      updateSidebarComponents,
+    } = this.props
 
     return (
       <Fragment>
-        <div className="flex justify-between items-center">
-          <h3 className="near-black f5 mv0 pa5">
+        <div className="flex justify-between items-center flex-shrink-0 bb bw1 b--light-silver h-3em">
+          <h3 className="ph5 f5 near-black">
             <FormattedMessage id="pages.editor.components.title" />
           </h3>
           <div
@@ -32,22 +40,30 @@ class ComponentSelector extends PureComponent<Props> {
             </span>
           </div>
         </div>
-        <ComponentList
-          components={components}
-          editor={editor}
-          highlightExtensionPoint={highlightHandler}
-          onMouseEnterComponent={this.handleMouseEnter}
-          onMouseLeaveComponent={this.handleMouseLeave}
-          iframeRuntime={iframeRuntime}
-        />
+        <ToastConsumer>
+          {({ showToast }) => (
+            <ComponentList
+              components={components}
+              editor={editor}
+              highlightHandler={highlightHandler}
+              onMouseEnterComponent={this.handleMouseEnter}
+              onMouseLeaveComponent={this.handleMouseLeave}
+              iframeRuntime={iframeRuntime}
+              showToast={showToast}
+              updateSidebarComponents={updateSidebarComponents}
+            />
+          )}
+        </ToastConsumer>
       </Fragment>
     )
   }
 
-  private handleMouseEnter = (event: React.MouseEvent<HTMLButtonElement>) => {
+  private handleMouseEnter = (
+    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
+  ) => {
     const treePath = event.currentTarget.getAttribute('data-tree-path')
 
-    this.props.highlightHandler(treePath as string)
+    this.props.highlightHandler(treePath)
   }
 
   private handleMouseLeave = () => {

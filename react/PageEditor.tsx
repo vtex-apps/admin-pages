@@ -39,21 +39,17 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public componentDidMount() {
-    this.toggleLoading()
+    this.context.stopLoading()
   }
 
   public componentDidUpdate() {
-    this.toggleLoading()
-  }
-
-  public toggleLoading = () => {
     this.context.stopLoading()
   }
 
   public render() {
-    const {
-      params: { path },
-    } = this.props
+    const { params } = this.props
+
+    const path = params && params.path
 
     return (
       <div className="h-100 overflow-y-auto bg-light-silver">
@@ -62,7 +58,7 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
             <iframe
               id="store-iframe"
               className="w-100 h-100"
-              src={['/', path].filter(str => !!str).join('')}
+              src={path ? `$/{path}` : '/'}
               frameBorder="0"
             />
           </EditorProvider>

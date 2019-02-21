@@ -1,3 +1,4 @@
+/* tslint:disable:max-classes-per-file class-name*/
 declare module 'vtex.styleguide' {
   import { Component, ComponentType, ReactNode } from 'react'
   // Remove this dependency from admin-pages when styleguide is properly typed.
@@ -23,6 +24,10 @@ declare module 'vtex.styleguide' {
   }
 
   interface ShowToastOptions {
+    action?: {
+      label: string
+      onClick: () => void
+    }
     message: string
     duration?: number
     horizontalPosition?: 'right' | 'left'
@@ -133,32 +138,37 @@ declare module 'vtex.styleguide' {
   > &
     StyleguideDatePickerCustomProps
 
+  export const ActionMenu: ComponentType<any>
   export const Alert: ComponentType<any>
   export const Box: ComponentType<any>
   export const Button: ComponentType<any>
+  export const ButtonWithIcon: ComponentType<any>
   export const Card: ComponentType<any>
   export const Checkbox: ComponentType<any>
   export class DatePicker extends Component<DatePickerProps> {}
+  export const ColorPicker: ComponentType<any>
   export const Dropdown: ComponentType<any>
   export const EmptyState: ComponentType<any>
-  export class EXPERIMENTAL_Conditions extends Component<ConditionsProps>{}
+  export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
   export const IconArrowBack: ComponentType<any>
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
   export const IconCaretUp: ComponentType<any>
   export const IconClose: ComponentType<any>
+  export const IconOptionsDots: ComponentType<any>
   export const Input: ComponentType<any>
   export const Modal: ComponentType<any>
   export const PageHeader: ComponentType<any>
   export const Pagination: ComponentType<any>
   export const Radio: ComponentType<any>
+  export const RadioGroup: ComponentType<any>
   export const Spinner: ComponentType<any>
   export class Textarea extends Component<TextareaProps> {}
   export const Tab: ComponentType<any>
   export const Table: ComponentType<any>
   export const Tabs: ComponentType<any>
   export const Tag: ComponentType<any>
-  export class ToastConsumer extends Component<ToastConsumerProps>{}
-  export class ToastProvider extends Component<ToastProviderProps>{}
+  export class ToastConsumer extends Component<ToastConsumerProps> {}
+  export class ToastProvider extends Component<ToastProviderProps> {}
   export const Toggle: ComponentType<any>
 }

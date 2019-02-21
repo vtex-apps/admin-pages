@@ -8,7 +8,7 @@ declare module 'vtex.render-runtime' {
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
-  // type WithoutRenderContextProps<T extends RenderContextProps> =
+
   export const withRuntimeContext: <TOriginalProps extends {}>(
     Component: ComponentType<TOriginalProps & RenderContextProps>
   ) => ComponentType<
@@ -22,7 +22,7 @@ declare module 'vtex.render-runtime' {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema
     getSchema?: (props: object, otherArgs?: any) => ComponentSchema
-    uiSchema: UISchema
+    uiSchema?: UISchema
   }
 
   export interface ComponentsRegistry {

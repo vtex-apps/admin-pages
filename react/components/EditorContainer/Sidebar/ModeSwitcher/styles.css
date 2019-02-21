@@ -1,9 +1,0 @@
-.hide-child :global .child {
-  visibility: hidden;
-}
-
-.hide-child:hover :global .child,
-.hide-child:focus :global .child,
-.hide-child:active :global .child {
-  visibility: visible;
-}

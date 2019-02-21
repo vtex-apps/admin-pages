@@ -18,6 +18,6 @@
     "path": "/admin/cms/storefront"
   },
   "admin.cms.storefront": {
-    "path": "/admin/cms/storefront/*path"
+    "path": "/admin/cms/storefront/*targetPath"
   }
 }

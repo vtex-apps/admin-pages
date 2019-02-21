@@ -1,0 +1,7 @@
+mutation DeleteStyle($id: String) {
+  deleteStyle(id: $id) {
+    id
+    app
+    name
+  }
+}

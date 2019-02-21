@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { Button } from 'vtex.styleguide'
-
+import { FormattedMessage } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   Dimensions,
   SortableContainerProps,
   SortStart,
 } from 'react-sortable-hoc'
+import { ButtonWithIcon } from 'vtex.styleguide'
+
+import AddIcon from '../icons/AddIcon'
 
 import ArrayList from './ArrayList'
 
@@ -51,7 +53,7 @@ class ArrayFieldTemplate extends Component<
   }
 
   public render() {
-    const { items, canAdd, schema } = this.props
+    const { canAdd, items, schema } = this.props
     const { openedItem, sorting } = this.state
 
     return (
@@ -74,13 +76,14 @@ class ArrayFieldTemplate extends Component<
         />
         <div className="pt4">
           {canAdd && (
-            <Button
-              variation="secondary"
-              size="small"
+            <ButtonWithIcon
+              icon={<AddIcon />}
               onClick={this.handleAddItem}
+              size="small"
+              variation="secondary"
             >
-              + Add More
-            </Button>
+              <FormattedMessage id="pages.editor.components.arrayTemplate.button.add" />
+            </ButtonWithIcon>
           )}
         </div>
       </Fragment>
@@ -110,7 +113,7 @@ class ArrayFieldTemplate extends Component<
 
   private handleSortEnd: SortableContainerProps['onSortEnd'] = (
     { oldIndex, newIndex },
-    e,
+    e
   ) => {
     const { items } = this.props
     const { onReorderClick } = items[oldIndex]

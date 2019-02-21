@@ -9,37 +9,39 @@ import {
   getIframeImplementation,
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
-import { ComponentEditorFormContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
 
 interface CustomProps {
+  after?: JSX.Element
+  data: object
   editor: EditorContext
+  iframeRuntime: RenderContext
+  isContent?: boolean
   isLoading: boolean
   onChange: (event: IChangeEvent) => void
   onClose: () => void
   onSave: () => void
-  props: object
-  runtime: RenderContext
-  shouldRenderSaveButton: boolean
+  shouldDisableSaveButton: boolean
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.SFC<Props> = ({
-  children,
+  after,
+  data,
   editor,
   intl,
+  iframeRuntime,
+  isContent,
   isLoading,
   onChange,
   onClose,
   onSave,
-  props,
-  runtime,
-  shouldRenderSaveButton,
+  shouldDisableSaveButton,
 }) => {
-  const extension = getExtension(editor.editTreePath, runtime.extensions)
+  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
   const componentImplementation = getIframeImplementation(extension.component)
 
@@ -50,8 +52,8 @@ const ComponentEditor: React.SFC<Props> = ({
 
   const componentSchema = getComponentSchema(
     componentImplementation,
-    extension.props,
-    runtime,
+    extension[isContent ? 'content' : 'props'],
+    iframeRuntime,
     intl
   )
 
@@ -69,22 +71,24 @@ const ComponentEditor: React.SFC<Props> = ({
         isLoading={isLoading}
         onClose={onClose}
         onSave={onSave}
-        shouldRenderSaveButton={shouldRenderSaveButton}
+        shouldDisableSaveButton={shouldDisableSaveButton}
         title={componentSchema.title}
       />
-      <div className="ph5 h-100 overflow-y-auto">
-        {children}
-        <div className="bg-white flex flex-column justify-between size-editor w-100 pb3">
-          <Form
-            formContext={{ isLayoutMode: editor.mode === 'layout' }}
-            formData={props}
-            onChange={onChange}
-            onSubmit={onSave}
-            schema={schema as JSONSchema6}
-            uiSchema={getUiSchema(componentUiSchema, componentSchema)}
-          />
-          <div id="form__error-list-template___alert" />
+      <div className="h-100 overflow-y-auto">
+        <div className="ph5">
+          <div className="bg-white flex flex-column justify-between size-editor w-100 pb3">
+            <Form
+              formContext={{ isLayoutMode: editor.mode === 'layout' }}
+              formData={data}
+              onChange={onChange}
+              onSubmit={onSave}
+              schema={schema as JSONSchema6}
+              uiSchema={getUiSchema(componentUiSchema, componentSchema)}
+            />
+            <div id="form__error-list-template___alert" />
+          </div>
         </div>
+        {after}
       </div>
     </Fragment>
   )

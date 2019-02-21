@@ -4,7 +4,13 @@ import React, { Component, Fragment } from 'react'
 import { MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Button, DatePicker, Input, Toggle } from 'vtex.styleguide'
+import {
+  Button,
+  DatePicker,
+  Input,
+  ToastConsumerFunctions,
+  Toggle,
+} from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
@@ -17,7 +23,10 @@ interface CustomProps {
   onSave: MutationFn
 }
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
+type Props = CustomProps &
+  ReactIntl.InjectedIntlProps &
+  RenderContextProps &
+  Pick<ToastConsumerFunctions, 'showToast'>
 
 interface State {
   data: Redirect
@@ -211,7 +220,10 @@ class Form extends Component<Props, State> {
         this.setState({ isLoading: false }, () => {
           console.log(err)
 
-          alert('Error: redirect could not be deleted.')
+          this.props.showToast({
+            horizontalPosition: 'right',
+            message: 'Error: redirect could not be deleted.',
+          })
         })
       }
     })
@@ -250,7 +262,10 @@ class Form extends Component<Props, State> {
         this.setState({ isLoading: false }, () => {
           console.log(err)
 
-          alert('Error: redirect could not be saved.')
+          this.props.showToast({
+            horizontalPosition: 'right',
+            message: 'Error: redirect could not be deleted.',
+          })
         })
       }
     })

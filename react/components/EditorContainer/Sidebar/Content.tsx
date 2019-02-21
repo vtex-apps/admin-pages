@@ -1,41 +1,61 @@
 import React, { Component } from 'react'
-import { canUseDOM } from 'vtex.render-runtime'
-import { Spinner } from 'vtex.styleguide'
+import { ToastConsumer } from 'vtex.styleguide'
 
-import { getIframeImplementation } from '../../../utils/components'
+import { getIframeRenderComponents } from '../../../utils/components'
 
 import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
 import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
-import TemplateEditor from './TemplateEditor'
 import { SidebarComponent } from './typings'
+import { getComponents } from './utils'
 
 interface Props {
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
-  runtime: RenderContext
+  iframeRuntime: RenderContext
 }
 
-class Content extends Component<Props> {
-  public render() {
-    const { editor, highlightHandler, runtime } = this.props
+interface State {
+  components: SidebarComponent[]
+}
 
-    if (!runtime) {
-      return (
-        <div className="mt5 flex justify-center">
-          <Spinner />
-        </div>
-      )
+class Content extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      components: getComponents(
+        props.iframeRuntime.extensions,
+        getIframeRenderComponents(),
+        props.iframeRuntime.page
+      ),
     }
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    const prevRuntime = prevProps.iframeRuntime
+    const currRuntime = this.props.iframeRuntime
+
+    const prevPage = prevRuntime.page
+    const currPage = currRuntime.page
+
+    if (currPage !== prevPage) {
+      this.resetComponents()
+    }
+  }
+
+  public render() {
+    const { editor, highlightHandler, iframeRuntime } = this.props
 
     if (editor.editTreePath === null) {
       return (
         <ComponentSelector
-          components={this.getComponents(runtime)}
+          components={this.state.components}
           editor={editor}
           highlightHandler={highlightHandler}
-          iframeRuntime={runtime}
+          iframeRuntime={iframeRuntime}
+          updateSidebarComponents={this.updateComponents}
         />
       )
     }
@@ -44,120 +64,40 @@ class Content extends Component<Props> {
       <FormMetaConsumer>
         {formMeta => (
           <ModalConsumer>
-            {modal =>
-              editor.mode === 'layout' ? (
-                <TemplateEditor
-                  editor={editor}
-                  formMeta={formMeta}
-                  modal={modal}
-                  runtime={runtime}
-                />
-              ) : (
-                <ConfigurationList
-                  editor={editor}
-                  formMeta={formMeta}
-                  modal={modal}
-                  runtime={runtime}
-                />
-              )
-            }
+            {modal => (
+              <ToastConsumer>
+                {({ showToast }) => (
+                  <ConfigurationList
+                    editor={editor}
+                    formMeta={formMeta}
+                    iframeRuntime={iframeRuntime}
+                    modal={modal}
+                    showToast={showToast}
+                  />
+                )}
+              </ToastConsumer>
+            )}
           </ModalConsumer>
         )}
       </FormMetaConsumer>
     )
   }
 
-  private getComponentElement = (treePath: string) => {
-    const {
-      editor: { iframeWindow },
-    } = this.props
+  private resetComponents = () => {
+    const { iframeRuntime } = this.props
 
-    if (!canUseDOM) {
-      return undefined
-    }
-
-    return iframeWindow.document.querySelector(
-      `[data-extension-point="${treePath}"]`,
-    )
+    this.setState({
+      components: getComponents(
+        iframeRuntime.extensions,
+        getIframeRenderComponents(),
+        iframeRuntime.page
+      ),
+    })
   }
 
-  private getComponentSchema(treePath: string) {
-    const {
-      runtime: { extensions },
-    } = this.props
-
-    const { component, props = {} } = extensions[treePath]
-
-    const ComponentImpl =
-      (component && getIframeImplementation(component)) || undefined
-
-    return (
-      ComponentImpl &&
-      ((ComponentImpl.hasOwnProperty('schema') && ComponentImpl.schema) ||
-        (ComponentImpl.getSchema && ComponentImpl.getSchema(props)))
-    )
+  private updateComponents = (components: SidebarComponent[]) => {
+    this.setState({ components })
   }
-
-  private getComponents(runtime: RenderContext) {
-    return Object.keys(runtime.extensions)
-      .filter(this.isValidExtension)
-      .sort(this.sortComponents)
-      .map<SidebarComponent>(treePath => ({
-        name: this.getComponentSchema(treePath)!.title!,
-        treePath,
-      }))
-  }
-
-  private isValidExtension = (treePath: string) => {
-    const {
-      runtime: { pages, page },
-    } = this.props
-
-    const schema = this.getComponentSchema(treePath)
-
-    return (
-      schema &&
-      schema.title &&
-      !isDifferentPage(treePath, page, Object.keys(pages))
-    )
-  }
-
-  private sortComponents = (treePathA: string, treePathB: string) => {
-    const componentA = this.getComponentElement(treePathA)
-
-    if (!componentA) {
-      return 1
-    }
-
-    const componentB = this.getComponentElement(treePathB)
-
-    if (!componentB) {
-      return -1
-    }
-
-    const { x: xA, y: yA } = componentA.getBoundingClientRect() as DOMRect
-    const { x: xB, y: yB } = componentB.getBoundingClientRect() as DOMRect
-
-    if (yA > yB || (yA === yB && xA > xB)) {
-      return 1
-    }
-
-    return -1
-  }
-}
-
-const isDifferentPage = (treePath: string, page: string, pages: string[]) => {
-  if (treePath.startsWith(page)) {
-    return false
-  }
-
-  const currentPageLevel = page.split('/').length
-
-  const sameLevelPages = pages.filter(
-    (p: string) => p.split('/').length === currentPageLevel,
-  )
-
-  return !!sameLevelPages.find((p: string) => treePath.startsWith(p))
 }
 
 export default Content
