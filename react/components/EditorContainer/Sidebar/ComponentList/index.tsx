@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
+import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
@@ -119,19 +119,21 @@ class ComponentList extends Component<Props, State> {
             style={{ marginTop: 'auto' }}
           >
             <div className="w-50 fl tc bw1 br b--light-silver">
-              <Button
+              <ButtonWithIcon
+                block
                 disabled={!hasChanges}
+                icon={<UndoIcon color={!hasChanges ? '#979899' : undefined} />}
                 onClick={this.handleUndo}
                 variation="tertiary"
               >
-                <UndoIcon color={!hasChanges ? '#979899' : undefined} />
                 <FormattedMessage id="pages.editor.component-list.button.undo">
                   {text => <span className="pl3">{text}</span>}
                 </FormattedMessage>
-              </Button>
+              </ButtonWithIcon>
             </div>
             <div className="w-50 fl tc">
               <Button
+                block
                 disabled={!hasChanges}
                 isLoading={this.state.isLoadingMutation}
                 onClick={this.handleOpenSaveChangesModal}
