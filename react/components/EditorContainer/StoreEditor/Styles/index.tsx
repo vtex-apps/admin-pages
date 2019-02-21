@@ -42,7 +42,11 @@ const Styles: React.SFC<Props> = ({ iframeWindow }) => {
 
     return () => {
       if (styleTag && iframeWindow.document.head) {
-        iframeWindow.document.head.removeChild(styleTag)
+        try {
+          iframeWindow.document.head.removeChild(styleTag)
+        } catch (err) {
+          console.error(err)
+        }
       }
     }
   }, [])
