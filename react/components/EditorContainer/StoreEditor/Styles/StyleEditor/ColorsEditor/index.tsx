@@ -1,3 +1,4 @@
+import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
 import React, { useState } from 'react'
 
@@ -61,7 +62,7 @@ const ColorsEditor: React.SFC<Props> = ({
 
         return (
           <ColorGroup
-            groupName={groupName as string}
+            groupName={startCase(groupName as string)}
             font={font}
             semanticColors={semanticColors}
             startEditing={(token: string) => {
@@ -71,7 +72,7 @@ const ColorsEditor: React.SFC<Props> = ({
                   action: () => startEditing(undefined),
                   text: 'Back to Colors',
                 },
-                title: token,
+                title: startCase(token),
               })
             }}
             colorsInfo={fromPairs(group)}
