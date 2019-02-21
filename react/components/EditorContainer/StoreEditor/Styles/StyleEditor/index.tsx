@@ -144,6 +144,7 @@ const StyleEditor: React.SFC<Props> = ({
                       updateStyle({ variables: { id: style.id, config } }),
                     ]).then(() => {
                       showToast({
+                        horizontalPosition: 'right',
                         message: 'Style saved successfully.',
                       })
                     })

@@ -74,6 +74,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
                       selectStyle={({ id, name }: Style) =>
                         saveSelectedStyle({ variables: { id } }).then(() => {
                           showToast({
+                            horizontalPosition: 'right',
                             message: `Style '${name}' was selected.`,
                           })
                         })
@@ -88,6 +89,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
                               },
                             },
                             duration: Infinity,
+                            horizontalPosition: 'right',
                             message: `Style '${name}' was deleted.`,
                           })
                         })
