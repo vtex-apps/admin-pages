@@ -400,7 +400,7 @@ export default compose(
     options: ({ editor, iframeRuntime }: Props) => ({
       variables: {
         pageContext: iframeRuntime.route.pageContext,
-        template: iframeRuntime.pages[iframeRuntime.page],
+        template: iframeRuntime.pages[iframeRuntime.page].blockId,
         treePath: editor.editTreePath,
       },
     }),
