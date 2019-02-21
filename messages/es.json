@@ -48,6 +48,7 @@
   "pages.admin.tabs.pages": "Páginas",
   "pages.admin.tabs.redirects": "Redirecciones",
   "pages.admin.tabs.settings": "Configuraciones",
+  "pages.editor.components.arrayTemplate.button.add": "Añadir",
   "pages.editor.components.button.save": "Salvar",
   "pages.editor.components.condition.scope.generic": "este template",
   "pages.editor.components.condition.scope.sitewide": "todo el sitio",

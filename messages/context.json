@@ -66,6 +66,7 @@
   "pages.admin.tabs.pages": "pages.admin.tabs.pages",
   "pages.admin.tabs.redirects": "pages.admin.tabs.redirects",
   "pages.admin.tabs.settings": "pages.admin.tabs.settings",
+  "pages.editor.components.arrayTemplate.button.add": "pages.editor.components.arrayTemplate.button.add",
   "pages.editor.components.button.save": "pages.editor.components.button.save",
   "pages.editor.components.condition.scope.generic": "pages.editor.components.condition.scope.generic",
   "pages.editor.components.condition.scope.sitewide": "pages.editor.components.condition.scope.sitewide",
