@@ -88,9 +88,9 @@ const StyleCard: React.SFC<Props> = ({
               </div>
             </div>
             {selected && (
-              <div className="emphasis">
-                <Tag>Current</Tag>
-              </div>
+              <Tag bgColor="#F71963" color="#FFFFFF">
+                Current
+              </Tag>
             )}
           </div>
         </div>
