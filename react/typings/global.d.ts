@@ -64,7 +64,7 @@ declare global {
     declarer: string | null
     domain: string
     interfaceId: string
-    pages: Page[],
+    pages: Page[]
     path: string
     routeId: string
     title: string | null
@@ -171,7 +171,7 @@ declare global {
     preview?: boolean
   }
 
-  type ConfigurationScope = 'entity' | 'route' | '*'
+  type ConfigurationScope = 'specific' | 'generic' | 'sitewide'
 
   interface PageContextOptions {
     scope?: ConfigurationScope

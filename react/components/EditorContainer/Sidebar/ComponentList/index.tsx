@@ -102,7 +102,37 @@ class ComponentList extends Component<Props, State> {
           })}
         />
         <div className="bb bw1 b--light-silver" />
-        <div className="flex flex-column justify-between flex-grow-1">
+        <div className="flex flex-column flex-grow-1">
+          {hasChanges && (
+            <div className="bb bw1 b--light-silver w-100">
+              <div className="w-50 fl tc bw1 br b--light-silver">
+                <ButtonWithIcon
+                  block
+                  disabled={!hasChanges}
+                  icon={
+                    <UndoIcon color={!hasChanges ? '#979899' : undefined} />
+                  }
+                  onClick={this.handleUndo}
+                  variation="tertiary"
+                >
+                  <FormattedMessage id="pages.editor.component-list.button.undo">
+                    {text => <span className="pl3">{text}</span>}
+                  </FormattedMessage>
+                </ButtonWithIcon>
+              </div>
+              <div className="w-50 fl tc">
+                <Button
+                  block
+                  disabled={!hasChanges}
+                  isLoading={this.state.isLoadingMutation}
+                  onClick={this.handleOpenSaveChangesModal}
+                  variation="tertiary"
+                >
+                  <FormattedMessage id="pages.editor.component-list.button.save" />
+                </Button>
+              </div>
+            </div>
+          )}
           <SortableList
             components={this.state.components}
             lockAxis="y"
@@ -114,35 +144,6 @@ class ComponentList extends Component<Props, State> {
             useDragHandle
           />
           <div className="bt b--light-silver" />
-          <div
-            className="bt bw1 b--light-silver w-100"
-            style={{ marginTop: 'auto' }}
-          >
-            <div className="w-50 fl tc bw1 br b--light-silver">
-              <ButtonWithIcon
-                block
-                disabled={!hasChanges}
-                icon={<UndoIcon color={!hasChanges ? '#979899' : undefined} />}
-                onClick={this.handleUndo}
-                variation="tertiary"
-              >
-                <FormattedMessage id="pages.editor.component-list.button.undo">
-                  {text => <span className="pl3">{text}</span>}
-                </FormattedMessage>
-              </ButtonWithIcon>
-            </div>
-            <div className="w-50 fl tc">
-              <Button
-                block
-                disabled={!hasChanges}
-                isLoading={this.state.isLoadingMutation}
-                onClick={this.handleOpenSaveChangesModal}
-                variation="tertiary"
-              >
-                <FormattedMessage id="pages.editor.component-list.button.save" />
-              </Button>
-            </div>
-          </div>
         </div>
       </Fragment>
     )

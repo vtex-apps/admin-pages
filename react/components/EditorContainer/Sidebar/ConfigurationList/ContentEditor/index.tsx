@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
 import { getExtension } from '../../../../../utils/components'
 import ComponentEditor from '../../ComponentEditor'
 
 import ConditionControls from './ConditionControls'
+import LabelEditor from './LabelEditor'
 
 interface Props {
   condition: ExtensionConfiguration['condition']
@@ -51,15 +52,22 @@ const ContentEditor: React.SFC<Props> = ({
       }
     : extensionContent
 
+  const shouldEnableSitewide = true
+
   return (
     <ComponentEditor
       after={
-        <ConditionControls
-          condition={condition}
-          label={label}
-          onConditionChange={onConditionChange}
-          onLabelChange={onLabelChange}
-        />
+        <Fragment>
+          <div className="pt5 ph5 bt bw1 b--light-silver">
+            <LabelEditor onChange={onLabelChange} value={label} />
+          </div>
+          <ConditionControls
+            condition={condition}
+            pageContext={iframeRuntime.route.pageContext}
+            onConditionChange={onConditionChange}
+            shouldEnableSitewide={shouldEnableSitewide}
+          />
+        </Fragment>
       }
       data={content}
       editor={editor}
