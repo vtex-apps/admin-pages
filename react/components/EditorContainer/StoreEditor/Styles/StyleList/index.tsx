@@ -43,7 +43,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
         const listStyles = unsortedStyles && unsortedStyles.sort(compareStyles)
 
         const selected = listStyles && find(style => style.selected, listStyles)
-        if (selected) {
+        if (selected && !loading) {
           setStyleAsset({ type: 'path', value: selected.path })
         }
 
