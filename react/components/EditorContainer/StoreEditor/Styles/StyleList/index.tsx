@@ -72,8 +72,12 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
                       <StyleCard
                         key={style.id}
                         style={style}
-                        selectStyle={({ id }: Style) =>
-                          saveSelectedStyle({ variables: { id } })
+                        selectStyle={({ id, name }: Style) =>
+                          saveSelectedStyle({ variables: { id } }).then(() => {
+                            showToast({
+                              message: `Style '${name}' was selected.`,
+                            })
+                          })
                         }
                         deleteStyle={({ config, name, id }: Style) => {
                           deleteStyle({ variables: { id } }).then(() => {
@@ -85,7 +89,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
                                 },
                               },
                               duration: Infinity,
-                              message: `Style ${name} was deleted.`,
+                              message: `Style '${name}' was deleted.`,
                             })
                           })
                         }}

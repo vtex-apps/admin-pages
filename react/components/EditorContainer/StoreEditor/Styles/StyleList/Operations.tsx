@@ -27,6 +27,7 @@ const Operations = (props: Props) => (
       <Mutation
         mutation={SaveSelectedStyle}
         refetchQueries={() => [{ query: ListStyles }]}
+        awaitRefetchQueries
       >
         {saveSelectedStyle => (
           <Mutation
