@@ -1,4 +1,4 @@
-import { find } from 'ramda'
+import { find, zip } from 'ramda'
 import React from 'react'
 import { ButtonWithIcon, Spinner } from 'vtex.styleguide'
 
@@ -12,6 +12,25 @@ interface Props {
   iframeWindow: Window
 }
 
+const compareStyles = (a: Style, b: Style) => {
+  const toArray = ({ selected, editable, app, name, id }: Style) => {
+    return [selected ? 0 : 1, editable ? 0 : 1, app, name, id]
+  }
+  const zipped = zip(toArray(a), toArray(b))
+  return zip(toArray(a), toArray(b)).reduce((acc, [value1, value2]) => {
+    if (acc !== 0) {
+      return acc
+    }
+    if (value1 < value2) {
+      return -1
+    }
+    if (value1 > value2) {
+      return 1
+    }
+    return acc
+  }, 0)
+}
+
 const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
   return (
     <Operations>
@@ -21,7 +40,8 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
         createStyle,
         deleteStyle,
       }) => {
-        const listStyles = data && data.listStyles
+        const unsortedStyles = data && data.listStyles
+        const listStyles = unsortedStyles && unsortedStyles.sort(compareStyles)
 
         const selected = listStyles && find(style => style.selected, listStyles)
         if (selected) {
