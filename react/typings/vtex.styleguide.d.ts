@@ -24,7 +24,7 @@ declare module 'vtex.styleguide' {
   }
 
   interface ShowToastOptions {
-    action: {
+    action?: {
       label: string
       onClick: () => void
     }
