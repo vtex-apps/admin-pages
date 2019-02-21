@@ -1,6 +1,6 @@
 import { find, zip } from 'ramda'
 import React from 'react'
-import { ButtonWithIcon, Spinner } from 'vtex.styleguide'
+import { ButtonWithIcon, Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import Operations from './Operations'
 
@@ -67,22 +67,36 @@ const StyleList: React.SFC<Props> = ({ startEditing, iframeWindow }) => {
             <div className="flex flex-column flex-grow-1 overflow-scroll">
               {listStyles &&
                 listStyles.map(style => (
-                  <StyleCard
-                    key={style.id}
-                    style={style}
-                    selectStyle={({ id }: Style) =>
-                      saveSelectedStyle({ variables: { id } })
-                    }
-                    deleteStyle={({ id }: Style) =>
-                      deleteStyle({ variables: { id } })
-                    }
-                    duplicateStyle={({ name, config }: Style) =>
-                      createStyle({
-                        variables: { name: `Copy of ${name}`, config },
-                      })
-                    }
-                    startEditing={startEditing}
-                  />
+                  <ToastConsumer>
+                    {({ showToast }) => (
+                      <StyleCard
+                        key={style.id}
+                        style={style}
+                        selectStyle={({ id }: Style) =>
+                          saveSelectedStyle({ variables: { id } })
+                        }
+                        deleteStyle={({ config, name, id }: Style) => {
+                          showToast({
+                            action: {
+                              label: 'Undo',
+                              onClick: () => {
+                                createStyle({ variables: { name, config } })
+                              },
+                            },
+                            duration: Infinity,
+                            message: `Style ${name} was deleted.`,
+                          })
+                          deleteStyle({ variables: { id } })
+                        }}
+                        duplicateStyle={({ name, config }: Style) =>
+                          createStyle({
+                            variables: { name: `Copy of ${name}`, config },
+                          })
+                        }
+                        startEditing={startEditing}
+                      />
+                    )}
+                  </ToastConsumer>
                 ))}
             </div>
           </div>

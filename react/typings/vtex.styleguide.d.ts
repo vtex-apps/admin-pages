@@ -24,6 +24,10 @@ declare module 'vtex.styleguide' {
   }
 
   interface ShowToastOptions {
+    action: {
+      label: string
+      onClick: () => void
+    }
     message: string
     duration?: number
     horizontalPosition?: 'right' | 'left'
