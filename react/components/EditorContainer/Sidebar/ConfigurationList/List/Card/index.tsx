@@ -2,18 +2,23 @@ import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 
 import Tag from './Tag'
+import { getTextFromContext } from './utils'
 
 interface Props {
   configuration: ExtensionConfiguration
   isDisabled?: boolean
+  isSitewide: boolean
   onClick: (configuration: ExtensionConfiguration) => void
+  path: string
 }
 
 const Card = ({
   configuration,
   isDisabled = false,
   intl,
+  isSitewide,
   onClick,
+  path,
 }: Props & ReactIntl.InjectedIntlProps) => (
   <div
     className={`mh5 mt5 ${!isDisabled ? 'pointer' : ''}`}
@@ -36,13 +41,12 @@ const Card = ({
           bgColor={isDisabled ? 'transparent' : 'light-gray'}
           borderColor="mid-gray"
           hasBorder={isDisabled}
-          // TODO
-          // text={intl.formatMessage({
-          //   id: `pages.conditions.scope.${
-          //     configuration.condition.context.type === 'route' ? 'route' : 'entity'
-          //   }`,
-          // })}
-          text="test"
+          text={getTextFromContext(
+            intl,
+            isSitewide,
+            path,
+            configuration.condition.pageContext
+          )}
           textColor="mid-gray"
         />
       </div>

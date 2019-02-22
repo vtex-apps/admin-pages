@@ -121,11 +121,12 @@ class ConfigurationList extends Component<Props, State> {
         <List
           configurations={listContentQuery.listContent}
           editor={editor}
-          iframeWindow={this.props.editor.iframeWindow}
           isDisabledChecker={this.isConfigurationDisabled}
+          isSitewide={this.isSitewide}
           onClose={this.handleQuit}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
+          path={this.props.editor.iframeWindow.location.pathname}
           title={componentSchema.title}
         />
       )
@@ -322,7 +323,6 @@ class ConfigurationList extends Component<Props, State> {
       const listContentQuery = this.props.listContent
 
       await listContentQuery.refetch({
-        
         pageContext: iframeRuntime.route.pageContext,
       })
 

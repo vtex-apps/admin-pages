@@ -8,11 +8,12 @@ import CreateButton from './CreateButton'
 interface Props {
   configurations: ExtensionConfiguration[]
   editor: EditorContext
-  iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
+  isSitewide: boolean
   onClose: () => void
   onCreate: (event: Event) => void
   onSelect: (configuration: ExtensionConfiguration) => void
+  path: string
   title?: string
 }
 
@@ -20,9 +21,11 @@ const List: React.SFC<Props> = ({
   configurations,
   editor,
   isDisabledChecker,
+  isSitewide,
   onClose,
   onCreate,
   onSelect,
+  path,
   title,
 }) => (
   <Fragment>
@@ -33,7 +36,9 @@ const List: React.SFC<Props> = ({
           <Card
             configuration={configuration}
             isDisabled={isDisabledChecker(configuration)}
+            isSitewide={isSitewide}
             onClick={onSelect}
+            path={path}
           />
         </Fragment>
       )
