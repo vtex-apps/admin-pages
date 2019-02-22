@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
-import { Mutation, Query, QueryResult } from 'react-apollo'
+import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
@@ -24,6 +24,13 @@ interface EditorProps {
   addNavigation: (info: NavigationInfo) => void
   updateConfig: React.Dispatch<Partial<TachyonsConfig>>
   setStyleAsset: (asset: StyleAssetInfo) => void
+}
+
+interface UpdateStyleResult {
+  updateStyle: {
+    path: string
+    selected: boolean
+  }
 }
 
 type ConfigReducer = (
@@ -110,7 +117,7 @@ const StyleEditor: React.SFC<Props> = ({
     <Mutation mutation={RenameStyle}>
       {renameStyle => (
         <Mutation mutation={UpdateStyle}>
-          {updateStyle => (
+          {(updateStyle: MutationFn<UpdateStyleResult>) => (
             <ToastConsumer>
               {({ showToast }) => (
                 <StyleEditorTools
@@ -126,18 +133,26 @@ const StyleEditor: React.SFC<Props> = ({
                     const result = await updateStyle({
                       variables: { id: style.id, config },
                     })
-                    const {
-                      updateStyle: { path },
-                    } = result && result.data
-                    setStyleAsset({
-                      keepSheet: true,
-                      type: 'path',
-                      value: path,
-                    })
-                    showToast({
-                      horizontalPosition: 'right',
-                      message: 'Style saved successfully.',
-                    })
+                    const styleInfo =
+                      result && result.data && result.data.updateStyle
+                    if (styleInfo) {
+                      const { path, selected } = styleInfo
+                      setStyleAsset({
+                        keepSheet: true,
+                        selected,
+                        type: 'path',
+                        value: path,
+                      })
+                      showToast({
+                        horizontalPosition: 'right',
+                        message: 'Style saved successfully.',
+                      })
+                    } else {
+                      showToast({
+                        horizontalPosition: 'right',
+                        message: 'There was a problem saving your style.',
+                      })
+                    }
                   }}
                   setName={setName}
                 >
