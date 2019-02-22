@@ -41,39 +41,40 @@ const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
   }
 }
 
+const createStyleTag = (window: Window, id: string) => {
+  if (window.document.getElementById(id)) {
+    return
+  }
+  const styleTag = window.document.createElement('style')
+  styleTag.setAttribute('id', id)
+  if (window.document.head) {
+    window.document.head.append(styleTag)
+  }
+}
+
+const removeStyleTag = (window: Window, id: string) => {
+  const styleTag = window.document.getElementById(id)
+  if (styleTag && window.document.head) {
+    try {
+      window.document.head.removeChild(styleTag)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
 const Styles: React.SFC<Props> = ({ iframeWindow }) => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
   useEffect(() => {
-    const stylePathTag = iframeWindow.document.createElement('style')
-    stylePathTag.setAttribute('id', PATH_STYLE_TAG_ID)
-    if (iframeWindow.document.head) {
-      iframeWindow.document.head.append(stylePathTag)
-    }
-
-    const styleSheetTag = iframeWindow.document.createElement('style')
-    styleSheetTag.setAttribute('id', SHEET_STYLE_TAG_ID)
-    if (iframeWindow.document.head) {
-      iframeWindow.document.head.append(styleSheetTag)
-    }
+    createStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+    createStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
 
     return () => {
-      if (stylePathTag && iframeWindow.document.head) {
-        try {
-          iframeWindow.document.head.removeChild(stylePathTag)
-        } catch (err) {
-          console.error(err)
-        }
-      }
-      if (styleSheetTag && iframeWindow.document.head) {
-        try {
-          iframeWindow.document.head.removeChild(styleSheetTag)
-        } catch (err) {
-          console.error(err)
-        }
-      }
+      removeStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+      removeStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
     }
-  }, [])
+  })
 
   return editing ? (
     <StyleEditor
