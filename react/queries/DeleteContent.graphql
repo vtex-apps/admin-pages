@@ -1,0 +1,13 @@
+mutation DeleteContent(
+  $template: String
+  $treePath: String
+  $pageContext: PageContextInput
+  $contentId: String
+) {
+  deleteContent(
+    template: $template
+    treePath: $treePath
+    pageContext: $pageContext
+    contentId: $contentId
+  )
+}
