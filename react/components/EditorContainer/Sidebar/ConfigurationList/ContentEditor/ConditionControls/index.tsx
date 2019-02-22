@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-// import DateSelector from './DateSelector'
 import ScopeSelector from './ScopeSelector'
 
 interface Props {
@@ -41,9 +40,6 @@ class ConditionControls extends Component<Props> {
               scope={scope}
             />
           </div>
-          {/* <div className="pt5 ph5 bb b--light-silver">
-          <DateSelector date={undefined} onChange={this.handleDateChange} />
-        </div> */}
         </div>
       </Fragment>
     )
@@ -62,12 +58,6 @@ class ConditionControls extends Component<Props> {
 
     return pageContext
   }
-
-  // private handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (something) {
-  //     onConditionChange({ something })
-  //   }
-  // }
 
   private handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { condition, onConditionChange } = this.props
