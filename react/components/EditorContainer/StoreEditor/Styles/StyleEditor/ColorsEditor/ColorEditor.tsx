@@ -10,17 +10,38 @@ interface Props {
 }
 
 interface ColorPickerColors {
-  hex: string
+  hex?: string
+  rgba?: {
+    r: number
+    g: number
+    b: number
+    a: number
+  }
 }
 
-const sixDigitsColors = (color: string) => {
+const getColorObject = (color: string): ColorPickerColors => {
   if (/^#[A-Fa-f0-9]{3}$/.test(color)) {
-    return color.replace(
-      /#([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])/,
-      '#$1$1$2$2$3$3'
-    )
+    return {
+      hex: color.replace(
+        /#([A-Fa-f0-9])([A-Fa-f0-9])([A-Fa-f0-9])/,
+        '#$1$1$2$2$3$3'
+      ),
+    }
   }
-  return color
+  const rgbaGroup = color.match(/\(.*\)/)
+  if (rgbaGroup) {
+    const rgbaInfo = rgbaGroup[0].slice(1, -1).split(',')
+    return {
+      hex: '#ffffff',
+      rgba: {
+        a: parseFloat(rgbaInfo[3]),
+        b: parseFloat(rgbaInfo[2]),
+        g: parseFloat(rgbaInfo[1]),
+        r: parseFloat(rgbaInfo[0]),
+      },
+    }
+  }
+  return { hex: color }
 }
 
 const fieldName = (id: string) => {
@@ -57,11 +78,17 @@ const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
                     <ColorPicker
                       key={key}
                       label={startCase(key)}
-                      color={{ hex: sixDigitsColors(info.color) }}
+                      color={getColorObject(info.color)}
                       colorHistory={[]}
-                      onChange={({ hex }: ColorPickerColors) => {
-                        const newInfo = { ...info, color: hex }
-                        updateColor(token, newInfo)
+                      onChange={({ rgba }: ColorPickerColors) => {
+                        if (rgba) {
+                          const { r, g, b, a } = rgba
+                          const newInfo = {
+                            ...info,
+                            color: `rgba(${r},${g},${b},${a})`,
+                          }
+                          updateColor(token, newInfo)
+                        }
                       }}
                     />
                   )
