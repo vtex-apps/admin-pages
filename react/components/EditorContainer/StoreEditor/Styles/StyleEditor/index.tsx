@@ -57,7 +57,11 @@ const Editor: React.SFC<EditorProps> = ({
   } = config
 
   return (
-    <Query query={GenerateStyleSheet} variables={{ config }}>
+    <Query
+      query={GenerateStyleSheet}
+      variables={{ config }}
+      fetchPolicy={'network-only'}
+    >
       {({ data }: QueryResult<{ generateStyleSheet: string }>) => {
         const stylesheet = data && data.generateStyleSheet
 
