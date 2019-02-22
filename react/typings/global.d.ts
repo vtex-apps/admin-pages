@@ -176,7 +176,7 @@ declare global {
     preview?: boolean
   }
 
-  type ConfigurationScope = 'specific' | 'generic' | 'sitewide'
+  type ConfigurationScope = 'entity' | 'template' | 'sitewide'
 
   interface PageContextOptions {
     scope?: ConfigurationScope

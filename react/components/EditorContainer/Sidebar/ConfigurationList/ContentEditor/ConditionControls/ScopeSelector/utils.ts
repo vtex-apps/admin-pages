@@ -6,14 +6,14 @@ export const getScopeStandardOptions = (
 ) => [
   {
     label: intl.formatMessage({
-      id: `pages.editor.components.condition.scope.specific.${pageContext.type}`,
+      id: `pages.editor.components.condition.scope.entity.${pageContext.type}`,
     }),
-    value: 'specific',
+    value: 'entity',
   },
   {
     label: intl.formatMessage({
-      id: 'pages.editor.components.condition.scope.generic',
+      id: 'pages.editor.components.condition.scope.template',
     }),
-    value: 'generic',
+    value: 'template',
   },
 ]

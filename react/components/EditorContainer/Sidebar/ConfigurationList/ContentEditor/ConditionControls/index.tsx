@@ -19,8 +19,8 @@ class ConditionControls extends Component<Props> {
     const scope = isSitewide
       ? 'sitewide'
       : condition.pageContext.id === '*'
-      ? 'generic'
-      : 'specific'
+      ? 'template'
+      : 'entity'
 
     return (
       <Fragment>
@@ -48,12 +48,8 @@ class ConditionControls extends Component<Props> {
   private getPageContextFromScope(scope: ConfigurationScope): PageContext {
     const { pageContext } = this.props
 
-    if (scope === 'sitewide') {
+    if (['sitewide', 'template'].includes(scope)) {
       return { id: '*', type: '*' }
-    }
-
-    if (scope === 'generic') {
-      return { id: '*', type: pageContext.type }
     }
 
     return pageContext

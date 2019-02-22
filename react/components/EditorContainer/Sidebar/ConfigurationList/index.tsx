@@ -315,7 +315,9 @@ class ConfigurationList extends Component<Props, State> {
       await saveContent({
         variables: {
           configuration,
-          template: iframeRuntime.pages[iframeRuntime.page].blockId,
+          template: this.isSitewide
+            ? '*'
+            : iframeRuntime.pages[iframeRuntime.page].blockId,
           treePath: editor.editTreePath,
         },
       })
