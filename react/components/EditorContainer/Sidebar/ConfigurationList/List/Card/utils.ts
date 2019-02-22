@@ -12,7 +12,7 @@ export const getTextFromContext = (
     })
   }
 
-  if (pageContext.id === '*') {
+  if (pageContext.id === '*' && pageContext.type === '*') {
     return intl.formatMessage({
       id: 'pages.editor.configuration.tag.template',
     })
