@@ -19,5 +19,6 @@ interface ActionMenuOption {
 interface StyleAssetInfo {
   type: 'path' | 'stylesheet'
   keepSheet?: boolean
+  selected?: boolean
   value: string
 }

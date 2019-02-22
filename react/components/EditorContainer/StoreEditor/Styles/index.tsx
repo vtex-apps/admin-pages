@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import StyleEditor from './StyleEditor'
 import StyleList from './StyleList'
 
-const PATH_STYLE_TAG_ID = 'style_link'
-const SHEET_STYLE_TAG_ID = 'style_edit'
+const SELECTED_STYLE_TAG_ID = 'style_link'
+const PATH_STYLE_TAG_ID = 'style_path'
+const SHEET_STYLE_TAG_ID = 'style_sheet'
 
 interface Props {
   iframeWindow: Window
@@ -24,6 +25,14 @@ const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
         sheetStyleTag.innerHTML = ''
       }
     }
+    if (asset.selected) {
+      const selectedStyleTag = window.document.getElementById(
+        SELECTED_STYLE_TAG_ID
+      )
+      if (selectedStyleTag) {
+        selectedStyleTag.setAttribute('href', asset.value)
+      }
+    }
   } else {
     const sheetStyleTag = window.document.getElementById(SHEET_STYLE_TAG_ID)
     if (sheetStyleTag) {
@@ -32,26 +41,40 @@ const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
   }
 }
 
+const createStyleTag = (window: Window, id: string) => {
+  if (window.document.getElementById(id)) {
+    return
+  }
+  const styleTag = window.document.createElement('style')
+  styleTag.setAttribute('id', id)
+  if (window.document.head) {
+    window.document.head.append(styleTag)
+  }
+}
+
+const removeStyleTag = (window: Window, id: string) => {
+  const styleTag = window.document.getElementById(id)
+  if (styleTag && window.document.head) {
+    try {
+      window.document.head.removeChild(styleTag)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
 const Styles: React.SFC<Props> = ({ iframeWindow }) => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
   useEffect(() => {
-    const styleTag = iframeWindow.document.createElement('style')
-    styleTag.setAttribute('id', SHEET_STYLE_TAG_ID)
-    if (iframeWindow.document.head) {
-      iframeWindow.document.head.append(styleTag)
-    }
+    createStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+    createStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
 
     return () => {
-      if (styleTag && iframeWindow.document.head) {
-        try {
-          iframeWindow.document.head.removeChild(styleTag)
-        } catch (err) {
-          console.error(err)
-        }
-      }
+      removeStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+      removeStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
     }
-  }, [])
+  })
 
   return editing ? (
     <StyleEditor

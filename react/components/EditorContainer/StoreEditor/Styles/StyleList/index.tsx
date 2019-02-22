@@ -44,7 +44,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
 
         const selected = listStyles && find(style => style.selected, listStyles)
         if (selected && !loading) {
-          setStyleAsset({ type: 'path', value: selected.path })
+          setStyleAsset({ type: 'path', selected: true, value: selected.path })
         }
 
         return loading ? (
