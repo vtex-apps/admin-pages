@@ -6,10 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Changed
+
+- [BREAKING] Make `admin-pages` compatible with new majors: `store-theme@2.x`, `pages-graphql@2.x`, `render@8.x`, `admin@2.x`.
+- [BREAKING] Use `blocks` architecture.
+
+### Added
+
+- Users can reorder and delete blocks.
+- Styles Editor
+
 ### Fixed
+
 - Typescript errors ;)
 
 ### Changed
+
 - **`EditorContainer`**
   - Move sidebar to it's own component.
   - Type IFrame on `highlightExtensionPoint`.
@@ -25,42 +38,54 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   - Move inside of `Sidebar` folder.
   - Switching mode from `editor` instead of props.
 - **Styleguide**
-  - Update version to 8.x.
+  - Update version to 9.x.
 
 ## [2.5.1] - 2019-01-02
+
 ### Fixed
+
 - **`HighlightOverlay`**
   - Uncovered edge case where a component has two or more DOM elements that alternate visibility based on the user device.
 
 ## [2.5.0] - 2018-12-05
+
 ### Changed
+
 - **Pages**
+
   - Rename "page list" to "pages".
 
 - **`pages.json`**
   - Move admin links to CMS section.
 
 ## [2.4.0] - 2018-12-05
+
 ### Added
+
 - **`render.d.ts`**
   - `Helmet` component.
 
 ### Changed
+
 - **Redirects**
   - Rename some folders and reorganize components.
 
 ### Removed
+
 - **Redirects**
   - Admin navbar link.
 
 ## [2.3.10] - 2018-12-05
 
 ### Fixed
+
 - **`HighlightOverlay`**
   - Consider padding from iframe body to calculate offset.
 
 ## [2.3.9] - 2018-11-26
+
 ### Fixed
+
 - **`ComponentEditor`**
   - `handleScopeChange` method signature updated.
 
