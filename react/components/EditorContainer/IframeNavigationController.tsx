@@ -6,34 +6,39 @@ interface Props {
   iframeRuntime: RenderContext | null
 }
 
+const maybeCall = (fn: (() => void) | void) => {
+  if (typeof fn === 'function') {
+    return fn()
+  }
+}
+
 const IframeNavigationController: React.FunctionComponent<Props> = ({
   iframeRuntime,
 }) => {
-  const { wasModified } = useFormMetaContext()
+  const { wasModified, setWasModified } = useFormMetaContext()
   const { editExtensionPoint } = useEditorContext()
 
   useEffect(
     () => {
-      let unblock: any
-      let unlisten: any
+      let unblock: (() => void) | void
+      let unlisten: (() => void) | void
+
       if (wasModified && iframeRuntime && iframeRuntime.history) {
         unblock = iframeRuntime.history.block('Are you sure you want to leave?')
         unlisten = iframeRuntime.history.listen((location, action) => {
           const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
           if (hasNavigated) {
+            unblock = maybeCall(unblock)
+            unlisten = maybeCall(unlisten)
+            setWasModified(false)
             editExtensionPoint(null)
           }
         })
       }
 
       return () => {
-        if (typeof unblock === 'function') {
-          unblock()
-        }
-
-        if (typeof unlisten === 'function') {
-          unlisten()
-        }
+        unblock = maybeCall(unblock)
+        unlisten = maybeCall(unlisten)
       }
     },
     [wasModified]
