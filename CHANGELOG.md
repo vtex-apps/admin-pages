@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- `IframeNavigationController` wasn't cleaning up when user decided to navigate.
+
 ## [3.0.0-beta.0] - 2019-02-22
 
 ### Changed
