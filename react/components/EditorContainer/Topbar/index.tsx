@@ -22,7 +22,11 @@ const Topbar: React.SFC<Props> = ({ changeMode, mode, urlPath }) => (
       ) : (
         <Fragment>
           {modes.map(buttonMode => (
-            <ModeButton changeMode={changeMode} mode={buttonMode} />
+            <ModeButton
+              key={buttonMode}
+              changeMode={changeMode}
+              mode={buttonMode}
+            />
           ))}
           <div className="flex items-center ml3 pl7 bw1 bl b--muted-5">
             <FormattedMessage id="pages.editor.container.editpath.label" />:
