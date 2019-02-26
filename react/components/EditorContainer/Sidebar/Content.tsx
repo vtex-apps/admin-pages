@@ -42,6 +42,7 @@ class Content extends Component<Props, State> {
 
     if (currPage !== prevPage) {
       this.resetComponents()
+      this.props.editor.setIsNavigating(false)
     }
   }
 
