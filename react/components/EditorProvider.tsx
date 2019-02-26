@@ -41,7 +41,7 @@ class EditorProvider extends Component<Props, State> {
     components: PropTypes.object,
   }
 
-  private unlisten: (() => void) | void = undefined
+  private unlisten?: (() => void) | void
 
   constructor(props: Props) {
     super(props)
