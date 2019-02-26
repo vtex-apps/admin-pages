@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
 import MessagesContext, { IMessagesContext } from './components/MessagesContext'
 
@@ -55,12 +56,7 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
       <div className="h-100 overflow-y-auto bg-light-silver">
         <MessagesContext.Provider value={this.state}>
           <EditorProvider>
-            <iframe
-              id="store-iframe"
-              className="w-100 h-100"
-              src={path ? `$/{path}` : '/'}
-              frameBorder="0"
-            />
+            <StoreIframe path={path} />
           </EditorProvider>
         </MessagesContext.Provider>
       </div>
