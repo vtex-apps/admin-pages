@@ -164,11 +164,11 @@ class ConfigurationList extends Component<Props, State> {
     allMatches: true,
     id: '',
     pageContext: this.isSitewide
-      ? this.props.iframeRuntime.route.pageContext
-      : ({
+      ? ({
           id: '*',
           type: '*',
-        } as ExtensionConfiguration['condition']['pageContext']),
+        } as ExtensionConfiguration['condition']['pageContext'])
+      : this.props.iframeRuntime.route.pageContext,
     statements: [],
   })
 
