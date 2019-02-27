@@ -7,7 +7,7 @@ import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 import DeleteContent from '../../../../queries/DeleteContent.graphql'
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
-import { getBlockPath } from '../../../../utils/blocks'
+import { getBlockPath, getSitewideTreePath } from '../../../../utils/blocks'
 import {
   getComponentSchema,
   getExtension,
@@ -314,6 +314,12 @@ class ConfigurationList extends Component<Props, State> {
       label,
     }
 
+    const treePath = editor.editTreePath!
+
+    const formattedTreePath = this.isSitewide
+      ? getSitewideTreePath(treePath)
+      : treePath
+
     formMeta.toggleLoading()
 
     try {
@@ -323,7 +329,7 @@ class ConfigurationList extends Component<Props, State> {
           template: this.isSitewide
             ? '*'
             : iframeRuntime.pages[iframeRuntime.page].blockId,
-          treePath: editor.editTreePath,
+          treePath: formattedTreePath,
         },
       })
 
