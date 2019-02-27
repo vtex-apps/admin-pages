@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { difference, pathOr, uniq } from 'ramda'
+import { difference, equals, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
@@ -101,10 +101,15 @@ class EditorProvider extends Component<Props, State> {
               const pathFromCurrentPage = this.state.iframeRuntime!.route.path
               const isRootPath =
                 pathFromCurrentPage === '/' || location.pathname === '/'
+              const hasParamsChanged = !equals(
+                location.state.navigationRoute.params,
+                this.state.iframeRuntime!.route.params
+              )
 
               const isDifferentPath = isRootPath
                 ? pathFromCurrentPage !== location.pathname
-                : !pathFromCurrentPage.startsWith(location.pathname) // to consider canonicals
+                : !pathFromCurrentPage.startsWith(location.pathname) ||
+                  hasParamsChanged // to consider canonicals
 
               const hasNavigated =
                 ['PUSH', 'REPLACE', 'POP'].includes(action) && isDifferentPath
