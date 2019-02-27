@@ -97,8 +97,15 @@ class EditorProvider extends Component<Props, State> {
           !this.unlisten
         ) {
           this.unlisten = this.state.iframeRuntime.history.listen(
-            (_, action) => {
-              const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
+            (location, action) => {
+              const page = this.state.iframeRuntime!.page
+              const pages = this.state.iframeRuntime!.pages
+              const pathFromCurrentPage = pages[page].path
+
+              const isDifferentPath = pathFromCurrentPage !== location.pathname
+              const hasNavigated =
+                ['PUSH', 'REPLACE', 'POP'].includes(action) && isDifferentPath
+
               if (hasNavigated) {
                 this.handleSetIsNavigating(true)
                 this.editExtensionPoint(null)
