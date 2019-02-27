@@ -19,7 +19,8 @@ const StoreEditor: React.SFC<Props> = (props: Props) => {
     <div
       className="h-100 mr5 bg-base ba b--muted-4 br3"
       style={{
-        width: '32rem',
+        minWidth: '31rem',
+        width: '31rem',
       }}
     >
       {Mode(props)}
