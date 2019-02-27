@@ -80,7 +80,7 @@ declare global {
     key: string
     pathname: string
     search: string
-    state: {}
+    state: { navigationRoute: { params: {} } }
   }
 
   type RuntimeHistory = History & {
@@ -172,7 +172,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
-    route: { pageContext: PageContext; path: string }
+    route: { pageContext: PageContext; path: string; params: {} }
     routes: Routes
     extensions: Extensions
     production: boolean
