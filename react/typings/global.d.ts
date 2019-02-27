@@ -75,9 +75,19 @@ declare global {
     [name: string]: Route
   }
 
+  interface HistoryLocation {
+    hash: string
+    key: string
+    pathname: string
+    search: string
+    state: {}
+  }
+
   type RuntimeHistory = History & {
     block: (s: string) => () => void
-    listen: (listenCb: (location: string, action: string) => void) => () => void
+    listen: (
+      listenCb: (location: HistoryLocation, action: string) => void
+    ) => () => void
   }
 
   interface RenderContext {
