@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0-beta.1] - 2019-02-27
+
+### Fixed
+
+- Store sidebar did not have a fixed size.
+- `IframeNavigationController` wasn't cleaning up when user decided to navigate.
+
 ## [3.0.0-beta.0] - 2019-02-22
 
 ### Changed

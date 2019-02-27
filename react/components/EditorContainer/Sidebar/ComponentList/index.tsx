@@ -3,7 +3,12 @@ import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
+import {
+  Button,
+  ButtonWithIcon,
+  Spinner,
+  ToastConsumerFunctions,
+} from 'vtex.styleguide'
 
 import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
@@ -72,7 +77,12 @@ class ComponentList extends Component<Props, State> {
   }
 
   public render() {
-    const { intl, onMouseEnterComponent, onMouseLeaveComponent } = this.props
+    const {
+      editor,
+      intl,
+      onMouseEnterComponent,
+      onMouseLeaveComponent,
+    } = this.props
 
     const hasChanges = this.state.changes.length > 0
 
@@ -95,7 +105,12 @@ class ComponentList extends Component<Props, State> {
           })}
         />
         <div className="bb bw1 b--light-silver" />
-        <div className="flex flex-column flex-grow-1">
+        <div className="relative flex flex-column flex-grow-1">
+          {editor.isNavigating && (
+            <div className="absolute bg-white-70 flex h-100 justify-center pt9 w-100 z-2">
+              <Spinner />
+            </div>
+          )}
           {hasChanges && (
             <div className="bb bw1 b--light-silver w-100">
               <div className="w-50 fl tc bw1 br b--light-silver">

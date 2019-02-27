@@ -12,16 +12,16 @@ const BackArrowIcon: React.SFC = () => (
     <path
       d="M1 5L12 5"
       stroke="#134CD8"
-      stroke-width="1.6"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M5 9L1 5L5 1"
       stroke="#134CD8"
-      stroke-width="1.6"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 )

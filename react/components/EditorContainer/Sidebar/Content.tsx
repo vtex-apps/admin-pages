@@ -37,11 +37,12 @@ class Content extends Component<Props, State> {
     const prevRuntime = prevProps.iframeRuntime
     const currRuntime = this.props.iframeRuntime
 
-    const prevPage = prevRuntime.page
-    const currPage = currRuntime.page
+    const prevPath = prevRuntime.route.path
+    const currPath = currRuntime.route.path
 
-    if (currPage !== prevPage) {
+    if (prevPath !== currPath) {
       this.resetComponents()
+      this.props.editor.setIsNavigating(false)
     }
   }
 

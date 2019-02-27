@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types'
-import { difference, pathOr, uniq } from 'ramda'
+import { difference, equals, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { compose, DataProps } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
 
-import EditorContainer, {
-  APP_CONTENT_ELEMENT_ID,
-} from './EditorContainer'
+import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
 import MessagesContext, { IMessagesContext } from './MessagesContext'
 
@@ -22,6 +20,7 @@ interface State {
   editTreePath: string | null
   iframeRuntime: RenderContext | null
   iframeWindow: Window
+  isNavigating: boolean
   mode: EditorMode
   showAdminControls: boolean
   template?: string
@@ -42,6 +41,8 @@ class EditorProvider extends Component<Props, State> {
     components: PropTypes.object,
   }
 
+  private unlisten?: (() => void) | void
+
   constructor(props: Props) {
     super(props)
 
@@ -52,6 +53,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
+      isNavigating: false,
       mode: 'content',
       showAdminControls: true,
       template: undefined,
@@ -88,6 +90,37 @@ class EditorProvider extends Component<Props, State> {
         }
 
         this.setState(newState)
+
+        if (
+          this.state.iframeRuntime &&
+          this.state.iframeRuntime.history &&
+          !this.unlisten
+        ) {
+          this.unlisten = this.state.iframeRuntime.history.listen(
+            (location, action) => {
+              const pathFromCurrentPage = this.state.iframeRuntime!.route.path
+              const isRootPath =
+                pathFromCurrentPage === '/' || location.pathname === '/'
+              const hasParamsChanged = !equals(
+                location.state.navigationRoute.params,
+                this.state.iframeRuntime!.route.params
+              )
+
+              const isDifferentPath = isRootPath
+                ? pathFromCurrentPage !== location.pathname
+                : !pathFromCurrentPage.startsWith(location.pathname) ||
+                  hasParamsChanged // to consider canonicals
+
+              const hasNavigated =
+                ['PUSH', 'REPLACE', 'POP'].includes(action) && isDifferentPath
+
+              if (hasNavigated) {
+                this.handleSetIsNavigating(true)
+                this.editExtensionPoint(null)
+              }
+            }
+          )
+        }
       }
     }
   }
@@ -136,6 +169,10 @@ class EditorProvider extends Component<Props, State> {
 
     if (!production) {
       emitter.removeListener('localesUpdated', this.emitLocaleEventToIframe)
+    }
+
+    if (this.unlisten) {
+      this.unlisten()
     }
   }
 
@@ -257,6 +294,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       iframeRuntime,
       iframeWindow,
+      isNavigating,
       mode,
       showAdminControls,
       viewport,
@@ -266,14 +304,17 @@ class EditorProvider extends Component<Props, State> {
       activeConditions,
       addCondition: this.handleAddCondition,
       allMatches,
-      conditions:  this.props.data && this.props.data.availableConditions || [],
+      conditions:
+        (this.props.data && this.props.data.availableConditions) || [],
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
       iframeWindow,
+      isNavigating,
       mode,
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
+      setIsNavigating: this.handleSetIsNavigating,
       setMode: this.handleSetMode,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,
@@ -300,6 +341,10 @@ class EditorProvider extends Component<Props, State> {
       </ToastProvider>
     )
   }
+
+  private handleSetIsNavigating = (isNavigating: boolean) => {
+    this.setState({ isNavigating })
+  }
 }
 
 const EditorWithMessageContext = (props: Props) => (
@@ -310,6 +355,4 @@ const EditorWithMessageContext = (props: Props) => (
   </MessagesContext.Consumer>
 )
 
-export default compose(
-  withRuntimeContext,
-)(EditorWithMessageContext)
+export default compose(withRuntimeContext)(EditorWithMessageContext)

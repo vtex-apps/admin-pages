@@ -75,9 +75,20 @@ declare global {
     [name: string]: Route
   }
 
+  interface HistoryLocation {
+    hash: string
+    key: string
+    pathname: string
+    search: string
+    state: { navigationRoute: { params: {} } }
+  }
+
   type RuntimeHistory = History & {
     block: (s: string) => () => void
-    listen: (listenCb: (location: string, action: string) => void) => () => void
+    listen: (
+      listenCb: (location: HistoryLocation, action: string) => void
+    ) => () => void
+    location: HistoryLocation
   }
 
   interface RenderContext {
@@ -133,9 +144,11 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
+    isNavigating: boolean
     mode: EditorMode
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
+    setIsNavigating: (isNavigating: boolean) => void
     setMode: (mode: EditorMode) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
@@ -159,7 +172,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
-    route: { pageContext: PageContext }
+    route: { pageContext: PageContext; path: string; params: {} }
     routes: Routes
     extensions: Extensions
     production: boolean

@@ -103,7 +103,7 @@
   "pages.editor.configuration.tag.sitewide": "Todo o site",
   "pages.editor.configuration.tag.subcategory": "Subcategoria: {id}",
   "pages.editor.configuration.tag.template": "Este template",
-  "pages.editor.container.editpath.label": "Editando",
+  "pages.editor.container.editpath.label": "URL da página",
   "pages.editor.info.page": "Página",
   "pages.editor.info.title": "Informações da Página"
 }
