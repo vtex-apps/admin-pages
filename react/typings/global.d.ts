@@ -88,6 +88,7 @@ declare global {
     listen: (
       listenCb: (location: HistoryLocation, action: string) => void
     ) => () => void
+    location: HistoryLocation
   }
 
   interface RenderContext {
@@ -171,7 +172,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
-    route: { pageContext: PageContext }
+    route: { pageContext: PageContext; path: string }
     routes: Routes
     extensions: Extensions
     production: boolean
