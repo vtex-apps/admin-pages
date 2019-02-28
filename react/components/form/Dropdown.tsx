@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types'
 import React from 'react'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
-import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 interface Props {
   label?: string
@@ -17,7 +16,7 @@ interface Props {
   }
 }
 
-type DropdownProps = WidgetProps & Props
+type DropdownProps = Props & WidgetProps & InjectedIntlProps
 
 const getChangeHandler = (
   onChange: (value?: string) => void,
@@ -29,6 +28,7 @@ const Dropdown: React.SFC<DropdownProps> = ({
   autofocus,
   disabled,
   id,
+  intl,
   label,
   onChange,
   onClose,
@@ -43,13 +43,13 @@ const Dropdown: React.SFC<DropdownProps> = ({
     autoFocus={autofocus}
     disabled={disabled || (schema && schema.disabled)}
     id={id}
-    label={label && <SimpleFormattedMessage id={label} />}
+    label={label && intl.formatMessage({ id: label })}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
     options={options.enumOptions.map(option => ({
       ...option,
-      label: option.label && <SimpleFormattedMessage id={option.label} />,
+      label: option.label && intl.formatMessage({ id: option.label }),
     }))}
     placeholder={placeholder}
     readOnly={readonly}
@@ -64,4 +64,4 @@ Dropdown.defaultProps = {
   required: false,
 }
 
-export default Dropdown
+export default injectIntl(Dropdown)
