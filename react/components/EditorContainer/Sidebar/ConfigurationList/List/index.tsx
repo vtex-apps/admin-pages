@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import { MutationFn } from 'react-apollo'
-import { Spinner } from 'vtex.styleguide'
+import ContentContainer from '../../ContentContainer'
 import EditorHeader from '../../EditorHeader'
 import { DeleteContentVariables } from '../typings'
 
@@ -36,12 +36,7 @@ const List: React.SFC<Props> = ({
 }) => (
   <Fragment>
     <EditorHeader editor={editor} onClose={onClose} title={title} />
-    <div className="relative">
-      {editor.isNavigating && (
-        <div className="absolute bg-white-70 flex h-100 justify-center pt9 w-100 z-2">
-          <Spinner />
-        </div>
-      )}
+    <ContentContainer isLoading={editor.isLoading}>
       {configurations.map(
         (configuration: ExtensionConfiguration, index: number) => (
           <Card
@@ -65,7 +60,7 @@ const List: React.SFC<Props> = ({
         )
       )}
       <CreateButton onClick={onCreate} />
-    </div>
+    </ContentContainer>
   </Fragment>
 )
 

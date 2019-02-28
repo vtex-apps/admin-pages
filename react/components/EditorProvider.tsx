@@ -20,7 +20,7 @@ interface State {
   editTreePath: string | null
   iframeRuntime: RenderContext | null
   iframeWindow: Window
-  isNavigating: boolean
+  isLoading: boolean
   mode: EditorMode
   showAdminControls: boolean
   template?: string
@@ -53,7 +53,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
-      isNavigating: false,
+      isLoading: false,
       mode: 'content',
       showAdminControls: true,
       template: undefined,
@@ -115,7 +115,7 @@ class EditorProvider extends Component<Props, State> {
                 ['PUSH', 'REPLACE', 'POP'].includes(action) && isDifferentPath
 
               if (hasNavigated) {
-                this.handleSetIsNavigating(true)
+                this.handleSetIsLoading(true)
                 this.editExtensionPoint(null)
               }
             }
@@ -294,7 +294,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       iframeRuntime,
       iframeWindow,
-      isNavigating,
+      isLoading,
       mode,
       showAdminControls,
       viewport,
@@ -310,11 +310,11 @@ class EditorProvider extends Component<Props, State> {
       editMode,
       editTreePath,
       iframeWindow,
-      isNavigating,
+      isLoading,
       mode,
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
-      setIsNavigating: this.handleSetIsNavigating,
+      setIsLoading: this.handleSetIsLoading,
       setMode: this.handleSetMode,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,
@@ -342,8 +342,8 @@ class EditorProvider extends Component<Props, State> {
     )
   }
 
-  private handleSetIsNavigating = (isNavigating: boolean) => {
-    this.setState({ isNavigating })
+  private handleSetIsLoading = (isLoading: boolean) => {
+    this.setState({ isLoading })
   }
 }
 

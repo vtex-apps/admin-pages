@@ -144,11 +144,11 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
-    isNavigating: boolean
+    isLoading: boolean
     mode: EditorMode
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
-    setIsNavigating: (isNavigating: boolean) => void
+    setIsLoading: (isLoading: boolean) => void
     setMode: (mode: EditorMode) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
