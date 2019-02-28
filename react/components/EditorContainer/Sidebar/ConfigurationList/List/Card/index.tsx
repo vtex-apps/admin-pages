@@ -14,6 +14,11 @@ interface Props {
   path: string
 }
 
+function stopPropagation(e: React.MouseEvent) {
+  e.preventDefault()
+  e.stopPropagation()
+}
+
 const Card = ({
   configuration,
   isDisabled = false,
@@ -64,13 +69,7 @@ const Card = ({
           textColor="mid-gray"
         />
       </div>
-      <div
-        className="absolute top-0 right-0 mt1"
-        onClick={e => {
-          e.preventDefault()
-          e.stopPropagation()
-        }}
-      >
+      <div className="absolute top-0 right-0 mt1" onClick={stopPropagation}>
         <ActionMenu options={actionMenuOptions} />
       </div>
     </div>
