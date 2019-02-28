@@ -97,3 +97,6 @@ export const getRelativeBlocksIds = (
         : acc,
     {}
   )
+
+export const getSitewideTreePath = (treePath: string) =>
+  ['*', ...treePath.split('/').slice(1)].join('/')
