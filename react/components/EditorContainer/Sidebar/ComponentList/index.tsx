@@ -15,6 +15,7 @@ import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
 import { getExtension } from '../../../../utils/components'
 import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
+import ContentContainer from '../ContentContainer'
 import { SidebarComponent } from '../typings'
 
 import SortableList from './SortableList'
@@ -105,12 +106,10 @@ class ComponentList extends Component<Props, State> {
           })}
         />
         <div className="bb bw1 b--light-silver" />
-        <div className="relative flex flex-column flex-grow-1">
-          {editor.isNavigating && (
-            <div className="absolute bg-white-70 flex h-100 justify-center pt9 w-100 z-2">
-              <Spinner />
-            </div>
-          )}
+        <ContentContainer
+          isLoading={editor.isLoading}
+          containerClassName="relative flex flex-column flex-grow-1"
+        >
           {hasChanges && (
             <div className="bb bw1 b--light-silver w-100">
               <div className="w-50 fl tc bw1 br b--light-silver">
@@ -152,7 +151,7 @@ class ComponentList extends Component<Props, State> {
             useDragHandle
           />
           <div className="bt b--light-silver" />
-        </div>
+        </ContentContainer>
       </Fragment>
     )
   }

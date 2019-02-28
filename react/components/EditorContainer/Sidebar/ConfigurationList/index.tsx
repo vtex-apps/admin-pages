@@ -355,7 +355,7 @@ class ConfigurationList extends Component<Props, State> {
     DeleteContentVariables
   > = async options => {
     const { editor, iframeRuntime } = this.props
-    editor.setIsNavigating(true)
+    editor.setIsLoading(true)
     try {
       await this.props.deleteContent({
         ...options,
@@ -382,13 +382,13 @@ class ConfigurationList extends Component<Props, State> {
         },
       })
 
-      editor.setIsNavigating(false)
+      editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
         message: 'Content deleted.',
       })
     } catch (e) {
-      editor.setIsNavigating(false)
+      editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
         message: 'Something went wrong. Please try again.',

@@ -42,7 +42,7 @@ class Content extends Component<Props, State> {
 
     if (prevPath !== currPath) {
       this.resetComponents()
-      this.props.editor.setIsNavigating(false)
+      this.props.editor.setIsLoading(false)
     }
   }
 
