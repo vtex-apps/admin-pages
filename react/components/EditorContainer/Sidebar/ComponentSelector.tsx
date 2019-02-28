@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
-import SelectionIcon from '../../../images/SelectionIcon'
+import BlocksLibraryIcon from '../../icons/BlocksLibraryIcon'
 
 import ComponentList from './ComponentList'
 import { SidebarComponent } from './typings'
@@ -31,6 +31,16 @@ class ComponentSelector extends PureComponent<Props> {
           <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
             <FormattedMessage id="pages.editor.components.title" />
           </h3>
+          <div
+            onClick={editor.toggleEditMode}
+            className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+          >
+            <span className="pr5 b--light-gray flex items-center">
+              <BlocksLibraryIcon
+                color={editor.editMode ? '#368df7' : '#979899'}
+              />
+            </span>
+          </div>
         </div>
         <div className="bb bw1 b--light-silver"></div>
         <ToastConsumer>
