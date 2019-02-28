@@ -52,9 +52,9 @@ const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
             <Spinner />
           </div>
         ) : (
-          <div className="flex flex-column ph3 h-100">
-            <div className="flex justify-between mv5 ml5 items-center">
-              <span className="f3">Styles</span>
+          <section className="flex flex-column ph3 h-100 overflow-x-hidden">
+            <header className="flex justify-between pv5 pl5 items-center flex-shrink-0 bg-white z-1">
+              <h1 className="f3 fw4">Styles</h1>
               <ButtonWithIcon
                 icon={<CreateNewIcon />}
                 variation="tertiary"
@@ -62,8 +62,8 @@ const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
               >
                 New
               </ButtonWithIcon>
-            </div>
-            <div className="flex flex-column flex-grow-1 overflow-scroll">
+            </header>
+            <div className="flex flex-column flex-grow-1 overflow-y-auto">
               <ToastConsumer>
                 {({ showToast }) =>
                   listStyles &&
@@ -105,7 +105,7 @@ const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
                 }
               </ToastConsumer>
             </div>
-          </div>
+          </section>
         )
       }}
     </Operations>

@@ -27,7 +27,7 @@ const ColorsEditor: React.SFC<Props> = ({
 
   if (editing) {
     return (
-      <div className="flex-grow-1 overflow-scroll">
+      <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
         <ColorEditor
           updateColor={updateColor(updateStyle)}
           token={editing}
@@ -56,7 +56,7 @@ const ColorsEditor: React.SFC<Props> = ({
   }, toPairs(info))
 
   return (
-    <div className="flex-grow-1 overflow-scroll">
+    <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
       {toPairs(groups).map(groupInfo => {
         const [groupName, group] = groupInfo
 
