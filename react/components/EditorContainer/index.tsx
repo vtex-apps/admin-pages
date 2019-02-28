@@ -138,7 +138,9 @@ export default class EditorContainer extends Component<Props, State> {
                       storeEditMode: mode,
                     })
                   }}
+                  isEditMode={editor.editMode}
                   mode={storeEditMode}
+                  toggleEditMode={editor.toggleEditMode}
                   urlPath={iframeWindow.location.pathname}
                 />
               )}
