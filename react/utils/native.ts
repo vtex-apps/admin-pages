@@ -43,7 +43,8 @@ export const translateFromNative = (schema: ComponentSchema) => {
   return schema
 }
 
-const iframe = document.getElementById('store-iframe') || ({} as any)
+const iframe =
+  (document && document.getElementById('store-iframe')) || ({} as any)
 const pages = iframe.__RUNTIME__ && Object.keys(iframe.__RUNTIME__.pages)
 
 // tslint:disable:object-literal-sort-keys
@@ -168,11 +169,6 @@ export const nativeMap: Record<
   },
 
   link: {
-    hasLink: {
-      default: false,
-      title: 'pages.editor.components.link.hasLink.title',
-      type: 'boolean',
-    },
     externalRoute: {
       default: false,
       title: 'pages.editor.components.link.externalRoute.title',
