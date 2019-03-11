@@ -63,7 +63,7 @@ const BlocksLibraryIcon: React.FunctionComponent<Props> = ({ color }) => (
     <path
       d="M6 4.5V1.5H16V11.5H13"
       stroke={color}
-      stroke-width="1.4"
+      strokeWidth="1.4"
       strokeLinecap="round"
       strokeLinejoin="round"
     />
