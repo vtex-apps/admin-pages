@@ -105,7 +105,6 @@ class ComponentList extends Component<Props, State> {
             id: 'pages.editor.component-list.modal.text',
           })}
         />
-        <div className="bb bw1 b--light-silver" />
         <ContentContainer
           isLoading={editor.isLoading}
           containerClassName="relative flex flex-column flex-grow-1"
@@ -150,7 +149,6 @@ class ComponentList extends Component<Props, State> {
             onSortEnd={this.handleSortEnd}
             useDragHandle
           />
-          <div className="bt b--light-silver" />
         </ContentContainer>
       </Fragment>
     )

@@ -23,7 +23,7 @@ const EditorHeader: React.SFC<Props> = ({
   title,
 }) => (
   <div
-    className={`w-100 pl5 pt5 pb3 bb bw1 b--light-silver ${
+    className={`w-100 pl5 pv4  bb bw1 b--light-silver pr5 ${
       !onSave ? 'pr5' : ''
     }`}
   >
@@ -32,9 +32,9 @@ const EditorHeader: React.SFC<Props> = ({
         <span className="pointer" onClick={onClose}>
           <IconArrowBack size={16} color="#585959" />
         </span>
-        <div className="w-100 pl5 flex justify-between items-center">
+        <div className="w-100 pl3 mv1 flex justify-between items-center">
           {title && (
-            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">
+            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1">
               {title}
             </h4>
           )}
