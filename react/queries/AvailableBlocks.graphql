@@ -1,0 +1,19 @@
+query AvailableBlocks($parentBlockId: String!, $extensionPointId: String){
+  availableBlocks(parentBlockId: $parentBlockId, extensionPointId: $extensionPointId) {
+    after
+    around
+    before
+    component
+    id
+    blocks {
+    	blockId
+      extensionPointId
+    }
+    preview {
+    	type
+      width
+    	height
+    }
+    propsJSON
+  }
+}
