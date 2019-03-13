@@ -11,7 +11,7 @@ interface Props {
   onClose: () => void
   onSave?: () => void
   shouldDisableSaveButton?: boolean
-  title?: string
+  title?: React.ReactChild
 }
 
 const EditorHeader: React.FunctionComponent<Props> = ({
@@ -44,7 +44,7 @@ const EditorHeader: React.FunctionComponent<Props> = ({
           )}
         </div>
       </div>
-      {!onSave && editor && (
+      {!onSave && editor && editor.mode === 'content' && (
         <div
           className="flex items-center pointer"
           onClick={() => {

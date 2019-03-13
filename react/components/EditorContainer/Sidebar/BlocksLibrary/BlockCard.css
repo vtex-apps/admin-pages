@@ -1,0 +1,7 @@
+.card-flex-size {
+  flex: 1 0 40%;
+}
+
+.card-text-overflow-wrap {
+  overflow-wrap: 'break-word';
+}

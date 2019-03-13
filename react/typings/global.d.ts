@@ -130,7 +130,7 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type EditorMode = 'content' | 'layout'
+  type EditorMode = 'content' | 'layout' | 'addBlock'
 
   interface EditorConditionSection {
     activeConditions: string[]
@@ -279,6 +279,16 @@ declare global {
   }
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
+  interface AvailableBlock {
+    after: string[]
+    around: string[]
+    before: string[]
+    component: string
+    id: string
+    blocks: InnerBlock[]
+    propsJSON: string
+  }
 
   interface FormattedBlock {
     id: Extension['blockId']

@@ -3,18 +3,18 @@ import React, { Component, Fragment } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import {
-  Button,
-  ButtonWithIcon,
-  Spinner,
-  ToastConsumerFunctions,
-} from 'vtex.styleguide'
+import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
 
+import AvailableBlocks from '../../../../queries/AvailableBlocks.graphql'
 import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
-import { getExtension } from '../../../../utils/components'
+import {
+  getExtension,
+  getIframeRenderComponents,
+} from '../../../../utils/components'
 import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
+import BlocksLibrary from '../BlocksLibrary'
 import ContentContainer from '../ContentContainer'
 import { SidebarComponent } from '../typings'
 
@@ -23,6 +23,10 @@ import { NormalizedComponent, ReorderChange } from './typings'
 import { getParentTreePath, normalize, pureSplice } from './utils'
 
 interface CustomProps {
+  availableBlocksData: {
+    availableBlocks: AvailableBlock[]
+    loading: boolean
+  }
   components: SidebarComponent[]
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
@@ -79,6 +83,7 @@ class ComponentList extends Component<Props, State> {
 
   public render() {
     const {
+      availableBlocksData: { availableBlocks = [] },
       editor,
       intl,
       onMouseEnterComponent,
@@ -86,6 +91,15 @@ class ComponentList extends Component<Props, State> {
     } = this.props
 
     const hasChanges = this.state.changes.length > 0
+
+    if (editor.mode === 'addBlock') {
+      return (
+        <BlocksLibrary
+          availableBlocks={availableBlocks}
+          handleAdd={this.handleAdd}
+        />
+      )
+    }
 
     return (
       <Fragment>
@@ -158,6 +172,80 @@ class ComponentList extends Component<Props, State> {
     this.setState({
       isModalOpen: false,
     })
+  }
+
+  private handleAdd = (block: AvailableBlock) => {
+    const { id: blockId } = block
+    const { iframeRuntime } = this.props
+    const { components } = this.state
+    const now = Date.now()
+    const currentPageExtension = iframeRuntime.pages[iframeRuntime.page].routeId
+    const extension = iframeRuntime.extensions[currentPageExtension]
+
+    const newBlocks = [
+      ...(extension.blocks || []),
+      {
+        blockId,
+        extensionPointId: `__USER-${currentPageExtension}-${now}`,
+      },
+    ]
+
+    const newExtension = {
+      ...extension,
+      blocks: newBlocks,
+    }
+
+    const parsedBlock = {
+      ...block,
+      content: {},
+      implementationIndex: 0,
+      implements: [],
+      props: JSON.parse(block.propsJSON),
+    }
+    const component = (getIframeRenderComponents() || {})[parsedBlock.component]
+    let name = ''
+
+    if (component) {
+      if (component.schema) {
+        name = component.schema.title || ''
+      } else if (component.getSchema) {
+        name = component.getSchema({}).title || ''
+      }
+    }
+
+    iframeRuntime.updateExtension(currentPageExtension, newExtension)
+    iframeRuntime.updateExtension(
+      `${currentPageExtension}/__USER-${currentPageExtension}-${now}`,
+      parsedBlock
+    )
+
+    const newComponents = [
+      ...components.slice(0, components.length - 1),
+      ...normalize([
+        {
+          name,
+          treePath: `${currentPageExtension}/__USER-${currentPageExtension}-${now}`,
+        },
+      ]),
+      ...components.slice(-1),
+    ]
+
+    this.setState(prevState => ({
+      ...prevState,
+      blocks: newBlocks,
+      changes: [
+        ...prevState.changes,
+        {
+          blocks: prevState.blocks,
+          components: prevState.components,
+          target: currentPageExtension,
+        },
+      ],
+      components: newComponents,
+    }))
+
+    this.props.updateSidebarComponents(newComponents)
+    this.props.editor.setMode('content')
   }
 
   private handleDelete = async (treePath: string) => {
@@ -421,5 +509,13 @@ class ComponentList extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  graphql(UpdateBlock, { name: 'updateBlock' })
+  graphql(UpdateBlock, { name: 'updateBlock' }),
+  graphql(AvailableBlocks, {
+    name: 'availableBlocksData',
+    options: ({ iframeRuntime }: Props) => ({
+      variables: {
+        parentBlockId: iframeRuntime.pages[iframeRuntime.page].blockId,
+      },
+    }),
+  })
 )(ComponentList)
