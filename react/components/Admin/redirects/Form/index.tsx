@@ -4,7 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'render'
-import { Button, Input, Toggle } from 'vtex.styleguide'
+import { Button, Input, RadioGroup, Toggle } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
@@ -46,7 +46,7 @@ class Form extends Component<Props, State> {
     this.state = {
       data: props.initialData,
       isLoading: false,
-      shouldShowDatePicker: false,
+      shouldShowDatePicker: !!props.initialData.endDate,
       shouldShowModal: false,
     }
   }
@@ -117,43 +117,58 @@ class Form extends Component<Props, State> {
                 value={data.to}
               />
               <Separator />
-              <Toggle
-                checked={shouldShowDatePicker}
+              <RadioGroup
                 disabled={this.isViewMode}
-                label={intl.formatMessage({
-                  id: 'pages.admin.redirects.form.toggle.endDate',
-                })}
-                onChange={this.toggleDatePickerVisibility}
-                size="small"
+                name="type"
+                options={[
+                  { value: 'permanent', label: intl.formatMessage({id: 'pages.admin.redirects.form.toggle.permanent'}) },
+                  { value: 'temporary', label: intl.formatMessage({id: 'pages.admin.redirects.form.toggle.temporary'}) },
+                ]}
+                value={data.type}
+                onChange={this.changeType}
               />
               <Separator />
-              {shouldShowDatePicker && (
-                <Fragment>
-                  {this.isViewMode ? (
-                    <Input
-                      disabled
-                      label={intl.formatMessage({
-                        id: 'pages.admin.redirects.form.datePicker.title',
-                      })}
-                      value={getFormattedLocalizedDate(data.endDate, locale)}
-                    />
-                  ) : (
+              { data.type === 'temporary' ?
+                <>
+                  <Toggle
+                    checked={shouldShowDatePicker}
+                    disabled={this.isViewMode}
+                    label={intl.formatMessage({
+                      id: 'pages.admin.redirects.form.toggle.endDate',
+                    })}
+                    onChange={this.toggleDatePickerVisibility}
+                    size="small"
+                  />
+                  <Separator />
+                  {shouldShowDatePicker && (
                     <Fragment>
-                      <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                        {text => <div className="mb3 w-100 f6">{text}</div>}
-                      </FormattedMessage>
-                      <DatePicker
-                        locale={locale}
-                        onChange={this.updateEndDate}
-                        selected={
-                          data.endDate ? moment(data.endDate) : undefined
-                        }
-                      />
+                      {this.isViewMode ? (
+                        <Input
+                          disabled
+                          label={intl.formatMessage({
+                            id: 'pages.admin.redirects.form.datePicker.title',
+                          })}
+                          value={getFormattedLocalizedDate(data.endDate, locale)}
+                        />
+                      ) : (
+                        <Fragment>
+                          <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                            {text => <div className="mb3 w-100 f6">{text}</div>}
+                          </FormattedMessage>
+                          <DatePicker
+                            locale={locale}
+                            onChange={this.updateEndDate}
+                            selected={
+                              data.endDate ? moment(data.endDate) : undefined
+                            }
+                          />
+                        </Fragment>
+                      )}
+                      <Separator />
                     </Fragment>
                   )}
-                  <Separator />
-                </Fragment>
-              )}
+                </>
+              : null}
               <div className="flex justify-end">
                 <div className="mr6">
                   <Button
@@ -233,7 +248,7 @@ class Form extends Component<Props, State> {
   private handleSave = (event: React.FormEvent) => {
     const { onSave } = this.props
     const {
-      data: { endDate, from, to },
+      data: { endDate, from, to, type },
     } = this.state
 
     event.preventDefault()
@@ -245,6 +260,7 @@ class Form extends Component<Props, State> {
             endDate,
             from,
             to,
+            type,
           },
         })
 
@@ -280,6 +296,14 @@ class Form extends Component<Props, State> {
       ...prevState,
       shouldShowModal: !prevState.shouldShowModal,
     }))
+  }
+
+  private changeType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const type = e.target.value
+    this.handleInputChange({
+      ...type === 'permanent' ? { endDate: ''} : null,
+      type,
+    })
   }
 
   private updateEndDate = (value: Moment) => {

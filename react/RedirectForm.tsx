@@ -35,6 +35,7 @@ class RedirectForm extends Component<Props, State> {
       from: '',
       id: NEW_REDIRECT_ID,
       to: '',
+      type: 'permanent' as RedirectTypes,
     }
 
     const isNew = props.params.id === NEW_REDIRECT_ID

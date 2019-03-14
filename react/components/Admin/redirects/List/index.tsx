@@ -102,6 +102,22 @@ class List extends Component<Props, State> {
           }),
           type: 'string',
         },
+        type: {
+          title: intl.formatMessage({
+            id: 'pages.admin.redirects.table.type',
+          }),
+          type: 'string',
+          cellRenderer: (cell: { cellData: string }) =>
+            cell.cellData ? (
+              <FormattedMessage id={`pages.admin.redirects.table.type.${cell.cellData}`}>
+                {text => <span className="ph4">{text}</span>}
+              </FormattedMessage>
+            ) : (
+              <FormattedMessage id="pages.admin.redirects.table.type.permanent">
+                {text => <span className="ph4 silver">{text}</span>}
+              </FormattedMessage>
+              )
+        },
         endDate: {
           cellRenderer: (cell: { cellData: string }) =>
             cell.cellData ? (
