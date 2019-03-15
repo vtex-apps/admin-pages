@@ -227,6 +227,8 @@ declare global {
     label?: string
   }
 
+  type RedirectTypes = 'permanent' | 'temporary'
+
   interface Redirect {
     cacheId: string
     disabled: boolean
@@ -234,6 +236,7 @@ declare global {
     from: string
     id: string
     to: string
+    type: RedirectTypes
   }
 
   interface HighlightableIFrame extends HTMLIFrameElement {

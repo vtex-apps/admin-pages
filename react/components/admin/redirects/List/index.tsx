@@ -76,7 +76,12 @@ class List extends Component<Props, State> {
         <div className="flex justify-end mb4">
           <CreateButton onClick={this.openNewItem} />
         </div>
-        <Table items={items} onRowClick={this.viewItem} schema={schema} />
+        <Table
+          fullWidth
+          items={items}
+          onRowClick={this.viewItem}
+          schema={schema}
+        />
       </Fragment>
     )
   }
@@ -99,6 +104,24 @@ class List extends Component<Props, State> {
             id: 'pages.admin.redirects.table.to',
           }),
           type: 'string',
+        },
+        type: {
+          title: intl.formatMessage({
+            id: 'pages.admin.redirects.table.type',
+          }),
+          type: 'string',
+          cellRenderer: (cell: { cellData: string }) =>
+            cell.cellData ? (
+              <FormattedMessage
+                id={`pages.admin.redirects.table.type.${cell.cellData}`}
+              >
+                {text => <span className="ph4">{text}</span>}
+              </FormattedMessage>
+            ) : (
+              <FormattedMessage id="pages.admin.redirects.table.type.permanent">
+                {text => <span className="ph4 silver">{text}</span>}
+              </FormattedMessage>
+            ),
         },
         endDate: {
           cellRenderer: (cell: { cellData: string }) =>
@@ -155,5 +178,5 @@ class List extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  withRuntimeContext,
+  withRuntimeContext
 )(List)
