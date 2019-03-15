@@ -1,4 +1,14 @@
-import { filter, has, keys, map, merge, mergeDeepLeft, pick, pickBy, reduce } from 'ramda'
+import {
+  filter,
+  has,
+  keys,
+  map,
+  merge,
+  mergeDeepLeft,
+  pick,
+  pickBy,
+  reduce,
+} from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { compose, graphql } from 'react-apollo'
 import { injectIntl } from 'react-intl'
@@ -6,17 +16,14 @@ import { RenderComponent } from 'render'
 import { IconArrowBack, Spinner } from 'vtex.styleguide'
 
 import AvailableComponents from '../../queries/AvailableComponents.graphql'
+import DeleteConfiguration from '../../queries/DeleteConfiguration.graphql'
 import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
 import SaveExtension from '../../queries/SaveExtension.graphql'
 import { getIframeImplementation } from '../../utils/components'
 import ConditionsSelector from '../ConditionsSelector'
-import ArrayFieldTemplate from '../form/ArrayFieldTemplate'
-import ErrorListTemplate from '../form/ErrorListTemplate'
-import FieldTemplate from '../form/FieldTemplate'
-import ObjectFieldTemplate from '../form/ObjectFieldTemplate'
-
 import Modal from '../Modal'
 import ModeSwitcher from '../ModeSwitcher'
+
 import ConfigurationsList from './ConfigurationsList'
 import Form from './Form'
 import LabelEditor from './LabelEditor'
@@ -39,6 +46,7 @@ interface ExtensionConfigurationsQuery {
 
 interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
   availableComponents: any
+  deleteConfiguration: any
   extensionConfigurations: ExtensionConfigurationsQuery
   intl: ReactIntl.InjectedIntl
   saveExtension: any
@@ -47,12 +55,14 @@ interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
 interface ComponentEditorState {
   conditions: string[]
   configuration?: AdaptedExtensionConfiguration
+  isDeleteModalOpen: boolean
   isEditMode: boolean
   isLoading: boolean
   isModalOpen: boolean
   mode: ComponentEditorMode
   newLabel?: string
   wasModified: boolean
+  deletedConfigurationId: string
 }
 
 class ComponentEditor extends Component<
@@ -67,6 +77,8 @@ class ComponentEditor extends Component<
 
     this.state = {
       conditions: [],
+      deletedConfigurationId: '',
+      isDeleteModalOpen: false,
       isEditMode: false,
       isLoading: false,
       isModalOpen: false,
@@ -89,7 +101,11 @@ class ComponentEditor extends Component<
     this._isMounted = false
   }
 
-  public getSchemaProps = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext) => {
+  public getSchemaProps = (
+    component: RenderComponent<any, any> | null,
+    props: any,
+    runtime: RenderContext,
+  ) => {
     if (!component) {
       return null
     }
@@ -127,7 +143,11 @@ class ComponentEditor extends Component<
    * @param {object} component The component implementation
    * @param {object} props The component props to be passed to the getSchema
    */
-  public getComponentSchema = (component: RenderComponent<any,any> | null, props: any, runtime: RenderContext): ComponentSchema => {
+  public getComponentSchema = (
+    component: RenderComponent<any, any> | null,
+    props: any,
+    runtime: RenderContext,
+  ): ComponentSchema => {
     const componentSchema: ComponentSchema = (component &&
       (component.schema ||
         (component.getSchema &&
@@ -143,7 +163,9 @@ class ComponentEditor extends Component<
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
-    const traverseAndTranslate: (schema: ComponentSchema) => ComponentSchema = schema => {
+    const traverseAndTranslate: (
+      schema: ComponentSchema,
+    ) => ComponentSchema = schema => {
       const translate: (
         value: string | { id: string; values?: { [key: string]: string } },
       ) => string = value =>
@@ -154,7 +176,7 @@ class ComponentEditor extends Component<
       const translatedSchema: ComponentSchema = map(
         (value: any): any =>
           Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema) as object
+        pick(['title', 'description', 'enumNames'], schema) as object,
       )
 
       if (has('widget', schema)) {
@@ -214,7 +236,10 @@ class ComponentEditor extends Component<
    * @return {object} A object defining the complete `UiSchema` that matches all the schema
    *  properties.
    */
-  public getUiSchema = (componentUiSchema: UISchema, componentSchema: ComponentSchema): UISchema => {
+  public getUiSchema = (
+    componentUiSchema: UISchema,
+    componentSchema: ComponentSchema,
+  ): UISchema => {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
      * the correct path to the property.
@@ -238,7 +263,7 @@ class ComponentEditor extends Component<
       )
       const itemsProperties = pickBy(
         property => has('properties', property),
-        properties.items
+        properties.items,
       )
 
       return {
@@ -252,35 +277,27 @@ class ComponentEditor extends Component<
             deepProperties,
           )),
         ...(itemsProperties &&
-          map(
-            item => getDeepUiSchema(item),
-            itemsProperties
-          )
-        ),
+          map(item => getDeepUiSchema(item), itemsProperties)),
       }
     }
 
     const uiSchema = {
-      ...map(
-        value => value.widget,
-        pickBy(property => has('widget', property), componentSchema.properties as ComponentSchemaProperties) as {widget: any},
-      ),
-      ...map(
-        property => getDeepUiSchema(property.properties),
-        pickBy(
-          property => has('properties', property),
-          componentSchema.properties as ComponentSchemaProperties,
-        ) as ComponentSchemaProperties,
-      ),
+      ...map(value => value.widget, pickBy(
+        property => has('widget', property),
+        componentSchema.properties as ComponentSchemaProperties,
+      ) as { widget: any }),
+      ...map(property => getDeepUiSchema(property.properties), pickBy(
+        property => has('properties', property),
+        componentSchema.properties as ComponentSchemaProperties,
+      ) as ComponentSchemaProperties),
       ...map(
         property => getDeepUiSchema(property),
         pickBy(
           property => has('items', property),
-          componentSchema.properties as ComponentSchemaProperties
-        )
+          componentSchema.properties as ComponentSchemaProperties,
+        ),
       ),
     }
-
     return mergeDeepLeft(uiSchema, componentUiSchema || {})
   }
 
@@ -334,19 +351,44 @@ class ComponentEditor extends Component<
         <Modal
           isActionLoading={this.state.isLoading}
           isOpen={this.state.isModalOpen}
-          onClickAction={this.handleConfigurationSave}
-          onClickCancel={this.handleConfigurationDiscard}
+          onClickAction={
+            this.state.isDeleteModalOpen
+              ? this.handleConfigurationDelete
+              : this.handleConfigurationSave
+          }
+          onClickCancel={
+            this.state.isDeleteModalOpen
+              ? this.handleModalClose
+              : this.handleConfigurationDiscard
+          }
           onClose={this.handleModalClose}
-          textButtonAction={intl.formatMessage({
-            id: 'pages.editor.components.button.save',
-          })}
-          textButtonCancel={intl.formatMessage({
-            id: 'pages.editor.components.modal.button.discard',
-          })}
-          textMessage={intl.formatMessage({
-            id: 'pages.editor.components.modal.text',
-          })}
+          textButtonAction={
+            this.state.isDeleteModalOpen
+              ? intl.formatMessage({
+                  id: 'pages.editor.components.button.delete',
+                })
+              : intl.formatMessage({
+                  id: 'pages.editor.components.button.save',
+                })
+          }
+          textButtonCancel={
+            this.state.isDeleteModalOpen
+              ? intl.formatMessage({
+                  id: 'pages.editor.components.button.cancel',
+                })
+              : intl.formatMessage({
+                  id: 'pages.editor.components.button.discard',
+                })
+          }
+          textMessage={
+            this.state.isDeleteModalOpen
+              ? intl.formatMessage({
+                  id: 'pages.editor.components.modal.deleteText',
+                })
+              : intl.formatMessage({ id: 'pages.editor.components.modal.text' })
+          }
         />
+
         <div className="w-100 flex items-center pl5 pt5 bt b--light-silver">
           <span
             className="pointer"
@@ -359,14 +401,22 @@ class ComponentEditor extends Component<
             <IconArrowBack size={16} color="#585959" />
           </span>
           <div className="w-100 pl5 flex justify-between items-center">
-            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">{componentSchema.title}</h4>
+            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">
+              {componentSchema.title}
+            </h4>
             {shouldRenderSaveButton && (
-                <SaveButton
-                  isLoading={this.state.isLoading}
-                  onClick={this.handleConfigurationSave}
-                  variation="tertiary"
-                />
-              )}
+              <SaveButton
+                isLoading={this.state.isLoading}
+                onClick={
+                  this.state.isEditMode
+                    ? this.state.isModalOpen
+                      ? this.handleConfigurationClose
+                      : this.handleConfigurationSave
+                    : this.handleModalClose
+                }
+                variation="tertiary"
+              />
+            )}
           </div>
         </div>
         {extensionConfigurationsQuery.loading ? (
@@ -374,8 +424,8 @@ class ComponentEditor extends Component<
             <Spinner />
           </div>
         ) : extensionConfigurationsQuery.extensionConfigurations &&
-        extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
-        !this.state.isEditMode ? (
+          extensionConfigurationsQuery.extensionConfigurations.length > 0 &&
+          !this.state.isEditMode ? (
           <ConfigurationsList
             activeConfiguration={this.state.configuration}
             configurations={extensionConfigurationsQuery.extensionConfigurations.map(
@@ -389,6 +439,7 @@ class ComponentEditor extends Component<
             )}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
+            onDelete={this.handleDeleteModalOpen}
             onEdit={this.handleConfigurationOpen}
             onSelect={this.handleConfigurationSelection}
             iframeWindow={this.props.editor.iframeWindow}
@@ -412,7 +463,10 @@ class ComponentEditor extends Component<
   ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
-    const { runtime, editor: { iframeWindow } } = this.props
+    const {
+      runtime,
+      editor: { iframeWindow },
+    } = this.props
 
     return {
       allMatches: true,
@@ -523,6 +577,61 @@ class ComponentEditor extends Component<
     }
   }
 
+  private handleConfigurationDelete = async () => {
+    const configurationId = this.state.deletedConfigurationId
+    const { deleteConfiguration, editor, runtime } = this.props
+
+    this.setState({
+      isLoading: true,
+    })
+
+    try {
+      await deleteConfiguration({
+        variables: {
+          configurationId,
+          routeId: runtime.page,
+          treePath: editor.editTreePath,
+        },
+      })
+
+      const extensionConfigurationsQuery = this.props.extensionConfigurations
+
+      await extensionConfigurationsQuery.refetch({
+        configurationsIds:
+          runtime.extensions[editor.editTreePath as string].configurationsIds,
+        treePath: editor.editTreePath,
+      })
+
+      this.setState(
+        {
+          isLoading: false,
+        },
+        () => {
+          this.handleModalClose()
+        },
+      )
+
+      this.setState({ isDeleteModalOpen: false })
+      if (
+        this.props.extensionConfigurations.extensionConfigurations.length === 0
+      ) {
+        this.setState({ isEditMode: true })
+      } else {
+        this.handleConfigurationChange(
+          this.props.extensionConfigurations.extensionConfigurations[0],
+        )
+      }
+
+      runtime.updateRuntime()
+    } catch (err) {
+      alert('Something went wrong. Please try again.')
+      this.setState({
+        isLoading: false,
+      })
+      console.log(err)
+    }
+  }
+
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
     const { configuration: currConfiguration } = this.state
 
@@ -537,7 +646,12 @@ class ComponentEditor extends Component<
   }
 
   private handleConfigurationSave = async () => {
-    const { editor, editor: { iframeWindow }, runtime, saveExtension } = this.props
+    const {
+      editor,
+      editor: { iframeWindow },
+      runtime,
+      saveExtension,
+    } = this.props
     const { conditions, configuration } = this.state
 
     const { allMatches, device } = configuration!
@@ -549,7 +663,9 @@ class ComponentEditor extends Component<
 
     const { component, props = {} } = this.getExtension()
 
-    const componentImplementation = component ? getIframeImplementation(component) : null
+    const componentImplementation = component
+      ? getIframeImplementation(component)
+      : null
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
@@ -642,7 +758,8 @@ class ComponentEditor extends Component<
     const { component: enumComponent } = event.formData
     const component =
       enumComponent && enumComponent !== '' ? enumComponent : null
-    const componentImplementation = component && getIframeImplementation(component)
+    const componentImplementation =
+      component && getIframeImplementation(component)
 
     if (!this.state.wasModified) {
       this.setState({ wasModified: true })
@@ -650,7 +767,7 @@ class ComponentEditor extends Component<
 
     if (component && !componentImplementation) {
       const allComponents = reduce(
-        (acc: {[key: string]: any}, currComponent: any) => {
+        (acc: { [key: string]: any }, currComponent: any) => {
           acc[currComponent.name] = {
             assets: currComponent.assets,
             dependencies: currComponent.dependencies,
@@ -678,6 +795,16 @@ class ComponentEditor extends Component<
 
   private handleModalClose = () => {
     this.setState({ isModalOpen: false })
+  }
+
+  private handleDeleteModalOpen = (
+    configurationId: ExtensionConfiguration['configurationId'],
+  ) => {
+    this.setState({
+      deletedConfigurationId: configurationId,
+      isDeleteModalOpen: true,
+      isModalOpen: true,
+    })
   }
 
   private handleModalOpen = () => {
@@ -710,7 +837,10 @@ class ComponentEditor extends Component<
     editor.editExtensionPoint(null)
   }
 
-  private handleScopeChange = (e: React.ChangeEvent<HTMLSelectElement>, newScope: ConfigurationScope) => {
+  private handleScopeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>,
+    newScope: ConfigurationScope,
+  ) => {
     if (
       this.state.configuration &&
       newScope !== this.state.configuration.scope
@@ -737,7 +867,11 @@ class ComponentEditor extends Component<
     uiSchema: object,
     extensionProps: object,
   ): JSX.Element {
-    const { editor, editor: { iframeWindow }, runtime } = this.props
+    const {
+      editor,
+      editor: { iframeWindow },
+      runtime,
+    } = this.props
     const { configuration } = this.state
 
     const mobile = iframeWindow.innerWidth < 600
@@ -801,6 +935,7 @@ class ComponentEditor extends Component<
 export default compose(
   injectIntl,
   graphql(SaveExtension, { name: 'saveExtension' }),
+  graphql(DeleteConfiguration, { name: 'deleteConfiguration' }),
   graphql(AvailableComponents, {
     name: 'availableComponents',
     options: (props: ComponentEditorProps) => ({

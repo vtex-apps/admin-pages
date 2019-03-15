@@ -29,7 +29,7 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   constructor(props: PageEditorProps) {
     super(props)
     this.state = {
-      setMessages: this.setMessages
+      setMessages: this.setMessages,
     }
   }
 
@@ -50,7 +50,9 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public render() {
-    const { params: { path } } = this.props
+    const {
+      params: { path },
+    } = this.props
 
     return (
       <MessagesContext.Provider value={this.state}>
@@ -58,7 +60,7 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
           <iframe
             id="store-iframe"
             className="w-100 h-100"
-            src={['/', path].filter((str) => !!str).join('')}
+            src={['/', path].filter(str => !!str).join('')}
             frameBorder="0"
           />
         </EditorProvider>
