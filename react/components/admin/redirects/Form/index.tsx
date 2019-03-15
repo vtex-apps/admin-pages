@@ -8,6 +8,7 @@ import {
   Button,
   DatePicker,
   Input,
+  RadioGroup,
   ToastConsumerFunctions,
   Toggle,
 } from 'vtex.styleguide'
@@ -52,7 +53,7 @@ class Form extends Component<Props, State> {
     this.state = {
       data: props.initialData,
       isLoading: false,
-      shouldShowDatePicker: false,
+      shouldShowDatePicker: !!props.initialData.endDate,
       shouldShowModal: false,
     }
   }
@@ -121,47 +122,74 @@ class Form extends Component<Props, State> {
             value={data.to}
           />
           <FormFieldSeparator />
-          <Toggle
-            checked={shouldShowDatePicker}
+          <RadioGroup
             disabled={this.isViewMode}
-            label={intl.formatMessage({
-              id: 'pages.admin.redirects.form.toggle.endDate',
-            })}
-            onChange={this.toggleDatePickerVisibility}
+            name="type"
+            options={[
+              {
+                label: intl.formatMessage({
+                  id: 'pages.admin.redirects.form.toggle.permanent',
+                }),
+                value: 'permanent',
+              },
+              {
+                label: intl.formatMessage({
+                  id: 'pages.admin.redirects.form.toggle.temporary',
+                }),
+                value: 'temporary',
+              },
+            ]}
+            value={data.type}
+            onChange={this.changeType}
           />
           <FormFieldSeparator />
-          {shouldShowDatePicker && (
-            <Fragment>
-              {this.isViewMode ? (
-                <Input
-                  disabled
+          {data.type === 'temporary' ? (
+            <>
+              <div className="relative">
+                <Toggle
+                  checked={shouldShowDatePicker}
+                  disabled={this.isViewMode}
                   label={intl.formatMessage({
-                    id: 'pages.admin.redirects.form.datePicker.title',
+                    id: 'pages.admin.redirects.form.toggle.endDate',
                   })}
-                  value={getFormattedLocalizedDate(data.endDate, locale)}
+                  onChange={this.toggleDatePickerVisibility}
                 />
-              ) : (
+              </div>
+              <FormFieldSeparator />
+              {shouldShowDatePicker && (
                 <Fragment>
-                  <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                    {text => <div className="mb3 w-100 f6">{text}</div>}
-                  </FormattedMessage>
-                  <DatePicker
-                    locale={locale}
-                    onChange={this.updateEndDate}
-                    useTime={true}
-                    value={
-                      data.endDate
-                        ? moment(data.endDate).toDate()
-                        : moment()
-                            .add(1, 'days')
-                            .toDate()
-                    }
-                  />
+                  {this.isViewMode ? (
+                    <Input
+                      disabled
+                      label={intl.formatMessage({
+                        id: 'pages.admin.redirects.form.datePicker.title',
+                      })}
+                      value={getFormattedLocalizedDate(data.endDate, locale)}
+                    />
+                  ) : (
+                    <Fragment>
+                      <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                        {text => <div className="mb3 w-100 f6">{text}</div>}
+                      </FormattedMessage>
+                      <DatePicker
+                        locale={locale}
+                        onChange={this.updateEndDate}
+                        useTime={true}
+                        value={
+                          data.endDate
+                            ? moment(data.endDate).toDate()
+                            : moment()
+                                .add(1, 'days')
+                                .toDate()
+                        }
+                      />
+                    </Fragment>
+                  )}
+                  <FormFieldSeparator />
                 </Fragment>
               )}
-              <FormFieldSeparator />
-            </Fragment>
-          )}
+            </>
+          ) : null}
           <div className="flex justify-end">
             <div className="mr6">
               <Button
@@ -242,7 +270,7 @@ class Form extends Component<Props, State> {
   private handleSave = (event: React.FormEvent) => {
     const { onSave } = this.props
     const {
-      data: { endDate, from, to },
+      data: { endDate, from, to, type },
     } = this.state
 
     event.preventDefault()
@@ -254,6 +282,7 @@ class Form extends Component<Props, State> {
             endDate,
             from,
             to,
+            type,
           },
         })
 
@@ -292,6 +321,14 @@ class Form extends Component<Props, State> {
       ...prevState,
       shouldShowModal: !prevState.shouldShowModal,
     }))
+  }
+
+  private changeType = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const type = e.target.value
+    this.handleInputChange({
+      ...(type === 'permanent' ? { endDate: '' } : null),
+      type,
+    })
   }
 
   private updateEndDate = (value: Date) => {
