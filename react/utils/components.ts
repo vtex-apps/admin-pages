@@ -160,7 +160,8 @@ export const getSchemaPropsOrContent = (
   component: RenderComponent<any, any> | null,
   propsOrContent: object,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl
+  intl: ReactIntl.InjectedIntl,
+  isContent: boolean = false
 ) => {
   if (!component) {
     return null
@@ -173,20 +174,33 @@ export const getSchemaPropsOrContent = (
    * @param {object} prevPropsOrContent The previous props or content passed to the component
    * @return {object} Actual component props or content
    */
-  const getPropsOrContentFromSchema = (properties: any = {}, prevPropsOrContent: any): object =>
+  const getPropsOrContentFromSchema = (
+    properties: any = {},
+    prevPropsOrContent: any
+  ): object =>
     reduce(
       (nextPropsOrContent, key) =>
-        merge(nextPropsOrContent, {
-          [key]:
-            properties[key].type === 'object'
-              ? getPropsOrContentFromSchema(properties[key].properties, prevPropsOrContent[key])
-              : prevPropsOrContent[key],
-        }),
+        !properties[key].isLayout === isContent
+          ? merge(nextPropsOrContent, {
+              [key]:
+                properties[key].type === 'object'
+                  ? getPropsOrContentFromSchema(
+                      properties[key].properties,
+                      prevPropsOrContent[key]
+                    )
+                  : prevPropsOrContent[key],
+            })
+          : nextPropsOrContent,
       {},
       filter(v => prevPropsOrContent[v] !== undefined, keys(properties))
     )
 
-  const componentSchema = getComponentSchema(component, propsOrContent, runtime, intl)
+  const componentSchema = getComponentSchema(
+    component,
+    propsOrContent,
+    runtime,
+    intl
+  )
 
   return getPropsOrContentFromSchema(componentSchema.properties, propsOrContent)
 }
@@ -207,7 +221,8 @@ export const updateExtensionFromForm = (
     componentImplementation,
     event.formData,
     runtime,
-    intl
+    intl,
+    isContent
   )
 
   runtime.updateExtension(editTreePath as string, {

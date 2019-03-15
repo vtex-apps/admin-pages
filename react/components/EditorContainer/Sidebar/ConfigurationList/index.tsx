@@ -293,7 +293,8 @@ class ConfigurationList extends Component<Props, State> {
       componentImplementation,
       content,
       iframeRuntime,
-      intl
+      intl,
+      true
     )
 
     const contentId =
