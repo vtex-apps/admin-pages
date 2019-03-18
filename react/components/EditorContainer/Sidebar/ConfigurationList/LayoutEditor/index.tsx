@@ -65,10 +65,7 @@ class LayoutEditor extends Component<Props> {
       iframeRuntime.extensions
     )
 
-    return {
-      component: extension.component || null,
-      ...extension.props,
-    }
+    return extension.props
   }
 
   private handleChange = (event: IChangeEvent) => {
