@@ -60,7 +60,7 @@ class RedirectList extends Component<Props, State> {
                       from={paginationFrom}
                       items={data.redirects.redirects.slice(
                         paginationFrom,
-                        paginationTo,
+                        paginationTo
                       )}
                       to={paginationTo}
                     />
@@ -71,7 +71,7 @@ class RedirectList extends Component<Props, State> {
                         onNextClick={this.getGoToNextPage(
                           data.redirects.redirects.length,
                           data.redirects.total,
-                          fetchMore,
+                          fetchMore
                         )}
                         onPrevClick={this.goToPrevPage}
                         textOf={intl.formatMessage({
@@ -95,11 +95,11 @@ class RedirectList extends Component<Props, State> {
   private getGoToNextPage = (
     dataLength: number,
     total: number,
-    fetchMore: (options: FetchMoreOptions) => void,
+    fetchMore: (options: FetchMoreOptions) => void
   ) => async () => {
     const nextPaginationTo = this.getNextPaginationTo(
       this.state.paginationFrom + PAGINATION_STEP,
-      total,
+      total
     )
 
     if (nextPaginationTo > dataLength) {

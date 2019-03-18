@@ -9,8 +9,13 @@ declare module 'render' {
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
   export const withRuntimeContext: <TOriginalProps extends {}>(
-    Component: ComponentType<TOriginalProps & RenderContextProps>,
-  ) => ComponentType<TOriginalProps>
+    Component: ComponentType<TOriginalProps & RenderContextProps>
+  ) => ComponentType<
+    Pick<
+      TOriginalProps,
+      Exclude<keyof TOriginalProps, keyof RenderContextProps>
+    >
+  >
 
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
     getCustomMessages?: (locale: string) => any
