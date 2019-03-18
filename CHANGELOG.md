@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.7.0] - 2019-03-18
+
 ## [2.6.0] - 2019-02-04
 ### Added
 - Check for `vtex.store@2.x` so we can notify users that `Storefront` and `Pages` are incompatible with the current major.
