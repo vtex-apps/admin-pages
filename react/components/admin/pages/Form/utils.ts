@@ -1,4 +1,5 @@
 import { DataProxy } from 'apollo-cache'
+import { indexBy, prop, values } from 'ramda'
 
 import Routes from '../../../../queries/Routes.graphql'
 
@@ -68,11 +69,18 @@ export const updateStoreAfterSave = (
     if (queryData) {
       const routes = queryData.routes
 
-      const newRoutes = savedRoute && [...routes, savedRoute]
+      const savedRoutePath = savedRoute && savedRoute.path
+      const routesByPath = indexBy(prop<Route, 'path'>('path'), routes)
+
+      const newRoutesByPath = {
+        ...routesByPath,
+        ...(savedRoutePath ? { [savedRoutePath]: savedRoute } : null),
+      }
+      const newRoutes = values(newRoutesByPath)
 
       const newData = {
         ...queryData,
-        routes: newRoutes || routes,
+        routes: newRoutes,
       }
 
       writeRedirectsToStore(newData, store)
