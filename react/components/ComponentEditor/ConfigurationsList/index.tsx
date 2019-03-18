@@ -9,6 +9,7 @@ interface Props {
   iframeWindow: Window
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   onCreate: (event: Event) => void
+  onDelete: (configurationId: ExtensionConfiguration['configurationId']) => void
   onEdit: (configuration: ExtensionConfiguration) => void
   onSelect: (configuration: ExtensionConfiguration) => void
 }
@@ -18,6 +19,7 @@ const ConfigurationsList: React.SFC<Props> = ({
   configurations,
   isDisabledChecker,
   onCreate,
+  onDelete,
   onEdit,
   onSelect,
 }) => (
@@ -30,6 +32,7 @@ const ConfigurationsList: React.SFC<Props> = ({
             configuration={configuration}
             isDisabled={isDisabledChecker(configuration)}
             onClick={onSelect}
+            onDelete={onDelete}
             onEdit={onEdit}
           />
         </Fragment>

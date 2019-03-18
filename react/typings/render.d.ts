@@ -1,16 +1,21 @@
 /* Typings for `render-runtime` */
 declare module 'render' {
-  import { ReactElement, Component } from 'react'
+  import { ComponentType, ReactElement, Component } from 'react'
 
   export const ExtensionPoint: ReactElement
-  export const Helmet: ReactElement
-  export const Link: ReactElement
+  export const Helmet: ComponentType<any>
+  export const Link: ComponentType<any>
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
   export const canUseDOM: boolean
   export const withRuntimeContext: <TOriginalProps extends {}>(
-    Component: ComponentType<TOriginalProps & RenderContextProps>,
-  ) => ComponentType<TOriginalProps>
+    Component: ComponentType<TOriginalProps & RenderContextProps>
+  ) => ComponentType<
+    Pick<
+      TOriginalProps,
+      Exclude<keyof TOriginalProps, keyof RenderContextProps>
+    >
+  >
 
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
     getCustomMessages?: (locale: string) => any

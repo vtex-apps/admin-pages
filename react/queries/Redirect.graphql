@@ -6,5 +6,6 @@ query Redirect($id: ID!) {
     from
     id
     to
+    type
   }
 }

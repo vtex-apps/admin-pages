@@ -1,0 +1,11 @@
+mutation DeleteConfiguration(
+  $configurationId: String!
+  $routeId: String!
+  $treePath: String!
+) {
+  deleteConfiguration(
+    configurationId: $configurationId
+    routeId: $routeId
+    treePath: $treePath
+  )
+}
