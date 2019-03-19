@@ -61,8 +61,8 @@ const Form: React.SFC<Props> = ({
 
   const isNew = isNewRoute(data)
 
-  const isDeletable = declarer !== 'vtex.store@2.x' && !isNew
-  const isInfoEditable = declarer !== 'vtex.store@2.x' || isNew
+  const isDeletable = !!declarer && !isNew
+  const isInfoEditable = !declarer || isNew
 
   const path = data.path || ''
 
