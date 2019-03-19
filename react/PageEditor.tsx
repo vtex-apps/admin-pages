@@ -50,7 +50,7 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   public render() {
     const { params } = this.props
 
-    const path = params && params.path
+    const path = params && params.targetPath
 
     return (
       <div className="h-100 overflow-y-auto bg-light-silver">
