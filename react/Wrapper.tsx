@@ -1,13 +1,14 @@
 import React, { ReactNode } from 'react'
 import { ToastProvider } from 'vtex.styleguide'
+import { AdminLoadingContextProvider } from './utils/AdminLoadingContext'
 
 interface Props {
   children?: ReactNode
 }
 
-const Wrapper: React.SFC<Props> = ({children}) => (
+const Wrapper: React.SFC<Props> = ({ children }) => (
   <ToastProvider positioning="window">
-    {children}
+    <AdminLoadingContextProvider>{children}</AdminLoadingContextProvider>
   </ToastProvider>
 )
 

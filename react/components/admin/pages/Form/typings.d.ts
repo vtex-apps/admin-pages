@@ -40,3 +40,11 @@ export interface SaveRouteVariables {
 }
 
 export type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
+
+export interface DateInfoFormat {
+  date: string
+  to: string
+  from: string
+}
+
+export type DateStatementFormat = Record<keyof DateInfoFormat, Date>

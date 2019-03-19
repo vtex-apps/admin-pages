@@ -3,11 +3,10 @@ import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { Box, ConditionsOperator, ToastConsumer } from 'vtex.styleguide'
+import { Box, ToastConsumer } from 'vtex.styleguide'
 
 import { RouteFormData } from 'pages'
 
-import AdminWrapper from './components/admin/AdminWrapper'
 import {
   NEW_ROUTE_ID,
   ROUTES_LIST,
@@ -16,8 +15,14 @@ import {
 import Form from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
+import { formatToFormData } from './components/admin/pages/Form/utils'
 import { getRouteTitle } from './components/admin/pages/utils'
+import {
+  TargetPathContextProps,
+  withTargetPath,
+} from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
+import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
 
@@ -28,71 +33,17 @@ interface CustomProps {
   runtime: RenderContext
 }
 
-type Props = WithApolloClient<CustomProps & RenderContextProps>
+type Props = WithApolloClient<
+  CustomProps &
+    RenderContextProps &
+    TargetPathRenderProps &
+    TargetPathContextProps
+>
 
 interface State {
   formData: RouteFormData
   isLoading: boolean
   routeId: string
-}
-
-type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
-
-interface DateInfoFormat {
-  date: string
-  to: string
-  from: string
-}
-type DateStatementFormat = Record<keyof DateInfoFormat, Date>
-
-const getConditionStatementObject = (
-  objectJson: string,
-  verb: DateVerbOptions
-): Partial<DateStatementFormat> => {
-  const dateInfoStringValues: DateInfoFormat = JSON.parse(objectJson)
-
-  return {
-    between: {
-      from: new Date(dateInfoStringValues.from),
-      to: new Date(dateInfoStringValues.to),
-    },
-    from: {
-      date: new Date(dateInfoStringValues.from),
-    },
-    is: {
-      date: new Date(dateInfoStringValues.from),
-    },
-    to: {
-      date: new Date(dateInfoStringValues.to),
-    },
-  }[verb]
-}
-
-const formatToFormData = (route: Route): RouteFormData => {
-  return {
-    ...route,
-    pages: route.pages.map((page, index) => ({
-      ...page,
-      condition: {
-        ...page.condition,
-        statements: page.condition.statements.map(
-          ({ verb, subject, objectJSON }) => ({
-            error: '',
-            object: getConditionStatementObject(
-              objectJSON,
-              verb as DateVerbOptions
-            ),
-            subject,
-            verb,
-          })
-        ),
-      },
-      operator: page.condition.allMatches
-        ? 'all'
-        : ('any' as ConditionsOperator),
-      uniqueId: index,
-    })),
-  }
 }
 
 class PageForm extends Component<Props, State> {
@@ -144,8 +95,10 @@ class PageForm extends Component<Props, State> {
   }
 
   public async componentDidMount() {
-    const { client } = this.props
+    const { client, setTargetPath } = this.props
     const { formData } = this.state
+
+    setTargetPath(WRAPPER_PATH)
 
     if (equals(formData, this.defaultFormData) && !this.isNew) {
       // didnt find in cache
@@ -181,7 +134,7 @@ class PageForm extends Component<Props, State> {
     const { formData, isLoading } = this.state
 
     return (
-      <AdminWrapper targetPath={WRAPPER_PATH}>
+      <>
         {isLoading ? (
           <Loader />
         ) : (
@@ -218,7 +171,7 @@ class PageForm extends Component<Props, State> {
             }}
           </Operations>
         )}
-      </AdminWrapper>
+      </>
     )
   }
 
@@ -229,5 +182,6 @@ class PageForm extends Component<Props, State> {
 
 export default compose(
   withApollo,
-  withRuntimeContext
+  withRuntimeContext,
+  withTargetPath
 )(PageForm)

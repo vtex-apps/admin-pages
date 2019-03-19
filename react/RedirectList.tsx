@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { Query } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Pagination } from 'vtex.styleguide'
 
-import AdminWrapper from './components/admin/AdminWrapper'
 import {
   PAGINATION_START,
   PAGINATION_STEP,
@@ -12,10 +11,14 @@ import {
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
 import { FetchMoreOptions } from './components/admin/redirects/List/typings'
+import {
+  TargetPathContextProps,
+  withTargetPath,
+} from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = ReactIntl.InjectedIntlProps
+type Props = ReactIntl.InjectedIntlProps & TargetPathContextProps
 
 interface State {
   paginationFrom: number
@@ -32,12 +35,17 @@ class RedirectList extends Component<Props, State> {
     }
   }
 
+  public componentDidMount() {
+    const { setTargetPath } = this.props
+    setTargetPath(WRAPPER_PATH)
+  }
+
   public render() {
     const { intl } = this.props
     const { paginationFrom, paginationTo } = this.state
 
     return (
-      <Fragment>
+      <>
         <Helmet>
           <title>
             {intl.formatMessage({ id: 'pages.admin.redirects.title' })}
@@ -52,11 +60,11 @@ class RedirectList extends Component<Props, State> {
           }}
         >
           {({ data, fetchMore, loading }) => (
-            <AdminWrapper targetPath={WRAPPER_PATH}>
+            <>
               {loading ? (
                 <Loader />
               ) : (
-                <Fragment>
+                <>
                   <List
                     from={paginationFrom}
                     items={data.redirects.redirects.slice(
@@ -84,12 +92,12 @@ class RedirectList extends Component<Props, State> {
                       totalItems={data.redirects.total}
                     />
                   )}
-                </Fragment>
+                </>
               )}
-            </AdminWrapper>
+            </>
           )}
         </Query>
-      </Fragment>
+      </>
     )
   }
 
@@ -146,4 +154,4 @@ class RedirectList extends Component<Props, State> {
   }
 }
 
-export default injectIntl(RedirectList)
+export default injectIntl(withTargetPath(RedirectList))
