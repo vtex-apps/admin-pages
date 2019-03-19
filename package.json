@@ -1,6 +1,6 @@
 {
   "license": "UNLICENSED",
-  "version": "3.0.0-beta.3",
+  "version": "3.0.0-beta.4",
   "devDependencies": {
     "husky": "^1.1.4",
     "prettier": "^1.15.2",
