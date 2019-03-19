@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
-import { ToastConsumer } from 'vtex.styleguide'
+import { Box, ToastConsumer } from 'vtex.styleguide'
 
 import {
   BASE_URL,
@@ -120,12 +120,14 @@ class RedirectForm extends Component<Props, State> {
             ) : (
               <ToastConsumer>
                 {({ showToast }) => (
-                  <Form
-                    initialData={formData as Redirect}
-                    onDelete={deleteRedirect}
-                    onSave={saveRedirect}
-                    showToast={showToast}
-                  />
+                  <Box>
+                    <Form
+                      initialData={formData as Redirect}
+                      onDelete={deleteRedirect}
+                      onSave={saveRedirect}
+                      showToast={showToast}
+                    />
+                  </Box>
                 )}
               </ToastConsumer>
             )

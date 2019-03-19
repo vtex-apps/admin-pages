@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Query } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
-import { Pagination } from 'vtex.styleguide'
+import { Box, Pagination } from 'vtex.styleguide'
 
 import {
   PAGINATION_START,
@@ -64,7 +64,7 @@ class RedirectList extends Component<Props, State> {
               {loading ? (
                 <Loader />
               ) : (
-                <>
+                <Box>
                   <List
                     from={paginationFrom}
                     items={data.redirects.redirects.slice(
@@ -92,7 +92,7 @@ class RedirectList extends Component<Props, State> {
                       totalItems={data.redirects.total}
                     />
                   )}
-                </>
+                </Box>
               )}
             </>
           )}
