@@ -1,5 +1,4 @@
 {
-  "pages.admin-menu-button.displayConditions": "pages.admin-menu-button.displayConditions",
   "pages.admin-menu-button.pages": "pages.admin-menu-button.pages",
   "pages.admin-menu-button.storefront": "pages.admin-menu-button.storefront",
   "pages.admin.loading": "pages.admin.loading",
@@ -15,10 +14,8 @@
   "pages.admin.pages.form.save.error": "pages.admin.pages.form.save.error",
   "pages.admin.pages.form.save.success": "pages.admin.pages.form.save.success",
   "pages.admin.pages.form.templates.conditional.addButton": "pages.admin.pages.form.templates.conditional.addButton",
-  "pages.admin.pages.form.templates.conditional.conditions.label": "pages.admin.pages.form.templates.conditional.conditions.label",
   "pages.admin.pages.form.templates.conditional.description": "pages.admin.pages.form.templates.conditional.description",
   "pages.admin.pages.form.templates.conditional.template.label": "pages.admin.pages.form.templates.conditional.template.label",
-  "pages.admin.pages.form.templates.conditional.template.placeholder": "pages.admin.pages.form.templates.conditional.template.placeholder",
   "pages.admin.pages.form.templates.conditional.title": "pages.admin.pages.form.templates.conditional.title",
   "pages.admin.pages.form.templates.field.default": "pages.admin.pages.form.templates.field.default",
   "pages.admin.pages.form.templates.field.required": "pages.admin.pages.form.templates.field.required",
@@ -93,7 +90,6 @@
   "pages.editor.components.condition.scope.title": "pages.editor.components.condition.scope.title",
   "pages.editor.components.condition.title": "pages.editor.components.condition.title",
   "pages.editor.components.configurations.button.create": "pages.editor.components.configurations.button.create",
-  "pages.editor.components.configurations.customConditions": "pages.editor.components.configurations.customConditions",
   "pages.editor.components.configurations.defaultTitle": "pages.editor.components.configurations.defaultTitle",
   "pages.editor.components.labelEditor.label": "pages.editor.components.labelEditor.label",
   "pages.editor.components.modal.button.discard": "pages.editor.components.modal.button.discard",
@@ -108,13 +104,5 @@
   "pages.editor.configuration.tag.sitewide": "pages.editor.configuration.tag.sitewide",
   "pages.editor.configuration.tag.subcategory": "pages.editor.configuration.tag.subcategory",
   "pages.editor.configuration.tag.template": "pages.editor.configuration.tag.template",
-  "pages.editor.container.editpath.label": "pages.editor.container.editpath.label",
-  "pages.editor.empty-extension.edit": "pages.editor.empty-extension.edit",
-  "pages.editor.empty-extension.title": "pages.editor.empty-extension.title",
-  "pages.editor.info.page": "pages.editor.info.page",
-  "pages.editor.info.title": "pages.editor.info.title",
-  "pages.editor.store.button.back.title": "pages.editor.store.button.back.title",
-  "pages.editor.store.button.settings.title": "pages.editor.store.button.settings.title",
-  "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
-  "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title"
+  "pages.editor.container.editpath.label": "pages.editor.container.editpath.label"
 }
