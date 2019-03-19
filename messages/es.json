@@ -104,5 +104,9 @@
   "pages.editor.configuration.tag.sitewide": "Todo el sitio",
   "pages.editor.configuration.tag.subcategory": "Subcategoría: {id}",
   "pages.editor.configuration.tag.template": "Este template",
-  "pages.editor.container.editpath.label": "URL de la página"
+  "pages.editor.container.editpath.label": "URL de la página",
+  "pages.editor.store.button.back.title": "Volver al editor",
+  "pages.editor.store.button.settings.title": "Configuraciones",
+  "pages.editor.store.button.template.title": "Templates",
+  "pages.editor.store.button.theme.title": "Tema"
 }

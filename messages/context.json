@@ -104,5 +104,9 @@
   "pages.editor.configuration.tag.sitewide": "pages.editor.configuration.tag.sitewide",
   "pages.editor.configuration.tag.subcategory": "pages.editor.configuration.tag.subcategory",
   "pages.editor.configuration.tag.template": "pages.editor.configuration.tag.template",
-  "pages.editor.container.editpath.label": "pages.editor.container.editpath.label"
+  "pages.editor.container.editpath.label": "pages.editor.container.editpath.label",
+  "pages.editor.store.button.back.title": "pages.editor.store.button.back.title",
+  "pages.editor.store.button.settings.title": "pages.editor.store.button.settings.title",
+  "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
+  "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title"
 }
