@@ -1,14 +1,5 @@
 import React, { FunctionComponent, useContext } from 'react'
 
-const AdminLoadingContext = React.createContext({
-  startLoading: () => {
-    window.postMessage({ action: { type: 'START_LOADING' } }, '*')
-  },
-  stopLoading: () => {
-    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-  },
-})
-
 const adminLoadingDefaultValue = {
   startLoading: () => {
     window.postMessage({ action: { type: 'START_LOADING' } }, '*')
@@ -17,6 +8,8 @@ const adminLoadingDefaultValue = {
     window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   },
 }
+
+const AdminLoadingContext = React.createContext(adminLoadingDefaultValue)
 
 const useAdminLoadingContext = () => useContext(AdminLoadingContext)
 
