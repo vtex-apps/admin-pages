@@ -48,7 +48,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
 
     if (canUseDOM) {
-      (window as HighlightableWindow).__setHighlightTreePath = (
+      ;(window as HighlightableWindow).__setHighlightTreePath = (
         newState: State
       ) => {
         this.setState(newState)
@@ -99,19 +99,19 @@ export default class HighlightOverlay extends Component<Props, State> {
     if (highlightTreePath && elements && provider) {
       const paddingFromIframeBody = iframeBody
         ? {
-          left: parseInt(
-            window.getComputedStyle(iframeBody, null).paddingLeft || '0',
-            10
-          ),
-          right: parseInt(
-            window.getComputedStyle(iframeBody, null).paddingRight || '0',
-            10
-          ),
-        }
+            left: parseInt(
+              window.getComputedStyle(iframeBody, null).paddingLeft || '0',
+              10
+            ),
+            right: parseInt(
+              window.getComputedStyle(iframeBody, null).paddingRight || '0',
+              10
+            ),
+          }
         : {
-          left: 0,
-          right: 0,
-        }
+            left: 0,
+            right: 0,
+          }
 
       const providerRect = provider.getBoundingClientRect() as DOMRect
 
@@ -126,6 +126,10 @@ export default class HighlightOverlay extends Component<Props, State> {
       const rect = element
         ? (element.getBoundingClientRect() as DOMRect)
         : this.INITIAL_HIGHLIGHT_RECT
+
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }
 
       // Add offset from render provider main div
       rect.y += -providerRect.y
@@ -202,7 +206,7 @@ export default class HighlightOverlay extends Component<Props, State> {
         style={highlightStyle}
         className={`absolute ${
           highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''
-          }`}
+        }`}
       />
     )
   }
