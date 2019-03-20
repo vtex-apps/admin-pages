@@ -54,7 +54,7 @@ class SortableListItem extends Component<Props, State> {
     return (
       <li className="list">
         <div
-          className="flex items-center bb bt bg-white hover-bg-light-silver b--light-silver"
+          className="flex items-center bb bg-white hover-bg-light-silver b--light-silver"
           data-tree-path={component.treePath}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}

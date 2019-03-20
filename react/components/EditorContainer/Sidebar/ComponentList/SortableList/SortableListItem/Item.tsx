@@ -33,7 +33,7 @@ const Item: React.SFC<Props> = ({
   >
     <FormattedMessage id={title}>
       {text => (
-        <span className={`f6 fw5 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
+        <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
           {text}
         </span>
       )}

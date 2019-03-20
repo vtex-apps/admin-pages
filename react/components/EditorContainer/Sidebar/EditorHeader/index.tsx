@@ -22,19 +22,15 @@ const EditorHeader: React.SFC<Props> = ({
   shouldDisableSaveButton = false,
   title,
 }) => (
-  <div
-    className={`w-100 pl5 pt5 pb3 bb bw1 b--light-silver ${
-      !onSave ? 'pr5' : ''
-    }`}
-  >
+  <div className={`w-100 ph5 pv4 bb bw1 b--light-silver`}>
     <div className="w-100 flex justify-between">
       <div className={`flex items-center ${onSave ? 'w-100' : ''}`}>
         <span className="pointer" onClick={onClose}>
           <IconArrowBack size={16} color="#585959" />
         </span>
-        <div className="w-100 pl5 flex justify-between items-center">
+        <div className="w-100 pl3 mv1 flex justify-between items-center">
           {title && (
-            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1 pv3">
+            <h4 className="mv0 f6 fw5 dark-gray b--transparent ba bw1">
               {title}
             </h4>
           )}
