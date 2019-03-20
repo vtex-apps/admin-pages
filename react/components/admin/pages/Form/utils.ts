@@ -1,8 +1,14 @@
 import { DataProxy } from 'apollo-cache'
+import { RouteFormData } from 'pages'
+import { indexBy, prop, values } from 'ramda'
+import { ConditionsOperator } from 'vtex.styleguide'
 
 import Routes from '../../../../queries/Routes.graphql'
 
 import {
+  DateInfoFormat,
+  DateStatementFormat,
+  DateVerbOptions,
   DeleteMutationResult,
   QueryData,
   RoutesQuery,
@@ -68,16 +74,73 @@ export const updateStoreAfterSave = (
     if (queryData) {
       const routes = queryData.routes
 
-      const newRoutes = savedRoute && [...routes, savedRoute]
+      const savedRoutePath = savedRoute && savedRoute.path
+      const routesByPath = indexBy(prop<Route, 'path'>('path'), routes)
+
+      const newRoutesByPath = {
+        ...routesByPath,
+        ...(savedRoutePath ? { [savedRoutePath]: savedRoute } : null),
+      }
+      const newRoutes = values(newRoutesByPath)
 
       const newData = {
         ...queryData,
-        routes: newRoutes || routes,
+        routes: newRoutes,
       }
 
       writeRedirectsToStore(newData, store)
     }
   } catch (err) {
     logCacheError()
+  }
+}
+
+const getConditionStatementObject = (
+  objectJson: string,
+  verb: DateVerbOptions
+): Partial<DateStatementFormat> => {
+  const dateInfoStringValues: DateInfoFormat = JSON.parse(objectJson)
+
+  return {
+    between: {
+      from: new Date(dateInfoStringValues.from),
+      to: new Date(dateInfoStringValues.to),
+    },
+    from: {
+      date: new Date(dateInfoStringValues.from),
+    },
+    is: {
+      date: new Date(dateInfoStringValues.from),
+    },
+    to: {
+      date: new Date(dateInfoStringValues.to),
+    },
+  }[verb]
+}
+
+export const formatToFormData = (route: Route): RouteFormData => {
+  return {
+    ...route,
+    pages: route.pages.map((page, index) => ({
+      ...page,
+      condition: {
+        ...page.condition,
+        statements: page.condition.statements.map(
+          ({ verb, subject, objectJSON }) => ({
+            error: '',
+            object: getConditionStatementObject(
+              objectJSON,
+              verb as DateVerbOptions
+            ),
+            subject,
+            verb,
+          })
+        ),
+      },
+      operator: page.condition.allMatches
+        ? 'all'
+        : ('any' as ConditionsOperator),
+      uniqueId: index,
+    })),
   }
 }

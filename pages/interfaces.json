@@ -3,15 +3,18 @@
     "around": ["wrapper"]
   },
   "admin.cms.pages": {
+    "around": ["pages-wrapper"]
+  },
+  "admin.cms.pages.page-list": {
     "component": "PageList"
   },
-  "admin.cms.page-details": {
+  "admin.cms.pages.page-details": {
     "component": "PageForm"
   },
-  "admin.cms.redirects": {
+  "admin.cms.pages.redirects": {
     "component": "RedirectList"
   },
-  "admin.cms.redirect-details": {
+  "admin.cms.pages.redirect-details": {
     "component": "RedirectForm"
   },
   "admin.cms.settings": {
@@ -26,6 +29,9 @@
   "highlight-overlay.cms": {
     "component": "HighlightOverlay",
     "extensible": "vtex"
+  },
+  "pages-wrapper": {
+    "component": "PagesAdminWrapper"
   },
   "wrapper": {
     "component": "Wrapper"

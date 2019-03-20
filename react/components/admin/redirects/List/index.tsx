@@ -113,7 +113,11 @@ class List extends Component<Props, State> {
           cellRenderer: (cell: { cellData: string }) =>
             cell.cellData ? (
               <FormattedMessage
-                id={`pages.admin.redirects.table.type.${cell.cellData}`}
+                id={
+                  cell.cellData === 'temporary'
+                    ? 'pages.admin.redirects.table.type.temporary'
+                    : 'pages.admin.redirects.table.type.permanent'
+                }
               >
                 {text => <span className="ph4">{text}</span>}
               </FormattedMessage>
