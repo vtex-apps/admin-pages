@@ -105,8 +105,10 @@
   "pages.editor.configuration.tag.subcategory": "Subcategoria: {id}",
   "pages.editor.configuration.tag.template": "Este template",
   "pages.editor.container.editpath.label": "URL da página",
-  "pages.editor.store.button.back.title": "Voltar para o editor",
-  "pages.editor.store.button.settings.title": "Configurações",
+  "pages.editor.info.page": "Página",
+  "pages.editor.info.title": "Informações da Página",
+  "pages.editor.store.button.settings.title": "Loja",
+  "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.button.template.title": "Templates",
-  "pages.editor.store.button.theme.title": "Tema"
+  "pages.editor.store.button.back.title": "Voltar para editor"
 }

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 import ModeButton from './components/ModeButton'
 
-const modes: StoreEditMode[] = ['theme']
+const modes: StoreEditMode[] = ['settings', 'theme']
 
 interface Props {
   changeMode: (mode?: StoreEditMode) => void

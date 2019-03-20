@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Store from './Store'
 import Styles from './Styles'
 
 interface Props {
@@ -11,6 +12,8 @@ const Mode = ({ editor, mode }: Props) => {
   switch (mode) {
     case 'theme':
       return <Styles iframeWindow={editor.iframeWindow} />
+    case 'settings':
+      return <Store iframeWindow={editor.iframeWindow} />
   }
 }
 

@@ -105,8 +105,12 @@
   "pages.editor.configuration.tag.subcategory": "Subcategory: {id}",
   "pages.editor.configuration.tag.template": "This template",
   "pages.editor.container.editpath.label": "Page URL",
+  "pages.editor.empty-extension.edit": "Click here to edit it",
+  "pages.editor.empty-extension.title": "This is an empty extension point",
+  "pages.editor.info.page": "Page",
+  "pages.editor.info.title": "Page Info",
   "pages.editor.store.button.back.title": "Back to editor",
   "pages.editor.store.button.settings.title": "Settings",
   "pages.editor.store.button.template.title": "Templates",
-  "pages.editor.store.button.theme.title": "Customize"
+  "pages.editor.store.button.theme.title": "Customize",
 }
