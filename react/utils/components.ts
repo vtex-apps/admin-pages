@@ -180,7 +180,8 @@ export const getSchemaPropsOrContent = (
   ): object =>
     reduce(
       (nextPropsOrContent, key) =>
-        !properties[key].isLayout === isContent
+        !properties[key].isLayout === isContent ||
+        properties[key].type === 'object'
           ? merge(nextPropsOrContent, {
               [key]:
                 properties[key].type === 'object'
