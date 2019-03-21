@@ -9,6 +9,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "exenv": "^1.2.2",
+    "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",
@@ -24,6 +25,7 @@
     "@types/graphql": "^0.12.5",
     "@types/intl": "^1.2.0",
     "@types/jest": "^23.3.9",
+    "@types/lodash.debounce": "^4.0.6",
     "@types/lodash.startcase": "^4.4.4",
     "@types/prop-types": "^15.5.2",
     "@types/ramda": "types/npm-ramda#dist",

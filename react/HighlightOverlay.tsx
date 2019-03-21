@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce'
 import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
 import { canUseDOM } from 'vtex.render-runtime'
@@ -37,6 +38,10 @@ export default class HighlightOverlay extends Component<Props, State> {
     y: 0,
   }
 
+  private debouncedScrollTo = debounce((element: Element) => {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }, 75)
+
   constructor(props: any) {
     super(props)
 
@@ -60,6 +65,9 @@ export default class HighlightOverlay extends Component<Props, State> {
 
   public componentDidUpdate() {
     this.updateExtensionPointDOMElements(this.state.editMode)
+    if (this.state.highlightTreePath === null) {
+      this.debouncedScrollTo.cancel()
+    }
   }
 
   public updateExtensionPointDOMElements = (editMode: boolean) => {
@@ -128,7 +136,7 @@ export default class HighlightOverlay extends Component<Props, State> {
         : this.INITIAL_HIGHLIGHT_RECT
 
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' })
+        this.debouncedScrollTo(element)
       }
 
       // Add offset from render provider main div
