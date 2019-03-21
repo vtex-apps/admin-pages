@@ -5,7 +5,7 @@ export interface TargetPathContextProps {
   setTargetPath: (s: string) => void
 }
 
-const TargetPathContext = React.createContext({
+const TargetPathContext = React.createContext<TargetPathContextProps>({
   setTargetPath: (s: string) => undefined,
   targetPath: '',
 })
