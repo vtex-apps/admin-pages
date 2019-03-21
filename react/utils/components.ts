@@ -213,10 +213,9 @@ export const updateExtensionFromForm = (
   runtime: RenderContext,
   isContent?: boolean
 ) => {
-  const { component: enumComponent } = event.formData
-  const component = enumComponent && enumComponent !== '' ? enumComponent : null
-  const componentImplementation =
-    component && getIframeImplementation(component)
+  const extension = editTreePath ? runtime.extensions[editTreePath] : null
+  const component = extension ? extension.component : null
+  const componentImplementation = getIframeImplementation(component)
 
   const propsOrContent = getSchemaPropsOrContent(
     componentImplementation,
