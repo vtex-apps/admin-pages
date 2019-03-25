@@ -1,17 +1,23 @@
 import React from 'react'
 
-const ArrowIcon: React.SFC = () => (
-  <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
-    <g clipPath="url(#clip0)">
-      <rect width="20" height="20" fill="none" />
-      <path d="M8 10.5L11.5 7L4.5 7L8 10.5Z" fill="#727273" />
-    </g>
-    <defs>
-      <clipPath id="clip0">
-        <rect width="20" height="20" fill="none" />
-      </clipPath>
-    </defs>
+interface Props {
+  color?: string
+}
+
+const ArrowIcon: React.FunctionComponent<Props> = ({ color }) => (
+  <svg
+    width="5"
+    height="9"
+    viewBox="0 0 5 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M0 8.5L5 4.5L0 0.5V8.5Z" fill={color} />
   </svg>
 )
+
+ArrowIcon.defaultProps = {
+  color: 'currentColor',
+}
 
 export default ArrowIcon

@@ -1,26 +1,36 @@
+import classnames from 'classnames'
 import React from 'react'
-
 import ArrowIcon from '../../../../../icons/ArrowIcon'
 
 import SideItem from './SideItem'
 
+import styles from './ExpandArrow.css'
+
 interface Props {
-  hasRightMargin?: boolean
+  hasLeftMargin?: boolean
   isExpanded: boolean
   onClick: () => void
 }
 
-const ExpandArrow: React.SFC<Props> = ({
-  hasRightMargin,
+const ExpandArrow: React.FunctionComponent<Props> = ({
+  hasLeftMargin,
   isExpanded,
   onClick,
 }) => (
-  <SideItem isPointer onClick={onClick}>
+  <SideItem horizontalPaddingClassName="ph2" isPointer onClick={onClick}>
     <div
-      className={`flex items-center ${isExpanded ? '' : 'rotate-90'}`}
-      style={hasRightMargin ? { marginRight: '44px' } : undefined}
+      className={classnames(`flex items-center color-inherit`, {
+        'pl6 ml2': hasLeftMargin,
+      })}
+      style={hasLeftMargin ? {} : { marginRight: 3 }}
     >
-      <ArrowIcon />
+      <div
+        className={classnames('color-inherit', styles['transition'], {
+          'rotate-90': isExpanded,
+        })}
+      >
+        <ArrowIcon />
+      </div>
     </div>
   </SideItem>
 )
