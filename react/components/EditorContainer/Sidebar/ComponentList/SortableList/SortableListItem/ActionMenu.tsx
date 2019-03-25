@@ -13,11 +13,10 @@ interface Props {
 const ActionMenu: React.SFC<Props> = ({ options }) => (
   <StyleguideActionMenu
     buttonProps={{
-      icon: true,
+      icon: <IconOptionsDots />,
       variation: 'tertiary',
     }}
     hideCaretIcon
-    icon={<IconOptionsDots />}
     options={options}
   />
 )
