@@ -25,7 +25,7 @@ interface Props {
   shouldDisableSaveButton: boolean
 }
 
-const ContentEditor: React.SFC<Props> = ({
+const ContentEditor: React.FunctionComponent<Props> = ({
   condition,
   configuration,
   editor,

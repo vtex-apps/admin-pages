@@ -10,7 +10,7 @@ interface Props {
   options: ActionMenuOption[]
 }
 
-const ActionMenu: React.SFC<Props> = ({ options }) => (
+const ActionMenu: React.FunctionComponent<Props> = ({ options }) => (
   <StyleguideActionMenu
     buttonProps={{
       icon: <IconOptionsDots />,

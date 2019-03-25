@@ -34,7 +34,7 @@ export interface ConditionalTemplatePickerProps {
 
 type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
 
-export const ConditionalTemplatePicker: React.SFC<Props> = ({
+export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
   condition,
   formErrors,
   intl,

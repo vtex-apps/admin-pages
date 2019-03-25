@@ -6,7 +6,7 @@ interface Props {
   children?: ReactNode
 }
 
-const Wrapper: React.SFC<Props> = ({ children }) => (
+const Wrapper: React.FunctionComponent<Props> = ({ children }) => (
   <ToastProvider positioning="window">
     <AdminLoadingContextProvider>{children}</AdminLoadingContextProvider>
   </ToastProvider>

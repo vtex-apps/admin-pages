@@ -24,7 +24,7 @@ const getChangeHandler = (
 ) => ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
   onChange(!value ? emptyValue : value)
 
-const Dropdown: React.SFC<DropdownProps> = ({
+const Dropdown: React.FunctionComponent<DropdownProps> = ({
   autofocus,
   disabled,
   id,

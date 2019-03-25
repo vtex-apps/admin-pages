@@ -14,7 +14,7 @@ interface Props {
   style: Style
 }
 
-const StyleCard: React.SFC<Props> = ({
+const StyleCard: React.FunctionComponent<Props> = ({
   deleteStyle,
   duplicateStyle,
   selectStyle,

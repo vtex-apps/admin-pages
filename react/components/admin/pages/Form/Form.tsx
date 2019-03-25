@@ -40,7 +40,7 @@ interface CustomProps extends TemplateSectionProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const Form: React.SFC<Props> = ({
+const Form: React.FunctionComponent<Props> = ({
   data,
   detailChangeHandlerGetter,
   formErrors,

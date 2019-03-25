@@ -11,7 +11,11 @@ interface Props {
   urlPath: string
 }
 
-const Topbar: React.SFC<Props> = ({ changeMode, mode, urlPath }) => (
+const Topbar: React.FunctionComponent<Props> = ({
+  changeMode,
+  mode,
+  urlPath,
+}) => (
   <div className="ph5 f6 h-3em w-100 flex justify-between items-center">
     <div className="flex items-stretch">
       {mode ? (

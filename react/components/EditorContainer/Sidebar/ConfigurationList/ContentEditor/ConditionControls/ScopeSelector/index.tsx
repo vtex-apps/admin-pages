@@ -13,7 +13,7 @@ interface CustomProps {
 
 type Props = CustomProps & InjectedIntlProps
 
-const ScopeSelector: React.SFC<Props> = ({
+const ScopeSelector: React.FunctionComponent<Props> = ({
   intl,
   isSitewide,
   onChange,

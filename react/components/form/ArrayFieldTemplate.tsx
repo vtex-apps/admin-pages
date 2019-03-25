@@ -135,7 +135,7 @@ class ArrayFieldTemplate extends Component<
   }
 }
 
-const StatelessArrayFieldTemplate: React.SFC<
+const StatelessArrayFieldTemplate: React.FunctionComponent<
   ArrayFieldTemplateProps
 > = props => <ArrayFieldTemplate {...props} />
 

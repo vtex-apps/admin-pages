@@ -11,7 +11,7 @@ interface Props extends WidgetProps {
   type?: string
 }
 
-const BaseInput: React.SFC<WidgetProps & Props> = props => {
+const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
   const {
     autofocus,
     disabled,

@@ -8,7 +8,7 @@ interface Props {
   textColor: string
 }
 
-const Tag: React.SFC<Props> = ({
+const Tag: React.FunctionComponent<Props> = ({
   bgColor,
   borderColor,
   hasBorder,

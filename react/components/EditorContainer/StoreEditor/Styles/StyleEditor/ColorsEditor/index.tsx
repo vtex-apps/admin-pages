@@ -15,7 +15,7 @@ interface Props {
 
 type EditMode = string | undefined
 
-const ColorsEditor: React.SFC<Props> = ({
+const ColorsEditor: React.FunctionComponent<Props> = ({
   addNavigation,
   font,
   semanticColors,

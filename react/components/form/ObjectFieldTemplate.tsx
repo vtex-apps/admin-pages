@@ -28,7 +28,7 @@ interface Props extends ObjectFieldTemplateProps {
   formContext: ComponentEditorFormContext
 }
 
-const ObjectFieldTemplate: React.SFC<Props> = ({
+const ObjectFieldTemplate: React.FunctionComponent<Props> = ({
   formContext,
   properties,
   schema,

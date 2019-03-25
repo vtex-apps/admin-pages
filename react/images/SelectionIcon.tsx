@@ -4,7 +4,7 @@ interface Props {
   stroke: string
 }
 
-const SelectionIcon: React.SFC<Props> = ({ stroke }) => (
+const SelectionIcon: React.FunctionComponent<Props> = ({ stroke }) => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
     <rect width="24" height="24" fill="white" />
     <path

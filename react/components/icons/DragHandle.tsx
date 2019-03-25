@@ -11,7 +11,11 @@ const iconBase = {
   width: 6,
 }
 
-const DragHandle: React.SFC<Props> = ({ size, className, ...props }) => {
+const DragHandle: React.FunctionComponent<Props> = ({
+  size,
+  className,
+  ...props
+}) => {
   const newSize = calcIconSize(iconBase, size as number) // TS doesn't detect defaultProps
 
   return (

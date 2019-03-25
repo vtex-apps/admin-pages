@@ -13,7 +13,7 @@ interface Props {
   treePath: string
 }
 
-const Item: React.SFC<Props> = ({
+const Item: React.FunctionComponent<Props> = ({
   hasSubItems,
   isSortable,
   isChild,

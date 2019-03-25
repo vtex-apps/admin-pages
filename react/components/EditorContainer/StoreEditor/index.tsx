@@ -14,7 +14,7 @@ const Mode = ({ editor, mode }: Props) => {
   }
 }
 
-const StoreEditor: React.SFC<Props> = (props: Props) => {
+const StoreEditor: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div
       className="h-100 mr5 bg-base ba b--muted-4 br3"

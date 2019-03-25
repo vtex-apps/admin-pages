@@ -30,7 +30,7 @@ export interface ConditionalTemplateSectionProps
 
 type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
 
-export const ConditionalTemplateSection: React.SFC<Props> = ({
+export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
   detailChangeHandlerGetter,
   formErrors,
   intl,

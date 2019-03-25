@@ -37,7 +37,7 @@ const getTitle = (mode?: StoreEditMode) => {
   }[mode]
 }
 
-const ModeButton: React.SFC<Props> = ({ changeMode, mode }) => {
+const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
   return (
     <div
       className="pointer mh3 h-3em w4 flex justify-center items-center"

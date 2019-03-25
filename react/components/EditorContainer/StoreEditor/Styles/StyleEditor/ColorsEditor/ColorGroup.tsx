@@ -14,7 +14,7 @@ interface Props {
   semanticColors: SemanticColors
 }
 
-const ColorGroup: React.SFC<Props> = ({
+const ColorGroup: React.FunctionComponent<Props> = ({
   colorsInfo,
   font,
   groupName,
@@ -56,7 +56,7 @@ interface ColorPreviewProps {
   token: string
 }
 
-const ColorPreview: React.SFC<ColorPreviewProps> = ({
+const ColorPreview: React.FunctionComponent<ColorPreviewProps> = ({
   colorInfo,
   previewInfo,
   startEditing,
