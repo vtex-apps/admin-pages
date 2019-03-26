@@ -1,5 +1,4 @@
 {
-  "pages.admin-menu-button.displayConditions": "Display conditions",
   "pages.admin-menu-button.pages": "Pages",
   "pages.admin-menu-button.storefront": "Storefront",
   "pages.admin.loading": "Loading",
@@ -131,7 +130,6 @@
   "pages.editor.components.condition.scope.title": "Apply to",
   "pages.editor.components.condition.title": "Visibility",
   "pages.editor.components.configurations.button.create": "Add content",
-  "pages.editor.components.configurations.customConditions": "Custom conditions:",
   "pages.editor.components.configurations.defaultTitle": "Untitled",
   "pages.editor.components.labelEditor.label": "Configuration name",
   "pages.editor.components.modal.button.discard": "Discard",

@@ -1,5 +1,4 @@
 {
-  "pages.admin-menu-button.displayConditions": "pages.admin-menu-button.displayConditions",
   "pages.admin-menu-button.pages": "pages.admin-menu-button.pages",
   "pages.admin-menu-button.storefront": "pages.admin-menu-button.storefront",
   "pages.admin.loading": "pages.admin.loading",
@@ -131,7 +130,6 @@
   "pages.editor.components.condition.scope.title": "pages.editor.components.condition.scope.title",
   "pages.editor.components.condition.title": "pages.editor.components.condition.title",
   "pages.editor.components.configurations.button.create": "pages.editor.components.configurations.button.create",
-  "pages.editor.components.configurations.customConditions": "pages.editor.components.configurations.customConditions",
   "pages.editor.components.configurations.defaultTitle": "pages.editor.components.configurations.defaultTitle",
   "pages.editor.components.labelEditor.label": "pages.editor.components.labelEditor.label",
   "pages.editor.components.modal.button.discard": "pages.editor.components.modal.button.discard",
