@@ -19,7 +19,7 @@ interface Props {
   value: string[]
 }
 
-const MultiSelect: React.SFC<Props> = ({
+const MultiSelect: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,

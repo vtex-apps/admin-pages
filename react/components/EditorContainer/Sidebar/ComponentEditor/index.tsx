@@ -28,7 +28,7 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const ComponentEditor: React.SFC<Props> = ({
+const ComponentEditor: React.FunctionComponent<Props> = ({
   after,
   data,
   editor,

@@ -16,17 +16,19 @@ const SaveButton = ({
   onClick,
   variation,
 }: Props & ReactIntl.InjectedIntlProps) => (
-  <Button
-    disabled={isDisabled}
-    isLoading={isLoading}
-    onClick={onClick}
-    size="small"
-    variation={variation}
-  >
-    {intl.formatMessage({
-      id: 'pages.editor.components.button.save',
-    })}
-  </Button>
+  <div className="nv3">
+    <Button
+      disabled={isDisabled}
+      isLoading={isLoading}
+      onClick={onClick}
+      size="small"
+      variation={variation}
+    >
+      {intl.formatMessage({
+        id: 'pages.editor.components.button.save',
+      })}
+    </Button>
+  </div>
 )
 
 export default injectIntl(SaveButton)

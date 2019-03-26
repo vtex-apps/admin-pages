@@ -14,7 +14,7 @@ interface Props {
   title?: string
 }
 
-const EditorHeader: React.SFC<Props> = ({
+const EditorHeader: React.FunctionComponent<Props> = ({
   editor,
   isLoading,
   onClose,

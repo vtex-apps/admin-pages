@@ -4,7 +4,7 @@ interface Props {
   color?: string
 }
 
-const UndoIcon: React.SFC<Props> = ({ color }) => (
+const UndoIcon: React.FunctionComponent<Props> = ({ color }) => (
   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
     <rect width="16" height="16" fill="none" />
     <path

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const SettingsIcon: React.SFC = () => (
+const SettingsIcon: React.FunctionComponent = () => (
   <svg
     width="16"
     height="16"

@@ -10,7 +10,7 @@ interface Props {
   size?: number
 }
 
-const TrashSimple: React.SFC<Props> = ({ size, ...props }) => {
+const TrashSimple: React.FunctionComponent<Props> = ({ size, ...props }) => {
   const newSize = calcIconSize(iconBase, size as number) // TS doesn't detect defaultProps
 
   return (

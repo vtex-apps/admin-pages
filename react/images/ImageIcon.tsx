@@ -5,7 +5,7 @@ interface Props {
   stroke?: string
 }
 
-const ImageIcon: React.SFC<Props> = ({ size, stroke }) => (
+const ImageIcon: React.FunctionComponent<Props> = ({ size, stroke }) => (
   <svg
     width={`${size}px`}
     height={`${size}px`}

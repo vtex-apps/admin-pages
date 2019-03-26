@@ -1,6 +1,6 @@
 import React from 'react'
 
-const TemplateIcon: React.SFC = () => (
+const TemplateIcon: React.FunctionComponent = () => (
   <svg
     width="18"
     height="16"

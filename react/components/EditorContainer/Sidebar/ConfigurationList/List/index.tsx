@@ -21,7 +21,7 @@ interface Props {
   title?: string
 }
 
-const List: React.SFC<Props> = ({
+const List: React.FunctionComponent<Props> = ({
   configurations,
   editor,
   isDisabledChecker,

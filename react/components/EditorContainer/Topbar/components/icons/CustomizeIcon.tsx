@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CustomizeIcon: React.SFC = () => (
+const CustomizeIcon: React.FunctionComponent = () => (
   <svg
     width="16"
     height="16"

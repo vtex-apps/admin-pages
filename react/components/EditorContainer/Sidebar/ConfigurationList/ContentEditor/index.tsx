@@ -25,7 +25,7 @@ interface Props {
   shouldDisableSaveButton: boolean
 }
 
-const ContentEditor: React.SFC<Props> = ({
+const ContentEditor: React.FunctionComponent<Props> = ({
   condition,
   configuration,
   editor,
@@ -42,17 +42,12 @@ const ContentEditor: React.SFC<Props> = ({
 }) => {
   const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
-  const extensionContent = {
-    component: extension.component || null,
-    ...extension.content,
-  }
-
   const content = configuration
     ? {
         ...(configuration.contentJSON && JSON.parse(configuration.contentJSON)),
-        ...extensionContent,
+        ...extension.content,
       }
-    : extensionContent
+    : extension.content
 
   return (
     <ComponentEditor

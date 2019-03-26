@@ -30,7 +30,10 @@ const compareStyles = (a: Style, b: Style) => {
   }, 0)
 }
 
-const StyleList: React.SFC<Props> = ({ startEditing, setStyleAsset }) => {
+const StyleList: React.FunctionComponent<Props> = ({
+  startEditing,
+  setStyleAsset,
+}) => {
   return (
     <Operations>
       {({

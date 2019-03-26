@@ -16,7 +16,7 @@ interface Props {
   value?: boolean
 }
 
-const Toggle: React.SFC<WidgetProps & Props> = ({
+const Toggle: React.FunctionComponent<WidgetProps & Props> = ({
   autofocus,
   disabled,
   id,

@@ -26,7 +26,7 @@ const NEW_CONFIGURATION_ID = 'new'
 
 interface ListContentQuery {
   error: object
-  listContent: ExtensionConfiguration[]
+  listContent?: ExtensionConfiguration[]
   loading: boolean
   refetch: (variables?: object) => void
 }
@@ -122,7 +122,7 @@ class ConfigurationList extends Component<Props, State> {
     if (!this.state.configuration) {
       return (
         <List
-          configurations={listContentQuery.listContent}
+          configurations={listContentQuery.listContent || []}
           editor={editor}
           iframeRuntime={iframeRuntime}
           isDisabledChecker={this.isConfigurationDisabled}
@@ -293,7 +293,8 @@ class ConfigurationList extends Component<Props, State> {
       componentImplementation,
       content,
       iframeRuntime,
-      intl
+      intl,
+      true
     )
 
     const contentId =

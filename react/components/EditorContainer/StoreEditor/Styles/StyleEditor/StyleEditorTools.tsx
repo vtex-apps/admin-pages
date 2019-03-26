@@ -15,7 +15,7 @@ type NavigationReducer = (
   info: NavigationUpdate
 ) => NavigationInfo[]
 
-const StyleEditorTools: React.SFC<Props> = ({
+const StyleEditorTools: React.FunctionComponent<Props> = ({
   children,
   initialState,
   saveStyle,

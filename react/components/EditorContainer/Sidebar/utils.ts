@@ -3,11 +3,11 @@ import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { SidebarComponent } from './typings'
 
-const isSamePage = (page: string, treePath: string) => {
-  const pageHead = page.split('/')[0]
-  const treePathHead = treePath.split('/')[0]
+const isSamePage = (page?: string, treePath?: string) => {
+  const pageHead = page && page.split('/')[0]
+  const treePathHead = treePath && treePath.split('/')[0]
 
-  return treePathHead === pageHead
+  return pageHead && treePathHead && treePathHead === pageHead
 }
 
 const getParentContainerPropsGetter = (extensions: Extensions) => (

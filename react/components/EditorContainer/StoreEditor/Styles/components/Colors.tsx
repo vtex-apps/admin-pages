@@ -4,7 +4,7 @@ interface Props {
   colors: string[]
 }
 
-const Colors: React.SFC<Props> = ({ colors }) => (
+const Colors: React.FunctionComponent<Props> = ({ colors }) => (
   <div className="flex ba br2 b--muted-5 bg-muted-5 overflow-hidden">
     {colors.map((color, index) => (
       <div

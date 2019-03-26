@@ -38,7 +38,7 @@ type ConfigReducer = (
   partialConfig: Partial<TachyonsConfig>
 ) => TachyonsConfig
 
-const Editor: React.SFC<EditorProps> = ({
+const Editor: React.FunctionComponent<EditorProps> = ({
   addNavigation,
   config,
   updateConfig,
@@ -106,7 +106,7 @@ const Editor: React.SFC<EditorProps> = ({
   )
 }
 
-const StyleEditor: React.SFC<Props> = ({
+const StyleEditor: React.FunctionComponent<Props> = ({
   stopEditing,
   style,
   setStyleAsset,

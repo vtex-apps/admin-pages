@@ -11,7 +11,7 @@ interface Props {
   schema: JSONSchema6
 }
 
-const FieldTemplate: React.SFC<Props & FieldTemplateProps> = ({
+const FieldTemplate: React.FunctionComponent<Props & FieldTemplateProps> = ({
   children,
   classNames,
   formContext,

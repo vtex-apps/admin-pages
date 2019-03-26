@@ -1,6 +1,6 @@
 import React from 'react'
 
-const ShowIcon: React.SFC<{}> = () => (
+const ShowIcon: React.FunctionComponent<{}> = () => (
   <svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1">
     <g
       stroke="none"

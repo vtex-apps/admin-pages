@@ -12,7 +12,7 @@ interface SelectProps {
 
 type Props = SelectProps & InjectedIntlProps
 
-const Select: React.SFC<Props> = ({
+const Select: React.FunctionComponent<Props> = ({
   errorMessage,
   onChange,
   options,
@@ -23,7 +23,7 @@ const Select: React.SFC<Props> = ({
     <ReactSelect
       className={`f6 ${!!errorMessage ? 'b--danger bw1' : ''}`}
       arrowRenderer={(
-        { onMouseDown, isOpen }: any, // ArrowRendererProps isn't defining isOpen.
+        { onMouseDown, isOpen }: any // ArrowRendererProps isn't defining isOpen.
       ) => (
         <div onMouseDown={onMouseDown}>
           {isOpen ? (
@@ -36,7 +36,7 @@ const Select: React.SFC<Props> = ({
       multi
       onChange={optionValues => {
         const formattedValue = (optionValues as Option[]).map(
-          (item: Option) => item.value as string,
+          (item: Option) => item.value as string
         )
         onChange(formattedValue)
       }}

@@ -11,7 +11,7 @@ interface Props {
 
 const MAX_SIZE = 4 * 1024 * 1024
 
-const Dropzone: React.SFC<Props> = ({
+const Dropzone: React.FunctionComponent<Props> = ({
   disabled,
   children,
   extraClasses,

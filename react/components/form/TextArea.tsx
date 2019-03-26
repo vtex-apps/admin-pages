@@ -19,7 +19,7 @@ interface Props extends WidgetProps {
  * - onFocus: FocusEventHandler<HTMLTextAreaElement>
  */
 
-const TextArea: React.SFC<Props> = ({
+const TextArea: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,
