@@ -121,7 +121,7 @@ class ComponentList extends Component<Props, State> {
         />
         <ContentContainer
           isLoading={editor.isLoading}
-          containerClassName="relative flex flex-column flex-grow-1"
+          containerClassName="relative flex flex-column flex-grow-1 bt bw1 b--light-silver"
         >
           {hasChanges && (
             <div className="bb bw1 b--light-silver w-100">

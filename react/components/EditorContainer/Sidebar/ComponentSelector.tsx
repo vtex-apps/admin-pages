@@ -2,7 +2,7 @@ import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
-import BlocksLibraryIcon from '../../icons/BlocksLibraryIcon'
+import AddIcon from '../../icons/AddIcon'
 
 import ComponentList from './ComponentList'
 import EditorHeader from './EditorHeader'
@@ -39,7 +39,7 @@ class ComponentSelector extends PureComponent<Props> {
             }
           />
         ) : (
-          <div className="flex justify-between items-center flex-shrink-0 bb bw1 b--light-silver h-3em">
+          <div className="flex justify-between items-center flex-shrink-0 h-3em">
             <h3 className="ph5 f5 near-black">
               <FormattedMessage id="pages.editor.components.title" />
             </h3>
@@ -52,10 +52,8 @@ class ComponentSelector extends PureComponent<Props> {
               }}
               className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
             >
-              <span className="pr5 b--light-gray flex items-center">
-                <BlocksLibraryIcon
-                  color={editor.editMode ? '#368df7' : '#979899'}
-                />
+              <span className="mr5 b--light-gray flex items-center c-action-primary hover-bg-action-secondary bg-animate">
+                <AddIcon size={20} />
               </span>
             </div>
           </div>
