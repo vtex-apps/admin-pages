@@ -2,13 +2,13 @@
   "license": "UNLICENSED",
   "version": "3.2.1",
   "devDependencies": {
-    "@vtex/intl-equalizer": "^2.2.1",
+    "@vtex/intl-equalizer": "^2.3.0",
     "husky": "^1.1.4",
     "lint-staged": "^8.0.4",
     "prettier": "^1.15.2"
   },
   "scripts": {
-    "lint:locales": "intl-equalizer"
+    "lint:locales": "intl-equalizer --all"
   },
   "husky": {
     "hooks": {
