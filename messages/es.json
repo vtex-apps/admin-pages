@@ -107,8 +107,8 @@
   "pages.editor.container.editpath.label": "URL de la página",
   "pages.editor.info.page": "Página",
   "pages.editor.info.title": "Informaciones de la Página",
-  "pages.editor.store.button.back.title": "Volver al editor",
   "pages.editor.store.button.settings.title": "Tienda",
-  "pages.editor.store.button.template.title": "Templates",
-  "pages.editor.store.button.theme.title": "Tema"
+  "pages.editor.store.button.theme.title": "Personalizar",
+  "pages.editor.store.button.template.title": "Modelos",
+  "pages.editor.store.button.back.title": "Volver al editor"
 }
