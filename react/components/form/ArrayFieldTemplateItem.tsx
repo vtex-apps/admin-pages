@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
@@ -6,7 +5,7 @@ import {
   SortableElementProps,
   SortableHandle,
 } from 'react-sortable-hoc'
-import { animated, Transition } from 'react-spring'
+import { animated, Transition } from 'react-spring/renderprops'
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 import SimpleFormattedMessage from './SimpleFormattedMessage'
