@@ -21,7 +21,14 @@ export interface ConditionalTemplateSectionProps
   detailChangeHandlerGetter: (
     detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  formErrors: Omit<Partial<{ [key in keyof Route]: key }>, 'pages'> & {
+    pages?: {
+      [key: string]: {
+        template?: string
+        condition?: string
+      }
+    }
+  }
   onAddConditionalTemplate: () => void
   pages: PagesFormData[]
   blockId: string

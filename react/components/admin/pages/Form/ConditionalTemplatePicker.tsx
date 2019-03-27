@@ -12,7 +12,14 @@ import SelectConditions from './SelectConditions'
 
 export interface ConditionalTemplatePickerProps {
   condition: ConditionFormsData
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  formErrors: Omit<Partial<{ [key in keyof Route]: key }>, 'pages'> & {
+    pages?: {
+      [key: string]: {
+        template?: string
+        condition?: string
+      }
+    }
+  }
   onChangeOperatorConditionalTemplate: (
     uniqueId: number,
     operator: NonNullable<ConditionsProps['operator']>

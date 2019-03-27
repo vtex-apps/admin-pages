@@ -3,11 +3,14 @@ import { State } from '../index'
 
 const requiredMessage = 'pages.admin.pages.form.templates.field.required'
 
-const validateFalsyPath = (path: keyof RouteFormData) => (data: RouteFormData) =>
-  !data[path] && { [path]: requiredMessage }
+const validateFalsyPath = (path: keyof RouteFormData) => (
+  data: RouteFormData
+) => !data[path] && { [path]: requiredMessage }
 
-const validateConditionalTemplates = (data: RouteFormData) => {
-  return (data.pages).reduce(
+const validateConditionalTemplates: (data: RouteFormData) => { pages?: {} } = (
+  data: RouteFormData
+) => {
+  return data.pages.reduce(
     (acc, { uniqueId, condition, template }) => {
       const templateError = !template && { template: requiredMessage }
       const conditionError = !condition.statements.length && {
@@ -25,7 +28,7 @@ const validateConditionalTemplates = (data: RouteFormData) => {
       }
       return acc
     },
-    {} as any,
+    {} as any
   )
 }
 
@@ -36,7 +39,9 @@ export const getValidateFormState = (prevState: State) => {
       ...prevState.formErrors,
       ...validateFalsyPath('path')(prevState.data),
       ...validateFalsyPath('blockId')(prevState.data),
-      ...validateFalsyPath('title')(prevState.data),
+      ...(prevState.isInfoEditable
+        ? validateFalsyPath('title')(prevState.data)
+        : {}),
       ...validateConditionalTemplates(prevState.data),
     },
   }
