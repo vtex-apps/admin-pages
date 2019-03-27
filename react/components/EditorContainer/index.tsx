@@ -143,7 +143,7 @@ export default class EditorContainer extends Component<Props, State> {
                 />
               )}
               <div
-                className={`pa5 bg-muted-5 flex items-center z-0 center-m left-0-m overflow-x-auto-m ${
+                className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
                   visible && runtime
                     ? 'calc--height-relative'
                     : 'top-0 w-100 h-100'

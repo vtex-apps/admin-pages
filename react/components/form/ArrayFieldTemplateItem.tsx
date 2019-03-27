@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+import { path } from 'ramda'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
@@ -53,9 +55,10 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
       showDragHandle,
     } = this.props
 
+
     const title =
       children.props.formData.__editorItemTitle ||
-      schema.items.properties.__editorItemTitle.default
+      path(['items', 'properties', '__editorItemTitle', 'default'], schema)
 
     return (
       <div
@@ -67,7 +70,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           <div className="flex items-center">
             {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
-              <SimpleFormattedMessage id={title} />
+              {title ? <SimpleFormattedMessage id={title} /> : 'Item'}
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">

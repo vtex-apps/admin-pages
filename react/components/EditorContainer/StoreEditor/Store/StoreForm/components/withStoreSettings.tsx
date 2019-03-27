@@ -1,3 +1,4 @@
+import { path } from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
 
@@ -37,7 +38,10 @@ class AvailableAppQuery extends Query<
 > {}
 
 export interface FormProps {
-  store: AvailableApp & InstalledApp
+  store: AvailableApp &
+    InstalledApp & {
+      settings: string
+    }
 }
 
 const renderLoading = (): React.ReactElement => (
@@ -55,43 +59,45 @@ const renderError = (): React.ReactElement => (
   </div>
 )
 
+const handleCornerCases = (fn: (x: any) => any) => ({
+  loading,
+  error,
+  data,
+  ...rest
+}: any) => {
+  if (loading) {
+    return renderLoading()
+  }
+  if (error || !data) {
+    return renderError()
+  }
+
+  return fn({ data, ...rest })
+}
+
 const withStoreSettings = (
   WrappedComponent: React.ComponentType<FormProps>
 ) => () => (
   <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
-    {({ loading, error, data: installedAppData }) => {
-      if (loading) {
-        return renderLoading()
-      }
-      if (error || !installedAppData) {
-        return renderError()
-      }
-
-      const { installedApp: store } = installedAppData
+    {handleCornerCases(({ data: storeData }) => {
+      const { installedApp: store } = storeData
+      const { slug, version } = store
       return (
         <AvailableAppQuery
           query={AvailableApp}
-          variables={{ id: `${store.slug}@${store.version}` }}
+          variables={{ id: `${slug}@${version}` }}
         >
-          {({ loading: secondLoading, error: secondError, data }) => {
-            if (secondLoading) {
-              return renderLoading()
-            }
-            if (secondError || !data) {
-              return renderError()
-            }
-            return (
-              <WrappedComponent
-                store={{
-                  ...store,
-                  ...data.availableApp,
-                }}
-              />
-            )
-          }}
+          {handleCornerCases(({ data: { availableApp: schemasData } } = {}) => (
+            <WrappedComponent
+              store={{
+                ...store,
+                ...schemasData,
+              }}
+            />
+          ))}
         </AvailableAppQuery>
       )
-    }}
+    })}
   </InstalledAppQuery>
 )
 

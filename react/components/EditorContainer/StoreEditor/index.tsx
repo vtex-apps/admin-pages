@@ -20,7 +20,7 @@ const Mode = ({ editor, mode }: Props) => {
 const StoreEditor: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div
-      className="h-100 mr5 bg-base ba b--muted-4 br3"
+      className="mr5 bg-base ba b--muted-4 br3"
       style={{
         minWidth: '31rem',
         width: '31rem',
