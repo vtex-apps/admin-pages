@@ -1,4 +1,4 @@
-import { getComponents } from './utils'
+import { generateWarningMessage, getComponents } from './utils'
 
 const mockExtensions = {
   'store/header': {
@@ -131,5 +131,61 @@ describe('getComponents', () => {
         treePath: 'store/home/shelf',
       },
     ])
+  })
+
+  it('should call console.warn when component has a schema with no title', () => {
+    // Setup
+    const originalWarn = console.warn
+    const mockWarn = jest.fn()
+    global.console.warn = mockWarn
+
+    // Test
+    const extensions = {
+      'store/home/shelf': {
+        component: 'vtex.shelf',
+      },
+    }
+    const components = {
+      'vtex.shelf': {
+        schema: {},
+      },
+    }
+    expect(
+      getComponents(extensions as any, components as any, 'store/home')
+    ).toEqual([])
+
+    expect(mockWarn).toHaveBeenCalledTimes(1)
+    expect(mockWarn).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+
+    // Restore
+    global.console.warn = originalWarn
+  })
+
+  it('should call console.warn when component returns a schema from getSchema with no title', () => {
+    // Setup
+    const originalWarn = console.warn
+    const mockWarn = jest.fn()
+    global.console.warn = mockWarn
+
+    // Test
+    const extensions = {
+      'store/home/shelf': {
+        component: 'vtex.shelf',
+      },
+    }
+    const components = {
+      'vtex.shelf': {
+        getSchema: () => ({}),
+      },
+    }
+    expect(
+      getComponents(extensions as any, components as any, 'store/home')
+    ).toEqual([])
+
+    expect(mockWarn).toHaveBeenCalledTimes(1)
+    expect(mockWarn).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+
+    // Restore
+    global.console.warn = originalWarn
   })
 })
