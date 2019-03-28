@@ -133,59 +133,53 @@ describe('getComponents', () => {
     ])
   })
 
-  it('should call console.warn when component has a schema with no title', () => {
-    // Setup
-    const originalWarn = console.warn
-    const mockWarn = jest.fn()
-    global.console.warn = mockWarn
+  describe('Warning for titleless schema', () => {
+    let warnSpy = jest.fn()
 
-    // Test
-    const extensions = {
-      'store/home/shelf': {
-        component: 'vtex.shelf',
-      },
-    }
-    const components = {
-      'vtex.shelf': {
-        schema: {},
-      },
-    }
-    expect(
-      getComponents(extensions as any, components as any, 'store/home')
-    ).toEqual([])
+    beforeEach(() => {
+      warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined)
+    })
 
-    expect(mockWarn).toHaveBeenCalledTimes(1)
-    expect(mockWarn).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+    afterEach(() => {
+      warnSpy.mockRestore()
+    })
 
-    // Restore
-    global.console.warn = originalWarn
-  })
+    it('should call console.warn when component has a schema with no title', () => {
+      const extensions = {
+        'store/home/shelf': {
+          component: 'vtex.shelf',
+        },
+      }
+      const components = {
+        'vtex.shelf': {
+          schema: {},
+        },
+      }
+      expect(
+        getComponents(extensions as any, components as any, 'store/home')
+      ).toEqual([])
 
-  it('should call console.warn when component returns a schema from getSchema with no title', () => {
-    // Setup
-    const originalWarn = console.warn
-    const mockWarn = jest.fn()
-    global.console.warn = mockWarn
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+      expect(warnSpy).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+    })
 
-    // Test
-    const extensions = {
-      'store/home/shelf': {
-        component: 'vtex.shelf',
-      },
-    }
-    const components = {
-      'vtex.shelf': {
-        getSchema: () => ({}),
-      },
-    }
-    expect(
-      getComponents(extensions as any, components as any, 'store/home')
-    ).toEqual([])
+    it('should call console.warn when component returns a schema from getSchema with no title', () => {
+      const extensions = {
+        'store/home/shelf': {
+          component: 'vtex.shelf',
+        },
+      }
+      const components = {
+        'vtex.shelf': {
+          getSchema: () => ({}),
+        },
+      }
+      expect(
+        getComponents(extensions as any, components as any, 'store/home')
+      ).toEqual([])
 
-    expect(mockWarn).toHaveBeenCalledTimes(1)
-    expect(mockWarn).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
-
-    // Restore
-    global.console.warn = originalWarn
+      expect(warnSpy).toHaveBeenCalledTimes(1)
+      expect(warnSpy).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+    })
   })
 })
