@@ -25,6 +25,7 @@
   "pages.admin.pages.form.templates.simple.conditions.date.equals": "pages.admin.pages.form.templates.simple.conditions.date.equals",
   "pages.admin.pages.form.templates.simple.conditions.date.from": "pages.admin.pages.form.templates.simple.conditions.date.from",
   "pages.admin.pages.form.templates.simple.conditions.date.range": "pages.admin.pages.form.templates.simple.conditions.date.range",
+  "pages.admin.pages.form.templates.simple.conditions.date.range.and": "pages.admin.pages.form.templates.simple.conditions.date.range.and",
   "pages.admin.pages.form.templates.simple.conditions.date.to": "pages.admin.pages.form.templates.simple.conditions.date.to",
   "pages.admin.pages.form.templates.simple.conditions.date": "pages.admin.pages.form.templates.simple.conditions.date",
   "pages.admin.pages.form.templates.simple.conditions.header-prefix": "pages.admin.pages.form.templates.simple.conditions.header-prefix",

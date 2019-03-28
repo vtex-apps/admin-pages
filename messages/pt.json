@@ -25,6 +25,7 @@
   "pages.admin.pages.form.templates.simple.conditions.date.equals": "é",
   "pages.admin.pages.form.templates.simple.conditions.date.from": "começa em",
   "pages.admin.pages.form.templates.simple.conditions.date.range": "está entre",
+  "pages.admin.pages.form.templates.simple.conditions.date.range.and": "e",
   "pages.admin.pages.form.templates.simple.conditions.date.to": "termina em",
   "pages.admin.pages.form.templates.simple.conditions.date": "Data",
   "pages.admin.pages.form.templates.simple.conditions.header-prefix": "Combinando",

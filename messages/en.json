@@ -25,6 +25,7 @@
   "pages.admin.pages.form.templates.simple.conditions.date.equals": "is",
   "pages.admin.pages.form.templates.simple.conditions.date.from": "starts on",
   "pages.admin.pages.form.templates.simple.conditions.date.range": "is between",
+  "pages.admin.pages.form.templates.simple.conditions.date.range.and": "and",
   "pages.admin.pages.form.templates.simple.conditions.date.to": "ends on",
   "pages.admin.pages.form.templates.simple.conditions.date": "Date",
   "pages.admin.pages.form.templates.simple.conditions.header-prefix": "Matching",
