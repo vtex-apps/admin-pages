@@ -3,10 +3,7 @@ import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { SidebarComponent } from './typings'
 
-export const generateWarningMessage = (name: string) =>
-  `[Site Editor] Component "${name}" exports schema but doesn't have a "title" property, because of that, it won't appear in the lateral list. If this is intended, ignore this message.`
-
-const isSamePage = (page?: string, treePath?: string) => {
+const isSamePage = (page: string, treePath: string) => {
   const pageHead = page && page.split('/')[0]
   const treePathHead = treePath && treePath.split('/')[0]
 

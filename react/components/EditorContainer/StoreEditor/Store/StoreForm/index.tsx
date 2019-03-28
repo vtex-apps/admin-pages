@@ -1,19 +1,43 @@
 import { assoc, compose, dissoc, map } from 'ramda'
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import {
+  ChildMutateProps,
+  graphql,
+  MutateProps,
+  MutationFn,
+} from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
 
-import { Button } from 'vtex.styleguide'
-
-import withStoreSettings, { FormProps } from './components/withStoreSettings'
-import { tryParseJson } from './utils/utils'
+import { Button, ToastContext } from 'vtex.styleguide'
 
 import ArrayFieldTemplate from '../../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../../form/BaseInput'
 import FieldTemplate from '../../../../form/FieldTemplate'
 import ObjectFieldTemplate from '../../../../form/ObjectFieldTemplate'
 
-const formatSchema = (schema: any, intl: any) => {
+import withStoreSettings, { FormProps } from './components/withStoreSettings'
+import { tryParseJson } from './utils/utils'
+
+import SaveAppSettings from './mutations/SaveAppSettings.graphql'
+
+interface MutationData {
+  message: string
+}
+
+interface MutationVariables {
+  app: string
+  version: string
+  settings: string
+}
+
+type Props = ChildMutateProps<
+  FormProps & InjectedIntlProps,
+  MutationData,
+  MutationVariables
+>
+
+const formatSchema = (schema: any, intl: any): any => {
   if (!schema) {
     return null
   }
@@ -43,15 +67,22 @@ const widgets = {
   BaseInput,
 }
 
-const StoreForm: React.FunctionComponent<FormProps & InjectedIntlProps> = ({
-  store,
-  intl,
-}) => {
+const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
   const [formData, setFormData] = useState(tryParseJson(store.settings))
+  const [submitting, setSubmitting] = useState(false)
+  const { showToast } = useContext(ToastContext)
 
-  const handleSubmit = () => {
-    console.log('todo')
-  }
+  useEffect(() => {
+    if (submitting) {
+      const { slug: app, version } = store
+      mutate({
+        variables: { app, version, settings: JSON.stringify(formData) },
+      })
+        .then(() => showToast(intl.formatMessage({ id: 'Top' })))
+        .catch(() => showToast(intl.formatMessage({ id: 'ruim' })))
+        .finally(() => setSubmitting(false))
+    }
+  }, [submitting])
 
   const { settingsSchema, settingsUiSchema } = store
   const schemas: { title: string; schema: any; uiSchema?: any } = {
@@ -79,7 +110,7 @@ const StoreForm: React.FunctionComponent<FormProps & InjectedIntlProps> = ({
         <Form
           {...schemas}
           formData={formData}
-          onSubmit={handleSubmit}
+          onSubmit={() => setSubmitting(true)}
           onError={e => console.log('Bad input numbers: ', e.length)}
           onChange={({ formData: newFormData }) => setFormData(newFormData)}
           showErrorList={false}
@@ -89,7 +120,13 @@ const StoreForm: React.FunctionComponent<FormProps & InjectedIntlProps> = ({
           widgets={widgets}
         >
           <div className="w-100 mt7 tr">
-            <Button size="small" type="submit" variation="primary">
+            <Button
+              size="small"
+              type="submit"
+              variation="primary"
+              onClick={() => setSubmitting(true)}
+              isLoading={submitting}
+            >
               <FormattedMessage id="pages.admin.pages.form.button.save" />
             </Button>
           </div>
@@ -99,4 +136,8 @@ const StoreForm: React.FunctionComponent<FormProps & InjectedIntlProps> = ({
   )
 }
 
-export default withStoreSettings(injectIntl(StoreForm))
+export default graphql<
+  FormProps & InjectedIntlProps,
+  MutationData,
+  MutationVariables
+>(SaveAppSettings)(withStoreSettings(injectIntl(StoreForm)))

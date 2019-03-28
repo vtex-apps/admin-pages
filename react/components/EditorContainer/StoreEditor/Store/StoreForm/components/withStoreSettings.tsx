@@ -76,8 +76,8 @@ const handleCornerCases = (fn: (x: any) => any) => ({
 }
 
 const withStoreSettings = (
-  WrappedComponent: React.ComponentType<FormProps>
-) => () => (
+  WrappedComponent: React.ComponentType<FormProps & any>
+) => (props: any) => (
   <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
     {handleCornerCases(({ data: storeData }) => {
       const { installedApp: store } = storeData
@@ -89,6 +89,7 @@ const withStoreSettings = (
         >
           {handleCornerCases(({ data: { availableApp: schemasData } } = {}) => (
             <WrappedComponent
+              {...props}
               store={{
                 ...store,
                 ...schemasData,
