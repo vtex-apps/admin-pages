@@ -134,14 +134,12 @@ describe('getComponents', () => {
   })
 
   describe('Warning for titleless schema', () => {
-    let warnSpy = jest.fn()
-
     beforeEach(() => {
-      warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined)
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined)
     })
 
     afterEach(() => {
-      warnSpy.mockRestore()
+      ;(console.warn as any).mockRestore()
     })
 
     it('should call console.warn when component has a schema with no title', () => {
@@ -159,8 +157,10 @@ describe('getComponents', () => {
         getComponents(extensions as any, components as any, 'store/home')
       ).toEqual([])
 
-      expect(warnSpy).toHaveBeenCalledTimes(1)
-      expect(warnSpy).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+      expect(console.warn).toHaveBeenCalledTimes(1)
+      expect(console.warn).toHaveBeenCalledWith(
+        generateWarningMessage('vtex.shelf')
+      )
     })
 
     it('should call console.warn when component returns a schema from getSchema with no title', () => {
@@ -178,8 +178,10 @@ describe('getComponents', () => {
         getComponents(extensions as any, components as any, 'store/home')
       ).toEqual([])
 
-      expect(warnSpy).toHaveBeenCalledTimes(1)
-      expect(warnSpy).toHaveBeenCalledWith(generateWarningMessage('vtex.shelf'))
+      expect(console.warn).toHaveBeenCalledTimes(1)
+      expect(console.warn).toHaveBeenCalledWith(
+        generateWarningMessage('vtex.shelf')
+      )
     })
   })
 })
