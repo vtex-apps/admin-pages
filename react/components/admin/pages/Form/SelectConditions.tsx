@@ -160,7 +160,7 @@ class SelectConditions extends React.Component<Props> {
     return (
       <DatePicker
         value={values && values.date}
-        onChange={date => {
+        onChange={(date: string) => {
           const newStatements = statements.map((statement, index) => {
             return {
               ...statement,
@@ -187,7 +187,7 @@ class SelectConditions extends React.Component<Props> {
         <div style={{ maxWidth: 140 }}>
           <DatePicker
             value={values && values.from}
-            onChange={date => {
+            onChange={(date: string) => {
               const newStatements = statements.map((statement, index) => {
                 return {
                   ...statement,
@@ -210,7 +210,7 @@ class SelectConditions extends React.Component<Props> {
         <div style={{ maxWidth: 140 }}>
           <DatePicker
             value={values && values.to}
-            onChange={date => {
+            onChange={(date: string) => {
               const newStatements = statements.map((statement, index) => {
                 return {
                   ...statement,
