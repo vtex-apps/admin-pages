@@ -7,6 +7,7 @@ import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
 
 import SectionTitle from './SectionTitle'
+import { FormErrors } from './typings'
 
 import {
   ConditionalTemplateSection,
@@ -22,14 +23,7 @@ interface CustomProps extends TemplateSectionProps {
   detailChangeHandlerGetter: (
     detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
-  formErrors: Omit<Partial<{ [key in keyof Route]: key }>, 'pages'> & {
-    pages?: {
-      [key: string]: {
-        template?: string
-        condition?: string
-      }
-    }
-  }
+  formErrors: FormErrors
   isDeletable: boolean
   isInfoEditable: boolean
   isLoading: boolean

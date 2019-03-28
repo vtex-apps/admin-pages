@@ -23,7 +23,7 @@ import {
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
-import { DateVerbOptions, SaveRouteVariables } from './typings'
+import { DateVerbOptions, FormErrors, SaveRouteVariables } from './typings'
 
 interface ComponentProps {
   initialData: RouteFormData
@@ -43,14 +43,7 @@ export interface State {
   isDeletable: boolean
   isLoading: boolean
   isInfoEditable: boolean
-  formErrors: Omit<Partial<{ [key in keyof Route]: key }>, 'pages'> & {
-    pages?: {
-      [key: string]: {
-        template?: string
-        condition?: string
-      }
-    }
-  }
+  formErrors: FormErrors
 }
 
 class FormContainer extends Component<Props, State> {
