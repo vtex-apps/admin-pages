@@ -48,3 +48,15 @@ export interface DateInfoFormat {
 }
 
 export type DateStatementFormat = Record<keyof DateInfoFormat, Date>
+
+export type FormErrors = Omit<
+  Partial<{ [key in keyof Route]: key }>,
+  'pages'
+> & {
+  pages?: {
+    [key: string]: {
+      template?: string
+      condition?: string
+    }
+  }
+}

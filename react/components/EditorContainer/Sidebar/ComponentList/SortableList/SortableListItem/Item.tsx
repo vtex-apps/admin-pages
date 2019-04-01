@@ -24,9 +24,7 @@ const Item: React.FunctionComponent<Props> = ({
   treePath,
 }) => {
   let leftPaddingClassName = 'pl8'
-  if (isChild) {
-    leftPaddingClassName = 'pl6'
-  } else if (isSortable && !hasSubItems) {
+  if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
   } else if (isSortable) {
     leftPaddingClassName = 'pl2'

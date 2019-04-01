@@ -1,4 +1,4 @@
-import { getComponents } from './utils'
+import { generateWarningMessage, getComponents } from './utils'
 
 const mockExtensions = {
   'store/header': {
@@ -131,5 +131,57 @@ describe('getComponents', () => {
         treePath: 'store/home/shelf',
       },
     ])
+  })
+
+  describe('Warning for titleless schema', () => {
+    beforeEach(() => {
+      jest.spyOn(console, 'warn').mockImplementation(() => undefined)
+    })
+
+    afterEach(() => {
+      ;(console.warn as any).mockRestore()
+    })
+
+    it('should call console.warn when component has a schema with no title', () => {
+      const extensions = {
+        'store/home/shelf': {
+          component: 'vtex.shelf',
+        },
+      }
+      const components = {
+        'vtex.shelf': {
+          schema: {},
+        },
+      }
+      expect(
+        getComponents(extensions as any, components as any, 'store/home')
+      ).toEqual([])
+
+      expect(console.warn).toHaveBeenCalledTimes(1)
+      expect(console.warn).toHaveBeenCalledWith(
+        generateWarningMessage('vtex.shelf')
+      )
+    })
+
+    it('should call console.warn when component returns a schema from getSchema with no title', () => {
+      const extensions = {
+        'store/home/shelf': {
+          component: 'vtex.shelf',
+        },
+      }
+      const components = {
+        'vtex.shelf': {
+          getSchema: () => ({}),
+        },
+      }
+      expect(
+        getComponents(extensions as any, components as any, 'store/home')
+      ).toEqual([])
+
+      expect(console.warn).toHaveBeenCalledTimes(1)
+      expect(console.warn).toHaveBeenCalledWith(
+        generateWarningMessage('vtex.shelf')
+      )
+    })
   })
 })

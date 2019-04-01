@@ -12,6 +12,7 @@ import {
 
 import { RouteFormData } from 'pages'
 
+import { isNewRoute } from '../utils'
 import Form from './Form'
 import {
   getAddConditionalTemplateState,
@@ -22,7 +23,7 @@ import {
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
-import { DateVerbOptions, SaveRouteVariables } from './typings'
+import { DateVerbOptions, FormErrors, SaveRouteVariables } from './typings'
 
 interface ComponentProps {
   initialData: RouteFormData
@@ -39,8 +40,10 @@ type Props = ComponentProps & InjectedIntlProps
 
 export interface State {
   data: RouteFormData
+  isDeletable: boolean
   isLoading: boolean
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  isInfoEditable: boolean
+  formErrors: FormErrors
 }
 
 class FormContainer extends Component<Props, State> {
@@ -51,9 +54,18 @@ class FormContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
+    const { declarer } = props.initialData || { declarer: null }
+
+    const isNew = isNewRoute(props.initialData)
+
+    const isDeletable = !declarer && !isNew
+    const isInfoEditable = !declarer || isNew
+
     this.state = {
       data: props.initialData,
       formErrors: {},
+      isDeletable,
+      isInfoEditable,
       isLoading: false,
     }
   }
@@ -64,13 +76,21 @@ class FormContainer extends Component<Props, State> {
 
   public render() {
     const { templates, onExit } = this.props
-    const { data, formErrors, isLoading } = this.state
+    const {
+      data,
+      formErrors,
+      isDeletable,
+      isInfoEditable,
+      isLoading,
+    } = this.state
 
     return (
       <Form
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
+        isDeletable={isDeletable}
         isLoading={isLoading}
+        isInfoEditable={isInfoEditable}
         onDelete={this.handleDelete}
         onExit={onExit}
         onLoginToggle={this.handleLoginToggle}
