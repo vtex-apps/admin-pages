@@ -112,7 +112,7 @@ declare module 'vtex.styleguide' {
     locale: string
     placeholder?: string
     size?: StyleguideSizes
-    value: Date
+    value?: Date
     useTime?: boolean
   }
 
