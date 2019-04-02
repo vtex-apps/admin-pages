@@ -78,8 +78,8 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
       mutate({
         variables: { app, version, settings: JSON.stringify(formData) },
       })
-        .then(() => showToast(intl.formatMessage({ id: 'Top' })))
-        .catch(() => showToast(intl.formatMessage({ id: 'ruim' })))
+        .then(() => showToast(intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })))
+        .catch(() => showToast(intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })))
         .finally(() => setSubmitting(false))
     }
   }, [submitting])
@@ -137,7 +137,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 }
 
 export default graphql<
-  FormProps & InjectedIntlProps,
+  {},
   MutationData,
   MutationVariables
 >(SaveAppSettings)(withStoreSettings(injectIntl(StoreForm)))
