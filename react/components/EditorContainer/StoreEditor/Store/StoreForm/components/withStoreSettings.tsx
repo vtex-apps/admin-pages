@@ -1,6 +1,7 @@
 import { path } from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 
 import { EmptyState, Spinner } from 'vtex.styleguide'
 
@@ -44,20 +45,24 @@ export interface FormProps {
     }
 }
 
-const renderLoading = (): React.ReactElement => (
+const Loading = (): React.ReactElement => (
   <div className="flex justify-center">
     <Spinner />
   </div>
 )
 
-// TODO: INTL
-const renderError = (): React.ReactElement => (
+const ErrorMessageComponent: React.FunctionComponent<InjectedIntlProps> = ({
+  intl,
+}): React.ReactElement => (
   <div className="flex justify-center">
-    <EmptyState title="Something went wrong">
-      We couldn't find the vtex.store data :/
+    <EmptyState
+      title={intl.formatMessage({ id: 'pages.editor.store.settings.error.title' })}
+    >
+      <FormattedMessage id="pages.editor.store.settings.error" />
     </EmptyState>
   </div>
 )
+const ErrorMessage = injectIntl(ErrorMessageComponent)
 
 const handleCornerCases = (fn: (x: any) => any) => ({
   loading,
@@ -66,10 +71,10 @@ const handleCornerCases = (fn: (x: any) => any) => ({
   ...rest
 }: any) => {
   if (loading) {
-    return renderLoading()
+    return <Loading />
   }
   if (error || !data) {
-    return renderError()
+    return <ErrorMessage />
   }
 
   return fn({ data, ...rest })

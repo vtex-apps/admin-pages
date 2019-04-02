@@ -110,5 +110,7 @@
   "pages.editor.store.button.settings.title": "Loja",
   "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.button.template.title": "Templates",
-  "pages.editor.store.button.back.title": "Voltar para editor"
+  "pages.editor.store.button.back.title": "Voltar para editor",
+  "pages.editor.store.settings.error.title": "Algo deu errado",
+  "pages.editor.store.settings.error": "Não foi possível carregar as informações da loja."
 }
