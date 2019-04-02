@@ -1,8 +1,6 @@
 /* tslint:disable:max-classes-per-file class-name*/
 declare module 'vtex.styleguide' {
   import { Component, ComponentType, ReactNode } from 'react'
-  // Remove this dependency from admin-pages when styleguide is properly typed.
-  import { ReactDatePickerProps } from 'react-datepicker'
 
   type StyleguideSizes = 'small' | 'regular' | 'large'
 
@@ -118,7 +116,6 @@ declare module 'vtex.styleguide' {
   }
 
   type DatePickerProps = Pick<
-    ReactDatePickerProps,
     | 'autoFocus'
     | 'disabled'
     | 'excludeDates'
