@@ -1,3 +1,4 @@
+import { RouteFormData } from 'pages'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
@@ -10,9 +11,9 @@ import {
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
 
-import { RouteFormData } from 'pages'
-
+import { formatStatements } from '../../../../utils/conditions'
 import { isNewRoute } from '../utils'
+
 import Form from './Form'
 import {
   getAddConditionalTemplateState,
@@ -23,7 +24,7 @@ import {
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
-import { DateVerbOptions, FormErrors, SaveRouteVariables } from './typings'
+import { FormErrors, SaveRouteVariables } from './typings'
 
 interface ComponentProps {
   initialData: RouteFormData
@@ -216,29 +217,6 @@ class FormContainer extends Component<Props, State> {
         uuid,
       } = this.state.data
 
-      const getObjectJson = (
-        dateInfo: { date: Date; to: Date; from: Date },
-        verb: DateVerbOptions
-      ) => {
-        return JSON.stringify(
-          {
-            between: {
-              from: dateInfo.from,
-              to: dateInfo.to,
-            },
-            from: {
-              from: dateInfo.date,
-            },
-            is: {
-              from: dateInfo.date,
-            },
-            to: {
-              to: dateInfo.date,
-            },
-          }[verb]
-        )
-      }
-
       this.setState({ isLoading: true }, async () => {
         try {
           await onSave({
@@ -255,16 +233,7 @@ class FormContainer extends Component<Props, State> {
                     condition: {
                       allMatches: page.condition.allMatches,
                       id: page.condition.id || undefined,
-                      statements: page.condition.statements.map(
-                        ({ object, subject, verb }) => ({
-                          objectJSON: getObjectJson(
-                            object,
-                            verb as DateVerbOptions
-                          ),
-                          subject,
-                          verb,
-                        })
-                      ),
+                      statements: formatStatements(page.condition.statements),
                     },
                     pageId: page.pageId || undefined,
                     template: page.template,

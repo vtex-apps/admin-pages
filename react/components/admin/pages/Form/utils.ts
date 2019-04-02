@@ -4,11 +4,11 @@ import { indexBy, prop, values } from 'ramda'
 import { ConditionsOperator } from 'vtex.styleguide'
 
 import Routes from '../../../../queries/Routes.graphql'
+import { DateVerbOptions } from '../../../../utils/conditions/typings'
 
 import {
   DateInfoFormat,
   DateStatementFormat,
-  DateVerbOptions,
   DeleteMutationResult,
   QueryData,
   RoutesQuery,
