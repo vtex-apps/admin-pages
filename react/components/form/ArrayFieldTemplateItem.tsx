@@ -55,7 +55,6 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
       showDragHandle,
     } = this.props
 
-
     const title =
       children.props.formData.__editorItemTitle ||
       path(['items', 'properties', '__editorItemTitle', 'default'], schema)
@@ -70,7 +69,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           <div className="flex items-center">
             {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
-              {title ? <SimpleFormattedMessage id={title} /> : 'Item'}
+              <SimpleFormattedMessage
+                id={title || 'pages.admin.pages.form.field.array.item'}
+              />
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">

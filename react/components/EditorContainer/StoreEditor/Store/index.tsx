@@ -6,7 +6,6 @@ interface Props {
 }
 
 const Store: React.FunctionComponent<Props> = ({ iframeWindow }) => {
-  console.log(iframeWindow)
   return (
     <div className="pa7">
       <StoreForm />

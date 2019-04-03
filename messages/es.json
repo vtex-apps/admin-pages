@@ -11,6 +11,7 @@
   "pages.admin.pages.form.field.login": "Requiere autenticación",
   "pages.admin.pages.form.field.path": "URL",
   "pages.admin.pages.form.field.title": "Título",
+  "pages.admin.pages.form.field.array.item": "Ítem",
   "pages.admin.pages.form.save.error": "Error: no se pudo guardar la ruta.",
   "pages.admin.pages.form.save.success": "Guardado con éxito.",
   "pages.admin.pages.form.templates.conditional.addButton": "Añadir template condicional",
@@ -105,12 +106,10 @@
   "pages.editor.configuration.tag.subcategory": "Subcategoría: {id}",
   "pages.editor.configuration.tag.template": "Este template",
   "pages.editor.container.editpath.label": "URL de la página",
-  "pages.editor.info.page": "Página",
-  "pages.editor.info.title": "Informaciones de la Página",
-  "pages.editor.store.button.settings.title": "Tienda",
-  "pages.editor.store.button.theme.title": "Personalizar",
-  "pages.editor.store.button.template.title": "Modelos",
   "pages.editor.store.button.back.title": "Volver al editor",
+  "pages.editor.store.button.settings.title": "Tienda",
+  "pages.editor.store.button.template.title": "Modelos",
+  "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.settings.error.title": "Algo salió mal",
   "pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda."
 }

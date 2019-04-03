@@ -11,6 +11,7 @@
   "pages.admin.pages.form.field.login": "Requer autenticação",
   "pages.admin.pages.form.field.path": "URL",
   "pages.admin.pages.form.field.title": "Título",
+  "pages.admin.pages.form.field.array.item": "Item",
   "pages.admin.pages.form.save.error": "Erro ao salvar rota.",
   "pages.admin.pages.form.save.success": "Sucesso",
   "pages.admin.pages.form.templates.conditional.addButton": "Adicionar template condicional",
@@ -105,12 +106,10 @@
   "pages.editor.configuration.tag.subcategory": "Subcategoria: {id}",
   "pages.editor.configuration.tag.template": "Este template",
   "pages.editor.container.editpath.label": "URL da página",
-  "pages.editor.info.page": "Página",
-  "pages.editor.info.title": "Informações da Página",
-  "pages.editor.store.button.settings.title": "Loja",
-  "pages.editor.store.button.theme.title": "Personalizar",
-  "pages.editor.store.button.template.title": "Templates",
   "pages.editor.store.button.back.title": "Voltar para editor",
+  "pages.editor.store.button.settings.title": "Loja",
+  "pages.editor.store.button.template.title": "Templates",
+  "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.settings.error.title": "Algo deu errado",
   "pages.editor.store.settings.error": "Não foi possível carregar as informações da loja."
 }
