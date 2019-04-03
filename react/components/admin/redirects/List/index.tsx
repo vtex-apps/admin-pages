@@ -43,6 +43,10 @@ class List extends Component<Props, State> {
   }
 
   public componentDidMount() {
+    const toolbar = document.getElementById('toolbar')
+    if (toolbar) {
+      toolbar.style.cssText = 'justify-content: flex-end;' // ugly-hack to align toolbar to the right when there is no search bar
+    }
     this.context.stopLoading()
   }
 
@@ -72,17 +76,57 @@ class List extends Component<Props, State> {
         </div>
       </EmptyState>
     ) : (
-      <Fragment>
-        <div className="flex justify-end mb4">
-          <CreateButton onClick={this.openNewItem} />
-        </div>
-        <Table
-          fullWidth
-          items={items}
-          onRowClick={this.viewItem}
-          schema={schema}
-        />
-      </Fragment>
+      <Table
+        fullWidth
+        items={items}
+        onRowClick={this.viewItem}
+        schema={schema}
+        toolbar={{
+          density: {
+            buttonLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.line-density.label',
+            }),
+            highOptionLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.line-density.high',
+            }),
+            lowOptionLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.line-density.low',
+            }),
+            mediumOptionLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.line-density.medium',
+            }),
+          },
+          download: {
+            handleCallback: () => alert('Callback()'),
+            label: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.export',
+            }),
+          },
+          fields: {
+            hideAllLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.fields.hide-all',
+            }),
+            label: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.fields.label',
+            }),
+            showAllLabel: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.fields.show-all',
+            }),
+          },
+          newLine: {
+            handleCallback: () => alert('handle new line callback'),
+            label: intl.formatMessage({
+              id: 'pages.admin.redirects.button.create',
+            }),
+          },
+          upload: {
+            handleCallback: () => alert('Callback()'),
+            label: intl.formatMessage({
+              id: 'pages.admin.redirects.table.toolbar.import',
+            }),
+          },
+        }}
+      />
     )
   }
 
