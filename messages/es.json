@@ -111,5 +111,9 @@
   "pages.editor.store.button.template.title": "Modelos",
   "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.settings.error.title": "Algo salió mal",
-  "pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda."
+  "pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda.",
+  "pages.editor.store.settings.pwa.error": "No se pudo cargar la configuración de PWA.",
+  "pages.editor.store.settings.pwa.theme_color": "Color del tema",
+  "pages.editor.store.settings.pwa.background_color": "Color de fondo",
+  "pages.editor.store.settings.pwa.start_url": "URL inicial"
 }

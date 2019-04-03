@@ -111,5 +111,9 @@
   "pages.editor.store.button.template.title": "Templates",
   "pages.editor.store.button.theme.title": "Personalizar",
   "pages.editor.store.settings.error.title": "Algo deu errado",
-  "pages.editor.store.settings.error": "Não foi possível carregar as informações da loja."
+  "pages.editor.store.settings.error": "Não foi possível carregar as informações da loja.",
+  "pages.editor.store.settings.pwa.error": "Não foi possível carregar os dados de PWA.",
+  "pages.editor.store.settings.pwa.theme_color": "Cor do tema",
+  "pages.editor.store.settings.pwa.background_color": "Cor de fundo",
+  "pages.editor.store.settings.pwa.start_url": "URL inicial"
 }
