@@ -45,7 +45,7 @@
   "pages.admin.redirects.emptyState": "Nenhum redirecionamento criado.",
   "pages.admin.redirects.form.button.back": "Voltar",
   "pages.admin.redirects.form.button.cancel": "Cancelar",
-  "pages.admin.redirects.form.button.create": "Criar",
+  "pages.admin.redirects.form.button.save": "Salvar",
   "pages.admin.redirects.form.button.remove": "Remover",
   "pages.admin.redirects.form.datePicker.title": "Data de fim",
   "pages.admin.redirects.form.modal.text": "Tem certeza de que deseja remover este redirecionamento?",

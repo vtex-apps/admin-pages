@@ -45,7 +45,7 @@
   "pages.admin.redirects.emptyState": "No redirects created.",
   "pages.admin.redirects.form.button.back": "Back",
   "pages.admin.redirects.form.button.cancel": "Cancel",
-  "pages.admin.redirects.form.button.create": "Create",
+  "pages.admin.redirects.form.button.save": "Save",
   "pages.admin.redirects.form.button.remove": "Remove",
   "pages.admin.redirects.form.datePicker.title": "End date",
   "pages.admin.redirects.form.modal.text": "Are you sure you want to remove this redirect?",

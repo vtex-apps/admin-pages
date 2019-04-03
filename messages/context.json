@@ -45,7 +45,7 @@
   "pages.admin.redirects.emptyState": "pages.admin.redirects.emptyState",
   "pages.admin.redirects.form.button.back": "pages.admin.redirects.form.button.back",
   "pages.admin.redirects.form.button.cancel": "pages.admin.redirects.form.button.cancel",
-  "pages.admin.redirects.form.button.create": "pages.admin.redirects.form.button.create",
+  "pages.admin.redirects.form.button.save": "pages.admin.redirects.form.button.save",
   "pages.admin.redirects.form.button.remove": "pages.admin.redirects.form.button.remove",
   "pages.admin.redirects.form.datePicker.title": "pages.admin.redirects.form.datePicker.title",
   "pages.admin.redirects.form.modal.text": "pages.admin.redirects.form.modal.text",
