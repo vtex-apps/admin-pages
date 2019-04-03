@@ -60,7 +60,7 @@ class ArrayFieldTemplate extends Component<
 
     return (
       <Fragment>
-        {title ? <SimpleFormattedMessage id={title} /> : 'List'}
+        {title && <SimpleFormattedMessage id={title} />}
         <ArrayList
           items={items}
           sorting={sorting}

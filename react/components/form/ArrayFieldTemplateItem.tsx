@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import { path } from 'ramda'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
