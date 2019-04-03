@@ -5,7 +5,7 @@ export function tryParseJson(str: string): { [k: string]: any } {
       parsed = JSON.parse(str)
     }
   } catch (e) {
-    console.log(e)
+    console.error(e)
   }
   return parsed
 }

@@ -13,14 +13,14 @@ const Mode = ({ editor, mode }: Props) => {
     case 'theme':
       return <Styles iframeWindow={editor.iframeWindow} />
     case 'settings':
-      return <Store iframeWindow={editor.iframeWindow} />
+      return <Store />
   }
 }
 
 const StoreEditor: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div
-      className="mr5 bg-base ba b--muted-4 br3"
+      className="h-100 mr5 bg-base ba b--muted-4 br3"
       style={{
         minWidth: '31rem',
         width: '31rem',
