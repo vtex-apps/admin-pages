@@ -108,5 +108,8 @@
   "pages.editor.store.button.back.title": "pages.editor.store.button.back.title",
   "pages.editor.store.button.settings.title": "pages.editor.store.button.settings.title",
   "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
-  "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title"
+  "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title",
+  "pages.editor.store.button.back.title": "Back to editor",
+  "pages.editor.store.settings.error.title": "Something went wrong",
+  "pages.editor.store.settings.error": "Couldn't load store settings."
 }

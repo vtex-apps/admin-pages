@@ -11,6 +11,7 @@
   "pages.admin.pages.form.field.login": "Requires authentication",
   "pages.admin.pages.form.field.path": "URL",
   "pages.admin.pages.form.field.title": "Title",
+  "pages.admin.pages.form.field.array.item": "Item",
   "pages.admin.pages.form.save.error": "Error: route could not be saved.",
   "pages.admin.pages.form.save.success": "Success",
   "pages.admin.pages.form.templates.conditional.addButton": "Add conditional template",
@@ -106,7 +107,9 @@
   "pages.editor.configuration.tag.template": "This template",
   "pages.editor.container.editpath.label": "Page URL",
   "pages.editor.store.button.back.title": "Back to editor",
-  "pages.editor.store.button.settings.title": "Settings",
-  "pages.editor.store.button.template.title": "Templates",
-  "pages.editor.store.button.theme.title": "Customize"
+  "pages.editor.store.button.settings.title": "Store",
+  "pages.editor.store.button.template.title": "Template",
+  "pages.editor.store.button.theme.title": "Customize",
+  "pages.editor.store.settings.error.title": "Something went wrong",
+  "pages.editor.store.settings.error": "Couldn't load store settings."
 }

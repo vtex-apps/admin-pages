@@ -36,6 +36,7 @@ declare module 'vtex.styleguide' {
   export interface ToastConsumerFunctions {
     showToast: (a: ShowToastOptions | string) => void
     hideToast: () => void
+    toastState: any
   }
   interface ToastConsumerProps {
     children: (mutations: ToastConsumerFunctions) => React.ReactNode
@@ -170,5 +171,6 @@ declare module 'vtex.styleguide' {
   export const Tag: ComponentType<any>
   export class ToastConsumer extends Component<ToastConsumerProps> {}
   export class ToastProvider extends Component<ToastProviderProps> {}
+  export const ToastContext: React.ContextType<ToastConsumerFunctions>
   export const Toggle: ComponentType<any>
 }

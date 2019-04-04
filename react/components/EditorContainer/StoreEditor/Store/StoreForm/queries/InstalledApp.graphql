@@ -1,0 +1,9 @@
+query installedApp($slug: String!) {
+  installedApp(slug: $slug) {
+    slug
+    name
+    vendor
+    version
+    settings
+  }
+}

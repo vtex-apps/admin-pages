@@ -1,0 +1,11 @@
+query availableApp($id: String!) {
+  availableApp(id: $id) {
+    id
+    title
+    installed
+    linked
+    installedVersion
+    settingsSchema
+    settingsUiSchema
+  }
+}

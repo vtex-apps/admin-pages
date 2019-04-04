@@ -1,3 +1,4 @@
+import { path } from 'ramda'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
@@ -55,7 +56,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
 
     const title =
       children.props.formData.__editorItemTitle ||
-      schema.items.properties.__editorItemTitle.default
+      path(['items', 'properties', '__editorItemTitle', 'default'], schema)
 
     return (
       <div
@@ -67,7 +68,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           <div className="flex items-center">
             {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
-              <SimpleFormattedMessage id={title} />
+              <SimpleFormattedMessage
+                id={title || 'pages.admin.pages.form.field.array.item'}
+              />
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">

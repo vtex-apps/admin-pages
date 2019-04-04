@@ -1,0 +1,5 @@
+mutation saveAppSettings($app: String, $version: String, $settings: String) {
+  saveAppSettings(app: $app, version: $version, settings: $settings) {
+    message
+  }
+}
