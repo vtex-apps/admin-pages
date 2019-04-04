@@ -51,7 +51,7 @@ class Form extends Component<Props, State> {
     super(props)
 
     this.isEditingRedirect = props.initialData.id !== NEW_REDIRECT_ID
-    console.log(props)
+
     this.state = {
       data: props.initialData,
       isLoading: false,

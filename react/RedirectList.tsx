@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Query, QueryResult } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
-import { Box, Pagination } from 'vtex.styleguide'
+import { Box, Pagination, ToastConsumer } from 'vtex.styleguide'
 
 import {
   PAGINATION_START,
@@ -71,44 +71,51 @@ class RedirectList extends Component<Props, State> {
             to: PAGINATION_STEP,
           }}
         >
-          {({ data, fetchMore, loading }) => (
+          {({ data, fetchMore, loading, refetch }) => (
             <>
               {loading ? (
                 <Loader />
               ) : (
-                <Box>
-                  <List
-                    from={paginationFrom}
-                    items={
-                      data
-                        ? data.redirects.redirects.slice(
-                            paginationFrom,
-                            paginationTo
-                          )
-                        : []
-                    }
-                    to={paginationTo}
-                  />
-                  {data && data.redirects.total > 0 && (
-                    <Pagination
-                      currentItemFrom={paginationFrom + 1}
-                      currentItemTo={paginationTo}
-                      onNextClick={this.getGoToNextPage(
-                        data.redirects.redirects.length,
-                        data.redirects.total,
-                        fetchMore
+                <ToastConsumer>
+                  {({ showToast }) => (
+                    <Box>
+                      <List
+                        from={paginationFrom}
+                        items={data.redirects.redirects.slice(
+                          paginationFrom,
+                          paginationTo
+                        )}
+                        refetch={() => {
+                          refetch({
+                            from: PAGINATION_START,
+                            to: PAGINATION_STEP,
+                          })
+                        }}
+                        to={paginationTo}
+                        showToast={showToast}
+                      />
+                      {data.redirects.total > 0 && (
+                        <Pagination
+                          currentItemFrom={paginationFrom + 1}
+                          currentItemTo={paginationTo}
+                          onNextClick={this.getGoToNextPage(
+                            data.redirects.redirects.length,
+                            data.redirects.total,
+                            fetchMore
+                          )}
+                          onPrevClick={this.goToPrevPage}
+                          textOf={intl.formatMessage({
+                            id: 'pages.admin.redirects.pagination.of',
+                          })}
+                          textShowRows={intl.formatMessage({
+                            id: 'pages.admin.redirects.pagination.showRows',
+                          })}
+                          totalItems={data.redirects.total}
+                        />
                       )}
-                      onPrevClick={this.goToPrevPage}
-                      textOf={intl.formatMessage({
-                        id: 'pages.admin.redirects.pagination.of',
-                      })}
-                      textShowRows={intl.formatMessage({
-                        id: 'pages.admin.redirects.pagination.showRows',
-                      })}
-                      totalItems={data.redirects.total}
-                    />
+                    </Box>
                   )}
-                </Box>
+                </ToastConsumer>
               )}
             </>
           )}

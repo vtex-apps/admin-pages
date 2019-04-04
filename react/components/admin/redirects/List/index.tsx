@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { EmptyState, Table, Tag } from 'vtex.styleguide'
+import { EmptyState, Table, Tag, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
+
+import SaveRedirectFromFile from '../../../../queries/SaveRedirectFromFile.graphql'
 
 import CreateButton from './CreateButton'
 
@@ -14,6 +16,10 @@ interface CustomProps {
   from: number
   items: Redirect[]
   to: number
+  saveRedirectFromFile: MutationFn<{ file: any }>
+  refetch: () => void
+  showToast: ToastConsumerFunctions['showToast']
+  loading: boolean
 }
 
 export type Props = CustomProps &
@@ -25,6 +31,7 @@ interface State {
     items: Redirect[]
     properties: object
   }
+  isSendingFile: boolean
 }
 
 class List extends Component<Props, State> {
@@ -34,10 +41,13 @@ class List extends Component<Props, State> {
     stopLoading: PropTypes.func.isRequired,
   }
 
+  private fileInputRef: React.RefObject<HTMLInputElement> = React.createRef()
+
   constructor(props: Props, context: RenderContext) {
     super(props)
 
     this.state = {
+      isSendingFile: false,
       schema: this.getSchema(props.items, context.culture.locale),
     }
   }
@@ -60,8 +70,8 @@ class List extends Component<Props, State> {
   }
 
   public render() {
-    const { intl } = this.props
-    const { schema } = this.state
+    const { intl, loading } = this.props
+    const { isSendingFile, schema } = this.state
 
     const items = schema.items
 
@@ -76,58 +86,97 @@ class List extends Component<Props, State> {
         </div>
       </EmptyState>
     ) : (
-      <Table
-        fullWidth
-        items={items}
-        onRowClick={this.viewItem}
-        schema={schema}
-        toolbar={{
-          density: {
-            buttonLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.line-density.label',
-            }),
-            highOptionLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.line-density.high',
-            }),
-            lowOptionLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.line-density.low',
-            }),
-            mediumOptionLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.line-density.medium',
-            }),
-          },
-          download: {
-            handleCallback: () => alert('Callback()'),
-            label: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.export',
-            }),
-          },
-          fields: {
-            hideAllLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.fields.hide-all',
-            }),
-            label: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.fields.label',
-            }),
-            showAllLabel: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.fields.show-all',
-            }),
-          },
-          newLine: {
-            handleCallback: () => alert('handle new line callback'),
-            label: intl.formatMessage({
-              id: 'pages.admin.redirects.button.create',
-            }),
-          },
-          upload: {
-            handleCallback: () => alert('Callback()'),
-            label: intl.formatMessage({
-              id: 'pages.admin.redirects.table.toolbar.import',
-            }),
-          },
-        }}
-      />
+      <>
+        <Table
+          fullWidth
+          items={items}
+          loading={isSendingFile || loading}
+          onRowClick={this.viewItem}
+          schema={schema}
+          toolbar={{
+            density: {
+              buttonLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.line-density.label',
+              }),
+              highOptionLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.line-density.high',
+              }),
+              lowOptionLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.line-density.low',
+              }),
+              mediumOptionLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.line-density.medium',
+              }),
+            },
+            download: {
+              handleCallback: () => alert('Callback()'),
+              label: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.export',
+              }),
+            },
+            fields: {
+              hideAllLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.fields.hide-all',
+              }),
+              label: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.fields.label',
+              }),
+              showAllLabel: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.fields.show-all',
+              }),
+            },
+            newLine: {
+              handleCallback: this.openNewItem,
+              label: intl.formatMessage({
+                id: 'pages.admin.redirects.button.create',
+              }),
+            },
+            upload: {
+              handleCallback: () => {
+                if (this.fileInputRef.current) {
+                  this.fileInputRef.current.click()
+                }
+              },
+              label: intl.formatMessage({
+                id: 'pages.admin.redirects.table.toolbar.import',
+              }),
+            },
+          }}
+        />
+        <input
+          className="dn"
+          ref={this.fileInputRef}
+          type="file"
+          onChange={this.handleSendFile}
+        />
+      </>
     )
+  }
+
+  private handleSendFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0]
+    if (file) {
+      this.setState({ isSendingFile: true }, async () => {
+        try {
+          await this.props.saveRedirectFromFile({ variables: { file } })
+          await this.props.refetch()
+          this.props.showToast({
+            horizontalPosition: 'right',
+            message: 'Success!',
+          })
+        } catch (e) {
+          this.props.showToast({
+            horizontalPosition: 'right',
+            message: 'Fail to save :(',
+          })
+          console.error(e)
+        }
+        this.setState({ isSendingFile: false })
+        if (this.fileInputRef.current) {
+          this.fileInputRef.current.value = ''
+        }
+      })
+    }
   }
 
   private getSchema = (items: Redirect[], locale: string) => {
@@ -226,5 +275,6 @@ class List extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  withRuntimeContext
+  withRuntimeContext,
+  graphql(SaveRedirectFromFile, { name: 'saveRedirectFromFile' })
 )(List)
