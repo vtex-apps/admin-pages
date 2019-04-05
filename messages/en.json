@@ -139,5 +139,12 @@
   "pages.editor.store.settings.pwa.update-manifest.success": "Manifest successfuly updated!",
   "pages.editor.store.settings.pwa.update-manifest.error": "Something wrong occurred while updating the manifest…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "App icon successfuly updated!",
-  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon…"
+  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon…",
+  "pages.editor.styles.header.title": "Styles",
+  "pages.editor.styles.new-button.text": "New",
+  "pages.editor.styles.new.defaultName": "Untitled",
+  "pages.editor.styles.select.save-success": "Style '{name}' was selected.",
+  "pages.editor.styles.select.delete-success": "Style '{name}' was deleted.",
+  "pages.editor.styles.select.delete.toast.undo": "Undo",
+  "pages.editor.styles.duplicate.defaultName": "Copy of ${name}"
 }

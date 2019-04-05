@@ -139,5 +139,12 @@
   "pages.editor.store.settings.pwa.update-manifest.success": "Manifesto atualizado com sucesso!",
   "pages.editor.store.settings.pwa.update-manifest.error": "Algo errado ocorreu ao atualizar o manifesto…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "Ícone do aplicativo atualizado com sucesso!",
-  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo errado ocorreu ao atualizar o ícone do aplicativo…"
+  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo errado ocorreu ao atualizar o ícone do aplicativo…",
+  "pages.editor.styles.header.title": "Estilos",
+  "pages.editor.styles.new-button.text": "Novo",
+  "pages.editor.styles.new.defaultName": "Sem título",
+  "pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
+  "pages.editor.styles.select.delete-success": "Estilo '{name}' foi deletado.",
+  "pages.editor.styles.select.delete.toast.undo": "Desfazer",
+  "pages.editor.styles.duplicate.defaultName": "Cópia de ${name}"
 }
