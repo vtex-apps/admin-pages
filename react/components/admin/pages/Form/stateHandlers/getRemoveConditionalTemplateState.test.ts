@@ -34,7 +34,7 @@ describe('getRemoveConditionalTemplateState', () => {
   })
 
   it(`should clear form errors`, () => {
-    const mockState = {
+    const mockState = ({
       data: {
         pages: [
           {
@@ -50,7 +50,7 @@ describe('getRemoveConditionalTemplateState', () => {
       formErrors: {
         title: 'oi',
       },
-    } as State
+    } as unknown) as State
 
     expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
       expect.objectContaining({
