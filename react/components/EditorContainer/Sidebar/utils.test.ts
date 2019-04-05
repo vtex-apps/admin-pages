@@ -235,6 +235,38 @@ describe('getIsSitewide', () => {
       render: 'server',
       track: [],
     },
+    'store.home/$around_homeWrapper': {
+      after: [],
+      around: [],
+      before: [],
+      blockId: 'vtex.store@2.x:homeWrapper',
+      blocks: [],
+      component: 'vtex.store@2.11.0/HomeWrapper',
+      content: {},
+      context: {},
+      implementationIndex: 0,
+      implements: [''],
+      preview: null,
+      props: {},
+      render: 'server',
+      track: [],
+    },
+    'store.home/$before_header.full': {
+      after: [],
+      around: [],
+      before: [],
+      blockId: 'vtex.store-theme@2.x:header.full',
+      blocks: [],
+      component: 'vtex.store-header@2.11.0/index',
+      content: {},
+      context: {},
+      implementationIndex: 0,
+      implements: [''],
+      preview: null,
+      props: {},
+      render: 'server',
+      track: [],
+    },
     'store.home/carousel#home': {
       after: [],
       around: [],
@@ -256,6 +288,16 @@ describe('getIsSitewide', () => {
 
   it('should return true for AFTER', () => {
     const mockEditTreePath = 'store.home/$after_footer'
+    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
+  })
+
+  it('should return true for AROUND', () => {
+    const mockEditTreePath = 'store.home/$around_homeWrapper'
+    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
+  })
+
+  it('should return true for BEFORE', () => {
+    const mockEditTreePath = 'store.home/$before_header.full'
     expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
   })
 

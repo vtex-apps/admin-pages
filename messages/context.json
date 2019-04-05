@@ -11,6 +11,7 @@
   "pages.admin.pages.form.field.login": "pages.admin.pages.form.field.login",
   "pages.admin.pages.form.field.path": "pages.admin.pages.form.field.path",
   "pages.admin.pages.form.field.title": "pages.admin.pages.form.field.title",
+  "pages.admin.pages.form.field.array.item": "pages.admin.pages.form.field.array.item",
   "pages.admin.pages.form.save.error": "pages.admin.pages.form.save.error",
   "pages.admin.pages.form.save.success": "pages.admin.pages.form.save.success",
   "pages.admin.pages.form.templates.conditional.addButton": "pages.admin.pages.form.templates.conditional.addButton",
@@ -109,7 +110,6 @@
   "pages.editor.store.button.settings.title": "pages.editor.store.button.settings.title",
   "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
   "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title",
-  "pages.editor.store.button.back.title": "Back to editor",
   "pages.editor.store.settings.error.title": "Something went wrong",
   "pages.editor.store.settings.error": "Couldn't load store settings."
 }
