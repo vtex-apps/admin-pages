@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- **`EditorContainer`**
+  - Add the PWA settings to the `Store` settings.
+
 ## [3.0.0-beta.6] - 2019-04-04
 
 ### Added
