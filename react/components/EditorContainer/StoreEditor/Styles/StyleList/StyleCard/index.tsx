@@ -6,12 +6,13 @@ import Colors from '../../components/Colors'
 import Typography from '../../components/Typography'
 
 type StyleFunction = (style: Style) => void
+type StyleMutation = (style: Style) => Promise<unknown>
 
 interface Props {
-  deleteStyle: StyleFunction
-  duplicateStyle: StyleFunction
+  deleteStyle: StyleMutation
+  duplicateStyle: StyleMutation
   intl: InjectedIntl
-  selectStyle: StyleFunction
+  selectStyle: StyleMutation
   startEditing: StyleFunction
   style: Style
 }

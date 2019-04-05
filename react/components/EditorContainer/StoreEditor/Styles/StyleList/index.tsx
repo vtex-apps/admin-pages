@@ -1,5 +1,5 @@
 import { find, zip } from 'ramda'
-import React from 'react'
+import React, { useState } from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { ButtonWithIcon, Spinner, ToastConsumer } from 'vtex.styleguide'
 
@@ -37,6 +37,8 @@ const StyleList: React.FunctionComponent<Props> = ({
   startEditing,
   setStyleAsset,
 }) => {
+  const [isCreatingStyle, setIsCreatingStyle] = useState(false)
+
   return (
     <Operations>
       {({
@@ -58,91 +60,167 @@ const StyleList: React.FunctionComponent<Props> = ({
             <Spinner />
           </div>
         ) : (
-          <section className="flex flex-column ph3 h-100 overflow-x-hidden">
-            <header className="flex justify-between pv5 pl5 items-center flex-shrink-0 bg-white z-1">
-              <h1 className="f3 fw4">
-                {intl.formatMessage({ id: 'pages.editor.styles.header.title' })}
-              </h1>
-              <ButtonWithIcon
-                icon={<CreateNewIcon />}
-                variation="tertiary"
-                onClick={() =>
-                  createStyle({
-                    variables: {
-                      name: intl.formatMessage({
-                        id: 'pages.editor.styles.new.defaultName',
-                      }),
-                    },
-                  })
-                }
-              >
-                {intl.formatMessage({
-                  id: 'pages.editor.styles.new-button.text',
-                })}
-              </ButtonWithIcon>
-            </header>
-            <div className="flex flex-column flex-grow-1 overflow-y-auto">
-              <ToastConsumer>
-                {({ showToast }) =>
-                  listStyles &&
-                  listStyles.map(style => (
-                    <StyleCard
-                      key={style.id}
-                      style={style}
-                      selectStyle={({ id, name }: Style) =>
-                        saveSelectedStyle({ variables: { id } }).then(() => {
+          <ToastConsumer>
+            {({ showToast }) => (
+              <section className="flex flex-column ph3 h-100 overflow-x-hidden">
+                <header className="flex justify-between pv5 pl5 items-center flex-shrink-0 bg-white z-1">
+                  <h1 className="f3 fw4">
+                    {intl.formatMessage({
+                      id: 'pages.editor.styles.header.title',
+                    })}
+                  </h1>
+                  <ButtonWithIcon
+                    icon={<CreateNewIcon />}
+                    variation="tertiary"
+                    isLoading={isCreatingStyle}
+                    onClick={() => {
+                      setIsCreatingStyle(true)
+                      createStyle({
+                        variables: {
+                          name: intl.formatMessage({
+                            id: 'pages.editor.styles.new.defaultName',
+                          }),
+                        },
+                      })
+                        .then(() => {
                           showToast({
                             horizontalPosition: 'right',
-                            message: intl.formatMessage(
-                              { id: 'pages.editor.styles.select.save-success' },
-                              { name }
-                            ),
+                            message: intl.formatMessage({
+                              id: 'pages.editor.styles.new.success',
+                            }),
                           })
                         })
-                      }
-                      deleteStyle={({ config, name, id }: Style) => {
-                        deleteStyle({ variables: { id } }).then(() => {
+                        .catch(e => {
+                          console.error(e)
                           showToast({
-                            action: {
-                              label: intl.formatMessage({
-                                id:
-                                  'pages.editor.styles.select.delete.toast.undo',
-                              }),
-                              onClick: () => {
-                                createStyle({ variables: { name, config } })
-                              },
+                            horizontalPosition: 'right',
+                            message: intl.formatMessage({
+                              id: 'pages.editor.styles.new.fail',
+                            }),
+                          })
+                        })
+                        .finally(() => setIsCreatingStyle(false))
+                    }}
+                  >
+                    {intl.formatMessage({
+                      id: 'pages.editor.styles.new-button.text',
+                    })}
+                  </ButtonWithIcon>
+                </header>
+                <div className="flex flex-column flex-grow-1 overflow-y-auto">
+                  {listStyles &&
+                    listStyles.map(style => (
+                      <StyleCard
+                        key={style.id}
+                        style={style}
+                        selectStyle={({ id, name }: Style) =>
+                          saveSelectedStyle({ variables: { id } })
+                            .then(() => {
+                              showToast({
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage(
+                                  {
+                                    id:
+                                      'pages.editor.styles.select.save-success',
+                                  },
+                                  { name }
+                                ),
+                              })
+                            })
+                            .catch(e => {
+                              console.error(e)
+                              showToast({
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage(
+                                  {
+                                    id: 'pages.editor.styles.select.save-fail',
+                                  },
+                                  { name }
+                                ),
+                              })
+                            })
+                        }
+                        deleteStyle={({ config, name, id }: Style) =>
+                          deleteStyle({ variables: { id } })
+                            .then(() => {
+                              showToast({
+                                action: {
+                                  label: intl.formatMessage({
+                                    id:
+                                      'pages.editor.styles.select.delete.toast.undo',
+                                  }),
+                                  onClick: () => {
+                                    createStyle({ variables: { name, config } })
+                                  },
+                                },
+                                duration: Infinity,
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage(
+                                  {
+                                    id:
+                                      'pages.editor.styles.select.delete-success',
+                                  },
+                                  { name }
+                                ),
+                              })
+                            })
+                            .catch(e => {
+                              console.error(e)
+                              showToast({
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage({
+                                  id:
+                                    'pages.editor.styles.card.menu.delete.fail',
+                                }),
+                              })
+                            })
+                        }
+                        duplicateStyle={({ name, config }: Style) =>
+                          createStyle({
+                            variables: {
+                              config,
+                              name: intl.formatMessage(
+                                {
+                                  id:
+                                    'pages.editor.styles.duplicate.defaultName',
+                                },
+                                { name }
+                              ),
                             },
-                            duration: Infinity,
-                            horizontalPosition: 'right',
-                            message: intl.formatMessage(
-                              {
-                                id: 'pages.editor.styles.select.delete-success',
-                              },
-                              { name }
-                            ),
                           })
-                        })
-                      }}
-                      duplicateStyle={({ name, config }: Style) =>
-                        createStyle({
-                          variables: {
-                            name: intl.formatMessage(
-                              {
-                                id: 'pages.editor.styles.duplicate.defaultName',
-                              },
-                              { name }
-                            ),
-                            config,
-                          },
-                        })
-                      }
-                      startEditing={startEditing}
-                    />
-                  ))
-                }
-              </ToastConsumer>
-            </div>
-          </section>
+                            .then(() => {
+                              showToast({
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage(
+                                  {
+                                    id:
+                                      'pages.editor.styles.card.menu.duplicate.success',
+                                  },
+                                  { name }
+                                ),
+                              })
+                            })
+                            .catch(e => {
+                              console.error(e)
+                              showToast({
+                                horizontalPosition: 'right',
+                                message: intl.formatMessage(
+                                  {
+                                    id:
+                                      'pages.editor.styles.card.menu.duplicate.fail',
+                                  },
+                                  { name }
+                                ),
+                              })
+                            })
+                        }
+                        startEditing={startEditing}
+                      />
+                    ))}
+                </div>
+              </section>
+            )}
+          </ToastConsumer>
         )
       }}
     </Operations>

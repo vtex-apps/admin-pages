@@ -143,7 +143,10 @@
   "pages.editor.styles.header.title": "pages.editor.styles.header.title",
   "pages.editor.styles.new-button.text": "pages.editor.styles.new-button.text",
   "pages.editor.styles.new.defaultName": "pages.editor.styles.new.defaultName",
+  "pages.editor.styles.new.success": "pages.editor.styles.new.success",
+  "pages.editor.styles.new.fail": "pages.editor.styles.new.fail",
   "pages.editor.styles.select.save-success": "pages.editor.styles.select.save-success",
+  "pages.editor.styles.select.save-fail": "pages.editor.styles.select.save-success",
   "pages.editor.styles.select.delete-success": "pages.editor.styles.select.delete-success",
   "pages.editor.styles.select.delete.toast.undo": "pages.editor.styles.select.delete.toast.undo",
   "pages.editor.styles.duplicate.defaultName": "pages.editor.styles.duplicate.defaultName",
@@ -152,6 +155,9 @@
   "pages.editor.styles.card.menu.edit": "pages.editor.styles.card.menu.edit",
   "pages.editor.styles.card.menu.select": "pages.editor.styles.card.menu.select",
   "pages.editor.styles.card.menu.duplicate": "pages.editor.styles.card.menu.duplicate",
+  "pages.editor.styles.card.menu.duplicate.success": "pages.editor.styles.card.menu.duplicate.success",
+  "pages.editor.styles.card.menu.duplicate.fail": "pages.editor.styles.card.menu.duplicate.fail",
   "pages.editor.styles.card.menu.delete": "pages.editor.styles.card.menu.delete",
+  "pages.editor.styles.card.menu.delete.fail": "pages.editor.styles.card.menu.delete.fail",
   "pages.editor.styles.card.name.app-subtitle": "pages.editor.styles.card.name.app-subtitle"
 }

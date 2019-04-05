@@ -143,7 +143,10 @@
   "pages.editor.styles.header.title": "Estilos",
   "pages.editor.styles.new-button.text": "Novo",
   "pages.editor.styles.new.defaultName": "Sem título",
+  "pages.editor.styles.new.success": "Novo estilo criado.",
+  "pages.editor.styles.new.fail": "Erro ao criar novo estilo.",
   "pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
+  "pages.editor.styles.select.save-fail": "Erro ao selecionar estilo '{name}'.",
   "pages.editor.styles.select.delete-success": "Estilo '{name}' foi deletado.",
   "pages.editor.styles.select.delete.toast.undo": "Desfazer",
   "pages.editor.styles.duplicate.defaultName": "Cópia de ${name}",
@@ -152,6 +155,9 @@
   "pages.editor.styles.card.menu.edit": "Editar",
   "pages.editor.styles.card.menu.select": "Selecionar como estilo da loja",
   "pages.editor.styles.card.menu.duplicate": "Duplicar",
+  "pages.editor.styles.card.menu.duplicate.success": "Estilo '{name}' duplicado com sucesso.",
+  "pages.editor.styles.card.menu.duplicate.fail": "Erro ao duplicar estilo '{name}'.",
   "pages.editor.styles.card.menu.delete": "Deletar",
+  "pages.editor.styles.card.menu.delete.fail": "Erro ao deletar estilo.",
   "pages.editor.styles.card.name.app-subtitle": "criado por {app}"
 }
