@@ -1,6 +1,7 @@
 import { has, path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
+import { getBlockPath } from '../../../utils/blocks'
 import { SidebarComponent } from './typings'
 
 export const generateWarningMessage = (name: string) =>
@@ -104,4 +105,13 @@ export function getComponents(
       name: getComponentSchema(treePath).title!,
       treePath,
     }))
+}
+
+export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
+  const blockPath = getBlockPath(extensions, editTreePath)
+
+  return (
+    (blockPath && ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
+    false
+  )
 }

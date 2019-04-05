@@ -19,6 +19,8 @@ interface Props {
   onSelect: (configuration: ExtensionConfiguration) => void
   path: string
   title?: string
+  template: string
+  treePath: string
 }
 
 const List: React.FunctionComponent<Props> = ({
@@ -33,6 +35,8 @@ const List: React.FunctionComponent<Props> = ({
   onSelect,
   path,
   title,
+  template,
+  treePath,
 }) => (
   <Fragment>
     <EditorHeader editor={editor} onClose={onClose} title={title} />
@@ -46,8 +50,8 @@ const List: React.FunctionComponent<Props> = ({
                 variables: {
                   contentId: configuration.contentId,
                   pageContext: iframeRuntime.route.pageContext,
-                  template: iframeRuntime.pages[iframeRuntime.page].blockId,
-                  treePath: editor.editTreePath!,
+                  template,
+                  treePath,
                 },
               })
             }}
