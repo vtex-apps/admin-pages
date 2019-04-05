@@ -1,4 +1,5 @@
 import React from 'react'
+import { InjectedIntl, injectIntl } from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
 import Colors from '../../components/Colors'
@@ -9,6 +10,7 @@ type StyleFunction = (style: Style) => void
 interface Props {
   deleteStyle: StyleFunction
   duplicateStyle: StyleFunction
+  intl: InjectedIntl
   selectStyle: StyleFunction
   startEditing: StyleFunction
   style: Style
@@ -17,6 +19,7 @@ interface Props {
 const StyleCard: React.FunctionComponent<Props> = ({
   deleteStyle,
   duplicateStyle,
+  intl,
   selectStyle,
   startEditing,
   style,
@@ -34,20 +37,26 @@ const StyleCard: React.FunctionComponent<Props> = ({
   const createMenuOptions = () => {
     const options = [
       editable && {
-        label: 'Edit',
+        label: intl.formatMessage({ id: 'pages.editor.styles.card.menu.edit' }),
         onClick: () => startEditing(style),
       },
       !selected && {
-        label: 'Select as store style',
+        label: intl.formatMessage({
+          id: 'pages.editor.styles.card.menu.select',
+        }),
         onClick: () => selectStyle(style),
       },
       {
-        label: 'Duplicate',
+        label: intl.formatMessage({
+          id: 'pages.editor.styles.card.menu.duplicate',
+        }),
         onClick: () => duplicateStyle(style),
       },
       !selected &&
         editable && {
-          label: 'Delete',
+          label: intl.formatMessage({
+            id: 'pages.editor.styles.card.menu.delete',
+          }),
           onClick: () => deleteStyle(style),
         },
     ]
@@ -63,12 +72,17 @@ const StyleCard: React.FunctionComponent<Props> = ({
               <span className="mr5 truncate">{name}</span>
               {!editable && (
                 <span className="f7 c-muted-2 truncate">
-                  created by {appId.split('@')[0]}
+                  {intl.formatMessage(
+                    { id: 'pages.editor.styles.card.name.app-subtitle' },
+                    { app: appId.split('@')[0] }
+                  )}
                 </span>
               )}
             </div>
             <ActionMenu
-              label="Actions"
+              label={intl.formatMessage({
+                id: 'pages.editor.styles.card.menu.label',
+              })}
               icon={<IconOptionsDots />}
               hideCaretIcon
               buttonProps={{
@@ -89,7 +103,7 @@ const StyleCard: React.FunctionComponent<Props> = ({
             </div>
             {selected && (
               <Tag bgColor="#F71963" color="#FFFFFF">
-                Current
+                {intl.formatMessage({ id: 'pages.editor.styles.card.current' })}
               </Tag>
             )}
           </div>
@@ -99,4 +113,4 @@ const StyleCard: React.FunctionComponent<Props> = ({
   )
 }
 
-export default StyleCard
+export default injectIntl(StyleCard)

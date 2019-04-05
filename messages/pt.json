@@ -106,7 +106,7 @@
   "pages.editor.configuration.tag.subcategory": "Subcategoria: {id}",
   "pages.editor.configuration.tag.template": "Este template",
   "pages.editor.container.editpath.label": "URL da página",
-  "pages.editor.store.button.back.title": "Voltar para editor",
+  "pages.editor.store.button.back.title": "Voltar para o editor",
   "pages.editor.store.button.settings.title": "Loja",
   "pages.editor.store.button.template.title": "Templates",
   "pages.editor.store.button.theme.title": "Personalizar",
@@ -146,5 +146,12 @@
   "pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
   "pages.editor.styles.select.delete-success": "Estilo '{name}' foi deletado.",
   "pages.editor.styles.select.delete.toast.undo": "Desfazer",
-  "pages.editor.styles.duplicate.defaultName": "Cópia de ${name}"
+  "pages.editor.styles.duplicate.defaultName": "Cópia de ${name}",
+  "pages.editor.styles.card.menu.label": "Ações",
+  "pages.editor.styles.card.current": "Atual",
+  "pages.editor.styles.card.menu.edit": "Editar",
+  "pages.editor.styles.card.menu.select": "Selecionar como estilo da loja",
+  "pages.editor.styles.card.menu.duplicate": "Duplicar",
+  "pages.editor.styles.card.menu.delete": "Deletar",
+  "pages.editor.styles.card.name.app-subtitle": "criado por {app}"
 }

@@ -146,5 +146,12 @@
   "pages.editor.styles.select.save-success": "Estilo '{name}' fue seleccionado.",
   "pages.editor.styles.select.delete-success": "Estilo '{name}' fue eliminado.",
   "pages.editor.styles.select.delete.toast.undo": "Deshacer",
-  "pages.editor.styles.duplicate.defaultName": "Copia de ${name}"
+  "pages.editor.styles.duplicate.defaultName": "Copia de ${name}",
+  "pages.editor.styles.card.menu.label": "Acciones",
+  "pages.editor.styles.card.current": "Actual",
+  "pages.editor.styles.card.menu.edit": "Editar",
+  "pages.editor.styles.card.menu.select": "Seleccionar como estilo de la tienda",
+  "pages.editor.styles.card.menu.duplicate": "Duplicar",
+  "pages.editor.styles.card.menu.delete": "Borrar",
+  "pages.editor.styles.card.name.app-subtitle": "criado por {app}"
 }
