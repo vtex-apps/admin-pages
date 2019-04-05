@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
@@ -26,6 +26,14 @@ const StyleCard: React.FunctionComponent<Props> = ({
   style,
   style: { app: appId, name, selected, editable, config },
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const setIsLoadingWrapper = (fn: () => Promise<any>) => async () => {
+    setIsLoading(true)
+    await fn()
+    setIsLoading(false)
+  }
+
   const {
     action_primary,
     action_secondary,
@@ -45,20 +53,27 @@ const StyleCard: React.FunctionComponent<Props> = ({
         label: intl.formatMessage({
           id: 'pages.editor.styles.card.menu.select',
         }),
-        onClick: () => selectStyle(style),
+        onClick: setIsLoadingWrapper(() => selectStyle(style)),
       },
       {
         label: intl.formatMessage({
           id: 'pages.editor.styles.card.menu.duplicate',
         }),
-        onClick: () => duplicateStyle(style),
+        onClick: setIsLoadingWrapper(() => duplicateStyle(style)),
       },
       !selected &&
         editable && {
           label: intl.formatMessage({
             id: 'pages.editor.styles.card.menu.delete',
           }),
-          onClick: () => deleteStyle(style),
+          onClick: async () => {
+            setIsLoading(true)
+            try {
+              await deleteStyle(style)
+            } catch (e) {
+              setIsLoading(false)
+            }
+          },
         },
     ]
     return options.filter(option => option)
@@ -81,13 +96,11 @@ const StyleCard: React.FunctionComponent<Props> = ({
               )}
             </div>
             <ActionMenu
-              label={intl.formatMessage({
-                id: 'pages.editor.styles.card.menu.label',
-              })}
-              icon={<IconOptionsDots />}
               hideCaretIcon
               buttonProps={{
-                icon: true,
+                icon: <IconOptionsDots />,
+                iconPosition: 'right',
+                isLoading,
                 variation: 'tertiary',
               }}
               options={createMenuOptions()}

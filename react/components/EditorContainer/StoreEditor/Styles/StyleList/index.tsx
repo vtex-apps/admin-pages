@@ -173,6 +173,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     'pages.editor.styles.card.menu.delete.fail',
                                 }),
                               })
+                              throw e
                             })
                         }
                         duplicateStyle={({ name, config }: Style) =>
