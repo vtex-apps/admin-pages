@@ -5,6 +5,7 @@ import { Query } from 'react-apollo'
 import { handleCornerCases } from '../../utils/utils'
 import Manifest from '../queries/Manifest.graphql'
 import Styles from '../queries/Styles.graphql'
+import { ManifestMutationData } from './withPWAMutations'
 
 export interface PWAImage {
   src: string
@@ -12,12 +13,7 @@ export interface PWAImage {
   sizes: string
 }
 
-export interface Manifest {
-  start_url?: string
-  theme_color: string
-  background_color: string
-  display?: string
-  orientation?: string
+export interface Manifest extends ManifestMutationData {
   icons?: PWAImage[]
 }
 
