@@ -152,7 +152,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
 
   return (
     <div className="flex flex-column justify-center">
-      <span className="t-heading-5 db">PWA</span>
+      <span className="t-heading-5 db">
+        <FormattedMessage id="pages.editor.store.settings.pwa.title" />
+      </span>
       <div className="pt2">
         <div className="flex flex-row items-center">
           <span className="t-heading-7 db w-40">
