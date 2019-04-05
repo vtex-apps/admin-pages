@@ -3,10 +3,12 @@ cache:
   directories:
     - "node_modules"
 node_js:
-  - "8"
-before_install: 
+  - "10"
+before_install:
   - cd react
-install: 
+install:
   - npm install
-script: 
-  - npm t
+before_script:
+  - cd..
+script:
+  - ./lint.sh
