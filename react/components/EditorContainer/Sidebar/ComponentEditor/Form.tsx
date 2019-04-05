@@ -1,6 +1,6 @@
 import { equals } from 'ramda'
 import React from 'react'
-import JsonSchemaForm, { FormProps, Widget } from 'react-jsonschema-form'
+import JsonSchemaForm, { FormProps, Widget, WidgetProps } from 'react-jsonschema-form'
 
 import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'

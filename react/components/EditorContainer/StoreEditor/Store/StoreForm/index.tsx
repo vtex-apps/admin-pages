@@ -119,7 +119,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
           ObjectFieldTemplate={ObjectFieldTemplate}
           widgets={widgets}
         >
-          <div className="w-100 mt7 tr">
+          <div className="w-100 tr">
             <Button
               size="small"
               type="submit"

@@ -1,0 +1,9 @@
+mutation updateManifest($icon: Upload!, $iOS: Boolean) {
+  updateManifestIcon(icon: $icon, iOS: $iOS) {
+    icons {
+      src
+      type
+      sizes
+    }
+  }
+}

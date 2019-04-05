@@ -6,7 +6,7 @@ import { handleCornerCases } from '../../utils/utils'
 import Manifest from '../queries/Manifest.graphql'
 import Styles from '../queries/Styles.graphql'
 
-interface PWAImage {
+export interface PWAImage {
   src: string
   type: string
   sizes: string
@@ -54,8 +54,8 @@ const withPWASettings = (
   WrappedComponent: React.ComponentType<ManifestData & any>
 ) => (props: any) => (
   <ManifestQuery query={Manifest}>
-    {handleCornerCases(options, ({ data: manifestData }) => {
-      if (!manifestData.manifest) {
+    {handleCornerCases(options, ({ data: PWAData, ...restPWAQuery }) => {
+      if (!PWAData.manifest) {
         return (
           <StylesQuery query={Styles}>
             {handleCornerCases(options, ({ data: stylesData }) => {
@@ -72,7 +72,8 @@ const withPWASettings = (
               return (
                 <WrappedComponent
                   {...props}
-                  {...manifestData}
+                  {...PWAData}
+                  {...restPWAQuery}
                   manifest={{
                     background_color: color,
                     theme_color: color,
@@ -83,7 +84,7 @@ const withPWASettings = (
           </StylesQuery>
         )
       }
-      return <WrappedComponent {...props} {...manifestData} />
+      return <WrappedComponent {...props} {...PWAData} {...restPWAQuery} />
     })}
   </ManifestQuery>
 )
