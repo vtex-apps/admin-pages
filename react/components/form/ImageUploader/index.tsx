@@ -15,9 +15,10 @@ import ErrorAlert from './ErrorAlert'
 
 import styles from './imageUploader.css'
 
-interface Props extends WidgetProps {
-  disabled: boolean
-  onChange: (pathname: string) => void
+interface Props {
+  disabled?: boolean
+  shouldMutate?: boolean
+  onChange: (pathname: string | null, file: ImageFile) => any
   schema: JSONSchema6
   uploadFile?: MutationFunc
   value: string
@@ -35,6 +36,7 @@ interface MutationData {
 class ImageUploader extends Component<Props, State> {
   public static defaultProps = {
     disabled: false,
+    shouldMutate: true,
     value: '',
   }
 
@@ -137,7 +139,8 @@ class ImageUploader extends Component<Props, State> {
   }
 
   private handleImageDrop = async (acceptedFiles: ImageFile[]) => {
-    const { uploadFile } = this.props as {
+    const { uploadFile, shouldMutate } = this.props as {
+      shouldMutate: boolean
       uploadFile: MutationFunc<MutationData>
     }
 
@@ -145,21 +148,22 @@ class ImageUploader extends Component<Props, State> {
       this.setState({ isLoading: true })
 
       try {
-        const {
-          data: {
-            uploadFile: { fileUrl },
-          },
-        } = (await uploadFile({
-          variables: { file: acceptedFiles[0] },
-        })) as { data: MutationData }
-
-        if (fileUrl) {
-          const fileUrlObj = new URL(fileUrl)
-
-          this.props.onChange(fileUrlObj.pathname)
-
-          this.setState({ isLoading: false })
+        let url = null
+        if (shouldMutate) {
+          const {
+            data: {
+              uploadFile: { fileUrl },
+            },
+          } = (await uploadFile({
+            variables: { file: acceptedFiles[0] },
+          })) as { data: MutationData }
+          url = fileUrl
         }
+        if (this.props.onChange) {
+          const path = url && new URL(url).pathname
+          await this.props.onChange(path, acceptedFiles[0])
+        }
+        this.setState({ isLoading: false })
       } catch (e) {
         this.setState({
           error: 'Something went wrong. Please try again.',
@@ -179,4 +183,6 @@ class ImageUploader extends Component<Props, State> {
   }
 }
 
-export default graphql<Props>(UploadFile, { name: 'uploadFile' })(ImageUploader)
+export default graphql<Props & (WidgetProps | {})>(UploadFile, {
+  name: 'uploadFile',
+})(ImageUploader)

@@ -78,8 +78,16 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
       mutate({
         variables: { app, version, settings: JSON.stringify(formData) },
       })
-        .then(() => showToast(intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })))
-        .catch(() => showToast(intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })))
+        .then(() =>
+          showToast(
+            intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })
+          )
+        )
+        .catch(() =>
+          showToast(
+            intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })
+          )
+        )
         .finally(() => setSubmitting(false))
     }
   }, [submitting])
@@ -105,7 +113,9 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   return (
     <div className="flex flex-column justify-center">
-      <span className="t-heading-5 db">VTEX Store</span>
+      <div className="t-heading-5">
+        <FormattedMessage id="pages.editor.store.settings.title" />
+      </div>
       <div className="pt2">
         <Form
           {...schemas}
@@ -119,7 +129,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
           ObjectFieldTemplate={ObjectFieldTemplate}
           widgets={widgets}
         >
-          <div className="w-100 mt7 tr">
+          <div className="w-100 tr">
             <Button
               size="small"
               type="submit"
@@ -136,8 +146,6 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
   )
 }
 
-export default graphql<
-  {},
-  MutationData,
-  MutationVariables
->(SaveAppSettings)(withStoreSettings(injectIntl(StoreForm)))
+export default graphql<{}, MutationData, MutationVariables>(SaveAppSettings)(
+  withStoreSettings(injectIntl(StoreForm))
+)

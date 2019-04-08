@@ -1,10 +1,8 @@
 import { path } from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 
-import { EmptyState, Spinner } from 'vtex.styleguide'
-
+import { handleCornerCases } from '../../utils/utils'
 import AvailableApp from '../queries/AvailableApp.graphql'
 import InstalledApp from '../queries/InstalledApp.graphql'
 import { tryParseJson } from '../utils/utils'
@@ -45,46 +43,18 @@ export interface FormProps {
     }
 }
 
-const Loading = (): React.ReactElement => (
-  <div className="flex justify-center">
-    <Spinner />
-  </div>
-)
-
-const ErrorMessageComponent: React.FunctionComponent<InjectedIntlProps> = ({
-  intl,
-}): React.ReactElement => (
-  <div className="flex justify-center">
-    <EmptyState
-      title={intl.formatMessage({ id: 'pages.editor.store.settings.error.title' })}
-    >
-      <FormattedMessage id="pages.editor.store.settings.error" />
-    </EmptyState>
-  </div>
-)
-const ErrorMessage = injectIntl(ErrorMessageComponent)
-
-const handleCornerCases = (fn: (x: any) => any) => ({
-  loading,
-  error,
-  data,
-  ...rest
-}: any) => {
-  if (loading) {
-    return <Loading />
-  }
-  if (error || !data) {
-    return <ErrorMessage />
-  }
-
-  return fn({ data, ...rest })
+const options = {
+  error: {
+    description: 'pages.editor.store.settings.error',
+    title: 'pages.editor.store.settings.error.title',
+  },
 }
 
 const withStoreSettings = (
   WrappedComponent: React.ComponentType<FormProps & any>
 ) => (props: any) => (
   <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
-    {handleCornerCases(({ data: storeData }) => {
+    {handleCornerCases(options, ({ data: storeData }) => {
       const { installedApp: store } = storeData
       const { slug, version } = store
       return (
@@ -92,7 +62,7 @@ const withStoreSettings = (
           query={AvailableApp}
           variables={{ id: `${slug}@${version}` }}
         >
-          {handleCornerCases(({ data: { availableApp: schemasData } } = {}) => (
+          {handleCornerCases(options, ({ data: { availableApp: schemasData } } = {}) => (
             <WrappedComponent
               {...props}
               store={{

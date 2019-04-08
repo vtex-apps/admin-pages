@@ -1,0 +1,11 @@
+query Style {
+  selectedStyle {
+    config {
+      semanticColors {
+        background {
+          base
+        }
+      }
+    }
+  }
+}
