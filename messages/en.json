@@ -137,7 +137,7 @@
   "pages.editor.store.settings.pwa.orientation.portrait-primary": "Portrait (Primary)",
   "pages.editor.store.settings.pwa.orientation.portrait-secondary": "Portrait (Secondary)",
   "pages.editor.store.settings.pwa.update-manifest.success": "Manifest successfuly updated!",
-  "pages.editor.store.settings.pwa.update-manifest.error": "Something wrong occurred while updating the manifest...",
+  "pages.editor.store.settings.pwa.update-manifest.error": "Something wrong occurred while updating the manifest…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "App icon successfuly updated!",
-  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon..."
+  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon…"
 }

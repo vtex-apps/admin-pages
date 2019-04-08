@@ -152,14 +152,14 @@ const PWAForm: React.FunctionComponent<Props> = ({
 
   return (
     <div className="flex flex-column justify-center">
-      <span className="t-heading-5 db">
+      <div className="t-heading-5">
         <FormattedMessage id="pages.editor.store.settings.pwa.title" />
-      </span>
+      </div>
       <div className="pt2">
         <div className="flex flex-row items-center">
-          <span className="t-heading-7 db w-40">
+          <div className="t-heading-7 w-40">
             <FormattedMessage id="pages.editor.store.settings.pwa.theme_color" />
-          </span>
+          </div>
           <div className="w-100">
             <ColorPicker
               color={{ hex: manifest.theme_color }}
@@ -174,9 +174,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div className="pt2">
         <div className="flex flex-row items-center">
-          <span className="t-heading-7 db w-40">
+          <div className="t-heading-7 w-40">
             <FormattedMessage id="pages.editor.store.settings.pwa.background_color" />
-          </span>
+          </div>
           <div className="w-100">
             <ColorPicker
               color={{ hex: manifest.background_color }}

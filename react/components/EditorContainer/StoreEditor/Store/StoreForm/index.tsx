@@ -113,9 +113,9 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   return (
     <div className="flex flex-column justify-center">
-      <span className="t-heading-5 db">
+      <div className="t-heading-5">
         <FormattedMessage id="pages.editor.store.settings.title" />
-      </span>
+      </div>
       <div className="pt2">
         <Form
           {...schemas}

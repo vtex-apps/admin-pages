@@ -137,7 +137,7 @@
   "pages.editor.store.settings.pwa.orientation.portrait-primary": "Retrato (Primario)",
   "pages.editor.store.settings.pwa.orientation.portrait-secondary": "Retrato (Secundario)",
   "pages.editor.store.settings.pwa.update-manifest.success": "Manifiesto actualizado correctamente",
-  "pages.editor.store.settings.pwa.update-manifest.error": "Algo malo ocurrió al actualizar el manifiesto...",
+  "pages.editor.store.settings.pwa.update-manifest.error": "Algo malo ocurrió al actualizar el manifiesto…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "Icono de la aplicación actualizado correctamente",
-  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo malo ocurrió al actualizar el ícono de la aplicación ..."
+  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo malo ocurrió al actualizar el ícono de la aplicación…"
 }
