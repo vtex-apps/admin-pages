@@ -1,6 +1,7 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { InjectedIntl, injectIntl } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
@@ -14,16 +15,18 @@ import StyleEditorTools from './StyleEditorTools'
 type EditMode = 'colors' | undefined
 
 interface Props {
-  style: Style
-  stopEditing: () => void
+  intl: InjectedIntl
   setStyleAsset: (asset: StyleAssetInfo) => void
+  stopEditing: () => void
+  style: Style
 }
 
 interface EditorProps {
-  config: TachyonsConfig
   addNavigation: (info: NavigationInfo) => void
-  updateConfig: React.Dispatch<Partial<TachyonsConfig>>
+  config: TachyonsConfig
+  intl: InjectedIntl
   setStyleAsset: (asset: StyleAssetInfo) => void
+  updateConfig: React.Dispatch<Partial<TachyonsConfig>>
 }
 
 interface UpdateStyleResult {
@@ -41,6 +44,7 @@ type ConfigReducer = (
 const Editor: React.FunctionComponent<EditorProps> = ({
   addNavigation,
   config,
+  intl,
   updateConfig,
   setStyleAsset,
 }) => {
@@ -88,9 +92,13 @@ const Editor: React.FunctionComponent<EditorProps> = ({
                     addNavigation({
                       backButton: {
                         action: () => setMode(undefined),
-                        text: 'Back',
+                        text: intl.formatMessage({
+                          id: 'pages.editor.styles.color-editor.back',
+                        }),
                       },
-                      title: 'Colors',
+                      title: intl.formatMessage({
+                        id: 'pages.editor.styles.edit.colors.title',
+                      }),
                     })
                     setMode('colors')
                   }}
@@ -107,6 +115,7 @@ const Editor: React.FunctionComponent<EditorProps> = ({
 }
 
 const StyleEditor: React.FunctionComponent<Props> = ({
+  intl,
   stopEditing,
   style,
   setStyleAsset,
@@ -128,7 +137,9 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                   initialState={{
                     backButton: {
                       action: stopEditing,
-                      text: 'Back',
+                      text: intl.formatMessage({
+                        id: 'pages.editor.styles.edit.colors.back',
+                      }),
                     },
                     title: name,
                   }}
@@ -149,12 +160,16 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                       })
                       showToast({
                         horizontalPosition: 'right',
-                        message: 'Style saved successfully.',
+                        message: intl.formatMessage({
+                          id: 'pages.editor.styles.edit.save.successful',
+                        }),
                       })
                     } else {
                       showToast({
                         horizontalPosition: 'right',
-                        message: 'There was a problem saving your style.',
+                        message: intl.formatMessage({
+                          id: 'pages.editor.styles.edit.save.failed',
+                        }),
                       })
                     }
                   }}
@@ -168,6 +183,7 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                         updateNavigation({ info, type: 'push' })
                       }}
                       setStyleAsset={setStyleAsset}
+                      intl={intl}
                     />
                   )}
                 </StyleEditorTools>
@@ -180,4 +196,4 @@ const StyleEditor: React.FunctionComponent<Props> = ({
   )
 }
 
-export default StyleEditor
+export default injectIntl(StyleEditor)

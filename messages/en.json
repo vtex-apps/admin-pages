@@ -158,5 +158,10 @@
   "pages.editor.styles.card.menu.duplicate.fail": "Failed to duplicate style '{name}'.",
   "pages.editor.styles.card.menu.delete": "Delete",
   "pages.editor.styles.card.menu.delete.fail": "Failed to delete style.",
-  "pages.editor.styles.card.name.app-subtitle": "created by {app}"
+  "pages.editor.styles.card.name.app-subtitle": "created by {app}",
+  "pages.editor.styles.color-editor.back": "Back",
+  "pages.editor.styles.edit.colors.title": "Colors",
+  "pages.editor.styles.edit.colors.back": "Back",
+  "pages.editor.styles.edit.save.successful": "Style saved successfully.",
+  "pages.editor.styles.edit.save.failed": "There was a problem saving your style."
 }

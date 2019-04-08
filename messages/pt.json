@@ -158,5 +158,10 @@
   "pages.editor.styles.card.menu.duplicate.fail": "Erro ao duplicar estilo '{name}'.",
   "pages.editor.styles.card.menu.delete": "Deletar",
   "pages.editor.styles.card.menu.delete.fail": "Erro ao deletar estilo.",
-  "pages.editor.styles.card.name.app-subtitle": "criado por {app}"
+  "pages.editor.styles.card.name.app-subtitle": "criado por {app}",
+  "pages.editor.styles.color-editor.back": "Voltar",
+  "pages.editor.styles.edit.colors.title": "Cores",
+  "pages.editor.styles.edit.colors.back": "Voltar",
+  "pages.editor.styles.edit.save.successful": "Estilo salvo com sucesso.",
+  "pages.editor.styles.edit.save.failed": "Erro ao salvar estilo."
 }
