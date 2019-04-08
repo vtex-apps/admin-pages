@@ -108,6 +108,7 @@
   "pages.editor.container.editpath.label": "pages.editor.container.editpath.label",
   "pages.editor.store.button.template.title": "pages.editor.store.button.template.title",
   "pages.editor.store.button.theme.title": "pages.editor.store.button.theme.title",
+  "pages.editor.store.button.settings.title": "Store",
   "pages.editor.store.button.back.title": "Back to editor",
   "pages.editor.store.settings.title": "General Settings",
   "pages.editor.store.settings.error.title": "Something went wrong",

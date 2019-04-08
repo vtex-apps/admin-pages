@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0-beta.9] - 2019-04-08
+
+### Fixed
+- Add settings button's intl id into `context.json`.
+
 ## [3.0.0-beta.8] - 2019-04-08
+
 ### Changed
 - Bump to new `pwa-graphql` major.
 
