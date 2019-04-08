@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Update the `pwa-graphql` dependency to 1.x.
+
 ## [3.0.0-beta.7] - 2019-04-08
 
 ### Added
