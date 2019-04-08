@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState } from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 

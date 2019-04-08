@@ -1,9 +1,4 @@
-import {
-  has,
-  map,
-  mergeDeepLeft,
-  pickBy,
-} from 'ramda'
+import { has, map, mergeDeepLeft, pickBy } from 'ramda'
 
 /**
  * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
@@ -16,7 +11,7 @@ import {
  */
 export const getUiSchema = (
   componentUiSchema: UISchema,
-  componentSchema: ComponentSchema,
+  componentSchema: ComponentSchema
 ): UISchema => {
   /**
    * It goes deep into the schema tree to find widget definitions, generating
@@ -37,17 +32,17 @@ export const getUiSchema = (
   const getDeepUiSchema = (properties: any): UISchema => {
     const deepProperties = pickBy(
       property => has('properties', property),
-      properties,
+      properties
     )
     const itemsProperties = pickBy(
       property => has('properties', property),
-      properties.items,
+      properties.items
     )
 
     return {
       ...map(
-        value => value.widget,
-        pickBy(property => has('widget', property), properties),
+        (value: ComponentSchema) => value.widget,
+        pickBy(property => has('widget', property), properties)
       ),
       ...(deepProperties &&
         map(property => getDeepUiSchema(property.properties), deepProperties)),
@@ -59,18 +54,18 @@ export const getUiSchema = (
   const uiSchema = {
     ...map(value => value.widget, pickBy(
       property => has('widget', property),
-      componentSchema.properties as ComponentSchemaProperties,
+      componentSchema.properties as ComponentSchemaProperties
     ) as { widget: any }),
     ...map(property => getDeepUiSchema(property.properties), pickBy(
       property => has('properties', property),
-      componentSchema.properties as ComponentSchemaProperties,
+      componentSchema.properties as ComponentSchemaProperties
     ) as ComponentSchemaProperties),
     ...map(
       property => getDeepUiSchema(property),
-      pickBy(
+      pickBy<{}, ComponentSchemaProperties>(
         property => has('items', property),
-        componentSchema.properties as ComponentSchemaProperties,
-      ),
+        componentSchema.properties || {}
+      )
     ),
   }
 

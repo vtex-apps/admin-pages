@@ -4,7 +4,7 @@ import { Textarea } from 'vtex.styleguide'
 
 interface Props extends WidgetProps {
   autofocus: boolean
-  label?: string
+  label: string
   rawErrors?: string[]
   onChange(val: string): void
 }

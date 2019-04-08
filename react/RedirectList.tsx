@@ -1,5 +1,6 @@
+import { FetchMoreQueryOptions } from 'apollo-client'
 import React, { Component } from 'react'
-import { Query } from 'react-apollo'
+import { ObservableQueryFields, Query, QueryResult } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Box, Pagination } from 'vtex.styleguide'
@@ -23,6 +24,19 @@ type Props = ReactIntl.InjectedIntlProps & TargetPathContextProps
 interface State {
   paginationFrom: number
   paginationTo: number
+}
+
+interface RedirectListQueryResult {
+  redirects: {
+    redirects: Redirect[]
+    total: number
+  }
+}
+
+interface RedirectListVariables {
+  from: number
+  to: number
+  fetchMoreResult?: RedirectListQueryResult
 }
 
 class RedirectList extends Component<Props, State> {
@@ -51,7 +65,7 @@ class RedirectList extends Component<Props, State> {
             {intl.formatMessage({ id: 'pages.admin.redirects.title' })}
           </title>
         </Helmet>
-        <Query
+        <Query<RedirectListQueryResult, RedirectListVariables>
           notifyOnNetworkStatusChange
           query={Redirects}
           variables={{
@@ -67,13 +81,17 @@ class RedirectList extends Component<Props, State> {
                 <Box>
                   <List
                     from={paginationFrom}
-                    items={data.redirects.redirects.slice(
-                      paginationFrom,
-                      paginationTo
-                    )}
+                    items={
+                      data
+                        ? data.redirects.redirects.slice(
+                            paginationFrom,
+                            paginationTo
+                          )
+                        : []
+                    }
                     to={paginationTo}
                   />
-                  {data.redirects.total > 0 && (
+                  {data && data.redirects.total > 0 && (
                     <Pagination
                       currentItemFrom={paginationFrom + 1}
                       currentItemTo={paginationTo}
@@ -104,7 +122,10 @@ class RedirectList extends Component<Props, State> {
   private getGoToNextPage = (
     dataLength: number,
     total: number,
-    fetchMore: (options: FetchMoreOptions) => void
+    fetchMore: QueryResult<
+      RedirectListQueryResult,
+      RedirectListVariables
+    >['fetchMore']
   ) => async () => {
     const nextPaginationTo = this.getNextPaginationTo(
       this.state.paginationFrom + PAGINATION_STEP,

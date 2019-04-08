@@ -6,9 +6,10 @@ import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
 import ColorsEditor from './ColorsEditor'
-import GenerateStyleSheet from './queries/GenerateStyleSheet.graphql'
-import RenameStyle from './queries/RenameStyle.graphql'
-import UpdateStyle from './queries/UpdateStyle.graphql'
+
+import RenameStyleMutation from './mutations/RenameStyle'
+import UpdateStyleMutation from './mutations/UpdateStyle'
+import GenerateStyleSheetQuery from './queries/GenerateStyleSheet'
 
 import StyleEditorTools from './StyleEditorTools'
 
@@ -27,13 +28,6 @@ interface EditorProps {
   intl: InjectedIntl
   setStyleAsset: (asset: StyleAssetInfo) => void
   updateConfig: React.Dispatch<Partial<TachyonsConfig>>
-}
-
-interface UpdateStyleResult {
-  updateStyle: {
-    path: string
-    selected: boolean
-  }
 }
 
 type ConfigReducer = (
@@ -61,12 +55,11 @@ const Editor: React.FunctionComponent<EditorProps> = ({
   } = config
 
   return (
-    <Query
-      query={GenerateStyleSheet}
+    <GenerateStyleSheetQuery
       variables={{ config }}
       fetchPolicy={'network-only'}
     >
-      {({ data }: QueryResult<{ generateStyleSheet: string }>) => {
+      {({ data }) => {
         const stylesheet = data && data.generateStyleSheet
 
         if (stylesheet) {
@@ -110,7 +103,7 @@ const Editor: React.FunctionComponent<EditorProps> = ({
             )
         }
       }}
-    </Query>
+    </GenerateStyleSheetQuery>
   )
 }
 
@@ -127,10 +120,10 @@ const StyleEditor: React.FunctionComponent<Props> = ({
   const [name, setName] = useState<string>(style.name)
 
   return (
-    <Mutation mutation={RenameStyle}>
+    <RenameStyleMutation>
       {renameStyle => (
-        <Mutation mutation={UpdateStyle}>
-          {(updateStyle: MutationFn<UpdateStyleResult>) => (
+        <UpdateStyleMutation>
+          {updateStyle => (
             <ToastConsumer>
               {({ showToast }) => (
                 <StyleEditorTools
@@ -190,9 +183,9 @@ const StyleEditor: React.FunctionComponent<Props> = ({
               )}
             </ToastConsumer>
           )}
-        </Mutation>
+        </UpdateStyleMutation>
       )}
-    </Mutation>
+    </RenameStyleMutation>
   )
 }
 
