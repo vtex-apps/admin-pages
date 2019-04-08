@@ -152,6 +152,7 @@ declare module 'vtex.styleguide' {
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
   export const IconCaretUp: ComponentType<any>
+  export const IconClear: ComponentType<any>
   export const IconClose: ComponentType<any>
   export const IconOptionsDots: ComponentType<any>
   export const Input: ComponentType<any>

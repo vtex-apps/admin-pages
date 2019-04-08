@@ -217,7 +217,7 @@ declare global {
       id: string
       pageContext: RenderRuntime['route']['pageContext']
       statements: Array<{
-        object: any
+        objectJSON: string
         subject: string
         verb: string
       }>
