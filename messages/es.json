@@ -163,5 +163,6 @@
   "pages.editor.styles.edit.colors.title": "Colores",
   "pages.editor.styles.edit.colors.back": "Volver",
   "pages.editor.styles.edit.save.successful": "Estilo guardado con éxito.",
-  "pages.editor.styles.edit.save.failed": "Error al guardar estilo."
+  "pages.editor.styles.edit.save.failed": "Error al guardar estilo.",
+  "pages.editor.styles.editor.tools.save": "Salvar"
 }

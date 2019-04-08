@@ -56,7 +56,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   }, toPairs(info))
 
   return (
-    <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
+    <div className="flex-grow-1">
       {toPairs(groups).map(groupInfo => {
         const [groupName, group] = groupInfo
 

@@ -1,6 +1,5 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
@@ -96,7 +95,11 @@ const Editor: React.FunctionComponent<EditorProps> = ({
                     setMode('colors')
                   }}
                 >
-                  <span className="f4">Colors</span>
+                  <span className="f4">
+                    {intl.formatMessage({
+                      id: 'pages.editor.styles.edit.colors.title',
+                    })}
+                  </span>
                   <Colors colors={[emphasis, action_primary]} />
                 </div>
               </div>

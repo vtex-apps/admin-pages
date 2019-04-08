@@ -1,6 +1,5 @@
-import { FetchMoreQueryOptions } from 'apollo-client'
 import React, { Component } from 'react'
-import { ObservableQueryFields, Query, QueryResult } from 'react-apollo'
+import { Query, QueryResult } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Box, Pagination } from 'vtex.styleguide'
@@ -11,7 +10,6 @@ import {
   WRAPPER_PATH,
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
-import { FetchMoreOptions } from './components/admin/redirects/List/typings'
 import {
   TargetPathContextProps,
   withTargetPath,

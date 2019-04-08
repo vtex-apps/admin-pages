@@ -163,5 +163,6 @@
   "pages.editor.styles.edit.colors.title": "pages.editor.styles.edit.colors.title",
   "pages.editor.styles.edit.colors.back": "pages.editor.styles.edit.colors.back",
   "pages.editor.styles.edit.save.successful": "pages.editor.styles.edit.save.successful",
-  "pages.editor.styles.edit.save.failed": "pages.editor.styles.edit.save.failed"
+  "pages.editor.styles.edit.save.failed": "pages.editor.styles.edit.save.failed",
+  "pages.editor.styles.editor.tools.save": "pages.editor.styles.editor.tools.save"
 }
