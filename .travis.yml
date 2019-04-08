@@ -9,6 +9,6 @@ before_install:
 install:
   - npm install
 before_script:
-  - cd..
+  - cd ..
 script:
   - ./lint.sh
