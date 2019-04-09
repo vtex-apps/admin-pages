@@ -136,6 +136,13 @@ class Scheduler extends Component<Props, State> {
     )
   }
 
+  private getConditionUpdater = (dates: Typings.DateRange) => () => {
+    this.props.updateCondition({
+      from: dates.from || this.state.from,
+      to: dates.to || this.state.to,
+    })
+  }
+
   private handleFromChange = (from: Date) => {
     if (from < this.initialState.fromMinTime) {
       from.setTime(this.initialState.fromMinTime.getTime())
@@ -152,9 +159,7 @@ class Scheduler extends Component<Props, State> {
           : this.defaultMinTime,
         to,
       },
-      () => {
-        this.props.updateCondition({ from, to })
-      }
+      this.getConditionUpdater({ from, to })
     )
   }
 
@@ -181,9 +186,7 @@ class Scheduler extends Component<Props, State> {
           ? this.initialState.toMinTime
           : this.defaultMinTime,
       },
-      () => {
-        this.props.updateCondition({ from, to })
-      }
+      this.getConditionUpdater({ from, to })
     )
   }
 
@@ -196,9 +199,7 @@ class Scheduler extends Component<Props, State> {
           from,
           shouldDisplayFrom: false,
         },
-        () => {
-          this.props.updateCondition({ from, to: this.state.to })
-        }
+        this.getConditionUpdater({ from })
       )
     } else {
       this.handleFromChange(this.initialState.fromMinTime)
@@ -216,9 +217,7 @@ class Scheduler extends Component<Props, State> {
           shouldDisplayTo: false,
           to,
         },
-        () => {
-          this.props.updateCondition({ from: this.state.from, to })
-        }
+        this.getConditionUpdater({ to })
       )
     } else {
       const initialValue = this.state.from
