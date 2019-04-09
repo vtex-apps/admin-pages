@@ -11,4 +11,4 @@ const ConditionTitle: React.FunctionComponent<Props> = ({ labelId }) => (
   </FormattedMessage>
 )
 
-export default ConditionTitle
+export default React.memo(ConditionTitle)
