@@ -1,6 +1,6 @@
 import { path } from 'ramda'
 import React from 'react'
-import { Query } from 'react-apollo'
+import { Query, QueryResult } from 'react-apollo'
 
 import { handleCornerCases } from '../../utils/utils'
 import PWA from '../queries/PWA.graphql'
@@ -16,8 +16,13 @@ export interface PWASettings {
   disablePrompt: boolean
 }
 
-export interface Manifest extends ManifestMutationData {
+export interface Manifest {
   icons?: PWAImage[]
+  background_color: string
+  theme_color: string
+  orientation?: string
+  start_url?: string
+  display?: string
 }
 
 export interface PWAData {
@@ -45,31 +50,35 @@ const options = {
   },
 }
 
-const withPWASettings = (WrappedComponent: React.ComponentType<PWAData & any>) => (
-  props: any
-) => (
-  <PWAQuery query={PWA}>
-    {handleCornerCases(options, ({ data, ...restPWAQuery }) => {
-      if (!data.manifest) {
-        const color = path(
-          ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
-          data
-        )
-        return (
-          <WrappedComponent
-            {...props}
-            {...data}
-            {...restPWAQuery}
-            manifest={{
-              background_color: color,
-              theme_color: color,
-            }}
-          />
-        )
-      }
-      return <WrappedComponent {...props} {...data} {...restPWAQuery} />
-    })}
-  </PWAQuery>
-)
+function withPWASettings<T>(
+  WrappedComponent: React.ComponentType<
+    T & PWAData & Omit<QueryResult<PWAData, {}>, 'data' | 'loading'>
+  >
+) {
+  return (props: T) => (
+    <PWAQuery query={PWA}>
+      {handleCornerCases<PWAData, {}>(options, ({ data, ...restPWAQuery }) => {
+        if (!data.manifest) {
+          const color = path(
+            ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
+            data
+          )
+          return (
+            <WrappedComponent
+              {...props}
+              {...data}
+              {...restPWAQuery}
+              manifest={{
+                background_color: color as string,
+                theme_color: color as string,
+              }}
+            />
+          )
+        }
+        return <WrappedComponent {...props} {...data} {...restPWAQuery} />
+      })}
+    </PWAQuery>
+  )
+}
 
 export default withPWASettings

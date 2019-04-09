@@ -1,10 +1,9 @@
 import { assoc, compose, dissoc, map } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import {
-  ChildMutateProps,
+  ChildProps,
   graphql,
   MutateProps,
-  MutationFn,
 } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
@@ -31,7 +30,7 @@ interface MutationVariables {
   settings: string
 }
 
-type Props = ChildMutateProps<
+type Props = ChildProps<
   FormProps & InjectedIntlProps,
   MutationData,
   MutationVariables
@@ -73,7 +72,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
   const { showToast } = useContext(ToastContext)
 
   useEffect(() => {
-    if (submitting) {
+    if (submitting && mutate) {
       const { slug: app, version } = store
       mutate({
         variables: { app, version, settings: JSON.stringify(formData) },
@@ -147,5 +146,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 }
 
 export default graphql<{}, MutationData, MutationVariables>(SaveAppSettings)(
-  withStoreSettings(injectIntl(StoreForm))
+  withStoreSettings<ChildProps<{}, MutationData, MutationVariables>>(
+    injectIntl(StoreForm)
+  )
 )

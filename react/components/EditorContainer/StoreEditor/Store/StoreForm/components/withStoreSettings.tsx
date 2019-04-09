@@ -15,9 +15,17 @@ interface InstalledApp {
   settings: string
 }
 
+interface InstalledAppData {
+  installedApp: InstalledApp
+}
+
+interface InstalledAppVariables {
+  slug: string
+}
+
 class InstalledAppQuery extends Query<
-  { installedApp: InstalledApp },
-  { slug: string }
+  InstalledAppData,
+  InstalledAppVariables
 > {}
 
 interface AvailableApp {
@@ -30,10 +38,18 @@ interface AvailableApp {
   settingsUiSchema: string
 }
 
+interface AvailableAppData {
+  availableApp: AvailableApp
+}
+
+interface AvailableAppVariables {
+  id: string
+}
+
 // tslint:disable-next-line:max-classes-per-file
 class AvailableAppQuery extends Query<
-  { availableApp: AvailableApp },
-  { id: string }
+  AvailableAppData,
+  AvailableAppVariables
 > {}
 
 export interface FormProps {
@@ -50,31 +66,39 @@ const options = {
   },
 }
 
-const withStoreSettings = (
-  WrappedComponent: React.ComponentType<FormProps & any>
-) => (props: any) => (
-  <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
-    {handleCornerCases(options, ({ data: storeData }) => {
-      const { installedApp: store } = storeData
-      const { slug, version } = store
-      return (
-        <AvailableAppQuery
-          query={AvailableApp}
-          variables={{ id: `${slug}@${version}` }}
-        >
-          {handleCornerCases(options, ({ data: { availableApp: schemasData } } = {}) => (
-            <WrappedComponent
-              {...props}
-              store={{
-                ...store,
-                ...schemasData,
-              }}
-            />
-          ))}
-        </AvailableAppQuery>
-      )
-    })}
-  </InstalledAppQuery>
-)
+function withStoreSettings<T>(
+  WrappedComponent: React.ComponentType<T & FormProps>
+) {
+  return (props: T) => (
+    <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
+      {handleCornerCases<InstalledAppData, InstalledAppVariables>(
+        options,
+        ({ data: storeData }) => {
+          const { installedApp: store } = storeData
+          const { slug, version } = store
+          return (
+            <AvailableAppQuery
+              query={AvailableApp}
+              variables={{ id: `${slug}@${version}` }}
+            >
+              {handleCornerCases<AvailableAppData, AvailableAppVariables>(
+                options,
+                ({ data: { availableApp: schemasData } }) => (
+                  <WrappedComponent
+                    {...props}
+                    store={{
+                      ...store,
+                      ...schemasData,
+                    }}
+                  />
+                )
+              )}
+            </AvailableAppQuery>
+          )
+        }
+      )}
+    </InstalledAppQuery>
+  )
+}
 
 export default withStoreSettings
