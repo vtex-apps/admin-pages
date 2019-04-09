@@ -10,7 +10,6 @@ const Store: React.FunctionComponent<{}> = () => {
       <div className="pv7">
         <div className="w-100 bb b--muted-4" />
       </div>
-      {/* TODO: Advanced settings button */}
       {!showAdvanced ? (
         <div
           className="link pointer c-muted-1"

@@ -58,13 +58,8 @@ const PWAForm: React.FunctionComponent<Props> = ({
   intl,
   refetch,
 }) => {
-  const [manifest, setManifest]: [Manifest, (m: Manifest) => void] = useState(
-    fillManifest(pwaManifest)
-  )
-  const [settings, setSettings]: [
-    PWASettings,
-    (s: PWASettings) => void
-  ] = useState(pwaSettings)
+  const [manifest, setManifest] = useState(fillManifest(pwaManifest))
+  const [settings, setSettings] = useState(pwaSettings)
   const [colorHistory, setColorHistory] = useState([
     pwaManifest.theme_color,
     pwaManifest.background_color,
@@ -141,12 +136,13 @@ const PWAForm: React.FunctionComponent<Props> = ({
   async function handleSubmit() {
     setSubmitting(true)
     try {
-      const mutations: Array<Promise<any>> = [saveManifest()]
+      const mutations: Array<
+        Promise<ManifestMutationData | void>
+      > = [saveManifest()]
       if (!equals(settings, pwaSettings)) {
         mutations.push(saveSettings())
       }
       const [newManifest] = await Promise.all(mutations)
-      console.log(newManifest)
       // If background color changed, show the new iOS splash screen
       if (
         newManifest &&
