@@ -138,8 +138,6 @@
   "pages.editor.store.settings.pwa.title": "PWA Settings",
   "pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "App icon successfuly updated!",
-  "pages.editor.store.settings.pwa.update-manifest.error": "Something wrong occurred while updating the manifest…",
-  "pages.editor.store.settings.pwa.update-manifest.success": "Manifest successfuly updated!",
   "pages.editor.store.settings.refetch": "Try again",
   "pages.editor.store.settings.title": "General Settings",
   "pages.editor.styles.card.current": "Current",
