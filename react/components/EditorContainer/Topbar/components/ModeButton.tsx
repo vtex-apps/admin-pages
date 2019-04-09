@@ -40,11 +40,11 @@ const getTitle = (mode?: StoreEditMode) => {
 const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
   return (
     <div
-      className="pointer mh3 h-3em w4 flex justify-center items-center"
+      className="pointer h-3em flex justify-center items-center mr5"
       onClick={() => changeMode(mode)}
     >
       {icon(mode)}
-      <div className={`pl4 b mid-gray ${mode ? '' : 'c-action-primary'}`}>
+      <div className={`pl3 b mid-gray fw5 ${mode ? '' : 'c-action-primary'}`}>
         <FormattedMessage id={getTitle(mode)} />
       </div>
     </div>
