@@ -114,7 +114,6 @@
   "pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda.",
   "pages.editor.store.settings.pwa.android-logo-icon": "Icono de Logotipo Android (512x512)",
   "pages.editor.store.settings.pwa.background_color": "Color de fondo",
-  "pages.editor.store.settings.pwa.disable-prompt": "Añadir a la pantalla principal",
   "pages.editor.store.settings.pwa.display.browser": "Navegador",
   "pages.editor.store.settings.pwa.display.fullscreen": "Pantalla completa",
   "pages.editor.store.settings.pwa.display.minimal-ui": "Minimalista (No soportado por Chrome)",
@@ -129,6 +128,7 @@
   "pages.editor.store.settings.pwa.orientation.natural": "Natural",
   "pages.editor.store.settings.pwa.orientation.portrait-primary": "Retrato (Primario)",
   "pages.editor.store.settings.pwa.orientation.portrait-secondary": "Retrato (Secundario)",
+<<<<<<< HEAD
   "pages.editor.store.settings.pwa.orientation.portrait": "Retrato",
   "pages.editor.store.settings.pwa.screen-orientation": "Orientación de la pantalla",
   "pages.editor.store.settings.pwa.splash-screen": "Pantalla de carga (iOS)",
@@ -167,4 +167,9 @@
   "pages.editor.styles.select.delete.toast.undo": "Deshacer",
   "pages.editor.styles.select.save-fail": "Error al seleccionar estilo '{name}'.",
   "pages.editor.styles.select.save-success": "Estilo '{name}' fue seleccionado."
+=======
+  "pages.editor.store.settings.pwa.update-manifest-icon.success": "Icono de la aplicación actualizado correctamente",
+  "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo malo ocurrió al actualizar el ícono de la aplicación…",
+  "pages.editor.store.settings.pwa.disable-prompt": "Añadir a la pantalla principal"
+>>>>>>> Add the 'Add to Home Screen' Toggle
 }

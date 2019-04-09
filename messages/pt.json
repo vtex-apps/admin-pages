@@ -114,6 +114,7 @@
   "pages.editor.store.settings.error": "Não foi possível carregar as informações da loja.",
   "pages.editor.store.settings.pwa.android-logo-icon": "Ícone de Logo Android (512x512)",
   "pages.editor.store.settings.pwa.background_color": "Cor de fundo",
+  "pages.editor.store.settings.pwa.disable-prompt": "Adicionar à tela inicial",
   "pages.editor.store.settings.pwa.display.browser": "Navegador",
   "pages.editor.store.settings.pwa.display.fullscreen": "Tela cheia",
   "pages.editor.store.settings.pwa.display.minimal-ui": "Minimalista (Não suportado pelo Chrome)",

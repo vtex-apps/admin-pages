@@ -5,8 +5,11 @@ import { Mutation, MutationFn, MutationResult } from 'react-apollo'
 import { handleCornerCases } from '../../utils/utils'
 import UpdateManifest from '../mutations/UpdateManifest.graphql'
 import UpdateManifestIcon from '../mutations/UpdateManifestIcon.graphql'
+import UpdatePWASettings from '../mutations/UpdatePWASettings.graphql'
 import Manifest from '../queries/Manifest.graphql'
 import Styles from '../queries/Styles.graphql'
+
+import { PWASettings } from './withPWASettings'
 
 export interface ManifestMutationData {
   start_url: string
@@ -40,6 +43,16 @@ class UpdateManifestIconMutation extends Mutation<
   UpdateManifestIconVariables
 > {}
 
+interface UpdatePWASettingsData {
+  settings: PWASettings
+}
+
+// tslint:disable-next-line:max-classes-per-file
+class UpdatePWASettingsMutation extends Mutation<
+  PWASettings,
+  UpdatePWASettingsData
+> {}
+
 export interface MutationProps {
   updateManifest: {
     mutate: MutationFn<UpdateManifestData, UpdateManifestVariables>
@@ -47,6 +60,9 @@ export interface MutationProps {
   updateManifestIcon: {
     mutate: MutationFn<UpdateManifestData, UpdateManifestIconVariables>
   } & MutationResult<UpdateManifestData>
+  updatePWASettings: {
+    mutate: MutationFn<PWASettings, UpdatePWASettingsData>
+  } & MutationResult<PWASettings>
 }
 
 const withPWAMutations = (
@@ -56,17 +72,25 @@ const withPWAMutations = (
     {(updateManifestMutate, updateManifestRest) => (
       <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
         {(updateManifestIconMutate, updateManifestIconRest) => (
-          <WrappedComponent
-            {...props}
-            updateManifest={{
-              mutate: updateManifestMutate,
-              ...updateManifestRest,
-            }}
-            updateManifestIcon={{
-              mutate: updateManifestIconMutate,
-              ...updateManifestIconRest,
-            }}
-          />
+          <UpdatePWASettingsMutation mutation={UpdatePWASettings}>
+            {(updatePWASettingsMutate, updatePWASettingsRest) => (
+              <WrappedComponent
+                {...props}
+                updateManifest={{
+                  mutate: updateManifestMutate,
+                  ...updateManifestRest,
+                }}
+                updateManifestIcon={{
+                  mutate: updateManifestIconMutate,
+                  ...updateManifestIconRest,
+                }}
+                updatePWASettings={{
+                  mutate: updatePWASettingsMutate,
+                  ...updatePWASettingsRest,
+                }}
+              />
+            )}
+          </UpdatePWASettingsMutation>
         )}
       </UpdateManifestIconMutation>
     )}

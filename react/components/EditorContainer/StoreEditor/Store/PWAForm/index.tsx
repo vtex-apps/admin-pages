@@ -1,4 +1,4 @@
-import { last, path, pick } from 'ramda'
+import { equals, last, path, pick } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { MutationFn, QueryResult } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
@@ -9,6 +9,7 @@ import {
   Dropdown,
   Input,
   ToastContext,
+  Toggle,
 } from 'vtex.styleguide'
 
 import ImageUploader from '../../../../form/ImageUploader'
@@ -18,8 +19,9 @@ import withPWAMutations, {
 } from './components/withPWAMutations'
 import withPWASettings, {
   Manifest,
-  ManifestData,
+  PWAData,
   PWAImage,
+  PWASettings,
 } from './components/withPWASettings'
 import {
   DISPLAY_OPTIONS,
@@ -43,18 +45,26 @@ const isManifestValid = (manifest: Manifest): boolean =>
       manifest.theme_color
   )
 
-type Props = ManifestData & InjectedIntlProps & MutationProps & QueryResult
+type Props = PWAData & InjectedIntlProps & MutationProps & QueryResult
 
 const PWAForm: React.FunctionComponent<Props> = ({
   manifest: pwaManifest,
   splashes,
   iOSIcons,
+  pwaSettings,
   updateManifest,
   updateManifestIcon,
+  updatePWASettings,
   intl,
   refetch,
 }) => {
-  const [manifest, setManifest] = useState(fillManifest(pwaManifest))
+  const [manifest, setManifest]: [Manifest, (m: Manifest) => void] = useState(
+    fillManifest(pwaManifest)
+  )
+  const [settings, setSettings]: [
+    PWASettings,
+    (s: PWASettings) => void
+  ] = useState(pwaSettings)
   const [colorHistory, setColorHistory] = useState([
     pwaManifest.theme_color,
     pwaManifest.background_color,
@@ -107,8 +117,11 @@ const PWAForm: React.FunctionComponent<Props> = ({
     }
   }
 
-  async function saveManifest() {
-    setSubmitting(true)
+  async function saveSettings(): Promise<void> {
+    await updatePWASettings.mutate({ variables: { settings } })
+  }
+
+  async function saveManifest(): Promise<ManifestMutationData | undefined> {
     const manifestData = pick(
       [
         'start_url',
@@ -119,30 +132,40 @@ const PWAForm: React.FunctionComponent<Props> = ({
       ],
       manifest
     ) as ManifestMutationData
+    const result = await updateManifest.mutate({
+      variables: { manifest: manifestData },
+    })
+    return path(['data', 'updateManifest'], result || {})
+  }
 
+  async function handleSubmit() {
+    setSubmitting(true)
     try {
-      const result = await updateManifest.mutate({
-        variables: { manifest: manifestData },
-      })
-      const backgroundColor: string | undefined = path(
-        ['data', 'updateManifest', 'background_color'],
-        result || {}
-      )
+      const mutations: Array<Promise<any>> = [saveManifest()]
+      if (!equals(settings, pwaSettings)) {
+        mutations.push(saveSettings())
+      }
+      const [newManifest] = await Promise.all(mutations)
+      console.log(newManifest)
       // If background color changed, show the new iOS splash screen
-      if (pwaManifest.background_color !== backgroundColor) {
+      if (
+        newManifest &&
+        pwaManifest.background_color !== newManifest.background_color
+      ) {
         await refetch()
       }
       showToast({
         duration: TOAST_DURATION,
         message: intl.formatMessage({
-          id: 'pages.editor.store.settings.pwa.update-manifest.success',
+          id: 'pages.admin.pages.form.save.success',
         }),
       })
-    } catch (_) {
+    } catch (err) {
+      console.error(err)
       showToast({
         duration: Infinity,
         message: intl.formatMessage({
-          id: 'pages.editor.store.settings.pwa.update-manifest.error',
+          id: 'pages.admin.pages.form.save.error',
         }),
       })
     } finally {
@@ -162,6 +185,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
           <div className="w-100">
             <ColorPicker
+              disabled={submitting}
               color={{ hex: manifest.theme_color }}
               colorHistory={colorHistory}
               onChange={(color: { hex: string }) => {
@@ -179,6 +203,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
           <div className="w-100">
             <ColorPicker
+              disabled={submitting}
               color={{ hex: manifest.background_color }}
               colorHistory={colorHistory}
               onChange={(color: { hex: string }) => {
@@ -191,6 +216,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div className="pt2 w-100">
         <Input
+          disabled={submitting}
           size="small"
           label={intl.formatMessage({
             id: 'pages.editor.store.settings.pwa.start_url',
@@ -203,6 +229,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div className="pt4 w-100">
         <Dropdown
+          disabled={submitting}
           value={manifest.orientation}
           label={intl.formatMessage({
             id: 'pages.editor.store.settings.pwa.screen-orientation',
@@ -221,6 +248,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div className="pt4">
         <Dropdown
+          disabled={submitting}
           value={manifest.display}
           label={intl.formatMessage({
             id: 'pages.editor.store.settings.pwa.display',
@@ -240,6 +268,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
       <div className="flex flex-column items-center justify-center pt5">
         <div className="w-100 pt4">
           <ImageUploader
+            disabled={submitting}
             value={
               androidIcon
                 ? new URL(`https://${location.hostname}/${androidIcon.src}`)
@@ -255,6 +284,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
         </div>
         <div className="w-100 pt4">
           <ImageUploader
+            disabled={submitting}
             value={
               iOSIcon
                 ? new URL(`https://${location.hostname}/${iOSIcon.src}`).href
@@ -279,12 +309,24 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
         </div>
       )}
+      <div className="pt6">
+        <Toggle
+          label={intl.formatMessage({
+            id: 'pages.editor.store.settings.pwa.disable-prompt',
+          })}
+          checked={!settings.disablePrompt}
+          disabled={submitting}
+          onChange={() =>
+            setSettings({ ...settings, disablePrompt: !settings.disablePrompt })
+          }
+        />
+      </div>
       <div className="w-100 mt7 tr">
         <Button
           size="small"
           type="submit"
           variation="primary"
-          onClick={saveManifest}
+          onClick={handleSubmit}
           disabled={!isManifestValid(manifest)}
           isLoading={submitting}
         >

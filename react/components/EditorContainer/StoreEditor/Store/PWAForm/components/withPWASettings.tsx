@@ -3,8 +3,7 @@ import React from 'react'
 import { Query } from 'react-apollo'
 
 import { handleCornerCases } from '../../utils/utils'
-import Manifest from '../queries/Manifest.graphql'
-import Styles from '../queries/Styles.graphql'
+import PWA from '../queries/PWA.graphql'
 import { ManifestMutationData } from './withPWAMutations'
 
 export interface PWAImage {
@@ -13,19 +12,19 @@ export interface PWAImage {
   sizes: string
 }
 
+export interface PWASettings {
+  disablePrompt: boolean
+}
+
 export interface Manifest extends ManifestMutationData {
   icons?: PWAImage[]
 }
 
-export interface ManifestData {
+export interface PWAData {
   manifest: Manifest
   iOSIcons: PWAImage[]
   splashes: PWAImage[]
-}
-
-class ManifestQuery extends Query<ManifestData, {}> {}
-
-interface StylesData {
+  pwaSettings: PWASettings
   selectedStyle: {
     config: {
       semanticColors: {
@@ -36,8 +35,8 @@ interface StylesData {
     }
   }
 }
-// tslint:disable-next-line:max-classes-per-file
-class StylesQuery extends Query<StylesData, {}> {}
+
+class PWAQuery extends Query<PWAData, {}> {}
 
 const options = {
   error: {
@@ -46,43 +45,31 @@ const options = {
   },
 }
 
-const withPWASettings = (
-  WrappedComponent: React.ComponentType<ManifestData & any>
-) => (props: any) => (
-  <ManifestQuery query={Manifest}>
-    {handleCornerCases(options, ({ data: PWAData, ...restPWAQuery }) => {
-      if (!PWAData.manifest) {
+const withPWASettings = (WrappedComponent: React.ComponentType<PWAData & any>) => (
+  props: any
+) => (
+  <PWAQuery query={PWA}>
+    {handleCornerCases(options, ({ data, ...restPWAQuery }) => {
+      if (!data.manifest) {
+        const color = path(
+          ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
+          data
+        )
         return (
-          <StylesQuery query={Styles}>
-            {handleCornerCases(options, ({ data: stylesData }) => {
-              const color = path(
-                [
-                  'selectedStyle',
-                  'config',
-                  'semanticColors',
-                  'background',
-                  'base',
-                ],
-                stylesData
-              )
-              return (
-                <WrappedComponent
-                  {...props}
-                  {...PWAData}
-                  {...restPWAQuery}
-                  manifest={{
-                    background_color: color,
-                    theme_color: color,
-                  }}
-                />
-              )
-            })}
-          </StylesQuery>
+          <WrappedComponent
+            {...props}
+            {...data}
+            {...restPWAQuery}
+            manifest={{
+              background_color: color,
+              theme_color: color,
+            }}
+          />
         )
       }
-      return <WrappedComponent {...props} {...PWAData} {...restPWAQuery} />
+      return <WrappedComponent {...props} {...data} {...restPWAQuery} />
     })}
-  </ManifestQuery>
+  </PWAQuery>
 )
 
 export default withPWASettings

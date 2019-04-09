@@ -114,7 +114,6 @@
   "pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda.",
   "pages.editor.store.settings.pwa.android-logo-icon": "Icono de Logotipo Android (512x512)",
   "pages.editor.store.settings.pwa.background_color": "Color de fondo",
-  "pages.editor.store.settings.pwa.disable-prompt": "Añadir a la pantalla principal",
   "pages.editor.store.settings.pwa.display.browser": "Navegador",
   "pages.editor.store.settings.pwa.display.fullscreen": "Pantalla completa",
   "pages.editor.store.settings.pwa.display.minimal-ui": "Minimalista (No soportado por Chrome)",

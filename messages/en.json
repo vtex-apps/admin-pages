@@ -114,6 +114,7 @@
   "pages.editor.store.settings.error": "Couldn't load store settings.",
   "pages.editor.store.settings.pwa.android-logo-icon": "Android Logo Icon (512x512)",
   "pages.editor.store.settings.pwa.background_color": "Background color",
+  "pages.editor.store.settings.pwa.disable-prompt": "Add to Home Screen",
   "pages.editor.store.settings.pwa.display.browser": "Browser",
   "pages.editor.store.settings.pwa.display.fullscreen": "Fullscreen",
   "pages.editor.store.settings.pwa.display.minimal-ui": "Minimal-UI (Not supported by Chrome)",
