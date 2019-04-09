@@ -77,65 +77,61 @@ class Scheduler extends Component<Props, State> {
       <>
         <ConditionTitle labelId="pages.editor.components.condition.date.title" />
 
-        <>
-          <Toggle
-            checked={this.state.shouldDisplayFrom}
-            label={intl.formatMessage({
-              id: 'pages.editor.components.condition.date.toggle.start',
-            })}
-            onChange={this.toggleFromVisibility}
-          />
+        <Toggle
+          checked={this.state.shouldDisplayFrom}
+          label={intl.formatMessage({
+            id: 'pages.editor.components.condition.date.toggle.start',
+          })}
+          onChange={this.toggleFromVisibility}
+        />
 
-          {this.state.shouldDisplayFrom && (
-            <div className="flex mt4">
-              <DatePicker
-                align="right"
-                dateRangeStart={this.state.from}
-                dateRangeEnd={this.state.to}
-                direction="up"
-                isRangeStart
-                locale={iframeRuntime.culture.locale}
-                maxTime={this.defaultMaxTime}
-                minDate={this.minDate}
-                minTime={this.state.fromMinTime}
-                onChange={this.handleFromChange}
-                useTime
-                value={this.state.from}
-              />
-            </div>
-          )}
-        </>
+        {this.state.shouldDisplayFrom && (
+          <div className="flex mt4">
+            <DatePicker
+              align="right"
+              dateRangeStart={this.state.from}
+              dateRangeEnd={this.state.to}
+              direction="up"
+              isRangeStart
+              locale={iframeRuntime.culture.locale}
+              maxTime={this.defaultMaxTime}
+              minDate={this.minDate}
+              minTime={this.state.fromMinTime}
+              onChange={this.handleFromChange}
+              useTime
+              value={this.state.from}
+            />
+          </div>
+        )}
 
         <div className="mt6" />
 
-        <>
-          <Toggle
-            checked={this.state.shouldDisplayTo}
-            label={intl.formatMessage({
-              id: 'pages.editor.components.condition.date.toggle.end',
-            })}
-            onChange={this.toggleToVisibility}
-          />
+        <Toggle
+          checked={this.state.shouldDisplayTo}
+          label={intl.formatMessage({
+            id: 'pages.editor.components.condition.date.toggle.end',
+          })}
+          onChange={this.toggleToVisibility}
+        />
 
-          {this.state.shouldDisplayTo && (
-            <div className="flex mt4">
-              <DatePicker
-                align="right"
-                dateRangeStart={this.state.from}
-                dateRangeEnd={this.state.to}
-                direction="up"
-                isRangeEnd
-                locale={iframeRuntime.culture.locale}
-                maxTime={this.defaultMaxTime}
-                minDate={this.minDate}
-                minTime={this.state.toMinTime}
-                onChange={this.handleToChange}
-                useTime
-                value={this.state.to}
-              />
-            </div>
-          )}
-        </>
+        {this.state.shouldDisplayTo && (
+          <div className="flex mt4">
+            <DatePicker
+              align="right"
+              dateRangeStart={this.state.from}
+              dateRangeEnd={this.state.to}
+              direction="up"
+              isRangeEnd
+              locale={iframeRuntime.culture.locale}
+              maxTime={this.defaultMaxTime}
+              minDate={this.minDate}
+              minTime={this.state.toMinTime}
+              onChange={this.handleToChange}
+              useTime
+              value={this.state.to}
+            />
+          </div>
+        )}
       </>
     )
   }
