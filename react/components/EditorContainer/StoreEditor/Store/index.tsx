@@ -10,6 +10,7 @@ const Store: React.FunctionComponent<{}> = () => {
       <div className="pv7">
         <div className="w-100 bb b--muted-4" />
       </div>
+      {/* FIXME: Put this in tabs instead + intl */}
       {!showAdvanced ? (
         <div
           className="link pointer c-muted-1"
