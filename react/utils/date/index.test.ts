@@ -35,7 +35,7 @@ describe('getNextTime', () => {
     expect(getNextTime(input)).toEqual(expectedOutput)
   })
 
-  it('works with 0 < minutes <= 59', () => {
+  it('works with 30 < minutes <= 59', () => {
     const input = new Date('2019-04-01T12:43:51.000-03:00')
 
     const expectedOutput = new Date('2019-04-01T13:00:00.000-03:00')
@@ -77,7 +77,7 @@ describe('getPreviousTime', () => {
     expect(getPreviousTime(input)).toEqual(expectedOutput)
   })
 
-  it('works with 0 < minutes <= 59', () => {
+  it('works with 30 < minutes <= 59', () => {
     const input = new Date('2019-04-01T12:43:51.000-03:00')
 
     const expectedOutput = new Date('2019-04-01T12:30:00.000-03:00')
