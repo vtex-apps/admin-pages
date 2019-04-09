@@ -4,7 +4,7 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { Input } from 'vtex.styleguide'
 
 interface Props extends WidgetProps {
-  label?: string
+  label: string
   max?: number
   min?: number
   rawErrors?: string[]

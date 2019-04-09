@@ -1,43 +1,43 @@
 import React from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { Mutation } from 'react-apollo'
 
-import CreateStyle from './queries/CreateStyle.graphql'
-import DeleteStyle from './queries/DeleteStyle.graphql'
-import ListStyles from './queries/ListStyles.graphql'
-import SaveSelectedStyle from './queries/SaveSelectedStyle.graphql'
+import ListStyles from './graphql/ListStyles.graphql'
+import CreateStyleMutation, {
+  CreateStyleMutationFn,
+} from './mutations/CreateStyle'
+import DeleteStyleMutation, {
+  DeleteStyleMutationFn,
+} from './mutations/DeleteStyle'
+import SaveSelectedStyleMutation, {
+  SaveSelectedStyleMutationFn,
+} from './mutations/SaveSelectedStyle'
+import ListStylesQuery, { ListStylesQueryResult } from './queries/ListStyles'
 
 interface Props {
   children: (mutations: OperationsObj) => React.ReactNode
 }
 
-interface ListStyles {
-  listStyles: Style[]
-}
-
 interface OperationsObj {
-  listStyles: QueryResult<ListStyles>
-  saveSelectedStyle: MutationFn
-  createStyle: MutationFn
-  deleteStyle: MutationFn
+  listStyles: ListStylesQueryResult
+  saveSelectedStyle: SaveSelectedStyleMutationFn
+  createStyle: CreateStyleMutationFn
+  deleteStyle: DeleteStyleMutationFn
 }
 
 const Operations = (props: Props) => (
-  <Query query={ListStyles} fetchPolicy={'network-only'}>
+  <ListStylesQuery fetchPolicy={'network-only'}>
     {listStyles => (
-      <Mutation
-        mutation={SaveSelectedStyle}
+      <SaveSelectedStyleMutation
         refetchQueries={() => [{ query: ListStyles }]}
         awaitRefetchQueries
       >
         {saveSelectedStyle => (
-          <Mutation
-            mutation={CreateStyle}
+          <CreateStyleMutation
             refetchQueries={() => [{ query: ListStyles }]}
             awaitRefetchQueries
           >
             {createStyle => (
-              <Mutation
-                mutation={DeleteStyle}
+              <DeleteStyleMutation
                 refetchQueries={() => [{ query: ListStyles }]}
                 awaitRefetchQueries
               >
@@ -49,13 +49,13 @@ const Operations = (props: Props) => (
                     saveSelectedStyle,
                   })
                 }
-              </Mutation>
+              </DeleteStyleMutation>
             )}
-          </Mutation>
+          </CreateStyleMutation>
         )}
-      </Mutation>
+      </SaveSelectedStyleMutation>
     )}
-  </Query>
+  </ListStylesQuery>
 )
 
 export default Operations

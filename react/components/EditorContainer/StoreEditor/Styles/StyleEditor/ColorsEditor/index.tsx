@@ -1,12 +1,14 @@
 import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
 import React, { useState } from 'react'
+import { InjectedIntl, injectIntl } from 'react-intl'
 
 import fromTachyonsConfig from '../utils/colors'
 import ColorEditor from './ColorEditor'
 import ColorGroup from './ColorGroup'
 
 interface Props {
+  intl: InjectedIntl
   updateStyle: (partialConfig: Partial<TachyonsConfig>) => void
   semanticColors: SemanticColors
   font: Font
@@ -18,6 +20,7 @@ type EditMode = string | undefined
 const ColorsEditor: React.FunctionComponent<Props> = ({
   addNavigation,
   font,
+  intl,
   semanticColors,
   updateStyle,
 }) => {
@@ -56,7 +59,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   }, toPairs(info))
 
   return (
-    <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
+    <div className="flex-grow-1">
       {toPairs(groups).map(groupInfo => {
         const [groupName, group] = groupInfo
 
@@ -70,7 +73,9 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
               addNavigation({
                 backButton: {
                   action: () => startEditing(undefined),
-                  text: 'Back to Colors',
+                  text: intl.formatMessage({
+                    id: 'pages.editor.styles.color-group.back',
+                  }),
                 },
                 title: startCase(token),
               })
@@ -98,4 +103,4 @@ const updateColor = (updateStyle: Props['updateStyle']) => (
   updateStyle(partialConfig)
 }
 
-export default ColorsEditor
+export default injectIntl(ColorsEditor)

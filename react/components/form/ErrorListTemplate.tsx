@@ -33,7 +33,7 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     const haveErrorsChanged =
       currErrors.length !== prevErrors.length ||
       (currErrors.length > 0 &&
-        currErrors.reduce(
+        currErrors.reduce<boolean>(
           (acc, error, index) => error.stack !== prevErrors[index].stack || acc,
           false
         ))

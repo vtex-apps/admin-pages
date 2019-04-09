@@ -4,6 +4,13 @@ import { Mutation, MutationFn } from 'react-apollo'
 import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 
+import {
+  DeleteRedirectMutationFn,
+  DeleteRedirectVariables,
+  RedirectData,
+  SaveRedirectMutationFn,
+  SaveRedirectVariables,
+} from './typings'
 import { getStoreUpdater } from './utils'
 
 interface Props {
@@ -11,14 +18,20 @@ interface Props {
 }
 
 interface OperationsObj {
-  deleteRedirect: MutationFn
-  saveRedirect: MutationFn
+  deleteRedirect: DeleteRedirectMutationFn
+  saveRedirect: SaveRedirectMutationFn
 }
 
 const Operations = (props: Props) => (
-  <Mutation mutation={DeleteRedirect} update={getStoreUpdater('delete')}>
+  <Mutation<RedirectData, DeleteRedirectVariables>
+    mutation={DeleteRedirect}
+    update={getStoreUpdater('delete')}
+  >
     {deleteRedirect => (
-      <Mutation mutation={SaveRedirect} update={getStoreUpdater('save')}>
+      <Mutation<RedirectData, SaveRedirectVariables>
+        mutation={SaveRedirect}
+        update={getStoreUpdater('save')}
+      >
         {saveRedirect =>
           props.children({
             deleteRedirect,

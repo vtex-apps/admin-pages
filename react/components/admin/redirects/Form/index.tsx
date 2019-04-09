@@ -1,7 +1,6 @@
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -17,11 +16,12 @@ import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
+import { DeleteRedirectMutationFn, SaveRedirectMutationFn } from './typings'
 
 interface CustomProps {
   initialData: Redirect
-  onDelete: MutationFn
-  onSave: MutationFn
+  onDelete: DeleteRedirectMutationFn
+  onSave: SaveRedirectMutationFn
 }
 
 type Props = CustomProps &
