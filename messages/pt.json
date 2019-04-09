@@ -139,7 +139,6 @@
   "pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo errado ocorreu ao atualizar o ícone do aplicativo…",
   "pages.editor.store.settings.pwa.update-manifest-icon.success": "Ícone do aplicativo atualizado com sucesso!",
   "pages.editor.store.settings.refetch": "Tentar novamente",
-  "pages.editor.store.settings.title": "Configurações gerais",
   "pages.editor.styles.card.current": "Atual",
   "pages.editor.styles.card.menu.delete.fail": "Erro ao deletar estilo.",
   "pages.editor.styles.card.menu.delete": "Deletar",
