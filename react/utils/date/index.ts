@@ -1,12 +1,9 @@
 import moment from 'moment'
 
-export const getFirstTime = (date: Date) => {
-  const dateClone = new Date(date)
-
-  dateClone.setHours(0, 0, 0, 0)
-
-  return dateClone
-}
+export const getFirstTime = (date: Date) =>
+  moment(date)
+    .startOf('day')
+    .toDate()
 
 export const getFormattedLocalizedDate = (date: string, locale: string) =>
   moment(date)
@@ -80,8 +77,5 @@ export const isSameDay = (dateA?: Date, dateB?: Date) => {
     return false
   }
 
-  const dateAClone = new Date(dateA.getTime())
-  const dateBClone = new Date(dateB.getTime())
-
-  return dateAClone.setHours(0, 0, 0, 0) === dateBClone.setHours(0, 0, 0, 0)
+  return moment(dateA).isSame(dateB, 'day')
 }
