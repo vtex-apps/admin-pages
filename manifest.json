@@ -20,11 +20,12 @@
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x"
   },
+  "peerDependencies": {
+    "vtex.admin": "2.x"
+  },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "settingsSchema": {},
   "scripts": {
     "postreleasy": "vtex publish -r vtex --verbose"
