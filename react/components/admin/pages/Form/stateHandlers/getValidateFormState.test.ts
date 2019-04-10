@@ -17,7 +17,9 @@ describe('getValidateFormState', () => {
       uuid: undefined,
     },
     formErrors: {},
-    isLoading: false
+    isDeletable: false,
+    isInfoEditable: true,
+    isLoading: false,
   }
 
   it('should return empty object if there are no errors', () => {
@@ -72,7 +74,7 @@ describe('getValidateFormState', () => {
     } as State
 
     expect(getValidateFormState(mockState)).toEqual(
-      expect.objectContaining({ formErrors: {} }),
+      expect.objectContaining({ formErrors: {} })
     )
   })
 
@@ -130,7 +132,7 @@ describe('getValidateFormState', () => {
         formErrors: expect.objectContaining({
           path: 'pages.admin.pages.form.templates.field.required',
         }),
-      }),
+      })
     )
   })
 
@@ -188,7 +190,7 @@ describe('getValidateFormState', () => {
         formErrors: expect.objectContaining({
           blockId: 'pages.admin.pages.form.templates.field.required',
         }),
-      }),
+      })
     )
   })
 
@@ -246,7 +248,26 @@ describe('getValidateFormState', () => {
         formErrors: expect.objectContaining({
           title: 'pages.admin.pages.form.templates.field.required',
         }),
-      }),
+      })
+    )
+  })
+
+  it(`shouldn't return error if title is falsy and field isn't editable`, () => {
+    const mockState = {
+      ...baseMockState,
+      data: {
+        ...baseMockState.data,
+        path: '/test',
+        template: 'defaultTemplate',
+        title: '',
+      },
+      isInfoEditable: false,
+    } as State
+
+    expect(getValidateFormState(mockState)).toEqual(
+      expect.objectContaining({
+        formErrors: {},
+      })
     )
   })
 
@@ -259,19 +280,19 @@ describe('getValidateFormState', () => {
           pages: [
             {
               condition: {
-              allMatches: true,
-              id: '1',
-              statements: [
-                {
-                  error: '',
-                  object: {
-                    date: new Date('2019-02-01'),
+                allMatches: true,
+                id: '1',
+                statements: [
+                  {
+                    error: '',
+                    object: {
+                      date: new Date('2019-02-01'),
+                    },
+                    subject: 'date',
+                    verb: 'is',
                   },
-                  subject: 'date',
-                  verb: 'is',
-                },
-              ],
-            },
+                ],
+              },
               pageId: 'myTemplate',
               template: 'teste',
               uniqueId: 10,
@@ -309,7 +330,7 @@ describe('getValidateFormState', () => {
               },
             },
           }),
-        }),
+        })
       )
     })
 
@@ -321,7 +342,7 @@ describe('getValidateFormState', () => {
           pages: [
             {
               condition: {
-                statements: []
+                statements: [],
               },
               pageId: 'pageId',
               template: 'template',
@@ -361,7 +382,7 @@ describe('getValidateFormState', () => {
               },
             },
           }),
-        }),
+        })
       )
     })
 
@@ -373,14 +394,14 @@ describe('getValidateFormState', () => {
           pages: [
             {
               condition: {
-                statements: []
+                statements: [],
               },
               template: '',
               uniqueId: 10,
             },
             {
               condition: {
-                statements: []
+                statements: [],
               },
               template: '',
               uniqueId: 5,
@@ -405,9 +426,8 @@ describe('getValidateFormState', () => {
               },
             },
           }),
-        }),
+        })
       )
     })
   })
-
 })

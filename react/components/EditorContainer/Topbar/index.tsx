@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 
 import ModeButton from './components/ModeButton'
 
-const modes: StoreEditMode[] = ['theme']
+const modes: StoreEditMode[] = ['settings', 'theme']
 
 interface Props {
   changeMode: (mode?: StoreEditMode) => void
@@ -11,7 +11,11 @@ interface Props {
   urlPath: string
 }
 
-const Topbar: React.SFC<Props> = ({ changeMode, mode, urlPath }) => (
+const Topbar: React.FunctionComponent<Props> = ({
+  changeMode,
+  mode,
+  urlPath,
+}) => (
   <div className="ph5 f6 h-3em w-100 flex justify-between items-center">
     <div className="flex items-stretch">
       {mode ? (
@@ -28,7 +32,7 @@ const Topbar: React.SFC<Props> = ({ changeMode, mode, urlPath }) => (
               mode={buttonMode}
             />
           ))}
-          <div className="flex items-center ml3 pl7 bw1 bl b--muted-5">
+          <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
             <FormattedMessage id="pages.editor.container.editpath.label" />:
             <div className="pl3 c-muted-2">{urlPath}</div>
           </div>

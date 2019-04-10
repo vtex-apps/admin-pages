@@ -1,10 +1,9 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
-import { ToastConsumer } from 'vtex.styleguide'
+import { Box, ToastConsumer } from 'vtex.styleguide'
 
-import AdminWrapper from './components/admin/AdminWrapper'
 import {
   BASE_URL,
   NEW_REDIRECT_ID,
@@ -13,6 +12,10 @@ import {
 import Form from './components/admin/redirects/Form'
 import Operations from './components/admin/redirects/Form/Operations'
 import { RedirectQuery } from './components/admin/redirects/Form/typings'
+import {
+  TargetPathContextProps,
+  withTargetPath,
+} from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
@@ -21,7 +24,10 @@ interface CustomProps {
 }
 
 type Props = WithApolloClient<
-  CustomProps & RenderContextProps & ReactIntl.InjectedIntlProps
+  CustomProps &
+    RenderContextProps &
+    ReactIntl.InjectedIntlProps &
+    TargetPathContextProps
 >
 
 interface State {
@@ -40,6 +46,7 @@ class RedirectForm extends Component<Props, State> {
       from: '',
       id: NEW_REDIRECT_ID,
       to: '',
+      type: 'permanent' as RedirectTypes,
     }
 
     const isNew = props.params.id === NEW_REDIRECT_ID
@@ -55,8 +62,11 @@ class RedirectForm extends Component<Props, State> {
       client,
       params,
       runtime: { navigate },
+      setTargetPath,
     } = this.props
     const { formData } = this.state
+
+    setTargetPath(WRAPPER_PATH)
 
     if (!formData) {
       try {
@@ -92,7 +102,7 @@ class RedirectForm extends Component<Props, State> {
     const { formData, isLoading } = this.state
 
     return (
-      <Fragment>
+      <>
         <Helmet>
           <title>
             {intl.formatMessage({
@@ -103,27 +113,27 @@ class RedirectForm extends Component<Props, State> {
             })}
           </title>
         </Helmet>
-        <AdminWrapper targetPath={WRAPPER_PATH}>
-          <Operations>
-            {({ deleteRedirect, saveRedirect }) =>
-              isLoading ? (
-                <Loader />
-              ) : (
-                <ToastConsumer>
-                  {({ showToast }) => (
+        <Operations>
+          {({ deleteRedirect, saveRedirect }) =>
+            isLoading ? (
+              <Loader />
+            ) : (
+              <ToastConsumer>
+                {({ showToast }) => (
+                  <Box>
                     <Form
                       initialData={formData as Redirect}
                       onDelete={deleteRedirect}
                       onSave={saveRedirect}
                       showToast={showToast}
                     />
-                  )}
-                </ToastConsumer>
-              )
-            }
-          </Operations>
-        </AdminWrapper>
-      </Fragment>
+                  </Box>
+                )}
+              </ToastConsumer>
+            )
+          }
+        </Operations>
+      </>
     )
   }
 }
@@ -131,5 +141,6 @@ class RedirectForm extends Component<Props, State> {
 export default compose(
   injectIntl,
   withApollo,
-  withRuntimeContext
+  withRuntimeContext,
+  withTargetPath
 )(RedirectForm)

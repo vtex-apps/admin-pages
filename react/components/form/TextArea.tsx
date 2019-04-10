@@ -4,7 +4,7 @@ import { Textarea } from 'vtex.styleguide'
 
 interface Props extends WidgetProps {
   autofocus: boolean
-  label?: string
+  label: string
   rawErrors?: string[]
   onChange(val: string): void
 }
@@ -19,7 +19,7 @@ interface Props extends WidgetProps {
  * - onFocus: FocusEventHandler<HTMLTextAreaElement>
  */
 
-const TextArea: React.SFC<Props> = ({
+const TextArea: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,

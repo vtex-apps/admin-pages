@@ -7,6 +7,51 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.0.0] - 2019-04-10
+
+### Added
+
+- **`EditorContainer`**
+  - Add toggle to allow disabling the "Add to Home Screen" prompt.
+
+## [3.0.0-beta.9] - 2019-04-08
+
+### Fixed
+
+- Add settings button's intl id into `context.json`.
+
+## [3.0.0-beta.8] - 2019-04-08
+
+### Changed
+
+- Bump to new `pwa-graphql` major.
+
+## [3.0.0-beta.7] - 2019-04-08
+
+### Added
+
+- **`EditorContainer`**
+  - Add the PWA settings to the `Store` settings.
+
+## [3.0.0-beta.6] - 2019-04-04
+
+### Added
+
+- **`EditorContainer`**
+  - Add the `settings` editor, named as `Store`.
+
+## [3.0.0-beta.5] - 2019-03-26
+
+## [3.0.0-beta.4] - 2019-03-19
+
+### Added
+
+- Redirect `type` support.
+
+## [3.0.0-beta.3] - 2019-02-28
+
+## [3.0.0-beta.2] - 2019-02-28
+
 ## [3.0.0-beta.1] - 2019-02-27
 
 ### Fixed

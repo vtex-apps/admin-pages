@@ -9,7 +9,7 @@ interface Props {
   categorizedRoutes: CategorizedRoutes
 }
 
-const List: React.SFC<Props> = ({ categorizedRoutes }) => (
+const List: React.FunctionComponent<Props> = ({ categorizedRoutes }) => (
   <Fragment>
     <Section
       hasCreateButton

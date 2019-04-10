@@ -59,7 +59,11 @@ const fieldName = (id: string) => {
   }
 }
 
-const ColorsEditor: React.SFC<Props> = ({ colorInfo, updateColor, token }) => {
+const ColorsEditor: React.FunctionComponent<Props> = ({
+  colorInfo,
+  updateColor,
+  token,
+}) => {
   const groups = groupBy(info => {
     return fieldName(info.path.split('.')[0])
   }, colorInfo)

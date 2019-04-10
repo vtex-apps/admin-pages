@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { ToastConsumer } from 'vtex.styleguide'
 
+import { getSitewideTreePath } from '../../../utils/blocks'
 import { getIframeRenderComponents } from '../../../utils/components'
 
 import ComponentSelector from './ComponentSelector'
@@ -8,7 +9,7 @@ import ConfigurationList from './ConfigurationList'
 import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
 import { SidebarComponent } from './typings'
-import { getComponents } from './utils'
+import { getComponents, getIsSitewide } from './utils'
 
 interface Props {
   editor: EditorContext
@@ -42,7 +43,7 @@ class Content extends Component<Props, State> {
 
     if (prevPath !== currPath) {
       this.resetComponents()
-      this.props.editor.setIsNavigating(false)
+      this.props.editor.setIsLoading(false)
     }
   }
 
@@ -61,6 +62,17 @@ class Content extends Component<Props, State> {
       )
     }
 
+    const isSitewide = getIsSitewide(
+      iframeRuntime.extensions,
+      editor.editTreePath!
+    )
+    const template = isSitewide
+      ? '*'
+      : iframeRuntime.pages[iframeRuntime.page].blockId
+    const treePath = isSitewide
+      ? getSitewideTreePath(editor.editTreePath!)
+      : editor.editTreePath!
+
     return (
       <FormMetaConsumer>
         {formMeta => (
@@ -72,8 +84,11 @@ class Content extends Component<Props, State> {
                     editor={editor}
                     formMeta={formMeta}
                     iframeRuntime={iframeRuntime}
+                    isSitewide={isSitewide}
                     modal={modal}
                     showToast={showToast}
+                    template={template}
+                    treePath={treePath}
                   />
                 )}
               </ToastConsumer>

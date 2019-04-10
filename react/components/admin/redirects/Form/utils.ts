@@ -4,7 +4,7 @@ import Redirects from '../../../../queries/Redirects.graphql'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
 import { RedirectsQuery } from '../typings'
 
-import { MutationResult, QueryData } from './typings'
+import { QueryData, StoreUpdaterGetter } from './typings'
 
 const cacheAccessParameters = {
   query: Redirects,
@@ -14,9 +14,9 @@ const cacheAccessParameters = {
   },
 }
 
-export const getStoreUpdater = (operation: 'delete' | 'save') => (
-  store: DataProxy,
-  result: MutationResult,
+export const getStoreUpdater: StoreUpdaterGetter = operation => (
+  store,
+  result
 ) => {
   const deleteRedirect = result.data && result.data.deleteRedirect
   const saveRedirect = result.data && result.data.saveRedirect
@@ -31,7 +31,7 @@ export const getStoreUpdater = (operation: 'delete' | 'save') => (
         (isDelete
           ? deleteRedirect &&
             queryData.redirects.redirects.filter(
-              redirect => redirect.id !== deleteRedirect.id,
+              redirect => redirect.id !== deleteRedirect.id
             )
           : saveRedirect &&
             queryData.redirects.redirects.reduce(
@@ -40,7 +40,7 @@ export const getStoreUpdater = (operation: 'delete' | 'save') => (
                 `${saveRedirect.from}__${saveRedirect.to}`
                   ? acc
                   : [...acc, currRedirect],
-              [saveRedirect],
+              [saveRedirect]
             )) || queryData.redirects.redirects
 
       const newTotal =

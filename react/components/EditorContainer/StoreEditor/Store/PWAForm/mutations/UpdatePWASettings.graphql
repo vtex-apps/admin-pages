@@ -1,0 +1,5 @@
+mutation updatePWASettings($settings: PWASettingsInput) {
+  updatePWASettings(settings: $settings) {
+    disablePrompt
+  }
+}

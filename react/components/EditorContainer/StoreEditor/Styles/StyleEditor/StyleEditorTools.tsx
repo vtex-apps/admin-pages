@@ -1,8 +1,10 @@
 import React, { useReducer, useState } from 'react'
+import { InjectedIntl, injectIntl } from 'react-intl'
 import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
   initialState: NavigationInfo
+  intl: InjectedIntl
   saveStyle: () => void
   children: (
     updateNavigation: React.Dispatch<NavigationUpdate>
@@ -15,9 +17,10 @@ type NavigationReducer = (
   info: NavigationUpdate
 ) => NavigationInfo[]
 
-const StyleEditorTools: React.SFC<Props> = ({
+const StyleEditorTools: React.FunctionComponent<Props> = ({
   children,
   initialState,
+  intl,
   saveStyle,
   setName,
 }) => {
@@ -93,15 +96,17 @@ const StyleEditorTools: React.SFC<Props> = ({
               saveStyle()
             }}
           >
-            Save
+            {intl.formatMessage({
+              id: 'pages.editor.styles.editor.tools.save',
+            })}
           </Button>
         </div>
       </div>
-      <div className="flex flex-column flex-grow-1">
+      <div className="flex flex-column flex-grow-1 overflow-y-auto overflow-x-hidden">
         {children(updateNavigation)}
       </div>
     </div>
   )
 }
 
-export default StyleEditorTools
+export default injectIntl(StyleEditorTools)

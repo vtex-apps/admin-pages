@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
@@ -12,6 +13,7 @@ import { ButtonWithIcon } from 'vtex.styleguide'
 import AddIcon from '../icons/AddIcon'
 
 import ArrayList from './ArrayList'
+import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 interface Props {
   canAdd?: boolean
@@ -53,11 +55,12 @@ class ArrayFieldTemplate extends Component<
   }
 
   public render() {
-    const { canAdd, items, schema } = this.props
+    const { canAdd, items, schema, title } = this.props
     const { openedItem, sorting } = this.state
 
     return (
       <Fragment>
+        {title && <SimpleFormattedMessage id={title} />}
         <ArrayList
           items={items}
           sorting={sorting}
@@ -135,7 +138,7 @@ class ArrayFieldTemplate extends Component<
   }
 }
 
-const StatelessArrayFieldTemplate: React.SFC<
+const StatelessArrayFieldTemplate: React.FunctionComponent<
   ArrayFieldTemplateProps
 > = props => <ArrayFieldTemplate {...props} />
 

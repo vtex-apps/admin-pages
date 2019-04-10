@@ -1,36 +1,32 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { InjectedIntl, injectIntl } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
 import ColorsEditor from './ColorsEditor'
-import GenerateStyleSheet from './queries/GenerateStyleSheet.graphql'
-import RenameStyle from './queries/RenameStyle.graphql'
-import UpdateStyle from './queries/UpdateStyle.graphql'
+
+import RenameStyleMutation from './mutations/RenameStyle'
+import UpdateStyleMutation from './mutations/UpdateStyle'
+import GenerateStyleSheetQuery from './queries/GenerateStyleSheet'
 
 import StyleEditorTools from './StyleEditorTools'
 
 type EditMode = 'colors' | undefined
 
 interface Props {
-  style: Style
-  stopEditing: () => void
+  intl: InjectedIntl
   setStyleAsset: (asset: StyleAssetInfo) => void
+  stopEditing: () => void
+  style: Style
 }
 
 interface EditorProps {
-  config: TachyonsConfig
   addNavigation: (info: NavigationInfo) => void
-  updateConfig: React.Dispatch<Partial<TachyonsConfig>>
+  config: TachyonsConfig
+  intl: InjectedIntl
   setStyleAsset: (asset: StyleAssetInfo) => void
-}
-
-interface UpdateStyleResult {
-  updateStyle: {
-    path: string
-    selected: boolean
-  }
+  updateConfig: React.Dispatch<Partial<TachyonsConfig>>
 }
 
 type ConfigReducer = (
@@ -38,9 +34,10 @@ type ConfigReducer = (
   partialConfig: Partial<TachyonsConfig>
 ) => TachyonsConfig
 
-const Editor: React.SFC<EditorProps> = ({
+const Editor: React.FunctionComponent<EditorProps> = ({
   addNavigation,
   config,
+  intl,
   updateConfig,
   setStyleAsset,
 }) => {
@@ -57,12 +54,11 @@ const Editor: React.SFC<EditorProps> = ({
   } = config
 
   return (
-    <Query
-      query={GenerateStyleSheet}
+    <GenerateStyleSheetQuery
       variables={{ config }}
       fetchPolicy={'network-only'}
     >
-      {({ data }: QueryResult<{ generateStyleSheet: string }>) => {
+      {({ data }) => {
         const stylesheet = data && data.generateStyleSheet
 
         if (stylesheet) {
@@ -88,25 +84,34 @@ const Editor: React.SFC<EditorProps> = ({
                     addNavigation({
                       backButton: {
                         action: () => setMode(undefined),
-                        text: 'Back',
+                        text: intl.formatMessage({
+                          id: 'pages.editor.styles.color-editor.back',
+                        }),
                       },
-                      title: 'Colors',
+                      title: intl.formatMessage({
+                        id: 'pages.editor.styles.edit.colors.title',
+                      }),
                     })
                     setMode('colors')
                   }}
                 >
-                  <span className="f4">Colors</span>
+                  <span className="f4">
+                    {intl.formatMessage({
+                      id: 'pages.editor.styles.edit.colors.title',
+                    })}
+                  </span>
                   <Colors colors={[emphasis, action_primary]} />
                 </div>
               </div>
             )
         }
       }}
-    </Query>
+    </GenerateStyleSheetQuery>
   )
 }
 
-const StyleEditor: React.SFC<Props> = ({
+const StyleEditor: React.FunctionComponent<Props> = ({
+  intl,
   stopEditing,
   style,
   setStyleAsset,
@@ -118,17 +123,19 @@ const StyleEditor: React.SFC<Props> = ({
   const [name, setName] = useState<string>(style.name)
 
   return (
-    <Mutation mutation={RenameStyle}>
+    <RenameStyleMutation>
       {renameStyle => (
-        <Mutation mutation={UpdateStyle}>
-          {(updateStyle: MutationFn<UpdateStyleResult>) => (
+        <UpdateStyleMutation>
+          {updateStyle => (
             <ToastConsumer>
               {({ showToast }) => (
                 <StyleEditorTools
                   initialState={{
                     backButton: {
                       action: stopEditing,
-                      text: 'Back',
+                      text: intl.formatMessage({
+                        id: 'pages.editor.styles.edit.colors.back',
+                      }),
                     },
                     title: name,
                   }}
@@ -149,12 +156,16 @@ const StyleEditor: React.SFC<Props> = ({
                       })
                       showToast({
                         horizontalPosition: 'right',
-                        message: 'Style saved successfully.',
+                        message: intl.formatMessage({
+                          id: 'pages.editor.styles.edit.save.successful',
+                        }),
                       })
                     } else {
                       showToast({
                         horizontalPosition: 'right',
-                        message: 'There was a problem saving your style.',
+                        message: intl.formatMessage({
+                          id: 'pages.editor.styles.edit.save.failed',
+                        }),
                       })
                     }
                   }}
@@ -168,16 +179,17 @@ const StyleEditor: React.SFC<Props> = ({
                         updateNavigation({ info, type: 'push' })
                       }}
                       setStyleAsset={setStyleAsset}
+                      intl={intl}
                     />
                   )}
                 </StyleEditorTools>
               )}
             </ToastConsumer>
           )}
-        </Mutation>
+        </UpdateStyleMutation>
       )}
-    </Mutation>
+    </RenameStyleMutation>
   )
 }
 
-export default StyleEditor
+export default injectIntl(StyleEditor)

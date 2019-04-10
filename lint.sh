@@ -13,3 +13,7 @@ if [ -z `which yarn` ];
   then npm run lint $FILES;
   else yarn lint $FILES;
 fi;
+
+cd ../
+
+yarn lint:locales

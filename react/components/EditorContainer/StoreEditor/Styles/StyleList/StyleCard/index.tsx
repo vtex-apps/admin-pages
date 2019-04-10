@@ -1,27 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { InjectedIntl, injectIntl } from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
 import Colors from '../../components/Colors'
 import Typography from '../../components/Typography'
 
 type StyleFunction = (style: Style) => void
+type StyleMutation = (style: Style) => Promise<unknown>
 
 interface Props {
-  deleteStyle: StyleFunction
-  duplicateStyle: StyleFunction
-  selectStyle: StyleFunction
+  deleteStyle: StyleMutation
+  duplicateStyle: StyleMutation
+  intl: InjectedIntl
+  selectStyle: StyleMutation
   startEditing: StyleFunction
   style: Style
 }
 
-const StyleCard: React.SFC<Props> = ({
+const StyleCard: React.FunctionComponent<Props> = ({
   deleteStyle,
   duplicateStyle,
+  intl,
   selectStyle,
   startEditing,
   style,
   style: { app: appId, name, selected, editable, config },
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const setIsLoadingWrapper = (fn: () => Promise<any>) => async () => {
+    setIsLoading(true)
+    await fn()
+    setIsLoading(false)
+  }
+
   const {
     action_primary,
     action_secondary,
@@ -34,21 +46,34 @@ const StyleCard: React.SFC<Props> = ({
   const createMenuOptions = () => {
     const options = [
       editable && {
-        label: 'Edit',
+        label: intl.formatMessage({ id: 'pages.editor.styles.card.menu.edit' }),
         onClick: () => startEditing(style),
       },
       !selected && {
-        label: 'Select as store style',
-        onClick: () => selectStyle(style),
+        label: intl.formatMessage({
+          id: 'pages.editor.styles.card.menu.select',
+        }),
+        onClick: setIsLoadingWrapper(() => selectStyle(style)),
       },
       {
-        label: 'Duplicate',
-        onClick: () => duplicateStyle(style),
+        label: intl.formatMessage({
+          id: 'pages.editor.styles.card.menu.duplicate',
+        }),
+        onClick: setIsLoadingWrapper(() => duplicateStyle(style)),
       },
       !selected &&
         editable && {
-          label: 'Delete',
-          onClick: () => deleteStyle(style),
+          label: intl.formatMessage({
+            id: 'pages.editor.styles.card.menu.delete',
+          }),
+          onClick: async () => {
+            setIsLoading(true)
+            try {
+              await deleteStyle(style)
+            } catch (e) {
+              setIsLoading(false)
+            }
+          },
         },
     ]
     return options.filter(option => option)
@@ -63,16 +88,19 @@ const StyleCard: React.SFC<Props> = ({
               <span className="mr5 truncate">{name}</span>
               {!editable && (
                 <span className="f7 c-muted-2 truncate">
-                  created by {appId.split('@')[0]}
+                  {intl.formatMessage(
+                    { id: 'pages.editor.styles.card.name.app-subtitle' },
+                    { app: appId.split('@')[0] }
+                  )}
                 </span>
               )}
             </div>
             <ActionMenu
-              label="Actions"
-              icon={<IconOptionsDots />}
               hideCaretIcon
               buttonProps={{
-                icon: true,
+                icon: <IconOptionsDots />,
+                iconPosition: 'right',
+                isLoading,
                 variation: 'tertiary',
               }}
               options={createMenuOptions()}
@@ -89,7 +117,7 @@ const StyleCard: React.SFC<Props> = ({
             </div>
             {selected && (
               <Tag bgColor="#F71963" color="#FFFFFF">
-                Current
+                {intl.formatMessage({ id: 'pages.editor.styles.card.current' })}
               </Tag>
             )}
           </div>
@@ -99,4 +127,4 @@ const StyleCard: React.SFC<Props> = ({
   )
 }
 
-export default StyleCard
+export default injectIntl(StyleCard)

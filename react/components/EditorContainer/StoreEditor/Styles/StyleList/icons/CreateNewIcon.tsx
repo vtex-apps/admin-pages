@@ -1,7 +1,7 @@
 import React from 'react'
 
 // TODO: Use tachyons on stroke color
-const CreateNewIcon: React.SFC = () => (
+const CreateNewIcon: React.FunctionComponent = () => (
   <svg
     width="14"
     height="14"

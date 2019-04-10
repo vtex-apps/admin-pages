@@ -5,9 +5,9 @@ import { Button, Checkbox, Input } from 'vtex.styleguide'
 import { RouteFormData } from 'pages'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
-import { isNewRoute } from '../utils'
 
 import SectionTitle from './SectionTitle'
+import { FormErrors } from './typings'
 
 import {
   ConditionalTemplateSection,
@@ -23,7 +23,9 @@ interface CustomProps extends TemplateSectionProps {
   detailChangeHandlerGetter: (
     detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  formErrors: FormErrors
+  isDeletable: boolean
+  isInfoEditable: boolean
   isLoading: boolean
   onDelete: () => void
   onExit: () => void
@@ -40,11 +42,13 @@ interface CustomProps extends TemplateSectionProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const Form: React.SFC<Props> = ({
+const Form: React.FunctionComponent<Props> = ({
   data,
   detailChangeHandlerGetter,
   formErrors,
   intl,
+  isDeletable,
+  isInfoEditable,
   isLoading,
   onAddConditionalTemplate,
   onChangeOperatorConditionalTemplate,
@@ -57,13 +61,6 @@ const Form: React.SFC<Props> = ({
   onSave,
   templates,
 }) => {
-  const { declarer } = data || { declarer: null }
-
-  const isNew = isNewRoute(data)
-
-  const isDeletable = declarer !== 'vtex.store@2.x' && !isNew
-  const isInfoEditable = declarer !== 'vtex.store@2.x' || isNew
-
   const path = data.path || ''
 
   return (

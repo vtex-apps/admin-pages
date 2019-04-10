@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { path } from 'ramda'
 import React, { Component } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
@@ -6,7 +6,7 @@ import {
   SortableElementProps,
   SortableHandle,
 } from 'react-sortable-hoc'
-import { animated, Transition } from 'react-spring'
+import { animated, Transition } from 'react-spring/renderprops'
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 import SimpleFormattedMessage from './SimpleFormattedMessage'
@@ -56,7 +56,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
 
     const title =
       children.props.formData.__editorItemTitle ||
-      schema.items.properties.__editorItemTitle.default
+      path(['items', 'properties', '__editorItemTitle', 'default'], schema)
 
     return (
       <div
@@ -68,7 +68,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           <div className="flex items-center">
             {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
-              <SimpleFormattedMessage id={title} />
+              <SimpleFormattedMessage
+                id={title || 'pages.admin.pages.form.field.array.item'}
+              />
             </label>
           </div>
           <div className="flex items-center accordion-label-buttons">

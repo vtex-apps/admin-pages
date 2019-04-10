@@ -49,7 +49,7 @@ describe('getChangeTemplateConditionalTemplateState', () => {
   })
 
   it('should clear formError', () => {
-    const mockState = {
+    const mockState = ({
       data: {
         pages: [
           {
@@ -69,7 +69,7 @@ describe('getChangeTemplateConditionalTemplateState', () => {
       formErrors: {
         title: 'oi',
       },
-    } as State
+    } as unknown) as State
 
     expect(
       getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState)

@@ -18,6 +18,8 @@ declare module 'vtex.render-runtime' {
     >
   >
 
+  export declare const useRuntime: () => RenderContext
+
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
     getCustomMessages?: (locale: string) => any
     schema: ComponentSchema

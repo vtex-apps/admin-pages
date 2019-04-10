@@ -1,3 +1,4 @@
+import { RouteFormData } from 'pages'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
@@ -10,7 +11,8 @@ import {
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
 
-import { RouteFormData } from 'pages'
+import { formatStatements } from '../../../../utils/conditions'
+import { isNewRoute } from '../utils'
 
 import Form from './Form'
 import {
@@ -22,7 +24,7 @@ import {
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
-import { DateVerbOptions, SaveRouteVariables } from './typings'
+import { FormErrors, SaveRouteVariables } from './typings'
 
 interface ComponentProps {
   initialData: RouteFormData
@@ -39,8 +41,10 @@ type Props = ComponentProps & InjectedIntlProps
 
 export interface State {
   data: RouteFormData
+  isDeletable: boolean
   isLoading: boolean
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  isInfoEditable: boolean
+  formErrors: FormErrors
 }
 
 class FormContainer extends Component<Props, State> {
@@ -51,9 +55,18 @@ class FormContainer extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
+    const { declarer } = props.initialData || { declarer: null }
+
+    const isNew = isNewRoute(props.initialData)
+
+    const isDeletable = !declarer && !isNew
+    const isInfoEditable = !declarer || isNew
+
     this.state = {
       data: props.initialData,
       formErrors: {},
+      isDeletable,
+      isInfoEditable,
       isLoading: false,
     }
   }
@@ -64,13 +77,21 @@ class FormContainer extends Component<Props, State> {
 
   public render() {
     const { templates, onExit } = this.props
-    const { data, formErrors, isLoading } = this.state
+    const {
+      data,
+      formErrors,
+      isDeletable,
+      isInfoEditable,
+      isLoading,
+    } = this.state
 
     return (
       <Form
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
+        isDeletable={isDeletable}
         isLoading={isLoading}
+        isInfoEditable={isInfoEditable}
         onDelete={this.handleDelete}
         onExit={onExit}
         onLoginToggle={this.handleLoginToggle}
@@ -196,29 +217,6 @@ class FormContainer extends Component<Props, State> {
         uuid,
       } = this.state.data
 
-      const getObjectJson = (
-        dateInfo: { date: Date; to: Date; from: Date },
-        verb: DateVerbOptions
-      ) => {
-        return JSON.stringify(
-          {
-            between: {
-              from: dateInfo.from,
-              to: dateInfo.to,
-            },
-            from: {
-              from: dateInfo.date,
-            },
-            is: {
-              from: dateInfo.date,
-            },
-            to: {
-              to: dateInfo.date,
-            },
-          }[verb]
-        )
-      }
-
       this.setState({ isLoading: true }, async () => {
         try {
           await onSave({
@@ -235,16 +233,7 @@ class FormContainer extends Component<Props, State> {
                     condition: {
                       allMatches: page.condition.allMatches,
                       id: page.condition.id || undefined,
-                      statements: page.condition.statements.map(
-                        ({ object, subject, verb }) => ({
-                          objectJSON: getObjectJson(
-                            object,
-                            verb as DateVerbOptions
-                          ),
-                          subject,
-                          verb,
-                        })
-                      ),
+                      statements: formatStatements(page.condition.statements),
                     },
                     pageId: page.pageId || undefined,
                     template: page.template,

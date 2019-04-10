@@ -54,29 +54,33 @@ class SortableListItem extends Component<Props, State> {
     return (
       <li className="list">
         <div
-          className="flex items-center bb bt bg-white hover-bg-light-silver b--light-silver"
+          className="flex items-center bb bg-white hover-bg-light-silver b--light-silver"
           data-tree-path={component.treePath}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
         >
           {component.isSortable && (
-            <DragHandle onMouseEnter={this.handleMouseEnter} />
+            <DragHandle
+              onMouseEnter={this.handleMouseEnter}
+              isExpandable={!!subitems}
+            />
+          )}
+          {subitems && (
+            <ExpandArrow
+              hasLeftMargin={!component.isSortable}
+              isExpanded={this.state.isExpanded}
+              onClick={this.toggleExpansion}
+            />
           )}
           <Item
-            hasLeftPadding={!component.isSortable}
+            hasSubItems={!!subitems}
+            isSortable={component.isSortable}
             onEdit={onEdit}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             title={component.name}
             treePath={component.treePath}
           />
-          {subitems && (
-            <ExpandArrow
-              hasRightMargin={!component.isSortable}
-              isExpanded={this.state.isExpanded}
-              onClick={this.toggleExpansion}
-            />
-          )}
           {component.isSortable && (
             <ActionMenu options={this.actionMenuOptions} />
           )}

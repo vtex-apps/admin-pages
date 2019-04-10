@@ -15,7 +15,7 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const Sidebar: React.SFC<Props> = ({
+const Sidebar: React.FunctionComponent<Props> = ({
   editor,
   highlightHandler,
   intl,

@@ -4,14 +4,14 @@ import { WidgetProps } from 'react-jsonschema-form'
 import { Input } from 'vtex.styleguide'
 
 interface Props extends WidgetProps {
-  label?: string
+  label: string
   max?: number
   min?: number
   rawErrors?: string[]
   type?: string
 }
 
-const BaseInput: React.SFC<WidgetProps & Props> = props => {
+const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
   const {
     autofocus,
     disabled,

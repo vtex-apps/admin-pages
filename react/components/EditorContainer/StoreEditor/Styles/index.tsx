@@ -63,7 +63,7 @@ const removeStyleTag = (window: Window, id: string) => {
   }
 }
 
-const Styles: React.SFC<Props> = ({ iframeWindow }) => {
+const Styles: React.FunctionComponent<Props> = ({ iframeWindow }) => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
   useEffect(() => {

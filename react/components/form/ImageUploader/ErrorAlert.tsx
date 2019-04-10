@@ -5,7 +5,7 @@ interface Props {
   message: string
 }
 
-const ErrorAlert: React.SFC<Props> = ({ message }) => {
+const ErrorAlert: React.FunctionComponent<Props> = ({ message }) => {
   const [isVisible, setIsVisible] = useState<boolean>(true)
 
   return isVisible ? (

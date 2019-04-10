@@ -5,7 +5,7 @@ interface Props {
   textColor?: string
 }
 
-const Typography: React.SFC<Props> = ({
+const Typography: React.FunctionComponent<Props> = ({
   typography: {
     fontFamily,
     fontSize,

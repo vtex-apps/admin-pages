@@ -4,10 +4,7 @@
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "lib": ["es2017", "dom"],
-    "module": "es6",
-    "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es2017",
     "skipLibCheck": true,
     "strict": true,
     "typeRoots": ["node_modules/@types"]

@@ -6,11 +6,16 @@ import ComponentDragHandleIcon from '../../../../../icons/ComponentDragHandleIco
 import SideItem from './SideItem'
 
 interface Props {
+  isExpandable: boolean
   onMouseEnter: () => void
 }
 
-const DragHandle = SortableHandle<Props>(({ onMouseEnter }) => (
-  <SideItem isPointer onMouseEnter={onMouseEnter}>
+const DragHandle = SortableHandle<Props>(({ isExpandable, onMouseEnter }) => (
+  <SideItem
+    horizontalPaddingClassName={isExpandable ? 'pl3 pr2' : undefined}
+    isPointer
+    onMouseEnter={onMouseEnter}
+  >
     <ComponentDragHandleIcon />
   </SideItem>
 ))

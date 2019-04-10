@@ -33,9 +33,9 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     const haveErrorsChanged =
       currErrors.length !== prevErrors.length ||
       (currErrors.length > 0 &&
-        currErrors.reduce(
+        currErrors.reduce<boolean>(
           (acc, error, index) => error.stack !== prevErrors[index].stack || acc,
-          false,
+          false
         ))
 
     if (!isVisible && haveErrorsChanged) {
@@ -48,7 +48,7 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     const { isVisible } = this.state
 
     const container = document.getElementById(
-      'form__error-list-template___alert',
+      'form__error-list-template___alert'
     )
 
     return (
@@ -63,7 +63,7 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
             </Alert>
           </div>
         ),
-        container,
+        container
       )
     )
   }
@@ -86,8 +86,8 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
   }
 }
 
-const StatelessErrorListTemplate: React.SFC<ErrorListProps> = props => (
-  <ErrorListTemplate {...props} />
-)
+const StatelessErrorListTemplate: React.FunctionComponent<
+  ErrorListProps
+> = props => <ErrorListTemplate {...props} />
 
 export default StatelessErrorListTemplate

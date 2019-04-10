@@ -1,25 +1,40 @@
-import React, { Component, Fragment } from 'react'
-import { Query } from 'react-apollo'
+import React, { Component } from 'react'
+import { Query, QueryResult } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
-import { Pagination } from 'vtex.styleguide'
+import { Box, Pagination } from 'vtex.styleguide'
 
-import AdminWrapper from './components/admin/AdminWrapper'
 import {
   PAGINATION_START,
   PAGINATION_STEP,
   WRAPPER_PATH,
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
-import { FetchMoreOptions } from './components/admin/redirects/List/typings'
+import {
+  TargetPathContextProps,
+  withTargetPath,
+} from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = ReactIntl.InjectedIntlProps
+type Props = ReactIntl.InjectedIntlProps & TargetPathContextProps
 
 interface State {
   paginationFrom: number
   paginationTo: number
+}
+
+interface RedirectListQueryResult {
+  redirects: {
+    redirects: Redirect[]
+    total: number
+  }
+}
+
+interface RedirectListVariables {
+  from: number
+  to: number
+  fetchMoreResult?: RedirectListQueryResult
 }
 
 class RedirectList extends Component<Props, State> {
@@ -32,18 +47,23 @@ class RedirectList extends Component<Props, State> {
     }
   }
 
+  public componentDidMount() {
+    const { setTargetPath } = this.props
+    setTargetPath(WRAPPER_PATH)
+  }
+
   public render() {
     const { intl } = this.props
     const { paginationFrom, paginationTo } = this.state
 
     return (
-      <Fragment>
+      <>
         <Helmet>
           <title>
             {intl.formatMessage({ id: 'pages.admin.redirects.title' })}
           </title>
         </Helmet>
-        <Query
+        <Query<RedirectListQueryResult, RedirectListVariables>
           notifyOnNetworkStatusChange
           query={Redirects}
           variables={{
@@ -52,20 +72,24 @@ class RedirectList extends Component<Props, State> {
           }}
         >
           {({ data, fetchMore, loading }) => (
-            <AdminWrapper targetPath={WRAPPER_PATH}>
+            <>
               {loading ? (
                 <Loader />
               ) : (
-                <Fragment>
+                <Box>
                   <List
                     from={paginationFrom}
-                    items={data.redirects.redirects.slice(
-                      paginationFrom,
-                      paginationTo
-                    )}
+                    items={
+                      data
+                        ? data.redirects.redirects.slice(
+                            paginationFrom,
+                            paginationTo
+                          )
+                        : []
+                    }
                     to={paginationTo}
                   />
-                  {data.redirects.total > 0 && (
+                  {data && data.redirects.total > 0 && (
                     <Pagination
                       currentItemFrom={paginationFrom + 1}
                       currentItemTo={paginationTo}
@@ -84,19 +108,22 @@ class RedirectList extends Component<Props, State> {
                       totalItems={data.redirects.total}
                     />
                   )}
-                </Fragment>
+                </Box>
               )}
-            </AdminWrapper>
+            </>
           )}
         </Query>
-      </Fragment>
+      </>
     )
   }
 
   private getGoToNextPage = (
     dataLength: number,
     total: number,
-    fetchMore: (options: FetchMoreOptions) => void
+    fetchMore: QueryResult<
+      RedirectListQueryResult,
+      RedirectListVariables
+    >['fetchMore']
   ) => async () => {
     const nextPaginationTo = this.getNextPaginationTo(
       this.state.paginationFrom + PAGINATION_STEP,
@@ -146,4 +173,4 @@ class RedirectList extends Component<Props, State> {
   }
 }
 
-export default injectIntl(RedirectList)
+export default injectIntl(withTargetPath(RedirectList))

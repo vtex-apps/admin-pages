@@ -148,7 +148,7 @@ describe('getChangeOperatorConditionalTemplateState', () => {
   })
 
   it('should clear formError', () => {
-    const mockState = {
+    const mockState = ({
       data: {
         pages: [
           {
@@ -168,7 +168,7 @@ describe('getChangeOperatorConditionalTemplateState', () => {
       formErrors: {
         title: 'oi',
       },
-    } as State
+    } as unknown) as State
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)

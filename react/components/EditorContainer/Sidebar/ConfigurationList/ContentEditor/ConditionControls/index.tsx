@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import { formatStatements } from '../../../../../../utils/conditions'
+
+import Scheduler from './Scheduler'
 import ScopeSelector from './ScopeSelector'
+import Separator from './Separator'
+import Typings from './typings'
 
 interface Props {
   condition: ExtensionConfiguration['condition']
@@ -31,18 +36,39 @@ class ConditionControls extends Component<Props> {
             </div>
           )}
         </FormattedMessage>
-        <div className="mv5 bt bw1 b--light-silver">
-          <div className="pa5">
-            <ScopeSelector
-              isSitewide={isSitewide}
-              onChange={this.handleScopeChange}
-              pageContext={pageContext}
-              scope={scope}
-            />
-          </div>
+
+        <div className="mv7 ph5">
+          <ScopeSelector
+            isSitewide={isSitewide}
+            onChange={this.handleScopeChange}
+            pageContext={pageContext}
+            scope={scope}
+          />
+
+          <Separator />
+
+          <Scheduler
+            initialValues={this.getDatesInitialValues()}
+            updateCondition={this.handleDateChange}
+          />
         </div>
       </Fragment>
     )
+  }
+
+  private getDatesInitialValues = () => {
+    const { condition } = this.props
+
+    const statement = condition.statements[0]
+
+    const object = statement && JSON.parse(statement.objectJSON)
+
+    const initialValues = object && {
+      from: object.from && new Date(object.from),
+      to: object.to && new Date(object.to),
+    }
+
+    return initialValues
   }
 
   private getPageContextFromScope(scope: ConfigurationScope): PageContext {
@@ -53,6 +79,37 @@ class ConditionControls extends Component<Props> {
     }
 
     return pageContext
+  }
+
+  private handleDateChange = (dates: Typings.DateRange) => {
+    const object =
+      dates.from || dates.to
+        ? {
+            ...(dates.from && dates.to
+              ? dates
+              : { date: dates.from || dates.to }),
+          }
+        : null
+
+    const verb = object
+      ? (dates.from && dates.to && 'between') || (dates.from && 'from') || 'to'
+      : null
+
+    const statements =
+      object && verb
+        ? formatStatements([
+            {
+              error: null,
+              object,
+              subject: 'date',
+              verb,
+            },
+          ])
+        : []
+
+    this.props.onConditionChange({
+      statements,
+    })
   }
 
   private handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>) => {

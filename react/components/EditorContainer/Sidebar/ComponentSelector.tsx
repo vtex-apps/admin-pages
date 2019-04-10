@@ -27,8 +27,8 @@ class ComponentSelector extends PureComponent<Props> {
 
     return (
       <Fragment>
-        <div className="flex justify-between items-center flex-shrink-0 bb bw1 b--light-silver h-3em">
-          <h3 className="ph5 f5 near-black">
+        <div className="flex justify-between items-center flex-shrink-0 h-3em">
+          <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
             <FormattedMessage id="pages.editor.components.title" />
           </h3>
           <div
@@ -40,6 +40,7 @@ class ComponentSelector extends PureComponent<Props> {
             </span>
           </div>
         </div>
+        <div className="bb bw1 b--light-silver"></div>
         <ToastConsumer>
           {({ showToast }) => (
             <ComponentList

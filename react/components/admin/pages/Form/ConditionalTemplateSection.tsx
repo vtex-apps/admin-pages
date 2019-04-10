@@ -5,6 +5,7 @@ import {
   ConditionalTemplatePickerProps,
 } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
+import { FormErrors } from './typings'
 
 import { PagesFormData } from 'pages'
 
@@ -21,7 +22,7 @@ export interface ConditionalTemplateSectionProps
   detailChangeHandlerGetter: (
     detailName: keyof Route
   ) => (event: React.ChangeEvent<HTMLInputElement>) => void
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  formErrors: FormErrors
   onAddConditionalTemplate: () => void
   pages: PagesFormData[]
   blockId: string
@@ -30,7 +31,7 @@ export interface ConditionalTemplateSectionProps
 
 type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
 
-export const ConditionalTemplateSection: React.SFC<Props> = ({
+export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
   detailChangeHandlerGetter,
   formErrors,
   intl,

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 
+import ActionMenu from '../../../ComponentList/SortableList/SortableListItem/ActionMenu'
 import Tag from './Tag'
 import { getTextFromContext } from './utils'
 
@@ -9,7 +10,13 @@ interface Props {
   isDisabled?: boolean
   isSitewide: boolean
   onClick: (configuration: ExtensionConfiguration) => void
+  onDelete: () => void
   path: string
+}
+
+function stopPropagation(e: React.MouseEvent) {
+  e.preventDefault()
+  e.stopPropagation()
 }
 
 const Card = ({
@@ -18,17 +25,29 @@ const Card = ({
   intl,
   isSitewide,
   onClick,
+  onDelete,
   path,
-}: Props & ReactIntl.InjectedIntlProps) => (
-  <div
-    className={`mh5 mt5 ${!isDisabled ? 'pointer' : ''}`}
-    onClick={() => {
-      if (!isDisabled) {
-        onClick(configuration)
-      }
-    }}
-  >
-    <div className="pa5 ba br3 b--light-gray hover-bg-light-silver">
+}: Props & ReactIntl.InjectedIntlProps) => {
+  const actionMenuOptions = [
+    {
+      label: intl.formatMessage({
+        id: 'pages.editor.component-list.action-menu.delete',
+      }),
+      onClick: () => onDelete(),
+    },
+  ]
+
+  return (
+    <div
+      className={`relative mh5 mt5 pa5 ba br3 b--light-gray hover-bg-light-silver ${
+        !isDisabled ? 'pointer' : ''
+      }`}
+      onClick={() => {
+        if (!isDisabled) {
+          onClick(configuration)
+        }
+      }}
+    >
       {configuration.label ? (
         <div>{configuration.label}</div>
       ) : (
@@ -50,8 +69,11 @@ const Card = ({
           textColor="mid-gray"
         />
       </div>
+      <div className="absolute top-0 right-0 mt1" onClick={stopPropagation}>
+        <ActionMenu options={actionMenuOptions} />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default injectIntl(Card)

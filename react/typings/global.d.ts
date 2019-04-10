@@ -144,11 +144,11 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
-    isNavigating: boolean
+    isLoading: boolean
     mode: EditorMode
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
-    setIsNavigating: (isNavigating: boolean) => void
+    setIsLoading: (isLoading: boolean) => void
     setMode: (mode: EditorMode) => void
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
@@ -217,7 +217,7 @@ declare global {
       id: string
       pageContext: RenderRuntime['route']['pageContext']
       statements: Array<{
-        object: any
+        objectJSON: string
         subject: string
         verb: string
       }>
@@ -227,6 +227,8 @@ declare global {
     label?: string
   }
 
+  type RedirectTypes = 'permanent' | 'temporary'
+
   interface Redirect {
     cacheId: string
     disabled: boolean
@@ -234,6 +236,7 @@ declare global {
     from: string
     id: string
     to: string
+    type: RedirectTypes
   }
 
   interface HighlightableIFrame extends HTMLIFrameElement {

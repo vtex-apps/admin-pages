@@ -4,9 +4,10 @@ import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
+import DeleteContent from '../../../../queries/DeleteContent.graphql'
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
-import { getBlockPath } from '../../../../utils/blocks'
+import { getBlockPath, getSitewideTreePath } from '../../../../utils/blocks'
 import {
   getComponentSchema,
   getExtension,
@@ -15,6 +16,7 @@ import {
   updateExtensionFromForm,
 } from '../../../../utils/components'
 import { FormMetaContext, ModalContext } from '../typings'
+import { DeleteContentVariables } from './typings'
 
 import ContentEditor from './ContentEditor'
 import LayoutEditor from './LayoutEditor'
@@ -24,20 +26,24 @@ const NEW_CONFIGURATION_ID = 'new'
 
 interface ListContentQuery {
   error: object
-  listContent: ExtensionConfiguration[]
+  listContent?: ExtensionConfiguration[]
   loading: boolean
   refetch: (variables?: object) => void
 }
 
 interface Props {
+  deleteContent: MutationFn<{ deleteContent: string }, DeleteContentVariables>
   editor: EditorContext
   listContent: ListContentQuery
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
+  isSitewide: boolean
   formMeta: FormMetaContext
   modal: ModalContext
   saveContent: MutationFn
   showToast: ToastConsumerFunctions['showToast']
+  template: string
+  treePath: string
 }
 
 interface State {
@@ -47,8 +53,6 @@ interface State {
 }
 
 class ConfigurationList extends Component<Props, State> {
-  private isSitewide: boolean
-
   constructor(props: Props) {
     super(props)
 
@@ -56,16 +60,6 @@ class ConfigurationList extends Component<Props, State> {
       actionHandler: this.handleConfigurationSave,
       cancelHandler: this.handleConfigurationDiscard,
     })
-
-    const blockPath = getBlockPath(
-      props.iframeRuntime.extensions,
-      props.editor.editTreePath!
-    )
-
-    this.isSitewide =
-      (blockPath &&
-        ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
-      false
 
     this.state = {
       condition: this.getDefaultCondition(),
@@ -119,15 +113,19 @@ class ConfigurationList extends Component<Props, State> {
     if (!this.state.configuration) {
       return (
         <List
-          configurations={listContentQuery.listContent}
+          configurations={listContentQuery.listContent || []}
           editor={editor}
+          iframeRuntime={iframeRuntime}
           isDisabledChecker={this.isConfigurationDisabled}
-          isSitewide={this.isSitewide}
+          isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
+          onDelete={this.handleContentDelete}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
           title={componentSchema.title}
+          template={this.props.template}
+          treePath={this.props.treePath}
         />
       )
     }
@@ -144,7 +142,7 @@ class ConfigurationList extends Component<Props, State> {
         editor={editor}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
-        isSitewide={this.isSitewide}
+        isSitewide={this.props.isSitewide}
         label={label}
         onClose={
           this.state.configuration
@@ -163,7 +161,7 @@ class ConfigurationList extends Component<Props, State> {
   private getDefaultCondition = () => ({
     allMatches: true,
     id: '',
-    pageContext: this.isSitewide
+    pageContext: this.props.isSitewide
       ? ({
           id: '*',
           type: '*',
@@ -273,6 +271,8 @@ class ConfigurationList extends Component<Props, State> {
       modal,
       iframeRuntime,
       saveContent,
+      template,
+      treePath,
     } = this.props
 
     const { component, content = {} } = getExtension(
@@ -288,7 +288,8 @@ class ConfigurationList extends Component<Props, State> {
       componentImplementation,
       content,
       iframeRuntime,
-      intl
+      intl,
+      true
     )
 
     const contentId =
@@ -315,10 +316,8 @@ class ConfigurationList extends Component<Props, State> {
       await saveContent({
         variables: {
           configuration,
-          template: this.isSitewide
-            ? '*'
-            : iframeRuntime.pages[iframeRuntime.page].blockId,
-          treePath: editor.editTreePath,
+          template,
+          treePath,
         },
       })
 
@@ -342,6 +341,54 @@ class ConfigurationList extends Component<Props, State> {
 
         console.log(err)
       })
+    }
+  }
+
+  private handleContentDelete: MutationFn<
+    { deleteContent: string },
+    DeleteContentVariables
+  > = async options => {
+    const { editor, iframeRuntime, template, treePath } = this.props
+    editor.setIsLoading(true)
+    try {
+      await this.props.deleteContent({
+        ...options,
+        update: (store, { data }) => {
+          const variables = {
+            pageContext: iframeRuntime.route.pageContext,
+            template,
+            treePath,
+          }
+
+          const { listContent } = store.readQuery<{
+            listContent: ExtensionConfiguration[]
+          }>({ query: ListContent, variables }) || { listContent: [] }
+          const newConfigurations = {
+            listContent: listContent.filter(
+              ({ contentId }) => contentId !== data!.deleteContent
+            ),
+          }
+          store.writeQuery({
+            data: newConfigurations,
+            query: ListContent,
+            variables,
+          })
+        },
+      })
+
+      editor.setIsLoading(false)
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: 'Content deleted.',
+      })
+    } catch (e) {
+      editor.setIsLoading(false)
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: 'Something went wrong. Please try again.',
+      })
+
+      console.error(e)
     }
   }
 
@@ -399,13 +446,14 @@ export default compose(
   injectIntl,
   graphql(ListContent, {
     name: 'listContent',
-    options: ({ editor, iframeRuntime }: Props) => ({
+    options: ({ iframeRuntime, template, treePath }: Props) => ({
       variables: {
         pageContext: iframeRuntime.route.pageContext,
-        template: iframeRuntime.pages[iframeRuntime.page].blockId,
-        treePath: editor.editTreePath,
+        template,
+        treePath,
       },
     }),
   }),
-  graphql(SaveContent, { name: 'saveContent' })
+  graphql(SaveContent, { name: 'saveContent' }),
+  graphql<DeleteContentVariables>(DeleteContent, { name: 'deleteContent' })
 )(ConfigurationList)

@@ -14,7 +14,7 @@ interface Props {
   semanticColors: SemanticColors
 }
 
-const ColorGroup: React.SFC<Props> = ({
+const ColorGroup: React.FunctionComponent<Props> = ({
   colorsInfo,
   font,
   groupName,
@@ -22,27 +22,25 @@ const ColorGroup: React.SFC<Props> = ({
   startEditing,
 }) => {
   return (
-    <div className="ph6 bt b--muted-5">
-      <div className="f4 flex items-center pv5">{groupName}</div>
-      <div>
-        {Object.values(
-          mapObjIndexed((info: ColorInfo[], token: string) => {
-            return (
-              <ColorPreview
-                key={token}
-                previewInfo={{
-                  backgroundColor: semanticColors.background.base,
-                  font,
-                  textColor: semanticColors.text.link,
-                }}
-                token={token}
-                startEditing={startEditing}
-                colorInfo={info}
-              />
-            )
-          }, colorsInfo)
-        )}
-      </div>
+    <div className="bt b--muted-5">
+      <div className="ph6 f4 flex items-center pv5">{groupName}</div>
+      {Object.values(
+        mapObjIndexed((info: ColorInfo[], token: string) => {
+          return (
+            <ColorPreview
+              key={token}
+              previewInfo={{
+                backgroundColor: semanticColors.background.base,
+                font,
+                textColor: semanticColors.text.link,
+              }}
+              token={token}
+              startEditing={startEditing}
+              colorInfo={info}
+            />
+          )
+        }, colorsInfo)
+      )}
     </div>
   )
 }
@@ -58,7 +56,7 @@ interface ColorPreviewProps {
   token: string
 }
 
-const ColorPreview: React.SFC<ColorPreviewProps> = ({
+const ColorPreview: React.FunctionComponent<ColorPreviewProps> = ({
   colorInfo,
   previewInfo,
   startEditing,
@@ -69,7 +67,7 @@ const ColorPreview: React.SFC<ColorPreviewProps> = ({
 
   return (
     <div
-      className="pv5 flex items-center"
+      className="pv5 ph6 flex items-center hover-bg-light-silver pointer"
       onClick={() => {
         startEditing(token)
       }}

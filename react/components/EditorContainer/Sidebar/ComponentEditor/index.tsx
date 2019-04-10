@@ -28,7 +28,7 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const ComponentEditor: React.SFC<Props> = ({
+const ComponentEditor: React.FunctionComponent<Props> = ({
   after,
   data,
   editor,
@@ -74,19 +74,17 @@ const ComponentEditor: React.SFC<Props> = ({
         shouldDisableSaveButton={shouldDisableSaveButton}
         title={componentSchema.title}
       />
-      <div className="h-100 overflow-y-auto">
-        <div className="ph5">
-          <div className="bg-white flex flex-column justify-between size-editor w-100 pb3">
-            <Form
-              formContext={{ isLayoutMode: editor.mode === 'layout' }}
-              formData={data}
-              onChange={onChange}
-              onSubmit={onSave}
-              schema={schema as JSONSchema6}
-              uiSchema={getUiSchema(componentUiSchema, componentSchema)}
-            />
-            <div id="form__error-list-template___alert" />
-          </div>
+      <div className="h-100 overflow-y-auto overflow-x-hidden">
+        <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
+          <Form
+            formContext={{ isLayoutMode: editor.mode === 'layout' }}
+            formData={data}
+            onChange={onChange}
+            onSubmit={onSave}
+            schema={schema as JSONSchema6}
+            uiSchema={getUiSchema(componentUiSchema, componentSchema)}
+          />
+          <div id="form__error-list-template___alert" />
         </div>
         {after}
       </div>

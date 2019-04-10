@@ -1,13 +1,17 @@
 import { has, path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
+import { getBlockPath } from '../../../utils/blocks'
 import { SidebarComponent } from './typings'
 
-const isSamePage = (page: string, treePath: string) => {
-  const pageHead = page.split('/')[0]
-  const treePathHead = treePath.split('/')[0]
+export const generateWarningMessage = (name: string) =>
+  `[Site Editor] Component "${name}" exports schema but doesn't have a "title" property, because of that, it won't appear in the lateral list. If this is intended, ignore this message.`
 
-  return treePathHead === pageHead
+const isSamePage = (page: string, treePath: string) => {
+  const pageHead = page && page.split('/')[0]
+  const treePathHead = treePath && treePath.split('/')[0]
+
+  return pageHead && treePathHead && treePathHead === pageHead
 }
 
 const getParentContainerPropsGetter = (extensions: Extensions) => (
@@ -44,13 +48,20 @@ export function getComponents(
 ) {
   const getParentContainerProps = getParentContainerPropsGetter(extensions)
 
+  const getComponentName = getComponentNameGetterFromExtensions(extensions)
   const getComponentSchema = getComponentSchemaGetter(components, extensions)
 
   return Object.keys(extensions)
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
+      const componentName = getComponentName(treePath)
+      const hasTitleInSchema = has('title', schema)
 
-      return isSamePage(page, treePath) && !!schema && has('title', schema)
+      if (schema && !hasTitleInSchema) {
+        console.warn(generateWarningMessage(componentName))
+      }
+
+      return isSamePage(page, treePath) && !!schema && hasTitleInSchema
     })
     .sort((treePathA, treePathB) => {
       const parentPathA = `${treePathA.split('/')[0]}/${
@@ -94,4 +105,13 @@ export function getComponents(
       name: getComponentSchema(treePath).title!,
       treePath,
     }))
+}
+
+export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
+  const blockPath = getBlockPath(extensions, editTreePath)
+
+  return (
+    (blockPath && ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
+    false
+  )
 }

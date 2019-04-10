@@ -1,0 +1,9 @@
+mutation updateManifest($manifest: ManifestInput) {
+  updateManifest(manifest: $manifest) {
+    start_url
+    theme_color
+    background_color
+    display
+    orientation
+  }
+}

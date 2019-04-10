@@ -9,10 +9,11 @@ import {
 
 import { ConditionFormsData } from 'pages'
 import SelectConditions from './SelectConditions'
+import { FormErrors } from './typings'
 
 export interface ConditionalTemplatePickerProps {
   condition: ConditionFormsData
-  formErrors: Partial<{ [key in keyof Route]: string }>
+  formErrors: FormErrors
   onChangeOperatorConditionalTemplate: (
     uniqueId: number,
     operator: NonNullable<ConditionsProps['operator']>
@@ -34,7 +35,7 @@ export interface ConditionalTemplatePickerProps {
 
 type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
 
-export const ConditionalTemplatePicker: React.SFC<Props> = ({
+export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
   condition,
   formErrors,
   intl,
