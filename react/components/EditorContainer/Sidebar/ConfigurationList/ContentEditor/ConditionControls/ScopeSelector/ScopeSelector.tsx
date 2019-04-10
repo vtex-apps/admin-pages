@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { RadioGroup } from 'vtex.styleguide'
+
+import ConditionTitle from '../ConditionTitle'
 
 import { getScopeStandardOptions } from './utils'
 
@@ -24,9 +26,8 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <FormattedMessage id="pages.editor.components.condition.scope.title">
-        {message => <div className="mb5">{message}</div>}
-      </FormattedMessage>
+      <ConditionTitle labelId="pages.editor.components.condition.scope.title" />
+
       <RadioGroup
         disabled={isSitewide}
         name="scopes"

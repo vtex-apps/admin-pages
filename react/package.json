@@ -31,7 +31,7 @@
     "@types/prop-types": "^15.5.2",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/react": "^16.8.10",
-    "@types/react-datepicker": "^2.0.3",
+    "@types/react-datepicker": "^2.2.1",
     "@types/react-dom": "^16.8.0",
     "@types/react-dropzone": "^4.2.2",
     "@types/react-helmet": "^5.0.5",

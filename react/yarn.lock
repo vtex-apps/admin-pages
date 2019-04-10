@@ -996,7 +996,7 @@
   version "0.25.0"
   resolved "https://codeload.github.com/types/npm-ramda/tar.gz/9529aa3c8ff70ff84afcbc0be83443c00f30ea90"
 
-"@types/react-datepicker@^2.0.3":
+"@types/react-datepicker@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@types/react-datepicker/-/react-datepicker-2.2.1.tgz#7abdff671439373886534d62192a7ab13aec2bbd"
   integrity sha512-En5Ezrl+o/QvHhAFUxxQox2SDu4vDmo3/uhXj9SwX7ObZ5X4jwSS9CocTHsRCqpsr+F7JGhUJ9KK7FVeknDw4Q==

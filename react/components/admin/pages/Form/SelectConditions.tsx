@@ -1,5 +1,5 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ConditionsProps,
@@ -160,7 +160,7 @@ class SelectConditions extends React.Component<Props> {
     return (
       <DatePicker
         value={values && values.date}
-        onChange={date => {
+        onChange={(date: Date) => {
           const newStatements = statements.map((statement, index) => {
             return {
               ...statement,
@@ -187,7 +187,7 @@ class SelectConditions extends React.Component<Props> {
         <div style={{ maxWidth: 140 }}>
           <DatePicker
             value={values && values.from}
-            onChange={date => {
+            onChange={(date: Date) => {
               const newStatements = statements.map((statement, index) => {
                 return {
                   ...statement,
@@ -203,12 +203,14 @@ class SelectConditions extends React.Component<Props> {
           />
         </div>
 
-        <div className="mv4 mh3 c-muted-2 b">and</div>
+        <FormattedMessage id="pages.admin.pages.form.templates.simple.conditions.date.range.and">
+          {message => <div className="mv4 mh3 c-muted-2 b">{message}</div>}
+        </FormattedMessage>
 
         <div style={{ maxWidth: 140 }}>
           <DatePicker
             value={values && values.to}
-            onChange={date => {
+            onChange={(date: Date) => {
               const newStatements = statements.map((statement, index) => {
                 return {
                   ...statement,

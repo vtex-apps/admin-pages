@@ -43,8 +43,6 @@ export interface DeleteRouteVariables {
   uuid: string
 }
 
-export type DateVerbOptions = 'between' | 'from' | 'is' | 'to'
-
 export interface DateInfoFormat {
   date: string
   to: string
