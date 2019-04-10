@@ -67,25 +67,28 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
   const [submitting, setSubmitting] = useState(false)
   const { showToast } = useContext(ToastContext)
 
-  useEffect(() => {
-    if (submitting) {
-      const { slug: app, version } = store
-      mutate({
-        variables: { app, version, settings: JSON.stringify(formData) },
-      })
-        .then(() =>
-          showToast(
-            intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })
+  useEffect(
+    () => {
+      if (submitting) {
+        const { slug: app, version } = store
+        mutate({
+          variables: { app, version, settings: JSON.stringify(formData) },
+        })
+          .then(() =>
+            showToast(
+              intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })
+            )
           )
-        )
-        .catch(() =>
-          showToast(
-            intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })
+          .catch(() =>
+            showToast(
+              intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })
+            )
           )
-        )
-        .finally(() => setSubmitting(false))
-    }
-  }, [submitting])
+          .finally(() => setSubmitting(false))
+      }
+    },
+    [submitting]
+  )
 
   const { settingsSchema, settingsUiSchema } = store
   const schemas: { title: string; schema: any; uiSchema?: any } = {
@@ -108,35 +111,30 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   return (
     <div className="flex flex-column justify-center">
-      <div className="t-heading-5">
-        <FormattedMessage id="pages.editor.store.settings.title" />
-      </div>
-      <div className="pt2">
-        <Form
-          {...schemas}
-          formData={formData}
-          onSubmit={() => setSubmitting(true)}
-          onError={e => console.log('Bad input numbers: ', e.length)}
-          onChange={({ formData: newFormData }) => setFormData(newFormData)}
-          showErrorList={false}
-          FieldTemplate={FieldTemplate}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          widgets={widgets}
-        >
-          <div className="w-100 tr">
-            <Button
-              size="small"
-              type="submit"
-              variation="primary"
-              onClick={() => setSubmitting(true)}
-              isLoading={submitting}
-            >
-              <FormattedMessage id="pages.admin.pages.form.button.save" />
-            </Button>
-          </div>
-        </Form>
-      </div>
+      <Form
+        {...schemas}
+        formData={formData}
+        onSubmit={() => setSubmitting(true)}
+        onError={e => console.log('Bad input numbers: ', e.length)}
+        onChange={({ formData: newFormData }) => setFormData(newFormData)}
+        showErrorList={false}
+        FieldTemplate={FieldTemplate}
+        ArrayFieldTemplate={ArrayFieldTemplate}
+        ObjectFieldTemplate={ObjectFieldTemplate}
+        widgets={widgets}
+      >
+        <div className="w-100 tr">
+          <Button
+            size="small"
+            type="submit"
+            variation="primary"
+            onClick={() => setSubmitting(true)}
+            isLoading={submitting}
+          >
+            <FormattedMessage id="pages.admin.pages.form.button.save" />
+          </Button>
+        </div>
+      </Form>
     </div>
   )
 }
