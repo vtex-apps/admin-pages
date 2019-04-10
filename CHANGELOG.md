@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- **`EditorContainer`**
+  - Change Store general/advanced settings logic to use tabs instead of buttons.
+
 ## [3.0.0] - 2019-04-10
 
 ### Added
