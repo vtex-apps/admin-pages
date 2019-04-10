@@ -209,10 +209,7 @@ class ConfigurationList extends Component<Props, State> {
         iframeRuntime.updateExtension(editor.editTreePath!, {
           ...iframeRuntime.extensions[editor.editTreePath!],
           component: extension.component,
-          content:
-            newConfiguration.contentId === NEW_CONFIGURATION_ID
-              ? extension.content
-              : JSON.parse(newConfiguration.contentJSON),
+          content: JSON.parse(newConfiguration.contentJSON),
         })
       }
     )
