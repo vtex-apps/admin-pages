@@ -1,10 +1,9 @@
 import { path } from 'ramda'
 import React from 'react'
-import { Query } from 'react-apollo'
+import { Query, QueryResult } from 'react-apollo'
 
 import { handleCornerCases } from '../../utils/utils'
-import Manifest from '../queries/Manifest.graphql'
-import Styles from '../queries/Styles.graphql'
+import PWA from '../queries/PWA.graphql'
 import { ManifestMutationData } from './withPWAMutations'
 
 export interface PWAImage {
@@ -13,19 +12,24 @@ export interface PWAImage {
   sizes: string
 }
 
-export interface Manifest extends ManifestMutationData {
-  icons?: PWAImage[]
+export interface PWASettings {
+  disablePrompt: boolean
 }
 
-export interface ManifestData {
+export interface Manifest {
+  icons?: PWAImage[]
+  background_color: string
+  theme_color: string
+  orientation?: string
+  start_url?: string
+  display?: string
+}
+
+export interface PWAData {
   manifest: Manifest
   iOSIcons: PWAImage[]
   splashes: PWAImage[]
-}
-
-class ManifestQuery extends Query<ManifestData, {}> {}
-
-interface StylesData {
+  pwaSettings: PWASettings
   selectedStyle: {
     config: {
       semanticColors: {
@@ -36,8 +40,8 @@ interface StylesData {
     }
   }
 }
-// tslint:disable-next-line:max-classes-per-file
-class StylesQuery extends Query<StylesData, {}> {}
+
+class PWAQuery extends Query<PWAData, {}> {}
 
 const options = {
   error: {
@@ -46,43 +50,35 @@ const options = {
   },
 }
 
-const withPWASettings = (
-  WrappedComponent: React.ComponentType<ManifestData & any>
-) => (props: any) => (
-  <ManifestQuery query={Manifest}>
-    {handleCornerCases(options, ({ data: PWAData, ...restPWAQuery }) => {
-      if (!PWAData.manifest) {
-        return (
-          <StylesQuery query={Styles}>
-            {handleCornerCases(options, ({ data: stylesData }) => {
-              const color = path(
-                [
-                  'selectedStyle',
-                  'config',
-                  'semanticColors',
-                  'background',
-                  'base',
-                ],
-                stylesData
-              )
-              return (
-                <WrappedComponent
-                  {...props}
-                  {...PWAData}
-                  {...restPWAQuery}
-                  manifest={{
-                    background_color: color,
-                    theme_color: color,
-                  }}
-                />
-              )
-            })}
-          </StylesQuery>
-        )
-      }
-      return <WrappedComponent {...props} {...PWAData} {...restPWAQuery} />
-    })}
-  </ManifestQuery>
-)
+function withPWASettings<T>(
+  WrappedComponent: React.ComponentType<
+    T & PWAData & Omit<QueryResult<PWAData, {}>, 'data' | 'loading'>
+  >
+) {
+  return (props: T) => (
+    <PWAQuery query={PWA}>
+      {handleCornerCases<PWAData, {}>(options, ({ data, ...restPWAQuery }) => {
+        if (!data.manifest) {
+          const color = path(
+            ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
+            data
+          )
+          return (
+            <WrappedComponent
+              {...props}
+              {...data}
+              {...restPWAQuery}
+              manifest={{
+                background_color: color as string,
+                theme_color: color as string,
+              }}
+            />
+          )
+        }
+        return <WrappedComponent {...props} {...data} {...restPWAQuery} />
+      })}
+    </PWAQuery>
+  )
+}
 
 export default withPWASettings

@@ -1,4 +1,5 @@
-query Manifest {
+query PWA {
+  # Manifest
   manifest {
     start_url
     theme_color
@@ -20,5 +21,19 @@ query Manifest {
     src
     type
     sizes
+  }
+  pwaSettings {
+    disablePrompt
+  }
+
+  # Styles
+  selectedStyle {
+    config {
+      semanticColors {
+        background {
+          base
+        }
+      }
+    }
   }
 }
