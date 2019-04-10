@@ -7,7 +7,6 @@ import PWAForm from './PWAForm'
 import StoreForm from './StoreForm'
 
 const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
-  const [showAdvanced, setShowAdvanced] = useState(false)
   const [activeTab, setActiveTab] = useState('general')
   return (
     <div className="pa7 h-100 overflow-y-auto flex flex-column">
