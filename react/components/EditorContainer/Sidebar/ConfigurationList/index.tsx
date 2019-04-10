@@ -216,7 +216,7 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleConfigurationClose = () => {
-    const { formMeta, modal } = this.props
+    const { editor, formMeta, iframeRuntime, modal } = this.props
 
     if (formMeta.wasModified) {
       modal.open()
@@ -225,6 +225,10 @@ class ConfigurationList extends Component<Props, State> {
         if (modal.isOpen) {
           modal.close()
         }
+
+        iframeRuntime.updateRuntime({
+          conditions: editor.activeConditions,
+        })
       })
     }
   }
@@ -404,18 +408,12 @@ class ConfigurationList extends Component<Props, State> {
     updateExtensionFromForm(editTreePath, event, intl, iframeRuntime, true)
   }
 
-  private handleQuit = (event?: any) => {
-    const { editor, iframeRuntime } = this.props
-
+  private handleQuit = (event?: Event) => {
     if (event) {
       event.stopPropagation()
     }
 
-    iframeRuntime.updateRuntime({
-      conditions: editor.activeConditions,
-    })
-
-    editor.editExtensionPoint(null)
+    this.props.editor.editExtensionPoint(null)
   }
 
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
