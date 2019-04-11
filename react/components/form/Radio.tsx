@@ -72,7 +72,7 @@ export default class Radio extends Component<RadioProps, State> {
 
   private handleSelection = (
     event: React.ChangeEvent,
-    value: JSONSchema6Type,
+    value: JSONSchema6Type
   ) => {
     event.stopPropagation()
 
