@@ -1,39 +1,46 @@
 import React, { useState } from 'react'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+
+import { Tab, Tabs } from 'vtex.styleguide'
+
 import PWAForm from './PWAForm'
 import StoreForm from './StoreForm'
 
-const Store: React.FunctionComponent<{}> = () => {
-  const [showAdvanced, setShowAdvanced] = useState(false)
+const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
+  const [activeTab, setActiveTab] = useState('general')
   return (
-    <div className="pa7 h-100 overflow-y-auto">
-      <StoreForm />
-      <div className="pv7">
-        <div className="w-100 bb b--muted-4" />
+    <div className="pa7 h-100 overflow-y-auto flex flex-column">
+      <div className="pb6 t-heading-5">
+        <FormattedMessage id="pages.editor.store.settings.title" />
       </div>
-      {/* FIXME: Put this in tabs instead + intl */}
-      {!showAdvanced ? (
-        <div
-          className="link pointer c-muted-1"
-          onClick={() => setShowAdvanced(true)}
-        >
-          Advanced settings
-        </div>
-      ) : (
-        <>
-          <PWAForm />
-          <div className="pv7">
-            <div className="w-100 bb b--muted-4" />
-          </div>
-          <div
-            className="link pointer c-muted-1"
-            onClick={() => setShowAdvanced(false)}
+      <div className="flex">
+        <Tabs>
+          <Tab
+            active={activeTab === 'general'}
+            onClick={() => setActiveTab('general')}
+            label={intl.formatMessage({
+              id: 'pages.editor.store.settings.tabs.general',
+            })}
           >
-            Hide advanced settings
-          </div>
-        </>
-      )}
+            <div className="pv6">
+              <StoreForm />
+            </div>
+          </Tab>
+          <Tab
+            active={activeTab === 'advanced'}
+            onClick={() => setActiveTab('advanced')}
+            label={intl.formatMessage({
+              id: 'pages.editor.store.settings.tabs.advanced',
+            })}
+          >
+            <div className="pv6">
+              <PWAForm />
+            </div>
+          </Tab>
+        </Tabs>
+      </div>
     </div>
   )
 }
 
-export default Store
+export default injectIntl(Store)
