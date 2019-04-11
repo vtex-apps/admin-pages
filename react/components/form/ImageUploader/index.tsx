@@ -2,13 +2,13 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
 import { ImageFile } from 'react-dropzone'
-import { FormattedMessage } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
 import UploadFile from '../../../queries/UploadFile.graphql'
+import FieldTitle from '../FieldTitle'
 
 import Dropzone from './Dropzone'
 import ErrorAlert from './ErrorAlert'
@@ -57,12 +57,6 @@ class ImageUploader extends Component<Props, State> {
     } = this.props
     const { error, isLoading } = this.state
 
-    const FieldTitle = () => (
-      <FormattedMessage id={title as string}>
-        {text => <span className="w-100 db mb3">{text}</span>}
-      </FormattedMessage>
-    )
-
     const backgroundImageStyle = {
       backgroundImage: `url("${value}")`,
     }
@@ -70,7 +64,7 @@ class ImageUploader extends Component<Props, State> {
     if (value) {
       return (
         <Fragment>
-          <FieldTitle />
+          <FieldTitle title={title} />
           <Dropzone
             disabled={disabled || isLoading}
             extraClasses={
@@ -108,7 +102,7 @@ class ImageUploader extends Component<Props, State> {
 
     return (
       <Fragment>
-        <FieldTitle />
+        <FieldTitle title={title} />
         <Dropzone
           disabled={disabled || isLoading}
           extraClasses={`ba bw1 b--dashed b--light-gray ${
