@@ -1,11 +1,6 @@
 query Brands($query: String = "") {
   brandSearch(query: $query) {
-    name
     id
-    active
-    metaTagDescription
-    cacheId
-    slug
-    titleTag
+    name
   }
 }

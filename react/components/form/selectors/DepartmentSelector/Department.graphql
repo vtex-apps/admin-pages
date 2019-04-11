@@ -1,0 +1,6 @@
+query Department($id: Int) {
+  department(id: $id) {
+    id
+    name
+  }
+}

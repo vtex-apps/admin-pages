@@ -1,0 +1,6 @@
+query Categories($query: String = "") {
+  categorySearch(query: $query) {
+    id
+    name
+  }
+}
