@@ -5,7 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import PaperIcon from '../../../icons/PaperIcon'
 
 const InstructionLine: React.FunctionComponent = ({ children }) => (
-  <div className="flex mv4">{children}</div>
+  <div className="flex mv4 self-start">{children}</div>
 )
 
 const Field: React.FunctionComponent = ({ children }) => (
@@ -18,6 +18,10 @@ const Description: React.FunctionComponent = ({ children }) => (
   <div>{children}</div>
 )
 
+const Parameter: React.FunctionComponent = ({ children }) => (
+  <span className="code f6">{children}</span>
+)
+
 const UploadPrompt = () => {
   return (
     <>
@@ -27,9 +31,9 @@ const UploadPrompt = () => {
             <PaperIcon />
           </div>
           <p className="tc">
-            Drop here your CSV or{' '}
+            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.message" />
             <button className="input-reset bg-white bw0 fw5 pa0 c-action-primary pointer">
-              choose a file
+              <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.button" />
             </button>
             .
           </p>
@@ -40,42 +44,67 @@ const UploadPrompt = () => {
               window.alert('oi')
             }}
           >
-            Download a sample CSV.
+            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.template" />
           </button>
         </div>
       </ReactDropzone>
-      <p>
+      <p className="self-start">
         <FormattedMessage id="pages.admin.upload.instructions.title" />
       </p>
+
       <InstructionLine>
         <Field>from</Field>
+
         <Description>
-          User will be redirected when accessing this path.
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.from" />
         </Description>
       </InstructionLine>
+
       <InstructionLine>
         <Field>to</Field>
-        <Description>Path that the user is redirected to.</Description>
+
+        <Description>
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.to" />
+        </Description>
       </InstructionLine>
+
       <InstructionLine>
         <Field>type</Field>
+
         <Description>
-          Can be either <i>temporary</i> (status code 302) or <i>permanent</i>
-          (status code 301).
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.intro" />
+          <Parameter>temporary</Parameter> (
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.status-code" />{' '}
+          302){' '}
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.or" />{' '}
+          <Parameter>permanent</Parameter> (
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.status-code" />{' '}
+          301).
         </Description>
       </InstructionLine>
+
       <InstructionLine>
         <Field>status</Field>
+
         <Description>
-          Can be <i>active</i> or <i>inactive</i>.
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.intro" />{' '}
+          <Parameter>active</Parameter>{' '}
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.active" />
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.or" />{' '}
+          <Parameter>inactive</Parameter>
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.inactive" />
+          .
         </Description>
       </InstructionLine>
+
       <InstructionLine>
         <Field>endDate</Field>
+
         <Description>
-          If the type <i>temporary</i>, it's possible to set and end date. The
-          accepted format will be a string in the ISO Date Standard. E.g.,
-          2019-04-05T19:19:45.679Z.
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro" />{' '}
+          <Parameter>temporary</Parameter>
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.rest" />{' '}
+          E.g., <Parameter>2019-04-05T19:19:45.679Z</Parameter>.
         </Description>
       </InstructionLine>
     </>
