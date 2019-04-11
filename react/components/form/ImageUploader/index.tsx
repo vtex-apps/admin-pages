@@ -14,6 +14,7 @@ import { Button, Spinner } from 'vtex.styleguide'
 
 import ImageIcon from '../../../images/ImageIcon'
 import UploadFile from '../../../queries/UploadFile.graphql'
+import FieldTitle from '../FieldTitle'
 
 import Dropzone from './Dropzone'
 import ErrorAlert from './ErrorAlert'
@@ -81,9 +82,7 @@ class ImageUploader extends Component<Props, State> {
     if (value) {
       return (
         <Fragment>
-          <FormattedMessage id={title as string}>
-            {text => <span className="w-100 db mb3">{text}</span>}
-          </FormattedMessage>
+          <FieldTitle title={title} />
           <Dropzone
             disabled={disabled || isLoading}
             extraClasses={
@@ -126,9 +125,7 @@ class ImageUploader extends Component<Props, State> {
 
     return (
       <Fragment>
-        <FormattedMessage id={title as string}>
-          {text => <span className="w-100 db mb3">{text}</span>}
-        </FormattedMessage>
+        <FieldTitle title={title} />
         <Dropzone
           disabled={disabled || isLoading}
           extraClasses={`ba bw1 b--dashed b--light-gray ${
