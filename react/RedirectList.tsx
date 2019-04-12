@@ -10,6 +10,7 @@ import {
   WRAPPER_PATH,
 } from './components/admin/redirects/consts'
 import List from './components/admin/redirects/List'
+import UploadModal from './components/admin/redirects/UploadModal'
 import {
   TargetPathContextProps,
   withTargetPath,
@@ -22,6 +23,7 @@ type Props = ReactIntl.InjectedIntlProps & TargetPathContextProps
 interface State {
   paginationFrom: number
   paginationTo: number
+  isModalOpen: boolean
 }
 
 interface RedirectListQueryResult {
@@ -42,6 +44,7 @@ class RedirectList extends Component<Props, State> {
     super(props)
 
     this.state = {
+      isModalOpen: false,
       paginationFrom: PAGINATION_START,
       paginationTo: PAGINATION_START + PAGINATION_STEP,
     }
@@ -54,7 +57,7 @@ class RedirectList extends Component<Props, State> {
 
   public render() {
     const { intl } = this.props
-    const { paginationFrom, paginationTo } = this.state
+    const { isModalOpen, paginationFrom, paginationTo } = this.state
 
     return (
       <>
@@ -71,54 +74,61 @@ class RedirectList extends Component<Props, State> {
             to: PAGINATION_STEP,
           }}
         >
-          {({ data, fetchMore, loading, refetch }) => (
-            <>
-              {loading ? (
-                <Loader />
-              ) : (
-                <ToastConsumer>
-                  {({ showToast }) => (
-                    <Box>
-                      <List
-                        from={paginationFrom}
-                        items={data.redirects.redirects.slice(
-                          paginationFrom,
-                          paginationTo
-                        )}
-                        refetch={() => {
-                          refetch({
-                            from: PAGINATION_START,
-                            to: PAGINATION_STEP,
-                          })
-                        }}
-                        to={paginationTo}
-                        showToast={showToast}
-                      />
-                      {data.redirects.total > 0 && (
-                        <Pagination
-                          currentItemFrom={paginationFrom + 1}
-                          currentItemTo={paginationTo}
-                          onNextClick={this.getGoToNextPage(
-                            data.redirects.redirects.length,
-                            data.redirects.total,
-                            fetchMore
-                          )}
-                          onPrevClick={this.goToPrevPage}
-                          textOf={intl.formatMessage({
-                            id: 'pages.admin.redirects.pagination.of',
-                          })}
-                          textShowRows={intl.formatMessage({
-                            id: 'pages.admin.redirects.pagination.showRows',
-                          })}
-                          totalItems={data.redirects.total}
+          {({ data, fetchMore, loading, refetch }) => {
+            const redirects = (data && data.redirects.redirects) || []
+            const total = (data && data.redirects.total) || 0
+
+            return (
+              <>
+                {loading ? (
+                  <Loader />
+                ) : (
+                  <ToastConsumer>
+                    {({ showToast }) => (
+                      <Box>
+                        <List
+                          from={paginationFrom}
+                          items={redirects.slice(paginationFrom, paginationTo)}
+                          refetch={() => {
+                            refetch({
+                              from: PAGINATION_START,
+                              to: PAGINATION_STEP,
+                            })
+                          }}
+                          to={paginationTo}
+                          showToast={showToast}
+                          openModal={this.openModal}
                         />
-                      )}
-                    </Box>
-                  )}
-                </ToastConsumer>
-              )}
-            </>
-          )}
+                        {total > 0 && (
+                          <Pagination
+                            currentItemFrom={paginationFrom + 1}
+                            currentItemTo={paginationTo}
+                            onNextClick={this.getGoToNextPage(
+                              redirects.length,
+                              total,
+                              fetchMore
+                            )}
+                            onPrevClick={this.goToPrevPage}
+                            textOf={intl.formatMessage({
+                              id: 'pages.admin.redirects.pagination.of',
+                            })}
+                            textShowRows={intl.formatMessage({
+                              id: 'pages.admin.redirects.pagination.showRows',
+                            })}
+                            totalItems={total}
+                          />
+                        )}
+                        <UploadModal
+                          isOpen={isModalOpen}
+                          onClose={this.closeModal}
+                        />
+                      </Box>
+                    )}
+                  </ToastConsumer>
+                )}
+              </>
+            )
+          }}
         </Query>
       </>
     )
@@ -178,6 +188,9 @@ class RedirectList extends Component<Props, State> {
       paginationTo: prevState.paginationFrom,
     }))
   }
+
+  private openModal = () => this.setState({ isModalOpen: true })
+  private closeModal = () => this.setState({ isModalOpen: false })
 }
 
 export default injectIntl(withTargetPath(RedirectList))

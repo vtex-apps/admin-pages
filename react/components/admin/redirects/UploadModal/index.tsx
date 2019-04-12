@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import React, { useState } from 'react'
 import { Modal } from 'vtex.styleguide'
 
@@ -6,10 +7,13 @@ import UploadError from './UploadError'
 import UploadPrompt from './UploadPrompt'
 import UploadSuccess from './UploadSuccess'
 
+import styles from './UploadModal.css'
+
 type States = 'PROMPT' | 'LOADING' | 'SUCCESS' | 'ERROR'
 
 interface Props {
   isOpen: boolean
+  onClose: () => void
 }
 
 const StateSwitcher: React.FunctionComponent<{ current: States }> = ({
@@ -31,17 +35,19 @@ const StateSwitcher: React.FunctionComponent<{ current: States }> = ({
   </>
 )
 
-const UploadModal: React.FunctionComponent<Props> = ({ isOpen }) => {
+const UploadModal: React.FunctionComponent<Props> = ({ isOpen, onClose }) => {
   const [currentStep, setModalStep] = useState('PROMPT' as States)
 
   return (
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <div
-        className="flex flex-column items-center justify-center"
-        style={{
-          minHeight: 'calc(80vh - 3rem)',
-          width: '32rem',
-        }}
+        className={classnames(
+          'flex flex-column items-center justify-center',
+          styles['modal-container'],
+          {
+            'justify-center': currentStep !== 'PROMPT',
+          }
+        )}
       >
         <StateSwitcher current={currentStep} />
       </div>

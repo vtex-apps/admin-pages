@@ -1,9 +1,16 @@
 import PropTypes from 'prop-types'
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { EmptyState, Table, Tag, ToastConsumerFunctions } from 'vtex.styleguide'
+import {
+  ButtonWithIcon,
+  EmptyState,
+  IconUpload,
+  Table,
+  Tag,
+  ToastConsumerFunctions,
+} from 'vtex.styleguide'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
@@ -20,6 +27,7 @@ interface CustomProps {
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
   loading: boolean
+  openModal: () => void
 }
 
 export type Props = CustomProps &
@@ -81,8 +89,25 @@ class List extends Component<Props, State> {
           id: 'pages.admin.redirects.emptyState',
         })}
       >
-        <div className="pt5">
-          <CreateButton onClick={this.openNewItem} />
+        <div className="pt5 flex flex-column tc">
+          <div>
+            <CreateButton onClick={this.openNewItem} />
+          </div>
+          <p className="mv2">
+            {intl.formatMessage({ id: 'pages.admin.redirects.or.text' })}
+          </p>
+          <div>
+            <ButtonWithIcon
+              icon={<IconUpload />}
+              variation="secondary"
+              onClick={this.props.openModal}
+              size="small"
+            >
+              {intl.formatMessage({
+                id: 'pages.admin.redirects.emptyState.upload',
+              })}
+            </ButtonWithIcon>
+          </div>
         </div>
       </EmptyState>
     ) : (

@@ -9,7 +9,7 @@ const InstructionLine: React.FunctionComponent = ({ children }) => (
 )
 
 const Field: React.FunctionComponent = ({ children }) => (
-  <div className="w3 mr6 code rebel-pink" style={{ minWidth: '4rem' }}>
+  <div className="w4 code rebel-pink" style={{ minWidth: '8rem' }}>
     {children}
   </div>
 )
@@ -98,7 +98,9 @@ const UploadPrompt = () => {
       </InstructionLine>
 
       <InstructionLine>
-        <Field>endDate</Field>
+        <Field>
+          endDate <i className="f7">(optional)</i>
+        </Field>
 
         <Description>
           <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro" />{' '}
