@@ -1,8 +1,8 @@
 import React, { Component, createContext, useContext } from 'react'
 
-import { FormMetaContext } from './typings'
+import { FormMetaContext as FormMetaContextT } from './typings'
 
-const defaultExternalState: FormMetaContext = {
+const defaultExternalState: FormMetaContextT = {
   getWasModified: () => {
     return false
   },
@@ -22,7 +22,7 @@ export const useFormMetaContext = () => useContext(FormMetaContext)
 
 export const FormMetaConsumer = FormMetaContext.Consumer
 
-type State = FormMetaContext
+type State = FormMetaContextT
 
 export class FormMetaProvider extends Component<{}, State> {
   constructor(props: {}) {

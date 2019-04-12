@@ -1,8 +1,8 @@
 import React, { Component, createContext, useContext } from 'react'
 
-import { ModalContext } from './typings'
+import { ModalContext as ModalContextT } from './typings'
 
-const defaultExternalState: ModalContext = {
+const defaultExternalState: ModalContextT = {
   actionHandler: () => {
     return
   },
@@ -27,7 +27,7 @@ export const useModalContext = () => useContext(ModalContext)
 
 export const ModalConsumer = ModalContext.Consumer
 
-type State = ModalContext
+type State = ModalContextT
 
 export class ModalProvider extends Component<{}, State> {
   constructor(props: {}) {
