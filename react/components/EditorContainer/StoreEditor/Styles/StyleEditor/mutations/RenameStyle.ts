@@ -1,4 +1,5 @@
-import { Mutation } from 'react-apollo'
+import React from 'react'
+import { Mutation, MutationFn } from 'react-apollo'
 import RenameStyle from '../graphql/RenameStyle.graphql'
 
 interface RenameStyleData {
@@ -11,6 +12,8 @@ interface RenameStyleVariables {
   id: string
   name: string
 }
+
+export type RenameStyleFunction = MutationFn<RenameStyleData, RenameStyleVariables>
 
 class RenameStyleMutation extends Mutation<
   RenameStyleData,

@@ -1,4 +1,5 @@
-import { Mutation } from 'react-apollo'
+import React from 'react'
+import { Mutation, MutationFn } from 'react-apollo'
 import UpdateStyle from '../graphql/UpdateStyle.graphql'
 
 interface UpdateStyleData {
@@ -12,6 +13,8 @@ interface UpdateStyleVariables {
   id: string
   config: TachyonsConfig
 }
+
+export type UpdateStyleFunction = MutationFn<UpdateStyleData, UpdateStyleVariables>
 
 class UpdateStyleMutation extends Mutation<
   UpdateStyleData,
