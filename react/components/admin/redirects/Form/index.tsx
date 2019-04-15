@@ -161,6 +161,7 @@ class Form extends Component<Props, State> {
                   </FormattedMessage>
                   <div className="flex">
                     <DatePicker
+                      direction="up"
                       locale={locale}
                       onChange={this.updateEndDate}
                       useTime={true}
