@@ -86,6 +86,7 @@
   "pages.admin.redirects.upload-modal.prompt.drop.message": "pages.admin.redirects.upload-modal.prompt.drop.message",
   "pages.admin.redirects.upload-modal.prompt.drop.template": "pages.admin.redirects.upload-modal.prompt.drop.button",
   "pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro": "pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro",
+  "pages.admin.redirects.upload-modal.prompt.instructions.end-date.optional": "pages.admin.redirects.upload-modal.prompt.instructions.end-date.optional",
   "pages.admin.redirects.upload-modal.prompt.instructions.end-date.rest": "pages.admin.redirects.upload-modal.prompt.instructions.end-date.rest",
   "pages.admin.redirects.upload-modal.prompt.instructions.from": "pages.admin.redirects.upload-modal.prompt.instructions.from",
   "pages.admin.redirects.upload-modal.prompt.instructions.status.active": "pages.admin.redirects.upload-modal.prompt.instructions.status.active",

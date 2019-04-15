@@ -86,6 +86,7 @@
   "pages.admin.redirects.upload-modal.prompt.drop.message": "Drop here your CSV or ",
   "pages.admin.redirects.upload-modal.prompt.drop.template": "Download a sample CSV.",
   "pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro": "If the type is ",
+  "pages.admin.redirects.upload-modal.prompt.instructions.end-date.optional": "optional",
   "pages.admin.redirects.upload-modal.prompt.instructions.end-date.rest": ", it's possible to set and end date. The accepted format will be a string in the ISO Date Standard.",
   "pages.admin.redirects.upload-modal.prompt.instructions.from": "User will be redirected when accessing this path.",
   "pages.admin.redirects.upload-modal.prompt.instructions.status.active": "​",

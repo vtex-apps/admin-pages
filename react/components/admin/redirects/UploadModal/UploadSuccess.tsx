@@ -4,7 +4,11 @@ import { Button } from 'vtex.styleguide'
 
 import PaperSuccessIcon from '../../../icons/PaperSuccessIcon'
 
-const UploadSuccess: React.FunctionComponent = () => (
+interface Props {
+  onButtonClick: () => void
+}
+
+const UploadSuccess: React.FunctionComponent<Props> = ({ onButtonClick }) => (
   <div className="flex flex-column items-center justify-center">
     <PaperSuccessIcon />
     <h2 className="tc fw4 mb3 mt7">
@@ -13,7 +17,7 @@ const UploadSuccess: React.FunctionComponent = () => (
     <p className="tc c-muted-2 mt2 mb6">
       <FormattedMessage id="pages.admin.redirects.upload-modal.success.subtitle" />
     </p>
-    <Button>
+    <Button onClick={onButtonClick}>
       <FormattedMessage id="pages.admin.redirects.upload-modal.success.button" />
     </Button>
   </div>

@@ -74,15 +74,16 @@ class RedirectList extends Component<Props, State> {
             to: PAGINATION_STEP,
           }}
         >
-          {({ data, fetchMore, loading, refetch }) => {
-            const redirects = (data && data.redirects.redirects) || []
-            const total = (data && data.redirects.total) || 0
+          {({ data, fetchMore, loading, refetch, error }) => {
+            const redirects =
+              (data && data.redirects && data.redirects.redirects) || []
+            const total = (data && data.redirects && data.redirects.total) || 0
 
             return (
               <>
                 {loading ? (
                   <Loader />
-                ) : (
+                ) : !error ? (
                   <ToastConsumer>
                     {({ showToast }) => (
                       <Box>
@@ -121,10 +122,13 @@ class RedirectList extends Component<Props, State> {
                         <UploadModal
                           isOpen={isModalOpen}
                           onClose={this.closeModal}
+                          refetchRedirects={refetch}
                         />
                       </Box>
                     )}
                   </ToastConsumer>
+                ) : (
+                  <div> Something went wrong. </div>
                 )}
               </>
             )

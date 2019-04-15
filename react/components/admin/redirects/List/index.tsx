@@ -15,8 +15,6 @@ import {
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
 
-import SaveRedirectFromFile from '../../../../queries/SaveRedirectFromFile.graphql'
-
 import CreateButton from './CreateButton'
 
 interface CustomProps {
@@ -49,8 +47,6 @@ class List extends Component<Props, State> {
     stopLoading: PropTypes.func.isRequired,
   }
 
-  private fileInputRef: React.RefObject<HTMLInputElement> = React.createRef()
-
   constructor(props: Props, context: RenderContext) {
     super(props)
 
@@ -78,7 +74,7 @@ class List extends Component<Props, State> {
   }
 
   public render() {
-    const { intl, loading } = this.props
+    const { intl, loading, openModal } = this.props
     const { isSendingFile, schema } = this.state
 
     const items = schema.items
@@ -158,9 +154,7 @@ class List extends Component<Props, State> {
             },
             upload: {
               handleCallback: () => {
-                if (this.fileInputRef.current) {
-                  this.fileInputRef.current.click()
-                }
+                openModal()
               },
               label: intl.formatMessage({
                 id: 'pages.admin.redirects.table.toolbar.import',
@@ -168,40 +162,8 @@ class List extends Component<Props, State> {
             },
           }}
         />
-        <input
-          className="dn"
-          ref={this.fileInputRef}
-          type="file"
-          onChange={this.handleSendFile}
-        />
       </>
     )
-  }
-
-  private handleSendFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0]
-    if (file) {
-      this.setState({ isSendingFile: true }, async () => {
-        try {
-          await this.props.saveRedirectFromFile({ variables: { file } })
-          await this.props.refetch()
-          this.props.showToast({
-            horizontalPosition: 'right',
-            message: 'Success!',
-          })
-        } catch (e) {
-          this.props.showToast({
-            horizontalPosition: 'right',
-            message: 'Fail to save :(',
-          })
-          console.error(e)
-        }
-        this.setState({ isSendingFile: false })
-        if (this.fileInputRef.current) {
-          this.fileInputRef.current.value = ''
-        }
-      })
-    }
   }
 
   private getSchema = (items: Redirect[], locale: string) => {
@@ -300,6 +262,5 @@ class List extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  withRuntimeContext,
-  graphql(SaveRedirectFromFile, { name: 'saveRedirectFromFile' })
+  withRuntimeContext
 )(List)

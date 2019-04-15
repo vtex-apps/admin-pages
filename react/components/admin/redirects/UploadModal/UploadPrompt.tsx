@@ -1,5 +1,6 @@
+import { saveAs } from 'file-saver'
 import React from 'react'
-import ReactDropzone from 'react-dropzone'
+import ReactDropzone, { DropFilesEventHandler } from 'react-dropzone'
 import { FormattedMessage } from 'react-intl'
 
 import PaperIcon from '../../../icons/PaperIcon'
@@ -22,10 +23,28 @@ const Parameter: React.FunctionComponent = ({ children }) => (
   <span className="code f6">{children}</span>
 )
 
-const UploadPrompt = () => {
+interface Props {
+  saveRedirectFromFile: DropFilesEventHandler
+}
+
+function downloadSampleCsv() {
+  const csv = [
+    `from,to,type,status,endDate`,
+    `/test-without-end-date,/,temporary,active,`,
+    `/test-with-end-date,/,temporary,active,2022-04-06T02:30:00.000Z`,
+  ].join('\n')
+  const type = 'text/csv'
+  const csvFile = new Blob([csv], { type })
+  saveAs(csvFile, 'redirects_sample.csv')
+}
+
+const UploadPrompt: React.FC<Props> = ({ saveRedirectFromFile }) => {
   return (
     <>
-      <ReactDropzone className="w-100 pv8 ba br3 bw1 b--action-primary b--dashed flex items-center justify-center">
+      <ReactDropzone
+        className="w-100 pv8 ba br3 bw1 b--action-primary b--dashed flex items-center justify-center"
+        onDrop={saveRedirectFromFile}
+      >
         <div className="flex flex-column items-center justify-center">
           <div className="c-action-primary">
             <PaperIcon />
@@ -41,7 +60,7 @@ const UploadPrompt = () => {
             className="input-reset bg-white bw0 fw5 pa0 c-action-primary pointer ttu"
             onClick={e => {
               e.stopPropagation()
-              window.alert('oi')
+              downloadSampleCsv()
             }}
           >
             <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.template" />
@@ -99,7 +118,12 @@ const UploadPrompt = () => {
 
       <InstructionLine>
         <Field>
-          endDate <i className="f7">(optional)</i>
+          endDate{' '}
+          <i className="f7">
+            (
+            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.optional" />
+            )
+          </i>
         </Field>
 
         <Description>
