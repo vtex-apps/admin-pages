@@ -34,7 +34,6 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
       setModalStep('LOADING')
       await saveRedirectFromFile({ variables: { file } })
       setModalStep('SUCCESS')
-      // await refetchRedirects()
     } catch (e) {
       setModalStep('ERROR')
     }
