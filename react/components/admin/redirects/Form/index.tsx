@@ -159,7 +159,7 @@ class Form extends Component<Props, State> {
                   <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
                     {text => <div className="mb3 w-100 f6">{text}</div>}
                   </FormattedMessage>
-                  <div>
+                  <div className="flex">
                     <DatePicker
                       locale={locale}
                       onChange={this.updateEndDate}
@@ -171,7 +171,7 @@ class Form extends Component<Props, State> {
                     />
                     <button
                       type="button"
-                      className="bn input-reset near-black"
+                      className="flex items-center justify-center bn input-reset near-black"
                       onClick={this.clearEndDate}
                     >
                       <IconClose />
