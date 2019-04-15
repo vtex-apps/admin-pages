@@ -72,7 +72,7 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
             case 'SUCCESS':
               return <UploadSuccess onButtonClick={resetState} />
             case 'ERROR':
-              return <UploadError />
+              return <UploadError error={error} />
           }
         })()}
       </div>
