@@ -32,8 +32,10 @@ declare module 'vtex.styleguide' {
     horizontalPosition?: 'right' | 'left'
   }
 
+  export type ShowToastFunction = (a: ShowToastOptions | string) => void
+
   export interface ToastConsumerFunctions {
-    showToast: (a: ShowToastOptions | string) => void
+    showToast: ShowToastFunction
     hideToast: () => void
     toastState: any
   }
