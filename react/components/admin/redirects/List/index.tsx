@@ -224,23 +224,6 @@ class List extends Component<Props, State> {
           }),
           type: 'string',
         },
-        disabled: {
-          cellRenderer: (cell: { cellData: boolean }) => (
-            <div className="ph4">
-              <Tag type={cell.cellData ? 'error' : 'success'}>
-                {intl.formatMessage({
-                  id: cell.cellData
-                    ? 'pages.admin.redirects.table.status.inactive'
-                    : 'pages.admin.redirects.table.status.active',
-                })}
-              </Tag>
-            </div>
-          ),
-          title: intl.formatMessage({
-            id: 'pages.admin.redirects.table.status.title',
-          }),
-          type: 'boolean',
-        },
         // tslint:enable:object-literal-sort-keys
       },
     }
