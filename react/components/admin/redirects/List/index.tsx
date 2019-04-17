@@ -130,7 +130,8 @@ class List extends Component<Props, State> {
               }),
             },
             download: {
-              handleCallback: () => alert('Callback()'),
+              handleCallback: () =>
+                window.open('/_v/private/pages/redirects.csv'),
               label: intl.formatMessage({
                 id: 'pages.admin.redirects.table.toolbar.export',
               }),

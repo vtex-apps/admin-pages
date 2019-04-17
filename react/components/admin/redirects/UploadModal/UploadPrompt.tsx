@@ -1,7 +1,10 @@
 import { saveAs } from 'file-saver'
-import React from 'react'
-import ReactDropzone, { DropFilesEventHandler } from 'react-dropzone'
+import React, { useState } from 'react'
+import ReactDropzone, { ImageFile } from 'react-dropzone'
 import { FormattedMessage } from 'react-intl'
+import { Radio } from 'vtex.styleguide'
+
+import { UploadActionType } from '../mutations/SaveRedirectFromFile'
 
 import PaperIcon from '../../../icons/PaperIcon'
 
@@ -23,10 +26,6 @@ const Parameter: React.FunctionComponent = ({ children }) => (
   <span className="code f6">{children}</span>
 )
 
-interface Props {
-  saveRedirectFromFile: DropFilesEventHandler
-}
-
 function downloadSampleCsv() {
   const csv = [
     `from,to,type,status,endDate`,
@@ -38,101 +37,99 @@ function downloadSampleCsv() {
   saveAs(csvFile, 'redirects_sample.csv')
 }
 
-const UploadPrompt: React.FC<Props> = ({ saveRedirectFromFile }) => {
+interface Props {
+  hasRedirects: boolean
+  saveRedirectFromFile: (
+    acceptedFiles: ImageFile[],
+    uploadActionType: UploadActionType
+  ) => void
+}
+
+const UploadPrompt: React.FC<Props> = ({
+  hasRedirects,
+  saveRedirectFromFile,
+}) => {
+  const [uploadActionType, setUploadActionType] = useState<UploadActionType>(
+    'merge'
+  )
+
   return (
     <>
+      <h1 className="self-start fw3 mv0">
+        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.title" />
+      </h1>
+      <p className="f6 lh-copy">
+        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.first" />
+        <a className="c-action-primary hover-c-action-primary pointer" download>
+          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.sample-download" />
+        </a>
+        {hasRedirects && (
+          <>
+            {' '}
+            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.or" />
+            <a
+              download
+              className="c-action-primary hover-c-action-primary pointer"
+              href="/_v/private/pages/redirects.csv"
+            >
+              <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.current-configurations" />
+            </a>
+          </>
+        )}
+        .{' '}
+        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.second" />
+      </p>
+
+      {hasRedirects && (
+        <div className="self-start mb4">
+          <p className="mt2">
+            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.title" />
+            :
+          </p>
+          <div>
+            <Radio
+              id="merge-upload-action-type"
+              checked={uploadActionType === 'merge'}
+              label={
+                <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.merge" />
+              }
+              name="upload-action-type"
+              onChange={() => setUploadActionType('merge')}
+              value="merge"
+            />
+            <Radio
+              id="overwrite-upload-action-type"
+              checked={uploadActionType === 'overwrite'}
+              label={
+                <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.overwrite" />
+              }
+              name="upload-action-type"
+              onChange={() => setUploadActionType('overwrite')}
+              value="overwrite"
+            />
+          </div>
+        </div>
+      )}
+
       <ReactDropzone
         className="w-100 pv8 ba br3 bw1 b--action-primary b--dashed flex items-center justify-center"
-        onDrop={saveRedirectFromFile}
+        onDrop={acceptedFiles =>
+          saveRedirectFromFile(acceptedFiles, uploadActionType)
+        }
       >
         <div className="flex flex-column items-center justify-center">
           <div className="c-action-primary">
             <PaperIcon />
           </div>
-          <p className="tc">
+          <p className="tc lh-copy mb0">
             <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.message" />
-            <button className="input-reset bg-white bw0 fw5 pa0 c-action-primary pointer">
+            <button className="input-reset bg-white bw0 fw5 pa0 hover-c-action-primary c-action-primary pointer">
               <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.button" />
             </button>
             .
           </p>
-          <button
-            className="input-reset bg-white bw0 fw5 pa0 c-action-primary pointer ttu"
-            onClick={e => {
-              e.stopPropagation()
-              downloadSampleCsv()
-            }}
-          >
-            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.template" />
-          </button>
         </div>
       </ReactDropzone>
-      <p className="self-start">
-        <FormattedMessage id="pages.admin.upload.instructions.title" />
-      </p>
-
-      <InstructionLine>
-        <Field>from</Field>
-
-        <Description>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.from" />
-        </Description>
-      </InstructionLine>
-
-      <InstructionLine>
-        <Field>to</Field>
-
-        <Description>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.to" />
-        </Description>
-      </InstructionLine>
-
-      <InstructionLine>
-        <Field>type</Field>
-
-        <Description>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.intro" />
-          <Parameter>temporary</Parameter> (
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.status-code" />{' '}
-          302){' '}
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.or" />{' '}
-          <Parameter>permanent</Parameter> (
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.type.status-code" />{' '}
-          301).
-        </Description>
-      </InstructionLine>
-
-      <InstructionLine>
-        <Field>status</Field>
-
-        <Description>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.intro" />{' '}
-          <Parameter>active</Parameter>{' '}
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.active" />
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.or" />{' '}
-          <Parameter>inactive</Parameter>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.status.inactive" />
-          .
-        </Description>
-      </InstructionLine>
-
-      <InstructionLine>
-        <Field>
-          endDate{' '}
-          <i className="f7">
-            (
-            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.optional" />
-            )
-          </i>
-        </Field>
-
-        <Description>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.intro" />{' '}
-          <Parameter>temporary</Parameter>
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.instructions.end-date.rest" />{' '}
-          E.g., <Parameter>2019-04-05T19:19:45.679Z</Parameter>.
-        </Description>
-      </InstructionLine>
     </>
   )
 }

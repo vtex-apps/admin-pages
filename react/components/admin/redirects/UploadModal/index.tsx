@@ -15,6 +15,7 @@ import styles from './UploadModal.css'
 type States = 'PROMPT' | 'LOADING' | 'SUCCESS' | 'ERROR'
 
 interface Props {
+  hasRedirects: boolean
   isOpen: boolean
   onClose: () => void
   refetchRedirects: () => void
@@ -22,6 +23,7 @@ interface Props {
 
 const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
   error,
+  hasRedirects,
   isOpen,
   onClose,
   refetchRedirects,
@@ -29,15 +31,18 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
 }) => {
   const [currentStep, setModalStep] = useState('PROMPT' as States)
 
-  const saveRedirectFromFileCb = useCallback(async ([file]) => {
-    try {
-      setModalStep('LOADING')
-      await saveRedirectFromFile({ variables: { file } })
-      setModalStep('SUCCESS')
-    } catch (e) {
-      setModalStep('ERROR')
-    }
-  }, [])
+  const saveRedirectFromFileCb = useCallback(
+    async ([file], uploadActionType) => {
+      try {
+        setModalStep('LOADING')
+        await saveRedirectFromFile({ variables: { file, uploadActionType } })
+        setModalStep('SUCCESS')
+      } catch (e) {
+        setModalStep('ERROR')
+      }
+    },
+    []
+  )
 
   const resetState = useCallback(
     async () => {
@@ -51,7 +56,7 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
   )
 
   return (
-    <Modal isOpen={isOpen} onClose={resetState}>
+    <Modal centered isOpen={isOpen} onClose={resetState}>
       <div
         className={classnames(
           'flex flex-column items-center justify-center',
@@ -65,7 +70,10 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
           switch (currentStep) {
             case 'PROMPT':
               return (
-                <UploadPrompt saveRedirectFromFile={saveRedirectFromFileCb} />
+                <UploadPrompt
+                  hasRedirects={hasRedirects}
+                  saveRedirectFromFile={saveRedirectFromFileCb}
+                />
               )
             case 'LOADING':
               return <Loading />

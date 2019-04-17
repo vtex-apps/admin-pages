@@ -6,8 +6,11 @@ interface SaveRedirectFromFileData {
   saveRedirectFromFile: boolean
 }
 
+export type UploadActionType = 'merge' | 'overwrite'
+
 interface SaveRedirectFromFileVariables {
   file: File | FileList | Blob
+  uploadActionType: UploadActionType
 }
 
 type SaveRedirectFromFileMutationFn = MutationFn<

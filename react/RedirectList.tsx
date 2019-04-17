@@ -78,6 +78,7 @@ class RedirectList extends Component<Props, State> {
             const redirects =
               (data && data.redirects && data.redirects.redirects) || []
             const total = (data && data.redirects && data.redirects.total) || 0
+            const hasRedirects = redirects.length > 0
 
             return (
               <>
@@ -121,6 +122,7 @@ class RedirectList extends Component<Props, State> {
                         )}
                         <UploadModal
                           isOpen={isModalOpen}
+                          hasRedirects={hasRedirects}
                           onClose={this.closeModal}
                           refetchRedirects={refetch}
                         />

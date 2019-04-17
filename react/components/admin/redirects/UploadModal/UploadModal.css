@@ -1,10 +1,10 @@
 .modal-container {
-  min-height: calc(80vh - 3rem);
+  min-height: calc(40vh - 3rem);
   width: calc(80vw - 3rem);
 }
 
 @media screen and (min-width: 30em) {
   .modal-container {
-    width: 40rem;
+    width: 20rem;
   }
 }
