@@ -46,8 +46,8 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
 
   const resetState = useCallback(
     async () => {
-      setModalStep('PROMPT')
       onClose()
+      setModalStep('PROMPT')
       if (currentStep === 'SUCCESS') {
         await refetchRedirects()
       }
