@@ -60,7 +60,11 @@ const UploadPrompt: React.FC<Props> = ({
       </h1>
       <p className="f6 lh-copy">
         <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.first" />
-        <a className="c-action-primary hover-c-action-primary pointer" download>
+        <a
+          className="c-action-primary link hover-c-action-primary pointer"
+          download
+          href="/_v/private/pages/redirects_template.csv"
+        >
           <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.sample-download" />
         </a>
         {hasRedirects && (
@@ -69,7 +73,7 @@ const UploadPrompt: React.FC<Props> = ({
             <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.or" />
             <a
               download
-              className="c-action-primary hover-c-action-primary pointer"
+              className="c-action-primary link hover-c-action-primary pointer"
               href="/_v/private/pages/redirects.csv"
             >
               <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.current-configurations" />
