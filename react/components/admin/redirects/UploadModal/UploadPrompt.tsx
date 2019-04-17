@@ -1,41 +1,10 @@
-import { saveAs } from 'file-saver'
 import React, { useState } from 'react'
 import ReactDropzone, { ImageFile } from 'react-dropzone'
 import { FormattedMessage } from 'react-intl'
 import { Radio } from 'vtex.styleguide'
 
-import { UploadActionType } from '../mutations/SaveRedirectFromFile'
-
 import PaperIcon from '../../../icons/PaperIcon'
-
-const InstructionLine: React.FunctionComponent = ({ children }) => (
-  <div className="flex mv4 self-start">{children}</div>
-)
-
-const Field: React.FunctionComponent = ({ children }) => (
-  <div className="w4 code rebel-pink" style={{ minWidth: '8rem' }}>
-    {children}
-  </div>
-)
-
-const Description: React.FunctionComponent = ({ children }) => (
-  <div>{children}</div>
-)
-
-const Parameter: React.FunctionComponent = ({ children }) => (
-  <span className="code f6">{children}</span>
-)
-
-function downloadSampleCsv() {
-  const csv = [
-    `from,to,type,status,endDate`,
-    `/test-without-end-date,/,temporary,active,`,
-    `/test-with-end-date,/,temporary,active,2022-04-06T02:30:00.000Z`,
-  ].join('\n')
-  const type = 'text/csv'
-  const csvFile = new Blob([csv], { type })
-  saveAs(csvFile, 'redirects_sample.csv')
-}
+import { UploadActionType } from '../mutations/SaveRedirectFromFile'
 
 interface Props {
   hasRedirects: boolean

@@ -9,7 +9,6 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "exenv": "^1.2.2",
-    "file-saver": "^2.0.1",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "ramda": "^0.25.0",
