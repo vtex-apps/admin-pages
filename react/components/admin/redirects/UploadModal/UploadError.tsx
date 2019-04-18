@@ -2,7 +2,10 @@ import { ApolloError } from 'apollo-client'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import DangerIcon from '../../../icons/DangerIcon'
 import PaperErrorIcon from '../../../icons/PaperErrorIcon'
+
+import styles from './UploadModal.css'
 
 interface Props {
   error?: ApolloError
@@ -35,20 +38,38 @@ const UploadError: React.FunctionComponent<Props> = ({ error }) => {
       <p className="tc c-muted-2 mt2">
         <FormattedMessage id="pages.admin.redirects.upload-modal.fail.message" />
       </p>
-      {errors.map((errorObj, id) => {
-        return (
-          <React.Fragment key={`error-line-${id}`}>
-            <h2>Errors on line {errorObj.lineNumber}:</h2>
-            <ul>
-              {errorObj.errors.map((errorMessage, messageId) => (
-                <li key={`error-line-${id}-message-${messageId}`}>
-                  {errorMessage}
-                </li>
-              ))}
-            </ul>
-          </React.Fragment>
-        )
-      })}
+      <hr
+        className={`b--muted-4 br-0 bl-0 bt-0 mh0 mv0 ${
+          styles['full-modal-width']
+        }`}
+      />
+      <div
+        className={`overflow-y-auto ${styles['error-container']} ${
+          styles['full-modal-width']
+        }`}
+      >
+        {errors.map((errorObj, id) => {
+          return (
+            <div className="flex pa3 pl7" key={`error-line-${id}`}>
+              <div className="mt1">
+                <DangerIcon />
+              </div>
+              <div className="ml4">
+                <h2 className="c-danger f5 fw4 mv0">
+                  Errors on line {errorObj.lineNumber}:
+                </h2>
+                <ul className="f5 fw3 list mt2 pl0">
+                  {errorObj.errors.map((errorMessage, messageId) => (
+                    <li key={`error-line-${id}-message-${messageId}`}>
+                      {errorMessage}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          )
+        })}
+      </div>
     </div>
   )
 }
