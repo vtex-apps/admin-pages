@@ -266,7 +266,7 @@ class Form extends Component<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { onSave } = this.props
+    const { intl, onSave } = this.props
     const {
       data: { endDate, from, to, type },
     } = this.state
@@ -295,7 +295,9 @@ class Form extends Component<Props, State> {
 
           this.props.showToast({
             horizontalPosition: 'right',
-            message: 'Error: redirect could not be deleted.',
+            message: intl.formatMessage({
+              id: 'pages.admin.redirects.form.save.error',
+            }),
           })
         })
       }
