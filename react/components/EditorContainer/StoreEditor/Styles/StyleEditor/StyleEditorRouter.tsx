@@ -4,8 +4,8 @@ import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
 import EditorSelector from './EditorSelector'
-import FontFamilyList from './FontFamily/FontFamilyList'
-import TypographyEditor from './TypographyEditor'
+import FontFamilyList from './typography/FontFamilyList'
+import TypographyEditor from './typography/TypographyEditor'
 
 import { GenerateStyleSheetData } from './queries/GenerateStyleSheet'
 
