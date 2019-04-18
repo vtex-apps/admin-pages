@@ -4,6 +4,8 @@ import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
 import EditorSelector from './EditorSelector'
+import FontFamilyList from './FontFamily/FontFamilyList'
+import TypographyEditor from './TypographyEditor'
 
 import { GenerateStyleSheetData } from './queries/GenerateStyleSheet'
 
@@ -12,6 +14,8 @@ export const ColorsIdParam = ':id'
 export enum EditorPath {
   selector = '/',
   colors = '/colors/:id',
+  typography = '/typography',
+  fontFamily = '/font-family',
 }
 
 interface Props {
@@ -59,6 +63,12 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
       <Switch>
         <Route exact path={EditorPath.selector} render={renderEditorSelector} />
         <Route exact path={colorsPaths} render={renderColorsEditor} />
+        <Route
+          exact
+          path={EditorPath.typography}
+          component={TypographyEditor}
+        />
+        <Route exact path={EditorPath.fontFamily} component={FontFamilyList} />
       </Switch>
     </div>
   )

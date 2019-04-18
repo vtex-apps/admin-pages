@@ -32,6 +32,11 @@ const EditorSelector: React.FunctionComponent<Props> = ({
     titleId: 'pages.editor.styles.edit.colors.title',
     widget: <Colors colors={[emphasis, action_primary]} />,
   }
+  const typographyEditorProps = {
+    path: EditorPath.typography,
+    titleId: 'pages.editor.styles.edit.typography.title',
+    widget: <div className="t-heading-2">Aa</div>,
+  }
 
   const saveButtonLabel = intl.formatMessage({
     id: 'pages.editor.components.button.save',
@@ -47,6 +52,7 @@ const EditorSelector: React.FunctionComponent<Props> = ({
       />
       <div className="ph6">
         <AvailableEditor {...colorEditorProps} />
+        <AvailableEditor {...typographyEditorProps} />
       </div>
     </>
   )
