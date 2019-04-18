@@ -1,5 +1,8 @@
-import React  from 'react'
+import React from 'react'
+
+import { createMemoryHistory } from 'history'
 import { InjectedIntl, injectIntl } from 'react-intl'
+import { Router } from 'react-router-dom'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import RenameStyleMutation from './mutations/RenameStyle'
@@ -14,28 +17,30 @@ interface Props {
   style: Style
 }
 
-const StyleEditor: React.FunctionComponent<Props> = (props) => {
+const StyleEditor: React.FunctionComponent<Props> = props => {
   return (
-    <RenameStyleMutation>
-      {renameStyle => (
-        <UpdateStyleMutation>
-          {updateStyle => (
-            <ToastConsumer>
-              {({ showToast }) => (
-                <StyleEditorHooks
-                  {...{
-                    ...props,
-                    renameStyle,
-                    showToast,
-                    updateStyle,
-                  }}
-                />
-              )}
-            </ToastConsumer>
-          )}
-        </UpdateStyleMutation>
-      )}
-    </RenameStyleMutation>
+    <Router history={createMemoryHistory()}>
+      <RenameStyleMutation>
+        {renameStyle => (
+          <UpdateStyleMutation>
+            {updateStyle => (
+              <ToastConsumer>
+                {({ showToast }) => (
+                  <StyleEditorHooks
+                    {...{
+                      ...props,
+                      renameStyle,
+                      showToast,
+                      updateStyle,
+                    }}
+                  />
+                )}
+              </ToastConsumer>
+            )}
+          </UpdateStyleMutation>
+        )}
+      </RenameStyleMutation>
+    </Router>
   )
 }
 

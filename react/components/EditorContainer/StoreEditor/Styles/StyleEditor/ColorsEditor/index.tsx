@@ -1,49 +1,68 @@
 import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
-import React, { useState } from 'react'
-import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
+import React from 'react'
 
+import { InjectedIntl, injectIntl } from 'react-intl'
+import { RouteComponentProps } from 'react-router'
+import StyleEditorHeader from '../StyleEditorHeader'
+import { ColorsIdParam, EditorPath } from '../StyleEditorRouter'
 import fromTachyonsConfig from '../utils/colors'
 import ColorEditor from './ColorEditor'
 import ColorGroup from './ColorGroup'
 
-interface Props {
+interface Props extends RouteComponentProps<ColorRouteParams> {
   intl: InjectedIntl
   updateStyle: (partialConfig: Partial<TachyonsConfig>) => void
-  semanticColors: SemanticColors
-  font: Font
-  addNavigation: (navigation: NavigationInfo) => void
+  config: TachyonsConfig
+  onSave: () => void
 }
 
-type EditMode = string | undefined
-
-const messages = defineMessages({
-  back: {
-    defaultMessage: 'Back to Colors',
-    id: 'admin/pages.editor.styles.color-group.back',
-  },
-})
-
 const ColorsEditor: React.FunctionComponent<Props> = ({
-  addNavigation,
-  font,
+  config: {
+    semanticColors,
+    typography: {
+      styles: { heading_6: font },
+    },
+  },
   intl,
-  semanticColors,
+  match,
   updateStyle,
+  history,
+  onSave,
 }) => {
-  const [editing, startEditing] = useState<EditMode>(undefined)
-
+  const {
+    params: { id },
+  } = match
   const info = fromTachyonsConfig(semanticColors)
 
-  if (editing) {
+  const colorsLabel = intl.formatMessage({
+    id: 'pages.editor.styles.edit.colors.title',
+  })
+
+  const saveButtonLabel = intl.formatMessage({
+    id: 'pages.editor.components.button.save',
+  })
+
+  const Header = ({ name }: { name: string }) => (
+    <StyleEditorHeader
+      onAux={onSave}
+      auxButtonLabel={saveButtonLabel}
+      title={name}
+    />
+  )
+
+  if (id) {
     return (
-      <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
-        <ColorEditor
-          updateColor={updateColor(updateStyle)}
-          token={editing}
-          colorInfo={info[editing]}
-        />
-      </div>
+      <>
+        <Header name={startCase(id)} />
+        <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
+          <ColorEditor
+            updateColor={updateColor(updateStyle)}
+            token={id}
+            colorInfo={info[id]}
+          />
+        </div>
+      </>
     )
   }
 
@@ -66,30 +85,26 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   }, toPairs(info))
 
   return (
-    <div className="flex-grow-1">
-      {toPairs(groups).map(groupInfo => {
-        const [groupName, group] = groupInfo
+    <>
+      <Header name={colorsLabel} />
+      <div className="flex-grow-1">
+        {toPairs(groups).map(groupInfo => {
+          const [groupName, group] = groupInfo
 
-        return (
-          <ColorGroup
-            groupName={startCase(groupName as string)}
-            font={font}
-            semanticColors={semanticColors}
-            startEditing={(token: string) => {
-              startEditing(token)
-              addNavigation({
-                backButton: {
-                  action: () => startEditing(undefined),
-                  text: intl.formatMessage(messages.back),
-                },
-                title: startCase(token),
-              })
-            }}
-            colorsInfo={fromPairs(group)}
-          />
-        )
-      })}
-    </div>
+          return (
+            <ColorGroup
+              groupName={startCase(groupName as string)}
+              font={font}
+              semanticColors={semanticColors}
+              startEditing={(token: string) =>
+                history.push(EditorPath.colors.replace(ColorsIdParam, token))
+              }
+              colorsInfo={fromPairs(group)}
+            />
+          )
+        })}
+      </div>
+    </>
   )
 }
 

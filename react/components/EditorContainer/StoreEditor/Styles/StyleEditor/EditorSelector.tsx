@@ -2,28 +2,24 @@ import React from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
 
 import Colors from '../components/Colors'
-import { EditMode } from './Editor'
+import AvailableEditor from './AvailableEditor'
+import StyleEditorHeader from './StyleEditorHeader'
+import { ColorsIdParam, EditorPath } from './StyleEditorRouter'
 
 interface Props {
-  addNavigation: (info: NavigationInfo) => void
   config: TachyonsConfig
+  name: string
+  onSave: () => void
+  stopEditing: () => void
   intl: InjectedIntl
-  setMode: (mode: EditMode) => void
 }
 
-interface AvailableEditorProps {
-  addNavigation: (info: NavigationInfo) => void
-  formattedMessage: string
-  mode: EditMode
-  setMode: (mode: EditMode) => void
-  widget: React.ReactNode
-}
-
-const Editor: React.FunctionComponent<Props> = ({
-  addNavigation,
+const EditorSelector: React.FunctionComponent<Props> = ({
   config,
   intl,
-  setMode,
+  name,
+  onSave,
+  stopEditing,
 }) => {
   const {
     semanticColors: {
@@ -31,51 +27,29 @@ const Editor: React.FunctionComponent<Props> = ({
     },
   } = config
 
-
   const colorEditorProps = {
-    addNavigation,
-    formattedMessage: intl.formatMessage({
-      id: 'pages.editor.styles.edit.colors.title',
-    }),
-    mode: 'colors' as EditMode,
-    setMode,
+    path: EditorPath.colors.replace(ColorsIdParam, ''),
+    titleId: 'pages.editor.styles.edit.colors.title',
     widget: <Colors colors={[emphasis, action_primary]} />,
   }
 
+  const saveButtonLabel = intl.formatMessage({
+    id: 'pages.editor.components.button.save',
+  })
+
   return (
-    <div className="ph6">
-      <AvailableEditor {...colorEditorProps} />
-    </div>
+    <>
+      <StyleEditorHeader
+        onAux={onSave}
+        auxButtonLabel={saveButtonLabel}
+        afterOnBack={stopEditing}
+        title={name}
+      />
+      <div className="ph6">
+        <AvailableEditor {...colorEditorProps} />
+      </div>
+    </>
   )
 }
 
-const AvailableEditor: React.FunctionComponent<AvailableEditorProps> = ({
-  addNavigation,
-  formattedMessage,
-  mode,
-  setMode,
-  widget,
-}) => {
-  const onEditorSelected = () => {
-    addNavigation({
-      backButton: {
-        action: () => setMode(undefined),
-        text: formattedMessage,
-      },
-      title: formattedMessage,
-    })
-    setMode(mode)
-  }
-
-  return (
-    <div
-      className="pointer flex justify-between items-center pv6 bb b--muted-4"
-      onClick={onEditorSelected}
-    >
-      <span className="f4">{formattedMessage}</span>
-      {widget}
-    </div>
-  )
-}
-
-export default injectIntl(Editor)
+export default injectIntl(EditorSelector)
