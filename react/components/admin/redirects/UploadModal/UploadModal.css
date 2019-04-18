@@ -5,7 +5,6 @@
 
 .full-modal-width {
   width: calc(100% + 6rem);
-  /* transform: translateX(-3rem); */
 }
 
 @media screen and (min-width: 30em) {
