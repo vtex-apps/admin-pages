@@ -36,8 +36,7 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
           : saveRedirect &&
             queryData.redirects.redirects.reduce(
               (acc, currRedirect) =>
-                currRedirect.cacheId ===
-                `${saveRedirect.from}__${saveRedirect.to}`
+                currRedirect.id === saveRedirect.id
                   ? acc
                   : [...acc, currRedirect],
               [saveRedirect]
