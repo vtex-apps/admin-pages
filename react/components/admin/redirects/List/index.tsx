@@ -57,10 +57,6 @@ class List extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    const toolbar = document.getElementById('toolbar')
-    if (toolbar) {
-      toolbar.style.cssText = 'justify-content: flex-end;' // ugly-hack to align toolbar to the right when there is no search bar
-    }
     this.context.stopLoading()
   }
 
