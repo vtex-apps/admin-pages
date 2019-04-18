@@ -78,6 +78,7 @@
   "pages.admin.redirects.table.type.temporary": "pages.admin.redirects.table.type.temporary",
   "pages.admin.redirects.table.type": "pages.admin.redirects.table.type",
   "pages.admin.redirects.title": "pages.admin.redirects.title",
+  "pages.admin.redirects.upload-modal.error.line.title": "pages.admin.redirects.upload-modal.error.line.title",
   "pages.admin.redirects.upload-modal.fail.message": "pages.admin.redirects.upload-modal.fail.message",
   "pages.admin.redirects.upload-modal.fail.subtitle": "pages.admin.redirects.upload-modal.fail.subtitle",
   "pages.admin.redirects.upload-modal.fail.title": "pages.admin.redirects.upload-modal.fail.title",

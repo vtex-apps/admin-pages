@@ -56,7 +56,8 @@ const UploadError: React.FunctionComponent<Props> = ({ error }) => {
               </div>
               <div className="ml4">
                 <h2 className="c-danger f5 fw4 mv0">
-                  Errors on line {errorObj.lineNumber}:
+                  <FormattedMessage id="pages.admin.redirects.upload-modal.error.line.title" />
+                  {errorObj.lineNumber}:
                 </h2>
                 <ul className="f5 fw3 list mt2 pl0">
                   {errorObj.errors.map((errorMessage, messageId) => (

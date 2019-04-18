@@ -78,6 +78,7 @@
   "pages.admin.redirects.table.type.temporary": "Temporário (302)",
   "pages.admin.redirects.table.type": "Tipo",
   "pages.admin.redirects.title": "Lista de redirecionamentos",
+  "pages.admin.redirects.upload-modal.error.line.title": "Erros na linha ",
   "pages.admin.redirects.upload-modal.fail.message": "Por favor, tente novamente.",
   "pages.admin.redirects.upload-modal.fail.subtitle": "Seus redirecionamentos não foram carregados.",
   "pages.admin.redirects.upload-modal.fail.title": "Algo deu errado.",

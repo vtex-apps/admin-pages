@@ -78,6 +78,7 @@
   "pages.admin.redirects.table.type.temporary": "Temporary (302)",
   "pages.admin.redirects.table.type": "Type",
   "pages.admin.redirects.title": "Redirect list",
+  "pages.admin.redirects.upload-modal.error.line.title": "Errors on line ",
   "pages.admin.redirects.upload-modal.fail.message": "Please try again.",
   "pages.admin.redirects.upload-modal.fail.subtitle": "Your redirects could not be uploaded.",
   "pages.admin.redirects.upload-modal.fail.title": "Something went wrong.",
