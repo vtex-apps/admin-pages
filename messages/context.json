@@ -49,6 +49,7 @@
   "pages.admin.redirects.form.button.remove": "pages.admin.redirects.form.button.remove",
   "pages.admin.redirects.form.button.save": "pages.admin.redirects.form.button.save",
   "pages.admin.redirects.form.datePicker.title": "pages.admin.redirects.form.datePicker.title",
+  "pages.admin.redirects.form.delete.error": "pages.admin.redirects.form.delete.error",
   "pages.admin.redirects.form.modal.text": "pages.admin.redirects.form.modal.text",
   "pages.admin.redirects.form.save.error": "pages.admin.redirects.form.save.error",
   "pages.admin.redirects.form.title.info": "pages.admin.redirects.form.title.info",

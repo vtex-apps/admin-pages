@@ -49,6 +49,7 @@
   "pages.admin.redirects.form.button.remove": "Borrar",
   "pages.admin.redirects.form.button.save": "Salvar",
   "pages.admin.redirects.form.datePicker.title": "Fecha final",
+  "pages.admin.redirects.form.delete.error": "Error: no se pudo eliminar la redirección.",
   "pages.admin.redirects.form.modal.text": "¿Está seguro de que desea borrar esta redirección?",
   "pages.admin.redirects.form.save.error": "Error: no se pudo guardar la redirección.",
   "pages.admin.redirects.form.title.info": "Informaciones de la redirección",

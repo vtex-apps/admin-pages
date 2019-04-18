@@ -231,7 +231,7 @@ class Form extends Component<Props, State> {
   }
 
   private handleDelete = (redirectId: string) => () => {
-    const { onDelete } = this.props
+    const { intl, onDelete } = this.props
 
     this.setState({ isLoading: true }, async () => {
       try {
@@ -248,7 +248,9 @@ class Form extends Component<Props, State> {
 
           this.props.showToast({
             horizontalPosition: 'right',
-            message: 'Error: redirect could not be deleted.',
+            message: intl.formatMessage({
+              id: 'pages.admin.redirects.form.delete.error',
+            }),
           })
         })
       }

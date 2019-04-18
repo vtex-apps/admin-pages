@@ -49,6 +49,7 @@
   "pages.admin.redirects.form.button.remove": "Remove",
   "pages.admin.redirects.form.button.save": "Save",
   "pages.admin.redirects.form.datePicker.title": "End date",
+  "pages.admin.redirects.form.delete.error": "Error: redirect could not be deleted.",
   "pages.admin.redirects.form.modal.text": "Are you sure you want to remove this redirect?",
   "pages.admin.redirects.form.save.error": "Error: redirect could not be saved.",
   "pages.admin.redirects.form.title.info": "Redirect info",

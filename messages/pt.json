@@ -49,6 +49,7 @@
   "pages.admin.redirects.form.button.remove": "Remover",
   "pages.admin.redirects.form.button.save": "Salvar",
   "pages.admin.redirects.form.datePicker.title": "Data de fim",
+  "pages.admin.redirects.form.delete.error": "Erro ao deletar redirecionamento.",
   "pages.admin.redirects.form.modal.text": "Tem certeza de que deseja remover este redirecionamento?",
   "pages.admin.redirects.form.save.error": "Erro ao salvar redirecionamento.",
   "pages.admin.redirects.form.title.info": "Informações do redirecionamento",
