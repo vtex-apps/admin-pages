@@ -1,12 +1,12 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
-import { ImageFile } from 'react-dropzone'
 import {
   defineMessages,
   FormattedMessage,
   InjectedIntlProps,
   injectIntl,
+  InjectedIntl,
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
@@ -23,7 +23,7 @@ import styles from './imageUploader.css'
 interface Props extends InjectedIntlProps {
   disabled?: boolean
   shouldMutate?: boolean
-  onChange: (pathname: string | null, file: ImageFile) => any
+  onChange: (pathname: string | null, file: File) => any
   schema: JSONSchema6
   uploadFile?: MutationFunc<MutationData>
   value: string
@@ -166,8 +166,12 @@ class ImageUploader extends Component<Props, State> {
     )
   }
 
-  private handleImageDrop = async (acceptedFiles: ImageFile[]) => {
-    const { intl, shouldMutate, uploadFile } = this.props
+  private handleImageDrop = async (acceptedFiles: File[]) => {
+    const { intl, uploadFile, shouldMutate } = this.props as {
+      intl: InjectedIntl
+      shouldMutate: boolean
+      uploadFile: MutationFunc<MutationData>
+    }
 
     if (acceptedFiles && acceptedFiles[0]) {
       this.setState({ isLoading: true })
