@@ -46,6 +46,7 @@ class Form extends Component<Props, State> {
   }
 
   private isEditingRedirect: boolean
+  private minDate = new Date()
 
   constructor(props: Props) {
     super(props)
@@ -161,11 +162,11 @@ class Form extends Component<Props, State> {
                   </FormattedMessage>
                   <div className="flex">
                     <DatePicker
+                      useTime
                       direction="up"
                       locale={locale}
                       onChange={this.updateEndDate}
-                      useTime={true}
-                      minDate={new Date()}
+                      minDate={this.minDate}
                       value={
                         data.endDate ? moment(data.endDate).toDate() : undefined
                       }

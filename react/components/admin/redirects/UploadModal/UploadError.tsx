@@ -1,4 +1,5 @@
 import { ApolloError } from 'apollo-client'
+import { pathOr } from 'ramda'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
@@ -17,14 +18,17 @@ interface ValidationLineError {
 }
 
 const UploadError: React.FunctionComponent<Props> = ({ error }) => {
-  const message = error && error.graphQLErrors[0].message
+  const message = pathOr<string, string>(
+    '',
+    ['graphQLErrors', '0', 'message'],
+    error || {}
+  )
   let errors: ValidationLineError[] = []
   try {
-    errors = JSON.parse(message!)
+    errors = JSON.parse(message)
   } catch (e) {
     console.error(e)
   }
-  console.log({ message })
 
   return (
     <div className="flex flex-column items-center justify-center">

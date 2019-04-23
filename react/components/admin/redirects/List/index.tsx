@@ -126,8 +126,7 @@ class List extends Component<Props, State> {
               }),
             },
             download: {
-              handleCallback: () =>
-                window.open('/_v/private/pages/redirects.csv'),
+              handleCallback: this.handleDownload,
               label: intl.formatMessage({
                 id: 'pages.admin.redirects.table.toolbar.export',
               }),
@@ -238,6 +237,8 @@ class List extends Component<Props, State> {
 
     navigate({ to: `${BASE_URL}/${selectedItem.id}` })
   }
+
+  private handleDownload = () => window.open('/_v/private/pages/redirects.csv')
 }
 
 export default compose(

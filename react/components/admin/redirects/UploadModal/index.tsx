@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Modal } from 'vtex.styleguide'
 
 import SaveRedirectFromFileMutation, {
@@ -55,6 +55,29 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
     [currentStep]
   )
 
+  const CurrentComponent = useMemo(
+    () => {
+      switch (currentStep) {
+        case 'PROMPT':
+          return (
+            <UploadPrompt
+              hasRedirects={hasRedirects}
+              saveRedirectFromFile={saveRedirectFromFileCb}
+            />
+          )
+        case 'LOADING':
+          return <Loading />
+        case 'SUCCESS':
+          return <UploadSuccess onButtonClick={resetState} />
+        case 'ERROR':
+          return <UploadError error={error} />
+        default:
+          return null
+      }
+    },
+    [currentStep]
+  )
+
   return (
     <Modal centered isOpen={isOpen} onClose={resetState}>
       <div
@@ -66,23 +89,7 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
           }
         )}
       >
-        {(() => {
-          switch (currentStep) {
-            case 'PROMPT':
-              return (
-                <UploadPrompt
-                  hasRedirects={hasRedirects}
-                  saveRedirectFromFile={saveRedirectFromFileCb}
-                />
-              )
-            case 'LOADING':
-              return <Loading />
-            case 'SUCCESS':
-              return <UploadSuccess onButtonClick={resetState} />
-            case 'ERROR':
-              return <UploadError error={error} />
-          }
-        })()}
+        {CurrentComponent}
       </div>
     </Modal>
   )
