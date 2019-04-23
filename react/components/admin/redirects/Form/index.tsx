@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
@@ -6,6 +7,7 @@ import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   Button,
   DatePicker,
+  IconClose,
   Input,
   RadioGroup,
   ToastConsumerFunctions,
@@ -43,12 +45,13 @@ class Form extends Component<Props, State> {
     stopLoading: PropTypes.func.isRequired,
   }
 
-  private isViewMode: boolean
+  private isEditingRedirect: boolean
+  private minDate = new Date()
 
   constructor(props: Props) {
     super(props)
 
-    this.isViewMode = props.initialData.id !== NEW_REDIRECT_ID
+    this.isEditingRedirect = props.initialData.id !== NEW_REDIRECT_ID
 
     this.state = {
       data: props.initialData,
@@ -93,7 +96,7 @@ class Form extends Component<Props, State> {
         />
         <FormattedMessage
           id={
-            this.isViewMode
+            this.isEditingRedirect
               ? 'pages.admin.redirects.form.title.info'
               : 'pages.admin.redirects.form.title.new'
           }
@@ -103,7 +106,6 @@ class Form extends Component<Props, State> {
         <FormFieldSeparator />
         <form onSubmit={this.handleSave}>
           <Input
-            disabled={this.isViewMode}
             label={intl.formatMessage({
               id: 'pages.admin.redirects.table.from',
             })}
@@ -113,7 +115,6 @@ class Form extends Component<Props, State> {
           />
           <FormFieldSeparator />
           <Input
-            disabled={this.isViewMode}
             label={intl.formatMessage({
               id: 'pages.admin.redirects.table.to',
             })}
@@ -123,7 +124,6 @@ class Form extends Component<Props, State> {
           />
           <FormFieldSeparator />
           <RadioGroup
-            disabled={this.isViewMode}
             name="type"
             options={[
               {
@@ -148,7 +148,6 @@ class Form extends Component<Props, State> {
               <div className="relative">
                 <Toggle
                   checked={shouldShowDatePicker}
-                  disabled={this.isViewMode}
                   label={intl.formatMessage({
                     id: 'pages.admin.redirects.form.toggle.endDate',
                   })}
@@ -158,54 +157,39 @@ class Form extends Component<Props, State> {
               <FormFieldSeparator />
               {shouldShowDatePicker && (
                 <Fragment>
-                  {this.isViewMode ? (
-                    <Input
-                      disabled
-                      label={intl.formatMessage({
-                        id: 'pages.admin.redirects.form.datePicker.title',
-                      })}
-                      value={getFormattedLocalizedDate(data.endDate, locale)}
+                  <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
+                    {text => <div className="mb3 w-100 f6">{text}</div>}
+                  </FormattedMessage>
+                  <div className="flex">
+                    <DatePicker
+                      useTime
+                      direction="up"
+                      locale={locale}
+                      onChange={this.updateEndDate}
+                      minDate={this.minDate}
+                      value={
+                        data.endDate ? moment(data.endDate).toDate() : undefined
+                      }
                     />
-                  ) : (
-                    <Fragment>
-                      <FormattedMessage id="pages.admin.redirects.form.datePicker.title">
-                        {text => <div className="mb3 w-100 f6">{text}</div>}
-                      </FormattedMessage>
-                      <DatePicker
-                        locale={locale}
-                        onChange={this.updateEndDate}
-                        useTime={true}
-                        value={
-                          data.endDate
-                            ? moment(data.endDate).toDate()
-                            : moment()
-                                .add(1, 'days')
-                                .toDate()
-                        }
-                      />
-                    </Fragment>
-                  )}
+                    <button
+                      type="button"
+                      className="flex items-center justify-center bn input-reset near-black"
+                      onClick={this.clearEndDate}
+                    >
+                      <IconClose />
+                    </button>
+                  </div>
                   <FormFieldSeparator />
                 </Fragment>
               )}
             </>
           ) : null}
-          <div className="flex justify-end">
-            <div className="mr6">
-              <Button
-                disabled={isLoading}
-                onClick={this.exit}
-                size="small"
-                variation="tertiary"
-              >
-                {intl.formatMessage({
-                  id: this.isViewMode
-                    ? 'pages.admin.redirects.form.button.back'
-                    : 'pages.admin.redirects.form.button.cancel',
-                })}
-              </Button>
-            </div>
-            {this.isViewMode ? (
+          <div
+            className={classnames('justify-between', {
+              flex: this.isEditingRedirect,
+            })}
+          >
+            {this.isEditingRedirect ? (
               <Button
                 size="small"
                 onClick={this.toggleModalVisibility}
@@ -215,13 +199,28 @@ class Form extends Component<Props, State> {
                   id: 'pages.admin.redirects.form.button.remove',
                 })}
               </Button>
-            ) : (
+            ) : null}
+            <div className="flex justify-end">
+              <div className="mr6">
+                <Button
+                  disabled={isLoading}
+                  onClick={this.exit}
+                  size="small"
+                  variation="tertiary"
+                >
+                  {intl.formatMessage({
+                    id: this.isEditingRedirect
+                      ? 'pages.admin.redirects.form.button.back'
+                      : 'pages.admin.redirects.form.button.cancel',
+                  })}
+                </Button>
+              </div>
               <Button isLoading={isLoading} size="small" type="submit">
                 {intl.formatMessage({
-                  id: 'pages.admin.redirects.form.button.create',
+                  id: 'pages.admin.redirects.form.button.save',
                 })}
               </Button>
-            )}
+            </div>
           </div>
         </form>
       </Fragment>
@@ -233,7 +232,7 @@ class Form extends Component<Props, State> {
   }
 
   private handleDelete = (redirectId: string) => () => {
-    const { onDelete } = this.props
+    const { intl, onDelete } = this.props
 
     this.setState({ isLoading: true }, async () => {
       try {
@@ -250,7 +249,9 @@ class Form extends Component<Props, State> {
 
           this.props.showToast({
             horizontalPosition: 'right',
-            message: 'Error: redirect could not be deleted.',
+            message: intl.formatMessage({
+              id: 'pages.admin.redirects.form.delete.error',
+            }),
           })
         })
       }
@@ -268,7 +269,7 @@ class Form extends Component<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { onSave } = this.props
+    const { intl, onSave } = this.props
     const {
       data: { endDate, from, to, type },
     } = this.state
@@ -281,6 +282,10 @@ class Form extends Component<Props, State> {
           variables: {
             endDate,
             from,
+            id:
+              this.props.initialData.id !== NEW_REDIRECT_ID
+                ? this.props.initialData.id
+                : undefined,
             to,
             type,
           },
@@ -293,7 +298,9 @@ class Form extends Component<Props, State> {
 
           this.props.showToast({
             horizontalPosition: 'right',
-            message: 'Error: redirect could not be deleted.',
+            message: intl.formatMessage({
+              id: 'pages.admin.redirects.form.save.error',
+            }),
           })
         })
       }
@@ -309,7 +316,7 @@ class Form extends Component<Props, State> {
       () => {
         this.handleInputChange({
           endDate: this.state.shouldShowDatePicker
-            ? moment().add(1, 'days')
+            ? moment(this.props.initialData.endDate || undefined).add(1, 'days')
             : '',
         })
       }
@@ -333,6 +340,10 @@ class Form extends Component<Props, State> {
 
   private updateEndDate = (value: Date) => {
     this.handleInputChange({ endDate: value })
+  }
+
+  private clearEndDate = () => {
+    this.handleInputChange({ endDate: '' })
   }
 
   private updateFrom = (event: Event) => {

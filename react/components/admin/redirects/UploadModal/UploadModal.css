@@ -1,0 +1,31 @@
+.modal-container {
+  min-height: calc(40vh - 3rem);
+  width: calc(80vw - 3rem);
+}
+
+.full-modal-width {
+  width: calc(100% + 6rem);
+}
+
+@media screen and (min-width: 30em) {
+  .modal-container {
+    width: 20rem;
+  }
+}
+
+.error-container {
+  max-height: 30vh;
+  margin-bottom: -3rem;
+}
+
+.error-container::-webkit-scrollbar,
+.error-container::-webkit-scrollbar-track {
+  width: 2px;
+  background: #f2f4f5;
+}
+
+.error-container::-webkit-scrollbar-thumb {
+  width: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}

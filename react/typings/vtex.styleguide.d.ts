@@ -112,12 +112,12 @@ declare module 'vtex.styleguide' {
     locale: string
     placeholder?: string
     size?: StyleguideSizes
-    value: Date
+    value?: Date
     useTime?: boolean
   }
 
   type DatePickerProps = Pick<
-    ReactDatePickerProps
+    | ReactDatePickerProps
     | 'autoFocus'
     | 'disabled'
     | 'excludeDates'
@@ -157,6 +157,7 @@ declare module 'vtex.styleguide' {
   export const IconClear: ComponentType<any>
   export const IconClose: ComponentType<any>
   export const IconOptionsDots: ComponentType<any>
+  export const IconUpload: ComponentType<any>
   export const Input: ComponentType<any>
   export const Modal: ComponentType<any>
   export const PageHeader: ComponentType<any>

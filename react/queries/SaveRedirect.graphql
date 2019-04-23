@@ -1,10 +1,11 @@
 mutation saveRedirect(
+  $id: ID
   $endDate: String!
   $from: String!
   $to: String!
   $type: String!
 ) {
-  saveRedirect(endDate: $endDate, from: $from, to: $to, type: $type) {
+  saveRedirect(id: $id, endDate: $endDate, from: $from, to: $to, type: $type) {
     cacheId
     disabled
     endDate

@@ -1,5 +1,6 @@
 import { DataProxy } from 'apollo-cache'
 
+import Redirect from '../../../../queries/Redirect.graphql'
 import Redirects from '../../../../queries/Redirects.graphql'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
 import { RedirectsQuery } from '../typings'
@@ -36,8 +37,7 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
           : saveRedirect &&
             queryData.redirects.redirects.reduce(
               (acc, currRedirect) =>
-                currRedirect.cacheId ===
-                `${saveRedirect.from}__${saveRedirect.to}`
+                currRedirect.id === saveRedirect.id
                   ? acc
                   : [...acc, currRedirect],
               [saveRedirect]
@@ -63,6 +63,20 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
     }
   } catch (err) {
     console.log('No cache found for "Redirects".')
+  }
+
+  try {
+    store.writeQuery({
+      data: { redirect: isDelete ? undefined : saveRedirect },
+      query: Redirect,
+      variables: {
+        id: isDelete
+          ? deleteRedirect && deleteRedirect.id
+          : saveRedirect && saveRedirect.id,
+      },
+    })
+  } catch (e) {
+    console.log('Error writing to "Redirect".')
   }
 }
 

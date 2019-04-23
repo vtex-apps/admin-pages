@@ -19,6 +19,7 @@ export interface DeleteRedirectVariables {
 }
 
 export interface SaveRedirectVariables {
+  id?: string
   endDate: string
   from: string
   to: string

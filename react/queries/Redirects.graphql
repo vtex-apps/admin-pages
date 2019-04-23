@@ -2,7 +2,6 @@ query Redirects($from: Int, $to: Int) {
   redirects(from: $from, to: $to) {
     redirects {
       cacheId
-      disabled
       endDate
       from
       id
