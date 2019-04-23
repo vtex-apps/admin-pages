@@ -62,7 +62,7 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
       writeRedirectsToStore(newData, store)
     }
   } catch (err) {
-    console.warn('No cache found for "Redirects".')
+    console.log('No cache found for "Redirects".')
   }
 
   try {
@@ -76,7 +76,7 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
       },
     })
   } catch (e) {
-    console.warn('Error writing to "Redirect".')
+    console.log('Error writing to "Redirect".')
   }
 }
 
