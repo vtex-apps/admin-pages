@@ -4,6 +4,7 @@ import { Button, IconArrowBack } from 'vtex.styleguide'
 
 interface Props extends RouteComponentProps {
   auxButtonLabel?: string | React.ReactNode
+  disabled?: boolean
   onAux?: () => void
   afterOnBack?: () => void
   title: string | React.ReactNode
@@ -11,6 +12,7 @@ interface Props extends RouteComponentProps {
 
 const StyleEditorHeader: React.FunctionComponent<Props> = ({
   auxButtonLabel,
+  disabled,
   history,
   onAux,
   afterOnBack,
@@ -32,8 +34,13 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
           </div>
           <span className="f3">{title}</span>
         </div>
-        {auxButtonLabel && onAux && (
-          <Button variation="tertiary" size="small" onClick={onAux}>
+        {auxButtonLabel && (
+          <Button
+            variation="tertiary"
+            size="small"
+            onClick={onAux}
+            disabled={!onAux}
+          >
             {auxButtonLabel}
           </Button>
         )}
