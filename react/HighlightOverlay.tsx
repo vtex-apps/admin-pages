@@ -21,6 +21,18 @@ export interface State {
   highlightTreePath: string | null
 }
 
+function isElementInViewport(el: Element) {
+  const rect = el.getBoundingClientRect()
+
+  return (
+    rect.top >= 0 &&
+    rect.left >= 0 &&
+    rect.bottom <=
+      (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
 export default class HighlightOverlay extends Component<Props, State> {
   public static propTypes = {
     editExtensionPoint: PropTypes.func,
@@ -39,7 +51,13 @@ export default class HighlightOverlay extends Component<Props, State> {
   }
 
   private debouncedScrollTo = debounce((element: Element) => {
-    element.scrollIntoView({ behavior: 'smooth' })
+    if (!isElementInViewport(element)) {
+      element.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+        inline: 'center',
+      })
+    }
   }, 75)
 
   constructor(props: any) {
