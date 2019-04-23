@@ -1,6 +1,6 @@
 import React from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
-import { Route, RouteComponentProps, Switch, withRouter } from 'react-router'
+import { Redirect, Route, RouteComponentProps, Switch } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
 import EditorSelector from './EditorSelector'
@@ -8,6 +8,7 @@ import FontFamilyList from './typography/FontFamilyList'
 import TypographyEditor from './typography/TypographyEditor'
 
 import { GenerateStyleSheetData } from './queries/GenerateStyleSheet'
+import CustomFont from './typography/CustomFont'
 
 export const ColorsIdParam = ':id'
 
@@ -16,6 +17,9 @@ export enum EditorPath {
   colors = '/colors/:id',
   typography = '/typography',
   fontFamily = '/font-family',
+  customFont = '/custom-font',
+  customFontFile = '/custom-font/file',
+  customFontLink = '/custom-font/link',
 }
 
 interface Props {
@@ -69,6 +73,13 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
           component={TypographyEditor}
         />
         <Route exact path={EditorPath.fontFamily} component={FontFamilyList} />
+
+        <Redirect
+          exact
+          from={EditorPath.customFont}
+          to={EditorPath.customFontFile}
+        />
+        <Route path={EditorPath.customFont} component={CustomFont} />
       </Switch>
     </div>
   )
