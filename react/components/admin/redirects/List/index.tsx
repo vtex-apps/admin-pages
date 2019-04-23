@@ -149,9 +149,7 @@ class List extends Component<Props, State> {
               }),
             },
             upload: {
-              handleCallback: () => {
-                openModal()
-              },
+              handleCallback: this.handleUpload,
               label: intl.formatMessage({
                 id: 'pages.admin.redirects.table.toolbar.import',
               }),
@@ -238,7 +236,11 @@ class List extends Component<Props, State> {
     navigate({ to: `${BASE_URL}/${selectedItem.id}` })
   }
 
-  private handleDownload = () => window.open('/_v/private/pages/redirects.csv')
+  private handleUpload = () => this.props.openModal()
+
+  private handleDownload() {
+    window.open('/_v/private/pages/redirects.csv')
+  }
 }
 
 export default compose(
