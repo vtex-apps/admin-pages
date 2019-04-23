@@ -74,7 +74,7 @@
   "pages.admin.redirects.table.toolbar.import": "Importar",
   "pages.admin.redirects.table.toolbar.line-density.high": "Alta",
   "pages.admin.redirects.table.toolbar.line-density.label": "Densidad de línea",
-  "pages.admin.redirects.table.toolbar.line-density.low": "Bajo",
+  "pages.admin.redirects.table.toolbar.line-density.low": "Baja",
   "pages.admin.redirects.table.toolbar.line-density.medium": "Media",
   "pages.admin.redirects.table.type.permanent": "Permanente (301)",
   "pages.admin.redirects.table.type.temporary": "Temporal (302)",
