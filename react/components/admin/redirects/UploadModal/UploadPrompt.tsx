@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import ReactDropzone, { ImageFile } from 'react-dropzone'
+import ReactDropzone from 'react-dropzone'
 import { FormattedMessage } from 'react-intl'
 import { Radio } from 'vtex.styleguide'
 
@@ -9,7 +9,7 @@ import { UploadActionType } from '../mutations/SaveRedirectFromFile'
 interface Props {
   hasRedirects: boolean
   saveRedirectFromFile: (
-    acceptedFiles: ImageFile[],
+    acceptedFiles: File[],
     uploadActionType: UploadActionType
   ) => void
 }
@@ -83,25 +83,33 @@ const UploadPrompt: React.FC<Props> = ({
         </div>
       )}
 
-      <ReactDropzone
-        className="w-100 pv8 ba br3 bw1 b--action-primary b--dashed flex items-center justify-center"
-        onDrop={acceptedFiles =>
-          saveRedirectFromFile(acceptedFiles, uploadActionType)
-        }
-      >
-        <div className="flex flex-column items-center justify-center">
-          <div className="c-action-primary">
-            <PaperIcon />
-          </div>
-          <p className="tc lh-copy mb0">
-            <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.message" />
-            <button className="input-reset bg-white bw0 fw5 pa0 hover-c-action-primary c-action-primary pointer">
-              <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.button" />
-            </button>
-            .
-          </p>
-        </div>
-      </ReactDropzone>
+      <div className="w-100 pv8 ba br3 bw1 b--action-primary b--dashed flex items-center justify-center">
+        <ReactDropzone
+          onDrop={acceptedFiles =>
+            saveRedirectFromFile(acceptedFiles, uploadActionType)
+          }
+        >
+          {({ getRootProps, getInputProps }) => (
+            <div
+              {...getRootProps({
+                className: 'flex flex-column items-center justify-center',
+              })}
+            >
+              <input {...getInputProps()} />
+              <div className="c-action-primary">
+                <PaperIcon />
+              </div>
+              <p className="tc lh-copy mb0">
+                <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.message" />
+                <button className="input-reset bg-white bw0 fw5 pa0 hover-c-action-primary c-action-primary pointer">
+                  <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.button" />
+                </button>
+                .
+              </p>
+            </div>
+          )}
+        </ReactDropzone>
+      </div>
     </>
   )
 }
