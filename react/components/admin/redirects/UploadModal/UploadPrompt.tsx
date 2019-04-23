@@ -38,7 +38,6 @@ const UploadPrompt: React.FC<Props> = ({
         </a>
         {hasRedirects && (
           <>
-            {' '}
             <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.or" />
             <a
               download
@@ -49,7 +48,7 @@ const UploadPrompt: React.FC<Props> = ({
             </a>
           </>
         )}
-        .{' '}
+        .
         <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.second" />
       </p>
 
