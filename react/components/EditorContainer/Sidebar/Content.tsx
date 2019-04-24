@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
@@ -9,9 +9,8 @@ import SaveContentMutation from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
 import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
-import { FormMetaConsumer } from './FormMetaContext'
-import { ModalConsumer } from './ModalContext'
-import { SidebarComponent } from './typings'
+import { useFormMetaContext } from './FormMetaContext'
+import { useModalContext } from './ModalContext'
 import { getComponents, getIsSitewide } from './utils'
 
 interface Props {
@@ -20,126 +19,102 @@ interface Props {
   iframeRuntime: RenderContext
 }
 
-interface State {
-  components: SidebarComponent[]
-}
+const initialComponents = (props: Props) =>
+  getComponents(
+    props.iframeRuntime.extensions,
+    getIframeRenderComponents(),
+    props.iframeRuntime.page
+  )
 
-class Content extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+const Content = (props: Props) => {
+  const { editor, highlightHandler, iframeRuntime } = props
 
-    this.state = {
-      components: getComponents(
-        props.iframeRuntime.extensions,
-        getIframeRenderComponents(),
-        props.iframeRuntime.page
-      ),
-    }
-  }
+  const formMeta = useFormMetaContext()
+  const modal = useModalContext()
 
-  public componentDidUpdate(prevProps: Props) {
-    const prevRuntime = prevProps.iframeRuntime
-    const currRuntime = this.props.iframeRuntime
-
-    const prevPath = prevRuntime.route.path
-    const currPath = currRuntime.route.path
-
-    if (prevPath !== currPath) {
-      this.resetComponents()
-      this.props.editor.setIsLoading(false)
-    }
-  }
-
-  public render() {
-    const { editor, highlightHandler, iframeRuntime } = this.props
-
-    if (editor.editTreePath === null) {
-      return (
-        <ComponentSelector
-          components={this.state.components}
-          editor={editor}
-          highlightHandler={highlightHandler}
-          iframeRuntime={iframeRuntime}
-          updateSidebarComponents={this.updateComponents}
-        />
-      )
-    }
-
-    const isSitewide = getIsSitewide(
-      iframeRuntime.extensions,
-      editor.editTreePath
+  const [components, setComponents] = useState(
+    getComponents(
+      props.iframeRuntime.extensions,
+      getIframeRenderComponents(),
+      props.iframeRuntime.page
     )
+  )
 
-    const template = isSitewide
-      ? '*'
-      : iframeRuntime.pages[iframeRuntime.page].blockId
+  const path = useRef('')
 
-    const treePath = isSitewide
-      ? getSitewideTreePath(editor.editTreePath)
-      : editor.editTreePath!
+  useEffect(
+    () => {
+      if (path.current !== iframeRuntime.route.path) {
+        setComponents(initialComponents(props))
+        props.editor.setIsLoading(false)
+      }
+      path.current = iframeRuntime.route.path
+    },
+    [iframeRuntime]
+  )
 
+  if (editor.editTreePath === null) {
     return (
-      <FormMetaConsumer>
-        {formMeta => (
-          <ModalConsumer>
-            {modal => (
-              <ToastConsumer>
-                {({ showToast }) => (
-                  <ListContentQuery
-                    variables={{
-                      pageContext: iframeRuntime.route.pageContext,
-                      template,
-                      treePath,
-                    }}
-                  >
-                    {listContentQueryResult => (
-                      <SaveContentMutation>
-                        {saveContent => (
-                          <DeleteContentMutation>
-                            {deleteContent => (
-                              <ConfigurationList
-                                deleteContent={deleteContent}
-                                editor={editor}
-                                formMeta={formMeta}
-                                iframeRuntime={iframeRuntime}
-                                listContent={listContentQueryResult}
-                                isSitewide={isSitewide}
-                                modal={modal}
-                                saveContent={saveContent}
-                                showToast={showToast}
-                                template={template}
-                                treePath={treePath}
-                              />
-                            )}
-                          </DeleteContentMutation>
-                        )}
-                      </SaveContentMutation>
-                    )}
-                  </ListContentQuery>
-                )}
-              </ToastConsumer>
-            )}
-          </ModalConsumer>
-        )}
-      </FormMetaConsumer>
+      <ComponentSelector
+        components={components}
+        editor={editor}
+        highlightHandler={highlightHandler}
+        iframeRuntime={iframeRuntime}
+        updateSidebarComponents={setComponents}
+      />
     )
   }
 
-  private resetComponents = () => {
-    const { iframeRuntime } = this.props
+  const isSitewide = getIsSitewide(
+    iframeRuntime.extensions,
+    editor.editTreePath
+  )
 
-    this.setState({
-      components: getComponents(
-        iframeRuntime.extensions,
-        getIframeRenderComponents(),
-        iframeRuntime.page
-      ),
-    })
-  }
+  const template = isSitewide
+    ? '*'
+    : iframeRuntime.pages[iframeRuntime.page].blockId
 
-  private updateComponents = (components: SidebarComponent[]) => {
-    this.setState({ components })
-  }
+  const treePath = isSitewide
+    ? getSitewideTreePath(editor.editTreePath)
+    : editor.editTreePath!
+
+  return (
+    <ToastConsumer>
+      {({ showToast }) => (
+        <ListContentQuery
+          variables={{
+            pageContext: iframeRuntime.route.pageContext,
+            template,
+            treePath,
+          }}
+        >
+          {listContentQueryResult => (
+            <SaveContentMutation>
+              {saveContent => (
+                <DeleteContentMutation>
+                  {deleteContent => (
+                    <ConfigurationList
+                      deleteContent={deleteContent}
+                      editor={editor}
+                      formMeta={formMeta}
+                      iframeRuntime={iframeRuntime}
+                      listContent={listContentQueryResult}
+                      isSitewide={isSitewide}
+                      modal={modal}
+                      saveContent={saveContent}
+                      showToast={showToast}
+                      template={template}
+                      treePath={treePath}
+                    />
+                  )}
+                </DeleteContentMutation>
+              )}
+            </SaveContentMutation>
+          )}
+        </ListContentQuery>
+      )}
+    </ToastConsumer>
+  )
 }
 
 export default Content
