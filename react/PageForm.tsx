@@ -147,7 +147,7 @@ class PageForm extends Component<Props, State> {
               ) : (
                 <Box>
                   {this.isNew ? (
-                    <FormattedMessage id="pages.admin.pages.form.title.new">
+                    <FormattedMessage id="admin/pages.admin.pages.form.title.new">
                       {text => <Title>{text}</Title>}
                     </FormattedMessage>
                   ) : (

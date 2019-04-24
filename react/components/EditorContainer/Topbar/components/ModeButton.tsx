@@ -26,14 +26,14 @@ const icon = (mode?: StoreEditMode) => {
 
 const getTitle = (mode?: StoreEditMode) => {
   if (!mode) {
-    return 'pages.editor.store.button.back.title'
+    return 'admin/pages.editor.store.button.back.title'
   }
 
   return {
-    [mode]: 'pages.editor.store.button.back.title',
-    settings: 'pages.editor.store.button.settings.title',
-    template: 'pages.editor.store.button.template.title',
-    theme: 'pages.editor.store.button.theme.title',
+    [mode]: 'admin/pages.editor.store.button.back.title',
+    settings: 'admin/pages.editor.store.button.settings.title',
+    template: 'admin/pages.editor.store.button.template.title',
+    theme: 'admin/pages.editor.store.button.theme.title',
   }[mode]
 }
 

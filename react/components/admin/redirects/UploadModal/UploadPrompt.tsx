@@ -25,37 +25,37 @@ const UploadPrompt: React.FC<Props> = ({
   return (
     <>
       <h1 className="self-start fw3 mv0">
-        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.title" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.title" />
       </h1>
       <p className="f6 lh-copy">
-        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.first" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.body.first" />
         <a
           className="c-action-primary link hover-c-action-primary pointer"
           download
           href="/_v/private/pages/redirects_template.csv"
         >
-          <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.sample-download" />
+          <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.body.sample-download" />
         </a>
         {hasRedirects && (
           <>
-            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.or" />
+            <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.or" />
             <a
               download
               className="c-action-primary link hover-c-action-primary pointer"
               href="/_v/private/pages/redirects.csv"
             >
-              <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.current-configurations" />
+              <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.current-configurations" />
             </a>
           </>
         )}
         .
-        <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.body.second" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.body.second" />
       </p>
 
       {hasRedirects && (
         <div className="self-start mb4">
           <p className="mt2">
-            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.title" />
+            <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.upload-behavior.title" />
             :
           </p>
           <div>
@@ -63,7 +63,7 @@ const UploadPrompt: React.FC<Props> = ({
               id="merge-upload-action-type"
               checked={uploadActionType === 'merge'}
               label={
-                <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.merge" />
+                <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.upload-behavior.merge" />
               }
               name="upload-action-type"
               onChange={() => setUploadActionType('merge')}
@@ -73,7 +73,7 @@ const UploadPrompt: React.FC<Props> = ({
               id="overwrite-upload-action-type"
               checked={uploadActionType === 'overwrite'}
               label={
-                <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.upload-behavior.overwrite" />
+                <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.upload-behavior.overwrite" />
               }
               name="upload-action-type"
               onChange={() => setUploadActionType('overwrite')}
@@ -94,9 +94,9 @@ const UploadPrompt: React.FC<Props> = ({
             <PaperIcon />
           </div>
           <p className="tc lh-copy mb0">
-            <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.message" />
+            <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.message" />
             <button className="input-reset bg-white bw0 fw5 pa0 hover-c-action-primary c-action-primary pointer">
-              <FormattedMessage id="pages.admin.redirects.upload-modal.prompt.drop.button" />
+              <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.drop.button" />
             </button>
             .
           </p>

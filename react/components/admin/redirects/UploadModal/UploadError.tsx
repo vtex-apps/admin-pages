@@ -34,13 +34,13 @@ const UploadError: React.FunctionComponent<Props> = ({ error }) => {
     <div className="flex flex-column items-center justify-center">
       <PaperErrorIcon />
       <h2 className="tc fw4 mb3 mt7">
-        <FormattedMessage id="pages.admin.redirects.upload-modal.fail.title" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.fail.title" />
       </h2>
       <p className="tc c-muted-2 mt2 mb2">
-        <FormattedMessage id="pages.admin.redirects.upload-modal.fail.subtitle" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.fail.subtitle" />
       </p>
       <p className="tc c-muted-2 mt2">
-        <FormattedMessage id="pages.admin.redirects.upload-modal.fail.message" />
+        <FormattedMessage id="admin/pages.admin.redirects.upload-modal.fail.message" />
       </p>
       <hr
         className={`b--muted-4 br-0 bl-0 bt-0 mh0 mv0 ${
@@ -60,7 +60,7 @@ const UploadError: React.FunctionComponent<Props> = ({ error }) => {
               </div>
               <div className="ml4">
                 <h2 className="c-danger f5 fw4 mv0">
-                  <FormattedMessage id="pages.admin.redirects.upload-modal.error.line.title" />
+                  <FormattedMessage id="admin/pages.admin.redirects.upload-modal.error.line.title" />
                   {errorObj.lineNumber}:
                 </h2>
                 <ul className="f5 fw3 list mt2 pl0">

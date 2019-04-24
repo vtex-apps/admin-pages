@@ -130,7 +130,7 @@ describe('getValidateFormState', () => {
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
-          path: 'pages.admin.pages.form.templates.field.required',
+          path: 'admin/pages.admin.pages.form.templates.field.required',
         }),
       })
     )
@@ -188,7 +188,7 @@ describe('getValidateFormState', () => {
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
-          blockId: 'pages.admin.pages.form.templates.field.required',
+          blockId: 'admin/pages.admin.pages.form.templates.field.required',
         }),
       })
     )
@@ -246,7 +246,7 @@ describe('getValidateFormState', () => {
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
-          title: 'pages.admin.pages.form.templates.field.required',
+          title: 'admin/pages.admin.pages.form.templates.field.required',
         }),
       })
     )
@@ -326,7 +326,7 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                template: 'pages.admin.pages.form.templates.field.required',
+                template: 'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -378,7 +378,7 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               10: {
-                condition: 'pages.admin.pages.form.templates.field.required',
+                condition: 'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -417,12 +417,12 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                condition: 'pages.admin.pages.form.templates.field.required',
-                template: 'pages.admin.pages.form.templates.field.required',
+                condition: 'admin/pages.admin.pages.form.templates.field.required',
+                template: 'admin/pages.admin.pages.form.templates.field.required',
               },
               10: {
-                condition: 'pages.admin.pages.form.templates.field.required',
-                template: 'pages.admin.pages.form.templates.field.required',
+                condition: 'admin/pages.admin.pages.form.templates.field.required',
+                template: 'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),

@@ -46,25 +46,25 @@ const StyleCard: React.FunctionComponent<Props> = ({
   const createMenuOptions = () => {
     const options = [
       editable && {
-        label: intl.formatMessage({ id: 'pages.editor.styles.card.menu.edit' }),
+        label: intl.formatMessage({ id: 'admin/pages.editor.styles.card.menu.edit' }),
         onClick: () => startEditing(style),
       },
       !selected && {
         label: intl.formatMessage({
-          id: 'pages.editor.styles.card.menu.select',
+          id: 'admin/pages.editor.styles.card.menu.select',
         }),
         onClick: setIsLoadingWrapper(() => selectStyle(style)),
       },
       {
         label: intl.formatMessage({
-          id: 'pages.editor.styles.card.menu.duplicate',
+          id: 'admin/pages.editor.styles.card.menu.duplicate',
         }),
         onClick: setIsLoadingWrapper(() => duplicateStyle(style)),
       },
       !selected &&
         editable && {
           label: intl.formatMessage({
-            id: 'pages.editor.styles.card.menu.delete',
+            id: 'admin/pages.editor.styles.card.menu.delete',
           }),
           onClick: async () => {
             setIsLoading(true)
@@ -89,7 +89,7 @@ const StyleCard: React.FunctionComponent<Props> = ({
               {!editable && (
                 <span className="f7 c-muted-2 truncate">
                   {intl.formatMessage(
-                    { id: 'pages.editor.styles.card.name.app-subtitle' },
+                    { id: 'admin/pages.editor.styles.card.name.app-subtitle' },
                     { app: appId.split('@')[0] }
                   )}
                 </span>
@@ -117,7 +117,7 @@ const StyleCard: React.FunctionComponent<Props> = ({
             </div>
             {selected && (
               <Tag bgColor="#F71963" color="#FFFFFF">
-                {intl.formatMessage({ id: 'pages.editor.styles.card.current' })}
+                {intl.formatMessage({ id: 'admin/pages.editor.styles.card.current' })}
               </Tag>
             )}
           </div>

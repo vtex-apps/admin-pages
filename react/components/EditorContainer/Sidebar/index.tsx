@@ -41,13 +41,13 @@ const Sidebar: React.FunctionComponent<Props> = ({
                   onClickCancel={modal.cancelHandler}
                   onClose={modal.close}
                   textButtonAction={intl.formatMessage({
-                    id: 'pages.editor.components.button.save',
+                    id: 'admin/pages.editor.components.button.save',
                   })}
                   textButtonCancel={intl.formatMessage({
-                    id: 'pages.editor.components.modal.button.discard',
+                    id: 'admin/pages.editor.components.modal.button.discard',
                   })}
                   textMessage={intl.formatMessage({
-                    id: 'pages.editor.components.modal.text',
+                    id: 'admin/pages.editor.components.modal.text',
                   })}
                 />
                 <Content

@@ -96,13 +96,13 @@ class ComponentList extends Component<Props, State> {
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
           textButtonAction={intl.formatMessage({
-            id: 'pages.editor.component-list.modal.button.save',
+            id: 'admin/pages.editor.component-list.modal.button.save',
           })}
           textButtonCancel={intl.formatMessage({
-            id: 'pages.editor.component-list.modal.button.cancel',
+            id: 'admin/pages.editor.component-list.modal.button.cancel',
           })}
           textMessage={intl.formatMessage({
-            id: 'pages.editor.component-list.modal.text',
+            id: 'admin/pages.editor.component-list.modal.text',
           })}
         />
         <ContentContainer
@@ -121,7 +121,7 @@ class ComponentList extends Component<Props, State> {
                   onClick={this.handleUndo}
                   variation="tertiary"
                 >
-                  <FormattedMessage id="pages.editor.component-list.button.undo">
+                  <FormattedMessage id="admin/pages.editor.component-list.button.undo">
                     {text => <span className="pl3">{text}</span>}
                   </FormattedMessage>
                 </ButtonWithIcon>
@@ -134,7 +134,7 @@ class ComponentList extends Component<Props, State> {
                   onClick={this.handleSave}
                   variation="tertiary"
                 >
-                  <FormattedMessage id="pages.editor.component-list.button.save" />
+                  <FormattedMessage id="admin/pages.editor.component-list.button.save" />
                 </Button>
               </div>
             </div>
@@ -298,7 +298,7 @@ class ComponentList extends Component<Props, State> {
 
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.toast.success',
+          id: 'admin/pages.editor.component-list.toast.success',
         })
       )
 
@@ -306,7 +306,7 @@ class ComponentList extends Component<Props, State> {
     } catch (e) {
       this.props.showToast(
         intl.formatMessage({
-          id: 'pages.editor.component-list.toast.error',
+          id: 'admin/pages.editor.component-list.toast.error',
         })
       )
     } finally {

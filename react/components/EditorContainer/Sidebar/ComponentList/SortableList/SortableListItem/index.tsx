@@ -35,7 +35,7 @@ class SortableListItem extends Component<Props, State> {
     this.actionMenuOptions = [
       {
         label: props.intl.formatMessage({
-          id: 'pages.editor.component-list.action-menu.delete',
+          id: 'admin/pages.editor.component-list.action-menu.delete',
         }),
         onClick: this.handleDelete,
       },

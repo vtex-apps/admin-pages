@@ -85,11 +85,11 @@ const Editor: React.FunctionComponent<EditorProps> = ({
                       backButton: {
                         action: () => setMode(undefined),
                         text: intl.formatMessage({
-                          id: 'pages.editor.styles.color-editor.back',
+                          id: 'admin/pages.editor.styles.color-editor.back',
                         }),
                       },
                       title: intl.formatMessage({
-                        id: 'pages.editor.styles.edit.colors.title',
+                        id: 'admin/pages.editor.styles.edit.colors.title',
                       }),
                     })
                     setMode('colors')
@@ -97,7 +97,7 @@ const Editor: React.FunctionComponent<EditorProps> = ({
                 >
                   <span className="f4">
                     {intl.formatMessage({
-                      id: 'pages.editor.styles.edit.colors.title',
+                      id: 'admin/pages.editor.styles.edit.colors.title',
                     })}
                   </span>
                   <Colors colors={[emphasis, action_primary]} />
@@ -134,7 +134,7 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                     backButton: {
                       action: stopEditing,
                       text: intl.formatMessage({
-                        id: 'pages.editor.styles.edit.colors.back',
+                        id: 'admin/pages.editor.styles.edit.colors.back',
                       }),
                     },
                     title: name,
@@ -157,14 +157,14 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                       showToast({
                         horizontalPosition: 'right',
                         message: intl.formatMessage({
-                          id: 'pages.editor.styles.edit.save.successful',
+                          id: 'admin/pages.editor.styles.edit.save.successful',
                         }),
                       })
                     } else {
                       showToast({
                         horizontalPosition: 'right',
                         message: intl.formatMessage({
-                          id: 'pages.editor.styles.edit.save.failed',
+                          id: 'admin/pages.editor.styles.edit.save.failed',
                         }),
                       })
                     }

@@ -29,7 +29,7 @@ class ConditionControls extends Component<Props> {
 
     return (
       <Fragment>
-        <FormattedMessage id="pages.editor.components.condition.title">
+        <FormattedMessage id="admin/pages.editor.components.condition.title">
           {message => (
             <div className="mv5 pt5 ph5 bt bw1 b--light-silver flex items-center f4">
               {message}

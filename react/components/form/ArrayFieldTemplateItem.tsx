@@ -69,7 +69,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
             {showDragHandle && <Handle />}
             <label className="f6 accordion-label-title">
               <SimpleFormattedMessage
-                id={title || 'pages.admin.pages.form.field.array.item'}
+                id={title || 'admin/pages.admin.pages.form.field.array.item'}
               />
             </label>
           </div>

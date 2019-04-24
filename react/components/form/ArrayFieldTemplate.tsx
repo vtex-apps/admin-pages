@@ -85,7 +85,7 @@ class ArrayFieldTemplate extends Component<
               size="small"
               variation="secondary"
             >
-              <FormattedMessage id="pages.editor.components.arrayTemplate.button.add" />
+              <FormattedMessage id="admin/pages.editor.components.arrayTemplate.button.add" />
             </ButtonWithIcon>
           )}
         </div>

@@ -61,8 +61,8 @@ export interface FormProps {
 
 const options = {
   error: {
-    description: 'pages.editor.store.settings.error',
-    title: 'pages.editor.store.settings.error.title',
+    description: 'admin/pages.editor.store.settings.error',
+    title: 'admin/pages.editor.store.settings.error.title',
   },
 }
 

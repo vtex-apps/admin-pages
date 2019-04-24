@@ -65,11 +65,11 @@ const Form: React.FunctionComponent<Props> = ({
 
   return (
     <form onSubmit={onSave}>
-      <SectionTitle textId="pages.admin.pages.form.details.title" />
+      <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
         disabled={!isInfoEditable}
         label={intl.formatMessage({
-          id: 'pages.admin.pages.form.field.title',
+          id: 'admin/pages.admin.pages.form.field.title',
         })}
         onChange={detailChangeHandlerGetter('title')}
         required
@@ -85,7 +85,7 @@ const Form: React.FunctionComponent<Props> = ({
       <Input
         disabled={!isInfoEditable}
         label={intl.formatMessage({
-          id: 'pages.admin.pages.form.field.path',
+          id: 'admin/pages.admin.pages.form.field.path',
         })}
         onChange={detailChangeHandlerGetter('path')}
         required
@@ -102,7 +102,7 @@ const Form: React.FunctionComponent<Props> = ({
         checked={!!data.auth}
         disabled={!isInfoEditable}
         label={intl.formatMessage({
-          id: 'pages.admin.pages.form.field.login',
+          id: 'admin/pages.admin.pages.form.field.login',
         })}
         name="checkbox-login"
         onChange={onLoginToggle}
@@ -140,7 +140,7 @@ const Form: React.FunctionComponent<Props> = ({
             variation="danger"
           >
             {intl.formatMessage({
-              id: 'pages.admin.pages.form.button.delete',
+              id: 'admin/pages.admin.pages.form.button.delete',
             })}
           </Button>
         )}
@@ -153,7 +153,7 @@ const Form: React.FunctionComponent<Props> = ({
               variation="tertiary"
             >
               {intl.formatMessage({
-                id: 'pages.admin.pages.form.button.cancel',
+                id: 'admin/pages.admin.pages.form.button.cancel',
               })}
             </Button>
           </div>
@@ -165,7 +165,7 @@ const Form: React.FunctionComponent<Props> = ({
             variation="primary"
           >
             {intl.formatMessage({
-              id: 'pages.admin.pages.form.button.save',
+              id: 'admin/pages.admin.pages.form.button.save',
             })}
           </Button>
         </div>

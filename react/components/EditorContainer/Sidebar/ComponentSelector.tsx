@@ -29,7 +29,7 @@ class ComponentSelector extends PureComponent<Props> {
       <Fragment>
         <div className="flex justify-between items-center flex-shrink-0 h-3em">
           <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
-            <FormattedMessage id="pages.editor.components.title" />
+            <FormattedMessage id="admin/pages.editor.components.title" />
           </h3>
           <div
             onClick={editor.toggleEditMode}

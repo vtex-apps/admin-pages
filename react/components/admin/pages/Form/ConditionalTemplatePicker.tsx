@@ -64,7 +64,7 @@ export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
       <div className="flex flex-column flex-grow-1 mr4 ph4">
         <Dropdown
           label={intl.formatMessage({
-            id: 'pages.admin.pages.form.templates.conditional.template.label',
+            id: 'admin/pages.admin.pages.form.templates.conditional.template.label',
           })}
           options={templates.map(({ id }) => ({ value: id, label: id }))}
           onChange={(e: React.ChangeEvent, value: string) =>

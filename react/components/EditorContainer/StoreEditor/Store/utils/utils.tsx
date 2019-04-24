@@ -39,7 +39,7 @@ const ErrorMessageComponent: React.FunctionComponent<ErrorMessageProps> = ({
       onClick={() => refetch()}
       isLoading={refetching}
     >
-      <FormattedMessage id="pages.editor.store.settings.refetch" />
+      <FormattedMessage id="admin/pages.editor.store.settings.refetch" />
     </Button>
   </div>
 )

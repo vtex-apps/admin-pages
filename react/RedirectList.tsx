@@ -63,7 +63,7 @@ class RedirectList extends Component<Props, State> {
       <>
         <Helmet>
           <title>
-            {intl.formatMessage({ id: 'pages.admin.redirects.title' })}
+            {intl.formatMessage({ id: 'admin/pages.admin.redirects.title' })}
           </title>
         </Helmet>
         <Query<RedirectListQueryResult, RedirectListVariables>
@@ -112,10 +112,10 @@ class RedirectList extends Component<Props, State> {
                             )}
                             onPrevClick={this.goToPrevPage}
                             textOf={intl.formatMessage({
-                              id: 'pages.admin.redirects.pagination.of',
+                              id: 'admin/pages.admin.redirects.pagination.of',
                             })}
                             textShowRows={intl.formatMessage({
-                              id: 'pages.admin.redirects.pagination.showRows',
+                              id: 'admin/pages.admin.redirects.pagination.showRows',
                             })}
                             totalItems={total}
                           />

@@ -66,7 +66,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                 <header className="flex justify-between pv5 pl5 items-center flex-shrink-0 bg-white z-1">
                   <h1 className="f3 fw4">
                     {intl.formatMessage({
-                      id: 'pages.editor.styles.header.title',
+                      id: 'admin/pages.editor.styles.header.title',
                     })}
                   </h1>
                   <ButtonWithIcon
@@ -78,7 +78,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                       createStyle({
                         variables: {
                           name: intl.formatMessage({
-                            id: 'pages.editor.styles.new.defaultName',
+                            id: 'admin/pages.editor.styles.new.defaultName',
                           }),
                         },
                       })
@@ -86,7 +86,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                           showToast({
                             horizontalPosition: 'right',
                             message: intl.formatMessage({
-                              id: 'pages.editor.styles.new.success',
+                              id: 'admin/pages.editor.styles.new.success',
                             }),
                           })
                         })
@@ -95,7 +95,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                           showToast({
                             horizontalPosition: 'right',
                             message: intl.formatMessage({
-                              id: 'pages.editor.styles.new.fail',
+                              id: 'admin/pages.editor.styles.new.fail',
                             }),
                           })
                         })
@@ -103,7 +103,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                     }}
                   >
                     {intl.formatMessage({
-                      id: 'pages.editor.styles.new-button.text',
+                      id: 'admin/pages.editor.styles.new-button.text',
                     })}
                   </ButtonWithIcon>
                 </header>
@@ -121,7 +121,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 message: intl.formatMessage(
                                   {
                                     id:
-                                      'pages.editor.styles.select.save-success',
+                                      'admin/pages.editor.styles.select.save-success',
                                   },
                                   { name }
                                 ),
@@ -133,7 +133,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage(
                                   {
-                                    id: 'pages.editor.styles.select.save-fail',
+                                    id: 'admin/pages.editor.styles.select.save-fail',
                                   },
                                   { name }
                                 ),
@@ -147,7 +147,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 action: {
                                   label: intl.formatMessage({
                                     id:
-                                      'pages.editor.styles.select.delete.toast.undo',
+                                      'admin/pages.editor.styles.select.delete.toast.undo',
                                   }),
                                   onClick: () => {
                                     createStyle({ variables: { name, config } })
@@ -158,7 +158,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 message: intl.formatMessage(
                                   {
                                     id:
-                                      'pages.editor.styles.select.delete-success',
+                                      'admin/pages.editor.styles.select.delete-success',
                                   },
                                   { name }
                                 ),
@@ -170,7 +170,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage({
                                   id:
-                                    'pages.editor.styles.card.menu.delete.fail',
+                                    'admin/pages.editor.styles.card.menu.delete.fail',
                                 }),
                               })
                               throw e
@@ -183,7 +183,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                               name: intl.formatMessage(
                                 {
                                   id:
-                                    'pages.editor.styles.duplicate.defaultName',
+                                    'admin/pages.editor.styles.duplicate.defaultName',
                                 },
                                 { name }
                               ),
@@ -195,7 +195,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 message: intl.formatMessage(
                                   {
                                     id:
-                                      'pages.editor.styles.card.menu.duplicate.success',
+                                      'admin/pages.editor.styles.card.menu.duplicate.success',
                                   },
                                   { name }
                                 ),
@@ -208,7 +208,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 message: intl.formatMessage(
                                   {
                                     id:
-                                      'pages.editor.styles.card.menu.duplicate.fail',
+                                      'admin/pages.editor.styles.card.menu.duplicate.fail',
                                   },
                                   { name }
                                 ),

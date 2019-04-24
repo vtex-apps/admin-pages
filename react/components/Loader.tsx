@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
 const Loader = () => (
-  <FormattedMessage id="pages.admin.loading">
+  <FormattedMessage id="admin/pages.admin.loading">
     {text => (
       <span>
         {text}
