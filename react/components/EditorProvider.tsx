@@ -1,17 +1,20 @@
+import ApolloClient from 'apollo-client'
 import PropTypes from 'prop-types'
 import { difference, equals, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
-import { compose, DataProps } from 'react-apollo'
+import { compose, DataProps, withApollo } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
 
+import { editorMessagesFromRuntime } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
 import MessagesContext, { IMessagesContext } from './MessagesContext'
 
 type Props = RenderContextProps &
   DataProps<{ availableConditions: [Condition] }> &
-  IMessagesContext
+  IMessagesContext &
+  {client: ApolloClient<any>}
 
 interface State {
   activeConditions: string[]
@@ -66,7 +69,16 @@ class EditorProvider extends Component<Props, State> {
         messages?: object,
         shouldUpdateRuntime?: boolean
       ) => {
-        this.props.setMessages(messages)
+        const { client } = this.props
+        const formattedEditorMessages = await editorMessagesFromRuntime({
+          client,
+          domain: 'admin',
+          runtime,
+        })
+        this.props.setMessages({
+          ...messages,
+          ...formattedEditorMessages,
+        })
 
         if (shouldUpdateRuntime) {
           await this.props.runtime.updateRuntime()
@@ -355,4 +367,4 @@ const EditorWithMessageContext = (props: Props) => (
   </MessagesContext.Consumer>
 )
 
-export default compose(withRuntimeContext)(EditorWithMessageContext)
+export default compose(withRuntimeContext, withApollo)(EditorWithMessageContext)
