@@ -109,6 +109,7 @@ declare global {
     preview: RenderRuntime['preview']
     production: RenderRuntime['production']
     route: RenderRuntime['route']
+    renderMajor: RenderRuntime['renderMajor']
     setDevice: (device: ConfigurationDevice) => void
     updateComponentAssets: (availableComponents: Components) => void
     updateExtension: (name: string, extension: Extension) => void
