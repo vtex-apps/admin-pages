@@ -370,6 +370,7 @@ class ConfigurationList extends Component<Props, State> {
         variables: {
           blockId,
           configuration,
+          lang: iframeRuntime.culture.locale,
           template,
           treePath,
         },

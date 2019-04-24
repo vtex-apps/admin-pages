@@ -3,12 +3,14 @@ mutation saveContent(
   $configuration: ContentConfigurationInput
   $template: String
   $treePath: String
+  $lang: String
 ) {
   saveContent(
     blockId: $blockId
     configuration: $configuration
     template: $template
     treePath: $treePath
+    lang: $lang
   ) {
     # Available fields:
     # condition {
