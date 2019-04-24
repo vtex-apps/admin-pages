@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -8,7 +7,6 @@ import {
   EmptyState,
   IconUpload,
   Table,
-  Tag,
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
 
@@ -21,10 +19,8 @@ interface CustomProps {
   from: number
   items: Redirect[]
   to: number
-  saveRedirectFromFile: MutationFn<{ file: any }>
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
-  loading: boolean
   openModal: () => void
 }
 
@@ -37,7 +33,6 @@ interface State {
     items: Redirect[]
     properties: object
   }
-  isSendingFile: boolean
 }
 
 class List extends Component<Props, State> {
@@ -51,7 +46,6 @@ class List extends Component<Props, State> {
     super(props)
 
     this.state = {
-      isSendingFile: false,
       schema: this.getSchema(props.items, context.culture.locale),
     }
   }
@@ -70,8 +64,8 @@ class List extends Component<Props, State> {
   }
 
   public render() {
-    const { intl, loading, openModal } = this.props
-    const { isSendingFile, schema } = this.state
+    const { intl, openModal } = this.props
+    const { schema } = this.state
 
     const items = schema.items
 
@@ -92,7 +86,7 @@ class List extends Component<Props, State> {
             <ButtonWithIcon
               icon={<IconUpload />}
               variation="secondary"
-              onClick={this.props.openModal}
+              onClick={openModal}
               size="small"
             >
               {intl.formatMessage({
@@ -107,22 +101,25 @@ class List extends Component<Props, State> {
         <Table
           fullWidth
           items={items}
-          loading={isSendingFile || loading}
           onRowClick={this.viewItem}
           schema={schema}
           toolbar={{
             density: {
               buttonLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.line-density.label',
+                id:
+                  'admin/pages.admin.redirects.table.toolbar.line-density.label',
               }),
               highOptionLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.line-density.high',
+                id:
+                  'admin/pages.admin.redirects.table.toolbar.line-density.high',
               }),
               lowOptionLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.line-density.low',
+                id:
+                  'admin/pages.admin.redirects.table.toolbar.line-density.low',
               }),
               mediumOptionLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.line-density.medium',
+                id:
+                  'admin/pages.admin.redirects.table.toolbar.line-density.medium',
               }),
             },
             download: {
@@ -243,7 +240,4 @@ class List extends Component<Props, State> {
   }
 }
 
-export default compose(
-  injectIntl,
-  withRuntimeContext
-)(List)
+export default withRuntimeContext(injectIntl(List))

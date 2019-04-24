@@ -1,9 +1,0 @@
-mutation UpdateBlock(
-  $block: BlockInput!
-  $blockPath: [BlockPathItem]!
-) {
-  updateBlock(
-    block: $block
-    blockPath: $blockPath
-  )
-}

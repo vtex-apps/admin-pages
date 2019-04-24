@@ -1,20 +1,14 @@
 import { clone, equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { compose, graphql, MutationFn } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
-import {
-  Button,
-  ButtonWithIcon,
-  Spinner,
-  ToastConsumerFunctions,
-} from 'vtex.styleguide'
+import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
 
-import UpdateBlock from '../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
 import { getExtension } from '../../../../utils/components'
 import UndoIcon from '../../../icons/UndoIcon'
 import Modal from '../../../Modal'
+import { UpdateBlockMutationFn } from '../../mutations/UpdateBlock'
 import ContentContainer from '../ContentContainer'
 import { SidebarComponent } from '../typings'
 
@@ -31,7 +25,7 @@ interface CustomProps {
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
   onMouseLeaveComponent: () => void
-  updateBlock: MutationFn
+  updateBlock: UpdateBlockMutationFn
   updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
@@ -52,10 +46,12 @@ class ComponentList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
     if (!equals(props.components, state.initialComponents)) {
       return {
+        ...state,
         components: normalize(props.components),
         initialComponents: props.components,
       }
     }
+    return state
   }
 
   private block: Extension
@@ -286,10 +282,10 @@ class ComponentList extends Component<Props, State> {
       await updateBlock({
         variables: {
           block: {
-            after: parsedRelativeBlocks.after,
-            around: parsedRelativeBlocks.around,
-            before: parsedRelativeBlocks.before,
-            blocks: blocks || extension.blocks,
+            after: parsedRelativeBlocks.after || [],
+            around: parsedRelativeBlocks.around || [],
+            before: parsedRelativeBlocks.before || [],
+            blocks: blocks || extension.blocks || [],
             propsJSON: JSON.stringify(extension.props),
           },
           blockPath: getBlockPath(iframeRuntime.extensions, iframeCurrentPage),
@@ -419,7 +415,4 @@ class ComponentList extends Component<Props, State> {
   }
 }
 
-export default compose(
-  injectIntl,
-  graphql(UpdateBlock, { name: 'updateBlock' })
-)(ComponentList)
+export default injectIntl(ComponentList)

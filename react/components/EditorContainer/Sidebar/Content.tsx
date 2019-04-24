@@ -64,13 +64,15 @@ class Content extends Component<Props, State> {
 
     const isSitewide = getIsSitewide(
       iframeRuntime.extensions,
-      editor.editTreePath!
+      editor.editTreePath
     )
+
     const template = isSitewide
       ? '*'
       : iframeRuntime.pages[iframeRuntime.page].blockId
+
     const treePath = isSitewide
-      ? getSitewideTreePath(editor.editTreePath!)
+      ? getSitewideTreePath(editor.editTreePath)
       : editor.editTreePath!
 
     return (

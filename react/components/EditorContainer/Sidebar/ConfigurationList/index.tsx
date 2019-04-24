@@ -7,7 +7,6 @@ import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 import DeleteContent from '../../../../queries/DeleteContent.graphql'
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
-import { getBlockPath, getSitewideTreePath } from '../../../../utils/blocks'
 import {
   getComponentSchema,
   getExtension,
@@ -21,6 +20,8 @@ import { DeleteContentVariables } from './typings'
 import ContentEditor from './ContentEditor'
 import LayoutEditor from './LayoutEditor'
 import List from './List'
+
+import UpdateBlockMutation from '../../mutations/UpdateBlock'
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -101,12 +102,17 @@ class ConfigurationList extends Component<Props, State> {
 
     if (editor.mode === 'layout') {
       return (
-        <LayoutEditor
-          editor={editor}
-          formMeta={formMeta}
-          iframeRuntime={iframeRuntime}
-          modal={modal}
-        />
+        <UpdateBlockMutation>
+          {updateBlock => (
+            <LayoutEditor
+              editor={editor}
+              formMeta={formMeta}
+              iframeRuntime={iframeRuntime}
+              modal={modal}
+              updateBlock={updateBlock}
+            />
+          )}
+        </UpdateBlockMutation>
       )
     }
 
