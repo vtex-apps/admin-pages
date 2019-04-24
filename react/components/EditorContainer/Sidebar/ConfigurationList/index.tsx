@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { compose, graphql, MutationFn } from 'react-apollo'
-import { injectIntl } from 'react-intl'
+import { injectIntl, intlShape } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -9,9 +9,9 @@ import {
   ListContentQueryResult,
 } from '../../queries/ListContent'
 
+import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../../mutations/SaveContent'
 
-import DeleteContent from '../../../../queries/DeleteContent.graphql'
 import {
   getComponentSchema,
   getExtension,
@@ -31,7 +31,7 @@ import UpdateBlockMutation from '../../mutations/UpdateBlock'
 const NEW_CONFIGURATION_ID = 'new'
 
 interface Props {
-  deleteContent: MutationFn<{ deleteContent: string }, DeleteContentVariables>
+  deleteContent: DeleteContentMutationFn
   editor: EditorContext
   listContent: ListContentQueryResult
   iframeRuntime: RenderContext
@@ -331,6 +331,8 @@ class ConfigurationList extends Component<Props, State> {
 
       await listContentQuery.refetch({
         pageContext: iframeRuntime.route.pageContext,
+        template,
+        treePath,
       })
 
       formMeta.toggleLoading(this.handleConfigurationDiscard)
@@ -354,7 +356,7 @@ class ConfigurationList extends Component<Props, State> {
     { deleteContent: string },
     DeleteContentVariables
   > = async options => {
-    const { editor, iframeRuntime, template, treePath } = this.props
+    const { editor, iframeRuntime, intl, template, treePath } = this.props
     editor.setIsLoading(true)
     try {
       await this.props.deleteContent({
@@ -387,13 +389,17 @@ class ConfigurationList extends Component<Props, State> {
       editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
-        message: 'Content deleted.',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.components.content.delete.success',
+        }),
       })
     } catch (e) {
       editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
-        message: 'Something went wrong. Please try again.',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.components.content.delete.error',
+        }),
       })
 
       console.error(e)
@@ -450,7 +456,4 @@ class ConfigurationList extends Component<Props, State> {
   }
 }
 
-export default compose(
-  injectIntl,
-  graphql<DeleteContentVariables>(DeleteContent, { name: 'deleteContent' })
-)(ConfigurationList)
+export default injectIntl(ConfigurationList)

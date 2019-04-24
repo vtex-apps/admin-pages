@@ -4,6 +4,7 @@ import { ToastConsumer } from 'vtex.styleguide'
 import { getSitewideTreePath } from '../../../utils/blocks'
 import { getIframeRenderComponents } from '../../../utils/components'
 
+import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
 import ComponentSelector from './ComponentSelector'
@@ -94,18 +95,23 @@ class Content extends Component<Props, State> {
                     {listContentQueryResult => (
                       <SaveContentMutation>
                         {saveContent => (
-                          <ConfigurationList
-                            editor={editor}
-                            formMeta={formMeta}
-                            iframeRuntime={iframeRuntime}
-                            listContent={listContentQueryResult}
-                            isSitewide={isSitewide}
-                            modal={modal}
-                            saveContent={saveContent}
-                            showToast={showToast}
-                            template={template}
-                            treePath={treePath}
-                          />
+                          <DeleteContentMutation>
+                            {deleteContent => (
+                              <ConfigurationList
+                                deleteContent={deleteContent}
+                                editor={editor}
+                                formMeta={formMeta}
+                                iframeRuntime={iframeRuntime}
+                                listContent={listContentQueryResult}
+                                isSitewide={isSitewide}
+                                modal={modal}
+                                saveContent={saveContent}
+                                showToast={showToast}
+                                template={template}
+                                treePath={treePath}
+                              />
+                            )}
+                          </DeleteContentMutation>
                         )}
                       </SaveContentMutation>
                     )}

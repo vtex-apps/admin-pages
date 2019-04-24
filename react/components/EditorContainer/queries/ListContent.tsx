@@ -13,7 +13,10 @@ export interface ListContentData {
   listContent?: ExtensionConfiguration[]
 }
 
-export type ListContentQueryResult = QueryResult<ListContentData>
+export type ListContentQueryResult = QueryResult<
+  ListContentData,
+  ListContentVariables
+>
 
 class ListContentQuery extends Query<ListContentData, ListContentVariables> {
   public static defaultProps = {
