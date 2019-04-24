@@ -4,8 +4,12 @@ import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
+import {
+  ListContentGraphqlDocument,
+  ListContentQueryResult,
+} from '../../queries/ListContent'
+
 import DeleteContent from '../../../../queries/DeleteContent.graphql'
-import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
 import {
   getComponentSchema,
@@ -25,17 +29,10 @@ import UpdateBlockMutation from '../../mutations/UpdateBlock'
 
 const NEW_CONFIGURATION_ID = 'new'
 
-interface ListContentQuery {
-  error: object
-  listContent?: ExtensionConfiguration[]
-  loading: boolean
-  refetch: (variables?: object) => void
-}
-
 interface Props {
   deleteContent: MutationFn<{ deleteContent: string }, DeleteContentVariables>
   editor: EditorContext
-  listContent: ListContentQuery
+  listContent: ListContentQueryResult
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   isSitewide: boolean
@@ -119,7 +116,9 @@ class ConfigurationList extends Component<Props, State> {
     if (!this.state.configuration) {
       return (
         <List
-          configurations={listContentQuery.listContent || []}
+          configurations={
+            (listContentQuery.data && listContentQuery.data.listContent) || []
+          }
           editor={editor}
           iframeRuntime={iframeRuntime}
           isDisabledChecker={this.isConfigurationDisabled}
@@ -368,7 +367,9 @@ class ConfigurationList extends Component<Props, State> {
 
           const { listContent } = store.readQuery<{
             listContent: ExtensionConfiguration[]
-          }>({ query: ListContent, variables }) || { listContent: [] }
+          }>({ query: ListContentGraphqlDocument, variables }) || {
+            listContent: [],
+          }
           const newConfigurations = {
             listContent: listContent.filter(
               ({ contentId }) => contentId !== data!.deleteContent
@@ -376,7 +377,7 @@ class ConfigurationList extends Component<Props, State> {
           }
           store.writeQuery({
             data: newConfigurations,
-            query: ListContent,
+            query: ListContentGraphqlDocument,
             variables,
           })
         },
@@ -450,16 +451,6 @@ class ConfigurationList extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  graphql(ListContent, {
-    name: 'listContent',
-    options: ({ iframeRuntime, template, treePath }: Props) => ({
-      variables: {
-        pageContext: iframeRuntime.route.pageContext,
-        template,
-        treePath,
-      },
-    }),
-  }),
   graphql(SaveContent, { name: 'saveContent' }),
   graphql<DeleteContentVariables>(DeleteContent, { name: 'deleteContent' })
 )(ConfigurationList)

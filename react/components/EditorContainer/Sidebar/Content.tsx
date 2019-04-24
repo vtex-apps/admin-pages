@@ -10,6 +10,7 @@ import { FormMetaConsumer } from './FormMetaContext'
 import { ModalConsumer } from './ModalContext'
 import { SidebarComponent } from './typings'
 import { getComponents, getIsSitewide } from './utils'
+import ListContentQuery from '../queries/ListContent'
 
 interface Props {
   editor: EditorContext
@@ -82,16 +83,27 @@ class Content extends Component<Props, State> {
             {modal => (
               <ToastConsumer>
                 {({ showToast }) => (
-                  <ConfigurationList
-                    editor={editor}
-                    formMeta={formMeta}
-                    iframeRuntime={iframeRuntime}
-                    isSitewide={isSitewide}
-                    modal={modal}
-                    showToast={showToast}
-                    template={template}
-                    treePath={treePath}
-                  />
+                  <ListContentQuery
+                    variables={{
+                      pageContext: iframeRuntime.route.pageContext,
+                      template,
+                      treePath,
+                    }}
+                  >
+                    {listContentQueryResult => (
+                      <ConfigurationList
+                        editor={editor}
+                        formMeta={formMeta}
+                        iframeRuntime={iframeRuntime}
+                        listContent={listContentQueryResult}
+                        isSitewide={isSitewide}
+                        modal={modal}
+                        showToast={showToast}
+                        template={template}
+                        treePath={treePath}
+                      />
+                    )}
+                  </ListContentQuery>
                 )}
               </ToastConsumer>
             )}
