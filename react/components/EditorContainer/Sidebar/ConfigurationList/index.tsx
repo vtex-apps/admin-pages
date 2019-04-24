@@ -7,7 +7,6 @@ import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 import DeleteContent from '../../../../queries/DeleteContent.graphql'
 import ListContent from '../../../../queries/ListContent.graphql'
 import SaveContent from '../../../../queries/SaveContent.graphql'
-import { getBlockPath, getSitewideTreePath } from '../../../../utils/blocks'
 import {
   getComponentSchema,
   getExtension,
