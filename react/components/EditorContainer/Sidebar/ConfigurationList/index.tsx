@@ -9,8 +9,9 @@ import {
   ListContentQueryResult,
 } from '../../queries/ListContent'
 
+import { SaveContentMutationFn } from '../../mutations/SaveContent'
+
 import DeleteContent from '../../../../queries/DeleteContent.graphql'
-import SaveContent from '../../../../queries/SaveContent.graphql'
 import {
   getComponentSchema,
   getExtension,
@@ -38,7 +39,7 @@ interface Props {
   isSitewide: boolean
   formMeta: FormMetaContext
   modal: ModalContext
-  saveContent: MutationFn
+  saveContent: SaveContentMutationFn
   showToast: ToastConsumerFunctions['showToast']
   template: string
   treePath: string
@@ -451,6 +452,5 @@ class ConfigurationList extends Component<Props, State> {
 
 export default compose(
   injectIntl,
-  graphql(SaveContent, { name: 'saveContent' }),
   graphql<DeleteContentVariables>(DeleteContent, { name: 'deleteContent' })
 )(ConfigurationList)
