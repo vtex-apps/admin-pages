@@ -11,7 +11,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
   return (
     <div className="pa7 h-100 overflow-y-auto flex flex-column">
       <div className="pb6 t-heading-5">
-        <FormattedMessage id="pages.editor.store.settings.title" />
+        <FormattedMessage id="admin/pages.editor.store.settings.title" />
       </div>
       <div className="flex">
         <Tabs>
@@ -19,7 +19,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
             active={activeTab === 'general'}
             onClick={() => setActiveTab('general')}
             label={intl.formatMessage({
-              id: 'pages.editor.store.settings.tabs.general',
+              id: 'admin/pages.editor.store.settings.tabs.general',
             })}
           >
             <div className="pv6">
@@ -30,7 +30,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
             active={activeTab === 'advanced'}
             onClick={() => setActiveTab('advanced')}
             label={intl.formatMessage({
-              id: 'pages.editor.store.settings.tabs.advanced',
+              id: 'admin/pages.editor.store.settings.tabs.advanced',
             })}
           >
             <div className="pv6">

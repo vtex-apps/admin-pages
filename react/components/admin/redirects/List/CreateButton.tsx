@@ -8,7 +8,7 @@ interface Props {
 
 const CreateButton = ({ onClick }: Props) => (
   <Button onClick={onClick} size="small" variation="primary">
-    <FormattedMessage id="pages.admin.redirects.button.create" />
+    <FormattedMessage id="admin/pages.admin.redirects.button.create" />
   </Button>
 )
 

@@ -76,12 +76,12 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
         })
           .then(() =>
             showToast(
-              intl.formatMessage({ id: 'pages.admin.pages.form.save.success' })
+              intl.formatMessage({ id: 'admin/pages.admin.pages.form.save.success' })
             )
           )
           .catch(() =>
             showToast(
-              intl.formatMessage({ id: 'pages.admin.pages.form.save.error' })
+              intl.formatMessage({ id: 'admin/pages.admin.pages.form.save.error' })
             )
           )
           .finally(() => setSubmitting(false))
@@ -131,7 +131,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
             onClick={() => setSubmitting(true)}
             isLoading={submitting}
           >
-            <FormattedMessage id="pages.admin.pages.form.button.save" />
+            <FormattedMessage id="admin/pages.admin.pages.form.button.save" />
           </Button>
         </div>
       </Form>

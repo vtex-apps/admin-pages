@@ -14,17 +14,17 @@ const List: React.FunctionComponent<Props> = ({ categorizedRoutes }) => (
     <Section
       hasCreateButton
       routes={sortRoutes(categorizedRoutes.noProducts)}
-      titleId="pages.admin.pages.list.section.standard"
+      titleId="admin/pages.admin.pages.list.section.standard"
     />
     <SectionSeparator />
     <Section
       routes={sortRoutes(categorizedRoutes.singleProduct)}
-      titleId="pages.admin.pages.list.section.product"
+      titleId="admin/pages.admin.pages.list.section.product"
     />
     <SectionSeparator />
     <Section
       routes={sortRoutes(categorizedRoutes.multipleProducts)}
-      titleId="pages.admin.pages.list.section.productCollections"
+      titleId="admin/pages.admin.pages.list.section.productCollections"
     />
   </Fragment>
 )

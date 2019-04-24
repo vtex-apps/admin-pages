@@ -15,15 +15,15 @@ export interface TargetPathRenderProps {
 const fields = {
   pages: {
     path: 'pages',
-    titleId: 'pages.admin.tabs.pages',
+    titleId: 'admin/pages.admin.tabs.pages',
   },
   redirects: {
     path: 'redirects',
-    titleId: 'pages.admin.tabs.redirects',
+    titleId: 'admin/pages.admin.tabs.redirects',
   },
   settings: {
     path: 'settings',
-    titleId: 'pages.admin.tabs.settings',
+    titleId: 'admin/pages.admin.tabs.settings',
   },
 }
 

@@ -33,45 +33,45 @@ class SelectConditions extends React.Component<Props> {
 
     this.labels = {
       addConditionBtn: translate(
-        'pages.admin.pages.form.templates.simple.conditions.add-button'
+        'admin/pages.admin.pages.form.templates.simple.conditions.add-button'
       ),
       addNewCondition: translate(
-        'pages.admin.pages.form.templates.simple.conditions.add-button'
+        'admin/pages.admin.pages.form.templates.simple.conditions.add-button'
       ),
-      delete: translate('pages.admin.pages.form.button.delete'),
+      delete: translate('admin/pages.admin.pages.form.button.delete'),
       headerPrefix: translate(
-        'pages.admin.pages.form.templates.simple.conditions.header-prefix'
+        'admin/pages.admin.pages.form.templates.simple.conditions.header-prefix'
       ),
       headerSufix: translate(
-        'pages.admin.pages.form.templates.simple.conditions.header-suffix'
+        'admin/pages.admin.pages.form.templates.simple.conditions.header-suffix'
       ),
       noConditions: translate(
-        'pages.admin.pages.form.templates.simple.conditions.no-conditions'
+        'admin/pages.admin.pages.form.templates.simple.conditions.no-conditions'
       ),
       operatorAll: translate(
-        'pages.admin.pages.form.templates.simple.conditions.operator-all'
+        'admin/pages.admin.pages.form.templates.simple.conditions.operator-all'
       ),
       operatorAnd: translate(
-        'pages.admin.pages.form.templates.simple.conditions.operator-and'
+        'admin/pages.admin.pages.form.templates.simple.conditions.operator-and'
       ),
       operatorAny: translate(
-        'pages.admin.pages.form.templates.simple.conditions.operator-any'
+        'admin/pages.admin.pages.form.templates.simple.conditions.operator-any'
       ),
       operatorOr: translate(
-        'pages.admin.pages.form.templates.simple.conditions.operator-or'
+        'admin/pages.admin.pages.form.templates.simple.conditions.operator-or'
       ),
     }
 
     this.options = {
       date: {
         label: translate(
-          'pages.admin.pages.form.templates.simple.conditions.date'
+          'admin/pages.admin.pages.form.templates.simple.conditions.date'
         ),
         unique: true,
         verbs: [
           {
             label: translate(
-              'pages.admin.pages.form.templates.simple.conditions.date.equals'
+              'admin/pages.admin.pages.form.templates.simple.conditions.date.equals'
             ),
             object: {
               extraParams: {},
@@ -81,7 +81,7 @@ class SelectConditions extends React.Component<Props> {
           },
           {
             label: translate(
-              'pages.admin.pages.form.templates.simple.conditions.date.range'
+              'admin/pages.admin.pages.form.templates.simple.conditions.date.range'
             ),
             object: {
               extraParams: {},
@@ -91,7 +91,7 @@ class SelectConditions extends React.Component<Props> {
           },
           {
             label: translate(
-              'pages.admin.pages.form.templates.simple.conditions.date.to'
+              'admin/pages.admin.pages.form.templates.simple.conditions.date.to'
             ),
             object: {
               extraParams: {},
@@ -101,7 +101,7 @@ class SelectConditions extends React.Component<Props> {
           },
           {
             label: translate(
-              'pages.admin.pages.form.templates.simple.conditions.date.from'
+              'admin/pages.admin.pages.form.templates.simple.conditions.date.from'
             ),
             object: {
               extraParams: {},
@@ -122,7 +122,7 @@ class SelectConditions extends React.Component<Props> {
           options={this.options}
           subjectPlaceholder={this.props.intl.formatMessage({
             id:
-              'pages.admin.pages.form.templates.simple.conditions.category-placeholder',
+              'admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder',
           })}
           statements={this.props.condition.statements}
           operator={this.props.operator}
@@ -203,7 +203,7 @@ class SelectConditions extends React.Component<Props> {
           />
         </div>
 
-        <FormattedMessage id="pages.admin.pages.form.templates.simple.conditions.date.range.and">
+        <FormattedMessage id="admin/pages.admin.pages.form.templates.simple.conditions.date.range.and">
           {message => <div className="mv4 mh3 c-muted-2 b">{message}</div>}
         </FormattedMessage>
 

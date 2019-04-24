@@ -75,12 +75,12 @@ class Scheduler extends Component<Props, State> {
 
     return (
       <>
-        <ConditionTitle labelId="pages.editor.components.condition.date.title" />
+        <ConditionTitle labelId="admin/pages.editor.components.condition.date.title" />
 
         <Toggle
           checked={this.state.shouldDisplayFrom}
           label={intl.formatMessage({
-            id: 'pages.editor.components.condition.date.toggle.start',
+            id: 'admin/pages.editor.components.condition.date.toggle.start',
           })}
           onChange={this.toggleFromVisibility}
         />
@@ -109,7 +109,7 @@ class Scheduler extends Component<Props, State> {
         <Toggle
           checked={this.state.shouldDisplayTo}
           label={intl.formatMessage({
-            id: 'pages.editor.components.condition.date.toggle.end',
+            id: 'admin/pages.editor.components.condition.date.toggle.end',
           })}
           onChange={this.toggleToVisibility}
         />

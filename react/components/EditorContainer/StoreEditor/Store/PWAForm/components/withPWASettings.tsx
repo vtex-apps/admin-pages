@@ -45,8 +45,8 @@ class PWAQuery extends Query<PWAData, {}> {}
 
 const options = {
   error: {
-    description: 'pages.editor.store.settings.error.title',
-    title: 'pages.editor.store.settings.pwa.error',
+    description: 'admin/pages.editor.store.settings.error.title',
+    title: 'admin/pages.editor.store.settings.pwa.error',
   },
 }
 

@@ -24,7 +24,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <FormattedMessage id="pages.editor.components.condition.scope.title">
+      <FormattedMessage id="admin/pages.editor.components.condition.scope.title">
         {message => <div className="mb5">{message}</div>}
       </FormattedMessage>
       <RadioGroup
@@ -36,7 +36,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
             ? [
                 {
                   label: intl.formatMessage({
-                    id: 'pages.editor.components.condition.scope.sitewide',
+                    id: 'admin/pages.editor.components.condition.scope.sitewide',
                   }),
                   value: 'sitewide',
                 },

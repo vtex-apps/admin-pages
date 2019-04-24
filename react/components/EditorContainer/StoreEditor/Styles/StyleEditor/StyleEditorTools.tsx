@@ -97,7 +97,7 @@ const StyleEditorTools: React.FunctionComponent<Props> = ({
             }}
           >
             {intl.formatMessage({
-              id: 'pages.editor.styles.editor.tools.save',
+              id: 'admin/pages.editor.styles.editor.tools.save',
             })}
           </Button>
         </div>

@@ -6,7 +6,7 @@ const Loading: React.FunctionComponent = () => (
   <div className="flex flex-column items-center justify-center">
     <Spinner />
     <p className="mt4">
-      <FormattedMessage id="pages.admin.redirects.upload-modal.loading" />
+      <FormattedMessage id="admin/pages.admin.redirects.upload-modal.loading" />
     </p>
   </div>
 )

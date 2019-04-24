@@ -8,19 +8,19 @@ export const getTextFromContext = (
 ) => {
   if (isSitewide) {
     return intl.formatMessage({
-      id: 'pages.editor.configuration.tag.sitewide',
+      id: 'admin/pages.editor.configuration.tag.sitewide',
     })
   }
 
   if (pageContext.id === '*' && pageContext.type === '*') {
     return intl.formatMessage({
-      id: 'pages.editor.configuration.tag.template',
+      id: 'admin/pages.editor.configuration.tag.template',
     })
   }
 
   return intl.formatMessage(
     {
-      id: `pages.editor.configuration.tag.${pageContext.type}`,
+      id: `admin/pages.editor.configuration.tag.${pageContext.type}`,
     },
     { id: pageContext.type === 'route' ? path : pageContext.id }
   )

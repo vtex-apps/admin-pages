@@ -172,7 +172,7 @@ class FormContainer extends Component<Props, State> {
         showToast({
           horizontalPosition: 'right',
           message: intl.formatMessage({
-            id: 'pages.admin.pages.form.delete.success',
+            id: 'admin/pages.admin.pages.form.delete.success',
           }),
         })
 
@@ -184,7 +184,7 @@ class FormContainer extends Component<Props, State> {
           showToast({
             horizontalPosition: 'right',
             message: intl.formatMessage({
-              id: 'pages.admin.pages.form.delete.error',
+              id: 'admin/pages.admin.pages.form.delete.error',
             }),
           })
         })
@@ -250,7 +250,7 @@ class FormContainer extends Component<Props, State> {
           showToast({
             horizontalPosition: 'right',
             message: intl.formatMessage({
-              id: 'pages.admin.pages.form.save.success',
+              id: 'admin/pages.admin.pages.form.save.success',
             }),
           })
 
@@ -262,7 +262,7 @@ class FormContainer extends Component<Props, State> {
             showToast({
               horizontalPosition: 'right',
               message: intl.formatMessage({
-                id: 'pages.admin.pages.form.save.error',
+                id: 'admin/pages.admin.pages.form.save.error',
               }),
             })
           })

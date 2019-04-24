@@ -25,7 +25,7 @@ const SaveButton = ({
       variation={variation}
     >
       {intl.formatMessage({
-        id: 'pages.editor.components.button.save',
+        id: 'admin/pages.editor.components.button.save',
       })}
     </Button>
   </div>

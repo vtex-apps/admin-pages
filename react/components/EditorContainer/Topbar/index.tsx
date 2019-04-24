@@ -33,7 +33,7 @@ const Topbar: React.FunctionComponent<Props> = ({
             />
           ))}
           <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
-            <FormattedMessage id="pages.editor.container.editpath.label" />:
+            <FormattedMessage id="admin/pages.editor.container.editpath.label" />:
             <div className="pl3 c-muted-2">{urlPath}</div>
           </div>
         </Fragment>

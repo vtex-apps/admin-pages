@@ -4,12 +4,12 @@
       "subItems": [
         {
           "isNew": true,
-          "labelId": "pages.admin-menu-button.storefront",
+          "labelId": "admin/pages.admin-menu-button.storefront",
           "path": "/admin/cms/storefront"
         },
         {
           "isNew": true,
-          "labelId": "pages.admin-menu-button.pages",
+          "labelId": "admin/pages.admin-menu-button.pages",
           "path": "/admin/cms/pages"
         }
       ],

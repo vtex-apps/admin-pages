@@ -74,7 +74,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
                 backButton: {
                   action: () => startEditing(undefined),
                   text: intl.formatMessage({
-                    id: 'pages.editor.styles.color-group.back',
+                    id: 'admin/pages.editor.styles.color-group.back',
                   }),
                 },
                 title: startCase(token),

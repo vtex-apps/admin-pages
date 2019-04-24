@@ -1,7 +1,7 @@
 import { RouteFormData } from 'pages'
 import { State } from '../index'
 
-const requiredMessage = 'pages.admin.pages.form.templates.field.required'
+const requiredMessage = 'admin/pages.admin.pages.form.templates.field.required'
 
 const validateFalsyPath = (path: keyof RouteFormData) => (
   data: RouteFormData

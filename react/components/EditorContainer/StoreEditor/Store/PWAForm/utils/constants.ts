@@ -4,52 +4,52 @@ interface DropdownOption {
 }
 
 export const ORIENTATION_OPTIONS: DropdownOption[] = [
-  { value: 'any', label: 'pages.editor.store.settings.pwa.orientation.any' },
+  { value: 'any', label: 'admin/pages.editor.store.settings.pwa.orientation.any' },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.natural',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.natural',
     value: 'natural',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.landscape',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.landscape',
     value: 'landscape',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.landscape-primary',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.landscape-primary',
     value: 'landscape-primary',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.landscape-secondary',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.landscape-secondary',
     value: 'landscape-secondary',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.portrait',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.portrait',
     value: 'portrait',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.portrait-primary',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.portrait-primary',
     value: 'portrait-primary',
   },
   {
-    label: 'pages.editor.store.settings.pwa.orientation.portrait-secondary',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.portrait-secondary',
     value: 'portrait-secondary',
   },
 ]
 
 export const DISPLAY_OPTIONS: DropdownOption[] = [
   {
-    label: 'pages.editor.store.settings.pwa.display.fullscreen',
+    label: 'admin/pages.editor.store.settings.pwa.display.fullscreen',
     value: 'fullscreen',
   },
   {
-    label: 'pages.editor.store.settings.pwa.display.standalone',
+    label: 'admin/pages.editor.store.settings.pwa.display.standalone',
     value: 'standalone',
   },
   {
-    label: 'pages.editor.store.settings.pwa.display.minimal-ui',
+    label: 'admin/pages.editor.store.settings.pwa.display.minimal-ui',
     value: 'minimal-ui',
   },
   {
-    label: 'pages.editor.store.settings.pwa.display.browser',
+    label: 'admin/pages.editor.store.settings.pwa.display.browser',
     value: 'browser',
   },
 ]

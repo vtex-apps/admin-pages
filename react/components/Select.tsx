@@ -52,7 +52,7 @@ const Select: React.FunctionComponent<Props> = ({
       placeholder={
         <span className="ml2">
           {intl.formatMessage({
-            id: 'pages.editor.components.conditions.custom.placeholder',
+            id: 'admin/pages.editor.components.conditions.custom.placeholder',
           })}
         </span>
       }

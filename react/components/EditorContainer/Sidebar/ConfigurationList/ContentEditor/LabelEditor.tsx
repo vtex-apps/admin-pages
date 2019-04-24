@@ -14,7 +14,7 @@ const LabelEditor = ({
 }: Props & ReactIntl.InjectedIntlProps) => (
   <Input
     label={intl.formatMessage({
-      id: 'pages.editor.components.labelEditor.label',
+      id: 'admin/pages.editor.components.labelEditor.label',
     })}
     onChange={onChange}
     value={value}

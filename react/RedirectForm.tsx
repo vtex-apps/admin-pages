@@ -108,8 +108,8 @@ class RedirectForm extends Component<Props, State> {
             {intl.formatMessage({
               id:
                 params.id === NEW_REDIRECT_ID
-                  ? 'pages.admin.redirects.form.title.new'
-                  : 'pages.admin.redirects.form.title.info',
+                  ? 'admin/pages.admin.redirects.form.title.new'
+                  : 'admin/pages.admin.redirects.form.title.info',
             })}
           </title>
         </Helmet>

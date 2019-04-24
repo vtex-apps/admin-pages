@@ -78,7 +78,7 @@ class List extends Component<Props, State> {
     return items.length === 0 ? (
       <EmptyState
         title={intl.formatMessage({
-          id: 'pages.admin.redirects.emptyState',
+          id: 'admin/pages.admin.redirects.emptyState',
         })}
       >
         <div className="pt5 flex flex-column tc">
@@ -86,7 +86,7 @@ class List extends Component<Props, State> {
             <CreateButton onClick={this.openNewItem} />
           </div>
           <p className="mv2">
-            {intl.formatMessage({ id: 'pages.admin.redirects.or.text' })}
+            {intl.formatMessage({ id: 'admin/pages.admin.redirects.or.text' })}
           </p>
           <div>
             <ButtonWithIcon
@@ -96,7 +96,7 @@ class List extends Component<Props, State> {
               size="small"
             >
               {intl.formatMessage({
-                id: 'pages.admin.redirects.emptyState.upload',
+                id: 'admin/pages.admin.redirects.emptyState.upload',
               })}
             </ButtonWithIcon>
           </div>
@@ -113,45 +113,45 @@ class List extends Component<Props, State> {
           toolbar={{
             density: {
               buttonLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.line-density.label',
+                id: 'admin/pages.admin.redirects.table.toolbar.line-density.label',
               }),
               highOptionLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.line-density.high',
+                id: 'admin/pages.admin.redirects.table.toolbar.line-density.high',
               }),
               lowOptionLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.line-density.low',
+                id: 'admin/pages.admin.redirects.table.toolbar.line-density.low',
               }),
               mediumOptionLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.line-density.medium',
+                id: 'admin/pages.admin.redirects.table.toolbar.line-density.medium',
               }),
             },
             download: {
               handleCallback: this.handleDownload,
               label: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.export',
+                id: 'admin/pages.admin.redirects.table.toolbar.export',
               }),
             },
             fields: {
               hideAllLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.fields.hide-all',
+                id: 'admin/pages.admin.redirects.table.toolbar.fields.hide-all',
               }),
               label: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.fields.label',
+                id: 'admin/pages.admin.redirects.table.toolbar.fields.label',
               }),
               showAllLabel: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.fields.show-all',
+                id: 'admin/pages.admin.redirects.table.toolbar.fields.show-all',
               }),
             },
             newLine: {
               handleCallback: this.openNewItem,
               label: intl.formatMessage({
-                id: 'pages.admin.redirects.button.create',
+                id: 'admin/pages.admin.redirects.button.create',
               }),
             },
             upload: {
               handleCallback: this.handleUpload,
               label: intl.formatMessage({
-                id: 'pages.admin.redirects.table.toolbar.import',
+                id: 'admin/pages.admin.redirects.table.toolbar.import',
               }),
             },
           }}
@@ -169,19 +169,19 @@ class List extends Component<Props, State> {
         // tslint:disable:object-literal-sort-keys
         from: {
           title: intl.formatMessage({
-            id: 'pages.admin.redirects.table.from',
+            id: 'admin/pages.admin.redirects.table.from',
           }),
           type: 'string',
         },
         to: {
           title: intl.formatMessage({
-            id: 'pages.admin.redirects.table.to',
+            id: 'admin/pages.admin.redirects.table.to',
           }),
           type: 'string',
         },
         type: {
           title: intl.formatMessage({
-            id: 'pages.admin.redirects.table.type',
+            id: 'admin/pages.admin.redirects.table.type',
           }),
           type: 'string',
           cellRenderer: (cell: { cellData: string }) =>
@@ -189,14 +189,14 @@ class List extends Component<Props, State> {
               <FormattedMessage
                 id={
                   cell.cellData === 'temporary'
-                    ? 'pages.admin.redirects.table.type.temporary'
-                    : 'pages.admin.redirects.table.type.permanent'
+                    ? 'admin/pages.admin.redirects.table.type.temporary'
+                    : 'admin/pages.admin.redirects.table.type.permanent'
                 }
               >
                 {text => <span className="ph4">{text}</span>}
               </FormattedMessage>
             ) : (
-              <FormattedMessage id="pages.admin.redirects.table.type.permanent">
+              <FormattedMessage id="admin/pages.admin.redirects.table.type.permanent">
                 {text => <span className="ph4 silver">{text}</span>}
               </FormattedMessage>
             ),
@@ -208,12 +208,12 @@ class List extends Component<Props, State> {
                 {getFormattedLocalizedDate(cell.cellData, locale)}
               </span>
             ) : (
-              <FormattedMessage id="pages.admin.redirects.table.endDate.default">
+              <FormattedMessage id="admin/pages.admin.redirects.table.endDate.default">
                 {text => <span className="ph4 silver">{text}</span>}
               </FormattedMessage>
             ),
           title: intl.formatMessage({
-            id: 'pages.admin.redirects.table.endDate.title',
+            id: 'admin/pages.admin.redirects.table.endDate.title',
           }),
           type: 'string',
         },

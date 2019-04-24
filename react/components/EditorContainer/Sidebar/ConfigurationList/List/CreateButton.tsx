@@ -20,7 +20,7 @@ const CreateButton = ({
       variation="tertiary"
     >
       {intl.formatMessage({
-        id: 'pages.editor.components.configurations.button.create',
+        id: 'admin/pages.editor.components.configurations.button.create',
       })}
     </ButtonWithIcon>
   </div>
