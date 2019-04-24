@@ -1,0 +1,6 @@
+query Collections($query: String = "") {
+  collectionSearch(query: $query) {
+    id
+    name
+  }
+}

@@ -1,0 +1,6 @@
+query Collection($id: Int) {
+  collection(id: $id) {
+    id
+    name
+  }
+}
