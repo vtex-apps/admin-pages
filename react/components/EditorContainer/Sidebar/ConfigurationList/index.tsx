@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { compose, graphql, MutationFn } from 'react-apollo'
-import { injectIntl, intlShape } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -20,7 +19,6 @@ import {
   updateExtensionFromForm,
 } from '../../../../utils/components'
 import { FormMetaContext, ModalContext } from '../typings'
-import { DeleteContentVariables } from './typings'
 
 import ContentEditor from './ContentEditor'
 import LayoutEditor from './LayoutEditor'
@@ -352,10 +350,7 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleContentDelete: MutationFn<
-    { deleteContent: string },
-    DeleteContentVariables
-  > = async options => {
+  private handleContentDelete: DeleteContentMutationFn = async options => {
     const { editor, iframeRuntime, intl, template, treePath } = this.props
     editor.setIsLoading(true)
     try {
