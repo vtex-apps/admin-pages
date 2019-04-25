@@ -36,11 +36,11 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   const info = fromTachyonsConfig(semanticColors)
 
   const colorsLabel = intl.formatMessage({
-    id: 'pages.editor.styles.edit.colors.title',
+    id: 'admin/pages.editor.styles.edit.colors.title',
   })
 
   const saveButtonLabel = intl.formatMessage({
-    id: 'pages.editor.components.button.save',
+    id: 'admin/pages.editor.components.button.save',
   })
 
   const Header = ({ name }: { name: string }) => (

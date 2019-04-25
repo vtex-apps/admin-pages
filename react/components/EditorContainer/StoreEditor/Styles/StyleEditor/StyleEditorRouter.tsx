@@ -1,5 +1,4 @@
 import React from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
 import { Redirect, Route, RouteComponentProps, Switch } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
@@ -29,7 +28,6 @@ interface Props {
     editing: [boolean, React.Dispatch<React.SetStateAction<boolean>>]
     name: [string, React.Dispatch<React.SetStateAction<string>>]
   }
-  intl: InjectedIntl
   onSave: () => void
   setStyleAsset: (asset: StyleAssetInfo) => void
   stopEditing: () => void
@@ -85,4 +83,4 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleEditorRouter)
+export default StyleEditorRouter
