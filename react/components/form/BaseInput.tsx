@@ -10,34 +10,46 @@ interface Props extends WidgetProps {
   type?: string
 }
 
-const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
-  const {
-    autofocus,
-    disabled,
-    id,
-    label,
-    max,
-    min,
-    onBlur,
-    onFocus,
-    options,
-    placeholder,
-    rawErrors,
-    readonly,
-    required,
-    schema,
-    value,
-  } = props
-
+const BaseInput: React.FunctionComponent<Props> = ({
+  autofocus,
+  disabled,
+  id,
+  label,
+  max,
+  min,
+  onBlur,
+  onChange,
+  onFocus,
+  options,
+  placeholder,
+  rawErrors,
+  readonly,
+  required,
+  schema,
+  type,
+  value,
+}) => {
   const schemaType = schema.type === 'number' ? 'number' : 'text'
 
-  const type = (options as any).inputType || props.type || schemaType
+  const inputType = (options as any).inputType || type || schemaType
 
   const currentError = rawErrors && rawErrors[0]
 
-  const onChange = ({
-    target: { value: inputValue },
-  }: React.ChangeEvent<HTMLInputElement>) => props.onChange(inputValue || '')
+  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (onBlur) {
+      onBlur(id, event.target.value)
+    }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    onChange(event.target.value || '')
+  }
+
+  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
+    if (onFocus) {
+      onFocus(id, event.target.value)
+    }
+  }
 
   return (
     <Input
@@ -49,21 +61,13 @@ const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
       label={label}
       max={max && `${max}`}
       min={min && `${min}`}
-      onBlur={
-        onBlur &&
-        ((event: React.ChangeEvent<HTMLInputElement>) =>
-          (onBlur as any)(id, event.target.value))
-      }
-      onChange={onChange}
-      onFocus={
-        onFocus &&
-        ((event: React.ChangeEvent<HTMLInputElement>) =>
-          (onFocus as any)(id, event.target.value))
-      }
+      onBlur={handleBlur}
+      onChange={handleChange}
+      onFocus={handleFocus}
       placeholder={placeholder}
       readOnly={readonly || (schema as any).readonly}
       required={required}
-      type={type}
+      type={inputType}
       value={value && `${value}`}
     />
   )

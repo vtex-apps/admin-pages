@@ -9,16 +9,6 @@ interface Props extends WidgetProps {
   onChange(val: string): void
 }
 
-/*
- * onBlur and onFocus are typed wrong on react-jsonschema-form, it should be:
- * - onBlur: (id: string, value: string) => void
- * - onFocus: (id: string, value: string) => void
- * (source: https://react-jsonschema-form.readthedocs.io/en/latest/advanced-customization/#custom-widgets-and-fields)
- * instead of:
- * - onBlur: FocusEventHandler<HTMLTextAreaElement>
- * - onFocus: FocusEventHandler<HTMLTextAreaElement>
- */
-
 const TextArea: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
@@ -35,15 +25,31 @@ const TextArea: React.FunctionComponent<Props> = ({
 }) => {
   const [currentError] = Array.isArray(rawErrors) ? rawErrors : ['']
 
+  const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    if (onBlur) {
+      onBlur(id, event.target.value)
+    }
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    onChange(event.target.value || '')
+  }
+
+  const handleFocus = (event: React.FocusEvent<HTMLTextAreaElement>) => {
+    if (onFocus) {
+      onFocus(id, event.target.value)
+    }
+  }
+
   return (
     <Textarea
       autoFocus={autofocus}
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
-      onChange={({ target }) => onChange(target.value || '')}
-      onBlur={onBlur && (event => (onBlur as any)(id, event.target.value))}
-      onFocus={onFocus && (event => (onFocus as any)(id, event.target.value))}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      onFocus={handleFocus}
       readOnly={readonly}
       value={value}
       label={label}
