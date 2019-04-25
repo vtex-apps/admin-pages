@@ -68,14 +68,14 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
       showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage({
-          id: 'pages.editor.styles.edit.save.successful',
+          id: 'admin/pages.editor.styles.edit.save.successful',
         }),
       })
     } else {
       showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage({
-          id: 'pages.editor.styles.edit.save.failed',
+          id: 'admin/pages.editor.styles.edit.save.failed',
         }),
       })
     }

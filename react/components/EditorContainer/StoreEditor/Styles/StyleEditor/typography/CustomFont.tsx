@@ -1,5 +1,6 @@
 import React, { Dispatch, SetStateAction, useReducer, useState } from 'react'
 import { DropEvent, DropzoneOptions, useDropzone } from 'react-dropzone'
+import { FormattedMessage } from 'react-intl'
 import { matchPath, RouteComponentProps, withRouter } from 'react-router'
 import {
   ActionMenu,
@@ -63,8 +64,7 @@ interface FontFileItemProps {
   style?: FontItemStyle
 }
 
-// Mega == 2 ^ 20
-const MEGA = 1048576
+const MEGA = 1048576 // Mega == 2 ^ 20
 const FONT_FILE_EXTENSIONS = ['.woff', '.woff2', '.ttf', '.otf', '.eot', '.svg']
 
 function reducer(prevState: FontFile[], action: FontFileAction): FontFile[] {
@@ -91,13 +91,16 @@ const CustomFont: React.FunctionComponent<RouteComponentProps> = ({
   const familyState = useState('')
 
   const enableSave = canSave(familyState[0], filesReducer[0])
+  const title = (
+    <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.title" />
+  )
 
   const { customFontFile, customFontLink } = EditorPath
   const { pathname } = history.location
   return (
     <>
       <StyleEditorHeader
-        title={'Custom Font'}
+        title={title}
         auxButtonLabel={'Save'}
         onAux={enableSave ? () => null : undefined}
       />
@@ -106,7 +109,9 @@ const CustomFont: React.FunctionComponent<RouteComponentProps> = ({
           <Tab
             active={matchPath(customFontFile, pathname) != null}
             onClick={() => history.replace(EditorPath.customFontFile)}
-            label="Upload a file"
+            label={
+              <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.file-upload" />
+            }
           >
             <CustomFontFile {...{ familyState, filesReducer }} />
           </Tab>
@@ -114,7 +119,9 @@ const CustomFont: React.FunctionComponent<RouteComponentProps> = ({
             active={matchPath(customFontLink, pathname) != null}
             disabled
             onClick={() => history.replace(EditorPath.customFontLink)}
-            label="File link"
+            label={
+              <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.file-link" />
+            }
           />
         </Tabs>
       </div>
@@ -161,7 +168,9 @@ const CustomFontFile: React.FunctionComponent<CustomFontFileProps> = ({
     <div className="mv6 w-100">
       <Input
         size="small"
-        label={'Font Family'}
+        label={
+          <FormattedMessage id="admin/pages.editor.styles.edit.font-family.title" />
+        }
         value={family}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           setFamily(e.target.value)
@@ -186,32 +195,42 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
   onStyleUpdate,
   style,
 }) => {
+  const actionMenuProps = {
+    buttonProps: {
+      icon: <IconOptionsDots color="currentColor" />,
+      variation: 'tertiary',
+    },
+    options: [
+      {
+        label: (
+          <FormattedMessage id="admin/pages.admin.redirects.form.button.remove" />
+        ),
+        onClick: onRemove,
+      },
+    ],
+  }
+
+  const dropdownProps = {
+    onChange: (_: React.ChangeEvent, value: string) =>
+      onStyleUpdate(value as FontItemStyle),
+    options: Object.entries(FontItemStyle).map(([value, label]) => ({
+      label,
+      value,
+    })),
+    value: style,
+    variation: 'inline',
+  }
+
   return (
     <div className="mv5">
       <div className="flex items-center">
         <div className="mv3">{file.name}</div>
         <div className="flex-grow-1" />
-        <ActionMenu
-          buttonProps={{
-            icon: <IconOptionsDots color="currentColor" />,
-            variation: 'tertiary',
-          }}
-          options={[{ label: 'Remove', onClick: onRemove }]}
-        />
+        <ActionMenu {...actionMenuProps} />
       </div>
       <div className="flex items-center">
-        <div>Weight:</div>
-        <Dropdown
-          variation="inline"
-          options={Object.entries(FontItemStyle).map(([value, label]) => ({
-            label,
-            value,
-          }))}
-          onChange={(_: React.ChangeEvent, value: string) =>
-            onStyleUpdate(value as FontItemStyle)
-          }
-          value={style}
-        />
+        <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.style" />
+        <Dropdown {...dropdownProps} />
       </div>
     </div>
   )
@@ -232,12 +251,14 @@ const FontFileUpload: React.FunctionComponent<FontFileUploadProps> = ({
   return (
     <div className="mv6 w-100 flex">
       <p className="t-small">
-        Upload you font family files in .ttf or .woff formats.{' '}
-        <span className="c-muted-2">(Maximum size 2MB)</span>
+        <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload-description" />{' '}
+        <span className="c-muted-2">
+          <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload-description-max-size" />
+        </span>
       </p>
       <div {...getRootProps()}>
         <ButtonWithIcon icon={<IconUpload />} variation="tertiary">
-          Upload
+          <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload" />
           <input {...getInputProps()} />
         </ButtonWithIcon>
       </div>
