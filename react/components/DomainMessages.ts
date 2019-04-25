@@ -65,7 +65,6 @@ export const editorMessagesFromRuntime = async ({
       const {
         data: { messages: batchMessages },
       } = await response
-      console.log('reducing', batchMessages)
       return [...acc, ...batchMessages]
     },
     [] as Message[],
