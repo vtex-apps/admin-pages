@@ -77,7 +77,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
       <div className="h-100 overflow-y-auto overflow-x-hidden">
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
-            formContext={{ isLayoutMode: editor.mode === 'layout' }}
+            formContext={{
+              iframeRuntime,
+              isLayoutMode: editor.mode === 'layout',
+            }}
             formData={data}
             onChange={onChange}
             onSubmit={onSave}
