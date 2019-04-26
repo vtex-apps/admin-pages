@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- **EditorContainer**
+  - Add `sticky` property to tabs at Store Settings menu.
+
 ## [3.5.2] - 2019-05-02
 
 ### Fixed
