@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
-import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 
-import UpdateBlock from '../../../../../queries/UpdateBlock.graphql'
 import { getBlockPath, getRelativeBlocksIds } from '../../../../../utils/blocks'
 import {
   getExtension,
   updateExtensionFromForm,
 } from '../../../../../utils/components'
+import { UpdateBlockMutationFn } from '../../../mutations/UpdateBlock'
 import ComponentEditor from '../../ComponentEditor'
 import { FormMetaContext, ModalContext } from '../../typings'
 
@@ -17,7 +16,7 @@ interface Props extends ReactIntl.InjectedIntlProps {
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   modal: ModalContext
-  updateBlock: MutationFn
+  updateBlock: UpdateBlockMutationFn
 }
 
 class LayoutEditor extends Component<Props> {
@@ -130,10 +129,10 @@ class LayoutEditor extends Component<Props> {
       await updateBlock({
         variables: {
           block: {
-            after: parsedRelativeBlocks.after,
-            around: parsedRelativeBlocks.around,
-            before: parsedRelativeBlocks.before,
-            blocks: this.block.blocks,
+            after: parsedRelativeBlocks.after || [],
+            around: parsedRelativeBlocks.around || [],
+            before: parsedRelativeBlocks.before || [],
+            blocks: this.block.blocks || [],
             propsJSON: JSON.stringify(extensionProps),
           },
           blockPath: getBlockPath(
@@ -158,9 +157,4 @@ class LayoutEditor extends Component<Props> {
   }
 }
 
-export default compose(
-  injectIntl,
-  graphql(UpdateBlock, {
-    name: 'updateBlock',
-  })
-)(LayoutEditor)
+export default injectIntl(LayoutEditor)

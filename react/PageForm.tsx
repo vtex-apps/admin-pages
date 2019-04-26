@@ -1,6 +1,6 @@
 import { equals } from 'ramda'
 import React, { Component } from 'react'
-import { compose, withApollo, WithApolloClient } from 'react-apollo'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -180,8 +180,4 @@ class PageForm extends Component<Props, State> {
   }
 }
 
-export default compose(
-  withApollo,
-  withRuntimeContext,
-  withTargetPath
-)(PageForm)
+export default withApollo(withRuntimeContext(withTargetPath(PageForm)))

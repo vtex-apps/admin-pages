@@ -1,4 +1,4 @@
-mutation saveContent (
+mutation saveContent(
   $configuration: ContentConfigurationInput
   $template: String
   $treePath: String

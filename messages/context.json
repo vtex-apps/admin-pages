@@ -128,6 +128,8 @@
   "admin/pages.editor.components.condition.title": "admin/pages.editor.components.condition.title",
   "admin/pages.editor.components.configurations.button.create": "admin/pages.editor.components.configurations.button.create",
   "admin/pages.editor.components.configurations.defaultTitle": "admin/pages.editor.components.configurations.defaultTitle",
+  "admin/pages.editor.components.content.delete.error": "admin/pages.editor.components.content.delete.error",
+  "admin/pages.editor.components.content.delete.success": "admin/pages.editor.components.content.delete.success",
   "admin/pages.editor.components.labelEditor.label": "admin/pages.editor.components.labelEditor.label",
   "admin/pages.editor.components.modal.button.discard": "admin/pages.editor.components.modal.button.discard",
   "admin/pages.editor.components.modal.text": "admin/pages.editor.components.modal.text",

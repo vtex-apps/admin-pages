@@ -2,7 +2,6 @@ import { RouteFormData } from 'pages'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
-import { compose, MutationFn } from 'react-apollo'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -26,11 +25,13 @@ import {
 } from './stateHandlers'
 import { FormErrors, SaveRouteVariables } from './typings'
 
+import { OperationsResults } from './Operations'
+
 interface ComponentProps {
   initialData: RouteFormData
-  onDelete: MutationFn
+  onDelete: OperationsResults['deleteRoute']
   onExit: () => void
-  onSave: MutationFn<any, SaveRouteVariables>
+  onSave: OperationsResults['saveRoute']
   runtime: RenderContext
   templates: Template[]
   showToast: ToastConsumerFunctions['showToast']
@@ -163,6 +164,10 @@ class FormContainer extends Component<Props, State> {
 
     this.setState({ isLoading: true }, async () => {
       try {
+        if (!data.uuid) {
+          throw new Error('No uuid')
+        }
+
         await onDelete({
           variables: {
             uuid: data.uuid,
@@ -274,7 +279,4 @@ class FormContainer extends Component<Props, State> {
   }
 }
 
-export default compose(
-  withRuntimeContext,
-  injectIntl
-)(FormContainer)
+export default withRuntimeContext(injectIntl(FormContainer))

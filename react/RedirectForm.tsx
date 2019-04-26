@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { compose, withApollo, WithApolloClient } from 'react-apollo'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -138,9 +138,6 @@ class RedirectForm extends Component<Props, State> {
   }
 }
 
-export default compose(
-  injectIntl,
-  withApollo,
-  withRuntimeContext,
-  withTargetPath
-)(RedirectForm)
+export default injectIntl(
+  withApollo(withRuntimeContext(withTargetPath(RedirectForm)))
+)

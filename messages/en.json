@@ -128,6 +128,8 @@
   "admin/pages.editor.components.condition.title": "Visibility",
   "admin/pages.editor.components.configurations.button.create": "Add content",
   "admin/pages.editor.components.configurations.defaultTitle": "Untitled",
+  "admin/pages.editor.components.content.delete.error": "Something went wrong.",
+  "admin/pages.editor.components.content.delete.success": "Content deleted.",
   "admin/pages.editor.components.labelEditor.label": "Configuration name",
   "admin/pages.editor.components.modal.button.discard": "Discard",
   "admin/pages.editor.components.modal.text": "You have unsaved modifications.",

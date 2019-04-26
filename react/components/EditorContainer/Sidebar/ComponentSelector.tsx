@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import SelectionIcon from '../../../images/SelectionIcon'
+import UpdateBlockMutation from '../mutations/UpdateBlock'
 
 import ComponentList from './ComponentList'
 import { SidebarComponent } from './typings'
@@ -40,19 +41,24 @@ class ComponentSelector extends PureComponent<Props> {
             </span>
           </div>
         </div>
-        <div className="bb bw1 b--light-silver"></div>
+        <div className="bb bw1 b--light-silver" />
         <ToastConsumer>
           {({ showToast }) => (
-            <ComponentList
-              components={components}
-              editor={editor}
-              highlightHandler={highlightHandler}
-              onMouseEnterComponent={this.handleMouseEnter}
-              onMouseLeaveComponent={this.handleMouseLeave}
-              iframeRuntime={iframeRuntime}
-              showToast={showToast}
-              updateSidebarComponents={updateSidebarComponents}
-            />
+            <UpdateBlockMutation>
+              {updateBlock => (
+                <ComponentList
+                  components={components}
+                  editor={editor}
+                  highlightHandler={highlightHandler}
+                  onMouseEnterComponent={this.handleMouseEnter}
+                  onMouseLeaveComponent={this.handleMouseLeave}
+                  iframeRuntime={iframeRuntime}
+                  showToast={showToast}
+                  updateSidebarComponents={updateSidebarComponents}
+                  updateBlock={updateBlock}
+                />
+              )}
+            </UpdateBlockMutation>
           )}
         </ToastConsumer>
       </Fragment>

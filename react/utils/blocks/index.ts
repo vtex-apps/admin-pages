@@ -13,14 +13,14 @@ export const getBlockRole = (treePathTail: string) => {
 export const getBlockPath = (
   extensions: RenderContext['extensions'],
   treePath: string
-): BlockPath | null => {
+): BlockPath => {
   const splitTreePath = treePath.split('/')
 
   const blockId = extensions[treePath].blockId
   const blockRole = getBlockRole(splitTreePath[splitTreePath.length - 1])
 
   if (!blockId) {
-    return null
+    return []
   }
 
   const parentTreePath = splitTreePath
@@ -46,7 +46,7 @@ export const getBlockPath = (
   const parentBlockPath = getBlockPath(extensions, parentTreePath)
 
   if (!parentBlockPath) {
-    return null
+    return []
   }
 
   return [...parentBlockPath, formattedBlock]

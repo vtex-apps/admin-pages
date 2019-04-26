@@ -20,7 +20,7 @@ declare global {
     after?: string[]
     around?: string[]
     before?: string[]
-    blockId?: string
+    blockId: string
     blocks?: InnerBlock[]
     component: string | null
     configurationsIds?: string[]
@@ -135,7 +135,6 @@ declare global {
 
   interface EditorConditionSection {
     activeConditions: string[]
-    conditions: Condition[]
     addCondition: (conditionId: string) => void
     removeCondition?: (conditionId: string) => void
   }
@@ -280,6 +279,8 @@ declare global {
   }
 
   type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
+
+  type BlockRole = 'AFTER' | 'AROUND' | 'BEFORE' | 'BLOCK' | 'TEMPLATE'
 
   interface FormattedBlock {
     id: Extension['blockId']

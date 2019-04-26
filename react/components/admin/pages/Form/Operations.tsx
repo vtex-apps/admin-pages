@@ -14,10 +14,10 @@ interface TemplateVariables {
 
 interface Props {
   interfaceId: string
-  children: (mutations: OperationsObj) => React.ReactNode
+  children: (mutations: OperationsResults) => React.ReactNode
 }
 
-interface OperationsObj {
+export interface OperationsResults {
   deleteRoute: MutationFn<any, DeleteRouteVariables>
   saveRoute: MutationFn<any, SaveRouteVariables>
   templatesResults: QueryResult<any, TemplateVariables>

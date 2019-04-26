@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import { compose, graphql, MutationFn } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
-import DeleteContent from '../../../../queries/DeleteContent.graphql'
-import ListContent from '../../../../queries/ListContent.graphql'
-import SaveContent from '../../../../queries/SaveContent.graphql'
-import { getBlockPath, getSitewideTreePath } from '../../../../utils/blocks'
+import {
+  ListContentGraphqlDocument,
+  ListContentQueryResult,
+} from '../../queries/ListContent'
+
+import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
+import { SaveContentMutationFn } from '../../mutations/SaveContent'
+
 import {
   getComponentSchema,
   getExtension,
@@ -16,31 +19,25 @@ import {
   updateExtensionFromForm,
 } from '../../../../utils/components'
 import { FormMetaContext, ModalContext } from '../typings'
-import { DeleteContentVariables } from './typings'
 
 import ContentEditor from './ContentEditor'
 import LayoutEditor from './LayoutEditor'
 import List from './List'
 
+import UpdateBlockMutation from '../../mutations/UpdateBlock'
+
 const NEW_CONFIGURATION_ID = 'new'
 
-interface ListContentQuery {
-  error: object
-  listContent?: ExtensionConfiguration[]
-  loading: boolean
-  refetch: (variables?: object) => void
-}
-
 interface Props {
-  deleteContent: MutationFn<{ deleteContent: string }, DeleteContentVariables>
+  deleteContent: DeleteContentMutationFn
   editor: EditorContext
-  listContent: ListContentQuery
+  listContent: ListContentQueryResult
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   isSitewide: boolean
   formMeta: FormMetaContext
   modal: ModalContext
-  saveContent: MutationFn
+  saveContent: SaveContentMutationFn
   showToast: ToastConsumerFunctions['showToast']
   template: string
   treePath: string
@@ -101,19 +98,26 @@ class ConfigurationList extends Component<Props, State> {
 
     if (editor.mode === 'layout') {
       return (
-        <LayoutEditor
-          editor={editor}
-          formMeta={formMeta}
-          iframeRuntime={iframeRuntime}
-          modal={modal}
-        />
+        <UpdateBlockMutation>
+          {updateBlock => (
+            <LayoutEditor
+              editor={editor}
+              formMeta={formMeta}
+              iframeRuntime={iframeRuntime}
+              modal={modal}
+              updateBlock={updateBlock}
+            />
+          )}
+        </UpdateBlockMutation>
       )
     }
 
     if (!this.state.configuration) {
       return (
         <List
-          configurations={listContentQuery.listContent || []}
+          configurations={
+            (listContentQuery.data && listContentQuery.data.listContent) || []
+          }
           editor={editor}
           iframeRuntime={iframeRuntime}
           isDisabledChecker={this.isConfigurationDisabled}
@@ -325,6 +329,8 @@ class ConfigurationList extends Component<Props, State> {
 
       await listContentQuery.refetch({
         pageContext: iframeRuntime.route.pageContext,
+        template,
+        treePath,
       })
 
       formMeta.toggleLoading(this.handleConfigurationDiscard)
@@ -344,11 +350,8 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleContentDelete: MutationFn<
-    { deleteContent: string },
-    DeleteContentVariables
-  > = async options => {
-    const { editor, iframeRuntime, template, treePath } = this.props
+  private handleContentDelete: DeleteContentMutationFn = async options => {
+    const { editor, iframeRuntime, intl, template, treePath } = this.props
     editor.setIsLoading(true)
     try {
       await this.props.deleteContent({
@@ -362,7 +365,9 @@ class ConfigurationList extends Component<Props, State> {
 
           const { listContent } = store.readQuery<{
             listContent: ExtensionConfiguration[]
-          }>({ query: ListContent, variables }) || { listContent: [] }
+          }>({ query: ListContentGraphqlDocument, variables }) || {
+            listContent: [],
+          }
           const newConfigurations = {
             listContent: listContent.filter(
               ({ contentId }) => contentId !== data!.deleteContent
@@ -370,7 +375,7 @@ class ConfigurationList extends Component<Props, State> {
           }
           store.writeQuery({
             data: newConfigurations,
-            query: ListContent,
+            query: ListContentGraphqlDocument,
             variables,
           })
         },
@@ -379,13 +384,17 @@ class ConfigurationList extends Component<Props, State> {
       editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
-        message: 'Content deleted.',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.components.content.delete.success',
+        }),
       })
     } catch (e) {
       editor.setIsLoading(false)
       this.props.showToast({
         horizontalPosition: 'right',
-        message: 'Something went wrong. Please try again.',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.components.content.delete.error',
+        }),
       })
 
       console.error(e)
@@ -442,18 +451,4 @@ class ConfigurationList extends Component<Props, State> {
   }
 }
 
-export default compose(
-  injectIntl,
-  graphql(ListContent, {
-    name: 'listContent',
-    options: ({ iframeRuntime, template, treePath }: Props) => ({
-      variables: {
-        pageContext: iframeRuntime.route.pageContext,
-        template,
-        treePath,
-      },
-    }),
-  }),
-  graphql(SaveContent, { name: 'saveContent' }),
-  graphql<DeleteContentVariables>(DeleteContent, { name: 'deleteContent' })
-)(ConfigurationList)
+export default injectIntl(ConfigurationList)
