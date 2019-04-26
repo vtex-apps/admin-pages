@@ -36,7 +36,10 @@ class PageEditor extends Component<PageEditorProps, IMessagesContext> {
   }
 
   public setMessages = (newMessages?: object) => {
-    messages = newMessages || {}
+    messages = {
+      ...messages,
+      ...newMessages,
+    }
   }
 
   public componentDidMount() {

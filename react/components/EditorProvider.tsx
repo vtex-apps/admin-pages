@@ -13,8 +13,7 @@ import MessagesContext, { IMessagesContext } from './MessagesContext'
 
 type Props = RenderContextProps &
   DataProps<{ availableConditions: [Condition] }> &
-  IMessagesContext &
-  {client: ApolloClient<any>}
+  IMessagesContext & { client: ApolloClient<any> }
 
 interface State {
   activeConditions: string[]
@@ -70,11 +69,18 @@ class EditorProvider extends Component<Props, State> {
         shouldUpdateRuntime?: boolean
       ) => {
         const { client } = this.props
-        const formattedEditorMessages = await editorMessagesFromRuntime({
-          client,
-          domain: 'admin',
-          runtime,
-        })
+        let formattedEditorMessages = {}
+
+        try {
+          formattedEditorMessages = await editorMessagesFromRuntime({
+            client,
+            domain: 'admin',
+            runtime,
+          })
+        } catch (e) {
+          console.log(e)
+        }
+
         this.props.setMessages({
           ...messages,
           ...formattedEditorMessages,
@@ -367,4 +373,7 @@ const EditorWithMessageContext = (props: Props) => (
   </MessagesContext.Consumer>
 )
 
-export default compose(withRuntimeContext, withApollo)(EditorWithMessageContext)
+export default compose(
+  withRuntimeContext,
+  withApollo
+)(EditorWithMessageContext)
