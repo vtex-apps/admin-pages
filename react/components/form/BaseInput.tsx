@@ -68,7 +68,7 @@ const BaseInput: React.FunctionComponent<Props> = ({
       readOnly={readonly || (schema as any).readonly}
       required={required}
       type={inputType}
-      value={value && `${value}`}
+      value={value ? `${value}` : ''}
     />
   )
 }
