@@ -51,7 +51,7 @@ class ComponentList extends Component<Props, State> {
         initialComponents: props.components,
       }
     }
-    return state
+    return null
   }
 
   private block: Extension
