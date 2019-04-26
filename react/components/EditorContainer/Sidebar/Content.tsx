@@ -19,7 +19,7 @@ interface Props {
   iframeRuntime: RenderContext
 }
 
-const initialComponents = (props: Props) =>
+const getInitialComponents = (props: Props) =>
   getComponents(
     props.iframeRuntime.extensions,
     getIframeRenderComponents(),
@@ -32,20 +32,14 @@ const Content = (props: Props) => {
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
-  const [components, setComponents] = useState(
-    getComponents(
-      props.iframeRuntime.extensions,
-      getIframeRenderComponents(),
-      props.iframeRuntime.page
-    )
-  )
+  const [components, setComponents] = useState(getInitialComponents(props))
 
   const path = useRef('')
 
   useEffect(
     () => {
       if (path.current !== iframeRuntime.route.path) {
-        setComponents(initialComponents(props))
+        setComponents(getInitialComponents(props))
         props.editor.setIsLoading(false)
       }
       path.current = iframeRuntime.route.path
