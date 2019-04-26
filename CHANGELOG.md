@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`__provideRuntime`**
+  - Prevents query from stopping execution by using a try catch block.
+
+### Changed
+
+- **`PageEditor`**
+  - Spread messages object instead of replacing.
+
 ## [3.4.0] - 2019-04-24
 
 ## [3.3.0] - 2019-04-24
