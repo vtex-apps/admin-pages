@@ -40,7 +40,7 @@ const Content = (props: Props) => {
     () => {
       if (path.current !== iframeRuntime.route.path) {
         setComponents(getInitialComponents(props))
-        props.editor.setIsLoading(false)
+        editor.setIsLoading(false)
       }
       path.current = iframeRuntime.route.path
     },
