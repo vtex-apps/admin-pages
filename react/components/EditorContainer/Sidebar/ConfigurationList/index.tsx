@@ -1,3 +1,4 @@
+import { clone } from 'ramda'
 import React, { Component } from 'react'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
@@ -251,7 +252,10 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
+    const { editor, iframeRuntime } = this.props
     const { configuration: currConfiguration } = this.state
+
+    const originalBlock = clone(iframeRuntime.extensions[editor.editTreePath!])
 
     if (
       !currConfiguration ||
@@ -259,6 +263,12 @@ class ConfigurationList extends Component<Props, State> {
     ) {
       this.handleConfigurationChange(configuration)
     }
+
+    this.props.modal.setHandlers({
+      closeCallbackHandler: () => {
+        iframeRuntime.updateExtension(editor.editTreePath!, originalBlock)
+      },
+    })
 
     this.setState({ configuration })
   }
