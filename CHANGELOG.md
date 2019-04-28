@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Pass blockId to ListContent query.
+
+### Removed
+
+- Remove layout props editions.
+- Disable reorder components.
+
+### Fixed
+
+- Correctly reset content when discarding.
+
 ## [3.4.2] - 2019-04-26
 
 ### Changed
