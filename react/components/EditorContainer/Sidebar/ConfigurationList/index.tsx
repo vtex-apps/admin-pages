@@ -3,10 +3,7 @@ import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
-import {
-  ListContentGraphqlDocument,
-  ListContentQueryResult,
-} from '../../queries/ListContent'
+import { ListContentQueryResult } from '../../queries/ListContent'
 
 import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../../mutations/SaveContent'
@@ -25,6 +22,7 @@ import LayoutEditor from './LayoutEditor'
 import List from './List'
 
 import UpdateBlockMutation from '../../mutations/UpdateBlock'
+import { getIsDefaultContent } from '../utils'
 
 const NEW_CONFIGURATION_ID = 'new'
 
@@ -119,7 +117,6 @@ class ConfigurationList extends Component<Props, State> {
             (listContentQuery.data && listContentQuery.data.listContent) || []
           }
           editor={editor}
-          iframeRuntime={iframeRuntime}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
@@ -128,8 +125,6 @@ class ConfigurationList extends Component<Props, State> {
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
           title={componentSchema.title}
-          template={this.props.template}
-          treePath={this.props.treePath}
         />
       )
     }
@@ -178,6 +173,7 @@ class ConfigurationList extends Component<Props, State> {
     condition: this.getDefaultCondition(),
     contentId: NEW_CONFIGURATION_ID,
     contentJSON: '{}',
+    origin: null,
   })
 
   private handleConditionChange = (
@@ -267,6 +263,23 @@ class ConfigurationList extends Component<Props, State> {
     this.setState({ configuration })
   }
 
+  private refetchConfigurations = async () => {
+    const {
+      editor,
+      iframeRuntime,
+      listContent,
+      template,
+      treePath,
+    } = this.props
+
+    return await listContent.refetch({
+      blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
+      pageContext: iframeRuntime.route.pageContext,
+      template,
+      treePath,
+    })
+  }
+
   private handleConfigurationSave = async () => {
     const {
       editor,
@@ -312,6 +325,8 @@ class ConfigurationList extends Component<Props, State> {
       contentId,
       contentJSON: JSON.stringify(pickedContent),
       label,
+      origin:
+        (this.state.configuration && this.state.configuration.origin) || null,
     }
 
     formMeta.toggleLoading()
@@ -325,13 +340,7 @@ class ConfigurationList extends Component<Props, State> {
         },
       })
 
-      const listContentQuery = this.props.listContent
-
-      await listContentQuery.refetch({
-        pageContext: iframeRuntime.route.pageContext,
-        template,
-        treePath,
-      })
+      await this.refetchConfigurations()
 
       formMeta.toggleLoading(this.handleConfigurationDiscard)
     } catch (err) {
@@ -350,50 +359,44 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  private handleContentDelete: DeleteContentMutationFn = async options => {
+  private handleContentDelete = async (
+    configuration: ExtensionConfiguration
+  ) => {
     const { editor, iframeRuntime, intl, template, treePath } = this.props
+
     editor.setIsLoading(true)
+
+    const action = getIsDefaultContent(configuration) ? 'reset' : 'delete'
+
     try {
       await this.props.deleteContent({
-        ...options,
-        update: (store, { data }) => {
-          const variables = {
-            pageContext: iframeRuntime.route.pageContext,
-            template,
-            treePath,
-          }
-
-          const { listContent } = store.readQuery<{
-            listContent: ExtensionConfiguration[]
-          }>({ query: ListContentGraphqlDocument, variables }) || {
-            listContent: [],
-          }
-          const newConfigurations = {
-            listContent: listContent.filter(
-              ({ contentId }) => contentId !== data!.deleteContent
-            ),
-          }
-          store.writeQuery({
-            data: newConfigurations,
-            query: ListContentGraphqlDocument,
-            variables,
-          })
+        variables: {
+          contentId: configuration.contentId,
+          pageContext: iframeRuntime.route.pageContext,
+          template,
+          treePath,
         },
       })
 
       editor.setIsLoading(false)
+
+      this.props.iframeRuntime.updateRuntime()
+
+      await this.refetchConfigurations()
+
       this.props.showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage({
-          id: 'admin/pages.editor.components.content.delete.success',
+          id: `admin/pages.editor.components.content.${action}.success`,
         }),
       })
     } catch (e) {
       editor.setIsLoading(false)
+
       this.props.showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage({
-          id: 'admin/pages.editor.components.content.delete.error',
+          id: `admin/pages.editor.components.content.${action}.error`,
         }),
       })
 

@@ -116,3 +116,7 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
     false
   )
 }
+
+export const getIsDefaultContent: (
+  configuration: Pick<ExtensionConfiguration, 'origin'>
+) => boolean = configuration => configuration.origin !== null

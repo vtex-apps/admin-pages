@@ -1,4 +1,9 @@
-import { generateWarningMessage, getComponents, getIsSitewide } from './utils'
+import {
+  generateWarningMessage,
+  getComponents,
+  getIsSitewide,
+  getIsDefaultContent,
+} from './utils'
 
 describe('getComponents', () => {
   const mockExtensions = {
@@ -304,5 +309,15 @@ describe('getIsSitewide', () => {
   it('should return false for blocks without role', () => {
     const mockEditTreePath = 'store.home/carousel#home'
     expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(false)
+  })
+})
+
+describe('getIsDefaultContent', () => {
+  it('should return true when origin is declared (comes from app)', () => {
+    expect(getIsDefaultContent({ origin: 'comes from block' })).toBe(true)
+  })
+
+  it('should return false when origin is null (declared by user)', () => {
+    expect(getIsDefaultContent({ origin: null })).toBe(false)
   })
 })
