@@ -12,12 +12,20 @@ import I18nInput from '../../../form/I18nInput'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
 import Radio from '../../../form/Radio'
 import RichText from '../../../form/RichText'
+import BrandSelector from '../../../form/selectors/BrandSelector'
+import CategorySelector from '../../../form/selectors/CategorySelector'
+import CollectionSelector from '../../../form/selectors/CollectionSelector'
+import DepartmentSelector from '../../../form/selectors/DepartmentSelector'
 import TextArea from '../../../form/TextArea'
 import Toggle from '../../../form/Toggle'
 
 export const widgets: Record<string, Widget> = {
   BaseInput,
+  Brand: BrandSelector,
+  Category: CategorySelector,
   CheckboxWidget: Toggle,
+  Collection: CollectionSelector,
+  Department: DepartmentSelector,
   IOMessage: I18nInput,
   RadioWidget: Radio,
   RichText,
