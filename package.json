@@ -1,6 +1,6 @@
 {
   "license": "UNLICENSED",
-  "version": "3.4.2",
+  "version": "3.5.0",
   "devDependencies": {
     "@vtex/intl-equalizer": "^2.2.1",
     "husky": "^1.1.4",
