@@ -72,7 +72,7 @@ export const normalize = (components: SidebarComponent[]) => {
 
   const normalizedNonRelativeRoots = nonRelativeRoots.map(root => ({
     ...root,
-    isSortable: true,
+    isSortable: false,
   }))
 
   const sortedRoots = [

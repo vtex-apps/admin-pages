@@ -44,18 +44,6 @@ const EditorHeader: React.FunctionComponent<Props> = ({
           )}
         </div>
       </div>
-      {!onSave && editor && (
-        <div
-          className="flex items-center pointer"
-          onClick={() => {
-            if (editor.mode !== 'layout') {
-              editor.setMode('layout')
-            }
-          }}
-        >
-          <GearIcon />
-        </div>
-      )}
     </div>
   </div>
 )

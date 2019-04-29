@@ -26,10 +26,7 @@ const PageEditor: ComponentWithCustomMessage = (props: PageEditorProps) => {
   const messagesContextValue = useMemo(
     () => ({
       setMessages(newMessages?: object) {
-        messages = {
-          ...messages,
-          ...newMessages,
-        }
+        messages = newMessages || {}
       },
     }),
     []

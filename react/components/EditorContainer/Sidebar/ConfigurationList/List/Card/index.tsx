@@ -9,6 +9,7 @@ interface Props {
   configuration: ExtensionConfiguration
   isDisabled?: boolean
   isSitewide: boolean
+  isDefaultContent?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onDelete: () => void
   path: string
@@ -21,6 +22,7 @@ function stopPropagation(e: React.MouseEvent) {
 
 const Card = ({
   configuration,
+  isDefaultContent = false,
   isDisabled = false,
   intl,
   isSitewide,
@@ -31,7 +33,9 @@ const Card = ({
   const actionMenuOptions = [
     {
       label: intl.formatMessage({
-        id: 'admin/pages.editor.component-list.action-menu.delete',
+        id: `admin/pages.editor.component-list.action-menu.${
+          isDefaultContent ? 'reset' : 'delete'
+        }`,
       }),
       onClick: () => onDelete(),
     },

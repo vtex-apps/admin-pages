@@ -224,6 +224,7 @@ declare global {
     }
     contentId: string
     contentJSON: string
+    origin: string | null
     label?: string
   }
 

@@ -1,9 +1,11 @@
 query ListContent(
+  $blockId: String
   $pageContext: PageContextInput
   $template: String
   $treePath: String
 ) {
   listContent(
+    blockId: $blockId
     pageContext: $pageContext
     template: $template
     treePath: $treePath
@@ -24,5 +26,6 @@ query ListContent(
     contentId
     contentJSON
     label
+    origin
   }
 }

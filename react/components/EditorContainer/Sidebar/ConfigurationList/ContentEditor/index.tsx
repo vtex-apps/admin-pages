@@ -49,6 +49,8 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       }
     : extension.content
 
+  const isDefault = !!(configuration && configuration.origin)
+
   return (
     <ComponentEditor
       after={
@@ -56,12 +58,14 @@ const ContentEditor: React.FunctionComponent<Props> = ({
           <div className="pt5 ph5 bt bw1 b--light-silver">
             <LabelEditor onChange={onLabelChange} value={label} />
           </div>
-          <ConditionControls
-            condition={condition}
-            isSitewide={isSitewide}
-            pageContext={iframeRuntime.route.pageContext}
-            onConditionChange={onConditionChange}
-          />
+          {!isDefault ? (
+            <ConditionControls
+              condition={condition}
+              isSitewide={isSitewide}
+              pageContext={iframeRuntime.route.pageContext}
+              onConditionChange={onConditionChange}
+            />
+          ) : null}
         </Fragment>
       }
       data={content}

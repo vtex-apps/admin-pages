@@ -77,6 +77,7 @@ const Content = (props: Props) => {
       {({ showToast }) => (
         <ListContentQuery
           variables={{
+            blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
             pageContext: iframeRuntime.route.pageContext,
             template,
             treePath,
