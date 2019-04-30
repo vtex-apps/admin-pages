@@ -26,4 +26,8 @@ const LabelEditor = ({
   />
 )
 
-export default injectIntl(LabelEditor)
+LabelEditor.defaultProps = {
+  value: '',
+}
+
+export default React.memo(injectIntl(LabelEditor))
