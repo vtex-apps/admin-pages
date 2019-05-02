@@ -1,9 +1,11 @@
 mutation saveContent(
+  $blockId: String
   $configuration: ContentConfigurationInput
   $template: String
   $treePath: String
 ) {
   saveContent(
+    blockId: $blockId
     configuration: $configuration
     template: $template
     treePath: $treePath
