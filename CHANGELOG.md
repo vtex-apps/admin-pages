@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
+- **`editbar.global.css`**
+  - Remove styles that changed elements globally: `html`, `body`, and `.render-provider`.
+
 ## [3.5.0] - 2019-04-28
 
 ### Changed
