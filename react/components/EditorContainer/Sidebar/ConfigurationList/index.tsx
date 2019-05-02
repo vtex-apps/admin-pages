@@ -1,3 +1,4 @@
+import { JSONSchema6 } from 'json-schema'
 import { clone, path } from 'ramda'
 import React, { Component } from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
@@ -43,8 +44,10 @@ interface Props {
 }
 
 interface State {
+  componentSchema?: ComponentSchema
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
+  contentSchema?: JSONSchema6
   newLabel?: string
 }
 
@@ -81,24 +84,30 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
+  public componentDidMount() {
+    const {
+      listContent: { data },
+    } = this.props
+
+    if (data && data.listContent && data.listContent.schemaJSON) {
+      this.updateComponentAndContentSchemas()
+    }
+  }
+
+  public componentDidUpdate(prevProps: Props) {
+    if (
+      prevProps.listContent.loading &&
+      !this.props.listContent.loading &&
+      !this.state.contentSchema
+    ) {
+      this.updateComponentAndContentSchemas()
+    }
+  }
+
   public render() {
-    const { editor, formMeta, intl, modal, iframeRuntime } = this.props
+    const { editor, formMeta, modal, iframeRuntime } = this.props
 
     const listContentQuery = this.props.listContent
-
-    const { component, content } = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
-
-    const componentImplementation = getIframeImplementation(component)
-
-    const componentSchema = getComponentSchema(
-      componentImplementation,
-      content,
-      iframeRuntime,
-      intl
-    )
 
     const shouldEnableSaveButton =
       (this.state.configuration &&
@@ -113,6 +122,12 @@ class ConfigurationList extends Component<Props, State> {
         </div>
       )
     }
+
+    const configurations =
+      (listContentQuery.data &&
+        listContentQuery.data.listContent &&
+        listContentQuery.data.listContent.content) ||
+      []
 
     if (editor.mode === 'layout') {
       return (
@@ -131,11 +146,12 @@ class ConfigurationList extends Component<Props, State> {
     }
 
     if (!this.state.configuration) {
+      const componentTitle =
+        this.state.componentSchema && this.state.componentSchema.title
+
       return (
         <List
-          configurations={
-            (listContentQuery.data && listContentQuery.data.listContent) || []
-          }
+          configurations={configurations}
           editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
@@ -144,7 +160,7 @@ class ConfigurationList extends Component<Props, State> {
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
-          title={componentSchema.title}
+          title={componentTitle}
         />
       )
     }
@@ -158,6 +174,7 @@ class ConfigurationList extends Component<Props, State> {
       <ContentEditor
         condition={this.state.condition}
         configuration={this.state.configuration}
+        contentSchema={this.state.contentSchema}
         editor={editor}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
@@ -339,7 +356,9 @@ class ConfigurationList extends Component<Props, State> {
       content,
       iframeRuntime,
       intl,
-      true
+      editor.messages,
+      true,
+      this.state.contentSchema
     )
 
     const contentId =
@@ -445,18 +464,20 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleFormChange = (event: IChangeEvent) => {
-    const {
-      formMeta,
-      intl,
-      iframeRuntime,
-      editor: { editTreePath },
-    } = this.props
+    const { formMeta, intl, iframeRuntime, editor } = this.props
 
     if (!formMeta.wasModified) {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(editTreePath, event, intl, iframeRuntime, true)
+    updateExtensionFromForm(
+      editor,
+      event,
+      intl,
+      iframeRuntime,
+      true,
+      this.state.contentSchema
+    )
   }
 
   private handleQuit = (event?: Event) => {
@@ -485,6 +506,36 @@ class ConfigurationList extends Component<Props, State> {
     }
 
     return configurationPageContext.id !== iframeRuntimePageContext.id
+  }
+
+  private updateComponentAndContentSchemas() {
+    const {
+      editor,
+      iframeRuntime,
+      intl,
+      listContent: { data },
+    } = this.props
+
+    const schemaJSON = data && data.listContent && data.listContent.schemaJSON
+
+    const contentSchema: JSONSchema6 = schemaJSON && JSON.parse(schemaJSON)
+
+    const { component, content } = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
+
+    const componentImplementation = getIframeImplementation(component)
+
+    const componentSchema = getComponentSchema(
+      componentImplementation,
+      content,
+      iframeRuntime,
+      intl,
+      contentSchema
+    )
+
+    this.setState({ componentSchema, contentSchema })
   }
 }
 

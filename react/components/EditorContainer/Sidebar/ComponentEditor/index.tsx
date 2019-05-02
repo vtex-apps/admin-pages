@@ -15,6 +15,7 @@ import { getUiSchema } from './utils'
 
 interface CustomProps {
   after?: JSX.Element
+  contentSchema?: JSONSchema6
   data: object
   editor: EditorContext
   iframeRuntime: RenderContext
@@ -30,6 +31,7 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
   after,
+  contentSchema,
   data,
   editor,
   intl,
@@ -54,7 +56,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
     componentImplementation,
     extension[isContent ? 'content' : 'props'],
     iframeRuntime,
-    intl
+    intl,
+    contentSchema
   )
 
   const schema = {
@@ -78,7 +81,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
-              iframeRuntime,
+              addMessages: editor.addMessages,
               isLayoutMode: editor.mode === 'layout',
             }}
             formData={data}

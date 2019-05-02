@@ -11,7 +11,10 @@ export interface ListContentVariables {
 }
 
 export interface ListContentData {
-  listContent?: ExtensionConfiguration[]
+  listContent?: {
+    content?: ExtensionConfiguration[]
+    schemaJSON: string
+  }
 }
 
 export type ListContentQueryResult = QueryResult<

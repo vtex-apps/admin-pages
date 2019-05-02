@@ -1,3 +1,4 @@
+import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
@@ -10,6 +11,7 @@ import LabelEditor from './LabelEditor'
 interface Props {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
+  contentSchema?: JSONSchema6
   editor: EditorContext
   iframeRuntime: RenderContext
   isLoading: boolean
@@ -28,6 +30,7 @@ interface Props {
 const ContentEditor: React.FunctionComponent<Props> = ({
   condition,
   configuration,
+  contentSchema,
   editor,
   iframeRuntime,
   isSitewide,
@@ -68,6 +71,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
           ) : null}
         </Fragment>
       }
+      contentSchema={contentSchema}
       data={content}
       editor={editor}
       iframeRuntime={iframeRuntime}

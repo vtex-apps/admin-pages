@@ -7,7 +7,7 @@ import BaseInput from './BaseInput'
 type Props = InjectedIntlProps & WidgetProps
 
 const IOMessage: React.FunctionComponent<Props> = props => {
-  const i18nKey = props.value
+  const [i18nKey] = React.useState(props.value)
 
   const [value, setValue] = React.useState(
     props.intl.messages[i18nKey]
@@ -16,7 +16,7 @@ const IOMessage: React.FunctionComponent<Props> = props => {
   )
 
   const handleChange = (newValue: string) => {
-    props.formContext.iframeRuntime.updateMessages({
+    props.formContext.addMessages({
       [i18nKey]: newValue,
     })
 

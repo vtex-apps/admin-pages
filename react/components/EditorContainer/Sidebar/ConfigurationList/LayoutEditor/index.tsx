@@ -68,18 +68,13 @@ class LayoutEditor extends Component<Props> {
   }
 
   private handleChange = (event: IChangeEvent) => {
-    const {
-      editor: { editTreePath },
-      formMeta,
-      intl,
-      iframeRuntime,
-    } = this.props
+    const { editor, formMeta, intl, iframeRuntime } = this.props
 
     if (!formMeta.wasModified) {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(editTreePath, event, intl, iframeRuntime)
+    updateExtensionFromForm(editor, event, intl, iframeRuntime)
   }
 
   private handleDiscard = () => {

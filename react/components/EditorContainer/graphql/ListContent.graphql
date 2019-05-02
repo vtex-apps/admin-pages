@@ -10,22 +10,25 @@ query ListContent(
     template: $template
     treePath: $treePath
   ) {
-    condition {
-      allMatches
-      id
-      pageContext {
+    content {
+      condition {
+        allMatches
         id
-        type
+        pageContext {
+          id
+          type
+        }
+        statements {
+          objectJSON
+          subject
+          verb
+        }
       }
-      statements {
-        objectJSON
-        subject
-        verb
-      }
+      contentId
+      contentJSON
+      label
+      origin
     }
-    contentId
-    contentJSON
-    label
-    origin
+    schemaJSON
   }
 }

@@ -141,10 +141,12 @@ declare global {
 
   interface EditorContext extends EditorConditionSection {
     allMatches: boolean
+    addMessages: MessagesAdder
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
     isLoading: boolean
+    messages: RenderRuntime['messages']
     mode: EditorMode
     viewport: Viewport
     setDevice: (device: ConfigurationDevice) => void
@@ -266,11 +268,14 @@ declare global {
 
   type UISchema = any
 
+  type MessagesAdder = (messages: RenderRuntime['messages']) => void
+
   interface Window {
     __provideRuntime?: (
       runtime: RenderContext,
-      messages?: Record<string, string>,
-      shouldUpdateRuntime?: boolean
+      messages: Record<string, string>,
+      shouldUpdateRuntime: boolean,
+      addMessages: MessagesAdder
     ) => void
   }
 

@@ -1,4 +1,14 @@
-import { filter, has, keys, map, merge, pick, reduce } from 'ramda'
+import { JSONSchema6 } from 'json-schema'
+import {
+  filter,
+  has,
+  keys,
+  map,
+  merge,
+  mergeDeepRight,
+  pick,
+  reduce,
+} from 'ramda'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { global, RenderComponent, Window } from 'vtex.render-runtime'
 
@@ -14,7 +24,8 @@ export const getComponentSchema = (
   component: RenderComponent<any, any> | null,
   propsOrContent: object,
   runtime: RenderContext,
-  intl: ReactIntl.InjectedIntl
+  intl: ReactIntl.InjectedIntl,
+  contentSchema?: JSONSchema6
 ): ComponentSchema => {
   const componentSchema: ComponentSchema = (component &&
     (component.schema ||
@@ -92,7 +103,13 @@ export const getComponentSchema = (
     return merge(schema, translatedSchema)
   }
 
-  return traverseAndTranslate(componentSchema)
+  const runtimeSchema = traverseAndTranslate(componentSchema)
+
+  if (!contentSchema) {
+    return runtimeSchema
+  }
+
+  return mergeDeepRight(runtimeSchema, contentSchema)
 }
 
 export const getExtension = (
@@ -161,7 +178,9 @@ export const getSchemaPropsOrContent = (
   propsOrContent: object,
   runtime: RenderContext,
   intl: ReactIntl.InjectedIntl,
-  isContent: boolean = false
+  messages: EditorContext['messages'],
+  isContent: boolean = false,
+  contentSchema?: JSONSchema6
 ) => {
   if (!component) {
     return null
@@ -189,6 +208,8 @@ export const getSchemaPropsOrContent = (
                       properties[key].properties,
                       prevPropsOrContent[key]
                     )
+                  : properties[key].format === 'IOMessage'
+                  ? messages[prevPropsOrContent[key]]
                   : prevPropsOrContent[key],
             })
           : nextPropsOrContent,
@@ -200,20 +221,24 @@ export const getSchemaPropsOrContent = (
     component,
     propsOrContent,
     runtime,
-    intl
+    intl,
+    contentSchema
   )
 
   return getPropsOrContentFromSchema(componentSchema.properties, propsOrContent)
 }
 
 export const updateExtensionFromForm = (
-  editTreePath: EditorContext['editTreePath'],
+  editor: EditorContext,
   event: IChangeEvent,
   intl: ReactIntl.InjectedIntl,
   runtime: RenderContext,
-  isContent?: boolean
+  isContent?: boolean,
+  contentSchema?: JSONSchema6
 ) => {
-  const extension = editTreePath ? runtime.extensions[editTreePath] : null
+  const extension = editor.editTreePath
+    ? runtime.extensions[editor.editTreePath]
+    : null
   const component = extension ? extension.component : null
   const componentImplementation = getIframeImplementation(component)
 
@@ -222,11 +247,13 @@ export const updateExtensionFromForm = (
     event.formData,
     runtime,
     intl,
-    isContent
+    editor.messages,
+    isContent,
+    contentSchema
   )
 
-  runtime.updateExtension(editTreePath as string, {
-    ...runtime.extensions[editTreePath!],
+  runtime.updateExtension(editor.editTreePath as string, {
+    ...runtime.extensions[editor.editTreePath!],
     [isContent ? 'content' : 'props']: propsOrContent,
   })
 }
