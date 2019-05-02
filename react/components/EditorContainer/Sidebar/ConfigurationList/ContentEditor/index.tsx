@@ -59,7 +59,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       after={
         <Fragment>
           <div className="pt5 ph5 bt bw1 b--light-silver">
-            <LabelEditor onChange={onLabelChange} value={label} />
+            <LabelEditor onChange={onLabelChange} value={label || ''} />
           </div>
           {!isDefault ? (
             <ConditionControls
