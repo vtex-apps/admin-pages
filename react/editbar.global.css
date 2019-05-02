@@ -1,21 +1,11 @@
 @import '~react-select/dist/react-select.css';
 
-html,
-body {
-  height: 100%;
-}
-
 .track-1 {
   letter-spacing: 0.2px;
 }
 
 .min-h-2 {
   min-height: 2rem;
-}
-
-.render-provider {
-  height: 100%;
-  background-color: #fff;
 }
 
 .editor-provider {
@@ -27,9 +17,9 @@ body {
 }
 
 .shadow-editor {
-  -webkit-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.20);
-  -moz-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.20);
-  box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.20);
+  -webkit-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
 }
 
 .form-group {
