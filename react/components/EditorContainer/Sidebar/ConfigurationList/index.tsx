@@ -340,7 +340,7 @@ class ConfigurationList extends Component<Props, State> {
     }
 
     const blockId = path<string>(
-      ['extensions', iframeRuntime.page, 'blockId'],
+      ['extensions', editor.editTreePath || '', 'blockId'],
       iframeRuntime
     )
 
