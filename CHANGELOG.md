@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Passing `blockId` on `SaveContent` mutation.
+
 ## [3.5.1] - 2019-05-02
 
 ### Removed
