@@ -6,6 +6,7 @@ interface SaveContentData {
 }
 
 interface SaveContentVariables {
+  blockId?: string
   configuration: Omit<ExtensionConfiguration, 'contentId'> & {
     contentId: string | null
   }

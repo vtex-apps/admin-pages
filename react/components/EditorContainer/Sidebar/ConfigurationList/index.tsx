@@ -1,4 +1,4 @@
-import { clone } from 'ramda'
+import { clone, path } from 'ramda'
 import React, { Component } from 'react'
 import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
@@ -339,11 +339,17 @@ class ConfigurationList extends Component<Props, State> {
         (this.state.configuration && this.state.configuration.origin) || null,
     }
 
+    const blockId = path<string>(
+      ['extensions', editor.editTreePath || '', 'blockId'],
+      iframeRuntime
+    )
+
     formMeta.toggleLoading()
 
     try {
       await saveContent({
         variables: {
+          blockId,
           configuration,
           template,
           treePath,
