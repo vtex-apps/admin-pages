@@ -1,8 +1,10 @@
 import React from 'react'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
+import { formatIOMessage } from 'vtex.native-types'
 import { Input } from 'vtex.styleguide'
 
-interface Props extends WidgetProps {
+interface Props extends InjectedIntlProps, WidgetProps {
   label: string
   max?: number
   min?: number
@@ -10,46 +12,35 @@ interface Props extends WidgetProps {
   type?: string
 }
 
-const BaseInput: React.FunctionComponent<Props> = ({
-  autofocus,
-  disabled,
-  id,
-  label,
-  max,
-  min,
-  onBlur,
-  onChange,
-  onFocus,
-  options,
-  placeholder,
-  rawErrors,
-  readonly,
-  required,
-  schema,
-  type,
-  value,
-}) => {
+const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
+  const {
+    autofocus,
+    disabled,
+    id,
+    intl,
+    label,
+    max,
+    min,
+    onBlur,
+    onFocus,
+    options,
+    placeholder,
+    rawErrors,
+    readonly,
+    required,
+    schema,
+    value,
+  } = props
+
   const schemaType = schema.type === 'number' ? 'number' : 'text'
 
-  const inputType = (options as any).inputType || type || schemaType
+  const type = (options as any).inputType || props.type || schemaType
 
   const currentError = rawErrors && rawErrors[0]
 
-  const handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (onBlur) {
-      onBlur(id, event.target.value)
-    }
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value || '')
-  }
-
-  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (onFocus) {
-      onFocus(id, event.target.value)
-    }
-  }
+  const onChange = ({
+    target: { value: inputValue },
+  }: React.ChangeEvent<HTMLInputElement>) => props.onChange(inputValue || '')
 
   return (
     <Input
@@ -58,17 +49,25 @@ const BaseInput: React.FunctionComponent<Props> = ({
       error={!!currentError}
       errorMessage={currentError}
       helpText={schema.description}
-      label={label}
+      label={formatIOMessage({ id: label, intl })}
       max={max && `${max}`}
       min={min && `${min}`}
-      onBlur={handleBlur}
-      onChange={handleChange}
-      onFocus={handleFocus}
+      onBlur={
+        onBlur &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onBlur as any)(id, event.target.value))
+      }
+      onChange={onChange}
+      onFocus={
+        onFocus &&
+        ((event: React.ChangeEvent<HTMLInputElement>) =>
+          (onFocus as any)(id, event.target.value))
+      }
       placeholder={placeholder}
       readOnly={readonly || (schema as any).readonly}
       required={required}
-      type={inputType}
-      value={value ? `${value}` : ''}
+      type={type}
+      value={value && `${value}`}
     />
   )
 }
@@ -82,4 +81,4 @@ BaseInput.defaultProps = {
   required: false,
 }
 
-export default BaseInput
+export default injectIntl(BaseInput)
