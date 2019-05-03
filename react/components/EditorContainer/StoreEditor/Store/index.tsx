@@ -14,7 +14,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
         <FormattedMessage id="admin/pages.editor.store.settings.title" />
       </div>
       <div className="flex">
-        <Tabs>
+        <Tabs sticky>
           <Tab
             active={activeTab === 'general'}
             onClick={() => setActiveTab('general')}
