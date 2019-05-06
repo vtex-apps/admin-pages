@@ -2,7 +2,7 @@ import { RouteFormData } from 'pages'
 import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ConditionsProps,
@@ -23,7 +23,7 @@ import {
   getRemoveConditionalTemplateState,
   getValidateFormState,
 } from './stateHandlers'
-import { FormErrors, SaveRouteVariables } from './typings'
+import { FormErrors } from './typings'
 
 import { OperationsResults } from './Operations'
 
@@ -47,6 +47,25 @@ export interface State {
   isInfoEditable: boolean
   formErrors: FormErrors
 }
+
+const messages = defineMessages({
+  deleteError: {
+    defaultMessage: 'Error: route could not be deleted.',
+    id: 'admin/pages.admin.pages.form.delete.error',
+  },
+  deleteSuccess: {
+    defaultMessage: 'Success',
+    id: 'admin/pages.admin.pages.form.delete.success',
+  },
+  saveError: {
+    defaultMessage: 'Error: route could not be saved.',
+    id: 'admin/pages.admin.pages.form.save.error',
+  },
+  saveSuccess: {
+    defaultMessage: 'Success',
+    id: 'admin/pages.admin.pages.form.save.success',
+  },
+})
 
 class FormContainer extends Component<Props, State> {
   public static contextTypes = {
@@ -176,9 +195,7 @@ class FormContainer extends Component<Props, State> {
 
         showToast({
           horizontalPosition: 'right',
-          message: intl.formatMessage({
-            id: 'admin/pages.admin.pages.form.delete.success',
-          }),
+          message: intl.formatMessage(messages.deleteSuccess),
         })
 
         onExit()
@@ -188,9 +205,7 @@ class FormContainer extends Component<Props, State> {
 
           showToast({
             horizontalPosition: 'right',
-            message: intl.formatMessage({
-              id: 'admin/pages.admin.pages.form.delete.error',
-            }),
+            message: intl.formatMessage(messages.deleteError),
           })
         })
       }
@@ -254,9 +269,7 @@ class FormContainer extends Component<Props, State> {
 
           showToast({
             horizontalPosition: 'right',
-            message: intl.formatMessage({
-              id: 'admin/pages.admin.pages.form.save.success',
-            }),
+            message: intl.formatMessage(messages.saveSuccess),
           })
 
           onExit()
@@ -266,9 +279,7 @@ class FormContainer extends Component<Props, State> {
 
             showToast({
               horizontalPosition: 'right',
-              message: intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.error',
-              }),
+              message: intl.formatMessage(messages.saveError),
             })
           })
         }

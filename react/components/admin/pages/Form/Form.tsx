@@ -43,6 +43,10 @@ interface CustomProps extends TemplateSectionProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
+  detailsTitle: {
+    defaultMessage: 'Page details',
+    id: 'admin/pages.admin.pages.form.details.title',
+  },
   fieldLogin: {
     defaultMessage: 'Requires authentication',
     id: 'admin/pages.admin.pages.form.field.login',

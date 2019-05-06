@@ -1,4 +1,5 @@
 import React from 'react'
+import { defineMessages, FormattedMessage } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 import {
   ConditionalTemplatePicker,
@@ -31,6 +32,17 @@ export interface ConditionalTemplateSectionProps
 
 type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
 
+const messages = defineMessages({
+  defaultFieldLabel: {
+    defaultMessage: 'Default',
+    id: 'admin/pages.admin.pages.form.templates.field.default',
+  },
+  templateTitle: {
+    defaultMessage: 'Templates',
+    id: 'admin/pages.admin.pages.form.templates.title',
+  },
+})
+
 export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
   detailChangeHandlerGetter,
   formErrors,
@@ -47,9 +59,7 @@ export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
   <React.Fragment>
     <SectionTitle textId="admin/pages.admin.pages.form.templates.title" />
     <Dropdown
-      label={intl.formatMessage({
-        id: 'admin/pages.admin.pages.form.templates.field.default',
-      })}
+      label={intl.formatMessage(messages.defaultFieldLabel)}
       options={templates.map(({ id }) => ({ value: id, label: id }))}
       onChange={detailChangeHandlerGetter('blockId')}
       value={blockId}
@@ -58,14 +68,16 @@ export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
       }
     />
     <h2 className="mt7 f5 normal">
-      {intl.formatMessage({
-        id: 'admin/pages.admin.pages.form.templates.conditional.title',
-      })}
+      <FormattedMessage
+        id="admin/pages.admin.pages.form.templates.conditional.title"
+        defaultMessage="Conditional"
+      />
     </h2>
     <p className="f6 c-muted-2">
-      {intl.formatMessage({
-        id: 'admin/pages.admin.pages.form.templates.conditional.description',
-      })}
+      <FormattedMessage
+        id="admin/pages.admin.pages.form.templates.conditional.description"
+        defaultMessage="Conditional template enables the use of a variant layout to your page. This layout will appear when it matches with the conditions set."
+      />
     </p>
     {pages.map(page => (
       <ConditionalTemplatePicker
@@ -96,9 +108,10 @@ export const ConditionalTemplateSection: React.FunctionComponent<Props> = ({
     >
       <span className="c-action-primary f4 mr2 v-mid">+</span>
       <span className="f6 v-mid">
-        {intl.formatMessage({
-          id: 'admin/pages.admin.pages.form.templates.conditional.addButton',
-        })}
+        <FormattedMessage
+          id="admin/pages.admin.pages.form.templates.conditional.addButton"
+          defaultMessage="Add conditional template"
+        />
       </span>
     </button>
   </React.Fragment>
