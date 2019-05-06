@@ -33,9 +33,13 @@ const messagesToReactIntlFormat = (messages: Message[]) =>
     messages
   )
 
-const reduceP = async <T, K>(fn: (acc: K, item: T) => Promise<K>, intialValue: K, list: T[]) => {
+const reduceP = async <T, K>(
+  fn: (acc: K, item: T) => Promise<K>,
+  intialValue: K,
+  list: T[]
+) => {
   let acc = intialValue
-  for(const item of list) {
+  for (const item of list) {
     acc = await fn(acc, item)
   }
   return acc
@@ -50,14 +54,15 @@ export const editorMessagesFromRuntime = async ({
   const componentNames = keys(components)
   const componentsBatch = splitEvery(MAX_COMPONENTES_PER_QUERY, componentNames)
   const responses = map(
-    (batch) => client.query<Data, Variables>({
-      query: messagesForDomainQuery,
-      variables: {
-        components: batch,
-        domain,
-        renderMajor,
-      },
-    }),
+    batch =>
+      client.query<Data, Variables>({
+        query: messagesForDomainQuery,
+        variables: {
+          components: batch,
+          domain,
+          renderMajor,
+        },
+      }),
     componentsBatch
   )
   const messages = await reduceP(
