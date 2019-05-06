@@ -52,13 +52,12 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
       ? componentImplementation.uiSchema
       : null
 
-  const componentSchema = getComponentSchema(
-    componentImplementation,
-    extension[isContent ? 'content' : 'props'],
-    iframeRuntime,
-    intl,
-    contentSchema
-  )
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema,
+    propsOrContent: extension[isContent ? 'content' : 'props'],
+    runtime: iframeRuntime,
+  })
 
   const schema = {
     ...componentSchema,

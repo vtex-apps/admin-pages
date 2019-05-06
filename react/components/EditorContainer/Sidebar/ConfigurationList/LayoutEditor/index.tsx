@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 
 import { getBlockPath, getRelativeBlocksIds } from '../../../../../utils/blocks'
@@ -11,7 +10,7 @@ import { UpdateBlockMutationFn } from '../../../mutations/UpdateBlock'
 import ComponentEditor from '../../ComponentEditor'
 import { FormMetaContext, ModalContext } from '../../typings'
 
-interface Props extends ReactIntl.InjectedIntlProps {
+interface Props {
   editor: EditorContext
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
@@ -68,13 +67,17 @@ class LayoutEditor extends Component<Props> {
   }
 
   private handleChange = (event: IChangeEvent) => {
-    const { editor, formMeta, intl, iframeRuntime } = this.props
+    const { editor, formMeta, iframeRuntime } = this.props
 
     if (!formMeta.wasModified) {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(editor, event, intl, iframeRuntime)
+    updateExtensionFromForm({
+      data: event,
+      runtime: iframeRuntime,
+      treePath: editor.editTreePath!,
+    })
   }
 
   private handleDiscard = () => {
@@ -152,4 +155,4 @@ class LayoutEditor extends Component<Props> {
   }
 }
 
-export default injectIntl(LayoutEditor)
+export default LayoutEditor
