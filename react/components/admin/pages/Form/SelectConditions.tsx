@@ -10,6 +10,7 @@ import {
 } from 'vtex.styleguide'
 
 import { ConditionFormsData } from 'pages'
+import { messages } from './messages'
 
 interface ComponentProps {
   condition: ConditionFormsData
@@ -32,47 +33,25 @@ class SelectConditions extends React.Component<Props> {
     const translate = (id: string) => intl.formatMessage({ id })
 
     this.labels = {
-      addConditionBtn: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.add-button'
-      ),
-      addNewCondition: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.add-button'
-      ),
-      delete: translate('admin/pages.admin.pages.form.button.delete'),
-      headerPrefix: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.header-prefix'
-      ),
-      headerSufix: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.header-suffix'
-      ),
-      noConditions: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.no-conditions'
-      ),
-      operatorAll: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.operator-all'
-      ),
-      operatorAnd: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.operator-and'
-      ),
-      operatorAny: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.operator-any'
-      ),
-      operatorOr: translate(
-        'admin/pages.admin.pages.form.templates.simple.conditions.operator-or'
-      ),
+      addConditionBtn: intl.formatMessage(messages.addCondition),
+      addNewCondition: intl.formatMessage(messages.addCondition),
+      delete: intl.formatMessage(messages.delete),
+      headerPrefix: intl.formatMessage(messages.headerPrefix),
+      headerSufix: intl.formatMessage(messages.headerSuffix),
+      noConditions: intl.formatMessage(messages.noConditions),
+      operatorAll: intl.formatMessage(messages.operatorAll),
+      operatorAnd: intl.formatMessage(messages.operatorAnd),
+      operatorAny: intl.formatMessage(messages.operatorAny),
+      operatorOr: intl.formatMessage(messages.operatorOr),
     }
 
     this.options = {
       date: {
-        label: translate(
-          'admin/pages.admin.pages.form.templates.simple.conditions.date'
-        ),
+        label: intl.formatMessage(messages.dateLabel),
         unique: true,
         verbs: [
           {
-            label: translate(
-              'admin/pages.admin.pages.form.templates.simple.conditions.date.equals'
-            ),
+            label: intl.formatMessage(messages.dateEquals),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -80,9 +59,7 @@ class SelectConditions extends React.Component<Props> {
             value: 'is',
           },
           {
-            label: translate(
-              'admin/pages.admin.pages.form.templates.simple.conditions.date.range'
-            ),
+            label: intl.formatMessage(messages.dateRange),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerRangeObject,
@@ -90,9 +67,7 @@ class SelectConditions extends React.Component<Props> {
             value: 'between',
           },
           {
-            label: translate(
-              'admin/pages.admin.pages.form.templates.simple.conditions.date.to'
-            ),
+            label: intl.formatMessage(messages.dateTo),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -100,9 +75,7 @@ class SelectConditions extends React.Component<Props> {
             value: 'to',
           },
           {
-            label: translate(
-              'admin/pages.admin.pages.form.templates.simple.conditions.date.from'
-            ),
+            label: intl.formatMessage(messages.dateFrom),
             object: {
               extraParams: {},
               renderFn: this.complexDatePickerObject,
@@ -120,10 +93,9 @@ class SelectConditions extends React.Component<Props> {
         <Conditions
           labels={this.labels}
           options={this.options}
-          subjectPlaceholder={this.props.intl.formatMessage({
-            id:
-              'admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder',
-          })}
+          subjectPlaceholder={this.props.intl.formatMessage(
+            messages.subjectPlaceholder
+          )}
           statements={this.props.condition.statements}
           operator={this.props.operator}
           onChangeOperator={this.handleToggleOperator}
@@ -203,7 +175,10 @@ class SelectConditions extends React.Component<Props> {
           />
         </div>
 
-        <FormattedMessage id="admin/pages.admin.pages.form.templates.simple.conditions.date.range.and">
+        <FormattedMessage
+          id="admin/pages.admin.pages.form.templates.simple.conditions.date.range.and"
+          defaultMessage="and"
+        >
           {message => <div className="mv4 mh3 c-muted-2 b">{message}</div>}
         </FormattedMessage>
 
