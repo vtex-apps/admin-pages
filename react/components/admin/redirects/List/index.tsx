@@ -14,6 +14,7 @@ import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
 
 import CreateButton from './CreateButton'
+import { messages } from './messages'
 
 interface CustomProps {
   from: number
@@ -70,17 +71,16 @@ class List extends Component<Props, State> {
     const items = schema.items
 
     return items.length === 0 ? (
-      <EmptyState
-        title={intl.formatMessage({
-          id: 'admin/pages.admin.redirects.emptyState',
-        })}
-      >
+      <EmptyState title={intl.formatMessage(messages.emptyState)}>
         <div className="pt5 flex flex-column tc">
           <div>
             <CreateButton onClick={this.openNewItem} />
           </div>
           <p className="mv2">
-            {intl.formatMessage({ id: 'admin/pages.admin.redirects.or.text' })}
+            <FormattedMessage
+              id="admin/pages.admin.redirects.or.text"
+              defaultMessage="or"
+            />
           </p>
           <div>
             <ButtonWithIcon
@@ -89,9 +89,10 @@ class List extends Component<Props, State> {
               onClick={openModal}
               size="small"
             >
-              {intl.formatMessage({
-                id: 'admin/pages.admin.redirects.emptyState.upload',
-              })}
+              <FormattedMessage
+                id="admin/pages.admin.redirects.emptyState.upload"
+                defaultMessage="Upload a CSV"
+              />
             </ButtonWithIcon>
           </div>
         </div>
@@ -105,51 +106,27 @@ class List extends Component<Props, State> {
           schema={schema}
           toolbar={{
             density: {
-              buttonLabel: intl.formatMessage({
-                id:
-                  'admin/pages.admin.redirects.table.toolbar.line-density.label',
-              }),
-              highOptionLabel: intl.formatMessage({
-                id:
-                  'admin/pages.admin.redirects.table.toolbar.line-density.high',
-              }),
-              lowOptionLabel: intl.formatMessage({
-                id:
-                  'admin/pages.admin.redirects.table.toolbar.line-density.low',
-              }),
-              mediumOptionLabel: intl.formatMessage({
-                id:
-                  'admin/pages.admin.redirects.table.toolbar.line-density.medium',
-              }),
+              buttonLabel: intl.formatMessage(messages.lineDensityLabel),
+              highOptionLabel: intl.formatMessage(messages.lineDensityHigh),
+              lowOptionLabel: intl.formatMessage(messages.lineDensityLow),
+              mediumOptionLabel: intl.formatMessage(messages.lineDensityMedium),
             },
             download: {
               handleCallback: this.handleDownload,
-              label: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.export',
-              }),
+              label: intl.formatMessage(messages.download),
             },
             fields: {
-              hideAllLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.fields.hide-all',
-              }),
-              label: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.fields.label',
-              }),
-              showAllLabel: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.fields.show-all',
-              }),
+              hideAllLabel: intl.formatMessage(messages.hideAll),
+              label: intl.formatMessage(messages.fieldsLabel),
+              showAllLabel: intl.formatMessage(messages.showAll),
             },
             newLine: {
               handleCallback: this.openNewItem,
-              label: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.button.create',
-              }),
+              label: intl.formatMessage(messages.newLine),
             },
             upload: {
               handleCallback: this.handleUpload,
-              label: intl.formatMessage({
-                id: 'admin/pages.admin.redirects.table.toolbar.import',
-              }),
+              label: intl.formatMessage(messages.upload),
             },
           }}
         />
@@ -165,35 +142,29 @@ class List extends Component<Props, State> {
       properties: {
         // tslint:disable:object-literal-sort-keys
         from: {
-          title: intl.formatMessage({
-            id: 'admin/pages.admin.redirects.table.from',
-          }),
+          title: intl.formatMessage(messages.tableFrom),
           type: 'string',
         },
         to: {
-          title: intl.formatMessage({
-            id: 'admin/pages.admin.redirects.table.to',
-          }),
+          title: intl.formatMessage(messages.tableTo),
           type: 'string',
         },
         type: {
-          title: intl.formatMessage({
-            id: 'admin/pages.admin.redirects.table.type',
-          }),
+          title: intl.formatMessage(messages.tableType),
           type: 'string',
           cellRenderer: (cell: { cellData: string }) =>
-            cell.cellData ? (
+            cell.cellData && cell.cellData === 'temporary' ? (
               <FormattedMessage
-                id={
-                  cell.cellData === 'temporary'
-                    ? 'admin/pages.admin.redirects.table.type.temporary'
-                    : 'admin/pages.admin.redirects.table.type.permanent'
-                }
+                id="admin/pages.admin.redirects.table.type.temporary"
+                defaultMessage="Temporary (302)"
               >
                 {text => <span className="ph4">{text}</span>}
               </FormattedMessage>
             ) : (
-              <FormattedMessage id="admin/pages.admin.redirects.table.type.permanent">
+              <FormattedMessage
+                id="admin/pages.admin.redirects.table.type.permanent"
+                defaultMessage="Permanent (301)"
+              >
                 {text => <span className="ph4 silver">{text}</span>}
               </FormattedMessage>
             ),
@@ -205,13 +176,14 @@ class List extends Component<Props, State> {
                 {getFormattedLocalizedDate(cell.cellData, locale)}
               </span>
             ) : (
-              <FormattedMessage id="admin/pages.admin.redirects.table.endDate.default">
+              <FormattedMessage
+                id="admin/pages.admin.redirects.table.endDate.default"
+                defaultMessage="not set"
+              >
                 {text => <span className="ph4 silver">{text}</span>}
               </FormattedMessage>
             ),
-          title: intl.formatMessage({
-            id: 'admin/pages.admin.redirects.table.endDate.title',
-          }),
+          title: intl.formatMessage(messages.endDateTitle),
           type: 'string',
         },
         // tslint:enable:object-literal-sort-keys
