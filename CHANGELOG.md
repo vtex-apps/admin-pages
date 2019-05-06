@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Split query to get messages in case there are too many components.
+
 ## [3.6.0] - 2019-05-03
 
 ### Added
