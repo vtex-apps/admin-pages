@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { formatStatements } from '../../../../../../utils/conditions'
@@ -17,7 +17,7 @@ interface Props {
   pageContext: RenderRuntime['route']['pageContext']
 }
 
-class ConditionControls extends Component<Props> {
+class ConditionControls extends PureComponent<Props> {
   public render() {
     const { condition, isSitewide, pageContext } = this.props
 
