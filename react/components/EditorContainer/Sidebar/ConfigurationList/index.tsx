@@ -1,42 +1,42 @@
 import { JSONSchema6 } from 'json-schema'
 import { clone, path } from 'ramda'
-import React, { Component } from 'react'
+import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
-import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
-
-import { ListContentQueryResult } from '../../queries/ListContent'
-
-import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
-import { SaveContentMutationFn } from '../../mutations/SaveContent'
+import { RenderComponent } from 'vtex.render-runtime'
+import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import {
   getComponentSchema,
   getExtension,
   getIframeImplementation,
   getSchemaPropsOrContent,
+  getSchemaPropsOrContentFromRuntime,
   updateExtensionFromForm,
 } from '../../../../utils/components'
+import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
+import { SaveContentMutationFn } from '../../mutations/SaveContent'
+import {
+  ListContentData,
+  ListContentQueryResult,
+} from '../../queries/ListContent'
 import { FormMetaContext, ModalContext } from '../typings'
-
-import ContentEditor from './ContentEditor'
-import LayoutEditor from './LayoutEditor'
-import List from './List'
-
-import UpdateBlockMutation from '../../mutations/UpdateBlock'
 import { getIsDefaultContent } from '../utils'
 
-const NEW_CONFIGURATION_ID = 'new'
+import { NEW_CONFIGURATION_ID } from './consts'
+import ContentEditor from './ContentEditor'
+import List from './List'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
   editor: EditorContext
-  listContent: ListContentQueryResult
+  formMeta: FormMetaContext
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   isSitewide: boolean
-  formMeta: FormMetaContext
   modal: ModalContext
+  queryData?: ListContentData
+  refetch: ListContentQueryResult['refetch']
   saveContent: SaveContentMutationFn
   showToast: ToastConsumerFunctions['showToast']
   template: string
@@ -44,10 +44,10 @@ interface Props {
 }
 
 interface State {
-  componentSchema?: ComponentSchema
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
-  contentSchema?: JSONSchema6
+  formData?: object
+  messages?: RenderRuntime['messages']
   newLabel?: string
 }
 
@@ -70,11 +70,52 @@ defineMessages({
   },
 })
 
-class ConfigurationList extends Component<Props, State> {
+class ConfigurationList extends React.Component<Props, State> {
+  private component: Extension['component']
+  private componentImplementation: RenderComponent<any, any> | null
+  private componentSchema: ComponentSchema
+  private configurations: ExtensionConfiguration[]
+  private contentSchema: JSONSchema6
+  private defaultFormData: object
+
   constructor(props: Props) {
     super(props)
 
-    props.modal.setHandlers({
+    const { editor, iframeRuntime, modal, queryData } = props
+
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
+
+    this.component = extension.component
+
+    this.componentImplementation = getIframeImplementation(this.component)
+
+    const listContent = queryData && queryData.listContent
+
+    this.contentSchema = listContent && JSON.parse(listContent.schemaJSON)
+
+    this.componentSchema = getComponentSchema({
+      component: this.componentImplementation,
+      contentSchema: this.contentSchema,
+      propsOrContent: extension.content,
+      runtime: iframeRuntime,
+    })
+
+    this.defaultFormData =
+      getSchemaPropsOrContentFromRuntime({
+        component: this.componentImplementation,
+        contentSchema: this.contentSchema,
+        isContent: true,
+        messages: editor.messages,
+        propsOrContent: {},
+        runtime: iframeRuntime,
+      }) || {}
+
+    this.configurations = (listContent && listContent.content) || []
+
+    modal.setHandlers({
       actionHandler: this.handleConfigurationSave,
       cancelHandler: this.handleConfigurationDiscard,
     })
@@ -84,30 +125,8 @@ class ConfigurationList extends Component<Props, State> {
     }
   }
 
-  public componentDidMount() {
-    const {
-      listContent: { data },
-    } = this.props
-
-    if (data && data.listContent && data.listContent.schemaJSON) {
-      this.updateComponentAndContentSchemas()
-    }
-  }
-
-  public componentDidUpdate(prevProps: Props) {
-    if (
-      prevProps.listContent.loading &&
-      !this.props.listContent.loading &&
-      !this.state.contentSchema
-    ) {
-      this.updateComponentAndContentSchemas()
-    }
-  }
-
   public render() {
-    const { editor, formMeta, modal, iframeRuntime } = this.props
-
-    const listContentQuery = this.props.listContent
+    const { editor, formMeta, iframeRuntime, modal } = this.props
 
     const shouldEnableSaveButton =
       (this.state.configuration &&
@@ -115,43 +134,10 @@ class ConfigurationList extends Component<Props, State> {
           this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
       false
 
-    if (listContentQuery.loading) {
-      return (
-        <div className="mt5 flex justify-center">
-          <Spinner />
-        </div>
-      )
-    }
-
-    const configurations =
-      (listContentQuery.data &&
-        listContentQuery.data.listContent &&
-        listContentQuery.data.listContent.content) ||
-      []
-
-    if (editor.mode === 'layout') {
-      return (
-        <UpdateBlockMutation>
-          {updateBlock => (
-            <LayoutEditor
-              editor={editor}
-              formMeta={formMeta}
-              iframeRuntime={iframeRuntime}
-              modal={modal}
-              updateBlock={updateBlock}
-            />
-          )}
-        </UpdateBlockMutation>
-      )
-    }
-
     if (!this.state.configuration) {
-      const componentTitle =
-        this.state.componentSchema && this.state.componentSchema.title
-
       return (
         <List
-          configurations={configurations}
+          configurations={this.configurations}
           editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
@@ -160,7 +146,7 @@ class ConfigurationList extends Component<Props, State> {
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
-          title={componentTitle}
+          title={this.componentSchema.title}
         />
       )
     }
@@ -174,8 +160,9 @@ class ConfigurationList extends Component<Props, State> {
       <ContentEditor
         condition={this.state.condition}
         configuration={this.state.configuration}
-        contentSchema={this.state.contentSchema}
+        contentSchema={this.contentSchema}
         editor={editor}
+        formMeta={formMeta}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         isSitewide={this.props.isSitewide}
@@ -194,17 +181,21 @@ class ConfigurationList extends Component<Props, State> {
     )
   }
 
-  private getDefaultCondition = () => ({
-    allMatches: true,
-    id: '',
-    pageContext: this.props.isSitewide
-      ? ({
-          id: '*',
-          type: '*',
-        } as ExtensionConfiguration['condition']['pageContext'])
-      : this.props.iframeRuntime.route.pageContext,
-    statements: [],
-  })
+  private getDefaultCondition = () => {
+    const { iframeRuntime, isSitewide } = this.props
+
+    return {
+      allMatches: true,
+      id: '',
+      pageContext: isSitewide
+        ? ({
+            id: '*',
+            type: '*',
+          } as ExtensionConfiguration['condition']['pageContext'])
+        : iframeRuntime.route.pageContext,
+      statements: [],
+    }
+  }
 
   private getDefaultConfiguration = (): ExtensionConfiguration => ({
     condition: this.getDefaultCondition(),
@@ -216,6 +207,8 @@ class ConfigurationList extends Component<Props, State> {
   private handleConditionChange = (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => {
+    const { formMeta } = this.props
+
     this.setState(prevState => ({
       ...prevState,
       condition: {
@@ -224,7 +217,9 @@ class ConfigurationList extends Component<Props, State> {
       },
     }))
 
-    this.props.formMeta.setWasModified(true)
+    if (!formMeta.wasModified) {
+      formMeta.setWasModified(true)
+    }
   }
 
   private handleConfigurationChange = (
@@ -232,27 +227,19 @@ class ConfigurationList extends Component<Props, State> {
   ) => {
     const { editor, iframeRuntime } = this.props
 
-    const extension = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
+    this.setState({
+      condition: newConfiguration.condition,
+      configuration: newConfiguration,
+    })
 
-    this.setState(
-      {
-        condition: newConfiguration.condition,
-        configuration: newConfiguration,
-      },
-      () => {
-        iframeRuntime.updateExtension(editor.editTreePath!, {
-          ...iframeRuntime.extensions[editor.editTreePath!],
-          component: extension.component,
-          content:
-            newConfiguration.contentId === NEW_CONFIGURATION_ID
-              ? extension.content
-              : JSON.parse(newConfiguration.contentJSON),
-        })
-      }
-    )
+    iframeRuntime.updateExtension(editor.editTreePath!, {
+      ...iframeRuntime.extensions[editor.editTreePath!],
+      component: this.component,
+      content:
+        newConfiguration.contentId === NEW_CONFIGURATION_ID
+          ? this.defaultFormData
+          : JSON.parse(newConfiguration.contentJSON),
+    })
   }
 
   private handleConfigurationClose = () => {
@@ -261,15 +248,18 @@ class ConfigurationList extends Component<Props, State> {
     if (formMeta.wasModified) {
       modal.open()
     } else {
-      this.setState({ configuration: undefined, newLabel: undefined }, () => {
-        if (modal.isOpen) {
-          modal.close()
-        }
+      this.setState(
+        { configuration: undefined, messages: undefined, newLabel: undefined },
+        () => {
+          if (modal.isOpen) {
+            modal.close()
+          }
 
-        iframeRuntime.updateRuntime({
-          conditions: editor.activeConditions,
-        })
-      })
+          iframeRuntime.updateRuntime({
+            conditions: editor.activeConditions,
+          })
+        }
+      )
     }
   }
 
@@ -279,54 +269,61 @@ class ConfigurationList extends Component<Props, State> {
 
   private handleConfigurationDiscard = () => {
     this.props.formMeta.setWasModified(false, () => {
+      if (this.state.messages) {
+        this.props.editor.addMessages(this.state.messages)
+      }
+
       this.handleConfigurationClose()
     })
   }
 
   private handleConfigurationLabelChange = (event: Event) => {
+    const { formMeta } = this.props
+
     if (event.target instanceof HTMLInputElement) {
       this.setState({ newLabel: event.target.value })
 
-      this.props.formMeta.setWasModified(true)
+      if (!formMeta.wasModified) {
+        formMeta.setWasModified(true)
+      }
     }
   }
 
-  private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
-    const { editor, iframeRuntime } = this.props
-    const { configuration: currConfiguration } = this.state
+  private handleConfigurationOpen = (
+    newConfiguration: ExtensionConfiguration
+  ) => {
+    const { editor, iframeRuntime, modal } = this.props
 
     const originalBlock = clone(iframeRuntime.extensions[editor.editTreePath!])
 
     if (
-      !currConfiguration ||
-      currConfiguration.contentId !== configuration.contentId
+      !this.state.configuration ||
+      this.state.configuration.contentId !== newConfiguration.contentId
     ) {
-      this.handleConfigurationChange(configuration)
+      this.handleConfigurationChange(newConfiguration)
     }
 
-    this.props.modal.setHandlers({
+    const componentImplementation = getIframeImplementation(this.component)
+
+    const content = getSchemaPropsOrContentFromRuntime({
+      component: componentImplementation,
+      contentSchema: this.contentSchema,
+      isContent: true,
+      messages: editor.messages,
+      propsOrContent: JSON.parse(newConfiguration.contentJSON),
+      runtime: iframeRuntime,
+    })
+
+    modal.setHandlers({
       closeCallbackHandler: () => {
         iframeRuntime.updateExtension(editor.editTreePath!, originalBlock)
       },
     })
 
-    this.setState({ configuration })
-  }
-
-  private refetchConfigurations = async () => {
-    const {
-      editor,
-      iframeRuntime,
-      listContent,
-      template,
-      treePath,
-    } = this.props
-
-    return await listContent.refetch({
-      blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
-      pageContext: iframeRuntime.route.pageContext,
-      template,
-      treePath,
+    this.setState({
+      configuration: newConfiguration,
+      formData: content || {},
+      messages: editor.messages,
     })
   }
 
@@ -334,7 +331,6 @@ class ConfigurationList extends Component<Props, State> {
     const {
       editor,
       formMeta,
-      intl,
       modal,
       iframeRuntime,
       saveContent,
@@ -342,24 +338,12 @@ class ConfigurationList extends Component<Props, State> {
       treePath,
     } = this.props
 
-    const { component, content = {} } = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
-
-    const componentImplementation = component
-      ? getIframeImplementation(component)
-      : null
-
-    const pickedContent = getSchemaPropsOrContent(
-      componentImplementation,
-      content,
-      iframeRuntime,
-      intl,
-      editor.messages,
-      true,
-      this.state.contentSchema
-    )
+    const content = getSchemaPropsOrContent({
+      isContent: true,
+      messages: editor.messages,
+      properties: this.componentSchema.properties,
+      propsOrContent: this.state.formData,
+    })
 
     const contentId =
       this.state.configuration!.contentId === NEW_CONFIGURATION_ID
@@ -375,7 +359,7 @@ class ConfigurationList extends Component<Props, State> {
       ...this.state.configuration,
       condition: this.state.condition,
       contentId,
-      contentJSON: JSON.stringify(pickedContent),
+      contentJSON: JSON.stringify(content),
       label,
       origin:
         (this.state.configuration && this.state.configuration.origin) || null,
@@ -401,7 +385,11 @@ class ConfigurationList extends Component<Props, State> {
 
       await this.refetchConfigurations()
 
-      formMeta.toggleLoading(this.handleConfigurationDiscard)
+      formMeta.toggleLoading(() => {
+        this.props.formMeta.setWasModified(false, () => {
+          this.handleConfigurationClose()
+        })
+      })
     } catch (err) {
       formMeta.toggleLoading(() => {
         if (modal.isOpen) {
@@ -464,20 +452,22 @@ class ConfigurationList extends Component<Props, State> {
   }
 
   private handleFormChange = (event: IChangeEvent) => {
-    const { formMeta, intl, iframeRuntime, editor } = this.props
+    const { formMeta, iframeRuntime, editor } = this.props
 
     if (!formMeta.wasModified) {
       formMeta.setWasModified(true)
     }
 
-    updateExtensionFromForm(
-      editor,
-      event,
-      intl,
-      iframeRuntime,
-      true,
-      this.state.contentSchema
-    )
+    if (event.formData) {
+      this.setState({ formData: event.formData })
+
+      updateExtensionFromForm({
+        data: event.formData,
+        isContent: true,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath!,
+      })
+    }
   }
 
   private handleQuit = (event?: Event) => {
@@ -508,34 +498,15 @@ class ConfigurationList extends Component<Props, State> {
     return configurationPageContext.id !== iframeRuntimePageContext.id
   }
 
-  private updateComponentAndContentSchemas() {
-    const {
-      editor,
-      iframeRuntime,
-      intl,
-      listContent: { data },
-    } = this.props
+  private refetchConfigurations = async () => {
+    const { editor, iframeRuntime, refetch, template, treePath } = this.props
 
-    const schemaJSON = data && data.listContent && data.listContent.schemaJSON
-
-    const contentSchema: JSONSchema6 = schemaJSON && JSON.parse(schemaJSON)
-
-    const { component, content } = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
-
-    const componentImplementation = getIframeImplementation(component)
-
-    const componentSchema = getComponentSchema(
-      componentImplementation,
-      content,
-      iframeRuntime,
-      intl,
-      contentSchema
-    )
-
-    this.setState({ componentSchema, contentSchema })
+    return await refetch({
+      blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
+      pageContext: iframeRuntime.route.pageContext,
+      template,
+      treePath,
+    })
   }
 }
 

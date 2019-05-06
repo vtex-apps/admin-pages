@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ToastConsumer } from 'vtex.styleguide'
+import { Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
 import { getIframeRenderComponents } from '../../../utils/components'
@@ -83,25 +83,32 @@ const Content = (props: Props) => {
             treePath,
           }}
         >
-          {listContentQueryResult => (
+          {({ data, loading, refetch }) => (
             <SaveContentMutation>
               {saveContent => (
                 <DeleteContentMutation>
-                  {deleteContent => (
-                    <ConfigurationList
-                      deleteContent={deleteContent}
-                      editor={editor}
-                      formMeta={formMeta}
-                      iframeRuntime={iframeRuntime}
-                      listContent={listContentQueryResult}
-                      isSitewide={isSitewide}
-                      modal={modal}
-                      saveContent={saveContent}
-                      showToast={showToast}
-                      template={template}
-                      treePath={treePath}
-                    />
-                  )}
+                  {deleteContent =>
+                    loading ? (
+                      <div className="mt5 flex justify-center">
+                        <Spinner />
+                      </div>
+                    ) : (
+                      <ConfigurationList
+                        deleteContent={deleteContent}
+                        editor={editor}
+                        formMeta={formMeta}
+                        iframeRuntime={iframeRuntime}
+                        isSitewide={isSitewide}
+                        modal={modal}
+                        queryData={data}
+                        refetch={refetch}
+                        saveContent={saveContent}
+                        showToast={showToast}
+                        template={template}
+                        treePath={treePath}
+                      />
+                    )
+                  }
                 </DeleteContentMutation>
               )}
             </SaveContentMutation>

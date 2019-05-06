@@ -9,6 +9,7 @@ import {
   getIframeImplementation,
 } from '../../../../utils/components'
 import EditorHeader from '../EditorHeader'
+import { FormMetaContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -18,6 +19,7 @@ interface CustomProps {
   contentSchema?: JSONSchema6
   data: object
   editor: EditorContext
+  formMeta: FormMetaContext
   iframeRuntime: RenderContext
   isContent?: boolean
   isLoading: boolean
@@ -34,7 +36,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   contentSchema,
   data,
   editor,
-  intl,
+  formMeta,
   iframeRuntime,
   isContent,
   isLoading,
@@ -80,7 +82,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
-              addMessages: editor.addMessages,
+              editor,
+              formMeta,
               isLayoutMode: editor.mode === 'layout',
             }}
             formData={data}

@@ -4,6 +4,7 @@ import { IChangeEvent } from 'react-jsonschema-form'
 
 import { getExtension } from '../../../../../utils/components'
 import ComponentEditor from '../../ComponentEditor'
+import { FormMetaContext } from '../../typings'
 
 import ConditionControls from './ConditionControls'
 import LabelEditor from './LabelEditor'
@@ -13,6 +14,7 @@ interface Props {
   configuration?: ExtensionConfiguration
   contentSchema?: JSONSchema6
   editor: EditorContext
+  formMeta: FormMetaContext
   iframeRuntime: RenderContext
   isLoading: boolean
   isSitewide: boolean
@@ -32,6 +34,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   configuration,
   contentSchema,
   editor,
+  formMeta,
   iframeRuntime,
   isSitewide,
   isLoading,
@@ -74,6 +77,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       contentSchema={contentSchema}
       data={content}
       editor={editor}
+      formMeta={formMeta}
       iframeRuntime={iframeRuntime}
       isContent
       isLoading={isLoading}

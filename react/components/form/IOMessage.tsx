@@ -7,18 +7,24 @@ import BaseInput from './BaseInput'
 type Props = InjectedIntlProps & WidgetProps
 
 const IOMessage: React.FunctionComponent<Props> = props => {
+  const { editor, formMeta } = props.formContext
+
   const [i18nKey] = React.useState(props.value)
 
+  const message = editor.messages[i18nKey]
+
   const [value, setValue] = React.useState(
-    props.intl.messages[i18nKey]
-      ? props.intl.formatMessage({ id: i18nKey })
-      : undefined
+    message || message === '' ? '' : i18nKey
   )
 
   const handleChange = (newValue: string) => {
-    props.formContext.addMessages({
+    editor.addMessages({
       [i18nKey]: newValue,
     })
+
+    if (!formMeta.wasModified) {
+      formMeta.setWasModified(true)
+    }
 
     setValue(newValue)
   }

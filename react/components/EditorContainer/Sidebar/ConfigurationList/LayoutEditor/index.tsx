@@ -41,6 +41,7 @@ class LayoutEditor extends Component<Props> {
       <ComponentEditor
         data={this.getExtensionProps()}
         editor={editor}
+        formMeta={formMeta}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         onChange={this.handleChange}
