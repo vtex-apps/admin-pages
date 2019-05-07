@@ -4,7 +4,6 @@ import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
   initialState: NavigationInfo
-  intl: InjectedIntl
   saveStyle: () => void
   children: (
     updateNavigation: React.Dispatch<NavigationUpdate>
@@ -20,7 +19,6 @@ type NavigationReducer = (
 const StyleEditorTools: React.FunctionComponent<Props> = ({
   children,
   initialState,
-  intl,
   saveStyle,
   setName,
 }) => {
@@ -110,4 +108,4 @@ const StyleEditorTools: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleEditorTools)
+export default StyleEditorTools
