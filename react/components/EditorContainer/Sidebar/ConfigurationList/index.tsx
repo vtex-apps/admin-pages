@@ -1,6 +1,6 @@
 import { clone, path } from 'ramda'
 import React, { Component } from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -47,6 +47,25 @@ interface State {
   configuration?: ExtensionConfiguration
   newLabel?: string
 }
+
+defineMessages({
+  deleteError: {
+    defaultMessage: 'Something went wrong.',
+    id: 'admin/pages.editor.components.content.delete.error',
+  },
+  deleteSuccess: {
+    defaultMessage: 'Content deleted.',
+    id: 'admin/pages.editor.components.content.delete.success',
+  },
+  resetError: {
+    defaultMessage: 'Error resetting content.',
+    id: 'admin/pages.editor.components.content.reset.error',
+  },
+  resetSuccess: {
+    defaultMessage: 'Content reset.',
+    id: 'admin/pages.editor.components.content.reset.success',
+  },
+})
 
 class ConfigurationList extends Component<Props, State> {
   constructor(props: Props) {

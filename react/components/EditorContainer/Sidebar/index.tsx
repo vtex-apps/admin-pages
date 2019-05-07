@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 
 import Modal from '../../Modal'
 
@@ -14,6 +14,21 @@ interface CustomProps {
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
+
+const messages = defineMessages({
+  discard: {
+    defaultMessage: 'Discard',
+    id: 'admin/pages.editor.components.modal.button.discard',
+  },
+  save: {
+    defaultMessage: 'Save',
+    id: 'admin/pages.editor.components.button.save',
+  },
+  unsaved: {
+    defaultMessage: 'You have unsaved modifications.',
+    id: 'admin/pages.editor.components.modal.text',
+  },
+})
 
 const Sidebar: React.FunctionComponent<Props> = ({
   editor,
@@ -40,15 +55,9 @@ const Sidebar: React.FunctionComponent<Props> = ({
                   onClickAction={modal.actionHandler}
                   onClickCancel={modal.cancelHandler}
                   onClose={modal.close}
-                  textButtonAction={intl.formatMessage({
-                    id: 'admin/pages.editor.components.button.save',
-                  })}
-                  textButtonCancel={intl.formatMessage({
-                    id: 'admin/pages.editor.components.modal.button.discard',
-                  })}
-                  textMessage={intl.formatMessage({
-                    id: 'admin/pages.editor.components.modal.text',
-                  })}
+                  textButtonAction={intl.formatMessage(messages.save)}
+                  textButtonCancel={intl.formatMessage(messages.discard)}
+                  textMessage={intl.formatMessage(messages.unsaved)}
                 />
                 <Content
                   editor={editor}

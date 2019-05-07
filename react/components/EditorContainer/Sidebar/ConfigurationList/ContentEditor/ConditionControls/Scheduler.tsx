@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { DatePicker, Toggle } from 'vtex.styleguide'
 
@@ -29,6 +29,21 @@ interface State extends Typings.DateRange {
   shouldDisplayTo: boolean
   toMinTime: Date
 }
+
+const messages = defineMessages({
+  dateTitle: {
+    defaultMessage: 'Custom date',
+    id: 'admin/pages.editor.components.condition.date.title',
+  },
+  toggleEnd: {
+    defaultMessage: 'Set an end date',
+    id: 'admin/pages.editor.components.condition.date.toggle.end',
+  },
+  toggleStart: {
+    defaultMessage: 'Set a start date',
+    id: 'admin/pages.editor.components.condition.date.toggle.start',
+  },
+})
 
 class Scheduler extends Component<Props, State> {
   private currDate: Date
@@ -79,9 +94,7 @@ class Scheduler extends Component<Props, State> {
 
         <Toggle
           checked={this.state.shouldDisplayFrom}
-          label={intl.formatMessage({
-            id: 'admin/pages.editor.components.condition.date.toggle.start',
-          })}
+          label={intl.formatMessage(messages.toggleStart)}
           onChange={this.toggleFromVisibility}
         />
 
@@ -108,9 +121,7 @@ class Scheduler extends Component<Props, State> {
 
         <Toggle
           checked={this.state.shouldDisplayTo}
-          label={intl.formatMessage({
-            id: 'admin/pages.editor.components.condition.date.toggle.end',
-          })}
+          label={intl.formatMessage(messages.toggleEnd)}
           onChange={this.toggleToVisibility}
         />
 
