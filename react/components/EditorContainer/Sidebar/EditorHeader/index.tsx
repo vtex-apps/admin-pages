@@ -1,12 +1,9 @@
 import React from 'react'
 import { IconArrowBack } from 'vtex.styleguide'
 
-import GearIcon from '../../../icons/GearIcon'
-
 import SaveButton from './SaveButton'
 
 interface Props {
-  editor?: EditorContext
   isLoading?: boolean
   onClose: () => void
   onSave?: () => void
@@ -15,7 +12,6 @@ interface Props {
 }
 
 const EditorHeader: React.FunctionComponent<Props> = ({
-  editor,
   isLoading,
   onClose,
   onSave,
