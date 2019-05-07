@@ -21,13 +21,50 @@ function stopPropagation(e: React.MouseEvent) {
 }
 
 const messages = defineMessages({
+  // Some of these messages are used in getTextFromContext
+  brand: {
+    defaultMessage: 'Brand: {id}',
+    id: 'admin/pages.editor.configuration.tag.brand',
+  },
+  category: {
+    defaultMessage: 'Category: {id}',
+    id: 'admin/pages.editor.configuration.tag.category',
+  },
   delete: {
     defaultMessage: 'Delete',
     id: 'admin/pages.editor.component-list.action-menu.delete',
   },
+  department: {
+    defaultMessage: 'Department: {id}',
+    id: 'admin/pages.editor.configuration.tag.department',
+  },
+  product: {
+    defaultMessage: 'Product: {id}',
+    id: 'admin/pages.editor.configuration.tag.product',
+  },
   reset: {
     defaultMessage: 'Reset',
     id: 'admin/pages.editor.component-list.action-menu.reset',
+  },
+  route: {
+    defaultMessage: 'URL: {id}',
+    id: 'admin/pages.editor.configuration.tag.route',
+  },
+  search: {
+    defaultMessage: 'Search: {id}',
+    id: 'admin/pages.editor.configuration.tag.search',
+  },
+  sitewide: {
+    defaultMessage: 'Entire site',
+    id: 'admin/pages.editor.configuration.tag.sitewide',
+  },
+  subcategory: {
+    defaultMessage: 'Subcategory: {id}',
+    id: 'admin/pages.editor.configuration.tag.subcategory',
+  },
+  template: {
+    defaultMessage: 'This template',
+    id: 'admin/pages.editor.configuration.tag.template',
   },
 })
 
