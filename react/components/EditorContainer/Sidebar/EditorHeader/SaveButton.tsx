@@ -14,7 +14,7 @@ const SaveButton = ({
   isLoading = false,
   onClick,
   variation,
-}: Props & ReactIntl.InjectedIntlProps) => (
+}: Props) => (
   <div className="nv3">
     <Button
       disabled={isDisabled}
