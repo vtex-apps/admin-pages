@@ -172,7 +172,6 @@
   "admin/pages.editor.store.settings.pwa.splash-screen": "Splash screen (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "Start URL",
   "admin/pages.editor.store.settings.pwa.theme_color": "Theme color",
-  "admin/pages.editor.store.settings.pwa.title": "PWA Settings",
   "admin/pages.editor.store.settings.pwa.update-manifest-icon.error": "Something wrong occurred while updating the App icon…",
   "admin/pages.editor.store.settings.pwa.update-manifest-icon.success": "App icon successfuly updated!",
   "admin/pages.editor.store.settings.refetch": "Try again",

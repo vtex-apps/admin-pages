@@ -1,6 +1,7 @@
 import { path } from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
+import { defineMessages } from 'react-intl'
 
 import { handleCornerCases } from '../../utils/utils'
 import AvailableApp from '../queries/AvailableApp.graphql'
@@ -58,6 +59,17 @@ export interface FormProps {
       settings: string
     }
 }
+
+defineMessages({
+  description: {
+    defaultMessage: `Couldn't load store settings.`,
+    id: 'admin/pages.editor.store.settings.error',
+  },
+  title: {
+    defaultMessage: 'Something went wrong',
+    id: 'admin/pages.editor.store.settings.error.title',
+  },
+})
 
 const options = {
   error: {

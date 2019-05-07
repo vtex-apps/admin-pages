@@ -1,6 +1,7 @@
 import { path } from 'ramda'
 import React from 'react'
 import { Query, QueryResult } from 'react-apollo'
+import { defineMessages } from 'react-intl'
 
 import { handleCornerCases } from '../../utils/utils'
 import PWA from '../queries/PWA.graphql'
@@ -42,6 +43,17 @@ export interface PWAData {
 }
 
 class PWAQuery extends Query<PWAData, {}> {}
+
+defineMessages({
+  description: {
+    defaultMessage: `Couldn't load store settings.`,
+    id: 'admin/pages.editor.store.settings.error',
+  },
+  title: {
+    defaultMessage: `Couldn't load PWA settings.`,
+    id: 'admin/pages.editor.store.settings.pwa.error',
+  },
+})
 
 const options = {
   error: {

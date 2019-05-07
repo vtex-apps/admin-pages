@@ -1,10 +1,26 @@
 import React, { useState } from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl,
+} from 'react-intl'
 
 import { Tab, Tabs } from 'vtex.styleguide'
 
 import PWAForm from './PWAForm'
 import StoreForm from './StoreForm'
+
+const messages = defineMessages({
+  advanced: {
+    defaultMessage: 'Advanced',
+    id: 'admin/pages.editor.store.settings.tabs.advanced',
+  },
+  general: {
+    defaultMessage: 'General',
+    id: 'admin/pages.editor.store.settings.tabs.general',
+  },
+})
 
 const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
   const [activeTab, setActiveTab] = useState('general')
@@ -18,9 +34,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
           <Tab
             active={activeTab === 'general'}
             onClick={() => setActiveTab('general')}
-            label={intl.formatMessage({
-              id: 'admin/pages.editor.store.settings.tabs.general',
-            })}
+            label={intl.formatMessage(messages.general)}
           >
             <div className="pv6">
               <StoreForm />
@@ -29,9 +43,7 @@ const Store: React.FunctionComponent<InjectedIntlProps> = ({ intl }) => {
           <Tab
             active={activeTab === 'advanced'}
             onClick={() => setActiveTab('advanced')}
-            label={intl.formatMessage({
-              id: 'admin/pages.editor.store.settings.tabs.advanced',
-            })}
+            label={intl.formatMessage(messages.advanced)}
           >
             <div className="pv6">
               <PWAForm />

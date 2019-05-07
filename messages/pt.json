@@ -172,7 +172,6 @@
   "admin/pages.editor.store.settings.pwa.splash-screen": "Tela de carregamento (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "URL inicial",
   "admin/pages.editor.store.settings.pwa.theme_color": "Cor do tema",
-  "admin/pages.editor.store.settings.pwa.title": "Configuração PWA",
   "admin/pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo errado ocorreu ao atualizar o ícone do aplicativo…",
   "admin/pages.editor.store.settings.pwa.update-manifest-icon.success": "Ícone do aplicativo atualizado com sucesso!",
   "admin/pages.editor.store.settings.refetch": "Tentar novamente",
