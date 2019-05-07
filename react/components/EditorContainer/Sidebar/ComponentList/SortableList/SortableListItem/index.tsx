@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../../typings'
@@ -26,6 +26,13 @@ interface State {
   isExpanded: boolean
 }
 
+const messages = defineMessages({
+  delete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.editor.component-list.action-menu.delete',
+  },
+})
+
 class SortableListItem extends Component<Props, State> {
   private actionMenuOptions: ActionMenuOption[]
 
@@ -34,9 +41,7 @@ class SortableListItem extends Component<Props, State> {
 
     this.actionMenuOptions = [
       {
-        label: props.intl.formatMessage({
-          id: 'admin/pages.editor.component-list.action-menu.delete',
-        }),
+        label: props.intl.formatMessage(messages.delete),
         onClick: this.handleDelete,
       },
     ]

@@ -1,7 +1,7 @@
 import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
 import React, { useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 
 import fromTachyonsConfig from '../utils/colors'
 import ColorEditor from './ColorEditor'
@@ -16,6 +16,13 @@ interface Props {
 }
 
 type EditMode = string | undefined
+
+const messages = defineMessages({
+  back: {
+    defaultMessage: 'Back to Colors',
+    id: 'admin/pages.editor.styles.color-group.back',
+  },
+})
 
 const ColorsEditor: React.FunctionComponent<Props> = ({
   addNavigation,
@@ -73,9 +80,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
               addNavigation({
                 backButton: {
                   action: () => startEditing(undefined),
-                  text: intl.formatMessage({
-                    id: 'admin/pages.editor.styles.color-group.back',
-                  }),
+                  text: intl.formatMessage(messages.back),
                 },
                 title: startCase(token),
               })

@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
@@ -96,9 +96,10 @@ const StyleEditorTools: React.FunctionComponent<Props> = ({
               saveStyle()
             }}
           >
-            {intl.formatMessage({
-              id: 'admin/pages.editor.styles.editor.tools.save',
-            })}
+            <FormattedMessage
+              id="admin/pages.editor.styles.editor.tools.save"
+              defaultMessage="Save"
+            />
           </Button>
         </div>
       </div>

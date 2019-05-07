@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
 import ActionMenu from '../../../ComponentList/SortableList/SortableListItem/ActionMenu'
 import Tag from './Tag'
@@ -20,6 +20,17 @@ function stopPropagation(e: React.MouseEvent) {
   e.stopPropagation()
 }
 
+const messages = defineMessages({
+  delete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.editor.component-list.action-menu.delete',
+  },
+  reset: {
+    defaultMessage: 'Reset',
+    id: 'admin/pages.editor.component-list.action-menu.reset',
+  },
+})
+
 const Card = ({
   configuration,
   isDefaultContent = false,
@@ -32,11 +43,9 @@ const Card = ({
 }: Props & ReactIntl.InjectedIntlProps) => {
   const actionMenuOptions = [
     {
-      label: intl.formatMessage({
-        id: `admin/pages.editor.component-list.action-menu.${
-          isDefaultContent ? 'reset' : 'delete'
-        }`,
-      }),
+      label: intl.formatMessage(
+        isDefaultContent ? messages.reset : messages.delete
+      ),
       onClick: () => onDelete(),
     },
   ]
@@ -55,7 +64,10 @@ const Card = ({
       {configuration.label ? (
         <div>{configuration.label}</div>
       ) : (
-        <FormattedMessage id="admin/pages.editor.components.configurations.defaultTitle">
+        <FormattedMessage
+          id="admin/pages.editor.components.configurations.defaultTitle"
+          defaultMessage="Untitled"
+        >
           {text => <div className="i gray">{text}</div>}
         </FormattedMessage>
       )}

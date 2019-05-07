@@ -1,5 +1,10 @@
 import React, { useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntl,
+  injectIntl,
+} from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
 import Colors from '../../components/Colors'
@@ -16,6 +21,25 @@ interface Props {
   startEditing: StyleFunction
   style: Style
 }
+
+const messages = defineMessages({
+  delete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.editor.styles.card.menu.delete',
+  },
+  duplicate: {
+    defaultMessage: 'Duplicate',
+    id: 'admin/pages.editor.styles.card.menu.duplicate',
+  },
+  edit: {
+    defaultMessage: 'Edit',
+    id: 'admin/pages.editor.styles.card.menu.edit',
+  },
+  select: {
+    defaultMessage: 'Select as store style',
+    id: 'admin/pages.editor.styles.card.menu.select',
+  },
+})
 
 const StyleCard: React.FunctionComponent<Props> = ({
   deleteStyle,
@@ -46,26 +70,20 @@ const StyleCard: React.FunctionComponent<Props> = ({
   const createMenuOptions = () => {
     const options = [
       editable && {
-        label: intl.formatMessage({ id: 'admin/pages.editor.styles.card.menu.edit' }),
+        label: intl.formatMessage(messages.edit),
         onClick: () => startEditing(style),
       },
       !selected && {
-        label: intl.formatMessage({
-          id: 'admin/pages.editor.styles.card.menu.select',
-        }),
+        label: intl.formatMessage(messages.select),
         onClick: setIsLoadingWrapper(() => selectStyle(style)),
       },
       {
-        label: intl.formatMessage({
-          id: 'admin/pages.editor.styles.card.menu.duplicate',
-        }),
+        label: intl.formatMessage(messages.duplicate),
         onClick: setIsLoadingWrapper(() => duplicateStyle(style)),
       },
       !selected &&
         editable && {
-          label: intl.formatMessage({
-            id: 'admin/pages.editor.styles.card.menu.delete',
-          }),
+          label: intl.formatMessage(messages.delete),
           onClick: async () => {
             setIsLoading(true)
             try {
@@ -88,10 +106,11 @@ const StyleCard: React.FunctionComponent<Props> = ({
               <span className="mr5 truncate">{name}</span>
               {!editable && (
                 <span className="f7 c-muted-2 truncate">
-                  {intl.formatMessage(
-                    { id: 'admin/pages.editor.styles.card.name.app-subtitle' },
-                    { app: appId.split('@')[0] }
-                  )}
+                  <FormattedMessage
+                    id="admin/pages.editor.styles.card.name.app-subtitle"
+                    defaultMessage="created by {app}"
+                    values={{ app: appId.split('@')[0] }}
+                  />
                 </span>
               )}
             </div>
@@ -117,7 +136,10 @@ const StyleCard: React.FunctionComponent<Props> = ({
             </div>
             {selected && (
               <Tag bgColor="#F71963" color="#FFFFFF">
-                {intl.formatMessage({ id: 'admin/pages.editor.styles.card.current' })}
+                <FormattedMessage
+                  id="admin/pages.editor.styles.card.current"
+                  defaultMessage="Current"
+                />
               </Tag>
             )}
           </div>
