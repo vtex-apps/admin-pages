@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
 import BackArrowIcon from './icons/BackArrowIcon'
 import CustomizeIcon from './icons/CustomizeIcon'
@@ -23,6 +23,25 @@ const icon = (mode?: StoreEditMode) => {
       return <BackArrowIcon />
   }
 }
+
+defineMessages({
+  back: {
+    defaultMessage: 'Back to editor',
+    id: 'admin/pages.editor.store.button.back.title',
+  },
+  settings: {
+    defaultMessage: 'Store',
+    id: 'admin/pages.editor.store.button.settings.title',
+  },
+  template: {
+    defaultMessage: 'Template',
+    id: 'admin/pages.editor.store.button.template.title',
+  },
+  theme: {
+    defaultMessage: 'Design',
+    id: 'admin/pages.editor.store.button.theme.title',
+  },
+})
 
 const getTitle = (mode?: StoreEditMode) => {
   if (!mode) {
