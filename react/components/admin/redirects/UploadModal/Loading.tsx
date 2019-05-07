@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Button, Spinner } from 'vtex.styleguide'
+import { Spinner } from 'vtex.styleguide'
 
 const Loading: React.FunctionComponent = () => (
   <div className="flex flex-column items-center justify-center">

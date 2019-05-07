@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Query, QueryResult } from 'react-apollo'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Box, Pagination, ToastConsumer } from 'vtex.styleguide'
 

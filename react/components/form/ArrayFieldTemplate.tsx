@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { path } from 'ramda'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'

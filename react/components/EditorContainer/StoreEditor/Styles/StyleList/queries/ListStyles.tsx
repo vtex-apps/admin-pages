@@ -1,4 +1,3 @@
-import React from 'react'
 import { Query, QueryResult } from 'react-apollo'
 import ListStyles from '../graphql/ListStyles.graphql'
 

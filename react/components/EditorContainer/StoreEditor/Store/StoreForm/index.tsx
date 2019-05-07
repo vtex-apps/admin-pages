@@ -1,6 +1,6 @@
 import { assoc, compose, dissoc, map } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
-import { ChildMutateProps, MutateProps, withMutation } from 'react-apollo'
+import { ChildMutateProps, withMutation } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
 
@@ -76,12 +76,16 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
         })
           .then(() =>
             showToast(
-              intl.formatMessage({ id: 'admin/pages.admin.pages.form.save.success' })
+              intl.formatMessage({
+                id: 'admin/pages.admin.pages.form.save.success',
+              })
             )
           )
           .catch(() =>
             showToast(
-              intl.formatMessage({ id: 'admin/pages.admin.pages.form.save.error' })
+              intl.formatMessage({
+                id: 'admin/pages.admin.pages.form.save.error',
+              })
             )
           )
           .finally(() => setSubmitting(false))

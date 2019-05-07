@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types'
-import React, { Component, useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo } from 'react'
 
 import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
-import MessagesContext, { IMessagesContext } from './components/MessagesContext'
+import MessagesContext from './components/MessagesContext'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
 interface PageEditorProps {

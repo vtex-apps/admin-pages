@@ -1,4 +1,3 @@
-import React from 'react'
 import { Mutation } from 'react-apollo'
 import RenameStyle from '../graphql/RenameStyle.graphql'
 

@@ -122,7 +122,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     }
   }
 
-  private renderChildren = (item: string) => (styles: React.CSSProperties) => (
+  private renderChildren = (_: string) => (styles: React.CSSProperties) => (
     <animated.div style={styles}>{this.props.children}</animated.div>
   )
 }

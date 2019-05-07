@@ -1,4 +1,4 @@
-import { defineMessages, InjectedIntl } from 'react-intl'
+import { InjectedIntl } from 'react-intl'
 
 export const getTextFromContext = (
   intl: InjectedIntl,

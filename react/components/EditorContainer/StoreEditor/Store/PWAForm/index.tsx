@@ -1,6 +1,6 @@
 import { equals, last, path, pick } from 'ramda'
-import React, { useContext, useEffect, useState } from 'react'
-import { MutationFn, QueryResult } from 'react-apollo'
+import React, { useContext, useState } from 'react'
+import { QueryResult } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 
 import {
@@ -21,7 +21,6 @@ import withPWASettings, {
   Manifest,
   PWAData,
   PWAImage,
-  PWASettings,
 } from './components/withPWASettings'
 import { messages } from './messages'
 import {

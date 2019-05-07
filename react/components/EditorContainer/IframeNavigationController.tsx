@@ -25,7 +25,7 @@ const IframeNavigationController: React.FunctionComponent<Props> = ({
 
       if (wasModified && iframeRuntime && iframeRuntime.history) {
         unblock = iframeRuntime.history.block('Are you sure you want to leave?')
-        unlisten = iframeRuntime.history.listen((location, action) => {
+        unlisten = iframeRuntime.history.listen((_, action) => {
           const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
           if (hasNavigated) {
             unblock = maybeCall(unblock)

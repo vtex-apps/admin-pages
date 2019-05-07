@@ -14,7 +14,6 @@ import {
   Toggle,
 } from 'vtex.styleguide'
 
-import { getFormattedLocalizedDate } from '../../../../utils/date'
 import Modal from '../../../Modal'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'

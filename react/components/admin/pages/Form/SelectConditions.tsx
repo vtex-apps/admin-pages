@@ -30,7 +30,6 @@ class SelectConditions extends React.Component<Props> {
     super(props)
 
     const intl = props.intl
-    const translate = (id: string) => intl.formatMessage({ id })
 
     this.labels = {
       addConditionBtn: intl.formatMessage(messages.addCondition),

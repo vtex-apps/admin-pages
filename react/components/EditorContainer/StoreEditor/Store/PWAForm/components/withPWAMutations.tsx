@@ -1,13 +1,9 @@
-import { path } from 'ramda'
 import React from 'react'
 import { Mutation, MutationFn, MutationResult } from 'react-apollo'
 
-import { handleCornerCases } from '../../utils/utils'
 import UpdateManifest from '../mutations/UpdateManifest.graphql'
 import UpdateManifestIcon from '../mutations/UpdateManifestIcon.graphql'
 import UpdatePWASettings from '../mutations/UpdatePWASettings.graphql'
-import Manifest from '../queries/Manifest.graphql'
-import Styles from '../queries/Styles.graphql'
 
 import { PWASettings } from './withPWASettings'
 

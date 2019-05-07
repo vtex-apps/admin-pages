@@ -5,7 +5,6 @@ import { defineMessages } from 'react-intl'
 
 import { handleCornerCases } from '../../utils/utils'
 import PWA from '../queries/PWA.graphql'
-import { ManifestMutationData } from './withPWAMutations'
 
 export interface PWAImage {
   src: string

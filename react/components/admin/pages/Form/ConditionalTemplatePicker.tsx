@@ -77,7 +77,7 @@ export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
         <Dropdown
           label={intl.formatMessage(messages.templateLabel)}
           options={templates.map(({ id }) => ({ value: id, label: id }))}
-          onChange={(e: React.ChangeEvent, value: string) =>
+          onChange={(_: React.ChangeEvent, value: string) =>
             onChangeTemplateConditionalTemplate(pageId, value)
           }
           value={template}

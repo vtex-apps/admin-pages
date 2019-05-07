@@ -1,5 +1,5 @@
 import React, { useReducer, useState } from 'react'
-import { FormattedMessage, InjectedIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {

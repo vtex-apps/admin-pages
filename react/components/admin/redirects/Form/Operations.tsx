@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mutation, MutationFn } from 'react-apollo'
+import { Mutation } from 'react-apollo'
 
 import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'

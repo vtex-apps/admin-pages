@@ -1,4 +1,3 @@
-import { path } from 'ramda'
 import React from 'react'
 import { Query } from 'react-apollo'
 import { defineMessages } from 'react-intl'
@@ -6,7 +5,6 @@ import { defineMessages } from 'react-intl'
 import { handleCornerCases } from '../../utils/utils'
 import AvailableApp from '../queries/AvailableApp.graphql'
 import InstalledApp from '../queries/InstalledApp.graphql'
-import { tryParseJson } from '../utils/utils'
 
 interface InstalledApp {
   slug: string
