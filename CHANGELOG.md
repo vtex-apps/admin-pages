@@ -7,7 +7,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.7.0] - 2019-05-09
+
+### Added
+
+- Content i18n support.
+- IOMessage widget.
+
+### Changed
+
+- Move Runtime update from configuration close to quit.
+- Refactor `ConfigurationList` to – among other things – handle form data locally, only evaluating Runtime extensions when getting instantiated and opening a configuration;
+- Only render `ConfigurationList` once the `ListContent` query is finished.
+- Replace `editor` and `formMeta` props with `useEditorContext` and `useFormMetaContext` in some components.
+- Rename `listContent` query to `listContentWithSchema`.
+
+### Fixed
+
+- Controlled/uncontrolled `BaseInput` issue.
+- Null values at `LabelEditor`.
+- Remove unused imports and props.
+
 ## [3.6.2] - 2019-05-09
+
+### Added
+
+- i18n default messages.
 
 ## [3.6.1] - 2019-05-06
 

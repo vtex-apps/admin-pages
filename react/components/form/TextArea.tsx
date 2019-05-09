@@ -1,28 +1,21 @@
 import React from 'react'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
+import { formatIOMessage } from 'vtex.native-types'
 import { Textarea } from 'vtex.styleguide'
 
-interface Props extends WidgetProps {
+interface Props extends InjectedIntlProps, WidgetProps {
   autofocus: boolean
   label: string
   rawErrors?: string[]
   onChange(val: string): void
 }
 
-/*
- * onBlur and onFocus are typed wrong on react-jsonschema-form, it should be:
- * - onBlur: (id: string, value: string) => void
- * - onFocus: (id: string, value: string) => void
- * (source: https://react-jsonschema-form.readthedocs.io/en/latest/advanced-customization/#custom-widgets-and-fields)
- * instead of:
- * - onBlur: FocusEventHandler<HTMLTextAreaElement>
- * - onFocus: FocusEventHandler<HTMLTextAreaElement>
- */
-
 const TextArea: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,
+  intl,
   label,
   onBlur,
   onChange,
@@ -33,24 +26,55 @@ const TextArea: React.FunctionComponent<Props> = ({
   schema,
   value,
 }) => {
+  const handleBlur = React.useCallback(
+    (event: React.FocusEvent<HTMLTextAreaElement>) => {
+      if (onBlur) {
+        onBlur(id, event.target.value)
+      }
+    },
+    []
+  )
+
+  const handleChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onChange(event.target.value || '')
+    },
+    []
+  )
+
+  const handleFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLTextAreaElement>) => {
+      if (onFocus) {
+        onFocus(id, event.target.value)
+      }
+    },
+    []
+  )
+
   const [currentError] = Array.isArray(rawErrors) ? rawErrors : ['']
 
   return (
     <Textarea
       autoFocus={autofocus}
+      disabled={disabled}
       error={!!currentError}
       errorMessage={currentError}
-      helpText={schema.description}
-      onChange={({ target }) => onChange(target.value || '')}
-      onBlur={onBlur && (event => (onBlur as any)(id, event.target.value))}
-      onFocus={onFocus && (event => (onFocus as any)(id, event.target.value))}
+      helpText={
+        schema.description
+          ? formatIOMessage({ id: schema.description, intl })
+          : ''
+      }
+      label={formatIOMessage({ id: label, intl })}
+      onBlur={handleBlur}
+      onChange={handleChange}
+      onFocus={handleFocus}
+      placeholder={
+        placeholder ? formatIOMessage({ id: placeholder, intl }) : ''
+      }
       readOnly={readonly}
       value={value}
-      label={label}
-      disabled={disabled}
-      placeholder={placeholder}
     />
   )
 }
 
-export default TextArea
+export default injectIntl(TextArea)

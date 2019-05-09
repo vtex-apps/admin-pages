@@ -8,6 +8,7 @@ import {
   getExtension,
   getIframeImplementation,
 } from '../../../../utils/components'
+import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
 
 import Form from './Form'
@@ -15,8 +16,8 @@ import { getUiSchema } from './utils'
 
 interface CustomProps {
   after?: JSX.Element
+  contentSchema?: JSONSchema6
   data: object
-  editor: EditorContext
   iframeRuntime: RenderContext
   isContent?: boolean
   isLoading: boolean
@@ -24,15 +25,15 @@ interface CustomProps {
   onClose: () => void
   onSave: () => void
   shouldDisableSaveButton: boolean
+  title?: ComponentSchema['title']
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
   after,
+  contentSchema,
   data,
-  editor,
-  intl,
   iframeRuntime,
   isContent,
   isLoading,
@@ -40,8 +41,11 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   onClose,
   onSave,
   shouldDisableSaveButton,
+  title,
 }) => {
-  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
+  const { editTreePath, mode } = useEditorContext()
+
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
 
   const componentImplementation = getIframeImplementation(extension.component)
 
@@ -50,12 +54,12 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
       ? componentImplementation.uiSchema
       : null
 
-  const componentSchema = getComponentSchema(
-    componentImplementation,
-    extension[isContent ? 'content' : 'props'],
-    iframeRuntime,
-    intl
-  )
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema,
+    propsOrContent: extension[isContent ? 'content' : 'props'],
+    runtime: iframeRuntime,
+  })
 
   const schema = {
     ...componentSchema,
@@ -72,12 +76,14 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         onClose={onClose}
         onSave={onSave}
         shouldDisableSaveButton={shouldDisableSaveButton}
-        title={componentSchema.title}
+        title={title || componentSchema.title}
       />
       <div className="h-100 overflow-y-auto overflow-x-hidden">
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
-            formContext={{ isLayoutMode: editor.mode === 'layout' }}
+            formContext={{
+              isLayoutMode: mode === 'layout',
+            }}
             formData={data}
             onChange={onChange}
             onSubmit={onSave}

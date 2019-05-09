@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "admin-pages",
-  "version": "3.6.2",
+  "version": "3.7.0",
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
@@ -14,6 +14,7 @@
     "vtex.apps-graphql": "2.x",
     "vtex.file-manager": "0.x",
     "vtex.file-manager-graphql": "0.x",
+    "vtex.native-types": "0.x",
     "vtex.pages-graphql": "2.x",
     "vtex.pwa-graphql": "1.x",
     "vtex.store": "2.x",

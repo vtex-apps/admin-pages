@@ -15,12 +15,14 @@ type Props = RenderContextProps &
 
 interface State {
   activeConditions: string[]
+  addMessages: MessagesAdder
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null
   iframeWindow: Window
   isLoading: boolean
+  messages: RenderRuntime['messages']
   mode: EditorMode
   showAdminControls: boolean
   template?: string
@@ -44,12 +46,16 @@ class EditorProvider extends Component<Props, State> {
 
     this.state = {
       activeConditions: [],
+      addMessages: () => {
+        return
+      },
       allMatches: true,
       editMode: false,
       editTreePath: null,
       iframeRuntime: null,
       iframeWindow: window,
       isLoading: false,
+      messages: {},
       mode: 'content',
       showAdminControls: true,
       template: undefined,
@@ -58,9 +64,10 @@ class EditorProvider extends Component<Props, State> {
 
     if (canUseDOM) {
       window.__provideRuntime = async (
-        runtime: RenderContext,
-        messages?: object,
-        shouldUpdateRuntime?: boolean
+        runtime,
+        messages,
+        shouldUpdateRuntime,
+        addMessages
       ) => {
         const { client } = this.props
         let formattedEditorMessages = {}
@@ -75,10 +82,12 @@ class EditorProvider extends Component<Props, State> {
           console.log(e)
         }
 
-        this.props.setMessages({
+        const newMessages = {
           ...messages,
           ...formattedEditorMessages,
-        })
+        }
+
+        this.props.setMessages(newMessages)
 
         if (shouldUpdateRuntime) {
           await this.props.runtime.updateRuntime()
@@ -91,6 +100,7 @@ class EditorProvider extends Component<Props, State> {
 
         const newState = {
           ...this.state,
+          addMessages,
           iframeRuntime: runtime,
           ...(this.state.iframeRuntime
             ? {}
@@ -99,6 +109,7 @@ class EditorProvider extends Component<Props, State> {
                   'store-iframe'
                 ) as HTMLIFrameElement).contentWindow as Window,
               }),
+          messages: newMessages,
         }
 
         this.setState(newState)
@@ -301,12 +312,14 @@ class EditorProvider extends Component<Props, State> {
 
     const {
       activeConditions,
+      addMessages,
       allMatches,
       editMode,
       editTreePath,
       iframeRuntime,
       iframeWindow,
       isLoading,
+      messages,
       mode,
       showAdminControls,
       viewport,
@@ -315,12 +328,14 @@ class EditorProvider extends Component<Props, State> {
     const editor: EditorContext = {
       activeConditions,
       addCondition: this.handleAddCondition,
+      addMessages,
       allMatches,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
       iframeWindow,
       isLoading,
+      messages,
       mode,
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,

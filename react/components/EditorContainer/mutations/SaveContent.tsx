@@ -10,6 +10,7 @@ interface SaveContentVariables {
   configuration: Omit<ExtensionConfiguration, 'contentId'> & {
     contentId: string | null
   }
+  lang: RenderContext['culture']['locale']
   template: string
   treePath: string
 }

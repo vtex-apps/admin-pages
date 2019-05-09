@@ -1,6 +1,7 @@
 import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
+import { formatIOMessage } from 'vtex.native-types'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
 interface Props {
@@ -43,15 +44,15 @@ const Dropdown: React.FunctionComponent<DropdownProps> = ({
     autoFocus={autofocus}
     disabled={disabled || (schema && schema.disabled)}
     id={id}
-    label={label && intl.formatMessage({ id: label })}
+    label={formatIOMessage({ id: label, intl })}
     onChange={onChange && getChangeHandler(onChange, options.emptyValue)}
     onClose={onClose}
     onOpen={onOpen}
     options={options.enumOptions.map(option => ({
       ...option,
-      label: option.label && intl.formatMessage({ id: option.label }),
+      label: formatIOMessage({ id: `${option.label}`, intl }),
     }))}
-    placeholder={placeholder}
+    placeholder={placeholder ? formatIOMessage({ id: placeholder, intl }) : ''}
     readOnly={readonly}
     value={value || ''}
   />

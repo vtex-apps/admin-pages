@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ToastConsumer } from 'vtex.styleguide'
+import { Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
 import { getIframeRenderComponents } from '../../../utils/components'
 
+import { useEditorContext } from '../../EditorContext'
 import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
+
 import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
 import { useFormMetaContext } from './FormMetaContext'
@@ -14,7 +16,6 @@ import { useModalContext } from './ModalContext'
 import { getComponents, getIsSitewide } from './utils'
 
 interface Props {
-  editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContext
 }
@@ -27,8 +28,9 @@ const getInitialComponents = (props: Props) =>
   )
 
 const Content = (props: Props) => {
-  const { editor, highlightHandler, iframeRuntime } = props
+  const { highlightHandler, iframeRuntime } = props
 
+  const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
@@ -51,7 +53,6 @@ const Content = (props: Props) => {
     return (
       <ComponentSelector
         components={components}
-        editor={editor}
         highlightHandler={highlightHandler}
         iframeRuntime={iframeRuntime}
         updateSidebarComponents={setComponents}
@@ -83,25 +84,32 @@ const Content = (props: Props) => {
             treePath,
           }}
         >
-          {listContentQueryResult => (
+          {({ data, loading, refetch }) => (
             <SaveContentMutation>
               {saveContent => (
                 <DeleteContentMutation>
-                  {deleteContent => (
-                    <ConfigurationList
-                      deleteContent={deleteContent}
-                      editor={editor}
-                      formMeta={formMeta}
-                      iframeRuntime={iframeRuntime}
-                      listContent={listContentQueryResult}
-                      isSitewide={isSitewide}
-                      modal={modal}
-                      saveContent={saveContent}
-                      showToast={showToast}
-                      template={template}
-                      treePath={treePath}
-                    />
-                  )}
+                  {deleteContent =>
+                    loading ? (
+                      <div className="mt5 flex justify-center">
+                        <Spinner />
+                      </div>
+                    ) : (
+                      <ConfigurationList
+                        deleteContent={deleteContent}
+                        editor={editor}
+                        formMeta={formMeta}
+                        iframeRuntime={iframeRuntime}
+                        isSitewide={isSitewide}
+                        modal={modal}
+                        queryData={data}
+                        refetch={refetch}
+                        saveContent={saveContent}
+                        showToast={showToast}
+                        template={template}
+                        treePath={treePath}
+                      />
+                    )
+                  }
                 </DeleteContentMutation>
               )}
             </SaveContentMutation>

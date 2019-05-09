@@ -1,16 +1,19 @@
+import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
 import { getExtension } from '../../../../../utils/components'
+import { useEditorContext } from '../../../../EditorContext'
 import ComponentEditor from '../../ComponentEditor'
 
 import ConditionControls from './ConditionControls'
 import LabelEditor from './LabelEditor'
 
 interface Props {
+  componentTitle?: ComponentSchema['title']
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
-  editor: EditorContext
+  contentSchema?: JSONSchema6
   iframeRuntime: RenderContext
   isLoading: boolean
   isSitewide: boolean
@@ -26,9 +29,10 @@ interface Props {
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
+  componentTitle,
   condition,
   configuration,
-  editor,
+  contentSchema,
   iframeRuntime,
   isSitewide,
   isLoading,
@@ -40,7 +44,9 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onSave,
   shouldDisableSaveButton,
 }) => {
-  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
+  const { editTreePath } = useEditorContext()
+
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
 
   const content = configuration
     ? {
@@ -56,7 +62,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       after={
         <Fragment>
           <div className="pt5 ph5 bt bw1 b--light-silver">
-            <LabelEditor onChange={onLabelChange} value={label} />
+            <LabelEditor onChange={onLabelChange} value={label || ''} />
           </div>
           {!isDefault ? (
             <ConditionControls
@@ -68,8 +74,8 @@ const ContentEditor: React.FunctionComponent<Props> = ({
           ) : null}
         </Fragment>
       }
+      contentSchema={contentSchema}
       data={content}
-      editor={editor}
       iframeRuntime={iframeRuntime}
       isContent
       isLoading={isLoading}
@@ -77,6 +83,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       onClose={onClose}
       onSave={onSave}
       shouldDisableSaveButton={shouldDisableSaveButton}
+      title={componentTitle}
     />
   )
 }

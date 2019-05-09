@@ -4,7 +4,7 @@ import { Input } from 'vtex.styleguide'
 
 interface Props {
   onChange: (event: Event) => void
-  value?: string
+  value: string
 }
 
 const messages = defineMessages({
@@ -17,7 +17,7 @@ const messages = defineMessages({
 const LabelEditor = ({
   intl,
   onChange,
-  value = '',
+  value,
 }: Props & ReactIntl.InjectedIntlProps) => (
   <Input
     label={intl.formatMessage(messages.label)}
