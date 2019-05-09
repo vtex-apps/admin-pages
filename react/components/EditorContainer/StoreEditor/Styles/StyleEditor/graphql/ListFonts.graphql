@@ -1,0 +1,12 @@
+query ListFonts {
+  listFonts {
+    id
+    fontFamily
+    fonts {
+      id
+      filename
+      fontWeight
+      fontStyle
+    }
+  }
+}

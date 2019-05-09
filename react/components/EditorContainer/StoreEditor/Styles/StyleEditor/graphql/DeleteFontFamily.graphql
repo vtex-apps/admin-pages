@@ -1,0 +1,5 @@
+mutation DeleteFontFamily($id: String) {
+  deleteFontFamily(id: $id) {
+    id
+  }
+}

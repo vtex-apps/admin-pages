@@ -1,0 +1,12 @@
+mutation SaveFontFamily($font: SaveFontFamilyInput) {
+  saveFontFamily(font: $font) {
+    id
+    fontFamily
+    fonts {
+      filename
+      fontWeight
+      fontStyle
+      id
+    }
+  }
+}
