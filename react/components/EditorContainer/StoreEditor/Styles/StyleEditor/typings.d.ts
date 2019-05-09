@@ -17,3 +17,7 @@ interface NavigationUpdate {
 interface ColorRouteParams {
   id: string
 }
+
+interface CustomFontParams {
+  id: string
+}

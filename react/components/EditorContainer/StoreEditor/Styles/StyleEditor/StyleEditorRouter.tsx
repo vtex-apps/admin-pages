@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route, RouteComponentProps, Switch } from 'react-router'
+import { Route, RouteComponentProps, Switch } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
 import EditorSelector from './EditorSelector'
@@ -7,18 +7,18 @@ import FontFamilyList from './typography/FontFamilyList'
 import TypographyEditor from './typography/TypographyEditor'
 
 import { GenerateStyleSheetData } from './queries/GenerateStyleSheet'
-import CustomFont from './typography/CustomFont'
+import CustomFont from './typography/FontEditor'
 
-export const ColorsIdParam = ':id'
+export const IdParam = ':id'
 
 export enum EditorPath {
   selector = '/',
   colors = '/colors/:id',
   typography = '/typography',
   fontFamily = '/font-family',
-  customFont = '/custom-font',
-  customFontFile = '/custom-font/file',
-  customFontLink = '/custom-font/link',
+  customFont = '/custom-font/:id',
+  customFontFile = '/custom-font/file/:id',
+  customFontLink = '/custom-font/link/:id',
 }
 
 interface Props {
@@ -54,11 +54,16 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
 
   const colorsPaths = [
     EditorPath.colors,
-    EditorPath.colors.replace(ColorsIdParam, ''),
+    EditorPath.colors.replace(IdParam, ''),
   ]
   const renderColorsEditor = (props: RouteComponentProps<ColorRouteParams>) => (
     <ColorsEditor {...{ ...props, updateStyle, config, onSave }} />
   )
+
+  const customFontPaths = [
+    EditorPath.customFont,
+    EditorPath.customFont.replace(IdParam, ''),
+  ]
 
   return (
     <div className="h-100 flex flex-column flex-grow-1 overflow-y-auto overflow-x-hidden">
@@ -72,12 +77,7 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
         />
         <Route exact path={EditorPath.fontFamily} component={FontFamilyList} />
 
-        <Redirect
-          exact
-          from={EditorPath.customFont}
-          to={EditorPath.customFontFile}
-        />
-        <Route path={EditorPath.customFont} component={CustomFont} />
+        <Route path={customFontPaths} component={CustomFont} />
       </Switch>
     </div>
   )

@@ -3,6 +3,7 @@ import { RouteComponentProps, withRouter } from 'react-router'
 import { Button, IconArrowBack } from 'vtex.styleguide'
 
 interface Props extends RouteComponentProps {
+  auxComponent?: React.ReactNode
   auxButtonLabel?: string | React.ReactNode
   onAux?: () => void
   afterOnBack?: () => void
@@ -10,6 +11,7 @@ interface Props extends RouteComponentProps {
 }
 
 const StyleEditorHeader: React.FunctionComponent<Props> = ({
+  auxComponent,
   auxButtonLabel,
   history,
   onAux,
@@ -42,6 +44,7 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
             {auxButtonLabel}
           </Button>
         )}
+        {auxComponent}
       </div>
     </div>
   )
