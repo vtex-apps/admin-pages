@@ -17,7 +17,7 @@ const IOMessage: React.FunctionComponent<Props> = props => {
 
   const [value, setValue] = React.useState(initialValue)
 
-  const handleChange = (newValue: string) => {
+  const handleChange = React.useCallback((newValue: string) => {
     editor.addMessages({
       [i18nKey]: newValue,
     })
@@ -27,7 +27,7 @@ const IOMessage: React.FunctionComponent<Props> = props => {
     }
 
     setValue(newValue)
-  }
+  }, [])
 
   return <BaseInput {...props} onChange={handleChange} value={value} />
 }

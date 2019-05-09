@@ -26,23 +26,32 @@ const TextArea: React.FunctionComponent<Props> = ({
   schema,
   value,
 }) => {
+  const handleBlur = React.useCallback(
+    (event: React.FocusEvent<HTMLTextAreaElement>) => {
+      if (onBlur) {
+        onBlur(id, event.target.value)
+      }
+    },
+    []
+  )
+
+  const handleChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+      onChange(event.target.value || '')
+    },
+    []
+  )
+
+  const handleFocus = React.useCallback(
+    (event: React.FocusEvent<HTMLTextAreaElement>) => {
+      if (onFocus) {
+        onFocus(id, event.target.value)
+      }
+    },
+    []
+  )
+
   const [currentError] = Array.isArray(rawErrors) ? rawErrors : ['']
-
-  const handleBlur = (event: React.FocusEvent<HTMLTextAreaElement>) => {
-    if (onBlur) {
-      onBlur(id, event.target.value)
-    }
-  }
-
-  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    onChange(event.target.value || '')
-  }
-
-  const handleFocus = (event: React.FocusEvent<HTMLTextAreaElement>) => {
-    if (onFocus) {
-      onFocus(id, event.target.value)
-    }
-  }
 
   return (
     <Textarea
