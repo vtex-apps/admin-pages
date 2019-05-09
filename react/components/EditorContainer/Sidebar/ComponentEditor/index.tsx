@@ -27,6 +27,7 @@ interface CustomProps {
   onClose: () => void
   onSave: () => void
   shouldDisableSaveButton: boolean
+  title?: ComponentSchema['title']
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -44,6 +45,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   onClose,
   onSave,
   shouldDisableSaveButton,
+  title,
 }) => {
   const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
 
@@ -76,7 +78,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         onClose={onClose}
         onSave={onSave}
         shouldDisableSaveButton={shouldDisableSaveButton}
-        title={componentSchema.title}
+        title={title || componentSchema.title}
       />
       <div className="h-100 overflow-y-auto overflow-x-hidden">
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">

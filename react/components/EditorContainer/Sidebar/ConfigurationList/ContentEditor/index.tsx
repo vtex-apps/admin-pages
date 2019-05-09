@@ -10,6 +10,7 @@ import ConditionControls from './ConditionControls'
 import LabelEditor from './LabelEditor'
 
 interface Props {
+  componentTitle?: ComponentSchema['title']
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   contentSchema?: JSONSchema6
@@ -30,6 +31,7 @@ interface Props {
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
+  componentTitle,
   condition,
   configuration,
   contentSchema,
@@ -85,6 +87,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       onClose={onClose}
       onSave={onSave}
       shouldDisableSaveButton={shouldDisableSaveButton}
+      title={componentTitle}
     />
   )
 }

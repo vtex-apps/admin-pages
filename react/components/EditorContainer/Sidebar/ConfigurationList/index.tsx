@@ -3,6 +3,7 @@ import { clone, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { IChangeEvent } from 'react-jsonschema-form'
+import { formatIOMessage } from 'vtex.native-types'
 import { RenderComponent } from 'vtex.render-runtime'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -73,7 +74,8 @@ defineMessages({
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
   private componentImplementation: RenderComponent<any, any> | null
-  private componentSchema: ComponentSchema
+  private componentProperties: ComponentSchema['properties']
+  private componentTitle: ComponentSchema['title']
   private configurations: ExtensionConfiguration[]
   private contentSchema: JSONSchema6
   private defaultFormData: object
@@ -81,7 +83,7 @@ class ConfigurationList extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const { editor, iframeRuntime, modal, queryData } = props
+    const { editor, iframeRuntime, intl, modal, queryData } = props
 
     const extension = getExtension(
       editor.editTreePath,
@@ -96,12 +98,21 @@ class ConfigurationList extends React.Component<Props, State> {
 
     this.contentSchema = listContent && JSON.parse(listContent.schemaJSON)
 
-    this.componentSchema = getComponentSchema({
+    const componentSchema = getComponentSchema({
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
       propsOrContent: extension.content,
       runtime: iframeRuntime,
     })
+
+    this.componentProperties = componentSchema.properties
+
+    this.componentTitle = componentSchema.title
+      ? formatIOMessage({
+          id: componentSchema.title,
+          intl,
+        })
+      : ''
 
     this.defaultFormData =
       getSchemaPropsOrContentFromRuntime({
@@ -146,7 +157,7 @@ class ConfigurationList extends React.Component<Props, State> {
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
-          title={this.componentSchema.title}
+          title={this.componentTitle}
         />
       )
     }
@@ -158,6 +169,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     return (
       <ContentEditor
+        componentTitle={this.componentTitle}
         condition={this.state.condition}
         configuration={this.state.configuration}
         contentSchema={this.contentSchema}
@@ -341,7 +353,7 @@ class ConfigurationList extends React.Component<Props, State> {
     const content = getSchemaPropsOrContent({
       isContent: true,
       messages: editor.messages,
-      properties: this.componentSchema.properties,
+      properties: this.componentProperties,
       propsOrContent: this.state.formData,
     })
 
