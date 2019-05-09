@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { InjectedIntl, injectIntl, defineMessages } from 'react-intl'
 import { ShowToastFunction } from 'vtex.styleguide'
 
 import { RenameStyleFunction } from './mutations/RenameStyle'
@@ -50,6 +50,17 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
     editing: editingState,
     name: nameState,
   }
+
+  defineMessages({
+    saveFailed: {
+      defaultMessage: 'An error occurred while saving your style.',
+      id: 'admin/pages.editor.styles.edit.save.failed',
+    },
+    saveSuccessful: {
+      defaultMessage: 'Style saved successfully.',
+      id: 'admin/pages.editor.styles.edit.save.successful',
+    },
+  })
 
   const saveStyle = async () => {
     await renameStyle({ variables: { id: style.id, name } })

@@ -1,8 +1,8 @@
-import startCase from 'lodash.startcase'
-import { fromPairs, groupBy, toPairs } from 'ramda'
 import React from 'react'
 
-import { InjectedIntl, injectIntl } from 'react-intl'
+import startCase from 'lodash.startcase'
+import { fromPairs, groupBy, toPairs } from 'ramda'
+import { FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 import StyleEditorHeader from '../StyleEditorHeader'
 import { EditorPath, IdParam } from '../StyleEditorRouter'
@@ -11,7 +11,6 @@ import ColorEditor from './ColorEditor'
 import ColorGroup from './ColorGroup'
 
 interface Props extends RouteComponentProps<ColorRouteParams> {
-  intl: InjectedIntl
   updateStyle: (partialConfig: Partial<TachyonsConfig>) => void
   config: TachyonsConfig
   onSave: () => void
@@ -24,7 +23,6 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
       styles: { heading_6: font },
     },
   },
-  intl,
   match,
   updateStyle,
   history,
@@ -35,15 +33,21 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   } = match
   const info = fromTachyonsConfig(semanticColors)
 
-  const colorsLabel = intl.formatMessage({
-    id: 'admin/pages.editor.styles.edit.colors.title',
-  })
+  const colorsLabel = (
+    <FormattedMessage
+      id="admin/pages.editor.styles.edit.colors.title"
+      defaultMessage="Colors"
+    />
+  )
 
-  const saveButtonLabel = intl.formatMessage({
-    id: 'admin/pages.editor.components.button.save',
-  })
+  const saveButtonLabel = (
+    <FormattedMessage
+      id="admin/pages.editor.components.button.save"
+      defaultMessage="Save"
+    />
+  )
 
-  const Header = ({ name }: { name: string }) => (
+  const Header = ({ name }: { name: string | React.ReactNode }) => (
     <StyleEditorHeader
       onAux={onSave}
       auxButtonLabel={saveButtonLabel}
@@ -123,4 +127,4 @@ const updateColor = (updateStyle: Props['updateStyle']) => (
   updateStyle(partialConfig)
 }
 
-export default injectIntl(ColorsEditor)
+export default ColorsEditor
