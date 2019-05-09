@@ -1,6 +1,6 @@
 import { mapObjIndexed, values } from 'ramda'
 import React, { useState } from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
 import TargetPathContext from './components/admin/TargetPathContext'
@@ -35,6 +35,21 @@ interface FieldInfo {
 interface CustomProps {
   targetPath: string
 }
+
+defineMessages({
+  pages: {
+    defaultMessage: 'Pages',
+    id: 'admin/pages.admin.tabs.pages',
+  },
+  redirects: {
+    defaultMessage: 'Redirects',
+    id: 'admin/pages.admin.tabs.redirects',
+  },
+  settings: {
+    defaultMessage: 'Settings',
+    id: 'admin/pages.admin.tabs.settings',
+  },
+})
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
 

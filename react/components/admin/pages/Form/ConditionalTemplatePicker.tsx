@@ -1,5 +1,6 @@
 import { path } from 'ramda'
 import React from 'react'
+import { defineMessages } from 'react-intl'
 import {
   ConditionsProps,
   ConditionsStatement,
@@ -35,6 +36,17 @@ export interface ConditionalTemplatePickerProps {
 
 type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
 
+const messages = defineMessages({
+  errorMessage: {
+    defaultMessage: 'Required',
+    id: 'admin/pages.admin.pages.form.templates.field.required',
+  },
+  templateLabel: {
+    defaultMessage: 'Template',
+    id: 'admin/pages.admin.pages.form.templates.conditional.template.label',
+  },
+})
+
 export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
   condition,
   formErrors,
@@ -63,11 +75,9 @@ export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
     <div className={`flex ${!hasError ? 'items-center' : ''} mv5`}>
       <div className="flex flex-column flex-grow-1 mr4 ph4">
         <Dropdown
-          label={intl.formatMessage({
-            id: 'admin/pages.admin.pages.form.templates.conditional.template.label',
-          })}
+          label={intl.formatMessage(messages.templateLabel)}
           options={templates.map(({ id }) => ({ value: id, label: id }))}
-          onChange={(e: React.ChangeEvent, value: string) =>
+          onChange={(_: React.ChangeEvent, value: string) =>
             onChangeTemplateConditionalTemplate(pageId, value)
           }
           value={template}

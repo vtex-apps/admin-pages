@@ -1,6 +1,11 @@
 import { clone, equals, findIndex, last } from 'ramda'
 import React, { Component, Fragment } from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl,
+} from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -41,6 +46,29 @@ interface State {
   isLoadingMutation: boolean
   isModalOpen: boolean
 }
+
+const messages = defineMessages({
+  cancel: {
+    defaultMessage: 'Discard',
+    id: 'admin/pages.editor.component-list.modal.button.cancel',
+  },
+  save: {
+    defaultMessage: 'Save',
+    id: 'admin/pages.editor.component-list.modal.button.save',
+  },
+  saveFail: {
+    defaultMessage: 'Could not be saved.',
+    id: 'admin/pages.editor.component-list.toast.error',
+  },
+  saveSuccessful: {
+    defaultMessage: 'Saved successfully.',
+    id: 'admin/pages.editor.component-list.toast.success',
+  },
+  text: {
+    defaultMessage: 'You have unsaved modifications',
+    id: 'admin/pages.editor.component-list.modal.text',
+  },
+})
 
 class ComponentList extends Component<Props, State> {
   public static getDerivedStateFromProps(props: Props, state: State) {
@@ -91,15 +119,9 @@ class ComponentList extends Component<Props, State> {
           onClickCancel={this.handleDiscard}
           onClose={this.handleCloseModal}
           isOpen={this.state.isModalOpen}
-          textButtonAction={intl.formatMessage({
-            id: 'admin/pages.editor.component-list.modal.button.save',
-          })}
-          textButtonCancel={intl.formatMessage({
-            id: 'admin/pages.editor.component-list.modal.button.cancel',
-          })}
-          textMessage={intl.formatMessage({
-            id: 'admin/pages.editor.component-list.modal.text',
-          })}
+          textButtonAction={intl.formatMessage(messages.save)}
+          textButtonCancel={intl.formatMessage(messages.cancel)}
+          textMessage={intl.formatMessage(messages.text)}
         />
         <ContentContainer
           isLoading={editor.isLoading}
@@ -117,7 +139,10 @@ class ComponentList extends Component<Props, State> {
                   onClick={this.handleUndo}
                   variation="tertiary"
                 >
-                  <FormattedMessage id="admin/pages.editor.component-list.button.undo">
+                  <FormattedMessage
+                    id="admin/pages.editor.component-list.button.undo"
+                    defaultMessage="Undo"
+                  >
                     {text => <span className="pl3">{text}</span>}
                   </FormattedMessage>
                 </ButtonWithIcon>
@@ -130,7 +155,10 @@ class ComponentList extends Component<Props, State> {
                   onClick={this.handleSave}
                   variation="tertiary"
                 >
-                  <FormattedMessage id="admin/pages.editor.component-list.button.save" />
+                  <FormattedMessage
+                    id="admin/pages.editor.component-list.button.save"
+                    defaultMessage="Save"
+                  />
                 </Button>
               </div>
             </div>
@@ -292,19 +320,11 @@ class ComponentList extends Component<Props, State> {
         },
       })
 
-      this.props.showToast(
-        intl.formatMessage({
-          id: 'admin/pages.editor.component-list.toast.success',
-        })
-      )
+      this.props.showToast(intl.formatMessage(messages.saveSuccessful))
 
       changes = []
     } catch (e) {
-      this.props.showToast(
-        intl.formatMessage({
-          id: 'admin/pages.editor.component-list.toast.error',
-        })
-      )
+      this.props.showToast(intl.formatMessage(messages.saveFail))
     } finally {
       this.handleCloseModal()
 

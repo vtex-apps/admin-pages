@@ -1,5 +1,4 @@
 import React from 'react'
-import { Mutation } from 'react-apollo'
 
 import ListStyles from './graphql/ListStyles.graphql'
 import CreateStyleMutation, {

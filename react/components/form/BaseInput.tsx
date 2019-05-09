@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { WidgetProps } from 'react-jsonschema-form'
 import { Input } from 'vtex.styleguide'

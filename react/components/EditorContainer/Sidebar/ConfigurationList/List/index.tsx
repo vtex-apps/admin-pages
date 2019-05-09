@@ -32,7 +32,7 @@ const List: React.FunctionComponent<Props> = ({
   title,
 }) => (
   <Fragment>
-    <EditorHeader editor={editor} onClose={onClose} title={title} />
+    <EditorHeader onClose={onClose} title={title} />
     <ContentContainer isLoading={editor.isLoading}>
       {configurations.map(
         (configuration: ExtensionConfiguration, index: number) => (

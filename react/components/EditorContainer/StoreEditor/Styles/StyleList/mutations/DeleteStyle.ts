@@ -1,4 +1,3 @@
-import React from 'react'
 import { Mutation, MutationFn } from 'react-apollo'
 import DeleteStyle from '../graphql/DeleteStyle.graphql'
 

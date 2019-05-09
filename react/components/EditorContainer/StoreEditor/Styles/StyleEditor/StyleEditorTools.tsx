@@ -1,10 +1,9 @@
 import React, { useReducer, useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Button, IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
   initialState: NavigationInfo
-  intl: InjectedIntl
   saveStyle: () => void
   children: (
     updateNavigation: React.Dispatch<NavigationUpdate>
@@ -20,7 +19,6 @@ type NavigationReducer = (
 const StyleEditorTools: React.FunctionComponent<Props> = ({
   children,
   initialState,
-  intl,
   saveStyle,
   setName,
 }) => {
@@ -96,9 +94,10 @@ const StyleEditorTools: React.FunctionComponent<Props> = ({
               saveStyle()
             }}
           >
-            {intl.formatMessage({
-              id: 'admin/pages.editor.styles.editor.tools.save',
-            })}
+            <FormattedMessage
+              id="admin/pages.editor.styles.editor.tools.save"
+              defaultMessage="Save"
+            />
           </Button>
         </div>
       </div>
@@ -109,4 +108,4 @@ const StyleEditorTools: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleEditorTools)
+export default StyleEditorTools

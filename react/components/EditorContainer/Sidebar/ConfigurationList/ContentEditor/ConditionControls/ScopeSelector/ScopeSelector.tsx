@@ -37,7 +37,8 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
             ? [
                 {
                   label: intl.formatMessage({
-                    id: 'admin/pages.editor.components.condition.scope.sitewide',
+                    id:
+                      'admin/pages.editor.components.condition.scope.sitewide',
                   }),
                   value: 'sitewide',
                 },

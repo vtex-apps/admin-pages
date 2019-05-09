@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useReducer, useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import Colors from '../components/Colors'
@@ -28,6 +28,29 @@ interface EditorProps {
   setStyleAsset: (asset: StyleAssetInfo) => void
   updateConfig: React.Dispatch<Partial<TachyonsConfig>>
 }
+
+const messages = defineMessages({
+  back: {
+    defaultMessage: 'Back',
+    id: 'admin/pages.editor.styles.color-editor.back',
+  },
+  colorsBack: {
+    defaultMessage: 'Back',
+    id: 'admin/pages.editor.styles.edit.colors.back',
+  },
+  saveFailed: {
+    defaultMessage: 'There was a problem saving your style.',
+    id: 'admin/pages.editor.styles.edit.save.failed',
+  },
+  saveSuccessful: {
+    defaultMessage: 'Style saved successfully.',
+    id: 'admin/pages.editor.styles.edit.save.successful',
+  },
+  title: {
+    defaultMessage: 'Colors',
+    id: 'admin/pages.editor.styles.edit.colors.title',
+  },
+})
 
 type ConfigReducer = (
   config: TachyonsConfig,
@@ -84,21 +107,15 @@ const Editor: React.FunctionComponent<EditorProps> = ({
                     addNavigation({
                       backButton: {
                         action: () => setMode(undefined),
-                        text: intl.formatMessage({
-                          id: 'admin/pages.editor.styles.color-editor.back',
-                        }),
+                        text: intl.formatMessage(messages.back),
                       },
-                      title: intl.formatMessage({
-                        id: 'admin/pages.editor.styles.edit.colors.title',
-                      }),
+                      title: intl.formatMessage(messages.title),
                     })
                     setMode('colors')
                   }}
                 >
                   <span className="f4">
-                    {intl.formatMessage({
-                      id: 'admin/pages.editor.styles.edit.colors.title',
-                    })}
+                    {intl.formatMessage(messages.title)}
                   </span>
                   <Colors colors={[emphasis, action_primary]} />
                 </div>
@@ -133,9 +150,7 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                   initialState={{
                     backButton: {
                       action: stopEditing,
-                      text: intl.formatMessage({
-                        id: 'admin/pages.editor.styles.edit.colors.back',
-                      }),
+                      text: intl.formatMessage(messages.colorsBack),
                     },
                     title: name,
                   }}
@@ -156,16 +171,12 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                       })
                       showToast({
                         horizontalPosition: 'right',
-                        message: intl.formatMessage({
-                          id: 'admin/pages.editor.styles.edit.save.successful',
-                        }),
+                        message: intl.formatMessage(messages.saveSuccessful),
                       })
                     } else {
                       showToast({
                         horizontalPosition: 'right',
-                        message: intl.formatMessage({
-                          id: 'admin/pages.editor.styles.edit.save.failed',
-                        }),
+                        message: intl.formatMessage(messages.saveFailed),
                       })
                     }
                   }}

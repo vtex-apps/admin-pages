@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Fragment } from 'react'
 import ReactSelect, { Option } from 'react-select'
 

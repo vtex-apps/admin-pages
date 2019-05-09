@@ -33,7 +33,10 @@ const Section = ({ hasCreateButton, routes, runtime, titleId }: Props) => (
             size="small"
             variation="primary"
           >
-            <FormattedMessage id="admin/pages.admin.pages.list.button.create" />
+            <FormattedMessage
+              id="admin/pages.admin.pages.list.button.create"
+              defaultMessage="Create New"
+            />
           </Button>
         </div>
       )}

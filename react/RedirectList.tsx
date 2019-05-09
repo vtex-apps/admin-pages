@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Query, QueryResult } from 'react-apollo'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Box, Pagination, ToastConsumer } from 'vtex.styleguide'
 
@@ -39,6 +39,21 @@ interface RedirectListVariables {
   fetchMoreResult?: RedirectListQueryResult
 }
 
+const messages = defineMessages({
+  paginationOf: {
+    defaultMessage: 'of',
+    id: 'admin/pages.admin.redirects.pagination.of',
+  },
+  showRows: {
+    defaultMessage: 'Number of rows',
+    id: 'admin/pages.admin.redirects.pagination.showRows',
+  },
+  title: {
+    defaultMessage: 'Redirect list',
+    id: 'admin/pages.admin.redirects.title',
+  },
+})
+
 class RedirectList extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
@@ -62,9 +77,7 @@ class RedirectList extends Component<Props, State> {
     return (
       <>
         <Helmet>
-          <title>
-            {intl.formatMessage({ id: 'admin/pages.admin.redirects.title' })}
-          </title>
+          <title>{intl.formatMessage(messages.title)}</title>
         </Helmet>
         <Query<RedirectListQueryResult, RedirectListVariables>
           notifyOnNetworkStatusChange
@@ -111,12 +124,8 @@ class RedirectList extends Component<Props, State> {
                               fetchMore
                             )}
                             onPrevClick={this.goToPrevPage}
-                            textOf={intl.formatMessage({
-                              id: 'admin/pages.admin.redirects.pagination.of',
-                            })}
-                            textShowRows={intl.formatMessage({
-                              id: 'admin/pages.admin.redirects.pagination.showRows',
-                            })}
+                            textOf={intl.formatMessage(messages.paginationOf)}
+                            textShowRows={intl.formatMessage(messages.showRows)}
                             totalItems={total}
                           />
                         )}

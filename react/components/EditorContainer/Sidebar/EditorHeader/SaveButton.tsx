@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { Button } from 'vtex.styleguide'
 
 interface Props {
@@ -10,12 +10,11 @@ interface Props {
 }
 
 const SaveButton = ({
-  intl,
   isDisabled = false,
   isLoading = false,
   onClick,
   variation,
-}: Props & ReactIntl.InjectedIntlProps) => (
+}: Props) => (
   <div className="nv3">
     <Button
       disabled={isDisabled}
@@ -24,11 +23,12 @@ const SaveButton = ({
       size="small"
       variation={variation}
     >
-      {intl.formatMessage({
-        id: 'admin/pages.editor.components.button.save',
-      })}
+      <FormattedMessage
+        id="admin/pages.editor.components.button.save"
+        defaultMessage="Save"
+      />
     </Button>
   </div>
 )
 
-export default injectIntl(SaveButton)
+export default SaveButton

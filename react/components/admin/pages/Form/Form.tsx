@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Checkbox, Input } from 'vtex.styleguide'
 
 import { RouteFormData } from 'pages'
@@ -42,6 +42,25 @@ interface CustomProps extends TemplateSectionProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
+const messages = defineMessages({
+  detailsTitle: {
+    defaultMessage: 'Page details',
+    id: 'admin/pages.admin.pages.form.details.title',
+  },
+  fieldLogin: {
+    defaultMessage: 'Requires authentication',
+    id: 'admin/pages.admin.pages.form.field.login',
+  },
+  fieldPath: {
+    defaultMessage: 'URL',
+    id: 'admin/pages.admin.pages.form.field.path',
+  },
+  fieldTitle: {
+    defaultMessage: 'Title',
+    id: 'admin/pages.admin.pages.form.field.title',
+  },
+})
+
 const Form: React.FunctionComponent<Props> = ({
   data,
   detailChangeHandlerGetter,
@@ -68,9 +87,7 @@ const Form: React.FunctionComponent<Props> = ({
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
         disabled={!isInfoEditable}
-        label={intl.formatMessage({
-          id: 'admin/pages.admin.pages.form.field.title',
-        })}
+        label={intl.formatMessage(messages.fieldTitle)}
         onChange={detailChangeHandlerGetter('title')}
         required
         value={data.title}
@@ -84,9 +101,7 @@ const Form: React.FunctionComponent<Props> = ({
       <FormFieldSeparator />
       <Input
         disabled={!isInfoEditable}
-        label={intl.formatMessage({
-          id: 'admin/pages.admin.pages.form.field.path',
-        })}
+        label={intl.formatMessage(messages.fieldPath)}
         onChange={detailChangeHandlerGetter('path')}
         required
         value={path}
@@ -101,9 +116,7 @@ const Form: React.FunctionComponent<Props> = ({
       <Checkbox
         checked={!!data.auth}
         disabled={!isInfoEditable}
-        label={intl.formatMessage({
-          id: 'admin/pages.admin.pages.form.field.login',
-        })}
+        label={intl.formatMessage(messages.fieldLogin)}
         name="checkbox-login"
         onChange={onLoginToggle}
         value="option-0"
@@ -139,9 +152,10 @@ const Form: React.FunctionComponent<Props> = ({
             size="small"
             variation="danger"
           >
-            {intl.formatMessage({
-              id: 'admin/pages.admin.pages.form.button.delete',
-            })}
+            <FormattedMessage
+              id="admin/pages.admin.pages.form.button.delete"
+              defaultMessage="Delete"
+            />
           </Button>
         )}
         <div className="flex justify-end">
@@ -152,9 +166,10 @@ const Form: React.FunctionComponent<Props> = ({
               size="small"
               variation="tertiary"
             >
-              {intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.button.cancel',
-              })}
+              <FormattedMessage
+                id="admin/pages.admin.pages.form.button.cancel"
+                defaultMessage="Cancel"
+              />
             </Button>
           </div>
           <Button
@@ -164,9 +179,10 @@ const Form: React.FunctionComponent<Props> = ({
             size="small"
             variation="primary"
           >
-            {intl.formatMessage({
-              id: 'admin/pages.admin.pages.form.button.save',
-            })}
+            <FormattedMessage
+              id="admin/pages.admin.pages.form.button.save"
+              defaultMessage="Save"
+            />
           </Button>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { ButtonWithIcon } from 'vtex.styleguide'
 
 import AddIcon from '../../../../icons/AddIcon'
@@ -8,10 +8,7 @@ interface Props {
   onClick: (event: Event) => void
 }
 
-const CreateButton = ({
-  intl,
-  onClick,
-}: Props & ReactIntl.InjectedIntlProps) => (
+const CreateButton = ({ onClick }: Props) => (
   <div className="mh5 mt5">
     <ButtonWithIcon
       block
@@ -19,11 +16,12 @@ const CreateButton = ({
       onClick={onClick}
       variation="tertiary"
     >
-      {intl.formatMessage({
-        id: 'admin/pages.editor.components.configurations.button.create',
-      })}
+      <FormattedMessage
+        id="admin/pages.editor.components.configurations.button.create"
+        defaultMessage="Add content"
+      />
     </ButtonWithIcon>
   </div>
 )
 
-export default injectIntl(CreateButton)
+export default React.memo(CreateButton)

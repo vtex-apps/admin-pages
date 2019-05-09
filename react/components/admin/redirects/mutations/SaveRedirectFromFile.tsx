@@ -1,4 +1,3 @@
-import React from 'react'
 import { Mutation, MutationFn, MutationResult } from 'react-apollo'
 import SaveRedirectFromFile from '../graphql/SaveRedirectFromFile.graphql'
 

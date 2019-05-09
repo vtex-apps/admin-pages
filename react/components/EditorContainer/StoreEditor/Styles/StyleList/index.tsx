@@ -1,6 +1,11 @@
 import { find, zip } from 'ramda'
 import React, { useState } from 'react'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntl,
+  injectIntl,
+} from 'react-intl'
 import { ButtonWithIcon, Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import Operations from './Operations'
@@ -31,6 +36,53 @@ const compareStyles = (a: Style, b: Style) => {
     return acc
   }, 0)
 }
+
+const messages = defineMessages({
+  defaultName: {
+    defaultMessage: 'Untitled',
+    id: 'admin/pages.editor.styles.new.defaultName',
+  },
+  deleteFail: {
+    defaultMessage: 'Failed to delete style.',
+    id: 'admin/pages.editor.styles.card.menu.delete.fail',
+  },
+  deleteSuccess: {
+    defaultMessage: `Style '{name}' was deleted.`,
+    id: 'admin/pages.editor.styles.select.delete-success',
+  },
+  duplicateDefaultName: {
+    defaultMessage: 'Copy of {name}',
+    id: 'admin/pages.editor.styles.duplicate.defaultName',
+  },
+  duplicateFail: {
+    defaultMessage: `Failed to duplicate style '{name}'.`,
+    id: 'admin/pages.editor.styles.card.menu.duplicate.fail',
+  },
+  duplicateSuccess: {
+    defaultMessage: `Style '{name}' was duplicated.`,
+    id: 'admin/pages.editor.styles.card.menu.duplicate.success',
+  },
+  newFail: {
+    defaultMessage: 'Failed to create new style.',
+    id: 'admin/pages.editor.styles.new.fail',
+  },
+  newSuccess: {
+    defaultMessage: 'New style created.',
+    id: 'admin/pages.editor.styles.new.success',
+  },
+  saveFail: {
+    defaultMessage: `Failed to select style '{name}'.`,
+    id: 'admin/pages.editor.styles.select.save-fail',
+  },
+  saveSuccess: {
+    defaultMessage: `Style '{name}' was selected.`,
+    id: 'admin/pages.editor.styles.select.save-success',
+  },
+  undo: {
+    defaultMessage: 'Undo',
+    id: 'admin/pages.editor.styles.select.delete.toast.undo',
+  },
+})
 
 const StyleList: React.FunctionComponent<Props> = ({
   intl,
@@ -65,9 +117,10 @@ const StyleList: React.FunctionComponent<Props> = ({
               <section className="flex flex-column ph3 h-100 overflow-x-hidden">
                 <header className="flex justify-between pv5 pl5 items-center flex-shrink-0 bg-white z-1">
                   <h1 className="f3 fw4">
-                    {intl.formatMessage({
-                      id: 'admin/pages.editor.styles.header.title',
-                    })}
+                    <FormattedMessage
+                      id="admin/pages.editor.styles.header.title"
+                      defaultMessage="Styles"
+                    />
                   </h1>
                   <ButtonWithIcon
                     icon={<CreateNewIcon />}
@@ -77,34 +130,29 @@ const StyleList: React.FunctionComponent<Props> = ({
                       setIsCreatingStyle(true)
                       createStyle({
                         variables: {
-                          name: intl.formatMessage({
-                            id: 'admin/pages.editor.styles.new.defaultName',
-                          }),
+                          name: intl.formatMessage(messages.defaultName),
                         },
                       })
                         .then(() => {
                           showToast({
                             horizontalPosition: 'right',
-                            message: intl.formatMessage({
-                              id: 'admin/pages.editor.styles.new.success',
-                            }),
+                            message: intl.formatMessage(messages.newSuccess),
                           })
                         })
                         .catch(e => {
                           console.error(e)
                           showToast({
                             horizontalPosition: 'right',
-                            message: intl.formatMessage({
-                              id: 'admin/pages.editor.styles.new.fail',
-                            }),
+                            message: intl.formatMessage(messages.newFail),
                           })
                         })
                         .finally(() => setIsCreatingStyle(false))
                     }}
                   >
-                    {intl.formatMessage({
-                      id: 'admin/pages.editor.styles.new-button.text',
-                    })}
+                    <FormattedMessage
+                      id="admin/pages.editor.styles.new-button.text"
+                      defaultMessage="new"
+                    />
                   </ButtonWithIcon>
                 </header>
                 <div className="flex flex-column flex-grow-1 overflow-y-auto">
@@ -119,10 +167,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                               showToast({
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage(
-                                  {
-                                    id:
-                                      'admin/pages.editor.styles.select.save-success',
-                                  },
+                                  messages.saveSuccess,
                                   { name }
                                 ),
                               })
@@ -131,12 +176,9 @@ const StyleList: React.FunctionComponent<Props> = ({
                               console.error(e)
                               showToast({
                                 horizontalPosition: 'right',
-                                message: intl.formatMessage(
-                                  {
-                                    id: 'admin/pages.editor.styles.select.save-fail',
-                                  },
-                                  { name }
-                                ),
+                                message: intl.formatMessage(messages.saveFail, {
+                                  name,
+                                }),
                               })
                             })
                         }
@@ -145,10 +187,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                             .then(() => {
                               showToast({
                                 action: {
-                                  label: intl.formatMessage({
-                                    id:
-                                      'admin/pages.editor.styles.select.delete.toast.undo',
-                                  }),
+                                  label: intl.formatMessage(messages.undo),
                                   onClick: () => {
                                     createStyle({ variables: { name, config } })
                                   },
@@ -156,10 +195,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 duration: Infinity,
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage(
-                                  {
-                                    id:
-                                      'admin/pages.editor.styles.select.delete-success',
-                                  },
+                                  messages.deleteSuccess,
                                   { name }
                                 ),
                               })
@@ -168,10 +204,9 @@ const StyleList: React.FunctionComponent<Props> = ({
                               console.error(e)
                               showToast({
                                 horizontalPosition: 'right',
-                                message: intl.formatMessage({
-                                  id:
-                                    'admin/pages.editor.styles.card.menu.delete.fail',
-                                }),
+                                message: intl.formatMessage(
+                                  messages.deleteFail
+                                ),
                               })
                               throw e
                             })
@@ -181,10 +216,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                             variables: {
                               config,
                               name: intl.formatMessage(
-                                {
-                                  id:
-                                    'admin/pages.editor.styles.duplicate.defaultName',
-                                },
+                                messages.duplicateDefaultName,
                                 { name }
                               ),
                             },
@@ -193,10 +225,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                               showToast({
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage(
-                                  {
-                                    id:
-                                      'admin/pages.editor.styles.card.menu.duplicate.success',
-                                  },
+                                  messages.duplicateSuccess,
                                   { name }
                                 ),
                               })
@@ -206,10 +235,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                               showToast({
                                 horizontalPosition: 'right',
                                 message: intl.formatMessage(
-                                  {
-                                    id:
-                                      'admin/pages.editor.styles.card.menu.duplicate.fail',
-                                  },
+                                  messages.duplicateFail,
                                   { name }
                                 ),
                               })

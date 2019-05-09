@@ -1,5 +1,6 @@
 import { path } from 'ramda'
 import React, { Component } from 'react'
+import { defineMessages } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   SortableElement,
@@ -41,6 +42,13 @@ type PropsFromItemTemplateProps = Pick<
   'onDropIndexClick' | 'hasRemove' | 'children'
 >
 type Props = IProps & SortableElementProps & PropsFromItemTemplateProps
+
+defineMessages({
+  defaultTitle: {
+    defaultMessage: 'Item',
+    id: 'admin/pages.admin.pages.form.field.array.item',
+  },
+})
 
 class ArrayFieldTemplateItem extends Component<Props, State> {
   public render() {
@@ -114,7 +122,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     }
   }
 
-  private renderChildren = (item: string) => (styles: React.CSSProperties) => (
+  private renderChildren = (_: string) => (styles: React.CSSProperties) => (
     <animated.div style={styles}>{this.props.children}</animated.div>
   )
 }
