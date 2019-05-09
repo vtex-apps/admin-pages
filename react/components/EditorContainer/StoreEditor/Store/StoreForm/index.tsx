@@ -104,7 +104,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
     schemas.title = intl.formatMessage({ id: schema.title })
     schemas.schema = assoc(
       'properties',
-      formatSchema(dissoc('title', schema).properties, intl),
+      formatSchema(schema.properties, intl),
       schema
     )
   }

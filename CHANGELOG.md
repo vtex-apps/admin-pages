@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- **EditorContainer**
+  - Add `promptOnCustomEvent` toggle in the PWA Form to allow events like click the BuyButton to prompt the PWA installation modal.
+
 ## [3.7.1] - 2019-05-10
 
 ### Fixed

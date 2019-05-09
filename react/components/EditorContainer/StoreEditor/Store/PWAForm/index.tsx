@@ -302,6 +302,24 @@ const PWAForm: React.FunctionComponent<Props> = ({
           }
         />
       </div>
+      <div className="pt6">
+        <Toggle
+          label={intl.formatMessage({
+            id: 'admin/pages.editor.store.settings.pwa.prompt-on-custom-event',
+          })}
+          checked={settings.promptOnCustomEvent}
+          disabled={submitting || settings.disablePrompt}
+          onChange={() =>
+            setSettings({
+              ...settings,
+              promptOnCustomEvent: !settings.promptOnCustomEvent,
+            })
+          }
+        />
+        <div className="c-muted-1 t-small mt3 lh-title">
+          <FormattedMessage id="admin/pages.editor.store.settings.pwa.prompt-on-custom-event.description" />
+        </div>
+      </div>
       <div className="w-100 mt7 tr">
         <Button
           size="small"

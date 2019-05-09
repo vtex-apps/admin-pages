@@ -24,6 +24,7 @@ query PWA {
   }
   pwaSettings {
     disablePrompt
+    promptOnCustomEvent
   }
 
   # Styles

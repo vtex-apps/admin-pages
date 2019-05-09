@@ -168,6 +168,8 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-primary": "Portrait (Primary)",
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "Portrait (Secondary)",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "Portrait",
+  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event": "Prompt \"Add to Home Screen\" based on user interaction",
+  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event.description": "For now, only available in add to cart event",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "Screen Orientation",
   "admin/pages.editor.store.settings.pwa.splash-screen": "Splash screen (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "Start URL",

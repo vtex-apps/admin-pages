@@ -1,5 +1,5 @@
 import React from 'react'
-import { SortableContainer } from 'react-sortable-hoc'
+import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../typings'
 
@@ -17,7 +17,9 @@ interface CustomProps {
 
 type Props = CustomProps
 
-const SortableList = SortableContainer<Props>(
+const SortableList: React.ComponentClass<
+  Props & SortableContainerProps
+> = SortableContainer<Props>(
   ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }) => (
     <ul className="mv0 pl0 overflow-y-auto pointer">
       {components.map((component, index) => (

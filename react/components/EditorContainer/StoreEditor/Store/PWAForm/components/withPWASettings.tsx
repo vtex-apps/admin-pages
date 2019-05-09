@@ -14,6 +14,7 @@ export interface PWAImage {
 
 export interface PWASettings {
   disablePrompt: boolean
+  promptOnCustomEvent: boolean
 }
 
 export interface Manifest {

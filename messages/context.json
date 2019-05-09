@@ -168,6 +168,8 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-primary": "admin/pages.editor.store.settings.pwa.orientation.portrait-primary",
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "admin/pages.editor.store.settings.pwa.orientation.portrait",
+  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event": "admin/pages.editor.store.settings.pwa.prompt-on-custom-event",
+  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event.description": "admin/pages.editor.store.settings.pwa.prompt-on-custom-event.description",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "admin/pages.editor.store.settings.pwa.screen-orientation",
   "admin/pages.editor.store.settings.pwa.splash-screen": "admin/pages.editor.store.settings.pwa.splash-screen",
   "admin/pages.editor.store.settings.pwa.start_url": "admin/pages.editor.store.settings.pwa.start_url",
