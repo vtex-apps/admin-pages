@@ -5,7 +5,7 @@ import React from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 import StyleEditorHeader from '../StyleEditorHeader'
-import { ColorsIdParam, EditorPath } from '../StyleEditorRouter'
+import { EditorPath, IdParam } from '../StyleEditorRouter'
 import fromTachyonsConfig from '../utils/colors'
 import ColorEditor from './ColorEditor'
 import ColorGroup from './ColorGroup'
@@ -97,7 +97,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
               font={font}
               semanticColors={semanticColors}
               startEditing={(token: string) =>
-                history.push(EditorPath.colors.replace(ColorsIdParam, token))
+                history.push(EditorPath.colors.replace(IdParam, token))
               }
               colorsInfo={fromPairs(group)}
             />

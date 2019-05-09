@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import Colors from '../components/Colors'
 import AvailableEditor from './AvailableEditor'
 import StyleEditorHeader from './StyleEditorHeader'
-import { ColorsIdParam, EditorPath } from './StyleEditorRouter'
+import { EditorPath, IdParam } from './StyleEditorRouter'
 
 interface Props {
   config: TachyonsConfig
@@ -26,7 +26,7 @@ const EditorSelector: React.FunctionComponent<Props> = ({
   } = config
 
   const colorEditorProps = {
-    path: EditorPath.colors.replace(ColorsIdParam, ''),
+    path: EditorPath.colors.replace(IdParam, ''),
     titleId: 'admin/pages.editor.styles.edit.colors.title',
     widget: <Colors colors={[emphasis, action_primary]} />,
   }

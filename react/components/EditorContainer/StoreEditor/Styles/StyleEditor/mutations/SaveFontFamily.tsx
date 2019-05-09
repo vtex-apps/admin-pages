@@ -51,8 +51,10 @@ const updateFontsAfterSave = (
 
   const { listFonts: families } = listData
   const newFamily = result.data.saveFontFamily
+  const toAppend =
+    families.find(({ id }) => id === newFamily.id) == null ? [newFamily] : []
   cache.writeQuery<ListFontsData>({
-    data: { listFonts: [...families, newFamily] },
+    data: { listFonts: [...families, ...toAppend] },
     query: ListFonts,
   })
 }
