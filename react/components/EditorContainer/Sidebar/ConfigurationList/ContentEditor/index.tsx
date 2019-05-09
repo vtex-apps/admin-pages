@@ -3,8 +3,8 @@ import React, { Fragment } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
 import { getExtension } from '../../../../../utils/components'
+import { useEditorContext } from '../../../../EditorContext'
 import ComponentEditor from '../../ComponentEditor'
-import { FormMetaContext } from '../../typings'
 
 import ConditionControls from './ConditionControls'
 import LabelEditor from './LabelEditor'
@@ -14,8 +14,6 @@ interface Props {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   contentSchema?: JSONSchema6
-  editor: EditorContext
-  formMeta: FormMetaContext
   iframeRuntime: RenderContext
   isLoading: boolean
   isSitewide: boolean
@@ -35,8 +33,6 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   condition,
   configuration,
   contentSchema,
-  editor,
-  formMeta,
   iframeRuntime,
   isSitewide,
   isLoading,
@@ -48,7 +44,9 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onSave,
   shouldDisableSaveButton,
 }) => {
-  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
+  const { editTreePath } = useEditorContext()
+
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
 
   const content = configuration
     ? {
@@ -78,8 +76,6 @@ const ContentEditor: React.FunctionComponent<Props> = ({
       }
       contentSchema={contentSchema}
       data={content}
-      editor={editor}
-      formMeta={formMeta}
       iframeRuntime={iframeRuntime}
       isContent
       isLoading={isLoading}

@@ -5,77 +5,75 @@ import { ToastConsumer } from 'vtex.styleguide'
 import SelectionIcon from '../../../images/SelectionIcon'
 import UpdateBlockMutation from '../mutations/UpdateBlock'
 
+import { useEditorContext } from '../../EditorContext'
 import ComponentList from './ComponentList'
 import { SidebarComponent } from './typings'
 
 interface Props {
   components: SidebarComponent[]
-  editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
   updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
-class ComponentSelector extends PureComponent<Props> {
-  public render() {
-    const {
-      components,
-      editor,
-      highlightHandler,
-      iframeRuntime,
-      updateSidebarComponents,
-    } = this.props
+const ComponentSelector: React.FunctionComponent<Props> = ({
+  components,
+  highlightHandler,
+  iframeRuntime,
+  updateSidebarComponents,
+}) => {
+  const editor = useEditorContext()
 
-    return (
-      <Fragment>
-        <div className="flex justify-between items-center flex-shrink-0 h-3em">
-          <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
-            <FormattedMessage id="admin/pages.editor.components.title" />
-          </h3>
-          <div
-            onClick={editor.toggleEditMode}
-            className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
-          >
-            <span className="pr5 b--light-gray flex items-center">
-              <SelectionIcon stroke={editor.editMode ? '#368df7' : '#979899'} />
-            </span>
-          </div>
+  const handleMouseEnter = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement | HTMLLIElement>) => {
+      const treePath = event.currentTarget.getAttribute('data-tree-path')
+
+      highlightHandler(treePath)
+    },
+    []
+  )
+
+  const handleMouseLeave = React.useCallback(() => {
+    highlightHandler(null)
+  }, [])
+
+  return (
+    <Fragment>
+      <div className="flex justify-between items-center flex-shrink-0 h-3em">
+        <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
+          <FormattedMessage id="admin/pages.editor.components.title" />
+        </h3>
+        <div
+          onClick={editor.toggleEditMode}
+          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+        >
+          <span className="pr5 b--light-gray flex items-center">
+            <SelectionIcon stroke={editor.editMode ? '#368df7' : '#979899'} />
+          </span>
         </div>
-        <div className="bb bw1 b--light-silver" />
-        <ToastConsumer>
-          {({ showToast }) => (
-            <UpdateBlockMutation>
-              {updateBlock => (
-                <ComponentList
-                  components={components}
-                  editor={editor}
-                  highlightHandler={highlightHandler}
-                  onMouseEnterComponent={this.handleMouseEnter}
-                  onMouseLeaveComponent={this.handleMouseLeave}
-                  iframeRuntime={iframeRuntime}
-                  showToast={showToast}
-                  updateSidebarComponents={updateSidebarComponents}
-                  updateBlock={updateBlock}
-                />
-              )}
-            </UpdateBlockMutation>
-          )}
-        </ToastConsumer>
-      </Fragment>
-    )
-  }
-
-  private handleMouseEnter = (
-    event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
-  ) => {
-    const treePath = event.currentTarget.getAttribute('data-tree-path')
-
-    this.props.highlightHandler(treePath)
-  }
-
-  private handleMouseLeave = () => {
-    this.props.highlightHandler(null)
-  }
+      </div>
+      <div className="bb bw1 b--light-silver" />
+      <ToastConsumer>
+        {({ showToast }) => (
+          <UpdateBlockMutation>
+            {updateBlock => (
+              <ComponentList
+                components={components}
+                editor={editor}
+                highlightHandler={highlightHandler}
+                onMouseEnterComponent={handleMouseEnter}
+                onMouseLeaveComponent={handleMouseLeave}
+                iframeRuntime={iframeRuntime}
+                showToast={showToast}
+                updateSidebarComponents={updateSidebarComponents}
+                updateBlock={updateBlock}
+              />
+            )}
+          </UpdateBlockMutation>
+        )}
+      </ToastConsumer>
+    </Fragment>
+  )
 }
 
-export default ComponentSelector
+export default React.memo(ComponentSelector)

@@ -35,13 +35,11 @@ class LayoutEditor extends Component<Props> {
   }
 
   public render() {
-    const { editor, formMeta, iframeRuntime, modal } = this.props
+    const { formMeta, iframeRuntime, modal } = this.props
 
     return (
       <ComponentEditor
         data={this.getExtensionProps()}
-        editor={editor}
-        formMeta={formMeta}
         iframeRuntime={iframeRuntime}
         isLoading={formMeta.isLoading && !modal.isOpen}
         onChange={this.handleChange}

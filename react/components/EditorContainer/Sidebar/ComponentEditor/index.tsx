@@ -8,8 +8,8 @@ import {
   getExtension,
   getIframeImplementation,
 } from '../../../../utils/components'
+import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
-import { FormMetaContext } from '../typings'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -18,8 +18,6 @@ interface CustomProps {
   after?: JSX.Element
   contentSchema?: JSONSchema6
   data: object
-  editor: EditorContext
-  formMeta: FormMetaContext
   iframeRuntime: RenderContext
   isContent?: boolean
   isLoading: boolean
@@ -36,8 +34,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   after,
   contentSchema,
   data,
-  editor,
-  formMeta,
   iframeRuntime,
   isContent,
   isLoading,
@@ -47,7 +43,9 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   shouldDisableSaveButton,
   title,
 }) => {
-  const extension = getExtension(editor.editTreePath, iframeRuntime.extensions)
+  const { editTreePath, mode } = useEditorContext()
+
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
 
   const componentImplementation = getIframeImplementation(extension.component)
 
@@ -84,9 +82,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
-              editor,
-              formMeta,
-              isLayoutMode: editor.mode === 'layout',
+              isLayoutMode: mode === 'layout',
             }}
             formData={data}
             onChange={onChange}

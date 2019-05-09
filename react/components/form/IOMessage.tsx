@@ -2,40 +2,32 @@ import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 
-import {
-  ComponentEditorFormContext,
-  FormMetaContext,
-} from '../EditorContainer/Sidebar/typings'
+import { useFormMetaContext } from '../EditorContainer/Sidebar/FormMetaContext'
+import { useEditorContext } from '../EditorContext'
 
 import BaseInput from './BaseInput'
 
-interface CustomWidgetProps extends WidgetProps {
-  formContext: ComponentEditorFormContext & {
-    editor: EditorContext
-    formMeta: FormMetaContext
-  }
-}
-
-type Props = CustomWidgetProps & InjectedIntlProps
+type Props = InjectedIntlProps & WidgetProps
 
 const IOMessage: React.FunctionComponent<Props> = props => {
-  const { editor, formMeta } = props.formContext
+  const { addMessages, messages } = useEditorContext()
+  const { setWasModified, wasModified } = useFormMetaContext()
 
   const [i18nKey] = React.useState(props.value)
 
-  const message = editor.messages[i18nKey]
+  const message = messages[i18nKey]
 
   const initialValue = message || (message === '' ? '' : i18nKey)
 
   const [value, setValue] = React.useState(initialValue)
 
   const handleChange = React.useCallback((newValue: string) => {
-    editor.addMessages({
+    addMessages({
       [i18nKey]: newValue,
     })
 
-    if (!formMeta.wasModified) {
-      formMeta.setWasModified(true)
+    if (!wasModified) {
+      setWasModified(true)
     }
 
     setValue(newValue)

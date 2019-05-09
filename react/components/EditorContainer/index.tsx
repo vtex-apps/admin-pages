@@ -125,7 +125,6 @@ export default class EditorContainer extends Component<Props, State> {
           <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
             {visible && !storeEditMode && runtime && (
               <Sidebar
-                editor={editor}
                 highlightHandler={this.highlightExtensionPoint}
                 runtime={runtime}
               />
