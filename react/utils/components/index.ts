@@ -121,7 +121,9 @@ export const getSchemaPropsOrContent = ({
   properties = {},
   propsOrContent,
 }: GetSchemaPropsOrContentParams): object => {
-  if (JSON.stringify(properties) === '{}') {
+  const isPropertiesObjEmpty = JSON.stringify(properties) === '{}'
+
+  if (isPropertiesObjEmpty) {
     return {}
   }
 
