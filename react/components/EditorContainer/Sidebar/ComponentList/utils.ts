@@ -1,11 +1,11 @@
-import { filter, flatten, partition } from 'ramda'
+import { curry, filter, flatten, partition } from 'ramda'
 
 import { SidebarComponent } from '../typings'
 
 import { getBlockRole } from '../../../../utils/blocks'
-import { NormalizedComponent, NormalizedRelativeRoot } from './typings'
+import { NormalizedComponent, TreesByRole } from './typings'
 
-const pathLength = (path: string) => path.split('/').length
+const MINIMUM_TREE_PATH_SIZE = 2
 
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
@@ -17,97 +17,104 @@ export const getParentTreePath = (treePath: string): string => {
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
 
-export const isRootComponent = (minimumTreePathSize: number) => (
-  component: SidebarComponent
-) => {
+export const isRootComponent = (component: SidebarComponent) => {
   const splitTreePath = component.treePath.split('/')
 
   return (
-    splitTreePath.length === minimumTreePathSize ||
-    (splitTreePath.length === minimumTreePathSize + 1 &&
-      splitTreePath[minimumTreePathSize].startsWith('$'))
+    splitTreePath.length === MINIMUM_TREE_PATH_SIZE ||
+    (splitTreePath.length === MINIMUM_TREE_PATH_SIZE + 1 &&
+      splitTreePath[MINIMUM_TREE_PATH_SIZE].startsWith('$'))
   )
 }
 
-export const isRootComponentRelative = (minimumTreePathSize: number) => (
-  rootComponent: SidebarComponent
-) => {
-  const splitTreePath = rootComponent.treePath.split('/')
+const pathLength = (path: string) => path.split('/').length
 
-  return (
-    splitTreePath[minimumTreePathSize - 1].startsWith('$') ||
-    (splitTreePath.length === minimumTreePathSize + 1 &&
-      splitTreePath[minimumTreePathSize].startsWith('$'))
-  )
-}
+const mountFullTree = curry(
+  (leaves: SidebarComponent[], root: SidebarComponent): NormalizedComponent => {
+    if (leaves.length === 0) {
+      return { ...root, components: [], isSortable: false }
+    }
 
-const mountFullTree = (
-  root: SidebarComponent,
-  rootOwnLeaves: SidebarComponent[]
-): NormalizedComponent => {
-  if (rootOwnLeaves.length === 0) {
-    return { ...root, isSortable: false }
-  }
-  const rootTreePathLength = pathLength(root.treePath)
-  const immediateChildren = rootOwnLeaves.filter(
-    ({ treePath: childPath }) =>
-      rootTreePathLength + 1 === pathLength(childPath)
-  )
-  const nonImmediateChildren = rootOwnLeaves.filter(
-    ({ treePath: childPath }) => rootTreePathLength + 1 < pathLength(childPath)
-  )
-
-  return {
-    ...root,
-    components: immediateChildren.map(child => {
-      const grandChildren = nonImmediateChildren.filter(({ treePath }) =>
-        treePath.startsWith(child.treePath)
-      )
-      return mountFullTree(child, grandChildren)
-    }),
-    isSortable: false,
-  }
-}
-
-export const normalize = (components: SidebarComponent[]) => {
-  const minimumTreePathSize = components.reduce((acc, currentComponent) => {
-    const treePathSize = currentComponent.treePath.split('/').length
-    return treePathSize < acc ? treePathSize : acc
-  }, Infinity)
-
-  const [roots, leaves] = partition(
-    isRootComponent(minimumTreePathSize),
-    components
-  )
-
-  const reduceRoot = (
-    acc: SidebarComponent[],
-    root: SidebarComponent
-  ): SidebarComponent[] => {
-    const { treePath: currentRootPath } = root
-    const rootPathLength = pathLength(currentRootPath)
-    const childrenFromRoot = leaves.filter(
-      ({ treePath: leafTreePath }) =>
-        leafTreePath.startsWith(currentRootPath) &&
-        rootPathLength + 1 === pathLength(leafTreePath)
+    const { children, grandChildren } = getChildrenAndGrandChildren(
+      root.treePath,
+      leaves
     )
 
-    const rootObject = {
+    return {
       ...root,
-      components: childrenFromRoot.map(child => {
-        const grandChildren = leaves.filter(({ treePath }) =>
-          treePath.startsWith(child.treePath)
+      components: children.map(nextRoot => {
+        const nextChildren = grandChildren.filter(({ treePath }) =>
+          treePath.startsWith(nextRoot.treePath)
         )
-        return mountFullTree(child, grandChildren)
+        return mountFullTree(nextChildren, nextRoot)
       }),
       isSortable: false,
     }
-    return acc.concat(rootObject)
   }
+)
 
-  const trees = roots.reduce<SidebarComponent[]>(reduceRoot, [])
+const getChildrenAndGrandChildren = (
+  rootTreePath: string,
+  nodes: SidebarComponent[]
+) => {
+  return nodes.reduce<{
+    children: SidebarComponent[]
+    grandChildren: SidebarComponent[]
+  }>(
+    (acc, node) => {
+      if (!node.treePath.startsWith(rootTreePath)) {
+        return acc
+      }
 
-  return trees
+      const nodeRelation: keyof typeof acc =
+        pathLength(rootTreePath) + 1 === pathLength(node.treePath)
+          ? 'children'
+          : 'grandChildren'
+
+      return {
+        ...acc,
+        [nodeRelation]: acc[nodeRelation].concat(node),
+      }
+    },
+    { children: [], grandChildren: [] }
+  )
+}
+
+export const normalize = (components: SidebarComponent[]) => {
+  const [roots, leaves] = partition(isRootComponent, components)
+
+  const trees = roots.map<SidebarComponent>(mountFullTree(leaves))
+
+  const treesByRole = trees.reduce<TreesByRole>(
+    (acc, tree) => {
+      const splitTreePath = tree.treePath.split('/')
+      const treePathTail = splitTreePath[splitTreePath.length - 1]
+
+      const blockRole = getBlockRole(treePathTail)
+      return {
+        ...acc,
+        [blockRole]: [...acc[blockRole], tree],
+      }
+    },
+    { after: [], around: [], before: [], blocks: [] }
+  )
+
+  const prependBlocksWithAround = flatten(
+    treesByRole.blocks.map(block => {
+      const aroundForBlock = treesByRole.around.find(aroundBlock => {
+        return aroundBlock.treePath.startsWith(block.treePath)
+      })
+      return aroundForBlock ? [aroundForBlock, block] : block
+    })
+  )
+
+  const reorderByRole = [
+    ...treesByRole.before,
+    ...prependBlocksWithAround,
+    ...treesByRole.after,
+  ]
+
+  return reorderByRole
 }
 
 export const pureSplice = <T>(index: number, target: T[]) => [

@@ -159,6 +159,7 @@ describe('normalize', () => {
               {
                 components: [
                   {
+                    components: [],
                     isSortable: false,
                     name: 'editor.product-rating.title',
                     treePath:
@@ -191,7 +192,7 @@ describe('normalize', () => {
     expect(normalize(input)).toEqual(expectedOutput)
   })
 
-  it.only('handles unordered components', () => {
+  it('handles unordered components', () => {
     const input: SidebarComponent[] = [
       {
         name: 'editor.footer.title',
@@ -286,21 +287,25 @@ describe('normalize', () => {
 
     const expectedOutput: NormalizedComponent[] = [
       {
+        components: [],
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
+        components: [],
         isSortable: false,
         name: 'editor.around-carousel.title',
         treePath: 'store.home/carousel#home/$around_0',
       },
       {
+        components: [],
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
+        components: [],
         isSortable: false,
         name: 'editor.around-shelf.title',
         treePath: 'store.home/shelf#home/$around_0',
@@ -308,6 +313,7 @@ describe('normalize', () => {
       {
         components: [
           {
+            components: [],
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
@@ -318,6 +324,7 @@ describe('normalize', () => {
         treePath: 'store.home/shelf#home',
       },
       {
+        components: [],
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
