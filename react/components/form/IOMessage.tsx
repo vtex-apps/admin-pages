@@ -2,9 +2,21 @@ import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 
+import {
+  ComponentEditorFormContext,
+  FormMetaContext,
+} from '../EditorContainer/Sidebar/typings'
+
 import BaseInput from './BaseInput'
 
-type Props = InjectedIntlProps & WidgetProps
+interface CustomWidgetProps extends WidgetProps {
+  formContext: ComponentEditorFormContext & {
+    editor: EditorContext
+    formMeta: FormMetaContext
+  }
+}
+
+type Props = CustomWidgetProps & InjectedIntlProps
 
 const IOMessage: React.FunctionComponent<Props> = props => {
   const { editor, formMeta } = props.formContext
