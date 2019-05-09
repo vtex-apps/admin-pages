@@ -4,7 +4,7 @@ query ListContent(
   $template: String
   $treePath: String
 ) {
-  listContent(
+  listContentWithSchema(
     blockId: $blockId
     pageContext: $pageContext
     template: $template

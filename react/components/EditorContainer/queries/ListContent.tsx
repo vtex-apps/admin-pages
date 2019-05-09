@@ -11,7 +11,7 @@ export interface ListContentVariables {
 }
 
 export interface ListContentData {
-  listContent?: {
+  listContentWithSchema?: {
     content?: ExtensionConfiguration[]
     schemaJSON: string
   }

@@ -94,7 +94,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     this.componentImplementation = getIframeImplementation(this.component)
 
-    const listContent = queryData && queryData.listContent
+    const listContent = queryData && queryData.listContentWithSchema
 
     this.contentSchema = listContent && JSON.parse(listContent.schemaJSON)
 
