@@ -13,9 +13,9 @@ const IOMessage: React.FunctionComponent<Props> = props => {
 
   const message = editor.messages[i18nKey]
 
-  const [value, setValue] = React.useState(
-    message || message === '' ? '' : i18nKey
-  )
+  const initialValue = message || (message === '' ? '' : i18nKey)
+
+  const [value, setValue] = React.useState(initialValue)
 
   const handleChange = (newValue: string) => {
     editor.addMessages({
