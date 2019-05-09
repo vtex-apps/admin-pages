@@ -5,8 +5,6 @@ import { SidebarComponent } from '../typings'
 import { getBlockRole } from '../../../../utils/blocks'
 import { NormalizedComponent, TreesByRole } from './typings'
 
-const MINIMUM_TREE_PATH_SIZE = 2
-
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
 
@@ -17,13 +15,15 @@ export const getParentTreePath = (treePath: string): string => {
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
 
-export const isRootComponent = (component: SidebarComponent) => {
+export const isRootComponent = (minimumTreePathSize: number) => (
+  component: SidebarComponent
+) => {
   const splitTreePath = component.treePath.split('/')
 
   return (
-    splitTreePath.length === MINIMUM_TREE_PATH_SIZE ||
-    (splitTreePath.length === MINIMUM_TREE_PATH_SIZE + 1 &&
-      splitTreePath[MINIMUM_TREE_PATH_SIZE].startsWith('$'))
+    splitTreePath.length === minimumTreePathSize ||
+    (splitTreePath.length === minimumTreePathSize + 1 &&
+      splitTreePath[minimumTreePathSize].startsWith('$'))
   )
 }
 
@@ -57,7 +57,17 @@ const getChildrenAndGrandChildren = (
   rootTreePath: string,
   nodes: SidebarComponent[]
 ) => {
-  return nodes.reduce<{
+  const descendants = nodes.filter(
+    node =>
+      node.treePath.startsWith(rootTreePath) && node.treePath !== rootTreePath
+  )
+
+  const minimumTreePathSize = descendants.reduce((min, currentComponent) => {
+    const treePathSize = currentComponent.treePath.split('/').length
+    return treePathSize < min ? treePathSize : min
+  }, Infinity)
+
+  return descendants.reduce<{
     children: SidebarComponent[]
     grandChildren: SidebarComponent[]
   }>(
@@ -67,7 +77,7 @@ const getChildrenAndGrandChildren = (
       }
 
       const nodeRelation: keyof typeof acc =
-        pathLength(rootTreePath) + 1 === pathLength(node.treePath)
+        minimumTreePathSize === pathLength(node.treePath)
           ? 'children'
           : 'grandChildren'
 
@@ -81,7 +91,15 @@ const getChildrenAndGrandChildren = (
 }
 
 export const normalize = (components: SidebarComponent[]) => {
-  const [roots, leaves] = partition(isRootComponent, components)
+  const minimumTreePathSize = components.reduce((acc, currentComponent) => {
+    const treePathSize = currentComponent.treePath.split('/').length
+    return treePathSize < acc ? treePathSize : acc
+  }, Infinity)
+
+  const [roots, leaves] = partition(
+    isRootComponent(minimumTreePathSize),
+    components
+  )
 
   const trees = roots.map<SidebarComponent>(mountFullTree(leaves))
 

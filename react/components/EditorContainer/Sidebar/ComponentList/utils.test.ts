@@ -192,6 +192,52 @@ describe('normalize', () => {
     expect(normalize(input)).toEqual(expectedOutput)
   })
 
+  it('should treat "closest" node as next root', () => {
+    const input: SidebarComponent[] = [
+      {
+        name: 'editor.product-summary.title',
+        treePath:
+          'store.home/shelf#home/spacer/placeholder/flex/product-summary',
+      },
+      {
+        name: 'editor.product-summary.title',
+        treePath:
+          'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
+      },
+      {
+        name: 'editor.shelf.title',
+        treePath: 'store.home/shelf#home',
+      },
+    ]
+
+    const expectedOutput: NormalizedComponent[] = [
+      {
+        components: [
+          {
+            components: [
+              {
+                components: [],
+                isSortable: false,
+                name: 'editor.product-summary.title',
+                treePath:
+                  'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
+              },
+            ],
+            isSortable: false,
+            name: 'editor.product-summary.title',
+            treePath:
+              'store.home/shelf#home/spacer/placeholder/flex/product-summary',
+          },
+        ],
+        isSortable: false,
+        name: 'editor.shelf.title',
+        treePath: 'store.home/shelf#home',
+      },
+    ]
+
+    expect(normalize(input)).toEqual(expectedOutput)
+  })
+
   it('handles unordered components', () => {
     const input: SidebarComponent[] = [
       {
@@ -344,7 +390,7 @@ describe('isRootComponent', () => {
 
     const expectedOutput = true
 
-    expect(isRootComponent(input)).toBe(expectedOutput)
+    expect(isRootComponent(2)(input)).toBe(expectedOutput)
   })
 
   it(`returns true when called with 'store.home/footer'`, () => {
@@ -355,7 +401,7 @@ describe('isRootComponent', () => {
 
     const expectedOutput = true
 
-    expect(isRootComponent(input)).toBe(expectedOutput)
+    expect(isRootComponent(2)(input)).toBe(expectedOutput)
   })
 
   it(`returns true when called with 'store.home/test'`, () => {
@@ -366,7 +412,7 @@ describe('isRootComponent', () => {
 
     const expectedOutput = true
 
-    expect(isRootComponent(input)).toBe(expectedOutput)
+    expect(isRootComponent(2)(input)).toBe(expectedOutput)
   })
 
   it(`returns false when called with 'store.home/header/login'`, () => {
@@ -377,7 +423,7 @@ describe('isRootComponent', () => {
 
     const expectedOutput = false
 
-    expect(isRootComponent(input)).toBe(expectedOutput)
+    expect(isRootComponent(2)(input)).toBe(expectedOutput)
   })
 
   it(`returns false when called with 'store.home/shelf/product-summary'`, () => {
@@ -388,7 +434,7 @@ describe('isRootComponent', () => {
 
     const expectedOutput = false
 
-    expect(isRootComponent(input)).toBe(expectedOutput)
+    expect(isRootComponent(2)(input)).toBe(expectedOutput)
   })
 })
 
