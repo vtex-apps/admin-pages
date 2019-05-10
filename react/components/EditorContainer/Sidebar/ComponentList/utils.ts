@@ -15,9 +15,9 @@ export const getParentTreePath = (treePath: string): string => {
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
 
-const isChild = (rootTreePath: string, childTreePath: string) => {
-  const splitRootTreePath = rootTreePath.split('/')
-  const splitChildTreePath = childTreePath.split('/')
+export const isChild = (rootTreePath: string, childTreePath: string) => {
+  const splitRootTreePath = filter(Boolean, rootTreePath.split('/'))
+  const splitChildTreePath = filter(Boolean, childTreePath.split('/'))
 
   return (
     splitRootTreePath.length > 0 &&

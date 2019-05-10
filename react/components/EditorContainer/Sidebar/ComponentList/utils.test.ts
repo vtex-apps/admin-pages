@@ -1,7 +1,7 @@
 import { SidebarComponent } from '../typings'
 
 import { NormalizedComponent } from './typings'
-import { getParentTreePath, isRootComponent, normalize } from './utils'
+import { getParentTreePath, isChild, isRootComponent, normalize } from './utils'
 
 describe('getParentTreePath', () => {
   it('returns parent treePath', () => {
@@ -487,5 +487,35 @@ describe('getParentTreePath', () => {
 
   it('handles strings with no delimiter ("/")', () => {
     expect(getParentTreePath('store')).toBe('store')
+  })
+})
+
+describe('isChild', () => {
+  it('should return true for direct child tree paths', () => {
+    expect(isChild('home', 'home/shelf')).toBe(true)
+  })
+
+  it('should return true when root ends with "/"', () => {
+    expect(isChild('home/', 'home/shelf')).toBe(true)
+  })
+
+  it('should return true for nested child', () => {
+    expect(
+      isChild('home', 'home/shelf/product-summary/product-description/text')
+    ).toBe(true)
+  })
+
+  it('should return false when root is empty', () => {
+    expect(isChild('', 'home/shelf')).toBe(false)
+  })
+
+  it('should return false when passing the same tree path', () => {
+    expect(isChild('home/layout#home', 'home/layout#home')).toBe(false)
+  })
+
+  it('should return false when the child block has the same start as the root', () => {
+    expect(
+      isChild('home/layout#home', 'home/layout#homeCollection/shelf')
+    ).toBe(false)
   })
 })
