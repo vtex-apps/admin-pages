@@ -169,7 +169,7 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "Retrato (Secundario)",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "Retrato",
   "admin/pages.editor.store.settings.pwa.prompt-on-custom-event": "Mostrar modal de instalación basado en la interacción del usuario",
-  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event.display": "Por ahora, sólo disponible en eventos de añadir a la cesta de la compra",
+  "admin/pages.editor.store.settings.pwa.prompt-on-custom-event.description": "Por ahora, sólo disponible en eventos de añadir a la cesta de la compra",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "Orientación de la pantalla",
   "admin/pages.editor.store.settings.pwa.splash-screen": "Pantalla de carga (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "URL inicial",
