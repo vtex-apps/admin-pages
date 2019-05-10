@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
@@ -34,7 +34,9 @@ const Content = (props: Props) => {
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
-  const [components, setComponents] = useState(getInitialComponents(props))
+  const initialComponents = useMemo(() => getInitialComponents(props), [])
+
+  const [components, setComponents] = useState(initialComponents)
 
   const path = useRef('')
 

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.7.1] - 2019-05-10
+
+### Fixed
+
+- [Performance] `useMemo` on `Content` to get `initialComponents` so it isn't calculated every time.
+
 ## [3.7.0] - 2019-05-09
 
 ### Added
