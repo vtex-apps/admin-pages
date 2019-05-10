@@ -18,7 +18,10 @@ const FontFamilyList: React.FunctionComponent<Props> = ({
   loading,
 }) => {
   const title = (
-    <FormattedMessage id="admin/pages.editor.styles.edit.font-family.title" />
+    <FormattedMessage
+      id="admin/pages.editor.styles.edit.font-family.title"
+      defaultMessage="Font Family"
+    />
   )
 
   if (loading) {
@@ -38,7 +41,10 @@ const FontFamilyList: React.FunctionComponent<Props> = ({
   }
 
   const addFontLabel = (
-    <FormattedMessage id="admin/pages.editor.styles.edit.font-family.add-font" />
+    <FormattedMessage
+      id="admin/pages.editor.styles.edit.font-family.add-font"
+      defaultMessage="Add Custom Font"
+    />
   )
 
   const addFontOnClick = () =>
@@ -58,7 +64,10 @@ const FontFamilyList: React.FunctionComponent<Props> = ({
         <StyleEditorHeader title={title} />
         <div className="ph6 lh-copy">
           <p>
-            <FormattedMessage id="admin/pages.editor.styles.edit.font-family.add-font-description" />
+            <FormattedMessage
+              id="admin/pages.editor.styles.edit.font-family.add-font-description"
+              defaultMessage="You can add custom font families to your store, let’s add some?"
+            />
           </p>
           {addFontButton}
         </div>
@@ -70,8 +79,8 @@ const FontFamilyList: React.FunctionComponent<Props> = ({
     <>
       <StyleEditorHeader
         title={title}
-        auxButtonLabel={addFontLabel}
-        onAux={addFontOnClick}
+        buttonLabel={addFontLabel}
+        onButtonClick={addFontOnClick}
       />
       <div className="ph6">
         {listFonts.map(fontFamily => (

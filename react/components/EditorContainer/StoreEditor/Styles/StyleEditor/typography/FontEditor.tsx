@@ -135,7 +135,10 @@ const CustomFont: React.FunctionComponent<Props> = ({
   const [fontFiles] = filesReducer
 
   const title = (
-    <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.title" />
+    <FormattedMessage
+      id="admin/pages.editor.styles.edit.custom-font.title"
+      defaultMessage="Custom Font"
+    />
   )
 
   if (loading) {
@@ -185,38 +188,16 @@ const CustomFont: React.FunctionComponent<Props> = ({
     })
   }
 
-  const headerButtons = (
-    <div>
-      {id != null && (
-        <Button
-          variation="tertiary"
-          size="small"
-          isLoading={loadingDelete}
-          onClick={onDelete}
-          disabled={disableDelete}
-        >
-          <FormattedMessage id="admin/pages.admin.pages.form.button.delete" />
-        </Button>
-      )}
-      <Button
-        variation="tertiary"
-        size="small"
-        isLoading={loadingSave}
-        onClick={onSave}
-        disabled={disableSave}
-      >
-        <FormattedMessage id="admin/pages.admin.pages.form.button.save" />
-      </Button>
-    </div>
-  )
-
   const fontFileTabProps = {
     active:
       matchPath(pathname, customFontFile) != null ||
       matchPath(pathname, EditorPath.customFont.replace(IdParam, '')) != null,
     key: 0,
     label: (
-      <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.file-upload" />
+      <FormattedMessage
+        id="admin/pages.editor.styles.edit.custom-font.file-upload"
+        defaultMessage="Upload a file"
+      />
     ),
     onClick: () =>
       history.replace(EditorPath.customFontFile.replace(IdParam, id || '')),
@@ -227,14 +208,46 @@ const CustomFont: React.FunctionComponent<Props> = ({
     disabled: true,
     key: 1,
     label: (
-      <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.file-link" />
+      <FormattedMessage
+        id="admin/pages.editor.styles.edit.custom-font.file-link"
+        defaultMessage="File link"
+      />
     ),
     onClick: () => history.replace(EditorPath.customFontLink),
   }
 
   return (
     <>
-      <StyleEditorHeader title={title} auxComponent={headerButtons} />
+      <StyleEditorHeader title={title}>
+        <div>
+          {id != null && (
+            <Button
+              variation="tertiary"
+              size="small"
+              isLoading={loadingDelete}
+              onClick={onDelete}
+              disabled={disableDelete}
+            >
+              <FormattedMessage
+                id="admin/pages.admin.pages.form.button.delete"
+                defaultMessage="Delete"
+              />
+            </Button>
+          )}
+          <Button
+            variation="tertiary"
+            size="small"
+            isLoading={loadingSave}
+            onClick={onSave}
+            disabled={disableSave}
+          >
+            <FormattedMessage
+              id="admin/pages.admin.pages.form.button.save"
+              defaultMessage="Save"
+            />
+          </Button>
+        </div>
+      </StyleEditorHeader>
       <div className="pa7 h-100 overflow-y-auto flex flex-column">
         <Tabs>
           <Tab {...fontFileTabProps}>

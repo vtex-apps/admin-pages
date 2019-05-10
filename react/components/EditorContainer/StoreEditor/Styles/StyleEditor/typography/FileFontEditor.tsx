@@ -73,7 +73,10 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
       <Input
         size="small"
         label={
-          <FormattedMessage id="admin/pages.editor.styles.edit.font-family.title" />
+          <FormattedMessage
+            id="admin/pages.editor.styles.edit.font-family.title"
+            defaultMessage="Font Family"
+          />
         }
         value={family}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -114,7 +117,10 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
     options: [
       {
         label: (
-          <FormattedMessage id="admin/pages.admin.redirects.form.button.remove" />
+          <FormattedMessage
+            id="admin/pages.admin.redirects.form.button.remove"
+            defaultMessage="Remove"
+          />
         ),
         onClick: onRemove,
       },
@@ -137,7 +143,10 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
         <ActionMenu {...actionMenuProps} />
       </div>
       <div className="flex items-center">
-        <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.style" />
+        <FormattedMessage
+          id="admin/pages.editor.styles.edit.custom-font.style"
+          defaultMessage="Style:"
+        />
         <Dropdown {...dropdownProps} />
       </div>
     </div>
@@ -159,14 +168,23 @@ const FontFileUploadComponent: React.FunctionComponent<FontFileUploadProps> = ({
   return (
     <div className="mv6 w-100 flex">
       <p className="t-small">
-        <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload-description" />{' '}
+        <FormattedMessage
+          id="admin/pages.editor.styles.edit.custom-font.upload-description"
+          defaultMessage="Upload your font family files in .ttf or .woff formats."
+        />{' '}
         <span className="c-muted-2">
-          <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload-description-max-size" />
+          <FormattedMessage
+            id="admin/pages.editor.styles.edit.custom-font.upload-description-max-size"
+            defaultMessage="(Maximum size 2MB)"
+          />
         </span>
       </p>
       <div {...getRootProps()}>
         <ButtonWithIcon icon={<IconUpload />} variation="tertiary">
-          <FormattedMessage id="admin/pages.editor.styles.edit.custom-font.upload" />
+          <FormattedMessage
+            id="admin/pages.editor.styles.edit.custom-font.upload"
+            defaultMessage="Upload"
+          />
           <input {...getInputProps()} />
         </ButtonWithIcon>
       </div>

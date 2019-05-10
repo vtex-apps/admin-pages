@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DataProxy } from 'apollo-cache'
 import { Mutation, MutationFn, QueryResult } from 'react-apollo'
 

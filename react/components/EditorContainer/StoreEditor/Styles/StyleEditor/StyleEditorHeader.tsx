@@ -1,29 +1,31 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { RouteComponentProps, withRouter } from 'react-router'
 import { Button, IconArrowBack } from 'vtex.styleguide'
 
 interface Props extends RouteComponentProps {
-  auxComponent?: React.ReactNode
-  auxButtonLabel?: string | React.ReactNode
-  onAux?: () => void
+  buttonLabel?: string | React.ReactNode
+  onButtonClick?: () => void
   afterOnBack?: () => void
   title: string | React.ReactNode
 }
 
 const StyleEditorHeader: React.FunctionComponent<Props> = ({
-  auxComponent,
-  auxButtonLabel,
-  history,
-  onAux,
   afterOnBack,
+  buttonLabel,
+  children,
+  history,
+  onButtonClick,
   title,
 }) => {
-  const onBack = () => {
-    history.goBack()
-    if (afterOnBack) {
-      afterOnBack()
-    }
-  }
+  const onBack = useCallback(
+    () => {
+      history.goBack()
+      if (afterOnBack) {
+        afterOnBack()
+      }
+    },
+    [history, afterOnBack]
+  )
 
   return (
     <div className="mh6 mt6">
@@ -34,17 +36,17 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
           </div>
           <span className="f3">{title}</span>
         </div>
-        {auxButtonLabel && (
+        {buttonLabel && (
           <Button
             variation="tertiary"
             size="small"
-            onClick={onAux}
-            disabled={!onAux}
+            onClick={onButtonClick}
+            disabled={!onButtonClick}
           >
-            {auxButtonLabel}
+            {buttonLabel}
           </Button>
         )}
-        {auxComponent}
+        {children}
       </div>
     </div>
   )

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
@@ -47,12 +47,23 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     />
   )
 
-  const Header = ({ name }: { name: string | React.ReactNode }) => (
-    <StyleEditorHeader
-      onAux={onSave}
-      auxButtonLabel={saveButtonLabel}
-      title={name}
-    />
+  const Header = useMemo(
+    () => {
+      return ({ name }: { name: string | React.ReactNode }) => (
+        <StyleEditorHeader
+          onButtonClick={onSave}
+          buttonLabel={saveButtonLabel}
+          title={name}
+        />
+      )
+    },
+    [onSave]
+  )
+
+  const startEditing = useMemo(
+    () => (token: string) =>
+      history.push(EditorPath.colors.replace(IdParam, token)),
+    [history]
   )
 
   if (id) {
@@ -70,44 +81,46 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     )
   }
 
-  const groups = groupBy(([token]) => {
-    if (token === 'emphasis') {
-      return 'emphasis'
-    } else if (token.startsWith('base')) {
-      return 'base'
-    } else if (token.startsWith('muted')) {
-      return 'muted'
-    } else if (
-      token.startsWith('action') ||
-      token === 'link' ||
-      token === 'disabled'
-    ) {
-      return 'action'
-    } else {
-      return 'feedback'
-    }
-  }, toPairs(info))
+  const groups = useMemo(
+    () =>
+      groupBy(([token]) => {
+        if (token === 'emphasis') {
+          return 'emphasis'
+        } else if (token.startsWith('base')) {
+          return 'base'
+        } else if (token.startsWith('muted')) {
+          return 'muted'
+        } else if (
+          token.startsWith('action') ||
+          token === 'link' ||
+          token === 'disabled'
+        ) {
+          return 'action'
+        } else {
+          return 'feedback'
+        }
+      }, toPairs(info)),
+    [info]
+  )
+
+  const colourGroups = useMemo(
+    () =>
+      toPairs(groups).map(([groupName, group]) => (
+        <ColorGroup
+          groupName={startCase(groupName as string)}
+          font={font}
+          semanticColors={semanticColors}
+          startEditing={startEditing}
+          colorsInfo={fromPairs(group)}
+        />
+      )),
+    [groups]
+  )
 
   return (
     <>
       <Header name={colorsLabel} />
-      <div className="flex-grow-1">
-        {toPairs(groups).map(groupInfo => {
-          const [groupName, group] = groupInfo
-
-          return (
-            <ColorGroup
-              groupName={startCase(groupName as string)}
-              font={font}
-              semanticColors={semanticColors}
-              startEditing={(token: string) =>
-                history.push(EditorPath.colors.replace(IdParam, token))
-              }
-              colorsInfo={fromPairs(group)}
-            />
-          )
-        })}
-      </div>
+      <div className="flex-grow-1">{colourGroups}</div>
     </>
   )
 }
