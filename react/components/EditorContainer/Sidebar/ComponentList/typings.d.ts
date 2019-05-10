@@ -5,11 +5,11 @@ export interface NormalizedComponent extends SidebarComponent {
   isSortable: boolean
 }
 
-export interface NormalizedRelativeRoot {
+export interface TreesByRole {
   after: NormalizedComponent[]
   around: NormalizedComponent[]
   before: NormalizedComponent[]
-  nestedAround: NormalizedComponent[]
+  blocks: NormalizedComponent[]
 }
 
 export interface ReorderChange {
