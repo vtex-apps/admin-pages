@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Components are now nested on the list.
+
+### Fixed
+
+- Bug that was duplicating some blocks.
+
 ## [3.7.1] - 2019-05-10
 
 ### Fixed
