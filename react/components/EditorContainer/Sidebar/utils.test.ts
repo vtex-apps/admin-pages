@@ -1,8 +1,8 @@
 import {
   generateWarningMessage,
   getComponents,
-  getIsSitewide,
   getIsDefaultContent,
+  getIsSitewide,
 } from './utils'
 
 describe('getComponents', () => {
@@ -80,16 +80,24 @@ describe('getComponents', () => {
     ])
   })
 
-  it('should use elements from props of LayoutContainer to determine order', () => {
+  it('should use blocks from extension to determine order', () => {
     expect(
       getComponents(
         {
           ...mockExtensions,
           'store/home': {
+            blocks: [
+              {
+                blockId: 'vtex.shelf@2.x:shelf',
+                extensionPointId: 'shelf',
+              },
+              {
+                blockId: 'vtex.carousel@2.x:carousel',
+                extensionPointId: 'carousel',
+              },
+            ],
             component: 'vtex.LayoutContainer',
-            props: {
-              elements: ['shelf', 'carousel'],
-            },
+            props: {},
           },
         } as any,
         mockComponents as any,

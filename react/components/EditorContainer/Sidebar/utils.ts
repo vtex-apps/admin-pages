@@ -14,10 +14,9 @@ const isSamePage = (page: string, treePath: string) => {
   return pageHead && treePathHead && treePathHead === pageHead
 }
 
-const getParentContainerPropsGetter = (extensions: Extensions) => (
+const getParentContainerBlocksGetter = (extensions: Extensions) => (
   parentPath: string
-) =>
-  pathOr<string[], string[]>([], [parentPath, 'props', 'elements'], extensions)
+) => pathOr<InnerBlock[], InnerBlock[]>([], [parentPath, 'blocks'], extensions)
 
 const getComponentNameGetterFromExtensions = (extensions: Extensions) => (
   treePath: string
@@ -46,7 +45,7 @@ export function getComponents(
   components: ComponentsRegistry | null,
   page: string
 ) {
-  const getParentContainerProps = getParentContainerPropsGetter(extensions)
+  const getParentContainerProps = getParentContainerBlocksGetter(extensions)
 
   const getComponentName = getComponentNameGetterFromExtensions(extensions)
   const getComponentSchema = getComponentSchemaGetter(components, extensions)
@@ -80,8 +79,18 @@ export function getComponents(
       }
 
       const parentContainerProps = getParentContainerProps(parentPathA)
-      const firstElementPosition = parentContainerProps.indexOf(nameA)
-      const secondElementPosition = parentContainerProps.indexOf(nameB)
+
+      const firstElementPosition = parentContainerProps.findIndex(
+        ({ extensionPointId }) => {
+          return nameA === extensionPointId
+        }
+      )
+      const secondElementPosition = parentContainerProps.findIndex(
+        ({ extensionPointId }) => {
+          return nameB === extensionPointId
+        }
+      )
+
       const areBothElementsInProps =
         firstElementPosition !== -1 && secondElementPosition !== -1
 
