@@ -5,6 +5,8 @@ import { SidebarComponent } from '../typings'
 import { getBlockRole } from '../../../../utils/blocks'
 import { NormalizedComponent, TreesByRole } from './typings'
 
+const removeFalsyValues = filter(Boolean)
+
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
 
@@ -16,8 +18,8 @@ export const getParentTreePath = (treePath: string): string => {
 }
 
 export const isChild = (rootTreePath: string, childTreePath: string) => {
-  const splitRootTreePath = filter(Boolean, rootTreePath.split('/'))
-  const splitChildTreePath = filter(Boolean, childTreePath.split('/'))
+  const splitRootTreePath = removeFalsyValues(rootTreePath.split('/'))
+  const splitChildTreePath = removeFalsyValues(childTreePath.split('/'))
 
   return (
     splitRootTreePath.length > 0 &&
