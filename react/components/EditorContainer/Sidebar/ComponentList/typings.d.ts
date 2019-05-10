@@ -5,7 +5,7 @@ export interface NormalizedComponent extends SidebarComponent {
   isSortable: boolean
 }
 
-interface TreesByRole {
+export interface TreesByRole {
   after: NormalizedComponent[]
   around: NormalizedComponent[]
   before: NormalizedComponent[]

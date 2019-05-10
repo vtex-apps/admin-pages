@@ -15,6 +15,19 @@ export const getParentTreePath = (treePath: string): string => {
   return splitTreePath.slice(0, splitTreePath.length - 1).join('/')
 }
 
+const isChild = (rootTreePath: string, childTreePath: string) => {
+  const splitRootTreePath = rootTreePath.split('/')
+  const splitChildTreePath = childTreePath.split('/')
+
+  return (
+    splitRootTreePath.length > 0 &&
+    splitRootTreePath.length !== splitChildTreePath.length &&
+    splitRootTreePath.every((path, id) => {
+      return path === splitChildTreePath[id]
+    })
+  )
+}
+
 export const isRootComponent = (minimumTreePathSize: number) => (
   component: SidebarComponent
 ) => {
@@ -43,8 +56,8 @@ const mountFullTree = curry(
     return {
       ...root,
       components: children.map(nextRoot => {
-        const nextChildren = grandChildren.filter(({ treePath }) =>
-          treePath.startsWith(nextRoot.treePath)
+        const nextChildren = grandChildren.filter(node =>
+          isChild(nextRoot.treePath, node.treePath)
         )
         return mountFullTree(nextChildren, nextRoot)
       }),
@@ -57,10 +70,7 @@ const getChildrenAndGrandChildren = (
   rootTreePath: string,
   nodes: SidebarComponent[]
 ) => {
-  const descendants = nodes.filter(
-    node =>
-      node.treePath.startsWith(rootTreePath) && node.treePath !== rootTreePath
-  )
+  const descendants = nodes.filter(node => isChild(rootTreePath, node.treePath))
 
   const minimumTreePathSize = descendants.reduce((min, currentComponent) => {
     const treePathSize = currentComponent.treePath.split('/').length
@@ -72,10 +82,6 @@ const getChildrenAndGrandChildren = (
     grandChildren: SidebarComponent[]
   }>(
     (acc, node) => {
-      if (!node.treePath.startsWith(rootTreePath)) {
-        return acc
-      }
-
       const nodeRelation: keyof typeof acc =
         minimumTreePathSize === pathLength(node.treePath)
           ? 'children'
@@ -120,7 +126,7 @@ export const normalize = (components: SidebarComponent[]) => {
   const prependBlocksWithAround = flatten(
     treesByRole.blocks.map(block => {
       const aroundForBlock = treesByRole.around.find(aroundBlock => {
-        return aroundBlock.treePath.startsWith(block.treePath)
+        return isChild(block.treePath, aroundBlock.treePath)
       })
       return aroundForBlock ? [aroundForBlock, block] : block
     })

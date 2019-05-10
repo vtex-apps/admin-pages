@@ -379,6 +379,48 @@ describe('normalize', () => {
 
     expect(normalize(input)).toEqual(expectedOutput)
   })
+
+  it('should handle treePaths with same beginning but that are different blocks', () => {
+    const input: SidebarComponent[] = [
+      {
+        name: 'editor.carousel.title',
+        treePath: 'store.home/layout#home',
+      },
+      {
+        name: 'editor.product-summary.title',
+        treePath: 'store.home/layout#homeCollection',
+      },
+      {
+        name: 'editor.product-summary.title',
+        treePath: 'store.home/layout#homeCollection/button',
+      },
+    ]
+
+    const expectedOutput: NormalizedComponent[] = [
+      {
+        components: [],
+        isSortable: false,
+        name: 'editor.carousel.title',
+        treePath: 'store.home/layout#home',
+      },
+      {
+        components: [
+          {
+            components: [],
+            isSortable: false,
+            name: 'editor.product-summary.title',
+            treePath: 'store.home/layout#homeCollection/button',
+          },
+        ],
+        isSortable: false,
+        name: 'editor.product-summary.title',
+        treePath: 'store.home/layout#homeCollection',
+      },
+    ]
+    const output = normalize(input)
+
+    expect(output).toEqual(expectedOutput)
+  })
 })
 
 describe('isRootComponent', () => {
