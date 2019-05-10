@@ -90,13 +90,13 @@ describe('normalize', () => {
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
       },
-    ].map(val => expect.objectContaining(val))
+    ]
 
     // Don't consider order here
     expect(normalize(input)).toEqual(expect.arrayContaining(expectedOutput))
   })
 
-  it('keep multilevel components', () => {
+  it('preserves multilevel structures', () => {
     const input: SidebarComponent[] = [
       {
         name: 'editor.header.title',
@@ -123,7 +123,7 @@ describe('normalize', () => {
         treePath: 'store.home/shelf#home/product-summary/product-rating',
       },
       {
-        name: 'editor.product-rating.title',
+        name: 'editor.product-rating.start.title',
         treePath: 'store.home/shelf#home/product-summary/product-rating/start',
       },
       {
@@ -161,7 +161,7 @@ describe('normalize', () => {
                   {
                     components: [],
                     isSortable: false,
-                    name: 'editor.product-rating.title',
+                    name: 'editor.product-rating.start.title',
                     treePath:
                       'store.home/shelf#home/product-summary/product-rating/start',
                   },
@@ -200,7 +200,7 @@ describe('normalize', () => {
           'store.home/shelf#home/spacer/placeholder/flex/product-summary',
       },
       {
-        name: 'editor.product-summary.title',
+        name: 'editor.product-summary.star.title',
         treePath:
           'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
       },
@@ -218,7 +218,7 @@ describe('normalize', () => {
               {
                 components: [],
                 isSortable: false,
-                name: 'editor.product-summary.title',
+                name: 'editor.product-summary.star.title',
                 treePath:
                   'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
               },

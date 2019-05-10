@@ -50,7 +50,7 @@ const mountFullTree = curry(
       return { ...root, components: [], isSortable: false }
     }
 
-    const { children, grandChildren } = getChildrenAndGrandChildren(
+    const { children, grandchildren } = getChildrenAndGrandchildren(
       root.treePath,
       leaves
     )
@@ -58,7 +58,7 @@ const mountFullTree = curry(
     return {
       ...root,
       components: children.map(nextRoot => {
-        const nextChildren = grandChildren.filter(node =>
+        const nextChildren = grandchildren.filter(node =>
           isChild(nextRoot.treePath, node.treePath)
         )
         return mountFullTree(nextChildren, nextRoot)
@@ -68,7 +68,7 @@ const mountFullTree = curry(
   }
 )
 
-const getChildrenAndGrandChildren = (
+const getChildrenAndGrandchildren = (
   rootTreePath: string,
   nodes: SidebarComponent[]
 ) => {
@@ -81,28 +81,28 @@ const getChildrenAndGrandChildren = (
 
   return descendants.reduce<{
     children: SidebarComponent[]
-    grandChildren: SidebarComponent[]
+    grandchildren: SidebarComponent[]
   }>(
     (acc, node) => {
       const nodeRelation: keyof typeof acc =
         minimumTreePathSize === pathLength(node.treePath)
           ? 'children'
-          : 'grandChildren'
+          : 'grandchildren'
 
       return {
         ...acc,
         [nodeRelation]: acc[nodeRelation].concat(node),
       }
     },
-    { children: [], grandChildren: [] }
+    { children: [], grandchildren: [] }
   )
 }
 
 export const normalize = (components: SidebarComponent[]) => {
-  const minimumTreePathSize = components.reduce((acc, currentComponent) => {
-    const treePathSize = currentComponent.treePath.split('/').length
-    return treePathSize < acc ? treePathSize : acc
-  }, Infinity)
+  const minimumTreePathSize = components.reduce(
+    (acc, { treePath }) => Math.min(acc, pathLength(treePath)),
+    Infinity
+  )
 
   const [roots, leaves] = partition(
     isRootComponent(minimumTreePathSize),
