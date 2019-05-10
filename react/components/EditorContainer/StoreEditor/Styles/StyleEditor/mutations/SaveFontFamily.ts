@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { DataProxy } from 'apollo-cache'
 import { Mutation, MutationFn, QueryResult } from 'react-apollo'
 
@@ -50,11 +48,18 @@ const updateFontsAfterSave = (
   }
 
   const { listFonts: families } = listData
-  const newFamily = result.data.saveFontFamily
-  const toAppend =
-    families.find(({ id }) => id === newFamily.id) == null ? [newFamily] : []
+  const savedFamily = result.data.saveFontFamily
+  const familyIndex = families.findIndex(({ id }) => id === savedFamily.id)
+  families.splice(
+    familyIndex < 0 ? families.length : familyIndex,
+    1,
+    savedFamily
+  )
+
   cache.writeQuery<ListFontsData>({
-    data: { listFonts: [...families, ...toAppend] },
+    data: {
+      listFonts: families,
+    },
     query: ListFonts,
   })
 }

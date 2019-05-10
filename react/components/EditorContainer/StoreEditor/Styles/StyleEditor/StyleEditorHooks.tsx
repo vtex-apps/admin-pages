@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'ramda'
-import React, { useReducer, useState } from 'react'
-import { InjectedIntl, injectIntl, defineMessages } from 'react-intl'
+import React, { useCallback, useReducer, useState } from 'react'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 import { ShowToastFunction } from 'vtex.styleguide'
 
 import { RenameStyleFunction } from './mutations/RenameStyle'
@@ -62,57 +62,61 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
     },
   })
 
-  const saveStyle = async () => {
-    await renameStyle({ variables: { id: style.id, name } })
-    const result = await updateStyle({
-      variables: { id: style.id, config },
-    })
-    const styleInfo = result && result.data && result.data.updateStyle
-    if (styleInfo) {
-      const { path, selected } = styleInfo
-      setStyleAsset({
-        keepSheet: true,
-        selected,
-        type: 'path',
-        value: path,
+  const saveStyle = useCallback(
+    async () => {
+      await renameStyle({ variables: { id: style.id, name } })
+      const result = await updateStyle({
+        variables: { id: style.id, config },
       })
-      showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: 'admin/pages.editor.styles.edit.save.successful',
-        }),
-      })
-    } else {
-      showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: 'admin/pages.editor.styles.edit.save.failed',
-        }),
-      })
-    }
-  }
+      const styleInfo = result && result.data && result.data.updateStyle
+      if (styleInfo) {
+        const { path, selected } = styleInfo
+        setStyleAsset({
+          keepSheet: true,
+          selected,
+          type: 'path',
+          value: path,
+        })
+        showToast({
+          horizontalPosition: 'right',
+          message: intl.formatMessage({
+            id: 'admin/pages.editor.styles.edit.save.successful',
+          }),
+        })
+      } else {
+        showToast({
+          horizontalPosition: 'right',
+          message: intl.formatMessage({
+            id: 'admin/pages.editor.styles.edit.save.failed',
+          }),
+        })
+      }
+    },
+    [style, name, config]
+  )
 
-  const onSave = () => {
-    setEditing(false)
-    saveStyle()
-  }
-
-  const getStyleEditorToolsProps = (
-    data: GenerateStyleSheetData | undefined
-  ) => ({
-    data: data || null,
-    hooks,
-    onSave,
-    setStyleAsset,
-    stopEditing,
-  })
+  const onSave = useCallback(
+    () => {
+      setEditing(false)
+      saveStyle()
+    },
+    [saveStyle, setEditing]
+  )
 
   return (
     <GenerateStyleSheetQuery
       variables={{ config }}
       fetchPolicy={'network-only'}
     >
-      {({ data }) => <StyleEditorRouter {...getStyleEditorToolsProps(data)} />}
+      {({ data }) => (
+        <StyleEditorRouter
+          data={data || null}
+          hooks={hooks}
+          onSave={onSave}
+          setStyleAsset={setStyleAsset}
+          stopEditing={stopEditing}
+        />
+      )}
     </GenerateStyleSheetQuery>
   )
 }

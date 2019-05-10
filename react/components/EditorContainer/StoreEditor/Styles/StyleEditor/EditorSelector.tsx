@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
 import Colors from '../components/Colors'
 import AvailableEditor from './AvailableEditor'
@@ -25,6 +25,17 @@ const EditorSelector: React.FunctionComponent<Props> = ({
     },
   } = config
 
+  defineMessages({
+    colorsTitle: {
+      defaultMessage: 'Colors',
+      id: 'admin/pages.editor.styles.edit.colors.title',
+    },
+    typographyTitle: {
+      defaultMessage: 'Typography',
+      id: 'admin/pages.editor.styles.edit.typography.title',
+    },
+  })
+
   const colorEditorProps = {
     path: EditorPath.colors.replace(IdParam, ''),
     titleId: 'admin/pages.editor.styles.edit.colors.title',
@@ -37,14 +48,17 @@ const EditorSelector: React.FunctionComponent<Props> = ({
   }
 
   const saveButtonLabel = (
-    <FormattedMessage id="admin/pages.editor.components.button.save" />
+    <FormattedMessage
+      id="admin/pages.editor.components.button.save"
+      defaultMessage="Save"
+    />
   )
 
   return (
     <>
       <StyleEditorHeader
-        onAux={onSave}
-        auxButtonLabel={saveButtonLabel}
+        onButtonClick={onSave}
+        buttonLabel={saveButtonLabel}
         afterOnBack={stopEditing}
         title={name}
       />
