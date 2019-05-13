@@ -153,7 +153,7 @@ class ConfigurationList extends React.Component<Props, State> {
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
-          onDelete={this.handleContentDelete}
+          onDelete={this.handleConfigurationDeletion}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
@@ -275,6 +275,51 @@ class ConfigurationList extends React.Component<Props, State> {
 
   private handleConfigurationCreation = () => {
     this.handleConfigurationOpen(this.getDefaultConfiguration())
+  }
+
+  private handleConfigurationDeletion = async (
+    configuration: ExtensionConfiguration
+  ) => {
+    const { editor, iframeRuntime, intl, template, treePath } = this.props
+
+    editor.setIsLoading(true)
+
+    const action = getIsDefaultContent(configuration) ? 'reset' : 'delete'
+
+    try {
+      await this.props.deleteContent({
+        variables: {
+          contentId: configuration.contentId,
+          pageContext: iframeRuntime.route.pageContext,
+          template,
+          treePath,
+        },
+      })
+
+      this.props.iframeRuntime.updateRuntime()
+
+      await this.refetchConfigurations()
+
+      editor.setIsLoading(false)
+
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage({
+          id: `admin/pages.editor.components.content.${action}.success`,
+        }),
+      })
+    } catch (e) {
+      editor.setIsLoading(false)
+
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage({
+          id: `admin/pages.editor.components.content.${action}.error`,
+        }),
+      })
+
+      console.error(e)
+    }
   }
 
   private handleConfigurationDiscard = () => {
@@ -413,51 +458,6 @@ class ConfigurationList extends React.Component<Props, State> {
 
         console.log(err)
       })
-    }
-  }
-
-  private handleContentDelete = async (
-    configuration: ExtensionConfiguration
-  ) => {
-    const { editor, iframeRuntime, intl, template, treePath } = this.props
-
-    editor.setIsLoading(true)
-
-    const action = getIsDefaultContent(configuration) ? 'reset' : 'delete'
-
-    try {
-      await this.props.deleteContent({
-        variables: {
-          contentId: configuration.contentId,
-          pageContext: iframeRuntime.route.pageContext,
-          template,
-          treePath,
-        },
-      })
-
-      this.props.iframeRuntime.updateRuntime()
-
-      await this.refetchConfigurations()
-
-      editor.setIsLoading(false)
-
-      this.props.showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: `admin/pages.editor.components.content.${action}.success`,
-        }),
-      })
-    } catch (e) {
-      editor.setIsLoading(false)
-
-      this.props.showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: `admin/pages.editor.components.content.${action}.error`,
-        }),
-      })
-
-      console.error(e)
     }
   }
 
