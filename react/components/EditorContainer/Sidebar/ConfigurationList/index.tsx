@@ -76,7 +76,6 @@ class ConfigurationList extends React.Component<Props, State> {
   private componentImplementation: RenderComponent<any, any> | null
   private componentProperties: ComponentSchema['properties']
   private componentTitle: ComponentSchema['title']
-  private configurations: ExtensionConfiguration[]
   private contentSchema: JSONSchema6
   private defaultFormData: object
 
@@ -124,8 +123,6 @@ class ConfigurationList extends React.Component<Props, State> {
         runtime: iframeRuntime,
       }) || {}
 
-    this.configurations = (listContent && listContent.content) || []
-
     modal.setHandlers({
       actionHandler: this.handleConfigurationSave,
       cancelHandler: this.handleConfigurationDiscard,
@@ -137,7 +134,11 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   public render() {
-    const { editor, formMeta, iframeRuntime, modal } = this.props
+    const { editor, formMeta, iframeRuntime, modal, queryData } = this.props
+
+    const listContent = queryData && queryData.listContentWithSchema
+
+    const configurations = (listContent && listContent.content) || []
 
     const shouldEnableSaveButton =
       (this.state.configuration &&
@@ -148,7 +149,7 @@ class ConfigurationList extends React.Component<Props, State> {
     if (!this.state.configuration) {
       return (
         <List
-          configurations={this.configurations}
+          configurations={configurations}
           editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
