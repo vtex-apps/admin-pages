@@ -435,11 +435,11 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      editor.setIsLoading(false)
-
       this.props.iframeRuntime.updateRuntime()
 
       await this.refetchConfigurations()
+
+      editor.setIsLoading(false)
 
       this.props.showToast({
         horizontalPosition: 'right',
