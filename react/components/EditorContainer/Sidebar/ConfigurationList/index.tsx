@@ -77,7 +77,6 @@ class ConfigurationList extends React.Component<Props, State> {
   private componentProperties: ComponentSchema['properties']
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
-  private defaultFormData: object
 
   constructor(props: Props) {
     super(props)
@@ -112,16 +111,6 @@ class ConfigurationList extends React.Component<Props, State> {
           intl,
         })
       : ''
-
-    this.defaultFormData =
-      getSchemaPropsOrContentFromRuntime({
-        component: this.componentImplementation,
-        contentSchema: this.contentSchema,
-        isContent: true,
-        messages: editor.messages,
-        propsOrContent: {},
-        runtime: iframeRuntime,
-      }) || {}
 
     modal.setHandlers({
       actionHandler: this.handleConfigurationSave,
@@ -215,6 +204,16 @@ class ConfigurationList extends React.Component<Props, State> {
     origin: null,
   })
 
+  private getFormData = (content: object): object =>
+    getSchemaPropsOrContentFromRuntime({
+      component: this.componentImplementation,
+      contentSchema: this.contentSchema,
+      isContent: true,
+      messages: this.props.editor.messages,
+      propsOrContent: content,
+      runtime: this.props.iframeRuntime,
+    }) || {}
+
   private handleConditionChange = (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => {
@@ -233,26 +232,6 @@ class ConfigurationList extends React.Component<Props, State> {
     }
   }
 
-  private handleConfigurationChange = (
-    newConfiguration: ExtensionConfiguration
-  ) => {
-    const { editor, iframeRuntime } = this.props
-
-    this.setState({
-      condition: newConfiguration.condition,
-      configuration: newConfiguration,
-    })
-
-    iframeRuntime.updateExtension(editor.editTreePath!, {
-      ...iframeRuntime.extensions[editor.editTreePath!],
-      component: this.component,
-      content:
-        newConfiguration.contentId === NEW_CONFIGURATION_ID
-          ? this.defaultFormData
-          : JSON.parse(newConfiguration.contentJSON),
-    })
-  }
-
   private handleConfigurationClose = () => {
     const { editor, formMeta, iframeRuntime, modal } = this.props
 
@@ -260,7 +239,12 @@ class ConfigurationList extends React.Component<Props, State> {
       modal.open()
     } else {
       this.setState(
-        { configuration: undefined, messages: undefined, newLabel: undefined },
+        {
+          configuration: undefined,
+          formData: undefined,
+          messages: undefined,
+          newLabel: undefined,
+        },
         () => {
           if (modal.isOpen) {
             modal.close()
@@ -348,38 +332,26 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, modal } = this.props
+    const { editor, iframeRuntime } = this.props
 
-    const originalBlock = clone(iframeRuntime.extensions[editor.editTreePath!])
+    const baseContent =
+      newConfiguration.contentId !== NEW_CONFIGURATION_ID
+        ? (JSON.parse(newConfiguration.contentJSON) as object)
+        : {}
 
-    if (
-      !this.state.configuration ||
-      this.state.configuration.contentId !== newConfiguration.contentId
-    ) {
-      this.handleConfigurationChange(newConfiguration)
-    }
-
-    const componentImplementation = getIframeImplementation(this.component)
-
-    const content = getSchemaPropsOrContentFromRuntime({
-      component: componentImplementation,
-      contentSchema: this.contentSchema,
-      isContent: true,
-      messages: editor.messages,
-      propsOrContent: JSON.parse(newConfiguration.contentJSON),
-      runtime: iframeRuntime,
-    })
-
-    modal.setHandlers({
-      closeCallbackHandler: () => {
-        iframeRuntime.updateExtension(editor.editTreePath!, originalBlock)
-      },
-    })
+    const formData = this.getFormData(baseContent)
 
     this.setState({
+      condition: newConfiguration.condition,
       configuration: newConfiguration,
-      formData: content || {},
+      formData,
       messages: editor.messages,
+    })
+
+    iframeRuntime.updateExtension(editor.editTreePath!, {
+      ...iframeRuntime.extensions[editor.editTreePath!],
+      component: this.component,
+      content: formData,
     })
   }
 
