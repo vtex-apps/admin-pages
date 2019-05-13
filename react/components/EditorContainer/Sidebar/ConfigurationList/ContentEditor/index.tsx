@@ -2,8 +2,6 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
-import { getExtension } from '../../../../../utils/components'
-import { useEditorContext } from '../../../../EditorContext'
 import ComponentEditor from '../../ComponentEditor'
 
 import ConditionControls from './ConditionControls'
@@ -14,7 +12,9 @@ interface Props {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   contentSchema?: JSONSchema6
+  data?: object
   iframeRuntime: RenderContext
+  isDefault: boolean
   isLoading: boolean
   isSitewide: boolean
   label?: string
@@ -31,11 +31,12 @@ interface Props {
 const ContentEditor: React.FunctionComponent<Props> = ({
   componentTitle,
   condition,
-  configuration,
   contentSchema,
+  data = {},
   iframeRuntime,
-  isSitewide,
+  isDefault,
   isLoading,
+  isSitewide,
   label,
   onClose,
   onConditionChange,
@@ -43,49 +44,34 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onLabelChange,
   onSave,
   shouldDisableSaveButton,
-}) => {
-  const { editTreePath } = useEditorContext()
-
-  const extension = getExtension(editTreePath, iframeRuntime.extensions)
-
-  const content = configuration
-    ? {
-        ...(configuration.contentJSON && JSON.parse(configuration.contentJSON)),
-        ...extension.content,
-      }
-    : extension.content
-
-  const isDefault = !!(configuration && configuration.origin)
-
-  return (
-    <ComponentEditor
-      after={
-        <Fragment>
-          <div className="pt5 ph5 bt bw1 b--light-silver">
-            <LabelEditor onChange={onLabelChange} value={label || ''} />
-          </div>
-          {!isDefault ? (
-            <ConditionControls
-              condition={condition}
-              isSitewide={isSitewide}
-              pageContext={iframeRuntime.route.pageContext}
-              onConditionChange={onConditionChange}
-            />
-          ) : null}
-        </Fragment>
-      }
-      contentSchema={contentSchema}
-      data={content}
-      iframeRuntime={iframeRuntime}
-      isContent
-      isLoading={isLoading}
-      onChange={onFormChange}
-      onClose={onClose}
-      onSave={onSave}
-      shouldDisableSaveButton={shouldDisableSaveButton}
-      title={componentTitle}
-    />
-  )
-}
+}) => (
+  <ComponentEditor
+    after={
+      <Fragment>
+        <div className="pt5 ph5 bt bw1 b--light-silver">
+          <LabelEditor onChange={onLabelChange} value={label || ''} />
+        </div>
+        {!isDefault ? (
+          <ConditionControls
+            condition={condition}
+            isSitewide={isSitewide}
+            pageContext={iframeRuntime.route.pageContext}
+            onConditionChange={onConditionChange}
+          />
+        ) : null}
+      </Fragment>
+    }
+    contentSchema={contentSchema}
+    data={data}
+    iframeRuntime={iframeRuntime}
+    isContent
+    isLoading={isLoading}
+    onChange={onFormChange}
+    onClose={onClose}
+    onSave={onSave}
+    shouldDisableSaveButton={shouldDisableSaveButton}
+    title={componentTitle}
+  />
+)
 
 export default ContentEditor

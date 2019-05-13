@@ -161,9 +161,10 @@ class ConfigurationList extends React.Component<Props, State> {
       <ContentEditor
         componentTitle={this.componentTitle}
         condition={this.state.condition}
-        configuration={this.state.configuration}
         contentSchema={this.contentSchema}
+        data={this.state.formData}
         iframeRuntime={iframeRuntime}
+        isDefault={getIsDefaultContent(this.state.configuration)}
         isLoading={formMeta.isLoading && !modal.isOpen}
         isSitewide={this.props.isSitewide}
         label={label}
