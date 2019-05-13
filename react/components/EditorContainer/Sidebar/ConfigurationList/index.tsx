@@ -235,7 +235,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationClose = () => {
     const { editor, formMeta, iframeRuntime, modal } = this.props
 
-    if (formMeta.wasModified) {
+    if (formMeta.getWasModified()) {
       modal.open()
     } else {
       this.setState(
