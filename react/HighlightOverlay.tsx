@@ -10,14 +10,14 @@ const HIGHLIGHT_REMOVAL_TIMEOUT_MS = 300
 interface Props {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
-  highlighHandler: (treePath: string | null) => void
+  highlightHandler: (treePath: string | null) => void
   highlightTreePath: string | null
 }
 
 export interface State {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
-  highlighHandler: (treePath: string | null) => void
+  highlightHandler: (treePath: string | null) => void
   highlightTreePath: string | null
 }
 
@@ -66,7 +66,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     this.state = {
       editExtensionPoint: props.editExtensionPoint,
       editMode: props.editMode,
-      highlighHandler: props.highlighHandler,
+      highlightHandler: props.highlightHandler,
       highlightTreePath: props.highlightTreePath,
     }
 
@@ -174,7 +174,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.state.highlighHandler(treePath)
+    this.state.highlightHandler(treePath)
 
     clearTimeout(this.highlightRemovalTimeout)
     e.stopPropagation()
@@ -192,7 +192,7 @@ export default class HighlightOverlay extends Component<Props, State> {
   }
 
   public tryRemoveHighlight = () => {
-    this.state.highlighHandler(null)
+    this.state.highlightHandler(null)
   }
 
   public handleClickHighlight = (e: any) => {
@@ -204,7 +204,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     e.stopPropagation()
     const { highlightTreePath } = this.state
     this.state.editExtensionPoint(highlightTreePath)
-    this.state.highlighHandler(null)
+    this.state.highlightHandler(null)
   }
 
   public render() {
