@@ -54,3 +54,18 @@ export function getFontFlavour({
 }: FontFileInput): FontFlavour {
   return [fontStyle, fontWeight] as FontFlavour
 }
+
+export function prettify(name: string) {
+  return name
+    .replace('__', ' ')
+    .replace('_', ' ')
+    .split(',')[0]
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+}
+
+export function prettifyCamelCase(name: string) {
+  const sentence = name.replace(/([a-z])([A-Z])/g, '$1 $2')
+  return sentence.charAt(0).toUpperCase() + sentence.slice(1)
+}

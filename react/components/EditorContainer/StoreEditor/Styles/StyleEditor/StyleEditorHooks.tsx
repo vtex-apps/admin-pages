@@ -5,9 +5,7 @@ import { ShowToastFunction } from 'vtex.styleguide'
 
 import { RenameStyleFunction } from './mutations/RenameStyle'
 import { UpdateStyleFunction } from './mutations/UpdateStyle'
-import GenerateStyleSheetQuery, {
-  GenerateStyleSheetData,
-} from './queries/GenerateStyleSheet'
+import GenerateStyleSheetQuery from './queries/GenerateStyleSheet'
 import StyleEditorRouter from './StyleEditorRouter'
 
 interface Props {
@@ -22,7 +20,7 @@ interface Props {
 
 type ConfigReducer = (
   config: TachyonsConfig,
-  partialConfig: Partial<TachyonsConfig>
+  partialConfig: DeepPartial<TachyonsConfig>
 ) => TachyonsConfig
 
 const StyleEditorStates: React.FunctionComponent<Props> = ({
@@ -115,6 +113,7 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
           onSave={onSave}
           setStyleAsset={setStyleAsset}
           stopEditing={stopEditing}
+          style={style}
         />
       )}
     </GenerateStyleSheetQuery>

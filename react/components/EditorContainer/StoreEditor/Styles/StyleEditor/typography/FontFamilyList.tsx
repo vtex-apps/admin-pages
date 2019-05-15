@@ -91,8 +91,9 @@ const FontFamilyList: React.FunctionComponent<Props> = ({
   )
 }
 
+const FontFamilyListWithRouter = withRouter(FontFamilyList)
+
 const FontFamilyListWrapper: React.FunctionComponent = () => {
-  const FontFamilyListWithRouter = withRouter(FontFamilyList)
   return (
     <ListFontsQuery>
       {queryResult => <FontFamilyListWithRouter {...queryResult} />}

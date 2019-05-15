@@ -28,6 +28,10 @@ const TypographyEditor: React.FunctionComponent = () => {
           path={EditorPath.fontFamily}
           titleId="admin/pages.editor.styles.edit.font-family.title"
         />
+        <AvailableEditor
+          path={EditorPath.typeTokens}
+          titleId="admin/pages.editor.styles.edit.type-tokens.title"
+        />
       </div>
     </>
   )

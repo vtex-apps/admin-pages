@@ -1,3 +1,7 @@
+type DeepPartial<T> = T extends object
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : T
+
 interface ButtonInfo {
   action?: () => void
   text: string
@@ -19,5 +23,9 @@ interface ColorRouteParams {
 }
 
 interface CustomFontParams {
+  id: string
+}
+
+interface TypeTokenParams {
   id: string
 }

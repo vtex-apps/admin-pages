@@ -216,6 +216,7 @@
   "admin/pages.editor.styles.edit.font-family.title": "Font Family",
   "admin/pages.editor.styles.edit.save.failed": "An error occurred while saving your style.",
   "admin/pages.editor.styles.edit.save.successful": "Style saved successfully.",
+  "admin/pages.editor.styles.edit.type-tokens.title": "Type Tokens",
   "admin/pages.editor.styles.edit.typography.title": "Typography",
   "admin/pages.editor.styles.header.title": "Styles",
   "admin/pages.editor.styles.new-button.text": "New",

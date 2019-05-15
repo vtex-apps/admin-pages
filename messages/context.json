@@ -216,6 +216,7 @@
   "admin/pages.editor.styles.edit.font-family.title": "admin/pages.editor.styles.edit.font-family.title",
   "admin/pages.editor.styles.edit.save.failed": "admin/pages.editor.styles.edit.save.failed",
   "admin/pages.editor.styles.edit.save.successful": "admin/pages.editor.styles.edit.save.successful",
+  "admin/pages.editor.styles.edit.type-tokens.title": "admin/pages.editor.styles.edit.type-tokens.title",
   "admin/pages.editor.styles.edit.typography.title": "admin/pages.editor.styles.edit.typography.title",
   "admin/pages.editor.styles.header.title": "admin/pages.editor.styles.header.title",
   "admin/pages.editor.styles.new-button.text": "admin/pages.editor.styles.new-button.text",
