@@ -4,6 +4,7 @@ import { Input } from 'vtex.styleguide'
 import EditableText from '../Sidebar/EditorHeader/EditableText'
 
 import { useEditorContext } from '../../EditorContext'
+import { Dropdown } from 'vtex.styleguide'
 import ModeButton from './components/ModeButton'
 
 const modes: StoreEditMode[] = ['settings', 'theme']
@@ -15,6 +16,16 @@ interface Props {
   onChangeUrlPath: (url: string) => void
   visible: boolean
 }
+
+const availableCultures = [{
+  label: 'English (en-US)',
+  value: 'en-US',
+},
+{
+  label: 'Português (pt-BR)',
+  value: 'pt-BR',
+},
+]
 
 const Topbar: React.FunctionComponent<Props> = ({
   changeMode,
@@ -62,6 +73,7 @@ const Topbar: React.FunctionComponent<Props> = ({
 
   return (
     <div
+  return (
       className={
         visible ? 'ph5 f6 h-3em w-100 flex justify-between items-center' : 'dn'
       }
@@ -93,6 +105,13 @@ const Topbar: React.FunctionComponent<Props> = ({
                 disabled={urlInputDisabled}
                 value={url}
               />
+                        ...culture,
+                        locale: e.target.value,
+                      })}
+                  />
+                </div>
+              </div>
+              <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
             </div>
           </Fragment>
         )}
