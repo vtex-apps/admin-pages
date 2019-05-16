@@ -66,21 +66,6 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     [history]
   )
 
-  if (id) {
-    return (
-      <>
-        <Header name={startCase(id)} />
-        <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
-          <ColorEditor
-            updateColor={updateColor(updateStyle)}
-            token={id}
-            colorInfo={info[id]}
-          />
-        </div>
-      </>
-    )
-  }
-
   const groups = useMemo(
     () =>
       groupBy(([token]) => {
@@ -116,6 +101,21 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
       )),
     [groups]
   )
+
+  if (id) {
+    return (
+      <>
+        <Header name={startCase(id)} />
+        <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
+          <ColorEditor
+            updateColor={updateColor(updateStyle)}
+            token={id}
+            colorInfo={info[id]}
+          />
+        </div>
+      </>
+    )
+  }
 
   return (
     <>
