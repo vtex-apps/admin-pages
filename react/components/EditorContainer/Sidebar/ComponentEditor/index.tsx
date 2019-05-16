@@ -1,5 +1,5 @@
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 
@@ -29,6 +29,41 @@ interface CustomProps {
   title?: ComponentSchema['title']
 }
 
+type getSchemasArgs = Pick<
+  CustomProps,
+  'iframeRuntime' | 'isContent' | 'contentSchema'
+> & { editTreePath: string | null }
+
+const getSchemas = ({
+  iframeRuntime,
+  isContent,
+  editTreePath,
+  contentSchema,
+}: getSchemasArgs) => {
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
+  const componentImplementation = getIframeImplementation(extension.component)
+
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema,
+    isContent: true,
+    propsOrContent: extension[isContent ? 'content' : 'props'],
+    runtime: iframeRuntime,
+  })
+
+  const componentUiSchema =
+    componentImplementation && componentImplementation.uiSchema
+      ? componentImplementation.uiSchema
+      : null
+
+  const uiSchemaFromComponent = getUiSchema(componentUiSchema, componentSchema)
+
+  return {
+    componentSchema,
+    uiSchema: uiSchemaFromComponent,
+  }
+}
+
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
@@ -46,29 +81,21 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 }) => {
   const { editTreePath, mode } = useEditorContext()
 
-  const extension = getExtension(editTreePath, iframeRuntime.extensions)
+  const { componentSchema, uiSchema } = useMemo(
+    () => getSchemas({ contentSchema, editTreePath, iframeRuntime, isContent }),
+    [editTreePath]
+  )
 
-  const componentImplementation = getIframeImplementation(extension.component)
-
-  const componentUiSchema =
-    componentImplementation && componentImplementation.uiSchema
-      ? componentImplementation.uiSchema
-      : null
-
-  const componentSchema = getComponentSchema({
-    component: componentImplementation,
-    contentSchema,
-    propsOrContent: extension[isContent ? 'content' : 'props'],
-    runtime: iframeRuntime,
-  })
-
-  const schema = {
-    ...componentSchema,
-    properties: {
-      ...componentSchema.properties,
-    },
-    title: undefined,
-  }
+  const schema = useMemo(
+    () => ({
+      ...componentSchema,
+      properties: {
+        ...componentSchema.properties,
+      },
+      title: undefined,
+    }),
+    [componentSchema]
+  )
 
   return (
     <Fragment>
@@ -91,7 +118,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             onChange={onChange}
             onSubmit={onSave}
             schema={schema as JSONSchema6}
-            uiSchema={getUiSchema(componentUiSchema, componentSchema)}
+            uiSchema={uiSchema}
           />
           <div id="form__error-list-template___alert" />
         </div>
