@@ -1,5 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
-import { isEmpty, path } from 'ramda'
+import debounce from 'lodash.debounce'
+import { Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
@@ -70,12 +71,39 @@ defineMessages({
   },
 })
 
+const omitUndefined = pickBy(val => typeof val !== 'undefined')
+
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
   private componentImplementation: RenderComponent<any, any> | null
   private componentProperties: ComponentSchema['properties']
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
+
+  private handleFormChange: FormProps<object>['onChange'] = debounce(event => {
+    const { formMeta, iframeRuntime, editor } = this.props
+
+    if (
+      !formMeta.getWasModified() &&
+      !equals(
+        omitUndefined((this.state.formData || {}) as Dictionary<any>),
+        omitUndefined(event.formData)
+      )
+    ) {
+      formMeta.setWasModified(true)
+    }
+
+    if (event.formData) {
+      this.setState({ formData: event.formData })
+
+      updateExtensionFromForm({
+        data: event.formData,
+        isContent: true,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath!,
+      })
+    }
+  }, 80)
 
   constructor(props: Props) {
     super(props)
@@ -98,6 +126,7 @@ class ConfigurationList extends React.Component<Props, State> {
     const componentSchema = getComponentSchema({
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
+      isContent: true,
       propsOrContent: extension.content,
       runtime: iframeRuntime,
     })
@@ -439,25 +468,6 @@ class ConfigurationList extends React.Component<Props, State> {
         })
 
         console.log(err)
-      })
-    }
-  }
-
-  private handleFormChange: FormProps<object>['onChange'] = event => {
-    const { formMeta, iframeRuntime, editor } = this.props
-
-    if (!formMeta.getWasModified()) {
-      formMeta.setWasModified(true)
-    }
-
-    if (event.formData) {
-      this.setState({ formData: event.formData })
-
-      updateExtensionFromForm({
-        data: event.formData,
-        isContent: true,
-        runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
       })
     }
   }
