@@ -1,5 +1,7 @@
 import { Component, ReactElement } from 'react'
+
 import { State as HighlightOverlayState } from '../HighlightOverlay'
+
 declare global {
   declare module '*.graphql' {
     import { DocumentNode } from 'graphql'
@@ -93,6 +95,7 @@ declare global {
 
   interface RenderContext {
     account: RenderRuntime['account']
+    addMessages: (newMessages: RenderContext['messages']) => void
     components: RenderRuntime['components']
     culture: RenderRuntime['culture']
     device: ConfigurationDevice
@@ -101,6 +104,7 @@ declare global {
     fetchComponent: (component: string) => Promise<void>
     getSettings: (app: string) => any
     history: RuntimeHistory | null
+    messages: RenderRuntime['messages']
     navigate: (options: NavigateOptions) => boolean
     onPageChanged: (location: Location) => void
     page: RenderRuntime['page']
@@ -112,7 +116,7 @@ declare global {
     renderMajor: RenderRuntime['renderMajor']
     setDevice: (device: ConfigurationDevice) => void
     updateComponentAssets: (availableComponents: Components) => void
-    updateExtension: (name: string, extension: Extension) => void
+    updateExtension: (name: string, extension: Extension) => Promise<void>
     updateRuntime: (options?: PageContextOptions) => Promise<void>
     workspace: RenderRuntime['workspace']
   }
@@ -141,7 +145,6 @@ declare global {
 
   interface EditorContext extends EditorConditionSection {
     allMatches: boolean
-    addMessages: MessagesAdder
     editMode: boolean
     editTreePath: string | null
     iframeWindow: Window
@@ -268,15 +271,12 @@ declare global {
 
   type UISchema = any
 
-  type MessagesAdder = (messages: RenderRuntime['messages']) => void
-
   interface Window {
     __provideRuntime?: (
       runtime: RenderContext,
       messages: Record<string, string>,
-      shouldUpdateRuntime: boolean,
-      addMessages: MessagesAdder
-    ) => void
+      shouldUpdateRuntime: boolean
+    ) => Promise<void>
   }
 
   interface AdminContext {

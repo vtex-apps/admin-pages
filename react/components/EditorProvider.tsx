@@ -15,7 +15,6 @@ type Props = RenderContextProps &
 
 interface State {
   activeConditions: string[]
-  addMessages: MessagesAdder
   allMatches: boolean
   editMode: boolean
   editTreePath: string | null
@@ -46,9 +45,6 @@ class EditorProvider extends Component<Props, State> {
 
     this.state = {
       activeConditions: [],
-      addMessages: () => {
-        return
-      },
       allMatches: true,
       editMode: false,
       editTreePath: null,
@@ -66,8 +62,7 @@ class EditorProvider extends Component<Props, State> {
       window.__provideRuntime = async (
         runtime,
         messages,
-        shouldUpdateRuntime,
-        addMessages
+        shouldUpdateRuntime
       ) => {
         const { client } = this.props
         let formattedEditorMessages = {}
@@ -100,7 +95,6 @@ class EditorProvider extends Component<Props, State> {
 
         const newState = {
           ...this.state,
-          addMessages,
           iframeRuntime: runtime,
           ...(this.state.iframeRuntime
             ? {}
@@ -112,7 +106,9 @@ class EditorProvider extends Component<Props, State> {
           messages: newMessages,
         }
 
-        this.setState(newState)
+        await new Promise(resolve => {
+          this.setState(newState, resolve)
+        })
 
         if (
           this.state.iframeRuntime &&
@@ -312,7 +308,6 @@ class EditorProvider extends Component<Props, State> {
 
     const {
       activeConditions,
-      addMessages,
       allMatches,
       editMode,
       editTreePath,
@@ -328,7 +323,6 @@ class EditorProvider extends Component<Props, State> {
     const editor: EditorContext = {
       activeConditions,
       addCondition: this.handleAddCondition,
-      addMessages,
       allMatches,
       editExtensionPoint: this.editExtensionPoint,
       editMode,

@@ -1,6 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
-import { IChangeEvent } from 'react-jsonschema-form'
+import { FormProps } from 'react-jsonschema-form'
 
 import ComponentEditor from '../../ComponentEditor'
 
@@ -22,7 +22,7 @@ interface Props {
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
-  onFormChange: (event: IChangeEvent) => void
+  onFormChange: FormProps<object>['onChange']
   onLabelChange: (event: Event) => void
   onSave: () => void
   shouldDisableSaveButton: boolean

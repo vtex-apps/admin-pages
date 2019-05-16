@@ -5,6 +5,7 @@ import {
   GetComponentSchemaParams,
   GetSchemaPropsOrContentFromRuntimeParams,
   GetSchemaPropsOrContentParams,
+  TranslateMessageParams,
   UpdateExtensionFromFormParams,
 } from './typings'
 
@@ -116,41 +117,47 @@ export const getImplementation = (component: string) => {
 }
 
 export const getSchemaPropsOrContent = ({
+  i18nMapping,
   isContent = false,
   messages,
-  properties = {},
+  properties,
   propsOrContent,
 }: GetSchemaPropsOrContentParams): object => {
-  const isPropertiesObjEmpty = JSON.stringify(properties) === '{}'
-
-  if (isPropertiesObjEmpty) {
+  if (!properties || !propsOrContent) {
     return {}
   }
 
-  const validProperties = Object.keys(properties).filter(
+  const keysWithData = Object.keys(properties).filter(
     key => propsOrContent[key] !== undefined
   )
 
-  return validProperties.reduce((acc, currKey: string) => {
+  return keysWithData.reduce((acc, currKey: string) => {
+    const currProperty = properties[currKey]
+
     if (
-      !properties[currKey] ||
-      (!properties[currKey].isLayout !== isContent &&
-        properties[currKey].type !== 'object')
+      !currProperty ||
+      (!currProperty.isLayout !== isContent && currProperty.type !== 'object')
     ) {
       return acc
     }
 
     const adaptedProperty = {
       [currKey]:
-        properties[currKey].type === 'object'
+        currProperty.type === 'object'
           ? getSchemaPropsOrContent({
               isContent,
               messages,
-              properties: properties[currKey].properties,
+              properties: currProperty.properties,
               propsOrContent: propsOrContent[currKey],
             })
-          : properties[currKey].format === 'IOMessage'
-          ? messages[propsOrContent[currKey]]
+          : currProperty.format === 'IOMessage' && messages
+          ? translateMessage({
+              dictionary: messages,
+              id:
+                propsOrContent[
+                  (i18nMapping && i18nMapping[currKey]) || currKey
+                ],
+            })
           : propsOrContent[currKey],
     }
 
@@ -183,6 +190,27 @@ export const getSchemaPropsOrContentFromRuntime = ({
     properties: componentSchema.properties,
     propsOrContent,
   })
+}
+
+export const translateMessage = ({
+  dictionary,
+  id,
+}: TranslateMessageParams): string => {
+  if (!id) {
+    return ''
+  }
+
+  const translatedMessage = dictionary[id]
+
+  if (translatedMessage) {
+    return translatedMessage
+  }
+
+  if (translatedMessage === '') {
+    return ''
+  }
+
+  return id
 }
 
 export const updateExtensionFromForm = ({

@@ -15,8 +15,10 @@ const maybeCall = (fn: (() => void) | void) => {
 const IframeNavigationController: React.FunctionComponent<Props> = ({
   iframeRuntime,
 }) => {
-  const { wasModified, setWasModified } = useFormMetaContext()
+  const { getWasModified, setWasModified } = useFormMetaContext()
   const { editExtensionPoint } = useEditorContext()
+
+  const wasModified = getWasModified()
 
   useEffect(
     () => {

@@ -1,10 +1,11 @@
 import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
-import { WidgetProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Input } from 'vtex.styleguide'
 
-interface Props extends InjectedIntlProps, WidgetProps {
+import { CustomWidgetProps } from './typings'
+
+interface Props extends CustomWidgetProps, InjectedIntlProps {
   label: string
   max?: number
   min?: number
@@ -12,7 +13,7 @@ interface Props extends InjectedIntlProps, WidgetProps {
   type?: string
 }
 
-const BaseInput: React.FunctionComponent<WidgetProps & Props> = props => {
+const BaseInput: React.FunctionComponent<Props> = props => {
   const {
     autofocus,
     disabled,

@@ -1,8 +1,8 @@
 import { JSONSchema6 } from 'json-schema'
-import { clone, path } from 'ramda'
+import { isEmpty, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
-import { IChangeEvent } from 'react-jsonschema-form'
+import { FormProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { RenderComponent } from 'vtex.render-runtime'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
@@ -48,7 +48,6 @@ interface State {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   formData?: object
-  messages?: RenderRuntime['messages']
   newLabel?: string
 }
 
@@ -131,7 +130,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const shouldEnableSaveButton =
       (this.state.configuration &&
-        (formMeta.wasModified ||
+        (formMeta.getWasModified() ||
           this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
       false
 
@@ -165,14 +164,10 @@ class ConfigurationList extends React.Component<Props, State> {
         data={this.state.formData}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
-        isLoading={formMeta.isLoading && !modal.isOpen}
+        isLoading={formMeta.getIsLoading() && !modal.isOpen}
         isSitewide={this.props.isSitewide}
         label={label}
-        onClose={
-          this.state.configuration
-            ? this.handleConfigurationClose
-            : this.handleQuit
-        }
+        onClose={this.handleConfigurationClose}
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
         onLabelChange={this.handleConfigurationLabelChange}
@@ -210,7 +205,6 @@ class ConfigurationList extends React.Component<Props, State> {
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
       isContent: true,
-      messages: this.props.editor.messages,
       propsOrContent: content,
       runtime: this.props.iframeRuntime,
     }) || {}
@@ -228,7 +222,7 @@ class ConfigurationList extends React.Component<Props, State> {
       },
     }))
 
-    if (!formMeta.wasModified) {
+    if (!formMeta.getWasModified()) {
       formMeta.setWasModified(true)
     }
   }
@@ -243,17 +237,24 @@ class ConfigurationList extends React.Component<Props, State> {
         {
           configuration: undefined,
           formData: undefined,
-          messages: undefined,
           newLabel: undefined,
         },
-        () => {
+        async () => {
           if (modal.isOpen) {
             modal.close()
           }
 
-          iframeRuntime.updateRuntime({
+          editor.setIsLoading(true)
+
+          if (!isEmpty(formMeta.getI18nMapping())) {
+            formMeta.clearI18nMapping()
+          }
+
+          await iframeRuntime.updateRuntime({
             conditions: editor.activeConditions,
           })
+
+          editor.setIsLoading(false)
         }
       )
     }
@@ -310,10 +311,6 @@ class ConfigurationList extends React.Component<Props, State> {
 
   private handleConfigurationDiscard = () => {
     this.props.formMeta.setWasModified(false, () => {
-      if (this.state.messages) {
-        this.props.editor.addMessages(this.state.messages)
-      }
-
       this.handleConfigurationClose()
     })
   }
@@ -324,13 +321,13 @@ class ConfigurationList extends React.Component<Props, State> {
     if (event.target instanceof HTMLInputElement) {
       this.setState({ newLabel: event.target.value })
 
-      if (!formMeta.wasModified) {
+      if (!formMeta.getWasModified()) {
         formMeta.setWasModified(true)
       }
     }
   }
 
-  private handleConfigurationOpen = (
+  private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
     const { editor, iframeRuntime } = this.props
@@ -342,18 +339,24 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const formData = this.getFormData(baseContent)
 
-    this.setState({
-      condition: newConfiguration.condition,
-      configuration: newConfiguration,
-      formData,
-      messages: editor.messages,
-    })
+    editor.setIsLoading(true)
 
-    iframeRuntime.updateExtension(editor.editTreePath!, {
+    await iframeRuntime.updateExtension(editor.editTreePath!, {
       ...iframeRuntime.extensions[editor.editTreePath!],
       component: this.component,
       content: formData,
     })
+
+    this.setState(
+      {
+        condition: newConfiguration.condition,
+        configuration: newConfiguration,
+        formData,
+      },
+      () => {
+        editor.setIsLoading(false)
+      }
+    )
   }
 
   private handleConfigurationSave = async () => {
@@ -367,9 +370,14 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
+    if (formMeta.getIsLoading()) {
+      return
+    }
+
     const content = getSchemaPropsOrContent({
+      i18nMapping: formMeta.getI18nMapping(),
       isContent: true,
-      messages: editor.messages,
+      messages: iframeRuntime.messages,
       properties: this.componentProperties,
       propsOrContent: this.state.formData,
     })
@@ -435,10 +443,10 @@ class ConfigurationList extends React.Component<Props, State> {
     }
   }
 
-  private handleFormChange = (event: IChangeEvent) => {
+  private handleFormChange: FormProps<object>['onChange'] = event => {
     const { formMeta, iframeRuntime, editor } = this.props
 
-    if (!formMeta.wasModified) {
+    if (!formMeta.getWasModified()) {
       formMeta.setWasModified(true)
     }
 

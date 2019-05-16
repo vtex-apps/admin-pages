@@ -1,7 +1,7 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment } from 'react'
 import { injectIntl } from 'react-intl'
-import { IChangeEvent } from 'react-jsonschema-form'
+import { FormProps } from 'react-jsonschema-form'
 
 import {
   getComponentSchema,
@@ -10,6 +10,7 @@ import {
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
+import { useFormMetaContext } from '../FormMetaContext'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -21,7 +22,7 @@ interface CustomProps {
   iframeRuntime: RenderContext
   isContent?: boolean
   isLoading: boolean
-  onChange: (event: IChangeEvent) => void
+  onChange: FormProps<object>['onChange']
   onClose: () => void
   onSave: () => void
   shouldDisableSaveButton: boolean
@@ -82,6 +83,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
+              addMessages: iframeRuntime.addMessages,
+              messages: iframeRuntime.messages,
               isLayoutMode: mode === 'layout',
             }}
             formData={data}

@@ -48,7 +48,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div className="h-100 flex flex-column dark-gray">
           <Modal
-            isActionLoading={formMeta.isLoading}
+            isActionLoading={formMeta.getIsLoading()}
             isOpen={modal.isOpen}
             onClickAction={modal.actionHandler}
             onClickCancel={modal.cancelHandler}

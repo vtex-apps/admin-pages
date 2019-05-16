@@ -1,15 +1,11 @@
 import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
-import { WidgetProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Textarea } from 'vtex.styleguide'
 
-interface Props extends InjectedIntlProps, WidgetProps {
-  autofocus: boolean
-  label: string
-  rawErrors?: string[]
-  onChange(val: string): void
-}
+import { CustomWidgetProps } from './typings'
+
+type Props = CustomWidgetProps & InjectedIntlProps
 
 const TextArea: React.FunctionComponent<Props> = ({
   autofocus,
