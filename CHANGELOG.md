@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Highlight overlay assets being loaded on store
+
 ## [3.8.0] - 2019-05-10
 
 ### Changed
