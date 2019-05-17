@@ -28,7 +28,8 @@
   },
   "highlight-overlay.cms": {
     "component": "HighlightOverlay",
-    "extensible": "vtex"
+    "extensible": "vtex",
+    "render": "lazy"
   },
   "pages-wrapper": {
     "component": "PagesAdminWrapper"
