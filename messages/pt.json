@@ -7,6 +7,7 @@
   "admin/pages.admin.pages.form.button.save": "Salvar",
   "admin/pages.admin.pages.form.delete.error": "Erro ao deletar rota.",
   "admin/pages.admin.pages.form.delete.success": "Success",
+  "admin/pages.admin.pages.form.details.path-hint": "/nova-pagina",
   "admin/pages.admin.pages.form.details.title": "Detalhes da página",
   "admin/pages.admin.pages.form.field.array.item": "Item",
   "admin/pages.admin.pages.form.field.login": "Requer autenticação",

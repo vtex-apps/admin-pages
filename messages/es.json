@@ -7,6 +7,7 @@
   "admin/pages.admin.pages.form.button.save": "Salvar",
   "admin/pages.admin.pages.form.delete.error": "Error: la ruta no pudo ser borrada.",
   "admin/pages.admin.pages.form.delete.success": "Eliminado con éxito.",
+  "admin/pages.admin.pages.form.details.path-hint": "/nueva-pagina",
   "admin/pages.admin.pages.form.details.title": "Detalles de la página",
   "admin/pages.admin.pages.form.field.array.item": "Ítem",
   "admin/pages.admin.pages.form.field.login": "Requiere autenticación",

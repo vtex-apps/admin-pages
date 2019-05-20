@@ -77,6 +77,10 @@ const messages = defineMessages({
     defaultMessage: 'Type your keyword and press ENTER to add it.',
     id: 'admin/pages.admin.pages.form.field.meta.description.no-options',
   },
+  pathHint: {
+    defaultMessage: '/my-custom-page',
+    id: 'admin/pages.admin.pages.form.details.path-hint',
+  },
   seoDescription: {
     defaultMessage: 'Description',
     id: 'admin/pages.admin.pages.form.field.meta.description',
@@ -131,6 +135,7 @@ const Form: React.FunctionComponent<Props> = ({
         disabled={!isInfoEditable}
         label={intl.formatMessage(messages.fieldPath)}
         onChange={detailChangeHandlerGetter('path')}
+        placeholder={intl.formatMessage(messages.pathHint)}
         required
         value={path}
         errorMessage={
