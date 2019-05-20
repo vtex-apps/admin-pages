@@ -155,7 +155,9 @@ export const getSchemaPropsOrContent = ({
               dictionary: messages,
               id:
                 propsOrContent[
-                  (i18nMapping && i18nMapping[currKey]) || currKey
+                  i18nMapping && i18nMapping[currKey] !== undefined
+                    ? i18nMapping[currKey]
+                    : currKey
                 ],
             })
           : propsOrContent[currKey],

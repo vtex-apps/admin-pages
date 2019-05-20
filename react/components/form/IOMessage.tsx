@@ -36,7 +36,7 @@ const IOMessage: React.FunctionComponent<CustomWidgetProps> = props => {
       debounce((newValue: string) => {
         const i18nMapping = getI18nMapping()
 
-        if (!i18nMapping[i18nKey]) {
+        if (i18nMapping[i18nKey] === undefined) {
           addToI18nMapping({ [i18nKey]: mappedI18nKey })
 
           props.onChange(mappedI18nKey)
