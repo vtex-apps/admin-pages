@@ -8,7 +8,6 @@ import EditorHeader from '../EditorHeader'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
-import LabelEditor from './LabelEditor'
 import { getSchemas } from './utils'
 
 interface CustomProps {
@@ -80,7 +79,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         isTitleEditable
         onClose={onClose}
         onTitleChange={onTitleChange}
-        title={title || componentSchema.title}
+        title={title}
       />
 
       <div className="h-100 overflow-y-auto overflow-x-hidden">
@@ -101,23 +100,13 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
           <div id="form__error-list-template___alert" />
         </div>
 
-        {isContent && (
-          <div className="flex flex-column justify-between">
-            {onLabelChange && (
-              <div className="pa5 bt bw1 b--light-silver">
-                <LabelEditor onChange={onLabelChange} value={label || ''} />
-              </div>
-            )}
-
-            {!isDefault && condition && onConditionChange && (
-              <ConditionControls
-                condition={condition}
-                isSitewide={isSitewide}
-                onConditionChange={onConditionChange}
-                pageContext={iframeRuntime.route.pageContext}
-              />
-            )}
-          </div>
+        {isContent && !isDefault && condition && onConditionChange && (
+          <ConditionControls
+            condition={condition}
+            isSitewide={isSitewide}
+            onConditionChange={onConditionChange}
+            pageContext={iframeRuntime.route.pageContext}
+          />
         )}
       </div>
     </Fragment>

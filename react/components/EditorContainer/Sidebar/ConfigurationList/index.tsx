@@ -176,12 +176,10 @@ class ConfigurationList extends React.Component<Props, State> {
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
         isSitewide={this.props.isSitewide}
-        label={label}
         onClose={this.handleContentBack}
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
-        onLabelChange={this.handleConfigurationLabelChange}
-        onTitleChange={this.handleConfigurationLabelChange}
+        onTitleChange={this.handleConfigurationTitleChange}
         onSave={this.handleConfigurationSave}
       />
     )
@@ -343,18 +341,6 @@ class ConfigurationList extends React.Component<Props, State> {
     })
   }
 
-  private handleConfigurationLabelChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { formMeta } = this.props
-
-    this.setState({ newLabel: event.target.value })
-
-    if (!formMeta.getWasModified()) {
-      formMeta.setWasModified(true)
-    }
-  }
-
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
@@ -504,6 +490,18 @@ class ConfigurationList extends React.Component<Props, State> {
 
         console.log(err)
       })
+    }
+  }
+
+  private handleConfigurationTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { formMeta } = this.props
+
+    this.setState({ newLabel: event.target.value })
+
+    if (!formMeta.getWasModified()) {
+      formMeta.setWasModified(true)
     }
   }
 

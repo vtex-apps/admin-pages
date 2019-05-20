@@ -1,4 +1,5 @@
 import React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { IconArrowBack, Input } from 'vtex.styleguide'
 
 interface Props {
@@ -22,14 +23,25 @@ const EditorHeader: React.FC<Props> = ({
         </span>
 
         <div className="w-100 pl3 flex justify-between items-center">
-          {title &&
-            (isTitleEditable ? (
-              <Input value={title} onChange={onTitleChange}>
-                {title}
-              </Input>
-            ) : (
-              <h4 className="fw5 ma0 lh-copy f5 near-black">{title}</h4>
-            ))}
+          {isTitleEditable ? (
+            <FormattedMessage
+              id="admin/pages.editor.components.configurations.defaultTitle"
+              defaultMessage="Untitled"
+            >
+              {placeholder => (
+                <Input
+                  size="small"
+                  value={title}
+                  onChange={onTitleChange}
+                  placeholder={placeholder}
+                >
+                  {title}
+                </Input>
+              )}
+            </FormattedMessage>
+          ) : (
+            title && <h4 className="fw5 ma0 lh-copy f5 near-black">{title}</h4>
+          )}
         </div>
       </div>
     </div>

@@ -13,13 +13,11 @@ interface Props {
   iframeRuntime: RenderContext
   isDefault: boolean
   isSitewide: boolean
-  label?: string
   onClose: () => void
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onFormChange: FormProps<{ formData: object }>['onChange']
-  onLabelChange: (e: Event) => void
   onSave: () => void
   onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -32,11 +30,9 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   iframeRuntime,
   isDefault,
   isSitewide,
-  label,
   onClose,
   onConditionChange,
   onFormChange,
-  onLabelChange,
   onSave,
   onTitleChange,
 }) => (
@@ -47,11 +43,9 @@ const ContentEditor: React.FunctionComponent<Props> = ({
     iframeRuntime={iframeRuntime}
     isSitewide={isSitewide}
     isDefault={isDefault}
-    label={label}
     onConditionChange={onConditionChange}
     onChange={onFormChange}
     onClose={onClose}
-    onLabelChange={onLabelChange}
     onSave={onSave}
     onTitleChange={onTitleChange}
     title={componentTitle}
