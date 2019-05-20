@@ -2,7 +2,12 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
 import { ImageFile } from 'react-dropzone'
-import { FormattedMessage } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl,
+} from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
 import { Button, Spinner } from 'vtex.styleguide'
@@ -15,12 +20,12 @@ import ErrorAlert from './ErrorAlert'
 
 import styles from './imageUploader.css'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   disabled?: boolean
   shouldMutate?: boolean
   onChange: (pathname: string | null, file: ImageFile) => any
   schema: JSONSchema6
-  uploadFile?: MutationFunc
+  uploadFile: MutationFunc<MutationData>
   value: string
 }
 
@@ -32,6 +37,18 @@ interface State {
 interface MutationData {
   uploadFile: { fileUrl: string }
 }
+
+const messages = defineMessages({
+  fileSizeError: {
+    defaultMessage:
+      'File exceeds the size limit of 4MB. Please choose a smaller one.',
+    id: 'admin/pages.editor.image-uploader.error.file-size',
+  },
+  genericError: {
+    defaultMessage: 'Something went wrong. Please try again.',
+    id: 'admin/pages.editor.image-uploader.error.generic',
+  },
+})
 
 class ImageUploader extends Component<Props, State> {
   public static defaultProps = {
@@ -57,12 +74,6 @@ class ImageUploader extends Component<Props, State> {
     } = this.props
     const { error, isLoading } = this.state
 
-    const FieldTitle = () => (
-      <FormattedMessage id={title as string}>
-        {text => <span className="w-100 db mb3">{text}</span>}
-      </FormattedMessage>
-    )
-
     const backgroundImageStyle = {
       backgroundImage: `url("${value}")`,
     }
@@ -70,7 +81,9 @@ class ImageUploader extends Component<Props, State> {
     if (value) {
       return (
         <Fragment>
-          <FieldTitle />
+          <FormattedMessage id={title as string}>
+            {text => <span className="w-100 db mb3">{text}</span>}
+          </FormattedMessage>
           <Dropzone
             disabled={disabled || isLoading}
             extraClasses={
@@ -96,7 +109,12 @@ class ImageUploader extends Component<Props, State> {
                   <div className="flex justify-center mb3">
                     <ImageIcon stroke="#fff" />
                   </div>
-                  <span className="white">Change image</span>
+                  <span className="white">
+                    <FormattedMessage
+                      id="admin/pages.editor.image-uploader.change"
+                      defaultMessage="Change image"
+                    />
+                  </span>
                 </div>
               </div>
             )}
@@ -108,7 +126,9 @@ class ImageUploader extends Component<Props, State> {
 
     return (
       <Fragment>
-        <FieldTitle />
+        <FormattedMessage id={title as string}>
+          {text => <span className="w-100 db mb3">{text}</span>}
+        </FormattedMessage>
         <Dropzone
           disabled={disabled || isLoading}
           extraClasses={`ba bw1 b--dashed b--light-gray ${
@@ -125,9 +145,17 @@ class ImageUploader extends Component<Props, State> {
                 <div className="mb3">
                   <ImageIcon />
                 </div>
-                <div className="mb5 f6 tc gray">Drag your image here</div>
+                <div className="mb5 f6 tc gray">
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.text"
+                    defaultMessage="Drag your image here"
+                  />
+                </div>
                 <Button size="small" variation="secondary">
-                  Upload
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.button"
+                    defaultMessage="Upload"
+                  />
                 </Button>
               </Fragment>
             )}
@@ -139,10 +167,7 @@ class ImageUploader extends Component<Props, State> {
   }
 
   private handleImageDrop = async (acceptedFiles: ImageFile[]) => {
-    const { uploadFile, shouldMutate } = this.props as {
-      shouldMutate: boolean
-      uploadFile: MutationFunc<MutationData>
-    }
+    const { intl, shouldMutate, uploadFile } = this.props
 
     if (acceptedFiles && acceptedFiles[0]) {
       this.setState({ isLoading: true })
@@ -166,14 +191,13 @@ class ImageUploader extends Component<Props, State> {
         this.setState({ isLoading: false })
       } catch (e) {
         this.setState({
-          error: 'Something went wrong. Please try again.',
+          error: intl.formatMessage(messages.genericError),
           isLoading: false,
         })
       }
     } else {
       this.setState({
-        error:
-          'File exceeds the size limit of 4MB. Please choose a smaller one.',
+        error: intl.formatMessage(messages.fileSizeError),
       })
     }
   }
@@ -183,6 +207,8 @@ class ImageUploader extends Component<Props, State> {
   }
 }
 
-export default graphql<Props & (WidgetProps | {})>(UploadFile, {
-  name: 'uploadFile',
-})(ImageUploader)
+export default injectIntl(
+  graphql<Props & (WidgetProps | {})>(UploadFile, {
+    name: 'uploadFile',
+  })(ImageUploader)
+)
