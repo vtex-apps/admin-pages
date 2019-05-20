@@ -19,8 +19,9 @@ interface Props {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onFormChange: FormProps<{ formData: object }>['onChange']
-  onLabelChange: (event: Event) => void
+  onLabelChange: (e: Event) => void
   onSave: () => void
+  onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
@@ -37,6 +38,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onFormChange,
   onLabelChange,
   onSave,
+  onTitleChange,
 }) => (
   <ComponentEditor
     condition={condition}
@@ -51,6 +53,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
     onClose={onClose}
     onLabelChange={onLabelChange}
     onSave={onSave}
+    onTitleChange={onTitleChange}
     title={componentTitle}
   />
 )

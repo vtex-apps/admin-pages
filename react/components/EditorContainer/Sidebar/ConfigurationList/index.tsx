@@ -169,7 +169,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     return (
       <ContentEditor
-        componentTitle={this.componentTitle}
+        componentTitle={this.state.newLabel}
         condition={this.state.condition}
         contentSchema={this.contentSchema}
         data={this.state.formData}
@@ -181,6 +181,7 @@ class ConfigurationList extends React.Component<Props, State> {
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
         onLabelChange={this.handleConfigurationLabelChange}
+        onTitleChange={this.handleConfigurationLabelChange}
         onSave={this.handleConfigurationSave}
       />
     )
@@ -342,15 +343,15 @@ class ConfigurationList extends React.Component<Props, State> {
     })
   }
 
-  private handleConfigurationLabelChange = (event: Event) => {
+  private handleConfigurationLabelChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { formMeta } = this.props
 
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ newLabel: event.target.value })
+    this.setState({ newLabel: event.target.value })
 
-      if (!formMeta.getWasModified()) {
-        formMeta.setWasModified(true)
-      }
+    if (!formMeta.getWasModified()) {
+      formMeta.setWasModified(true)
     }
   }
 
@@ -379,6 +380,7 @@ class ConfigurationList extends React.Component<Props, State> {
         condition: newConfiguration.condition,
         configuration: newConfiguration,
         formData,
+        newLabel: newConfiguration.label,
       },
       () => {
         editor.setIsLoading(false)

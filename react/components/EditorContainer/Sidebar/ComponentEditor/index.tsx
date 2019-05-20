@@ -26,6 +26,7 @@ interface CustomProps {
   ) => void
   onLabelChange?: (event: Event) => void
   onSave: () => void
+  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: ComponentSchema['title']
 }
 
@@ -44,6 +45,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   onClose,
   onLabelChange,
   onSave,
+  onTitleChange,
   title,
 }) => {
   const editor = useEditorContext()
@@ -74,7 +76,12 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <EditorHeader onClose={onClose} title={title || componentSchema.title} />
+      <EditorHeader
+        isTitleEditable
+        onClose={onClose}
+        onTitleChange={onTitleChange}
+        title={title || componentSchema.title}
+      />
 
       <div className="h-100 overflow-y-auto overflow-x-hidden">
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
