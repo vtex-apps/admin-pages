@@ -25,6 +25,7 @@
   "admin/pages.admin.pages.form.templates.conditional.title": "admin/pages.admin.pages.form.templates.conditional.title",
   "admin/pages.admin.pages.form.templates.field.default": "admin/pages.admin.pages.form.templates.field.default",
   "admin/pages.admin.pages.form.templates.field.required": "admin/pages.admin.pages.form.templates.field.required",
+  "admin/pages.admin.pages.form.templates.path.validation-error": "admin/pages.admin.pages.form.templates.path.validation-error",
   "admin/pages.admin.pages.form.templates.simple.conditions.add-button": "admin/pages.admin.pages.form.templates.simple.conditions.add-button",
   "admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder": "admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder",
   "admin/pages.admin.pages.form.templates.simple.conditions.date.equals": "admin/pages.admin.pages.form.templates.simple.conditions.date.equals",

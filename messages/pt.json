@@ -25,6 +25,7 @@
   "admin/pages.admin.pages.form.templates.conditional.title": "Condicional",
   "admin/pages.admin.pages.form.templates.field.default": "Padrão",
   "admin/pages.admin.pages.form.templates.field.required": "Obrigatório",
+  "admin/pages.admin.pages.form.templates.path.validation-error": "A URL deve começar com '/'.",
   "admin/pages.admin.pages.form.templates.simple.conditions.add-button": "Adicionar nova condição",
   "admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder": "Selecione tipo de categoria",
   "admin/pages.admin.pages.form.templates.simple.conditions.date.equals": "é",

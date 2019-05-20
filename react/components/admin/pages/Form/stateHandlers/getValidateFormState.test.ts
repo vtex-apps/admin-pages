@@ -136,6 +136,25 @@ describe('getValidateFormState', () => {
     )
   })
 
+  it(`should return error if path doesn't begin with '/'`, () => {
+    const mockState = {
+      ...baseMockState,
+      data: {
+        ...baseMockState.data,
+        path: 'lalala',
+        title: 'test',
+      },
+    } as State
+
+    expect(getValidateFormState(mockState)).toEqual(
+      expect.objectContaining({
+        formErrors: expect.objectContaining({
+          path: 'admin/pages.admin.pages.form.templates.path.validation-error',
+        }),
+      })
+    )
+  })
+
   it('should return error if pageId is falsy', () => {
     const mockState = {
       ...baseMockState,
@@ -326,7 +345,8 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -378,7 +398,8 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               10: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -417,12 +438,16 @@ describe('getValidateFormState', () => {
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
               10: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
