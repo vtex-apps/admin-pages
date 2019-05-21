@@ -95,7 +95,7 @@ declare global {
 
   interface RenderContext {
     account: RenderRuntime['account']
-    addMessages: (newMessages: RenderContext['messages']) => void
+    addMessages: (newMessages: RenderContext['messages']) => Promise<void>
     components: RenderRuntime['components']
     culture: RenderRuntime['culture']
     device: ConfigurationDevice
