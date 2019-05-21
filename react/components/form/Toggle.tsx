@@ -1,23 +1,13 @@
 import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
-import { WidgetProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Toggle as StyleguideToggle } from 'vtex.styleguide'
 
-interface Props extends InjectedIntlProps {
-  label?: string
-  autofocus?: boolean
-  disabled?: boolean
-  id?: string
-  onChange?: React.EventHandler<React.ChangeEvent>
-  readonly?: boolean
-  schema: {
-    disabled?: boolean
-  }
-  value?: boolean
-}
+import { CustomWidgetProps } from './typings'
 
-const Toggle: React.FunctionComponent<WidgetProps & Props> = ({
+type Props = CustomWidgetProps & InjectedIntlProps
+
+const Toggle: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,

@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.8.2] - 2019-05-21
+
+### Changed
+
+- When deleting a configuration, keep the loader until the configuration has been deleted.
+
+### Fixed
+
+- Inconsistent content edition caused by desynchronized Runtimes.
+- Configuration list not being updated after creating/deleting configurations.
+
 ## [3.8.1] - 2019-05-17
 
 ### Fixed

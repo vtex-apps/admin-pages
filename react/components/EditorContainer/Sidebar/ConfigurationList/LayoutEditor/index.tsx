@@ -41,11 +41,11 @@ class LayoutEditor extends Component<Props> {
       <ComponentEditor
         data={this.getExtensionProps()}
         iframeRuntime={iframeRuntime}
-        isLoading={formMeta.isLoading && !modal.isOpen}
+        isLoading={formMeta.getIsLoading() && !modal.isOpen}
         onChange={this.handleChange}
         onClose={this.handleExit}
         onSave={this.handleSave}
-        shouldDisableSaveButton={!formMeta.wasModified}
+        shouldDisableSaveButton={!formMeta.getWasModified()}
       />
     )
   }
@@ -68,7 +68,7 @@ class LayoutEditor extends Component<Props> {
   private handleChange = (event: IChangeEvent) => {
     const { editor, formMeta, iframeRuntime } = this.props
 
-    if (!formMeta.wasModified) {
+    if (!formMeta.getWasModified()) {
       formMeta.setWasModified(true)
     }
 
@@ -98,7 +98,7 @@ class LayoutEditor extends Component<Props> {
   private handleExit = () => {
     const { formMeta, modal } = this.props
 
-    if (formMeta.wasModified) {
+    if (formMeta.getWasModified()) {
       modal.open()
     } else {
       this.exit()

@@ -1,9 +1,11 @@
 export interface FormMetaContext {
-  getWasModified: () => FormMetaContext['wasModified']
-  isLoading: boolean
+  addToI18nMapping: (newEntry: Record<string, string>) => void
+  clearI18nMapping: () => void
+  getI18nMapping: () => Record<string, string>
+  getIsLoading: () => boolean
+  getWasModified: () => boolean
   setWasModified: (newValue: boolean, callback?: () => void) => void
   toggleLoading: (callback?: () => void) => void
-  wasModified: boolean
 }
 
 export interface ModalContext {
@@ -18,7 +20,7 @@ export interface ModalContext {
       actionHandler?: ModalContext['actionHandler']
       cancelHandler?: ModalContext['cancelHandler']
       closeCallbackHandler?: ModalContext['closeCallbackHandler']
-    },
+    }
   ) => void
 }
 

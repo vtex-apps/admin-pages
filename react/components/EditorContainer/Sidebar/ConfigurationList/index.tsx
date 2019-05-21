@@ -1,8 +1,8 @@
 import { JSONSchema6 } from 'json-schema'
-import { clone, path } from 'ramda'
+import { isEmpty, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
-import { IChangeEvent } from 'react-jsonschema-form'
+import { FormProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { RenderComponent } from 'vtex.render-runtime'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
@@ -48,7 +48,6 @@ interface State {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   formData?: object
-  messages?: RenderRuntime['messages']
   newLabel?: string
 }
 
@@ -76,9 +75,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private componentImplementation: RenderComponent<any, any> | null
   private componentProperties: ComponentSchema['properties']
   private componentTitle: ComponentSchema['title']
-  private configurations: ExtensionConfiguration[]
   private contentSchema: JSONSchema6
-  private defaultFormData: object
 
   constructor(props: Props) {
     super(props)
@@ -114,18 +111,6 @@ class ConfigurationList extends React.Component<Props, State> {
         })
       : ''
 
-    this.defaultFormData =
-      getSchemaPropsOrContentFromRuntime({
-        component: this.componentImplementation,
-        contentSchema: this.contentSchema,
-        isContent: true,
-        messages: editor.messages,
-        propsOrContent: {},
-        runtime: iframeRuntime,
-      }) || {}
-
-    this.configurations = (listContent && listContent.content) || []
-
     modal.setHandlers({
       actionHandler: this.handleConfigurationSave,
       cancelHandler: this.handleConfigurationDiscard,
@@ -137,23 +122,27 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   public render() {
-    const { editor, formMeta, iframeRuntime, modal } = this.props
+    const { editor, formMeta, iframeRuntime, modal, queryData } = this.props
+
+    const listContent = queryData && queryData.listContentWithSchema
+
+    const configurations = (listContent && listContent.content) || []
 
     const shouldEnableSaveButton =
       (this.state.configuration &&
-        (formMeta.wasModified ||
+        (formMeta.getWasModified() ||
           this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
       false
 
     if (!this.state.configuration) {
       return (
         <List
-          configurations={this.configurations}
+          configurations={configurations}
           editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
-          onDelete={this.handleContentDelete}
+          onDelete={this.handleConfigurationDeletion}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
           path={this.props.editor.iframeWindow.location.pathname}
@@ -171,17 +160,14 @@ class ConfigurationList extends React.Component<Props, State> {
       <ContentEditor
         componentTitle={this.componentTitle}
         condition={this.state.condition}
-        configuration={this.state.configuration}
         contentSchema={this.contentSchema}
+        data={this.state.formData}
         iframeRuntime={iframeRuntime}
-        isLoading={formMeta.isLoading && !modal.isOpen}
+        isDefault={getIsDefaultContent(this.state.configuration)}
+        isLoading={formMeta.getIsLoading() && !modal.isOpen}
         isSitewide={this.props.isSitewide}
         label={label}
-        onClose={
-          this.state.configuration
-            ? this.handleConfigurationClose
-            : this.handleQuit
-        }
+        onClose={this.handleConfigurationClose}
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
         onLabelChange={this.handleConfigurationLabelChange}
@@ -214,6 +200,15 @@ class ConfigurationList extends React.Component<Props, State> {
     origin: null,
   })
 
+  private getFormData = (content: object): object =>
+    getSchemaPropsOrContentFromRuntime({
+      component: this.componentImplementation,
+      contentSchema: this.contentSchema,
+      isContent: true,
+      propsOrContent: content,
+      runtime: this.props.iframeRuntime,
+    }) || {}
+
   private handleConditionChange = (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => {
@@ -227,47 +222,39 @@ class ConfigurationList extends React.Component<Props, State> {
       },
     }))
 
-    if (!formMeta.wasModified) {
+    if (!formMeta.getWasModified()) {
       formMeta.setWasModified(true)
     }
-  }
-
-  private handleConfigurationChange = (
-    newConfiguration: ExtensionConfiguration
-  ) => {
-    const { editor, iframeRuntime } = this.props
-
-    this.setState({
-      condition: newConfiguration.condition,
-      configuration: newConfiguration,
-    })
-
-    iframeRuntime.updateExtension(editor.editTreePath!, {
-      ...iframeRuntime.extensions[editor.editTreePath!],
-      component: this.component,
-      content:
-        newConfiguration.contentId === NEW_CONFIGURATION_ID
-          ? this.defaultFormData
-          : JSON.parse(newConfiguration.contentJSON),
-    })
   }
 
   private handleConfigurationClose = () => {
     const { editor, formMeta, iframeRuntime, modal } = this.props
 
-    if (formMeta.wasModified) {
+    if (formMeta.getWasModified()) {
       modal.open()
     } else {
       this.setState(
-        { configuration: undefined, messages: undefined, newLabel: undefined },
-        () => {
+        {
+          configuration: undefined,
+          formData: undefined,
+          newLabel: undefined,
+        },
+        async () => {
           if (modal.isOpen) {
             modal.close()
           }
 
-          iframeRuntime.updateRuntime({
+          editor.setIsLoading(true)
+
+          if (!isEmpty(formMeta.getI18nMapping())) {
+            formMeta.clearI18nMapping()
+          }
+
+          await iframeRuntime.updateRuntime({
             conditions: editor.activeConditions,
           })
+
+          editor.setIsLoading(false)
         }
       )
     }
@@ -277,12 +264,53 @@ class ConfigurationList extends React.Component<Props, State> {
     this.handleConfigurationOpen(this.getDefaultConfiguration())
   }
 
+  private handleConfigurationDeletion = async (
+    configuration: ExtensionConfiguration
+  ) => {
+    const { editor, iframeRuntime, intl, template, treePath } = this.props
+
+    editor.setIsLoading(true)
+
+    const action = getIsDefaultContent(configuration) ? 'reset' : 'delete'
+
+    try {
+      await this.props.deleteContent({
+        variables: {
+          contentId: configuration.contentId,
+          pageContext: iframeRuntime.route.pageContext,
+          template,
+          treePath,
+        },
+      })
+
+      this.props.iframeRuntime.updateRuntime()
+
+      await this.refetchConfigurations()
+
+      editor.setIsLoading(false)
+
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage({
+          id: `admin/pages.editor.components.content.${action}.success`,
+        }),
+      })
+    } catch (e) {
+      editor.setIsLoading(false)
+
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage({
+          id: `admin/pages.editor.components.content.${action}.error`,
+        }),
+      })
+
+      console.error(e)
+    }
+  }
+
   private handleConfigurationDiscard = () => {
     this.props.formMeta.setWasModified(false, () => {
-      if (this.state.messages) {
-        this.props.editor.addMessages(this.state.messages)
-      }
-
       this.handleConfigurationClose()
     })
   }
@@ -293,48 +321,42 @@ class ConfigurationList extends React.Component<Props, State> {
     if (event.target instanceof HTMLInputElement) {
       this.setState({ newLabel: event.target.value })
 
-      if (!formMeta.wasModified) {
+      if (!formMeta.getWasModified()) {
         formMeta.setWasModified(true)
       }
     }
   }
 
-  private handleConfigurationOpen = (
+  private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, modal } = this.props
+    const { editor, iframeRuntime } = this.props
 
-    const originalBlock = clone(iframeRuntime.extensions[editor.editTreePath!])
+    const baseContent =
+      newConfiguration.contentId !== NEW_CONFIGURATION_ID
+        ? (JSON.parse(newConfiguration.contentJSON) as object)
+        : {}
 
-    if (
-      !this.state.configuration ||
-      this.state.configuration.contentId !== newConfiguration.contentId
-    ) {
-      this.handleConfigurationChange(newConfiguration)
-    }
+    const formData = this.getFormData(baseContent)
 
-    const componentImplementation = getIframeImplementation(this.component)
+    editor.setIsLoading(true)
 
-    const content = getSchemaPropsOrContentFromRuntime({
-      component: componentImplementation,
-      contentSchema: this.contentSchema,
-      isContent: true,
-      messages: editor.messages,
-      propsOrContent: JSON.parse(newConfiguration.contentJSON),
-      runtime: iframeRuntime,
+    await iframeRuntime.updateExtension(editor.editTreePath!, {
+      ...iframeRuntime.extensions[editor.editTreePath!],
+      component: this.component,
+      content: formData,
     })
 
-    modal.setHandlers({
-      closeCallbackHandler: () => {
-        iframeRuntime.updateExtension(editor.editTreePath!, originalBlock)
+    this.setState(
+      {
+        condition: newConfiguration.condition,
+        configuration: newConfiguration,
+        formData,
       },
-    })
-
-    this.setState({
-      configuration: newConfiguration,
-      formData: content || {},
-      messages: editor.messages,
-    })
+      () => {
+        editor.setIsLoading(false)
+      }
+    )
   }
 
   private handleConfigurationSave = async () => {
@@ -348,9 +370,14 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
+    if (formMeta.getIsLoading()) {
+      return
+    }
+
     const content = getSchemaPropsOrContent({
+      i18nMapping: formMeta.getI18nMapping(),
       isContent: true,
-      messages: editor.messages,
+      messages: iframeRuntime.messages,
       properties: this.componentProperties,
       propsOrContent: this.state.formData,
     })
@@ -416,55 +443,10 @@ class ConfigurationList extends React.Component<Props, State> {
     }
   }
 
-  private handleContentDelete = async (
-    configuration: ExtensionConfiguration
-  ) => {
-    const { editor, iframeRuntime, intl, template, treePath } = this.props
-
-    editor.setIsLoading(true)
-
-    const action = getIsDefaultContent(configuration) ? 'reset' : 'delete'
-
-    try {
-      await this.props.deleteContent({
-        variables: {
-          contentId: configuration.contentId,
-          pageContext: iframeRuntime.route.pageContext,
-          template,
-          treePath,
-        },
-      })
-
-      editor.setIsLoading(false)
-
-      this.props.iframeRuntime.updateRuntime()
-
-      await this.refetchConfigurations()
-
-      this.props.showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: `admin/pages.editor.components.content.${action}.success`,
-        }),
-      })
-    } catch (e) {
-      editor.setIsLoading(false)
-
-      this.props.showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          id: `admin/pages.editor.components.content.${action}.error`,
-        }),
-      })
-
-      console.error(e)
-    }
-  }
-
-  private handleFormChange = (event: IChangeEvent) => {
+  private handleFormChange: FormProps<object>['onChange'] = event => {
     const { formMeta, iframeRuntime, editor } = this.props
 
-    if (!formMeta.wasModified) {
+    if (!formMeta.getWasModified()) {
       formMeta.setWasModified(true)
     }
 
