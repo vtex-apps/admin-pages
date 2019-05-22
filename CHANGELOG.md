@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- `PWA App Settings` subsection so users can clearly see what really needs to be filled in the `Advanced Settings` form.
+
 ## [3.8.2] - 2019-05-21
 
 ### Changed

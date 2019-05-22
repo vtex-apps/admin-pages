@@ -151,6 +151,7 @@
   "admin/pages.editor.store.settings.error.title": "Algo deu errado",
   "admin/pages.editor.store.settings.error": "Não foi possível carregar as informações da loja.",
   "admin/pages.editor.store.settings.pwa.android-logo-icon": "Ícone de Logo Android (512x512)",
+  "admin/pages.editor.store.settings.pwa.app-settings": "Configurações do aplicativo PWA",
   "admin/pages.editor.store.settings.pwa.background_color": "Cor de fundo",
   "admin/pages.editor.store.settings.pwa.disable-prompt": "Adicionar à tela inicial",
   "admin/pages.editor.store.settings.pwa.display.browser": "Navegador",
