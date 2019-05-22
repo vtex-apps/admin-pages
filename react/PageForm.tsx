@@ -54,7 +54,7 @@ class PageForm extends Component<Props, State> {
     context: null,
     declarer: null,
     domain: 'store',
-    interfaceId: 'vtex.store@2.x:store.custom',
+    interfaceId: 'vtex.identity-messages-templates@0.x:email.custom',
     pages: [],
     path: '',
     routeId: '',
