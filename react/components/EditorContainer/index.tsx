@@ -1,6 +1,6 @@
 import debounce from 'lodash.debounce'
 import { path } from 'ramda'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
 
 import { State as HighlightOverlayState } from '../../HighlightOverlay'
@@ -63,19 +63,16 @@ const EditorContainer: React.FC<Props> = ({
   viewports,
   visible,
 }) => {
-  const { viewport, iframeWindow } = editor
+  const { editMode, editExtensionPoint, viewport, iframeWindow } = editor
   const [storeEditMode, setStoreEditMode] = useState<StoreEditMode>()
 
   const highlightExtensionPoint = useCallback(
     debounce((highlightTreePath: string | null) => {
-      const { editMode, editExtensionPoint } = editor
-
       const iframe = document.getElementById('store-iframe') || {}
       const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(
         ['contentWindow', '__setHighlightTreePath'],
         iframe
       )
-
       if (setHighlightTreePath) {
         setHighlightTreePath({
           editExtensionPoint,
@@ -85,7 +82,14 @@ const EditorContainer: React.FC<Props> = ({
         })
       }
     }, 100),
-    [editor]
+    [editMode, editExtensionPoint]
+  )
+
+  useEffect(
+    () => {
+      highlightExtensionPoint(null)
+    },
+    [editMode]
   )
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
