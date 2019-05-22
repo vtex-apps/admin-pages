@@ -267,7 +267,7 @@ export const updateExtensionFromForm = ({
   runtime,
   treePath,
 }: UpdateExtensionFromFormParams) => {
-  runtime.updateExtension(treePath, {
+  return runtime.updateExtension(treePath, {
     ...runtime.extensions[treePath],
     [isContent ? 'content' : 'props']: data,
   })

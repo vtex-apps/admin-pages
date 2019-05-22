@@ -1,6 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import debounce from 'lodash.debounce'
-import { Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
+import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
@@ -79,6 +79,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private componentProperties: ComponentSchema['properties']
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
+  private activeExtension: Extension
 
   private handleFormChange: FormProps<object>['onChange'] = debounce(event => {
     const { formMeta, iframeRuntime, editor } = this.props
@@ -148,6 +149,8 @@ class ConfigurationList extends React.Component<Props, State> {
     this.state = {
       condition: this.getDefaultCondition(),
     }
+
+    this.activeExtension = clone(extension)
   }
 
   public render() {
@@ -196,7 +199,7 @@ class ConfigurationList extends React.Component<Props, State> {
         isLoading={formMeta.getIsLoading() && !modal.isOpen}
         isSitewide={this.props.isSitewide}
         label={label}
-        onClose={this.handleConfigurationClose}
+        onClose={this.handleContentBack}
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
         onLabelChange={this.handleConfigurationLabelChange}
@@ -256,8 +259,20 @@ class ConfigurationList extends React.Component<Props, State> {
     }
   }
 
+  private handleContentBack = async () => {
+    const { editor, iframeRuntime } = this.props
+
+    this.handleConfigurationClose()
+    updateExtensionFromForm({
+      data: this.activeExtension.content,
+      runtime: iframeRuntime,
+      treePath: editor.editTreePath!,
+      isContent: true,
+    })
+  }
+
   private handleConfigurationClose = () => {
-    const { editor, formMeta, iframeRuntime, modal } = this.props
+    const { editor, formMeta, modal } = this.props
 
     if (formMeta.getWasModified()) {
       modal.open()
@@ -273,15 +288,9 @@ class ConfigurationList extends React.Component<Props, State> {
             modal.close()
           }
 
-          editor.setIsLoading(true)
-
           if (!isEmpty(formMeta.getI18nMapping())) {
             formMeta.clearI18nMapping()
           }
-
-          await iframeRuntime.updateRuntime({
-            conditions: editor.activeConditions,
-          })
 
           editor.setIsLoading(false)
         }
@@ -339,8 +348,16 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleConfigurationDiscard = () => {
-    this.props.formMeta.setWasModified(false, () => {
+    const { editor, iframeRuntime } = this.props
+
+    this.props.formMeta.setWasModified(false, async () => {
       this.handleConfigurationClose()
+      updateExtensionFromForm({
+        data: this.activeExtension.content,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath!,
+        isContent: true,
+      })
     })
   }
 
@@ -451,12 +468,24 @@ class ConfigurationList extends React.Component<Props, State> {
 
       await this.refetchConfigurations()
 
+      editor.setIsLoading(true)
+
+      await iframeRuntime.updateRuntime({
+        conditions: editor.activeConditions,
+      })
+
+      this.activeExtension = clone(
+        getExtension(editor.editTreePath, iframeRuntime.extensions)
+      )
+
       formMeta.toggleLoading(() => {
         this.props.formMeta.setWasModified(false, () => {
           this.handleConfigurationClose()
         })
       })
     } catch (err) {
+      editor.setIsLoading(false)
+
       formMeta.toggleLoading(() => {
         if (modal.isOpen) {
           modal.close()
