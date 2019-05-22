@@ -10,7 +10,6 @@ import {
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
-import { useFormMetaContext } from '../FormMetaContext'
 
 import Form from './Form'
 import { getUiSchema } from './utils'
@@ -22,7 +21,7 @@ interface CustomProps {
   iframeRuntime: RenderContext
   isContent?: boolean
   isLoading: boolean
-  onChange: FormProps<object>['onChange']
+  onChange: FormProps<{ formData: object }>['onChange']
   onClose: () => void
   onSave: () => void
   shouldDisableSaveButton: boolean
@@ -111,8 +110,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
           <Form
             formContext={{
               addMessages: iframeRuntime.addMessages,
-              messages: iframeRuntime.messages,
               isLayoutMode: mode === 'layout',
+              messages: iframeRuntime.messages,
             }}
             formData={data}
             onChange={onChange}

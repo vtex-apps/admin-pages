@@ -1,5 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import debounce from 'lodash.debounce'
+import throttle from 'lodash.throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
@@ -81,30 +82,12 @@ class ConfigurationList extends React.Component<Props, State> {
   private contentSchema: JSONSchema6
   private activeExtension: Extension
 
-  private handleFormChange: FormProps<object>['onChange'] = debounce(event => {
-    const { formMeta, iframeRuntime, editor } = this.props
-
-    if (
-      !formMeta.getWasModified() &&
-      !equals(
-        omitUndefined((this.state.formData || {}) as Dictionary<any>),
-        omitUndefined(event.formData)
-      )
-    ) {
-      formMeta.setWasModified(true)
-    }
-
-    if (event.formData) {
-      this.setState({ formData: event.formData })
-
-      updateExtensionFromForm({
-        data: event.formData,
-        isContent: true,
-        runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
-      })
-    }
-  }, 80)
+  private throttledUpdateExtensionFromForm: typeof updateExtensionFromForm = throttle(
+    data => {
+      return updateExtensionFromForm(data)
+    },
+    200
+  )
 
   constructor(props: Props) {
     super(props)
@@ -265,9 +248,9 @@ class ConfigurationList extends React.Component<Props, State> {
     this.handleConfigurationClose()
     updateExtensionFromForm({
       data: this.activeExtension.content,
+      isContent: true,
       runtime: iframeRuntime,
       treePath: editor.editTreePath!,
-      isContent: true,
     })
   }
 
@@ -354,9 +337,9 @@ class ConfigurationList extends React.Component<Props, State> {
       this.handleConfigurationClose()
       updateExtensionFromForm({
         data: this.activeExtension.content,
+        isContent: true,
         runtime: iframeRuntime,
         treePath: editor.editTreePath!,
-        isContent: true,
       })
     })
   }
@@ -497,6 +480,33 @@ class ConfigurationList extends React.Component<Props, State> {
         })
 
         console.log(err)
+      })
+    }
+  }
+
+  private handleFormChange: FormProps<{
+    formData: object
+  }>['onChange'] = event => {
+    const { formMeta, iframeRuntime, editor } = this.props
+
+    if (
+      !formMeta.getWasModified() &&
+      !equals(
+        omitUndefined((this.state.formData || {}) as Dictionary<any>),
+        omitUndefined(event.formData)
+      )
+    ) {
+      formMeta.setWasModified(true)
+    }
+
+    if (event.formData) {
+      this.setState({ formData: event.formData })
+
+      this.throttledUpdateExtensionFromForm({
+        data: event.formData,
+        isContent: true,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath!,
       })
     }
   }

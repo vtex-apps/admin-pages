@@ -22,7 +22,7 @@ interface Props {
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
-  onFormChange: FormProps<object>['onChange']
+  onFormChange: FormProps<{ formData: object }>['onChange']
   onLabelChange: (event: Event) => void
   onSave: () => void
   shouldDisableSaveButton: boolean
