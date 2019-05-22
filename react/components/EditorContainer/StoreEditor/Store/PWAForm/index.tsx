@@ -250,6 +250,18 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
         </div>
       )}
+      <div className="pv7">
+        <div className="w-100 bb b--muted-4" />
+      </div>
+      <div
+        className="pb3 link pointer c-muted-1"
+        onClick={() => setShowSpecific(!showSpecific)}
+      >
+        <span className="pr4">
+          <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />
+        </span>
+        {showSpecific ? <IconCaretUp /> : <IconCaretDown />}
+      </div>
       {showSpecific && (
         <>
           <div className="pt4 w-100">
@@ -312,18 +324,6 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
         </>
       )}
-      <div className="pv7">
-        <div className="w-100 bb b--muted-4" />
-      </div>
-      <div
-        className="link pointer c-muted-1"
-        onClick={() => setShowSpecific(!showSpecific)}
-      >
-        <span className="pr4">
-          <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />
-        </span>
-        {showSpecific ? <IconCaretUp /> : <IconCaretDown />}
-      </div>
       <div className="w-100 mt7 tr">
         <Button
           size="small"
