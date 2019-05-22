@@ -7,6 +7,8 @@ import {
   Button,
   ColorPicker,
   Dropdown,
+  IconCaretDown,
+  IconCaretUp,
   Input,
   ToastContext,
   Toggle,
@@ -65,6 +67,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
     pwaManifest.background_color,
   ])
   const [submitting, setSubmitting] = useState(false)
+  const [showSpecific, setShowSpecific] = useState(false)
   const { showToast } = useContext(ToastContext)
 
   const [splash = null] = splashes || []
@@ -201,52 +204,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
         </div>
       </div>
-      <div className="pt2 w-100">
-        <Input
-          disabled={submitting}
-          size="small"
-          label={intl.formatMessage(messages.startUrl)}
-          value={manifest.start_url}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setManifest({ ...manifest, start_url: e.target.value })
-          }
-        />
-      </div>
-      <div className="pt4 w-100">
-        <Dropdown
-          disabled={submitting}
-          value={manifest.orientation}
-          label={intl.formatMessage(messages.screenOrientation)}
-          options={ORIENTATION_OPTIONS.map(option => ({
-            ...option,
-            label: intl.formatMessage({ id: option.label }),
-          }))}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setManifest({
-              ...manifest,
-              orientation: e.target.value,
-            })
-          }
-        />
-      </div>
-      <div className="pt4">
-        <Dropdown
-          disabled={submitting}
-          value={manifest.display}
-          label={intl.formatMessage(messages.pwaDisplay)}
-          options={DISPLAY_OPTIONS.map(option => ({
-            ...option,
-            label: intl.formatMessage({ id: option.label }),
-          }))}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-            setManifest({
-              ...manifest,
-              display: e.target.value,
-            })
-          }
-        />
-      </div>
-      <div className="flex flex-column items-center justify-center pt5">
+      <div className="flex flex-column items-center justify-center">
         <div className="w-100 pt4">
           <ImageUploader
             disabled={submitting}
@@ -292,16 +250,80 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
         </div>
       )}
-      <div className="pt6">
-        <Toggle
-          label={intl.formatMessage(messages.disablePrompt)}
-          checked={!settings.disablePrompt}
-          disabled={submitting}
-          onChange={() =>
-            setSettings({ ...settings, disablePrompt: !settings.disablePrompt })
-          }
-        />
+      <div className="pv7">
+        <div className="w-100 bb b--muted-4" />
       </div>
+      <div
+        className="pb3 link pointer c-muted-1"
+        onClick={() => setShowSpecific(!showSpecific)}
+      >
+        <span className="pr4">
+          <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />
+        </span>
+        {showSpecific ? <IconCaretUp /> : <IconCaretDown />}
+      </div>
+      {showSpecific && (
+        <>
+          <div className="pt4 w-100">
+            <Input
+              disabled={submitting}
+              size="small"
+              label={intl.formatMessage(messages.startUrl)}
+              value={manifest.start_url}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setManifest({ ...manifest, start_url: e.target.value })
+              }
+            />
+          </div>
+          <div className="pt4 w-100">
+            <Dropdown
+              disabled={submitting}
+              value={manifest.orientation}
+              label={intl.formatMessage(messages.screenOrientation)}
+              options={ORIENTATION_OPTIONS.map(option => ({
+                ...option,
+                label: intl.formatMessage({ id: option.label }),
+              }))}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setManifest({
+                  ...manifest,
+                  orientation: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className="pt4">
+            <Dropdown
+              disabled={submitting}
+              value={manifest.display}
+              label={intl.formatMessage(messages.pwaDisplay)}
+              options={DISPLAY_OPTIONS.map(option => ({
+                ...option,
+                label: intl.formatMessage({ id: option.label }),
+              }))}
+              onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                setManifest({
+                  ...manifest,
+                  display: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className="pt6">
+            <Toggle
+              label={intl.formatMessage(messages.disablePrompt)}
+              checked={!settings.disablePrompt}
+              disabled={submitting}
+              onChange={() =>
+                setSettings({
+                  ...settings,
+                  disablePrompt: !settings.disablePrompt,
+                })
+              }
+            />
+          </div>
+        </>
+      )}
       <div className="w-100 mt7 tr">
         <Button
           size="small"
