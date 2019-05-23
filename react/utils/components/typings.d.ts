@@ -11,6 +11,7 @@ export interface GetComponentSchemaParams {
   contentSchema?: JSONSchema6
   propsOrContent: PropsOrContent
   runtime: RenderContext
+  isContent: boolean
 }
 
 export interface GetSchemaPropsOrContentParams {

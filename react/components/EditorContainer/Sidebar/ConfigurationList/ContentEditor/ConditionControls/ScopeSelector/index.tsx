@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import { RadioGroup } from 'vtex.styleguide'
 
@@ -21,6 +21,20 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
   scope,
 }) => {
   const standardOptions = getScopeStandardOptions(intl, pageContext)
+  const options = useMemo(
+    () =>
+      isSitewide
+        ? [
+            {
+              label: intl.formatMessage({
+                id: 'admin/pages.editor.components.condition.scope.sitewide',
+              }),
+              value: 'sitewide',
+            },
+          ]
+        : standardOptions,
+    [isSitewide]
+  )
 
   return (
     <Fragment>
@@ -31,23 +45,11 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
         disabled={isSitewide}
         name="scopes"
         onChange={onChange}
-        options={
-          isSitewide
-            ? [
-                {
-                  label: intl.formatMessage({
-                    id:
-                      'admin/pages.editor.components.condition.scope.sitewide',
-                  }),
-                  value: 'sitewide',
-                },
-              ]
-            : standardOptions
-        }
+        options={options}
         value={scope}
       />
     </Fragment>
   )
 }
 
-export default injectIntl(ScopeSelector)
+export default React.memo(injectIntl(ScopeSelector))

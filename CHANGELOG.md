@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.9.1] - 2019-05-23
+
+### Changed
+
+- Reset content logic to improve UX.
+
+### Added
+
+- Add slight debounce to `formChange`.
+
+### Fixed
+
+- Typo on `HighlightOverlay` state.
+- Only passing relevant schema, i.e., `layout` or `content` to Form.
+- `useMemo` on some components instead of recreating an object every render.
+
 ## [3.9.0] - 2019-05-22
 
 ### Added

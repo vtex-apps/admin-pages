@@ -1,5 +1,6 @@
+import debounce from 'lodash.debounce'
 import { path } from 'ramda'
-import React, { Component } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
 
 import { State as HighlightOverlayState } from '../../HighlightOverlay'
@@ -54,42 +55,19 @@ interface Props {
   visible: boolean
 }
 
-interface State {
-  highlightTreePath: string | null
-  storeEditMode?: StoreEditMode
-}
+const EditorContainer: React.FC<Props> = ({
+  children,
+  editor,
+  runtime,
+  toggleShowAdminControls,
+  viewports,
+  visible,
+}) => {
+  const { editMode, editExtensionPoint, viewport, iframeWindow } = editor
+  const [storeEditMode, setStoreEditMode] = useState<StoreEditMode>()
 
-export default class EditorContainer extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-
-    this.state = {
-      highlightTreePath: null,
-    }
-  }
-
-  public componentDidMount() {
-    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
-  }
-
-  public getSnapshotBeforeUpdate(prevProps: Props) {
-    const {
-      editor: { editMode },
-    } = this.props
-
-    if (prevProps.editor.editMode !== editMode) {
-      this.highlightExtensionPoint(null)
-    }
-
-    return null
-  }
-
-  public highlightExtensionPoint = (highlightTreePath: string | null) => {
-    const {
-      editor: { editMode, editExtensionPoint },
-    } = this.props
-
-    this.setState({ highlightTreePath }, () => {
+  const highlightExtensionPoint = useCallback(
+    debounce((highlightTreePath: string | null) => {
       const iframe = document.getElementById('store-iframe') || {}
       const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(
         ['contentWindow', '__setHighlightTreePath'],
@@ -99,102 +77,94 @@ export default class EditorContainer extends Component<Props, State> {
         setHighlightTreePath({
           editExtensionPoint,
           editMode,
-          highlighHandler: this.highlightExtensionPoint,
+          highlightHandler: highlightExtensionPoint,
           highlightTreePath,
         })
       }
-    })
-  }
+    }, 100),
+    [editMode, editExtensionPoint]
+  )
 
-  public render() {
-    const {
-      editor,
-      editor: { viewport, iframeWindow },
-      runtime,
-      toggleShowAdminControls,
-      viewports,
-      visible,
-    } = this.props
+  useEffect(
+    () => {
+      highlightExtensionPoint(null)
+    },
+    [editMode]
+  )
 
-    const { storeEditMode } = this.state
+  const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
 
-    return (
-      <FormMetaProvider>
-        <ModalProvider>
-          <IframeNavigationController iframeRuntime={runtime} />
-          <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
-            {visible && !storeEditMode && runtime && (
-              <Sidebar
-                highlightHandler={this.highlightExtensionPoint}
-                runtime={runtime}
+  return (
+    <FormMetaProvider>
+      <ModalProvider>
+        <IframeNavigationController iframeRuntime={runtime} />
+        <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
+          {visible && !storeEditMode && runtime && (
+            <Sidebar
+              highlightHandler={highlightExtensionPoint}
+              runtime={runtime}
+            />
+          )}
+          <div className="calc--height-ns flex-grow-1 db-ns dn">
+            {visible && runtime && (
+              <Topbar
+                changeMode={setStoreEditMode}
+                mode={storeEditMode}
+                urlPath={iframeWindow.location.pathname}
               />
             )}
-            <div className="calc--height-ns flex-grow-1 db-ns dn">
-              {visible && runtime && (
-                <Topbar
-                  changeMode={(mode?: StoreEditMode) => {
-                    this.setState({
-                      storeEditMode: mode,
-                    })
-                  }}
-                  mode={storeEditMode}
-                  urlPath={iframeWindow.location.pathname}
-                />
+            <div
+              className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
+                visible && runtime
+                  ? 'calc--height-relative'
+                  : 'top-0 w-100 h-100'
+              }`}
+            >
+              {visible && runtime && storeEditMode && (
+                <StoreEditor editor={editor} mode={storeEditMode} />
               )}
-              <div
-                className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
-                  visible && runtime
-                    ? 'calc--height-relative'
-                    : 'top-0 w-100 h-100'
-                }`}
-              >
-                {visible && runtime && storeEditMode && (
-                  <StoreEditor editor={editor} mode={storeEditMode} />
-                )}
-                <div
-                  id={APP_CONTENT_ELEMENT_ID}
-                  className="relative w-100 h-100"
+              <div id={APP_CONTENT_ELEMENT_ID} className="relative w-100 h-100">
+                <Draggable
+                  bounds="parent"
+                  onStart={() => {
+                    const iframe = document.getElementById('store-iframe')
+                    if (iframe !== null) {
+                      iframe.classList.add('iframe-pointer-none')
+                    }
+                  }}
+                  onStop={() => {
+                    const iframe = document.getElementById('store-iframe')
+                    if (iframe !== null) {
+                      iframe.classList.remove('iframe-pointer-none')
+                    }
+                  }}
                 >
-                  <Draggable
-                    bounds="parent"
-                    onStart={() => {
-                      const iframe = document.getElementById('store-iframe')
-                      if (iframe !== null) {
-                        iframe.classList.add('iframe-pointer-none')
-                      }
-                    }}
-                    onStop={() => {
-                      const iframe = document.getElementById('store-iframe')
-                      if (iframe !== null) {
-                        iframe.classList.remove('iframe-pointer-none')
-                      }
-                    }}
-                  >
-                    <div className="animated br2 bg-base bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
-                      <DeviceSwitcher
-                        inPreview={!visible}
-                        setViewport={editor.setViewport}
-                        toggleEditMode={toggleShowAdminControls}
-                        viewport={editor.viewport}
-                        viewports={viewports}
-                      />
-                    </div>
-                  </Draggable>
-                  <main
-                    {...getContainerProps(viewport)}
-                    role="main"
-                    style={{
-                      transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`,
-                    }}
-                  >
-                    {this.props.children}
-                  </main>
-                </div>
+                  <div className="animated br2 bg-base bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
+                    <DeviceSwitcher
+                      inPreview={!visible}
+                      setViewport={editor.setViewport}
+                      toggleEditMode={toggleShowAdminControls}
+                      viewport={editor.viewport}
+                      viewports={viewports}
+                    />
+                  </div>
+                </Draggable>
+                <main
+                  {...containerProps}
+                  role="main"
+                  style={{
+                    transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`,
+                  }}
+                >
+                  {children}
+                </main>
               </div>
             </div>
           </div>
-        </ModalProvider>
-      </FormMetaProvider>
-    )
-  }
+        </div>
+      </ModalProvider>
+    </FormMetaProvider>
+  )
 }
+
+export default EditorContainer
