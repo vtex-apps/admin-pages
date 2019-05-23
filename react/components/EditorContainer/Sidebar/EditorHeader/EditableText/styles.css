@@ -2,6 +2,10 @@
   transition: font-style, border, color 100ms ease-in-out;
 }
 
+.input::placeholder {
+  font-style: italic;
+}
+
 .input:focus {
   border: 1px solid #dbe9fd;
   box-shadow: 0 0 1px #dbe9fd;
