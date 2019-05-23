@@ -132,6 +132,7 @@ export const getExtension = (
     implements: extensionImplements,
     props: props || {},
     shouldRender,
+    title: '',
   }
 }
 

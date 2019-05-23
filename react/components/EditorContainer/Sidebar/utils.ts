@@ -111,7 +111,7 @@ export function getComponents(
       return treePathA > treePathB ? 1 : -1
     })
     .map<SidebarComponent>(treePath => ({
-      name: getComponentSchema(treePath).title!,
+      name: extensions[treePath].title || getComponentSchema(treePath).title!,
       treePath,
     }))
 }
