@@ -1,18 +1,18 @@
-import { InjectedIntl } from 'react-intl'
+import { GetTextFromContextArgs } from './typings'
 
-export const getTextFromContext = (
-  intl: InjectedIntl,
-  isSitewide: boolean,
-  path: string,
-  pageContext: PageContext
-) => {
+export const getTextFromContext = ({
+  context,
+  isSitewide,
+  intl,
+  path,
+}: GetTextFromContextArgs) => {
   if (isSitewide) {
     return intl.formatMessage({
       id: 'admin/pages.editor.configuration.tag.sitewide',
     })
   }
 
-  if (pageContext.id === '*' && pageContext.type === '*') {
+  if (context.id === '*') {
     return intl.formatMessage({
       id: 'admin/pages.editor.configuration.tag.template',
     })
@@ -20,8 +20,8 @@ export const getTextFromContext = (
 
   return intl.formatMessage(
     {
-      id: `admin/pages.editor.configuration.tag.${pageContext.type}`,
+      id: `admin/pages.editor.configuration.tag.${context.type}`,
     },
-    { id: pageContext.type === 'route' ? path : pageContext.id }
+    { id: context.type === 'route' ? path : context.id }
   )
 }

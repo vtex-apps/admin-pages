@@ -113,12 +113,12 @@ const Card = ({
           bgColor={isDisabled ? 'transparent' : 'light-gray'}
           borderColor="mid-gray"
           hasBorder={isDisabled}
-          text={getTextFromContext(
+          text={getTextFromContext({
+            context: configuration.condition.pageContext,
             intl,
             isSitewide,
             path,
-            configuration.condition.pageContext
-          )}
+          })}
           textColor="mid-gray"
         />
       </div>
