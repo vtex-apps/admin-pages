@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Support for `title` that comes from block.
+
+### Changed
+
+- `title` from block is also considered when deciding whether to show or hide the extension on the Sidebar.
+
 ## [3.9.1] - 2019-05-23
 
 ### Changed
