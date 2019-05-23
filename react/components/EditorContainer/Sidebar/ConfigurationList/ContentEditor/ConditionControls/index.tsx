@@ -2,6 +2,7 @@ import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import { formatStatements } from '../../../../../../utils/conditions'
+import { isUnidentifiedPageContext } from '../../utils'
 
 import Scheduler from './Scheduler'
 import ScopeSelector from './ScopeSelector'
@@ -18,6 +19,9 @@ interface Props {
 }
 
 class ConditionControls extends PureComponent<Props> {
+  private isScopeDisabled =
+    this.props.isSitewide || isUnidentifiedPageContext(this.props.pageContext)
+
   public render() {
     const { condition, isSitewide, pageContext } = this.props
 
@@ -39,6 +43,7 @@ class ConditionControls extends PureComponent<Props> {
 
         <div className="mv7 ph5">
           <ScopeSelector
+            isDisabled={this.isScopeDisabled}
             isSitewide={isSitewide}
             onChange={this.handleScopeChange}
             pageContext={pageContext}

@@ -1,5 +1,4 @@
 import { JSONSchema6 } from 'json-schema'
-import debounce from 'lodash.debounce'
 import throttle from 'lodash.throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
@@ -29,6 +28,7 @@ import { getIsDefaultContent } from '../utils'
 import { NEW_CONFIGURATION_ID } from './consts'
 import ContentEditor from './ContentEditor'
 import List from './List'
+import { isUnidentifiedPageContext } from './utils'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
@@ -53,7 +53,7 @@ interface State {
   newLabel?: string
 }
 
-defineMessages({
+const messages = defineMessages({
   deleteError: {
     defaultMessage: 'Something went wrong.',
     id: 'admin/pages.editor.components.content.delete.error',
@@ -61,6 +61,11 @@ defineMessages({
   deleteSuccess: {
     defaultMessage: 'Content deleted.',
     id: 'admin/pages.editor.components.content.delete.success',
+  },
+  pageContextError: {
+    defaultMessage:
+      'Could not identify {entity}. The configuration will be set to "{template}".',
+    id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
   resetError: {
     defaultMessage: 'Error resetting content.',
@@ -190,18 +195,27 @@ class ConfigurationList extends React.Component<Props, State> {
     )
   }
 
-  private getDefaultCondition = () => {
+  private getDefaultCondition = (): ExtensionConfiguration['condition'] => {
     const { iframeRuntime, isSitewide } = this.props
+
+    const iframePageContext = iframeRuntime.route.pageContext
+
+    const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
+      ? {
+          id: '*',
+          type: '*',
+        }
+      : {
+          id: isUnidentifiedPageContext(iframePageContext)
+            ? '*'
+            : iframePageContext.id,
+          type: iframePageContext.type,
+        }
 
     return {
       allMatches: true,
       id: '',
-      pageContext: isSitewide
-        ? ({
-            id: '*',
-            type: '*',
-          } as ExtensionConfiguration['condition']['pageContext'])
-        : iframeRuntime.route.pageContext,
+      pageContext,
       statements: [],
     }
   }
@@ -349,7 +363,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime } = this.props
+    const { editor, iframeRuntime, intl, showToast } = this.props
 
     const baseContent =
       newConfiguration.contentId !== NEW_CONFIGURATION_ID
@@ -374,6 +388,29 @@ class ConfigurationList extends React.Component<Props, State> {
       },
       () => {
         editor.setIsLoading(false)
+
+        const { pageContext } = this.state.condition
+
+        if (isUnidentifiedPageContext(pageContext)) {
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage(
+              {
+                id: messages.pageContextError.id,
+              },
+              {
+                entity: intl.formatMessage({
+                  id: `admin/pages.editor.components.condition.scope.entity.${
+                    pageContext.type
+                  }`,
+                }),
+                template: intl.formatMessage({
+                  id: 'admin/pages.editor.components.condition.scope.template',
+                }),
+              }
+            ),
+          })
+        }
       }
     )
   }
