@@ -421,6 +421,99 @@ describe('normalize', () => {
 
     expect(output).toEqual(expectedOutput)
   })
+
+  it('should put components in closest ancestor', () => {
+    const input: SidebarComponent[] = [
+      {
+        name: 'editor.row.title',
+        treePath: 'store.home/flex-layout.row#homeCollections',
+      },
+      {
+        name: 'admin/editor.rich-text.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#leftCollection/rich-text#homeCollectionsTitle',
+      },
+      {
+        name: 'admin/editor.info-card.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerDCComics',
+      },
+      {
+        name: 'admin/editor.info-card.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerMarvel',
+      },
+      {
+        name: 'admin/editor.info-card.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerAngel',
+      },
+      {
+        name: 'admin/editor.info-card.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerSeaHunter',
+      },
+      {
+        name: 'admin/editor.info-card.title',
+        treePath:
+          'store.home/flex-layout.row#homeCollections/flex-layout.col#rightCollection/info-card#homeCollectionsDisney',
+      },
+    ]
+
+    const expectedOutput: NormalizedComponent[] = [
+      {
+        components: [
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.rich-text.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#leftCollection/rich-text#homeCollectionsTitle',
+          },
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.info-card.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerDCComics',
+          },
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.info-card.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerMarvel',
+          },
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.info-card.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerAngel',
+          },
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.info-card.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerSeaHunter',
+          },
+          {
+            components: [],
+            isSortable: false,
+            name: 'admin/editor.info-card.title',
+            treePath:
+              'store.home/flex-layout.row#homeCollections/flex-layout.col#rightCollection/info-card#homeCollectionsDisney',
+          },
+        ],
+        isSortable: false,
+        name: 'editor.row.title',
+        treePath: 'store.home/flex-layout.row#homeCollections',
+      },
+    ]
+
+    expect(normalize(input)).toEqual(expectedOutput)
+  })
 })
 
 describe('isRootComponent', () => {
