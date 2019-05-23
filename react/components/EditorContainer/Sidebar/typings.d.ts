@@ -29,6 +29,10 @@ export interface SidebarComponent {
   treePath: string
 }
 
+export interface ModifiedSidebarComponent extends SidebarComponent {
+  modifiedTreePath: string
+}
+
 export interface ComponentEditorFormContext {
   isLayoutMode: boolean
 }
