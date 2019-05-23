@@ -25,6 +25,7 @@ declare global {
     blockId: string
     blocks?: InnerBlock[]
     component: string | null
+    composition: 'blocks' | 'children'
     configurationsIds?: string[]
     content: object
     implementationIndex: number
