@@ -53,7 +53,7 @@ interface State {
   newLabel?: string
 }
 
-defineMessages({
+const messages = defineMessages({
   deleteError: {
     defaultMessage: 'Something went wrong.',
     id: 'admin/pages.editor.components.content.delete.error',
@@ -61,6 +61,11 @@ defineMessages({
   deleteSuccess: {
     defaultMessage: 'Content deleted.',
     id: 'admin/pages.editor.components.content.delete.success',
+  },
+  pageContextError: {
+    defaultMessage:
+      'Could not identify {entity}. The configuration will be set to "{template}".',
+    id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
   resetError: {
     defaultMessage: 'Error resetting content.',
@@ -358,7 +363,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime } = this.props
+    const { editor, iframeRuntime, intl, showToast } = this.props
 
     const baseContent =
       newConfiguration.contentId !== NEW_CONFIGURATION_ID
@@ -383,6 +388,29 @@ class ConfigurationList extends React.Component<Props, State> {
       },
       () => {
         editor.setIsLoading(false)
+
+        const { pageContext } = this.state.condition
+
+        if (isUnidentifiedPageContext(pageContext)) {
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage(
+              {
+                id: messages.pageContextError.id,
+              },
+              {
+                entity: intl.formatMessage({
+                  id: `admin/pages.editor.components.condition.scope.entity.${
+                    pageContext.type
+                  }`,
+                }),
+                template: intl.formatMessage({
+                  id: 'admin/pages.editor.components.condition.scope.template',
+                }),
+              }
+            ),
+          })
+        }
       }
     )
   }
