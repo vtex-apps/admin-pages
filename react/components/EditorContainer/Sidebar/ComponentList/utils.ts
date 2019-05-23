@@ -1,4 +1,4 @@
-import { curry, filter, flatten, partition } from 'ramda'
+import { curry, filter, find, flatten, omit, partition, propEq } from 'ramda'
 
 import { SidebarComponent } from '../typings'
 
@@ -6,6 +6,10 @@ import { getBlockRole } from '../../../../utils/blocks'
 import { NormalizedComponent, TreesByRole } from './typings'
 
 const removeFalsyValues = filter(Boolean)
+
+interface ModifiedSidebarComponent extends SidebarComponent {
+  modifiedTreePath: string
+}
 
 export const getParentTreePath = (treePath: string): string => {
   const splitTreePath = treePath.split('/')
@@ -31,7 +35,7 @@ export const isChild = (rootTreePath: string, childTreePath: string) => {
 }
 
 export const isRootComponent = (minimumTreePathSize: number) => (
-  component: SidebarComponent
+  component: Pick<ModifiedSidebarComponent, 'treePath'>
 ) => {
   const splitTreePath = component.treePath.split('/')
 
@@ -45,21 +49,25 @@ export const isRootComponent = (minimumTreePathSize: number) => (
 const pathLength = (path: string) => path.split('/').length
 
 const mountFullTree = curry(
-  (leaves: SidebarComponent[], root: SidebarComponent): NormalizedComponent => {
+  (
+    leaves: ModifiedSidebarComponent[],
+    root: ModifiedSidebarComponent
+  ): NormalizedComponent => {
+    const rootToSpread = omit(['modifiedTreePath'], root)
     if (leaves.length === 0) {
-      return { ...root, components: [], isSortable: false }
+      return { ...rootToSpread, components: [], isSortable: false }
     }
 
     const { children, grandchildren } = getChildrenAndGrandchildren(
-      root.treePath,
+      root.modifiedTreePath,
       leaves
     )
 
     return {
-      ...root,
+      ...rootToSpread,
       components: children.map(nextRoot => {
         const nextChildren = grandchildren.filter(node =>
-          isChild(nextRoot.treePath, node.treePath)
+          isChild(nextRoot.modifiedTreePath, node.modifiedTreePath)
         )
         return mountFullTree(nextChildren, nextRoot)
       }),
@@ -70,22 +78,24 @@ const mountFullTree = curry(
 
 const getChildrenAndGrandchildren = (
   rootTreePath: string,
-  nodes: SidebarComponent[]
+  nodes: ModifiedSidebarComponent[]
 ) => {
-  const descendants = nodes.filter(node => isChild(rootTreePath, node.treePath))
+  const descendants = nodes.filter(node =>
+    isChild(rootTreePath, node.modifiedTreePath)
+  )
 
   const minimumTreePathSize = descendants.reduce((min, currentComponent) => {
-    const treePathSize = currentComponent.treePath.split('/').length
+    const treePathSize = currentComponent.modifiedTreePath.split('/').length
     return treePathSize < min ? treePathSize : min
   }, Infinity)
 
   return descendants.reduce<{
-    children: SidebarComponent[]
-    grandchildren: SidebarComponent[]
+    children: ModifiedSidebarComponent[]
+    grandchildren: ModifiedSidebarComponent[]
   }>(
     (acc, node) => {
       const nodeRelation: keyof typeof acc =
-        minimumTreePathSize === pathLength(node.treePath)
+        minimumTreePathSize === pathLength(node.modifiedTreePath)
           ? 'children'
           : 'grandchildren'
 
@@ -98,15 +108,41 @@ const getChildrenAndGrandchildren = (
   )
 }
 
+const hideNonExistentNodesInTreePath = (
+  components: SidebarComponent[]
+): ModifiedSidebarComponent[] => {
+  return components.map(node => {
+    const splitTreePath = node.treePath.split('/')
+    const leaf = splitTreePath.pop() // mutates array
+    let commonAncestor
+    const newTreePath = [leaf]
+
+    while (splitTreePath.length > 0) {
+      const currentTreePath = splitTreePath.join('/')
+      const currentNode = splitTreePath.pop() // mutates array
+      commonAncestor = find(propEq('treePath', currentTreePath), components)
+      if (commonAncestor || splitTreePath.length === 0) {
+        newTreePath.push(currentNode)
+      }
+    }
+
+    return {
+      ...node,
+      modifiedTreePath: newTreePath.reverse().join('/'),
+    }
+  })
+}
+
 export const normalize = (components: SidebarComponent[]) => {
-  const minimumTreePathSize = components.reduce(
-    (acc, { treePath }) => Math.min(acc, pathLength(treePath)),
+  const modifiedComponents = hideNonExistentNodesInTreePath(components)
+  const minimumTreePathSize = modifiedComponents.reduce(
+    (acc, { modifiedTreePath }) => Math.min(acc, pathLength(modifiedTreePath)),
     Infinity
   )
 
   const [roots, leaves] = partition(
     isRootComponent(minimumTreePathSize),
-    components
+    modifiedComponents
   )
 
   const trees = roots.map<SidebarComponent>(mountFullTree(leaves))
