@@ -117,6 +117,7 @@ export const getExtension = (
     implements: extensionImplements = [],
     props = {},
     shouldRender = false,
+    title = '',
   } = extensions[editTreePath!] || {}
 
   return {
@@ -132,7 +133,7 @@ export const getExtension = (
     implements: extensionImplements,
     props: props || {},
     shouldRender,
-    title: '',
+    title,
   }
 }
 
