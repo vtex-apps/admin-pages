@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.10.2] - 2019-05-23
+
+### Changed
+
+- Check title type that is passed to component list item.
+
 ## [3.10.1] - 2019-05-23
 
 ### Changed
