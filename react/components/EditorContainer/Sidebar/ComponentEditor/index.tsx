@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button } from 'vtex.styleguide'
+import { Button, Spinner } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
@@ -11,6 +11,8 @@ import { useFormMetaContext } from '../FormMetaContext'
 import ConditionControls from './ConditionControls'
 import Form from './Form'
 import { getSchemas } from './utils'
+
+import ContentContainer from '../ContentContainer'
 
 interface CustomProps {
   condition?: ExtensionConfiguration['condition']
@@ -79,7 +81,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <div className="h-100 overflow-y-auto overflow-x-hidden">
+      <ContentContainer
+        containerClassName="h-100 overflow-y-auto overflow-x-hidden"
+        centerSpinner
+      >
         <EditorHeader
           isTitleEditable={isContent}
           onClose={onClose}
@@ -112,11 +117,16 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             pageContext={iframeRuntime.route.pageContext}
           />
         )}
-      </div>
+      </ContentContainer>
 
       <div className="flex flex-row-reverse w-100 bt bw1 b--light-silver">
         <div className="pa4">
-          <Button size="small" variation="tertiary" onClick={onClose}>
+          <Button
+            disabled={editor.isLoading}
+            onClick={onClose}
+            size="small"
+            variation="tertiary"
+          >
             <FormattedMessage
               defaultMessage="Cancel"
               id="admin/pages.editor.components.button.cancel"

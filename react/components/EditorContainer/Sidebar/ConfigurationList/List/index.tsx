@@ -9,7 +9,6 @@ import CreateButton from './CreateButton'
 
 interface Props {
   configurations: ExtensionConfiguration[]
-  editor: EditorContext
   isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   isSitewide: boolean
   onClose: () => void
@@ -22,7 +21,6 @@ interface Props {
 
 const List: React.FunctionComponent<Props> = ({
   configurations,
-  editor,
   isDisabledChecker,
   isSitewide,
   onClose,
@@ -35,7 +33,7 @@ const List: React.FunctionComponent<Props> = ({
   <Fragment>
     <EditorHeader onClose={onClose} title={title} />
 
-    <ContentContainer isLoading={editor.isLoading}>
+    <ContentContainer>
       {configurations.map(
         (configuration: ExtensionConfiguration, index: number) => (
           <Card

@@ -139,7 +139,7 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   public render() {
-    const { editor, iframeRuntime, queryData } = this.props
+    const { iframeRuntime, queryData } = this.props
 
     const listContent = queryData && queryData.listContentWithSchema
 
@@ -149,7 +149,6 @@ class ConfigurationList extends React.Component<Props, State> {
       return (
         <List
           configurations={configurations}
-          editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
@@ -444,6 +443,8 @@ class ConfigurationList extends React.Component<Props, State> {
     formMeta.toggleLoading()
 
     try {
+      editor.setIsLoading(true)
+
       await saveContent({
         variables: {
           blockId,
@@ -455,8 +456,6 @@ class ConfigurationList extends React.Component<Props, State> {
       })
 
       await this.refetchConfigurations()
-
-      editor.setIsLoading(true)
 
       await iframeRuntime.updateRuntime({
         conditions: editor.activeConditions,
