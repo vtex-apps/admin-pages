@@ -1,11 +1,11 @@
 import { SidebarComponent } from '../typings'
 
 export interface NormalizedComponent extends SidebarComponent {
-  components?: NormalizedComponent[]
+  components: NormalizedComponent[]
   isSortable: boolean
 }
 
-export interface TreesByRole {
+export interface ComponentsByRole {
   after: NormalizedComponent[]
   around: NormalizedComponent[]
   before: NormalizedComponent[]
