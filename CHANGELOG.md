@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- When the page context can't be identified, set the configuration scope as "this template" and display a toast with a brief explanation.
+
+### Fixed
+
+- Page context evaluation logic in configuration cards' tags.
+
 ## [3.10.0] - 2019-05-23
 
 ### Added
