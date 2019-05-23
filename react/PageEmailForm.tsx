@@ -12,7 +12,7 @@ import {
   ROUTES_LIST,
   WRAPPER_PATH,
 } from './components/admin/pages/consts'
-import Form from './components/admin/pages/Form'
+import FormEmail from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
 import Title from './components/admin/pages/Form/Title'
 import { formatToFormData } from './components/admin/pages/Form/utils'
@@ -46,15 +46,15 @@ interface State {
   routeId: string
 }
 
-class PageForm extends Component<Props, State> {
+class PageEmailForm extends Component<Props, State> {
   private isNew: boolean
   private defaultFormData: RouteFormData = {
     auth: false,
     blockId: '',
     context: null,
     declarer: null,
-    domain: 'store',
-    interfaceId: 'vtex.store@2.x:store.custom',
+    domain: 'email',
+    interfaceId: 'vtex.identity-messages-templates@0.x:email.custom',
     pages: [],
     path: '',
     routeId: '',
@@ -64,6 +64,8 @@ class PageForm extends Component<Props, State> {
 
   constructor(props: Props) {
     super(props)
+
+    console.log(props)
 
     const routeId = decodeURIComponent(props.params.id)
 
@@ -155,7 +157,7 @@ class PageForm extends Component<Props, State> {
                   )}
                   <ToastConsumer>
                     {({ showToast, hideToast }) => (
-                      <Form
+                      <FormEmail
                         initialData={formData}
                         onDelete={deleteRoute}
                         onExit={this.exit}
@@ -180,4 +182,4 @@ class PageForm extends Component<Props, State> {
   }
 }
 
-export default withApollo(withRuntimeContext(withTargetPath(PageForm)))
+export default withApollo(withRuntimeContext(withTargetPath(PageEmailForm)))

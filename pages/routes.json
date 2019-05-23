@@ -5,6 +5,9 @@
   "admin.cms.pages.page-details": {
     "path": "/admin/cms/pages/*id"
   },
+  "admin.email.pages.page-details": {
+    "path": "/admin/email/pages/*id"
+  },
   "admin.cms.pages.redirects": {
     "path": "/admin/cms/redirects"
   },

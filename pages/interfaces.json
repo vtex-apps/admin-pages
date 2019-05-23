@@ -5,11 +5,20 @@
   "admin.cms.pages": {
     "around": ["pages-wrapper"]
   },
+  "admin.email": {
+    "around": ["wrapper"]
+  },
+  "admin.email.pages": {
+    "around": ["pages-wrapper"]
+  },
   "admin.cms.pages.page-list": {
     "component": "PageList"
   },
   "admin.cms.pages.page-details": {
     "component": "PageForm"
+  },
+  "admin.email.pages.page-details": {
+    "component": "PageEmailForm"
   },
   "admin.cms.pages.redirects": {
     "component": "RedirectList"
