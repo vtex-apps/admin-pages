@@ -1,5 +1,4 @@
 import { JSONSchema6 } from 'json-schema'
-import debounce from 'lodash.debounce'
 import throttle from 'lodash.throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
@@ -29,6 +28,7 @@ import { getIsDefaultContent } from '../utils'
 import { NEW_CONFIGURATION_ID } from './consts'
 import ContentEditor from './ContentEditor'
 import List from './List'
+import { isUnidentifiedPageContext } from './utils'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
@@ -190,18 +190,27 @@ class ConfigurationList extends React.Component<Props, State> {
     )
   }
 
-  private getDefaultCondition = () => {
+  private getDefaultCondition = (): ExtensionConfiguration['condition'] => {
     const { iframeRuntime, isSitewide } = this.props
+
+    const iframePageContext = iframeRuntime.route.pageContext
+
+    const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
+      ? {
+          id: '*',
+          type: '*',
+        }
+      : {
+          id: isUnidentifiedPageContext(iframePageContext)
+            ? '*'
+            : iframePageContext.id,
+          type: iframePageContext.type,
+        }
 
     return {
       allMatches: true,
       id: '',
-      pageContext: isSitewide
-        ? ({
-            id: '*',
-            type: '*',
-          } as ExtensionConfiguration['condition']['pageContext'])
-        : iframeRuntime.route.pageContext,
+      pageContext,
       statements: [],
     }
   }

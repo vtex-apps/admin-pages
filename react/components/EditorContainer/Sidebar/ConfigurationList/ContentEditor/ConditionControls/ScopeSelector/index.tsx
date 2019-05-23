@@ -5,16 +5,18 @@ import { RadioGroup } from 'vtex.styleguide'
 import { getScopeStandardOptions } from './utils'
 
 interface CustomProps {
+  isDisabled: boolean
+  isSitewide: boolean
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   pageContext: PageContext
   scope: ConfigurationScope
-  isSitewide: boolean
 }
 
 type Props = CustomProps & InjectedIntlProps
 
 const ScopeSelector: React.FunctionComponent<Props> = ({
   intl,
+  isDisabled,
   isSitewide,
   onChange,
   pageContext,
@@ -42,7 +44,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
         {message => <div className="mb5">{message}</div>}
       </FormattedMessage>
       <RadioGroup
-        disabled={isSitewide}
+        disabled={isDisabled}
         name="scopes"
         onChange={onChange}
         options={options}
