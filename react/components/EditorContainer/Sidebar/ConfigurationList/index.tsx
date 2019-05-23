@@ -83,9 +83,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private activeExtension: Extension
 
   private throttledUpdateExtensionFromForm: typeof updateExtensionFromForm = throttle(
-    data => {
-      return updateExtensionFromForm(data)
-    },
+    data => updateExtensionFromForm(data),
     200
   )
 
@@ -331,16 +329,8 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleConfigurationDiscard = () => {
-    const { editor, iframeRuntime } = this.props
-
-    this.props.formMeta.setWasModified(false, async () => {
-      this.handleConfigurationClose()
-      updateExtensionFromForm({
-        data: this.activeExtension.content,
-        isContent: true,
-        runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
-      })
+    this.props.formMeta.setWasModified(false, () => {
+      this.handleContentBack()
     })
   }
 
