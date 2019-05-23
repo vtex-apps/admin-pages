@@ -46,7 +46,7 @@ export const getValidateFormState = (prevState: State) => {
     ...prevState,
     formErrors: {
       ...prevState.formErrors,
-      ...validateUrlBeginning(prevState.data.path),
+      ...(validateUrlBeginning(prevState.data.path) as Record<string, string>),
       ...validateFalsyPath('path')(prevState.data),
       ...validateFalsyPath('blockId')(prevState.data),
       ...(prevState.isInfoEditable
