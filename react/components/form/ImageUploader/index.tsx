@@ -25,7 +25,7 @@ interface Props extends InjectedIntlProps {
   shouldMutate?: boolean
   onChange: (pathname: string | null, file: ImageFile) => any
   schema: JSONSchema6
-  uploadFile: MutationFunc<MutationData>
+  uploadFile?: MutationFunc<MutationData>
   value: string
 }
 
@@ -174,7 +174,8 @@ class ImageUploader extends Component<Props, State> {
 
       try {
         let url = null
-        if (shouldMutate) {
+
+        if (shouldMutate && uploadFile) {
           const {
             data: {
               uploadFile: { fileUrl },
@@ -184,10 +185,12 @@ class ImageUploader extends Component<Props, State> {
           })) as { data: MutationData }
           url = fileUrl
         }
+
         if (this.props.onChange) {
           const path = url && new URL(url).pathname
           await this.props.onChange(path, acceptedFiles[0])
         }
+
         this.setState({ isLoading: false })
       } catch (e) {
         this.setState({
