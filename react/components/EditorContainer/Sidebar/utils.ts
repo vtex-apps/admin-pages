@@ -2,6 +2,7 @@ import { has, path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'
+import { isRootComponent } from './ComponentList/utils'
 import { SidebarComponent } from './typings'
 
 export const generateWarningMessage = (name: string) =>
@@ -53,15 +54,24 @@ export function getComponents(
   return Object.keys(extensions)
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
+      const component = extensions[treePath]
       const componentName = getComponentName(treePath)
       const hasTitleInSchema = has('title', schema)
       const hasTitle = hasTitleInSchema || has('title', extensions[treePath])
+
+      const isLayoutComponent = component.composition === 'children'
+      const isRoot = isRootComponent(2)({ treePath })
 
       if (schema && !hasTitleInSchema) {
         console.warn(generateWarningMessage(componentName))
       }
 
-      return isSamePage(page, treePath) && !!schema && hasTitle
+      return (
+        isSamePage(page, treePath) &&
+        !!schema &&
+        hasTitleInSchema &&
+        (isRoot || !isLayoutComponent)
+      )
     })
     .sort((treePathA, treePathB) => {
       const parentPathA = `${treePathA.split('/')[0]}/${
