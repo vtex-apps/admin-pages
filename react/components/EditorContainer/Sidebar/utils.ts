@@ -55,12 +55,13 @@ export function getComponents(
       const schema = getComponentSchema(treePath)
       const componentName = getComponentName(treePath)
       const hasTitleInSchema = has('title', schema)
+      const hasTitle = hasTitleInSchema || has('title', extensions[treePath])
 
       if (schema && !hasTitleInSchema) {
         console.warn(generateWarningMessage(componentName))
       }
 
-      return isSamePage(page, treePath) && !!schema && hasTitleInSchema
+      return isSamePage(page, treePath) && !!schema && hasTitle
     })
     .sort((treePathA, treePathB) => {
       const parentPathA = `${treePathA.split('/')[0]}/${
@@ -111,7 +112,7 @@ export function getComponents(
       return treePathA > treePathB ? 1 : -1
     })
     .map<SidebarComponent>(treePath => ({
-      name: getComponentSchema(treePath).title!,
+      name: extensions[treePath].title || getComponentSchema(treePath).title!,
       treePath,
     }))
 }

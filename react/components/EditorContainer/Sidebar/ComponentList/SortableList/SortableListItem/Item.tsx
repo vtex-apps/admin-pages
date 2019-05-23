@@ -1,8 +1,9 @@
 import classnames from 'classnames'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { formatIOMessage } from 'vtex.native-types'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   hasSubItems?: boolean
   isSortable?: boolean
   isChild?: boolean
@@ -15,6 +16,7 @@ interface Props {
 
 const Item: React.FunctionComponent<Props> = ({
   hasSubItems,
+  intl,
   isSortable,
   isChild,
   onEdit,
@@ -48,15 +50,11 @@ const Item: React.FunctionComponent<Props> = ({
         ...(!hasSubItems || isSortable ? { marginLeft: 1 } : null),
       }}
     >
-      <FormattedMessage id={title}>
-        {text => (
-          <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
-            {text}
-          </span>
-        )}
-      </FormattedMessage>
+      <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
+        {formatIOMessage({ id: title, intl })}
+      </span>
     </div>
   )
 }
 
-export default Item
+export default injectIntl(Item)

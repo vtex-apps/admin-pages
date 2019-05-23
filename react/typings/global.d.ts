@@ -31,6 +31,7 @@ declare global {
     implements: string[]
     props: object
     shouldRender?: boolean
+    title?: string
   }
 
   interface Extensions {
