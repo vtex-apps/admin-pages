@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
@@ -13,6 +13,13 @@ interface Props extends InjectedIntlProps {
   title: string
   treePath: string
 }
+
+const messages = defineMessages({
+  untitledBlock: {
+    defaultMessage: 'Untitled Block',
+    id: 'admin/pages.editor.component-list.untitled',
+  },
+})
 
 const Item: React.FunctionComponent<Props> = ({
   hasSubItems,
@@ -51,7 +58,11 @@ const Item: React.FunctionComponent<Props> = ({
       }}
     >
       <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
-        {formatIOMessage({ id: title, intl })}
+        {typeof title === 'string' ? (
+          formatIOMessage({ id: title, intl })
+        ) : (
+          <i>{intl.formatMessage(messages.untitledBlock)}</i>
+        )}
       </span>
     </div>
   )
