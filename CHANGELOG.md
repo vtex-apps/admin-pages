@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.9.1] - 2019-05-23
+
 ### Changed
 
 - Reset content logic to improve UX.
