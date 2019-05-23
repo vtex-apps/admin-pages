@@ -1,10 +1,12 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
+import { Button } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
+import { useFormMetaContext } from '../FormMetaContext'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
@@ -16,14 +18,13 @@ interface CustomProps {
   data: object
   iframeRuntime: RenderContext
   isDefault?: boolean
+  isNew?: boolean
   isSitewide?: boolean
-  label?: string
   onChange: FormProps<{ formData: object }>['onChange']
   onClose: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
-  onLabelChange?: (event: Event) => void
   onSave: () => void
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: ComponentSchema['title']
@@ -37,17 +38,17 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   data,
   iframeRuntime,
   isDefault,
+  isNew,
   isSitewide = false,
-  label,
   onChange,
   onConditionChange,
   onClose,
-  onLabelChange,
   onSave,
   onTitleChange,
   title,
 }) => {
   const editor = useEditorContext()
+  const formMeta = useFormMetaContext()
 
   const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
@@ -73,16 +74,19 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
     [componentSchema]
   )
 
+  const shouldDisableSaveButton =
+    !isNew && (editor.isLoading || !formMeta.getWasModified())
+
   return (
     <Fragment>
-      <EditorHeader
-        isTitleEditable
-        onClose={onClose}
-        onTitleChange={onTitleChange}
-        title={title}
-      />
-
       <div className="h-100 overflow-y-auto overflow-x-hidden">
+        <EditorHeader
+          isTitleEditable={isContent}
+          onClose={onClose}
+          onTitleChange={onTitleChange}
+          title={title}
+        />
+
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
@@ -108,6 +112,29 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             pageContext={iframeRuntime.route.pageContext}
           />
         )}
+      </div>
+
+      <div className="flex flex-row-reverse w-100 bt bw1 b--light-silver">
+        <div className="pa4">
+          <Button size="small" variation="tertiary" onClick={onClose}>
+            <FormattedMessage
+              defaultMessage="Cancel"
+              id="admin/pages.editor.components.button.cancel"
+            />
+          </Button>
+
+          <Button
+            disabled={shouldDisableSaveButton}
+            onClick={onSave}
+            size="small"
+            variation="primary"
+          >
+            <FormattedMessage
+              defaultMessage="Save"
+              id="admin/pages.editor.components.button.save"
+            />
+          </Button>
+        </div>
       </div>
     </Fragment>
   )

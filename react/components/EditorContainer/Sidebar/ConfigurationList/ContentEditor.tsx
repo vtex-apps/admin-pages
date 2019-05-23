@@ -12,6 +12,7 @@ interface Props {
   data?: object
   iframeRuntime: RenderContext
   isDefault: boolean
+  isNew?: boolean
   isSitewide: boolean
   onClose: () => void
   onConditionChange: (
@@ -29,6 +30,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   data = {},
   iframeRuntime,
   isDefault,
+  isNew,
   isSitewide,
   onClose,
   onConditionChange,
@@ -41,8 +43,9 @@ const ContentEditor: React.FunctionComponent<Props> = ({
     contentSchema={contentSchema}
     data={data}
     iframeRuntime={iframeRuntime}
-    isSitewide={isSitewide}
     isDefault={isDefault}
+    isNew={isNew}
+    isSitewide={isSitewide}
     onConditionChange={onConditionChange}
     onChange={onFormChange}
     onClose={onClose}

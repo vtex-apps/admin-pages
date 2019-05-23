@@ -1,6 +1,8 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { IconArrowBack, Input } from 'vtex.styleguide'
+import { IconArrowBack } from 'vtex.styleguide'
+
+import EditableText from './EditableText'
 
 interface Props {
   isTitleEditable?: boolean
@@ -29,14 +31,13 @@ const EditorHeader: React.FC<Props> = ({
               defaultMessage="Untitled"
             >
               {placeholder => (
-                <Input
-                  size="small"
-                  value={title}
+                <EditableText
                   onChange={onTitleChange}
-                  placeholder={placeholder}
+                  placeholder={placeholder as string}
+                  value={title}
                 >
                   {title}
-                </Input>
+                </EditableText>
               )}
             </FormattedMessage>
           ) : (

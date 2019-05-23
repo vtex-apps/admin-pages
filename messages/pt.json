@@ -116,6 +116,7 @@
   "admin/pages.editor.component-list.toast.success": "Salvo com sucesso.",
   "admin/pages.editor.component-list.untitled": "Bloco sem título",
   "admin/pages.editor.components.arrayTemplate.button.add": "Adicionar",
+  "admin/pages.editor.components.button.cancel": "Cancelar",
   "admin/pages.editor.components.button.save": "Salvar",
   "admin/pages.editor.components.condition.date.title": "Data personalizada",
   "admin/pages.editor.components.condition.date.toggle.end": "Definir uma data de fim",

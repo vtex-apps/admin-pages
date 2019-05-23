@@ -34,6 +34,7 @@ const List: React.FunctionComponent<Props> = ({
 }) => (
   <Fragment>
     <EditorHeader onClose={onClose} title={title} />
+
     <ContentContainer isLoading={editor.isLoading}>
       {configurations.map(
         (configuration: ExtensionConfiguration, index: number) => (
@@ -51,6 +52,7 @@ const List: React.FunctionComponent<Props> = ({
           />
         )
       )}
+
       <CreateButton onClick={onCreate} />
     </ContentContainer>
   </Fragment>

@@ -162,11 +162,6 @@ class ConfigurationList extends React.Component<Props, State> {
       )
     }
 
-    const label =
-      this.state.newLabel !== undefined
-        ? this.state.newLabel
-        : this.state.configuration && this.state.configuration.label
-
     return (
       <ContentEditor
         componentTitle={this.state.newLabel}
@@ -175,6 +170,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data={this.state.formData}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
+        isNew={this.state.configuration.contentId === NEW_CONFIGURATION_ID}
         isSitewide={this.props.isSitewide}
         onClose={this.handleContentBack}
         onConditionChange={this.handleConditionChange}
