@@ -28,6 +28,7 @@ import { FormErrors } from './typings'
 import { OperationsResults } from './Operations'
 
 interface ComponentProps {
+  isCustomPage: boolean
   initialData: RouteFormData
   onDelete: OperationsResults['deleteRoute']
   onExit: () => void
@@ -96,7 +97,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public render() {
-    const { templates, onExit } = this.props
+    const { isCustomPage, templates, onExit } = this.props
     const {
       data,
       formErrors,
@@ -107,6 +108,7 @@ class FormContainer extends Component<Props, State> {
 
     return (
       <Form
+        isCustomPage={isCustomPage}
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
         isDeletable={isDeletable}

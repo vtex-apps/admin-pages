@@ -32,6 +32,7 @@ interface CustomProps extends TemplateSectionProps {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void
   formErrors: FormErrors
+  isCustomPage: boolean
   isDeletable: boolean
   isInfoEditable: boolean
   isLoading: boolean
@@ -83,6 +84,7 @@ const Form: React.FunctionComponent<Props> = ({
   detailChangeHandlerGetter,
   formErrors,
   intl,
+  isCustomPage,
   isDeletable,
   isInfoEditable,
   isLoading,
@@ -139,22 +141,26 @@ const Form: React.FunctionComponent<Props> = ({
         onChange={onLoginToggle}
         value="option-0"
       />
-      <FormFieldSeparator />
-      <Textarea
-        disabled={!isInfoEditable}
-        label={intl.formatMessage(messages.seoDescription)}
-        onChange={detailChangeHandlerGetter('metaTagDescription')}
-        value={data.metaTagDescription}
-      />
-      <FormFieldSeparator />
-      <Select
-        creatable
-        disabled={!isInfoEditable}
-        label={intl.formatMessage(messages.seoKeywords)}
-        onChange={onChangeKeywords}
-        placeholder=""
-        value={data.metaTagKeywords}
-      />
+      {isCustomPage && (
+        <>
+          <FormFieldSeparator />
+          <Textarea
+            disabled={!isInfoEditable}
+            label={intl.formatMessage(messages.seoDescription)}
+            onChange={detailChangeHandlerGetter('metaTagDescription')}
+            value={data.metaTagDescription}
+          />
+          <FormFieldSeparator />
+          <Select
+            creatable
+            disabled={!isInfoEditable}
+            label={intl.formatMessage(messages.seoKeywords)}
+            onChange={onChangeKeywords}
+            placeholder=""
+            value={data.metaTagKeywords}
+          />
+        </>
+      )}
       <FormFieldSeparator />
       <SeparatorWithLine />
       <ConditionalTemplateSection

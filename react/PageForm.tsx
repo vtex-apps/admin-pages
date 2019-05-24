@@ -159,6 +159,9 @@ class PageForm extends Component<Props, State> {
                     {({ showToast, hideToast }) => (
                       <Form
                         initialData={formData}
+                        isCustomPage={formData.interfaceId.includes(
+                          'store.custom'
+                        )}
                         onDelete={deleteRoute}
                         onExit={this.exit}
                         onSave={saveRoute}
