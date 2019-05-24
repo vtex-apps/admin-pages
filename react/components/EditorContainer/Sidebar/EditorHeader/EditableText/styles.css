@@ -11,5 +11,7 @@
   box-shadow: 0 0 1px #dbe9fd;
   color: #4c4c58;
   font-style: italic;
+  margin-bottom: -1px;
+  margin-top: -1px;
   outline: none !important;
 }

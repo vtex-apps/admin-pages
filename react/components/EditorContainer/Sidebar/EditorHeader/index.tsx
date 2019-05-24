@@ -16,37 +16,44 @@ const EditorHeader: React.FC<Props> = ({
   onClose,
   onTitleChange,
   title,
-}) => (
-  <div className="w-100 ph5 pv4">
-    <div className="w-100 flex justify-between">
-      <div className="w-100 flex items-center">
-        <span className="pointer" onClick={onClose}>
-          <IconArrowBack color="#727273" size={12} />
-        </span>
+}) => {
+  const titleBaseClassName = 'w-100 fw5 ma0 lh-copy f5 near-black'
 
-        <div className="w-100 pl3 flex justify-between items-center">
-          {isTitleEditable ? (
-            <FormattedMessage
-              id="admin/pages.editor.components.configurations.defaultTitle"
-              defaultMessage="Untitled"
-            >
-              {placeholder => (
-                <EditableText
-                  onChange={onTitleChange}
-                  placeholder={placeholder as string}
-                  value={title}
-                >
-                  {title}
-                </EditableText>
-              )}
-            </FormattedMessage>
-          ) : (
-            title && <h4 className="fw5 ma0 lh-copy f5 near-black">{title}</h4>
-          )}
+  return (
+    <div className="w-100 ph5 pv4">
+      <div className="w-100 flex justify-between">
+        <div className="w-100 flex items-center">
+          <span className="pointer" onClick={onClose}>
+            <IconArrowBack color="#727273" size={12} />
+          </span>
+
+          <div className="w-100 pl3 flex justify-between items-center">
+            {isTitleEditable ? (
+              <FormattedMessage
+                id="admin/pages.editor.components.configurations.defaultTitle"
+                defaultMessage="Untitled"
+              >
+                {placeholder => (
+                  <EditableText
+                    baseClassName={titleBaseClassName}
+                    onChange={onTitleChange}
+                    placeholder={placeholder as string}
+                    value={title}
+                  >
+                    {title}
+                  </EditableText>
+                )}
+              </FormattedMessage>
+            ) : (
+              <h4 className={`ba b--transparent ${titleBaseClassName}`}>
+                {title}
+              </h4>
+            )}
+          </div>
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default EditorHeader

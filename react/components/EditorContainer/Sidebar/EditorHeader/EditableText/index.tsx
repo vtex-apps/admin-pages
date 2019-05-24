@@ -3,14 +3,20 @@ import React from 'react'
 import styles from './styles.css'
 
 interface Props {
+  baseClassName: string
   onChange?: React.ChangeEventHandler<HTMLInputElement>
   placeholder?: string
   value?: string
 }
 
-const EditableText: React.FC<Props> = ({ onChange, placeholder, value }) => (
+const EditableText: React.FC<Props> = ({
+  baseClassName,
+  onChange,
+  placeholder,
+  value,
+}) => (
   <input
-    className={`bn font-body input-reset f4 pa3 ${styles.input}`}
+    className={`bn font-body input-reset ${baseClassName} ${styles.input}`}
     onChange={onChange}
     placeholder={placeholder}
     type="text"
