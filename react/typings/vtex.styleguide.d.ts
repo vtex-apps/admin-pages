@@ -1,7 +1,7 @@
 /* tslint:disable:max-classes-per-file class-name*/
 declare module 'vtex.styleguide' {
   import { ReactDatePickerProps } from '@types/react-datepicker'
-  import { Component, ComponentType, ReactNode } from 'react'
+  import { Component, ComponentType, CSSProperties, ReactNode } from 'react'
 
   type StyleguideSizes = 'small' | 'regular' | 'large'
 
@@ -13,6 +13,7 @@ declare module 'vtex.styleguide' {
     error?: boolean
     errorMessage?: string
     helpText?: ReactNode
+    resize?: CSSProperties['resize']
     value?: string
     label?: string
   }

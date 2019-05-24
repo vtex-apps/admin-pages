@@ -53,6 +53,10 @@ interface CustomProps extends TemplateSectionProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
+  createKeywordsMessage: {
+    defaultMessage: 'Create keyword "{keyword}"',
+    id: 'admin/pages.admin.pages.form.field.meta.keywords.create',
+  },
   detailsTitle: {
     defaultMessage: 'Page details',
     id: 'admin/pages.admin.pages.form.details.title',
@@ -68,6 +72,10 @@ const messages = defineMessages({
   fieldTitle: {
     defaultMessage: 'Title',
     id: 'admin/pages.admin.pages.form.field.title',
+  },
+  noOptionsKeywordsMessage: {
+    defaultMessage: 'Type your keyword and press ENTER to add it.',
+    id: 'admin/pages.admin.pages.form.field.meta.description.no-options',
   },
   seoDescription: {
     defaultMessage: 'Description',
@@ -148,13 +156,20 @@ const Form: React.FunctionComponent<Props> = ({
             disabled={!isInfoEditable}
             label={intl.formatMessage(messages.seoDescription)}
             onChange={detailChangeHandlerGetter('metaTagDescription')}
+            resize="vertical"
             value={data.metaTagDescription}
           />
           <FormFieldSeparator />
           <Select
             creatable
             disabled={!isInfoEditable}
+            formatCreateLabel={(keyword: string) =>
+              intl.formatMessage(messages.createKeywordsMessage, { keyword })
+            }
             label={intl.formatMessage(messages.seoKeywords)}
+            noOptionsMessage={() =>
+              intl.formatMessage(messages.noOptionsKeywordsMessage)
+            }
             onChange={onChangeKeywords}
             placeholder=""
             value={data.metaTagKeywords}
