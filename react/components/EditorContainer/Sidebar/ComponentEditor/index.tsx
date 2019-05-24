@@ -3,86 +3,62 @@ import React, { Fragment, useMemo } from 'react'
 import { injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 
-import {
-  getComponentSchema,
-  getExtension,
-  getIframeImplementation,
-} from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
 
+import ConditionControls from './ConditionControls'
 import Form from './Form'
-import { getUiSchema } from './utils'
+import LabelEditor from './LabelEditor'
+import { getSchemas } from './utils'
 
 interface CustomProps {
-  after?: JSX.Element
+  condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: object
   iframeRuntime: RenderContext
-  isContent?: boolean
-  isLoading: boolean
+  isDefault?: boolean
+  isSitewide?: boolean
+  label?: string
   onChange: FormProps<{ formData: object }>['onChange']
   onClose: () => void
+  onConditionChange?: (
+    changes: Partial<ExtensionConfiguration['condition']>
+  ) => void
+  onLabelChange?: (event: Event) => void
   onSave: () => void
-  shouldDisableSaveButton: boolean
   title?: ComponentSchema['title']
-}
-
-type getSchemasArgs = Pick<
-  CustomProps,
-  'iframeRuntime' | 'isContent' | 'contentSchema'
-> & { editTreePath: string | null }
-
-const getSchemas = ({
-  iframeRuntime,
-  isContent,
-  editTreePath,
-  contentSchema,
-}: getSchemasArgs) => {
-  const extension = getExtension(editTreePath, iframeRuntime.extensions)
-  const componentImplementation = getIframeImplementation(extension.component)
-
-  const componentSchema = getComponentSchema({
-    component: componentImplementation,
-    contentSchema,
-    isContent: true,
-    propsOrContent: extension[isContent ? 'content' : 'props'],
-    runtime: iframeRuntime,
-  })
-
-  const componentUiSchema =
-    componentImplementation && componentImplementation.uiSchema
-      ? componentImplementation.uiSchema
-      : null
-
-  const uiSchemaFromComponent = getUiSchema(componentUiSchema, componentSchema)
-
-  return {
-    componentSchema,
-    uiSchema: uiSchemaFromComponent,
-  }
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
-  after,
+  condition,
   contentSchema,
   data,
   iframeRuntime,
-  isContent,
-  isLoading,
+  isDefault,
+  isSitewide = false,
+  label,
   onChange,
+  onConditionChange,
   onClose,
+  onLabelChange,
   onSave,
-  shouldDisableSaveButton,
   title,
 }) => {
-  const { editTreePath, mode } = useEditorContext()
+  const editor = useEditorContext()
+
+  const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
   const { componentSchema, uiSchema } = useMemo(
-    () => getSchemas({ contentSchema, editTreePath, iframeRuntime, isContent }),
-    [editTreePath, mode]
+    () =>
+      getSchemas({
+        contentSchema,
+        editTreePath: editor.editTreePath,
+        iframeRuntime,
+        isContent,
+      }),
+    [editor.editTreePath, editor.mode]
   )
 
   const schema = useMemo(
@@ -98,19 +74,14 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <EditorHeader
-        isLoading={isLoading}
-        onClose={onClose}
-        onSave={onSave}
-        shouldDisableSaveButton={shouldDisableSaveButton}
-        title={title || componentSchema.title}
-      />
+      <EditorHeader onClose={onClose} title={title || componentSchema.title} />
+
       <div className="h-100 overflow-y-auto overflow-x-hidden">
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
               addMessages: iframeRuntime.addMessages,
-              isLayoutMode: mode === 'layout',
+              isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
             }}
             formData={data}
@@ -119,9 +90,28 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             schema={schema as JSONSchema6}
             uiSchema={uiSchema}
           />
+
           <div id="form__error-list-template___alert" />
         </div>
-        {after}
+
+        {isContent && (
+          <div className="flex flex-column justify-between">
+            {onLabelChange && (
+              <div className="pa5 bt bw1 b--light-silver">
+                <LabelEditor onChange={onLabelChange} value={label || ''} />
+              </div>
+            )}
+
+            {!isDefault && condition && onConditionChange && (
+              <ConditionControls
+                condition={condition}
+                isSitewide={isSitewide}
+                onConditionChange={onConditionChange}
+                pageContext={iframeRuntime.route.pageContext}
+              />
+            )}
+          </div>
+        )}
       </div>
     </Fragment>
   )

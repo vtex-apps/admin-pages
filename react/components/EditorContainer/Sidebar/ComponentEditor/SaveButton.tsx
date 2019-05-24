@@ -4,7 +4,7 @@ import { Button } from 'vtex.styleguide'
 
 interface Props {
   isDisabled?: boolean
-  isLoading: boolean
+  isLoading?: boolean
   onClick: (event: Event) => void
   variation?: 'primary' | 'secondary' | 'tertiary'
 }

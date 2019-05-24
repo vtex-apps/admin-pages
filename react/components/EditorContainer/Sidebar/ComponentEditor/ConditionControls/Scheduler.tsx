@@ -11,7 +11,7 @@ import {
   getPreviousTime,
   isLastTime,
   isSameDay,
-} from '../../../../../../utils/date'
+} from '../../../../../utils/date'
 
 import ConditionTitle from './ConditionTitle'
 import Typings from './typings'

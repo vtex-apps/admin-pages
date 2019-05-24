@@ -23,12 +23,11 @@ import {
   ListContentQueryResult,
 } from '../../queries/ListContent'
 import { FormMetaContext, ModalContext } from '../typings'
-import { getIsDefaultContent } from '../utils'
+import { getIsDefaultContent, isUnidentifiedPageContext } from '../utils'
 
 import { NEW_CONFIGURATION_ID } from './consts'
 import ContentEditor from './ContentEditor'
 import List from './List'
-import { isUnidentifiedPageContext } from './utils'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
@@ -140,17 +139,11 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   public render() {
-    const { editor, formMeta, iframeRuntime, modal, queryData } = this.props
+    const { editor, iframeRuntime, queryData } = this.props
 
     const listContent = queryData && queryData.listContentWithSchema
 
     const configurations = (listContent && listContent.content) || []
-
-    const shouldEnableSaveButton =
-      (this.state.configuration &&
-        (formMeta.getWasModified() ||
-          this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
-      false
 
     if (!this.state.configuration) {
       return (
@@ -182,7 +175,6 @@ class ConfigurationList extends React.Component<Props, State> {
         data={this.state.formData}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
-        isLoading={formMeta.getIsLoading() && !modal.isOpen}
         isSitewide={this.props.isSitewide}
         label={label}
         onClose={this.handleContentBack}
@@ -190,7 +182,6 @@ class ConfigurationList extends React.Component<Props, State> {
         onFormChange={this.handleFormChange}
         onLabelChange={this.handleConfigurationLabelChange}
         onSave={this.handleConfigurationSave}
-        shouldDisableSaveButton={!shouldEnableSaveButton}
       />
     )
   }

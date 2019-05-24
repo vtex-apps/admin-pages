@@ -3,6 +3,7 @@ import React, { Fragment } from 'react'
 import ContentContainer from '../../ContentContainer'
 import EditorHeader from '../../EditorHeader'
 import { getIsDefaultContent } from '../../utils'
+
 import Card from './Card'
 import CreateButton from './CreateButton'
 
