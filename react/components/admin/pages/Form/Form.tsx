@@ -1,8 +1,14 @@
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
-import { Button, Checkbox, Input } from 'vtex.styleguide'
+import {
+  Button,
+  Checkbox,
+  EXPERIMENTAL_Select as Select,
+  Input,
+  Textarea,
+} from 'vtex.styleguide'
 
-import { RouteFormData } from 'pages'
+import { KeywordsFormData, RouteFormData } from 'pages'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import SeparatorWithLine from '../SeparatorWithLine'
 
@@ -21,8 +27,10 @@ type TemplateSectionProps = Omit<
 interface CustomProps extends TemplateSectionProps {
   data: RouteFormData
   detailChangeHandlerGetter: (
-    detailName: keyof Route
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void
+    detailName: keyof RouteFormData
+  ) => (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void
   formErrors: FormErrors
   isDeletable: boolean
   isInfoEditable: boolean
@@ -38,6 +46,7 @@ interface CustomProps extends TemplateSectionProps {
   ) => void
   onRemoveConditionalTemplate: (uniqueId: number) => void
   templates: Template[]
+  onChangeKeywords: (values: KeywordsFormData[]) => void
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -59,6 +68,14 @@ const messages = defineMessages({
     defaultMessage: 'Title',
     id: 'admin/pages.admin.pages.form.field.title',
   },
+  seoDescription: {
+    defaultMessage: 'Description',
+    id: 'admin/pages.admin.pages.form.field.meta.description',
+  },
+  seoKeywords: {
+    defaultMessage: 'Keywords',
+    id: 'admin/pages.admin.pages.form.field.meta.keywords',
+  },
 })
 
 const Form: React.FunctionComponent<Props> = ({
@@ -70,6 +87,7 @@ const Form: React.FunctionComponent<Props> = ({
   isInfoEditable,
   isLoading,
   onAddConditionalTemplate,
+  onChangeKeywords,
   onChangeOperatorConditionalTemplate,
   onChangeStatementsConditionalTemplate,
   onChangeTemplateConditionalTemplate,
@@ -120,6 +138,22 @@ const Form: React.FunctionComponent<Props> = ({
         name="checkbox-login"
         onChange={onLoginToggle}
         value="option-0"
+      />
+      <FormFieldSeparator />
+      <Textarea
+        disabled={!isInfoEditable}
+        label={intl.formatMessage(messages.seoDescription)}
+        onChange={detailChangeHandlerGetter('metaTagDescription')}
+        value={data.metaTagDescription}
+      />
+      <FormFieldSeparator />
+      <Select
+        creatable
+        disabled={!isInfoEditable}
+        label={intl.formatMessage(messages.seoKeywords)}
+        onChange={onChangeKeywords}
+        placeholder=""
+        value={data.metaTagKeywords}
       />
       <FormFieldSeparator />
       <SeparatorWithLine />

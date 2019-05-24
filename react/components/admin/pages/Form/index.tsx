@@ -118,6 +118,7 @@ class FormContainer extends Component<Props, State> {
         onSave={this.handleSave}
         templates={templates}
         onAddConditionalTemplate={this.handleAddConditionalTemplate}
+        onChangeKeywords={this.handleMetaTagKeywords}
         onRemoveConditionalTemplate={this.handleRemoveConditionalTemplate}
         onChangeTemplateConditionalTemplate={
           this.handleChangeTemplateConditionalTemplate
@@ -162,8 +163,21 @@ class FormContainer extends Component<Props, State> {
     this.setState(getChangeStatementsConditionalTemplate(uniqueId, statements))
   }
 
+  private handleMetaTagKeywords = (
+    values: Array<{ label: string; value: string }>
+  ) => {
+    this.setState(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        metaTagKeywords: values,
+      },
+      formErrors: {},
+    }))
+  }
+
   private getDetailChangeHandler = (detailName: string) => (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const newDetailValue = e.target.value
 
@@ -230,6 +244,8 @@ class FormContainer extends Component<Props, State> {
         declarer,
         domain,
         interfaceId,
+        metaTagDescription,
+        metaTagKeywords,
         pages,
         path,
         routeId,
@@ -248,6 +264,10 @@ class FormContainer extends Component<Props, State> {
                 declarer,
                 domain,
                 interfaceId,
+                metaTags: {
+                  description: metaTagDescription,
+                  keywords: (metaTagKeywords || []).map(({ value }) => value),
+                },
                 pages: pages.map(page => {
                   return {
                     condition: {

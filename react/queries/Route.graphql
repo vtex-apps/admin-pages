@@ -1,11 +1,5 @@
-query Route(
-  $domain: String
-  $routeId: String!
-) {
-  route(
-    domain: $domain
-    routeId: $routeId
-  ) {
+query Route($domain: String, $routeId: String!) {
+  route(domain: $domain, routeId: $routeId) {
     auth
     blockId
     context
@@ -15,6 +9,10 @@ query Route(
     path
     routeId
     uuid
+    metaTags {
+      description
+      keywords
+    }
     pages {
       condition {
         allMatches

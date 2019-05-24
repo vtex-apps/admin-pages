@@ -9,6 +9,10 @@ mutation SaveRoute($route: NewRouteInput) {
     path
     routeId
     uuid
+    metaTags {
+      description
+      keywords
+    }
     pages {
       condition {
         allMatches

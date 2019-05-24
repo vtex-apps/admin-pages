@@ -10,6 +10,8 @@
   "admin/pages.admin.pages.form.details.title": "Detalles de la página",
   "admin/pages.admin.pages.form.field.array.item": "Ítem",
   "admin/pages.admin.pages.form.field.login": "Requiere autenticación",
+  "admin/pages.admin.pages.form.field.meta.description": "Descripción",
+  "admin/pages.admin.pages.form.field.meta.keywords": "Palabras clave",
   "admin/pages.admin.pages.form.field.path": "URL",
   "admin/pages.admin.pages.form.field.title": "Título",
   "admin/pages.admin.pages.form.save.error": "Error: no se pudo guardar la ruta.",

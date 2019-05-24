@@ -55,6 +55,8 @@ class PageForm extends Component<Props, State> {
     declarer: null,
     domain: 'store',
     interfaceId: 'vtex.store@2.x:store.custom',
+    metaTagDescription: '',
+    metaTagKeywords: [],
     pages: [],
     path: '',
     routeId: '',
