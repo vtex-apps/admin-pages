@@ -9,7 +9,7 @@ interface Props {
 }
 
 const CreateButton = ({ onClick }: Props) => (
-  <div className="mh5 mt5">
+  <div className="mh5 ba b--muted-4 br2">
     <ButtonWithIcon
       block
       icon={<AddIcon />}
@@ -17,8 +17,8 @@ const CreateButton = ({ onClick }: Props) => (
       variation="tertiary"
     >
       <FormattedMessage
+        defaultMessage="New content"
         id="admin/pages.editor.components.configurations.button.create"
-        defaultMessage="Add content"
       />
     </ButtonWithIcon>
   </div>

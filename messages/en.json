@@ -133,7 +133,7 @@
   "admin/pages.editor.components.condition.scope.title": "Apply to",
   "admin/pages.editor.components.condition.title": "Visibility",
   "admin/pages.editor.components.condition.toast.error.page-context": "Could not identify {entity}. The configuration will be set to \"{template}\".",
-  "admin/pages.editor.components.configurations.button.create": "Add content",
+  "admin/pages.editor.components.configurations.button.create": "New content",
   "admin/pages.editor.components.configurations.defaultTitle": "Untitled",
   "admin/pages.editor.components.content.delete.error": "Something went wrong.",
   "admin/pages.editor.components.content.delete.success": "Content deleted.",

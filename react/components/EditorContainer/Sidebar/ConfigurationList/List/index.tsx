@@ -34,6 +34,8 @@ const List: React.FunctionComponent<Props> = ({
     <EditorHeader onClose={onClose} title={title} />
 
     <ContentContainer>
+      <CreateButton onClick={onCreate} />
+
       {configurations.map(
         (configuration: ExtensionConfiguration, index: number) => (
           <Card
@@ -50,8 +52,6 @@ const List: React.FunctionComponent<Props> = ({
           />
         )
       )}
-
-      <CreateButton onClick={onCreate} />
     </ContentContainer>
   </Fragment>
 )
