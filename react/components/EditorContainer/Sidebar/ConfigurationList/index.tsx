@@ -255,15 +255,18 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleContentBack = async () => {
-    const { editor, iframeRuntime } = this.props
+    const { editor, formMeta, iframeRuntime } = this.props
 
     this.handleConfigurationClose()
-    updateExtensionFromForm({
-      data: this.activeExtension.content,
-      isContent: true,
-      runtime: iframeRuntime,
-      treePath: editor.editTreePath!,
-    })
+
+    if (!formMeta.getWasModified()) {
+      updateExtensionFromForm({
+        data: this.activeExtension.content,
+        isContent: true,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath!,
+      })
+    }
   }
 
   private handleConfigurationClose = () => {

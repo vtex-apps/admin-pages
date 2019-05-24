@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Image Uploader now has translated messages.
 - Loading issue when navigating.
+- Back button was updating the form before the user selected the discard option.
 
 ## [3.11.0] - 2019-05-28
 
