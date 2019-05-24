@@ -22,7 +22,7 @@ const EditorHeader: React.FunctionComponent<Props> = ({
     <div className="w-100 flex justify-between">
       <div className={`flex items-center ${onSave ? 'w-100' : ''}`}>
         <span className="pointer" onClick={onClose}>
-          <IconArrowBack size={16} color="#585959" />
+          <IconArrowBack color="#727273" size={12} />
         </span>
         <div className="w-100 pl3 flex justify-between items-center">
           {title && <h4 className="fw5 ma0 lh-copy f5 near-black">{title}</h4>}
