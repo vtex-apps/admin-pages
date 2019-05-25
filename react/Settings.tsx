@@ -7,7 +7,7 @@ class Settings extends Component<RenderContextProps> {
       runtime: { navigate },
     } = this.props
 
-    navigate({ to: '/admin/apps/vtex.store/setup' })
+    navigate({ to: '/admin/app/apps/vtex.store/setup' })
   }
 
   public render() {

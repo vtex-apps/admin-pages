@@ -44,13 +44,13 @@ const Sidebar: React.FunctionComponent<Props> = ({
       id="sidebar-vtex-editor"
       className={
         visible
-          ? 'z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto'
+          ? 'z-1 h-100 top-3em-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto'
           : 'dn'
       }
     >
       <nav
         id="admin-sidebar"
-        className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
+        className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
         <div
           className={`h-100 flex flex-column dark-gray ${

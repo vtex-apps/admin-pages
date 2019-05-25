@@ -84,7 +84,6 @@ class Form extends Component<Props, State> {
   public static contextTypes = {
     culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
       .isRequired,
-    stopLoading: PropTypes.func.isRequired,
   }
 
   private isEditingRedirect: boolean
@@ -104,7 +103,7 @@ class Form extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   public render() {

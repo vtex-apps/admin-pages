@@ -63,7 +63,7 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
 
   return (
     <TargetPathContext.Provider value={{ targetPath, setTargetPath }}>
-      <div className="h-100 overflow-y-auto bg-light-silver">
+      <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8">
           <PageHeader title="CMS" />
           <div className="ph7">
@@ -79,7 +79,7 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
                       key={key}
                       label={intl.formatMessage({ id: info.titleId })}
                       onClick={() => {
-                        runtime.navigate({ to: '/admin/cms/' + info.path })
+                        runtime.navigate({ to: '/admin/app/cms/' + info.path })
                         startLoading()
                         setTargetPath(info.path)
                       }}
