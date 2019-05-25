@@ -8,7 +8,9 @@ interface Props {
 
 const Wrapper: React.FunctionComponent<Props> = ({ children }) => (
   <ToastProvider positioning="window">
-    <AdminLoadingContextProvider>{children}</AdminLoadingContextProvider>
+    <AdminLoadingContextProvider>
+      <div className="vh-100">{children}</div>
+    </AdminLoadingContextProvider>
   </ToastProvider>
 )
 

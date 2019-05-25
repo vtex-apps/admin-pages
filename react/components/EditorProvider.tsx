@@ -49,7 +49,7 @@ class EditorProvider extends Component<Props, State> {
       editMode: false,
       editTreePath: null,
       iframeRuntime: null,
-      iframeWindow: window,
+      iframeWindow: window.self,
       isLoading: false,
       messages: {},
       mode: 'content',
@@ -59,7 +59,7 @@ class EditorProvider extends Component<Props, State> {
     }
 
     if (canUseDOM) {
-      window.__provideRuntime = async (
+      window.top.__provideRuntime = window.self.__provideRuntime = async (
         runtime,
         messages,
         shouldUpdateRuntime
@@ -98,7 +98,7 @@ class EditorProvider extends Component<Props, State> {
           ...(this.state.iframeRuntime
             ? ({} as object)
             : {
-                iframeWindow: (document.getElementById(
+                iframeWindow: (window.self.document.getElementById(
                   'store-iframe'
                 ) as HTMLIFrameElement).contentWindow as Window,
               }),
@@ -157,7 +157,9 @@ class EditorProvider extends Component<Props, State> {
       )
     }
 
-    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+    if (window.top) {
+      window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+    }
 
     const appContentElement = document.getElementById(APP_CONTENT_ELEMENT_ID)
     emitter.addListener('localesChanged', this.emitLocaleEventToIframe)
@@ -171,7 +173,7 @@ class EditorProvider extends Component<Props, State> {
       appContentElement.addEventListener(
         'scroll',
         e => {
-          setTimeout(() => window.dispatchEvent(e), 0)
+          setTimeout(() => window.self.dispatchEvent(e), 0)
         },
         { passive: true }
       )
@@ -211,7 +213,9 @@ class EditorProvider extends Component<Props, State> {
     const editMode = !this.state.editMode
 
     this.setState({ editMode }, () => {
-      window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+      if (window.top) {
+        window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+      }
     })
   }
 
