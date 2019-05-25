@@ -5,12 +5,12 @@
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
+    "admin": "0.x",
     "pages": "1.x",
     "messages": "1.x",
     "react": "3.x"
   },
   "dependencies": {
-    "vtex.admin": "2.x",
     "vtex.apps-graphql": "2.x",
     "vtex.file-manager": "0.x",
     "vtex.file-manager-graphql": "0.x",
@@ -20,9 +20,6 @@
     "vtex.store": "2.x",
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x"
-  },
-  "peerDependencies": {
-    "vtex.admin": "2.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],

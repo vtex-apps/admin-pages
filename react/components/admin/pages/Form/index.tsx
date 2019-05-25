@@ -70,10 +70,6 @@ const messages = defineMessages({
 })
 
 class FormContainer extends Component<Props, State> {
-  public static contextTypes = {
-    stopLoading: PropTypes.func.isRequired,
-  }
-
   constructor(props: Props) {
     super(props)
 
@@ -94,7 +90,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   public render() {

@@ -98,7 +98,7 @@ const EditorContainer: React.FC<Props> = ({
     <FormMetaProvider>
       <ModalProvider>
         <IframeNavigationController iframeRuntime={runtime} />
-        <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
+        <div className="w-100 h-100 min-vh-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
           {!storeEditMode && runtime && (
             <Sidebar
               highlightHandler={highlightExtensionPoint}
@@ -106,7 +106,7 @@ const EditorContainer: React.FC<Props> = ({
               visible={visible}
             />
           )}
-          <div className="calc--height-ns flex-grow-1 db-ns dn">
+          <div className="min-vh-100 flex-grow-1 db-ns dn">
             {runtime && (
               <Topbar
                 changeMode={setStoreEditMode}

@@ -2,10 +2,10 @@ import React, { FunctionComponent, useContext } from 'react'
 
 const adminLoadingDefaultValue = {
   startLoading: () => {
-    window.postMessage({ action: { type: 'START_LOADING' } }, '*')
+    window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
   },
   stopLoading: () => {
-    window.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
+    window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   },
 }
 

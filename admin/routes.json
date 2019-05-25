@@ -1,0 +1,47 @@
+{
+  "admin.app.cms": {
+    "around": ["wrapper"]
+  },
+  "admin.app.cms.pages": {
+    "around": ["pages-wrapper"]
+  },
+  "admin.app.cms.pages.page-list": {
+    "component": "PageList",
+    "path": "/admin/app/cms/pages"
+  },
+  "admin.app.cms.pages.page-details": {
+    "component": "PageForm",
+    "path": "/admin/app/cms/pages/*id"
+  },
+  "admin.app.cms.pages.redirects": {
+    "component": "RedirectList",
+    "path": "/admin/app/cms/redirects"
+  },
+  "admin.app.cms.pages.redirect-details": {
+    "component": "RedirectForm",
+    "path": "/admin/app/cms/redirects/*id"
+  },
+  "admin.app.cms.settings": {
+    "component": "Settings",
+    "path": "/admin/app/cms/settings"
+  },
+  "admin.app.cms.storefront-home": {
+    "component": "PageEditor",
+    "path": "/admin/app/cms/storefront"
+  },
+  "admin.app.cms.storefront": {
+    "component": "PageEditor",
+    "path": "/admin/app/cms/storefront/*targetPath"
+  },
+  "highlight-overlay.cms": {
+    "component": "HighlightOverlay",
+    "extensible": "vtex",
+    "render": "lazy"
+  },
+  "pages-wrapper": {
+    "component": "PagesAdminWrapper"
+  },
+  "wrapper": {
+    "component": "Wrapper"
+  }
+}
