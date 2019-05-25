@@ -157,9 +157,6 @@
   .h-3em-ns {
     height: 3em;
   }
-  .calc--height-ns {
-    height: calc(100vh - 3em);
-  }
   .calc--height-relative-ns {
     height: calc(100% - 3em);
   }

@@ -40,7 +40,6 @@ class List extends Component<Props, State> {
   public static contextTypes = {
     culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
       .isRequired,
-    stopLoading: PropTypes.func.isRequired,
   }
 
   constructor(props: Props, context: RenderContext) {
@@ -52,7 +51,7 @@ class List extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   public componentDidUpdate(prevProps: Props) {

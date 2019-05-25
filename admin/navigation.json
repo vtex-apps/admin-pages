@@ -1,0 +1,16 @@
+{
+  "section": "storeSetup",
+  "subSection": "cms",
+  "subSectionItems": [
+    {
+      "isNew": true,
+      "labelId": "admin/pages.admin-menu-button.storefront",
+      "path": "/admin/cms/storefront"
+    },
+    {
+      "isNew": true,
+      "labelId": "admin/pages.admin-menu-button.pages",
+      "path": "/admin/cms/pages"
+    }
+  ]
+}
