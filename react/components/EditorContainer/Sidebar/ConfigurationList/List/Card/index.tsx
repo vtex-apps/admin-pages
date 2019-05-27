@@ -6,6 +6,7 @@ import PageIcon from '../../../../../icons/PageIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
 import ActionMenu from '../../../ComponentList/SortableList/SortableListItem/ActionMenu'
 
+import ConditionTags from './ConditionTags'
 import { getGenericContext } from './utils'
 
 interface Props {
@@ -45,11 +46,11 @@ const messages = defineMessages({
   },
   sitewideContext: {
     defaultMessage: 'entire site',
-    id: 'admin/pages.editor.configuration.scope.site.context',
+    id: 'admin/pages.editor.configuration.scope.sitewide.context',
   },
   sitewideSaved: {
     defaultMessage: 'Saved on',
-    id: 'admin/pages.editor.configuration.scope.site.saved',
+    id: 'admin/pages.editor.configuration.scope.sitewide.saved',
   },
   templateContext: {
     defaultMessage: 'template',
@@ -95,6 +96,8 @@ const Card = ({
 
   const conditionPageContext = configuration.condition.pageContext
 
+  const conditions = configuration.condition.statements
+
   const scope = React.useMemo(
     () =>
       getGenericContext({
@@ -130,6 +133,8 @@ const Card = ({
             id: 'admin/pages.editor.configuration.defaultTitle',
           })}
       </div>
+
+      <ConditionTags conditions={conditions} />
 
       <div className="mt5">
         <FormattedMessage

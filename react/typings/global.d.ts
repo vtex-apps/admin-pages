@@ -224,6 +224,8 @@ declare global {
       | '*'
   }
 
+  type ConditionSubject = 'date' | 'utm'
+
   interface ExtensionConfiguration {
     condition: {
       allMatches: boolean
@@ -231,7 +233,7 @@ declare global {
       pageContext: RenderRuntime['route']['pageContext']
       statements: Array<{
         objectJSON: string
-        subject: string
+        subject: ConditionSubject
         verb: string
       }>
     }
