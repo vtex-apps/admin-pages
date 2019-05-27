@@ -54,7 +54,7 @@ class PageEmailForm extends Component<Props, State> {
     context: null,
     declarer: null,
     domain: 'email',
-    interfaceId: 'vtex.identity-messages-templates@0.x:email.custom',
+    interfaceId: 'vtex.custom-messages-templates@0.x:email.custom',
     pages: [],
     path: '',
     routeId: '',
