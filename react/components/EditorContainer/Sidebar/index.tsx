@@ -1,10 +1,10 @@
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 
+import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 
 import Content from './Content'
-import { useFormMetaContext } from './FormMetaContext'
 import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
@@ -34,7 +34,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   runtime,
   visible,
 }) => {
-  const formMeta = useFormMetaContext()
+  const editor = useEditorContext()
   const modal = useModalContext()
 
   return (
@@ -52,7 +52,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div className="h-100 flex flex-column dark-gray">
           <Modal
-            isActionLoading={formMeta.getIsLoading()}
+            isActionLoading={editor.isLoading}
             isOpen={modal.isOpen}
             onClickAction={modal.actionHandler}
             onClickCancel={modal.cancelHandler}

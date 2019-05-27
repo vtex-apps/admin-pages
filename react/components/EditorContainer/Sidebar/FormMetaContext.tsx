@@ -12,16 +12,10 @@ const defaultExternalState: FormMetaContextT = {
   getI18nMapping: () => {
     return {}
   },
-  getIsLoading: () => {
-    return false
-  },
   getWasModified: () => {
     return false
   },
   setWasModified: () => {
-    return
-  },
-  toggleLoading: () => {
     return
   },
 }
@@ -47,12 +41,10 @@ export class FormMetaProvider extends Component<{}, State> {
       addToI18nMapping: this.addToI18nMapping,
       clearI18nMapping: this.clearI18nMapping,
       getI18nMapping: this.getI18nMapping,
-      getIsLoading: this.getIsLoading,
       getWasModified: this.getWasModified,
       i18nMapping: {},
       isLoading: false,
       setWasModified: this.setWasModified,
-      toggleLoading: this.toggleLoading,
       wasModified: false,
     }
   }
@@ -78,8 +70,6 @@ export class FormMetaProvider extends Component<{}, State> {
 
   private getI18nMapping: State['getI18nMapping'] = () => this.state.i18nMapping
 
-  private getIsLoading: State['getIsLoading'] = () => this.state.isLoading
-
   private getWasModified: State['getWasModified'] = () => this.state.wasModified
 
   private setWasModified: State['setWasModified'] = (newValue, callback) => {
@@ -88,18 +78,5 @@ export class FormMetaProvider extends Component<{}, State> {
         callback()
       }
     })
-  }
-
-  private toggleLoading: State['toggleLoading'] = callback => {
-    this.setState(
-      prevState => ({
-        isLoading: !prevState.isLoading,
-      }),
-      () => {
-        if (callback) {
-          callback()
-        }
-      }
-    )
   }
 }

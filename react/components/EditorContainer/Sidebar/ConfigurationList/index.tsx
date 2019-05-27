@@ -402,7 +402,7 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
-    if (formMeta.getIsLoading()) {
+    if (editor.isLoading) {
       return
     }
 
@@ -439,8 +439,6 @@ class ConfigurationList extends React.Component<Props, State> {
       iframeRuntime
     )
 
-    formMeta.toggleLoading()
-
     try {
       editor.setIsLoading(true)
 
@@ -464,26 +462,22 @@ class ConfigurationList extends React.Component<Props, State> {
         getExtension(editor.editTreePath, iframeRuntime.extensions)
       )
 
-      formMeta.toggleLoading(() => {
-        this.props.formMeta.setWasModified(false, () => {
-          this.handleConfigurationClose()
-        })
+      this.props.formMeta.setWasModified(false, () => {
+        this.handleConfigurationClose()
       })
     } catch (err) {
       editor.setIsLoading(false)
 
-      formMeta.toggleLoading(() => {
-        if (modal.isOpen) {
-          modal.close()
-        }
+      if (modal.isOpen) {
+        modal.close()
+      }
 
-        this.props.showToast({
-          horizontalPosition: 'right',
-          message: 'Something went wrong. Please try again.',
-        })
-
-        console.log(err)
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: 'Something went wrong. Please try again.',
       })
+
+      console.log(err)
     }
   }
 

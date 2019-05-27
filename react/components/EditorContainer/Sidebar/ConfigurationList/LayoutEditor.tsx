@@ -118,7 +118,7 @@ class LayoutEditor extends Component<Props> {
       }
     )
 
-    formMeta.toggleLoading()
+    editor.setIsLoading(true)
 
     try {
       await updateBlock({
@@ -138,12 +138,14 @@ class LayoutEditor extends Component<Props> {
       })
 
       formMeta.setWasModified(false, () => {
-        formMeta.toggleLoading(this.exit)
+        editor.setIsLoading(false)
+
+        this.exit
       })
     } catch (err) {
       console.log(err)
 
-      formMeta.toggleLoading()
+      editor.setIsLoading(false)
     } finally {
       if (modal.isOpen) {
         modal.close()
