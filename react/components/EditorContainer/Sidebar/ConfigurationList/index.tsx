@@ -155,7 +155,6 @@ class ConfigurationList extends React.Component<Props, State> {
           onDelete={this.handleConfigurationDeletion}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
-          path={this.props.editor.iframeWindow.location.pathname}
           title={this.componentTitle}
         />
       )

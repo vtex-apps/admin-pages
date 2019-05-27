@@ -18,7 +18,7 @@ const CreateButton = ({ onClick }: Props) => (
     >
       <FormattedMessage
         defaultMessage="New content"
-        id="admin/pages.editor.components.configurations.button.create"
+        id="admin/pages.editor.configuration.button.create"
       />
     </ButtonWithIcon>
   </div>

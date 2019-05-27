@@ -15,7 +15,6 @@ interface Props {
   onDelete: (configuration: ExtensionConfiguration) => void
   onCreate: (event: Event) => void
   onSelect: (configuration: ExtensionConfiguration) => void
-  path: string
   title?: string
 }
 
@@ -27,7 +26,6 @@ const List: React.FunctionComponent<Props> = ({
   onCreate,
   onDelete,
   onSelect,
-  path,
   title,
 }) => (
   <Fragment>
@@ -48,7 +46,6 @@ const List: React.FunctionComponent<Props> = ({
             isSitewide={isSitewide}
             key={index}
             onClick={onSelect}
-            path={path}
           />
         )
       )}

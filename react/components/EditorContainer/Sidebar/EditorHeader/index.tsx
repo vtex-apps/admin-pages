@@ -30,8 +30,8 @@ const EditorHeader: React.FC<Props> = ({
           <div className="w-100 pl3 flex justify-between items-center">
             {isTitleEditable ? (
               <FormattedMessage
-                id="admin/pages.editor.components.configurations.defaultTitle"
-                defaultMessage="Untitled"
+                defaultMessage="Untitled content"
+                id="admin/pages.editor.configuration.defaultTitle"
               >
                 {placeholder => (
                   <EditableText

@@ -1,8 +1,6 @@
 import { InjectedIntl } from 'react-intl'
 
-export interface GetTextFromContextArgs {
+export interface GetGenericContextArgs {
   context: PageContext
-  intl: InjectedIntl
   isSitewide: boolean
-  path: string
 }

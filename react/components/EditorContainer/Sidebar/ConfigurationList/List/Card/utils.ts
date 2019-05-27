@@ -1,27 +1,16 @@
-import { GetTextFromContextArgs } from './typings'
+import { GetGenericContextArgs } from './typings'
 
-export const getTextFromContext = ({
+export const getGenericContext = ({
   context,
   isSitewide,
-  intl,
-  path,
-}: GetTextFromContextArgs) => {
+}: GetGenericContextArgs) => {
   if (isSitewide) {
-    return intl.formatMessage({
-      id: 'admin/pages.editor.configuration.tag.sitewide',
-    })
+    return 'sitewide'
   }
 
   if (context.id === '*') {
-    return intl.formatMessage({
-      id: 'admin/pages.editor.configuration.tag.template',
-    })
+    return 'template'
   }
 
-  return intl.formatMessage(
-    {
-      id: `admin/pages.editor.configuration.tag.${context.type}`,
-    },
-    { id: context.type === 'route' ? path : context.id }
-  )
+  return 'page'
 }
