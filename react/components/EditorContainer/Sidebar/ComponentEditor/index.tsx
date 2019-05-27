@@ -119,8 +119,20 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         )}
       </ContentContainer>
 
-      <div className="flex flex-row-reverse w-100 bt bw1 b--light-silver">
-        <div className="pa4">
+      <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
+        <Button
+          disabled={shouldDisableSaveButton}
+          onClick={onSave}
+          size="small"
+          variation="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="admin/pages.editor.components.button.save"
+          />
+        </Button>
+
+        <div className="mr5">
           <Button
             disabled={editor.isLoading}
             onClick={onClose}
@@ -130,18 +142,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             <FormattedMessage
               defaultMessage="Cancel"
               id="admin/pages.editor.components.button.cancel"
-            />
-          </Button>
-
-          <Button
-            disabled={shouldDisableSaveButton}
-            onClick={onSave}
-            size="small"
-            variation="primary"
-          >
-            <FormattedMessage
-              defaultMessage="Save"
-              id="admin/pages.editor.components.button.save"
             />
           </Button>
         </div>
