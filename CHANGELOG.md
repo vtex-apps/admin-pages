@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+
+- [BREAKING] Change routes to be compliance with new admin 3.x architecture `/admin/app/<route>`.
+- [BREAKING] Injects this admin in admin 3.x navigation (loosing compatibility with admin 2.x).
+- Remove some context function calls that were previously injected by admin 2.x
 
 ## [3.15.2] - 2019-06-27
 
