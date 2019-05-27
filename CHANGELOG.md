@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- [BREAKING] Change routes to be compliance with new admin 3.x architecture `/admin/app/<route>`.
+- [BREAKING] Injects this admin in admin 3.x navigation (loosing compatibility with admin 2.x).
+- Remove some context function calls that were previously injected by admin 2.x
+
 ## [3.14.0] - 2019-06-06
 
 ### Added
