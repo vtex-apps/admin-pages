@@ -49,7 +49,11 @@ const BaseInput: React.FunctionComponent<Props> = props => {
       disabled={disabled || (schema as any).disabled}
       error={!!currentError}
       errorMessage={currentError}
-      helpText={schema.description}
+      helpText={
+        schema.description
+          ? formatIOMessage({ id: schema.description, intl })
+          : ''
+      }
       label={formatIOMessage({ id: label, intl })}
       max={max && `${max}`}
       min={min && `${min}`}
