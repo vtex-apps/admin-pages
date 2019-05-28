@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.10.5] - 2019-05-28
+
 ### Fixed
 
 - Add format IO messages to radio button labels
