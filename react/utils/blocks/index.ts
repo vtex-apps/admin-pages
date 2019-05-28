@@ -1,6 +1,4 @@
-import { BlockRole, RelativeBlocks } from './typings'
-
-type BlockRolesForTree = BlockRole | 'blocks'
+import { BlockRole, BlockRolesForTree, RelativeBlocks } from './typings'
 
 export const getBlockRole = (treePathTail: string): BlockRolesForTree => {
   const blockRoleMatch = treePathTail.match(/\$(after|around|before)_/)

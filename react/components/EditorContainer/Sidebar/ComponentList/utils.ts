@@ -1,9 +1,9 @@
-import { curry, filter, flatten, partition } from 'ramda'
+import { filter, flatten } from 'ramda'
 
-import { SidebarComponent } from '../typings'
+import { ModifiedSidebarComponent, SidebarComponent } from '../typings'
 
 import { getBlockRole } from '../../../../utils/blocks'
-import { NormalizedComponent, TreesByRole } from './typings'
+import { ComponentsByRole, NormalizedComponent } from './typings'
 
 const removeFalsyValues = filter(Boolean)
 
@@ -31,7 +31,7 @@ export const isChild = (rootTreePath: string, childTreePath: string) => {
 }
 
 export const isRootComponent = (minimumTreePathSize: number) => (
-  component: SidebarComponent
+  component: Pick<ModifiedSidebarComponent, 'treePath'>
 ) => {
   const splitTreePath = component.treePath.split('/')
 
@@ -42,105 +42,132 @@ export const isRootComponent = (minimumTreePathSize: number) => (
   )
 }
 
-const pathLength = (path: string) => path.split('/').length
+const hideNonExistentNodesInTreePath = (
+  components: SidebarComponent[]
+): ModifiedSidebarComponent[] => {
+  const allTreePaths = components.reduce((acc, component) => {
+    return acc.add(component.treePath)
+  }, new Set())
 
-const mountFullTree = curry(
-  (leaves: SidebarComponent[], root: SidebarComponent): NormalizedComponent => {
-    if (leaves.length === 0) {
-      return { ...root, components: [], isSortable: false }
-    }
+  return components.map(component => {
+    const paths = component.treePath.split('/')
 
-    const { children, grandchildren } = getChildrenAndGrandchildren(
-      root.treePath,
-      leaves
-    )
+    let prefix: string | null = null
+    const existingPaths = paths.filter(path => {
+      prefix = prefix === null ? path : [prefix, path].join('/')
+      return allTreePaths.has(prefix)
+    })
 
     return {
-      ...root,
-      components: children.map(nextRoot => {
-        const nextChildren = grandchildren.filter(node =>
-          isChild(nextRoot.treePath, node.treePath)
-        )
-        return mountFullTree(nextChildren, nextRoot)
-      }),
-      isSortable: false,
+      ...component,
+      modifiedTreePath: existingPaths.join('/'),
     }
-  }
-)
+  })
+}
 
-const getChildrenAndGrandchildren = (
-  rootTreePath: string,
-  nodes: SidebarComponent[]
-) => {
-  const descendants = nodes.filter(node => isChild(rootTreePath, node.treePath))
+const modifiedPathLength = (component: ModifiedSidebarComponent) =>
+  component.modifiedTreePath.split('/').length
 
-  const minimumTreePathSize = descendants.reduce((min, currentComponent) => {
-    const treePathSize = currentComponent.treePath.split('/').length
-    return treePathSize < min ? treePathSize : min
-  }, Infinity)
+const parentTreePath = (path: string) =>
+  path
+    .split('/')
+    .slice(0, -1)
+    .join('/')
 
-  return descendants.reduce<{
-    children: SidebarComponent[]
-    grandchildren: SidebarComponent[]
-  }>(
-    (acc, node) => {
-      const nodeRelation: keyof typeof acc =
-        minimumTreePathSize === pathLength(node.treePath)
-          ? 'children'
-          : 'grandchildren'
-
-      return {
-        ...acc,
-        [nodeRelation]: acc[nodeRelation].concat(node),
-      }
-    },
-    { children: [], grandchildren: [] }
-  )
+const getComponentRole = (
+  component: SidebarComponent
+): keyof ComponentsByRole => {
+  const splitTreePath = component.treePath.split('/')
+  const treePathTail = splitTreePath[splitTreePath.length - 1]
+  return getBlockRole(treePathTail)
 }
 
 export const normalize = (components: SidebarComponent[]) => {
-  const minimumTreePathSize = components.reduce(
-    (acc, { treePath }) => Math.min(acc, pathLength(treePath)),
-    Infinity
+  if (components.length === 0) {
+    return []
+  }
+  const rootId = components[0].treePath.split('/')[0]
+  const root = { treePath: rootId, name: 'root' }
+  const allComponents = [root, ...components]
+
+  const modifiedComponents = hideNonExistentNodesInTreePath(allComponents).sort(
+    (cmp1, cmp2) => modifiedPathLength(cmp1) - modifiedPathLength(cmp2)
   )
 
-  const [roots, leaves] = partition(
-    isRootComponent(minimumTreePathSize),
-    components
-  )
+  const nodes = buildTree(modifiedComponents)
+  return hoistSurroundingBlocks(nodes, rootId)
+}
 
-  const trees = roots.map<SidebarComponent>(mountFullTree(leaves))
+const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
+  const nodes: Record<string, NormalizedComponent> = {}
+  orderedNodes.forEach(({ modifiedTreePath, ...component }) => {
+    const normalized = { ...component, isSortable: false, components: [] }
+    const parentId = parentTreePath(modifiedTreePath)
+    nodes[modifiedTreePath] = normalized
 
-  const treesByRole = trees.reduce<TreesByRole>(
-    (acc, tree) => {
-      const splitTreePath = tree.treePath.split('/')
-      const treePathTail = splitTreePath[splitTreePath.length - 1]
+    if (nodes[parentId] != null) {
+      const parent = nodes[parentId]
+      parent.components.push(normalized)
+    }
+  })
+  return nodes
+}
 
-      const blockRole = getBlockRole(treePathTail)
-      return {
-        ...acc,
-        [blockRole]: [...acc[blockRole], tree],
-      }
+const hoistSurroundingBlocks = (
+  nodes: Record<string, NormalizedComponent>,
+  rootId: string
+) => {
+  const childrenByRole = partitionNodesChildrenByRole(nodes)
+  return hoistSubtrees(nodes[rootId], childrenByRole, true)
+}
+
+const partitionNodesChildrenByRole = (
+  nodes: Record<string, NormalizedComponent>
+) => {
+  const partitionChildrenByRole = ({ components }: NormalizedComponent) =>
+    components.reduce(
+      (componentsByRole: ComponentsByRole, component) => {
+        componentsByRole[getComponentRole(component)].push(component)
+        return componentsByRole
+      },
+      { around: [], after: [], before: [], blocks: [] }
+    )
+  return Object.values(nodes).reduce(
+    (childrenByRole: Record<string, ComponentsByRole>, node) => {
+      childrenByRole[node.treePath] = partitionChildrenByRole(node)
+      return childrenByRole
     },
-    { after: [], around: [], before: [], blocks: [] }
+    {}
   )
+}
 
-  const prependBlocksWithAround = flatten(
-    treesByRole.blocks.map(block => {
-      const aroundForBlock = treesByRole.around.find(aroundBlock => {
-        return isChild(block.treePath, aroundBlock.treePath)
-      })
-      return aroundForBlock ? [aroundForBlock, block] : block
-    })
+const hoistSubtrees = (
+  component: NormalizedComponent,
+  pathToChildrenByRole: Record<string, ComponentsByRole>,
+  isRoot: boolean = false
+): NormalizedComponent[] => {
+  const { treePath, components } = component
+  const childrenByRole = pathToChildrenByRole[treePath]
+  const blockChildren = components.filter(
+    child => getComponentRole(child) === 'blocks'
   )
+  const hoistedComponents = flatten(
+    blockChildren.map(child => hoistSubtrees(child, pathToChildrenByRole))
+  )
+  const current = isRoot
+    ? hoistedComponents
+    : [{ ...component, components: hoistedComponents }]
 
-  const reorderByRole = [
-    ...treesByRole.before,
-    ...prependBlocksWithAround,
-    ...treesByRole.after,
-  ]
+  if (childrenByRole) {
+    return [
+      ...childrenByRole.around,
+      ...childrenByRole.before,
+      ...current,
+      ...childrenByRole.after,
+    ]
+  }
 
-  return reorderByRole
+  return [...current]
 }
 
 export const pureSplice = <T>(index: number, target: T[]) => [

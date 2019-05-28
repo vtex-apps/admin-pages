@@ -58,7 +58,7 @@ class SortableListItem extends Component<Props, State> {
     const hasSubItems = subitems.length > 0
 
     return (
-      <li className="list">
+      <>
         <div
           className="flex items-center bb bg-white hover-bg-light-silver b--light-silver"
           data-tree-path={component.treePath}
@@ -92,9 +92,9 @@ class SortableListItem extends Component<Props, State> {
           )}
         </div>
         {this.state.isExpanded && subitems && (
-          <ul className="mv0 pl0">
+          <div className="mv0 pl0">
             {subitems.map((item, index) => (
-              <li
+              <div
                 className="flex bg-white hover-bg-light-silver list"
                 data-tree-path={item.treePath}
                 key={item.treePath}
@@ -119,12 +119,12 @@ class SortableListItem extends Component<Props, State> {
                     onMouseLeave={onMouseLeave}
                   />
                 </div>
-              </li>
+              </div>
             ))}
             <div className="bb b--light-silver" />
-          </ul>
+          </div>
         )}
-      </li>
+      </>
     )
   }
 
