@@ -31,7 +31,7 @@ const List: React.FunctionComponent<Props> = ({
   <Fragment>
     <EditorHeader onClose={onClose} title={title} />
 
-    <ContentContainer>
+    <ContentContainer centerSpinner>
       <CreateButton onClick={onCreate} />
 
       {configurations.map(
