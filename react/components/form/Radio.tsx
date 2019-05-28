@@ -1,10 +1,11 @@
 import { JSONSchema6Type } from 'json-schema'
-import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
+import { formatIOMessage } from 'vtex.native-types'
 import { Radio as StyleguideRadio } from 'vtex.styleguide'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   label?: string
   name?: string
   schema: {
@@ -18,16 +19,7 @@ interface State {
 
 type RadioProps = Props & WidgetProps
 
-export default class Radio extends Component<RadioProps, State> {
-  public static propTypes = {
-    id: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    name: PropTypes.string,
-    onChange: PropTypes.func.isRequired,
-    schema: PropTypes.object.isRequired,
-    value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  }
-
+class Radio extends Component<RadioProps, State> {
   constructor(props: RadioProps) {
     super(props)
 
@@ -37,11 +29,13 @@ export default class Radio extends Component<RadioProps, State> {
   }
 
   public render() {
-    const { id, label, name, schema } = this.props
+    const { id, intl, label, name, schema } = this.props
 
     return (
       <Fragment>
-        <span className="dib mb3 w-100">{label}</span>
+        <span className="dib mb3 w-100">
+          {formatIOMessage({ id: label, intl })}
+        </span>
         {schema.enum &&
           schema.enum.map((item, index) => (
             <StyleguideRadio
@@ -62,17 +56,18 @@ export default class Radio extends Component<RadioProps, State> {
 
   private getLabel = (item: JSONSchema6Type, index: number) => {
     const {
+      intl,
       schema: { enumNames },
     } = this.props
 
     return enumNames && enumNames.length >= index
-      ? enumNames[index]
+      ? formatIOMessage({ id: enumNames[index], intl })
       : item && item.toString()
   }
 
   private handleSelection = (
     event: React.ChangeEvent,
-    value: JSONSchema6Type,
+    value: JSONSchema6Type
   ) => {
     event.stopPropagation()
 
@@ -81,3 +76,5 @@ export default class Radio extends Component<RadioProps, State> {
     this.props.onChange(value)
   }
 }
+
+export default injectIntl(Radio)
