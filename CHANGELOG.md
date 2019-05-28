@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Hint to Page Form.
 - Validate if URL begins with '/'.
+- Description and Keywords fields to Page Form when creating or editing a custom page.
 
 ### Fixed
 
