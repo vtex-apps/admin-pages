@@ -145,7 +145,7 @@
   "admin/pages.editor.configuration.tag.sitewide": "Entire site",
   "admin/pages.editor.configuration.tag.subcategory": "Subcategory: {id}",
   "admin/pages.editor.configuration.tag.template": "This template",
-  "admin/pages.editor.container.editpath.label": "Page URL",
+  "admin/pages.editor.container.editpath.label": "Page URL:",
   "admin/pages.editor.store.button.back.title": "Back to editor",
   "admin/pages.editor.store.button.settings.title": "Store",
   "admin/pages.editor.store.button.template.title": "Template",

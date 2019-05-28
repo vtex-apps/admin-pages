@@ -99,18 +99,20 @@ const EditorContainer: React.FC<Props> = ({
       <ModalProvider>
         <IframeNavigationController iframeRuntime={runtime} />
         <div className="w-100 h-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
-          {visible && !storeEditMode && runtime && (
+          {!storeEditMode && runtime && (
             <Sidebar
               highlightHandler={highlightExtensionPoint}
               runtime={runtime}
+              visible={visible}
             />
           )}
           <div className="calc--height-ns flex-grow-1 db-ns dn">
-            {visible && runtime && (
+            {runtime && (
               <Topbar
                 changeMode={setStoreEditMode}
                 mode={storeEditMode}
                 urlPath={iframeWindow.location.pathname}
+                visible={visible}
               />
             )}
             <div
@@ -120,8 +122,12 @@ const EditorContainer: React.FC<Props> = ({
                   : 'top-0 w-100 h-100'
               }`}
             >
-              {visible && runtime && storeEditMode && (
-                <StoreEditor editor={editor} mode={storeEditMode} />
+              {runtime && storeEditMode && (
+                <StoreEditor
+                  editor={editor}
+                  mode={storeEditMode}
+                  visible={visible}
+                />
               )}
               <div id={APP_CONTENT_ELEMENT_ID} className="relative w-100 h-100">
                 <Draggable

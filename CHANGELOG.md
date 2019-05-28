@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [3.10.3] - 2019-05-28
+## [3.10.4] - 2019-05-28
+
 ### Fixed
+
+- Keep store editors state when hidden by store preview.
+
+## [3.10.3] - 2019-05-28
+
+### Fixed
+
 - Add i18n to editor description field
 
 ## [3.10.2] - 2019-05-23

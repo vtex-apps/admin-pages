@@ -66,15 +66,18 @@ const removeStyleTag = (window: Window, id: string) => {
 const Styles: React.FunctionComponent<Props> = ({ iframeWindow }) => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
-  useEffect(() => {
-    createStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
-    createStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
+  useEffect(
+    () => {
+      createStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+      createStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
 
-    return () => {
-      removeStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
-      removeStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
-    }
-  })
+      return () => {
+        removeStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
+        removeStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
+      }
+    },
+    [editing]
+  )
 
   return editing ? (
     <StyleEditor

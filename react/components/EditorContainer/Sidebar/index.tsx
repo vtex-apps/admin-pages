@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 
 import Modal from '../../Modal'
 
@@ -7,12 +7,11 @@ import Content from './Content'
 import { useFormMetaContext } from './FormMetaContext'
 import { useModalContext } from './ModalContext'
 
-interface CustomProps {
+interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
   runtime: RenderContext
+  visible: boolean
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
   discard: {
@@ -33,6 +32,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   highlightHandler,
   intl,
   runtime,
+  visible,
 }) => {
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
@@ -40,7 +40,11 @@ const Sidebar: React.FunctionComponent<Props> = ({
   return (
     <div
       id="sidebar-vtex-editor"
-      className="z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto"
+      className={
+        visible
+          ? 'z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto'
+          : 'dn'
+      }
     >
       <nav
         id="admin-sidebar"

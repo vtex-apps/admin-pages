@@ -9,14 +9,20 @@ interface Props {
   changeMode: (mode?: StoreEditMode) => void
   mode?: StoreEditMode
   urlPath: string
+  visible: boolean
 }
 
 const Topbar: React.FunctionComponent<Props> = ({
   changeMode,
   mode,
   urlPath,
+  visible,
 }) => (
-  <div className="ph5 f6 h-3em w-100 flex justify-between items-center">
+  <div
+    className={
+      visible ? 'ph5 f6 h-3em w-100 flex justify-between items-center' : 'dn'
+    }
+  >
     <div className="flex items-stretch">
       {mode ? (
         <Fragment>
@@ -33,7 +39,7 @@ const Topbar: React.FunctionComponent<Props> = ({
             />
           ))}
           <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
-            <FormattedMessage id="admin/pages.editor.container.editpath.label" />:
+            <FormattedMessage id="admin/pages.editor.container.editpath.label" />
             <div className="pl3 c-muted-2">{urlPath}</div>
           </div>
         </Fragment>
