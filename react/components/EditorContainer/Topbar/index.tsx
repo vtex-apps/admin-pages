@@ -19,9 +19,9 @@ const Topbar: React.FunctionComponent<Props> = ({
   visible,
 }) => (
   <div
-    className={`ph5 f6 h-3em w-100 ${
-      visible ? 'flex' : 'dn'
-    } justify-between items-center`}
+    className={
+      visible ? 'ph5 f6 h-3em w-100 flex justify-between items-center' : 'dn'
+    }
   >
     <div className="flex items-stretch">
       {mode ? (
@@ -40,7 +40,7 @@ const Topbar: React.FunctionComponent<Props> = ({
           ))}
           <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
             <FormattedMessage id="admin/pages.editor.container.editpath.label" />
-            :<div className="pl3 c-muted-2">{urlPath}</div>
+            <div className="pl3 c-muted-2">{urlPath}</div>
           </div>
         </Fragment>
       )}

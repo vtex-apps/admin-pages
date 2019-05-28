@@ -40,9 +40,11 @@ const Sidebar: React.FunctionComponent<Props> = ({
   return (
     <div
       id="sidebar-vtex-editor"
-      className={`z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns ${
-        visible ? 'flex' : 'dn'
-      } flex-row-reverse overflow-x-auto`}
+      className={
+        visible
+          ? 'z-1 h-100 top-3em-ns calc--height-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto'
+          : 'dn'
+      }
     >
       <nav
         id="admin-sidebar"
