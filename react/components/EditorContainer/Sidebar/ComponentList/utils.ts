@@ -157,12 +157,17 @@ const hoistSubtrees = (
   const current = isRoot
     ? hoistedComponents
     : [{ ...component, components: hoistedComponents }]
-  return [
-    ...childrenByRole.around,
-    ...childrenByRole.before,
-    ...current,
-    ...childrenByRole.after,
-  ]
+
+  if (childrenByRole) {
+    return [
+      ...childrenByRole.around,
+      ...childrenByRole.before,
+      ...current,
+      ...childrenByRole.after,
+    ]
+  }
+
+  return [...current]
 }
 
 export const pureSplice = <T>(index: number, target: T[]) => [
