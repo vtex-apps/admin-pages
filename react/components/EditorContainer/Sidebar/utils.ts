@@ -69,7 +69,7 @@ export function getComponents(
       return (
         isSamePage(page, treePath) &&
         !!schema &&
-        hasTitleInSchema &&
+        hasTitle &&
         (isRoot || !isLayoutComponent)
       )
     })
