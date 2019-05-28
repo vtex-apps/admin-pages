@@ -218,7 +218,6 @@ class EditorProvider extends Component<Props, State> {
 
   public handleToggleShowAdminControls = () => {
     const showAdminControls = !this.state.showAdminControls
-    const editMode = false
 
     Array.prototype.forEach.call(
       document.getElementsByClassName('render-container'),
@@ -228,7 +227,7 @@ class EditorProvider extends Component<Props, State> {
           : e.classList.remove('editor-provider')
     )
 
-    this.setState({ showAdminControls, editMode })
+    this.setState({ showAdminControls })
   }
 
   public handleAddCondition = (conditionId: string) => {

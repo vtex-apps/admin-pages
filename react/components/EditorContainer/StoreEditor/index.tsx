@@ -6,6 +6,7 @@ import Styles from './Styles'
 interface Props {
   editor: EditorContext
   mode: StoreEditMode
+  visible?: boolean
 }
 
 const Mode = ({ editor, mode }: Props) => {
@@ -20,7 +21,9 @@ const Mode = ({ editor, mode }: Props) => {
 const StoreEditor: React.FunctionComponent<Props> = (props: Props) => {
   return (
     <div
-      className="h-100 mr5 bg-base ba b--muted-4 br3"
+      className={`h-100 mr5 bg-base ba b--muted-4 br3${
+        props.visible ? '' : ' dn'
+      }`}
       style={{
         minWidth: '31rem',
         width: '31rem',
