@@ -69,7 +69,11 @@ function withPWASettings<T>(
   return (props: T) => (
     <PWAQuery query={PWA}>
       {handleCornerCases<PWAData, {}>(options, ({ data, ...restPWAQuery }) => {
-        if (!data.manifest) {
+        if (
+          !data.manifest ||
+          !data.manifest.background_color ||
+          !data.manifest.theme_color
+        ) {
           const color = path(
             ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
             data
