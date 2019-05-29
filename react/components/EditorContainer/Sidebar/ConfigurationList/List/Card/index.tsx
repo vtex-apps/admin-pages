@@ -148,11 +148,11 @@ const Card = ({
 
               <span className="ml2 f6">
                 {message}{' '}
-                <span className="fw5">
-                  {intl.formatMessage({
-                    id: `admin/pages.editor.configuration.scope.${scope}.context`,
-                  })}
-                </span>
+                <FormattedMessage
+                  id={`admin/pages.editor.configuration.scope.${scope}.context`}
+                >
+                  {message => <span className="fw5">{message}</span>}
+                </FormattedMessage>
               </span>
             </div>
           )}
