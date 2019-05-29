@@ -9,6 +9,8 @@ import ActionMenu from '../../../ComponentList/SortableList/SortableListItem/Act
 import ConditionTags from './ConditionTags'
 import { getGenericContext } from './utils'
 
+import './styles.css'
+
 interface Props {
   configuration: ExtensionConfiguration
   isDisabled?: boolean
@@ -167,7 +169,11 @@ const Card = ({
         )}
       </div>
 
-      <div className="absolute top-0 right-0 mt1" onClick={stopPropagation}>
+      <div
+        className="absolute remove-hover-bg top-0 right-0 mt1"
+        id="action-menu-parent"
+        onClick={stopPropagation}
+      >
         <ActionMenu options={actionMenuOptions} />
       </div>
     </div>
