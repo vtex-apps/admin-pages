@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed style editor preview where tachyons was overriding components' css override.
+
 ## [3.12.0] - 2019-05-28
 
 ### Added
