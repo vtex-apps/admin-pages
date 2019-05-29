@@ -47,7 +47,10 @@ const createStyleTag = (window: Window, id: string) => {
   }
   const styleTag = window.document.createElement('style')
   styleTag.setAttribute('id', id)
-  if (window.document.head) {
+  const tachyonsTag = window.document.getElementById('style_link')
+  if (tachyonsTag) {
+    tachyonsTag.after(styleTag)
+  } else if (window.document.head) {
     window.document.head.append(styleTag)
   }
 }
