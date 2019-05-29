@@ -13,7 +13,9 @@ const ContentContainer: React.FunctionComponent<Props> = ({
   children,
   containerClassName,
 }) => {
-  const { isLoading } = useEditorContext()
+  const editor = useEditorContext()
+
+  const isLoading = editor.getIsLoading()
 
   return (
     <>

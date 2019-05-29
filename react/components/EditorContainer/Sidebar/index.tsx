@@ -37,6 +37,8 @@ const Sidebar: React.FunctionComponent<Props> = ({
   const editor = useEditorContext()
   const modal = useModalContext()
 
+  const isLoading = editor.getIsLoading()
+
   return (
     <div
       id="sidebar-vtex-editor"
@@ -52,11 +54,11 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div
           className={`h-100 flex flex-column dark-gray ${
-            editor.isLoading ? 'relative' : ''
+            isLoading ? 'relative' : ''
           }`}
         >
           <Modal
-            isActionLoading={editor.isLoading}
+            isActionLoading={isLoading}
             isOpen={modal.isOpen}
             onClickAction={modal.actionHandler}
             onClickCancel={modal.cancelHandler}

@@ -76,8 +76,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
     [componentSchema]
   )
 
+  const isLoading = editor.getIsLoading()
+
   const shouldDisableSaveButton =
-    !isNew && (editor.isLoading || !formMeta.getWasModified())
+    isLoading || (!formMeta.getWasModified() && !isNew)
 
   return (
     <Fragment>
@@ -131,7 +133,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
         <div className="mr5">
           <Button
-            disabled={editor.isLoading}
+            disabled={isLoading}
             onClick={onClose}
             size="small"
             variation="tertiary"

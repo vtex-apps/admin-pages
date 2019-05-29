@@ -402,7 +402,7 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
-    if (editor.isLoading) {
+    if (editor.getIsLoading()) {
       return
     }
 
