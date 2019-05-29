@@ -84,6 +84,7 @@ function withPWASettings<T>(
               {...data}
               {...restPWAQuery}
               manifest={{
+                ...(data.manifest || {}),
                 background_color: color as string,
                 theme_color: color as string,
               }}
