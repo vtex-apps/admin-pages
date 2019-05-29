@@ -7,6 +7,15 @@ const validateFalsyPath = (path: keyof RouteFormData) => (
   data: RouteFormData
 ) => !data[path] && { [path]: requiredMessage }
 
+const validateUrlBeginning = (path: string) => {
+  if (path.startsWith('/')) {
+    return {}
+  }
+  return {
+    path: 'admin/pages.admin.pages.form.templates.path.validation-error',
+  }
+}
+
 const validateConditionalTemplates: (data: RouteFormData) => { pages?: {} } = (
   data: RouteFormData
 ) => {
@@ -37,6 +46,7 @@ export const getValidateFormState = (prevState: State) => {
     ...prevState,
     formErrors: {
       ...prevState.formErrors,
+      ...(validateUrlBeginning(prevState.data.path) as Record<string, string>),
       ...validateFalsyPath('path')(prevState.data),
       ...validateFalsyPath('blockId')(prevState.data),
       ...(prevState.isInfoEditable

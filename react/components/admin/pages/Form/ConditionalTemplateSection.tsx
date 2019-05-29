@@ -8,7 +8,7 @@ import {
 import SectionTitle from './SectionTitle'
 import { FormErrors } from './typings'
 
-import { PagesFormData } from 'pages'
+import { PagesFormData, RouteFormData } from 'pages'
 
 type TemplatePickerCallbacks = Pick<
   ConditionalTemplatePickerProps,
@@ -21,8 +21,10 @@ type TemplatePickerCallbacks = Pick<
 export interface ConditionalTemplateSectionProps
   extends TemplatePickerCallbacks {
   detailChangeHandlerGetter: (
-    detailName: keyof Route
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void
+    detailName: keyof RouteFormData
+  ) => (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void
   formErrors: FormErrors
   onAddConditionalTemplate: () => void
   pages: PagesFormData[]

@@ -68,10 +68,9 @@ describe('getValidateFormState', () => {
           },
         ] as any[],
         path: '/test',
-        template: 'defaultTemplate',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({ formErrors: {} })
@@ -125,12 +124,31 @@ describe('getValidateFormState', () => {
         path: '',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
         formErrors: expect.objectContaining({
           path: 'admin/pages.admin.pages.form.templates.field.required',
+        }),
+      })
+    )
+  })
+
+  it(`should return error if path doesn't begin with '/'`, () => {
+    const mockState = {
+      ...baseMockState,
+      data: {
+        ...baseMockState.data,
+        path: 'lalala',
+        title: 'test',
+      },
+    }
+
+    expect(getValidateFormState(mockState)).toEqual(
+      expect.objectContaining({
+        formErrors: expect.objectContaining({
+          path: 'admin/pages.admin.pages.form.templates.path.validation-error',
         }),
       })
     )
@@ -183,7 +201,7 @@ describe('getValidateFormState', () => {
         path: '/test',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -241,7 +259,7 @@ describe('getValidateFormState', () => {
         template: 'defaultTemplate',
         title: '',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -262,7 +280,7 @@ describe('getValidateFormState', () => {
         title: '',
       },
       isInfoEditable: false,
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -319,14 +337,15 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -371,14 +390,15 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
             pages: {
               10: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),
@@ -410,19 +430,23 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
           formErrors: expect.objectContaining({
             pages: {
               5: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
               10: {
-                condition: 'admin/pages.admin.pages.form.templates.field.required',
-                template: 'admin/pages.admin.pages.form.templates.field.required',
+                condition:
+                  'admin/pages.admin.pages.form.templates.field.required',
+                template:
+                  'admin/pages.admin.pages.form.templates.field.required',
               },
             },
           }),

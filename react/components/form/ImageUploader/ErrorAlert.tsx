@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ErrorAlert: React.FunctionComponent<Props> = ({ message }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(true)
+  const [isVisible, setIsVisible] = useState(true)
 
   return isVisible ? (
     <div className="w-100 mt3">

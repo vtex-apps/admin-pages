@@ -1,6 +1,6 @@
 import { DataProxy } from 'apollo-cache'
 import { RouteFormData } from 'pages'
-import { indexBy, prop, values } from 'ramda'
+import { indexBy, pathOr, prop, values } from 'ramda'
 import { ConditionsOperator } from 'vtex.styleguide'
 
 import Routes from '../../../../queries/Routes.graphql'
@@ -121,6 +121,12 @@ const getConditionStatementObject = (
 export const formatToFormData = (route: Route): RouteFormData => {
   return {
     ...route,
+    metaTagDescription: pathOr('', ['metaTags', 'description'], route),
+    metaTagKeywords: pathOr<string[], string[]>(
+      [],
+      ['metaTags', 'keywords'],
+      route
+    ).map(keyword => ({ label: keyword, value: keyword })),
     pages: route.pages.map((page, index) => ({
       ...page,
       condition: {

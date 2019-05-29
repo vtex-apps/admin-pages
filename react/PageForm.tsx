@@ -55,6 +55,8 @@ class PageForm extends Component<Props, State> {
     declarer: null,
     domain: 'store',
     interfaceId: 'vtex.store@2.x:store.custom',
+    metaTagDescription: '',
+    metaTagKeywords: [],
     pages: [],
     path: '',
     routeId: '',
@@ -157,6 +159,9 @@ class PageForm extends Component<Props, State> {
                     {({ showToast, hideToast }) => (
                       <Form
                         initialData={formData}
+                        isCustomPage={formData.interfaceId.includes(
+                          'store.custom'
+                        )}
                         onDelete={deleteRoute}
                         onExit={this.exit}
                         onSave={saveRoute}

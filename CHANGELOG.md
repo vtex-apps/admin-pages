@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.12.0] - 2019-05-28
+
+### Added
+
+- Hint to Page Form.
+- Validate if URL begins with '/'.
+- Description and Keywords fields to Page Form when creating or editing a custom page.
+
+### Fixed
+
+- Image Uploader now has translated messages.
+- Loading issue when navigating.
+- Back button was updating the form before the user selected the discard option.
+
 ## [3.11.0] - 2019-05-28
 
 ## [3.10.5] - 2019-05-28

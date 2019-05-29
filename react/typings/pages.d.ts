@@ -23,7 +23,14 @@ declare module 'pages' {
     template: string
   }
 
-  type RouteFormData = Omit<Route, 'pages'> & {
+  interface KeywordsFormData {
+    value: string
+    label: string
+  }
+
+  type RouteFormData = Omit<Route, 'pages' | 'metaTags'> & {
     pages: PagesFormData[]
+    metaTagDescription?: string
+    metaTagKeywords?: KeywordsFormData[]
   }
 }

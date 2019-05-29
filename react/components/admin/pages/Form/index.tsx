@@ -28,6 +28,7 @@ import { FormErrors } from './typings'
 import { OperationsResults } from './Operations'
 
 interface ComponentProps {
+  isCustomPage: boolean
   initialData: RouteFormData
   onDelete: OperationsResults['deleteRoute']
   onExit: () => void
@@ -96,7 +97,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   public render() {
-    const { templates, onExit } = this.props
+    const { isCustomPage, templates, onExit } = this.props
     const {
       data,
       formErrors,
@@ -107,6 +108,7 @@ class FormContainer extends Component<Props, State> {
 
     return (
       <Form
+        isCustomPage={isCustomPage}
         data={data}
         detailChangeHandlerGetter={this.getDetailChangeHandler}
         isDeletable={isDeletable}
@@ -118,6 +120,7 @@ class FormContainer extends Component<Props, State> {
         onSave={this.handleSave}
         templates={templates}
         onAddConditionalTemplate={this.handleAddConditionalTemplate}
+        onChangeKeywords={this.handleMetaTagKeywords}
         onRemoveConditionalTemplate={this.handleRemoveConditionalTemplate}
         onChangeTemplateConditionalTemplate={
           this.handleChangeTemplateConditionalTemplate
@@ -162,8 +165,21 @@ class FormContainer extends Component<Props, State> {
     this.setState(getChangeStatementsConditionalTemplate(uniqueId, statements))
   }
 
+  private handleMetaTagKeywords = (
+    values: Array<{ label: string; value: string }>
+  ) => {
+    this.setState(prevState => ({
+      ...prevState,
+      data: {
+        ...prevState.data,
+        metaTagKeywords: values,
+      },
+      formErrors: {},
+    }))
+  }
+
   private getDetailChangeHandler = (detailName: string) => (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const newDetailValue = e.target.value
 
@@ -230,6 +246,8 @@ class FormContainer extends Component<Props, State> {
         declarer,
         domain,
         interfaceId,
+        metaTagDescription,
+        metaTagKeywords,
         pages,
         path,
         routeId,
@@ -248,6 +266,10 @@ class FormContainer extends Component<Props, State> {
                 declarer,
                 domain,
                 interfaceId,
+                metaTags: {
+                  description: metaTagDescription,
+                  keywords: (metaTagKeywords || []).map(({ value }) => value),
+                },
                 pages: pages.map(page => {
                   return {
                     condition: {

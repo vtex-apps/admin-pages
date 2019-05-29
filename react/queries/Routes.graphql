@@ -9,6 +9,10 @@ query Routes($domain: String) {
     path
     routeId
     uuid
+    metaTags {
+      description
+      keywords
+    }
     pages {
       condition {
         allMatches
