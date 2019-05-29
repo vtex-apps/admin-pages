@@ -111,6 +111,7 @@ class Scheduler extends Component<Props, State> {
               minDate={this.minDate}
               minTime={this.state.fromMinTime}
               onChange={this.handleFromChange}
+              positionFixed
               useTime
               value={this.state.from}
             />
