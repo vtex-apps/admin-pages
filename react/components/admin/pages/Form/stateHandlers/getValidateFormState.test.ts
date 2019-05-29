@@ -68,10 +68,9 @@ describe('getValidateFormState', () => {
           },
         ] as any[],
         path: '/test',
-        template: 'defaultTemplate',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({ formErrors: {} })
@@ -125,7 +124,7 @@ describe('getValidateFormState', () => {
         path: '',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -144,7 +143,7 @@ describe('getValidateFormState', () => {
         path: 'lalala',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -202,7 +201,7 @@ describe('getValidateFormState', () => {
         path: '/test',
         title: 'test',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -260,7 +259,7 @@ describe('getValidateFormState', () => {
         template: 'defaultTemplate',
         title: '',
       },
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -281,7 +280,7 @@ describe('getValidateFormState', () => {
         title: '',
       },
       isInfoEditable: false,
-    } as State
+    }
 
     expect(getValidateFormState(mockState)).toEqual(
       expect.objectContaining({
@@ -338,7 +337,7 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
@@ -391,7 +390,7 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
@@ -431,7 +430,7 @@ describe('getValidateFormState', () => {
           path: '/test',
           title: 'defaultTemplate',
         },
-      } as State
+      }
 
       expect(getValidateFormState(mockState)).toEqual(
         expect.objectContaining({
