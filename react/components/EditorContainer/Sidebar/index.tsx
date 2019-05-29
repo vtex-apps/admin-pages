@@ -54,6 +54,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div
           className={`h-100 flex flex-column dark-gray ${
+            // TODO: Check if 'relative' could always be active
             isLoading ? 'relative' : ''
           }`}
         >

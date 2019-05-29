@@ -1,6 +1,7 @@
 import React from 'react'
 
 const TemplateIcon: React.FC = () => (
+  // <div> is used for making sure that the icon isn't vertically centered
   <div>
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
       <path
