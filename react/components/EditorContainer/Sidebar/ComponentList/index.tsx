@@ -102,12 +102,7 @@ class ComponentList extends Component<Props, State> {
   }
 
   public render() {
-    const {
-      editor,
-      intl,
-      onMouseEnterComponent,
-      onMouseLeaveComponent,
-    } = this.props
+    const { intl, onMouseEnterComponent, onMouseLeaveComponent } = this.props
 
     const hasChanges = this.state.changes.length > 0
 
@@ -123,10 +118,8 @@ class ComponentList extends Component<Props, State> {
           textButtonCancel={intl.formatMessage(messages.cancel)}
           textMessage={intl.formatMessage(messages.text)}
         />
-        <ContentContainer
-          isLoading={editor.isLoading}
-          containerClassName="relative flex flex-column flex-grow-1"
-        >
+
+        <ContentContainer containerClassName="relative flex flex-column flex-grow-1">
           {hasChanges && (
             <div className="bb bw1 b--light-silver w-100">
               <div className="w-50 fl tc bw1 br b--light-silver">
@@ -147,6 +140,7 @@ class ComponentList extends Component<Props, State> {
                   </FormattedMessage>
                 </ButtonWithIcon>
               </div>
+
               <div className="w-50 fl tc">
                 <Button
                   block
@@ -163,6 +157,7 @@ class ComponentList extends Component<Props, State> {
               </div>
             </div>
           )}
+
           <SortableList
             components={this.state.components}
             lockAxis="y"

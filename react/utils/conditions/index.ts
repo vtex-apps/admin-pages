@@ -25,6 +25,6 @@ const formatDateInfo = (
 export const formatStatements = (statements: ConditionsStatement[]) =>
   statements.map(({ object, subject, verb }) => ({
     objectJSON: JSON.stringify(formatDateInfo(object, verb as DateVerbOptions)),
-    subject,
+    subject: subject as ConditionSubject,
     verb,
   }))

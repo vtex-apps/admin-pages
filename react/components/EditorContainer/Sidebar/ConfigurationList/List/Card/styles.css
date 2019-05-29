@@ -1,0 +1,7 @@
+/* This is a temporary hack to remove the hover background from the
+ActionMenu */
+
+#action-menu-parent > div > div > div > button:active,
+#action-menu-parent > div > div > div > button:hover {
+  background-color: transparent !important;
+}

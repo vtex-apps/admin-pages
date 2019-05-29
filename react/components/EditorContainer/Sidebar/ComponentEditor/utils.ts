@@ -1,5 +1,13 @@
 import { has, map, mergeDeepLeft, pickBy } from 'ramda'
 
+import {
+  getComponentSchema,
+  getExtension,
+  getIframeImplementation,
+} from '../../../../utils/components'
+
+import { GetSchemasArgs } from './typings'
+
 /**
  * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
  * Each schema property can define an widget especifying how to display it.
@@ -9,7 +17,7 @@ import { has, map, mergeDeepLeft, pickBy } from 'ramda'
  * @return {object} A object defining the complete `UiSchema` that matches all the schema
  *  properties.
  */
-export const getUiSchema = (
+const getUiSchema = (
   componentUiSchema: UISchema,
   componentSchema: ComponentSchema
 ): UISchema => {
@@ -70,4 +78,34 @@ export const getUiSchema = (
   }
 
   return mergeDeepLeft(uiSchema, componentUiSchema || {})
+}
+
+export const getSchemas = ({
+  contentSchema,
+  editTreePath,
+  iframeRuntime,
+  isContent,
+}: GetSchemasArgs) => {
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
+  const componentImplementation = getIframeImplementation(extension.component)
+
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema,
+    isContent: true,
+    propsOrContent: extension[isContent ? 'content' : 'props'],
+    runtime: iframeRuntime,
+  })
+
+  const componentUiSchema =
+    componentImplementation && componentImplementation.uiSchema
+      ? componentImplementation.uiSchema
+      : null
+
+  const uiSchemaFromComponent = getUiSchema(componentUiSchema, componentSchema)
+
+  return {
+    componentSchema,
+    uiSchema: uiSchemaFromComponent,
+  }
 }

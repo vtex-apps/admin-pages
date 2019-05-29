@@ -92,7 +92,7 @@ const Content = (props: Props) => {
                 <DeleteContentMutation>
                   {deleteContent =>
                     loading ? (
-                      <div className="mt5 flex justify-center">
+                      <div className="mt9 flex justify-center">
                         <Spinner />
                       </div>
                     ) : (

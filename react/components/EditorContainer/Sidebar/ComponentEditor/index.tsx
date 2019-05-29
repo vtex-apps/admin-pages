@@ -1,88 +1,68 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
-import { injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
+import { Button, Spinner } from 'vtex.styleguide'
 
-import {
-  getComponentSchema,
-  getExtension,
-  getIframeImplementation,
-} from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
+import { useFormMetaContext } from '../FormMetaContext'
 
+import ConditionControls from './ConditionControls'
 import Form from './Form'
-import { getUiSchema } from './utils'
+import { getSchemas } from './utils'
+
+import ContentContainer from '../ContentContainer'
 
 interface CustomProps {
-  after?: JSX.Element
+  condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: object
   iframeRuntime: RenderContext
-  isContent?: boolean
-  isLoading: boolean
+  isDefault?: boolean
+  isNew?: boolean
+  isSitewide?: boolean
   onChange: FormProps<{ formData: object }>['onChange']
   onClose: () => void
+  onConditionChange?: (
+    changes: Partial<ExtensionConfiguration['condition']>
+  ) => void
   onSave: () => void
-  shouldDisableSaveButton: boolean
+  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: ComponentSchema['title']
-}
-
-type getSchemasArgs = Pick<
-  CustomProps,
-  'iframeRuntime' | 'isContent' | 'contentSchema'
-> & { editTreePath: string | null }
-
-const getSchemas = ({
-  iframeRuntime,
-  isContent,
-  editTreePath,
-  contentSchema,
-}: getSchemasArgs) => {
-  const extension = getExtension(editTreePath, iframeRuntime.extensions)
-  const componentImplementation = getIframeImplementation(extension.component)
-
-  const componentSchema = getComponentSchema({
-    component: componentImplementation,
-    contentSchema,
-    isContent: true,
-    propsOrContent: extension[isContent ? 'content' : 'props'],
-    runtime: iframeRuntime,
-  })
-
-  const componentUiSchema =
-    componentImplementation && componentImplementation.uiSchema
-      ? componentImplementation.uiSchema
-      : null
-
-  const uiSchemaFromComponent = getUiSchema(componentUiSchema, componentSchema)
-
-  return {
-    componentSchema,
-    uiSchema: uiSchemaFromComponent,
-  }
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
-  after,
+  condition,
   contentSchema,
   data,
   iframeRuntime,
-  isContent,
-  isLoading,
+  isDefault,
+  isNew,
+  isSitewide = false,
   onChange,
+  onConditionChange,
   onClose,
   onSave,
-  shouldDisableSaveButton,
+  onTitleChange,
   title,
 }) => {
-  const { editTreePath, mode } = useEditorContext()
+  const editor = useEditorContext()
+  const formMeta = useFormMetaContext()
+
+  const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
   const { componentSchema, uiSchema } = useMemo(
-    () => getSchemas({ contentSchema, editTreePath, iframeRuntime, isContent }),
-    [editTreePath, mode]
+    () =>
+      getSchemas({
+        contentSchema,
+        editTreePath: editor.editTreePath,
+        iframeRuntime,
+        isContent,
+      }),
+    [editor.editTreePath, editor.mode]
   )
 
   const schema = useMemo(
@@ -96,21 +76,26 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
     [componentSchema]
   )
 
+  const isLoading = editor.getIsLoading()
+
+  const shouldDisableSaveButton =
+    isLoading || (!formMeta.getWasModified() && !isNew)
+
   return (
     <Fragment>
-      <EditorHeader
-        isLoading={isLoading}
-        onClose={onClose}
-        onSave={onSave}
-        shouldDisableSaveButton={shouldDisableSaveButton}
-        title={title || componentSchema.title}
-      />
-      <div className="h-100 overflow-y-auto overflow-x-hidden">
+      <ContentContainer containerClassName="h-100 overflow-y-auto overflow-x-hidden">
+        <EditorHeader
+          isTitleEditable={isContent}
+          onClose={onClose}
+          onTitleChange={onTitleChange}
+          title={title}
+        />
+
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
               addMessages: iframeRuntime.addMessages,
-              isLayoutMode: mode === 'layout',
+              isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
             }}
             formData={data}
@@ -119,9 +104,46 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             schema={schema as JSONSchema6}
             uiSchema={uiSchema}
           />
+
           <div id="form__error-list-template___alert" />
         </div>
-        {after}
+
+        {isContent && !isDefault && condition && onConditionChange && (
+          <ConditionControls
+            condition={condition}
+            isSitewide={isSitewide}
+            onConditionChange={onConditionChange}
+            pageContext={iframeRuntime.route.pageContext}
+          />
+        )}
+      </ContentContainer>
+
+      <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
+        <Button
+          disabled={shouldDisableSaveButton}
+          onClick={onSave}
+          size="small"
+          variation="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="admin/pages.editor.components.button.save"
+          />
+        </Button>
+
+        <div className="mr5">
+          <Button
+            disabled={isLoading}
+            onClick={onClose}
+            size="small"
+            variation="tertiary"
+          >
+            <FormattedMessage
+              defaultMessage="Cancel"
+              id="admin/pages.editor.components.button.cancel"
+            />
+          </Button>
+        </div>
       </div>
     </Fragment>
   )

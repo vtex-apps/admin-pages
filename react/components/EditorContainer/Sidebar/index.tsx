@@ -1,10 +1,10 @@
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 
+import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 
 import Content from './Content'
-import { useFormMetaContext } from './FormMetaContext'
 import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
@@ -34,8 +34,10 @@ const Sidebar: React.FunctionComponent<Props> = ({
   runtime,
   visible,
 }) => {
-  const formMeta = useFormMetaContext()
+  const editor = useEditorContext()
   const modal = useModalContext()
+
+  const isLoading = editor.getIsLoading()
 
   return (
     <div
@@ -50,9 +52,14 @@ const Sidebar: React.FunctionComponent<Props> = ({
         id="admin-sidebar"
         className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns calc--height-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
-        <div className="h-100 flex flex-column dark-gray">
+        <div
+          className={`h-100 flex flex-column dark-gray ${
+            // TODO: Check if 'relative' could always be active
+            isLoading ? 'relative' : ''
+          }`}
+        >
           <Modal
-            isActionLoading={formMeta.getIsLoading()}
+            isActionLoading={isLoading}
             isOpen={modal.isOpen}
             onClickAction={modal.actionHandler}
             onClickCancel={modal.cancelHandler}

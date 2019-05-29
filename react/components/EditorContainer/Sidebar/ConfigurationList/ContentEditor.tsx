@@ -1,11 +1,8 @@
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { FormProps } from 'react-jsonschema-form'
 
-import ComponentEditor from '../../ComponentEditor'
-
-import ConditionControls from './ConditionControls'
-import LabelEditor from './LabelEditor'
+import ComponentEditor from '../ComponentEditor'
 
 interface Props {
   componentTitle?: ComponentSchema['title']
@@ -15,17 +12,15 @@ interface Props {
   data?: object
   iframeRuntime: RenderContext
   isDefault: boolean
-  isLoading: boolean
+  isNew?: boolean
   isSitewide: boolean
-  label?: string
   onClose: () => void
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onFormChange: FormProps<{ formData: object }>['onChange']
-  onLabelChange: (event: Event) => void
   onSave: () => void
-  shouldDisableSaveButton: boolean
+  onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
@@ -35,41 +30,27 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   data = {},
   iframeRuntime,
   isDefault,
-  isLoading,
+  isNew,
   isSitewide,
-  label,
   onClose,
   onConditionChange,
   onFormChange,
-  onLabelChange,
   onSave,
-  shouldDisableSaveButton,
+  onTitleChange,
 }) => (
   <ComponentEditor
-    after={
-      <Fragment>
-        <div className="pa5 bt bw1 b--light-silver">
-          <LabelEditor onChange={onLabelChange} value={label || ''} />
-        </div>
-        {!isDefault ? (
-          <ConditionControls
-            condition={condition}
-            isSitewide={isSitewide}
-            pageContext={iframeRuntime.route.pageContext}
-            onConditionChange={onConditionChange}
-          />
-        ) : null}
-      </Fragment>
-    }
+    condition={condition}
     contentSchema={contentSchema}
     data={data}
     iframeRuntime={iframeRuntime}
-    isContent
-    isLoading={isLoading}
+    isDefault={isDefault}
+    isNew={isNew}
+    isSitewide={isSitewide}
+    onConditionChange={onConditionChange}
     onChange={onFormChange}
     onClose={onClose}
     onSave={onSave}
-    shouldDisableSaveButton={shouldDisableSaveButton}
+    onTitleChange={onTitleChange}
     title={componentTitle}
   />
 )

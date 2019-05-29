@@ -24,7 +24,7 @@ const icon = (mode?: StoreEditMode) => {
   }
 }
 
-defineMessages({
+const messages = defineMessages({
   back: {
     defaultMessage: 'Back to editor',
     id: 'admin/pages.editor.store.button.back.title',
@@ -45,15 +45,10 @@ defineMessages({
 
 const getTitle = (mode?: StoreEditMode) => {
   if (!mode) {
-    return 'admin/pages.editor.store.button.back.title'
+    return messages.back
   }
 
-  return {
-    [mode]: 'admin/pages.editor.store.button.back.title',
-    settings: 'admin/pages.editor.store.button.settings.title',
-    template: 'admin/pages.editor.store.button.template.title',
-    theme: 'admin/pages.editor.store.button.theme.title',
-  }[mode]
+  return messages[mode]
 }
 
 const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
@@ -64,7 +59,7 @@ const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
     >
       {icon(mode)}
       <div className={`pl3 b mid-gray fw5 ${mode ? '' : 'c-action-primary'}`}>
-        <FormattedMessage id={getTitle(mode)} />
+        <FormattedMessage {...getTitle(mode)} />
       </div>
     </div>
   )

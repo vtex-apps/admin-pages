@@ -1,17 +1,14 @@
 declare module 'vtex.native-types' {
-  import { Component } from 'react'
-  import { InjectedIntl, InjectedIntlProps } from 'react-intl'
+  import { FunctionComponent } from 'react'
+  import { FormattedMessage, InjectedIntlProps } from 'react-intl'
 
-  interface FormatIOMessageParams {
-    id: string
-    intl: InjectedIntl
-  }
+  const formatIOMessage: (
+    adaptedMessageDescriptor: FormattedMessage.MessageDescriptor &
+      InjectedIntlProps,
+    values?: Record<string, MessageValue>
+  ) => string
 
-  export const formatIOMessage = (params: FormatIOMessageParams) => string
-
-  interface IOMessageProps extends InjectedIntlProps {
-    id: string
-  }
-
-  export const IOMessage: Component<IOMessageProps>
+  export const IOMessage: FunctionComponent<
+    FormattedMessage.Props & InjectedIntlProps
+  >
 }

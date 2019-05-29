@@ -23,12 +23,11 @@ import {
   ListContentQueryResult,
 } from '../../queries/ListContent'
 import { FormMetaContext, ModalContext } from '../typings'
-import { getIsDefaultContent } from '../utils'
+import { getIsDefaultContent, isUnidentifiedPageContext } from '../utils'
 
 import { NEW_CONFIGURATION_ID } from './consts'
 import ContentEditor from './ContentEditor'
 import List from './List'
-import { isUnidentifiedPageContext } from './utils'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
@@ -140,57 +139,42 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   public render() {
-    const { editor, formMeta, iframeRuntime, modal, queryData } = this.props
+    const { iframeRuntime, queryData } = this.props
 
     const listContent = queryData && queryData.listContentWithSchema
 
     const configurations = (listContent && listContent.content) || []
 
-    const shouldEnableSaveButton =
-      (this.state.configuration &&
-        (formMeta.getWasModified() ||
-          this.state.configuration.contentId === NEW_CONFIGURATION_ID)) ||
-      false
-
     if (!this.state.configuration) {
       return (
         <List
           configurations={configurations}
-          editor={editor}
           isDisabledChecker={this.isConfigurationDisabled}
           isSitewide={this.props.isSitewide}
           onClose={this.handleQuit}
           onDelete={this.handleConfigurationDeletion}
           onCreate={this.handleConfigurationCreation}
           onSelect={this.handleConfigurationOpen}
-          path={this.props.editor.iframeWindow.location.pathname}
           title={this.componentTitle}
         />
       )
     }
 
-    const label =
-      this.state.newLabel !== undefined
-        ? this.state.newLabel
-        : this.state.configuration && this.state.configuration.label
-
     return (
       <ContentEditor
-        componentTitle={this.componentTitle}
+        componentTitle={this.state.newLabel}
         condition={this.state.condition}
         contentSchema={this.contentSchema}
         data={this.state.formData}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
-        isLoading={formMeta.getIsLoading() && !modal.isOpen}
+        isNew={this.state.configuration.contentId === NEW_CONFIGURATION_ID}
         isSitewide={this.props.isSitewide}
-        label={label}
         onClose={this.handleContentBack}
         onConditionChange={this.handleConditionChange}
         onFormChange={this.handleFormChange}
-        onLabelChange={this.handleConfigurationLabelChange}
+        onTitleChange={this.handleConfigurationTitleChange}
         onSave={this.handleConfigurationSave}
-        shouldDisableSaveButton={!shouldEnableSaveButton}
       />
     )
   }
@@ -351,18 +335,6 @@ class ConfigurationList extends React.Component<Props, State> {
     })
   }
 
-  private handleConfigurationLabelChange = (event: Event) => {
-    const { formMeta } = this.props
-
-    if (event.target instanceof HTMLInputElement) {
-      this.setState({ newLabel: event.target.value })
-
-      if (!formMeta.getWasModified()) {
-        formMeta.setWasModified(true)
-      }
-    }
-  }
-
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
@@ -388,6 +360,7 @@ class ConfigurationList extends React.Component<Props, State> {
         condition: newConfiguration.condition,
         configuration: newConfiguration,
         formData,
+        newLabel: newConfiguration.label,
       },
       () => {
         editor.setIsLoading(false)
@@ -429,7 +402,7 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
-    if (formMeta.getIsLoading()) {
+    if (editor.getIsLoading()) {
       return
     }
 
@@ -466,9 +439,9 @@ class ConfigurationList extends React.Component<Props, State> {
       iframeRuntime
     )
 
-    formMeta.toggleLoading()
-
     try {
+      editor.setIsLoading(true)
+
       await saveContent({
         variables: {
           blockId,
@@ -481,8 +454,6 @@ class ConfigurationList extends React.Component<Props, State> {
 
       await this.refetchConfigurations()
 
-      editor.setIsLoading(true)
-
       await iframeRuntime.updateRuntime({
         conditions: editor.activeConditions,
       })
@@ -491,26 +462,34 @@ class ConfigurationList extends React.Component<Props, State> {
         getExtension(editor.editTreePath, iframeRuntime.extensions)
       )
 
-      formMeta.toggleLoading(() => {
-        this.props.formMeta.setWasModified(false, () => {
-          this.handleConfigurationClose()
-        })
+      this.props.formMeta.setWasModified(false, () => {
+        this.handleConfigurationClose()
       })
     } catch (err) {
       editor.setIsLoading(false)
 
-      formMeta.toggleLoading(() => {
-        if (modal.isOpen) {
-          modal.close()
-        }
+      if (modal.isOpen) {
+        modal.close()
+      }
 
-        this.props.showToast({
-          horizontalPosition: 'right',
-          message: 'Something went wrong. Please try again.',
-        })
-
-        console.log(err)
+      this.props.showToast({
+        horizontalPosition: 'right',
+        message: 'Something went wrong. Please try again.',
       })
+
+      console.log(err)
+    }
+  }
+
+  private handleConfigurationTitleChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { formMeta } = this.props
+
+    this.setState({ newLabel: event.target.value })
+
+    if (!formMeta.getWasModified()) {
+      formMeta.setWasModified(true)
     }
   }
 

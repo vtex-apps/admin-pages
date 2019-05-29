@@ -1,7 +1,7 @@
 import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { formatStatements } from '../../../../../../utils/conditions'
+import { formatStatements } from '../../../../../utils/conditions'
 import { isUnidentifiedPageContext } from '../../utils'
 
 import Scheduler from './Scheduler'

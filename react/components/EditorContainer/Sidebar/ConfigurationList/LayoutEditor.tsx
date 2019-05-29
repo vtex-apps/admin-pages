@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { IChangeEvent } from 'react-jsonschema-form'
 
-import { getBlockPath, getRelativeBlocksIds } from '../../../../../utils/blocks'
+import { getBlockPath, getRelativeBlocksIds } from '../../../../utils/blocks'
 import {
   getExtension,
   updateExtensionFromForm,
-} from '../../../../../utils/components'
-import { UpdateBlockMutationFn } from '../../../mutations/UpdateBlock'
-import ComponentEditor from '../../ComponentEditor'
-import { FormMetaContext, ModalContext } from '../../typings'
+} from '../../../../utils/components'
+import { UpdateBlockMutationFn } from '../../mutations/UpdateBlock'
+import ComponentEditor from '../ComponentEditor'
+import { FormMetaContext, ModalContext } from '../typings'
 
 interface Props {
   editor: EditorContext
@@ -35,17 +35,15 @@ class LayoutEditor extends Component<Props> {
   }
 
   public render() {
-    const { formMeta, iframeRuntime, modal } = this.props
+    const { iframeRuntime } = this.props
 
     return (
       <ComponentEditor
         data={this.getExtensionProps()}
         iframeRuntime={iframeRuntime}
-        isLoading={formMeta.getIsLoading() && !modal.isOpen}
         onChange={this.handleChange}
         onClose={this.handleExit}
         onSave={this.handleSave}
-        shouldDisableSaveButton={!formMeta.getWasModified()}
       />
     )
   }
@@ -120,7 +118,7 @@ class LayoutEditor extends Component<Props> {
       }
     )
 
-    formMeta.toggleLoading()
+    editor.setIsLoading(true)
 
     try {
       await updateBlock({
@@ -140,12 +138,14 @@ class LayoutEditor extends Component<Props> {
       })
 
       formMeta.setWasModified(false, () => {
-        formMeta.toggleLoading(this.exit)
+        editor.setIsLoading(false)
+
+        this.exit()
       })
     } catch (err) {
       console.log(err)
 
-      formMeta.toggleLoading()
+      editor.setIsLoading(false)
     } finally {
       if (modal.isOpen) {
         modal.close()

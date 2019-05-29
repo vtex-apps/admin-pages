@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.13.0] - 2019-05-29
+
+### Added
+
+- Loading overlay to content editor.
+- Scope and condition information to configuration cards.
+
+### Changed
+
+- Make component editor's header editable.
+- Configuration card layout.
+- Size and color of the component editor's headers' back arrow.
+- Standardize the component editor's headers.
+- Move configuration creation button up and change its label.
+- Increase spacing between form buttons.
+- Use `EditorContext`'s loading state instead of `FormMetaContext`'s one.
+- Use method to get `EditorContext`'s loading state instead of an attribute.
+
+### Fixed
+
+- `ModeButton` default messages.
+- `vtex.native-types` typings.
+
 ## [3.12.1] - 2019-05-29
 
 ### Fixed

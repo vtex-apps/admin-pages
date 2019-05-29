@@ -312,7 +312,6 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       iframeRuntime,
       iframeWindow,
-      isLoading,
       messages,
       mode,
       showAdminControls,
@@ -326,8 +325,8 @@ class EditorProvider extends Component<Props, State> {
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
+      getIsLoading: this.getIsLoading,
       iframeWindow,
-      isLoading,
       messages,
       mode,
       removeCondition: this.handleRemoveCondition,
@@ -355,6 +354,8 @@ class EditorProvider extends Component<Props, State> {
       </ToastProvider>
     )
   }
+
+  private getIsLoading = () => this.state.isLoading
 
   private handleSetIsLoading = (isLoading: boolean) => {
     this.setState({ isLoading })

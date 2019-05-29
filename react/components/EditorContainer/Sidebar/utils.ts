@@ -140,3 +140,7 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
 export const getIsDefaultContent: (
   configuration: Pick<ExtensionConfiguration, 'origin'>
 ) => boolean = configuration => configuration.origin !== null
+
+export const isUnidentifiedPageContext = (
+  pageContext: RenderRuntime['route']['pageContext']
+) => pageContext.type !== '*' && pageContext.id === '*'
