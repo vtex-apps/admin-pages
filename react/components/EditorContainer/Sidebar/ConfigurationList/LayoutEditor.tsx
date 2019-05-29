@@ -140,7 +140,7 @@ class LayoutEditor extends Component<Props> {
       formMeta.setWasModified(false, () => {
         editor.setIsLoading(false)
 
-        this.exit
+        this.exit()
       })
     } catch (err) {
       console.log(err)
