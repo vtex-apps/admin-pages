@@ -3,14 +3,15 @@
 }
 
 .input::placeholder {
+  color: #979899;
   font-style: italic;
+  font-weight: 400;
 }
 
 .input:focus {
   border: 1px solid #dbe9fd;
   box-shadow: 0 0 1px #dbe9fd;
-  color: #4c4c58;
-  font-style: italic;
+  color: #3f3f40;
   margin-bottom: -1px;
   margin-top: -1px;
   outline: none !important;

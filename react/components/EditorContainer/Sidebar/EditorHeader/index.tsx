@@ -17,7 +17,7 @@ const EditorHeader: React.FC<Props> = ({
   onTitleChange,
   title,
 }) => {
-  const titleBaseClassName = 'w-100 fw5 ma0 lh-copy f5 near-black'
+  const titleBaseClassName = 'w-100 ma0 lh-copy f5 fw5 near-black'
 
   return (
     <div className="w-100 ph5 pv4">
