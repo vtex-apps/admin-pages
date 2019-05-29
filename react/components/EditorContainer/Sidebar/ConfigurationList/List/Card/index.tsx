@@ -88,10 +88,10 @@ const Card = ({
         return null
       }
 
-      const splittedOrigin =
+      const splitOrigin =
         configuration.origin && configuration.origin.split('@')
 
-      return splittedOrigin && splittedOrigin[0]
+      return splitOrigin && splitOrigin[0]
     },
     [configuration.origin]
   )
