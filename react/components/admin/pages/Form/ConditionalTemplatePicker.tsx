@@ -41,6 +41,10 @@ const messages = defineMessages({
     defaultMessage: 'Required',
     id: 'admin/pages.admin.pages.form.templates.field.required',
   },
+  pathValidationErrorMessage: {
+    defaultMessage: `URL should begin with '/'.`,
+    id: 'admin/pages.admin.pages.form.templates.path.validation-error',
+  },
   templateLabel: {
     defaultMessage: 'Template',
     id: 'admin/pages.admin.pages.form.templates.conditional.template.label',
