@@ -50,8 +50,6 @@ const createStyleTag = (window: Window, id: string) => {
   const tachyonsTag = window.document.getElementById('style_link')
   if (tachyonsTag) {
     tachyonsTag.after(styleTag)
-  } else if (window.document.head) {
-    window.document.head.append(styleTag)
   }
 }
 
