@@ -215,7 +215,8 @@ export const getSchemaPropsOrContent = ({
             dictionary: messages,
             id,
           })
-        : Object.keys(i18nMapping).find(key => i18nMapping[key] === id) || ''
+        : Object.keys(i18nMapping).find(key => i18nMapping[key] === id) ||
+          propsOrContent[currKey]
     } else {
       adaptedProperty[currKey] = propsOrContent[currKey]
     }
