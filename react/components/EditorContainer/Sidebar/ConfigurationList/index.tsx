@@ -406,8 +406,10 @@ class ConfigurationList extends React.Component<Props, State> {
       return
     }
 
+    const i18nMapping = formMeta.getI18nMapping()
+
     const content = getSchemaPropsOrContent({
-      i18nMapping: formMeta.getI18nMapping(),
+      i18nMapping,
       isContent: true,
       messages: iframeRuntime.messages,
       properties: this.componentProperties,
@@ -458,9 +460,24 @@ class ConfigurationList extends React.Component<Props, State> {
         conditions: editor.activeConditions,
       })
 
-      this.activeExtension = clone(
-        getExtension(editor.editTreePath, iframeRuntime.extensions)
+      const partialNewActiveExtension = getExtension(
+        editor.editTreePath,
+        iframeRuntime.extensions
       )
+
+      const newActiveExtension = clone({
+        ...partialNewActiveExtension,
+        content: getSchemaPropsOrContent({
+          i18nMapping,
+          isContent: true,
+          messages: iframeRuntime.messages,
+          properties: this.componentProperties,
+          propsOrContent: partialNewActiveExtension.content,
+          shouldTranslate: false,
+        }),
+      })
+
+      this.activeExtension = newActiveExtension
 
       this.props.formMeta.setWasModified(false, () => {
         this.handleConfigurationClose()

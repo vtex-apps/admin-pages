@@ -171,6 +171,7 @@ export const getSchemaPropsOrContent = ({
   messages,
   properties,
   propsOrContent,
+  shouldTranslate = true,
 }: GetSchemaPropsOrContentParams): object => {
   if (!properties || !propsOrContent) {
     return {}
@@ -190,26 +191,33 @@ export const getSchemaPropsOrContent = ({
       return acc
     }
 
-    const adaptedProperty = {
-      [currKey]:
-        currProperty.type === 'object'
-          ? getSchemaPropsOrContent({
-              isContent,
-              messages,
-              properties: currProperty.properties,
-              propsOrContent: propsOrContent[currKey],
-            })
-          : currProperty.format === 'IOMessage' && messages
-          ? translateMessage({
-              dictionary: messages,
-              id:
-                propsOrContent[
-                  i18nMapping && i18nMapping[currKey] !== undefined
-                    ? i18nMapping[currKey]
-                    : currKey
-                ],
-            })
-          : propsOrContent[currKey],
+    let adaptedProperty: Record<string, unknown> = {}
+
+    if (currProperty.type === 'object') {
+      adaptedProperty[currKey] = getSchemaPropsOrContent({
+        i18nMapping,
+        isContent,
+        messages,
+        properties: currProperty.properties,
+        propsOrContent: propsOrContent[currKey],
+        shouldTranslate,
+      })
+    } else if (currProperty.format === 'IOMessage' && messages) {
+      const id =
+        propsOrContent[
+          i18nMapping && i18nMapping[currKey] !== undefined
+            ? i18nMapping[currKey]
+            : currKey
+        ]
+
+      adaptedProperty[currKey] = shouldTranslate
+        ? translateMessage({
+            dictionary: messages,
+            id,
+          })
+        : Object.keys(i18nMapping).find(key => i18nMapping[key] === id) || ''
+    } else {
+      adaptedProperty[currKey] = propsOrContent[currKey]
     }
 
     return merge(acc, adaptedProperty)
