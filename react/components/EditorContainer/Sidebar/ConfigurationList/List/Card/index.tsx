@@ -170,7 +170,7 @@ const Card = ({
       </div>
 
       <div
-        className="absolute remove-hover-bg top-0 right-0 mt1"
+        className="absolute top-0 right-0 mt1"
         id="action-menu-parent"
         onClick={stopPropagation}
       >
