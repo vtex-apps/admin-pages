@@ -84,6 +84,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (
               <button
+                type="button"
                 className="accordion-icon-button accordion-icon-button--remove"
                 onClick={stopPropagation(onDropIndexClick(formIndex))}
               >
