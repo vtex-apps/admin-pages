@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.13.2] - 2019-06-03
+
+### Fixed
+
+- `Scheduler`'s second `DatePicker`'s (`to`) position.
+
 ## [3.13.1] - 2019-05-29
 
 ### Fixed
