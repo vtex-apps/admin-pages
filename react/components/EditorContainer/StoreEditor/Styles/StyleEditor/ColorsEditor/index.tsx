@@ -1,9 +1,10 @@
 import React, { useMemo } from 'react'
+import { FormattedMessage } from 'react-intl'
+import { RouteComponentProps } from 'react-router'
 
 import startCase from 'lodash.startcase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
-import { FormattedMessage } from 'react-intl'
-import { RouteComponentProps } from 'react-router'
+
 import StyleEditorHeader from '../StyleEditorHeader'
 import { EditorPath, IdParam } from '../StyleEditorRouter'
 import fromTachyonsConfig from '../utils/colors'
