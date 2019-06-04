@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 
 import StyleEditorHeader from '../StyleEditorHeader'
 import { EditorPath, IdParam } from '../StyleEditorRouter'
-import { prettify } from '../utils/typography'
+import startCase from 'lodash.startcase'
 
 interface Props extends RouteComponentProps {
   style: Style
@@ -49,7 +49,7 @@ const TypeTokenEntry: React.FunctionComponent<EntryProps> = ({
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
       onClick={() => history.push(EditorPath.typeToken.replace(IdParam, name))}
     >
-      <span className="f4">{prettify(name)}</span>
+      <span className="f4">{startCase(name)}</span>
     </div>
   )
 }

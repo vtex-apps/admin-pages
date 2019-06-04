@@ -8,7 +8,7 @@ import ListFontsQuery, {
   ListFontsQueryResult,
 } from '../queries/ListFontsQuery'
 import StyleEditorHeader from '../StyleEditorHeader'
-import { prettify, prettifyCamelCase } from '../utils/typography'
+import startCase from 'lodash.startcase'
 
 interface WrapperProps extends RouteComponentProps<TypeTokenParams> {
   config: TachyonsConfig
@@ -41,7 +41,7 @@ const TypeToken: React.FunctionComponent<Props> = ({
   if (loading) {
     return (
       <>
-        <StyleEditorHeader title={prettify(token)} />
+        <StyleEditorHeader title={startCase(token)} />
         <div className="pv8 flex justify-center">
           <Spinner />
         </div>
@@ -67,7 +67,7 @@ const TypeToken: React.FunctionComponent<Props> = ({
   return (
     <>
       <StyleEditorHeader
-        title={prettify(token)}
+        title={startCase(token)}
         buttonLabel={saveLabel}
         onButtonClick={saveStyle}
       />
@@ -104,7 +104,7 @@ function getOptions(
   const options = (() => {
     switch (key) {
       case 'fontFamily':
-        return fontFamilies.map(({ id, fontFamily }) => ({
+        return fontFamilies.map(({ fontFamily }) => ({
           label: fontFamily,
           value: fontFamily,
         }))
@@ -150,7 +150,7 @@ function getOptions(
 
   const currentIfNotInOptions =
     options.find(({ value }) => value === font[key]) == null
-      ? [{ label: prettify(font[key]), value: font[key] }]
+      ? [{ label: startCase(font[key].split(',')[0]), value: font[key] }]
       : []
 
   return [...currentIfNotInOptions, ...options]
@@ -175,7 +175,7 @@ const TypeTokenEntry: React.FunctionComponent<EntryProps> = ({
 }) => {
   return (
     <div className="pointer flex justify-between items-center pv6 bb b--muted-4">
-      <span className="f4">{prettifyCamelCase(id)}</span>
+      <span className="f4">{startCase(id)}</span>
       <Dropdown
         variation="inline"
         onChange={getOnChange(id, dispatch)}
