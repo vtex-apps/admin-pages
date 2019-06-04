@@ -28,7 +28,7 @@ const TypeTokenDropdown: React.FunctionComponent<EntryProps> = ({
   fontFamilies,
 }) => {
   return (
-    <div className="pointer flex justify-between items-center pv6 bb b--muted-4">
+    <div className="flex justify-between items-center pv6 bb b--muted-4">
       <span className="f4">{startCase(id)}</span>
       <Dropdown
         variation="inline"
