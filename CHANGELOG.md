@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.13.3] - 2019-06-04
+
 ### Fixed
 
 - Deleting item when pressing Enter inside a carousel
+- Navigation infinite loading when iframe runtime crashes.
+- "Create new" message on pages portuguese translation.
 
 ## [3.13.2] - 2019-06-03
 
