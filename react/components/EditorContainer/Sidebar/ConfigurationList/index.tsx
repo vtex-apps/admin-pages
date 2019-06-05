@@ -216,6 +216,7 @@ class ConfigurationList extends React.Component<Props, State> {
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
       isContent: true,
+      messages: this.props.iframeRuntime.messages,
       propsOrContent: content,
       runtime: this.props.iframeRuntime,
     }) || {}
