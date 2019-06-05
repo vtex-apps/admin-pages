@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Simplify active content determination logic after saving a configuration.
+
+### Fixed
+
+- Handle edge case in which translatable fields' values are `undefined`.
+- Prevent invalid values at `EditableText` and `BaseInput`.
+- Add missing `contentMapId` field to the `Extension` interface.
+
+### Security
+
+- Upgrade `handlebars` to `^4.1.2`, since a vulnerability has been discovered in the previous version.
+
 ## [3.13.5] - 2019-06-06
 
 ### Fixed
