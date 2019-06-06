@@ -12,6 +12,7 @@ import {
 
 import { formatStatements } from '../../../../utils/conditions'
 import { isNewRoute } from '../utils'
+import { generateNewRouteId } from './utils'
 
 import Form from './Form'
 import {
@@ -282,11 +283,7 @@ class FormContainer extends Component<Props, State> {
                   }
                 }),
                 path,
-                routeId:
-                  routeId ||
-                  `${interfaceId}#${path
-                    .replace('/', '')
-                    .replace(/\//gi, '-')}`,
+                routeId: routeId || generateNewRouteId(interfaceId, path),
                 title,
                 uuid,
               },
