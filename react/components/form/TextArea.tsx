@@ -68,7 +68,7 @@ const TextArea: React.FunctionComponent<Props> = ({
         placeholder ? formatIOMessage({ id: placeholder, intl }) : ''
       }
       readOnly={readonly}
-      value={value}
+      value={value ? `${value}` : ''}
     />
   )
 }
