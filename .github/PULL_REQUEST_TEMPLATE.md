@@ -9,9 +9,10 @@
 #### Checklist/Reminders
 
 - [ ] Updated `README.md`.
-- [ ] If applicable, link this PR to a Clubhouse story.
-- [ ] Whenever possible, create tests for bug fixes.
-- [ ] If applicable, delete workspace after merge.
+- [ ] Updated `CHANGELOG.md`.
+- [ ] Link PR to a Clubhouse story (if applicable).
+- [ ] Updated/created tests (important for bug fixes).
+- [ ] Delete workspace after merge (f applicable).
 
 #### Screenshots or example usage
 
