@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Prevent invalid values at `TextArea``.
 
+### Removed
+
+- `TextArea`s horizontal resizing.
+
 ## [3.13.7] - 2019-06-06
 
 ### Fixed

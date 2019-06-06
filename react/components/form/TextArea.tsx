@@ -68,6 +68,7 @@ const TextArea: React.FunctionComponent<Props> = ({
         placeholder ? formatIOMessage({ id: placeholder, intl }) : ''
       }
       readOnly={readonly}
+      resize="vertical"
       value={value ? `${value}` : ''}
     />
   )
