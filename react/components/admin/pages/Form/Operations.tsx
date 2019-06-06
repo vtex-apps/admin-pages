@@ -5,7 +5,12 @@ import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
-import { DeleteRouteVariables, SaveRouteVariables } from './typings'
+import {
+  DeleteMutationResult,
+  DeleteRouteVariables,
+  SaveMutationResult,
+  SaveRouteVariables,
+} from './typings'
 import { updateStoreAfterDelete, updateStoreAfterSave } from './utils'
 
 interface TemplateVariables {
@@ -29,12 +34,12 @@ const Operations = ({ interfaceId, children }: Props) => (
     variables={{ interfaceId }}
   >
     {templatesResults => (
-      <Mutation<any, DeleteRouteVariables>
+      <Mutation<DeleteMutationResult['data'], DeleteRouteVariables>
         mutation={DeleteRoute}
         update={updateStoreAfterDelete}
       >
         {deleteRoute => (
-          <Mutation<any, SaveRouteVariables>
+          <Mutation<SaveMutationResult['data'], SaveRouteVariables>
             mutation={SaveRoute}
             update={updateStoreAfterSave}
           >
