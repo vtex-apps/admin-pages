@@ -6,9 +6,14 @@ import { translateMessage } from '../../utils/components'
 import { useFormMetaContext } from '../EditorContainer/Sidebar/FormMetaContext'
 
 import BaseInput from './BaseInput'
+import TextArea from './TextArea'
 import { CustomWidgetProps } from './typings'
 
-const IOMessage: React.FunctionComponent<CustomWidgetProps> = props => {
+interface Props extends CustomWidgetProps {
+  isTextarea?: boolean
+}
+
+const I18nInput: React.FunctionComponent<Props> = props => {
   const {
     addToI18nMapping,
     getI18nMapping,
@@ -77,7 +82,17 @@ const IOMessage: React.FunctionComponent<CustomWidgetProps> = props => {
     setValue(newValue)
   }, [])
 
-  return <BaseInput {...props} onChange={handleChange} value={value} />
+  const finalProps = {
+    ...props,
+    onChange: handleChange,
+    value,
+  }
+
+  if (props.isTextarea) {
+    return <TextArea {...finalProps} />
+  }
+
+  return <BaseInput {...finalProps} />
 }
 
-export default IOMessage
+export default I18nInput
