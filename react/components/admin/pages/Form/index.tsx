@@ -282,7 +282,11 @@ class FormContainer extends Component<Props, State> {
                   }
                 }),
                 path,
-                routeId: routeId || `${interfaceId}#${path.replace('/', '')}`,
+                routeId:
+                  routeId ||
+                  `${interfaceId}#${path
+                    .replace('/', '')
+                    .replace(/\//gi, '-')}`,
                 title,
                 uuid,
               },
