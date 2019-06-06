@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.14.0] - 2019-06-06
+
+### Added
+
+- `RichText` widget, which, for now, is just a `TextArea` with i18n.
+
+### Changed
+
+- Rename `IOMessage` widget to `I18nInput`, and add a prop to replace `BaseInput` with `TextArea`.
+
+### Fixed
+
+- Prevent invalid values at `TextArea``.
+
+### Removed
+
+- `TextArea`'s horizontal resizing.
+
 ## [3.13.7] - 2019-06-06
 
 ### Fixed

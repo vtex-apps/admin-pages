@@ -8,19 +8,21 @@ import Dropdown from '../../../form/Dropdown'
 import ErrorListTemplate from '../../../form/ErrorListTemplate'
 import FieldTemplate from '../../../form/FieldTemplate'
 import ImageUploader from '../../../form/ImageUploader'
-import IOMessage from '../../../form/IOMessage'
+import I18nInput from '../../../form/I18nInput'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
 import Radio from '../../../form/Radio'
+import RichText from '../../../form/RichText'
 import TextArea from '../../../form/TextArea'
 import Toggle from '../../../form/Toggle'
 
-export const widgets = {
-  BaseInput: BaseInput as Widget,
-  CheckboxWidget: Toggle as Widget,
-  IOMessage: IOMessage as Widget,
-  RadioWidget: Radio as Widget,
+export const widgets: Record<string, Widget> = {
+  BaseInput,
+  CheckboxWidget: Toggle,
+  IOMessage: I18nInput,
+  RadioWidget: Radio,
+  RichText,
   SelectWidget: Dropdown as Widget,
-  TextareaWidget: TextArea as Widget,
+  TextareaWidget: TextArea,
   'image-uploader': (ImageUploader as unknown) as Widget,
 }
 

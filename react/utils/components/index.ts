@@ -202,7 +202,10 @@ export const getSchemaPropsOrContent = ({
         properties: currProperty.properties,
         propsOrContent: propsOrContent[currKey],
       })
-    } else if (currProperty.format === 'IOMessage' && messages) {
+    } else if (
+      ['IOMessage', 'RichText'].includes(currProperty.format) &&
+      messages
+    ) {
       const id =
         propsOrContent[
           i18nMapping && i18nMapping[currKey] !== undefined
