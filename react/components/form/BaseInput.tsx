@@ -55,8 +55,8 @@ const BaseInput: React.FunctionComponent<Props> = props => {
           : ''
       }
       label={formatIOMessage({ id: label, intl })}
-      max={max && `${max}`}
-      min={min && `${min}`}
+      max={max ? `${max}` : undefined}
+      min={min ? `${min}` : undefined}
       onBlur={
         onBlur &&
         ((event: React.ChangeEvent<HTMLInputElement>) =>
@@ -72,7 +72,7 @@ const BaseInput: React.FunctionComponent<Props> = props => {
       readOnly={readonly || (schema as any).readonly}
       required={required}
       type={type}
-      value={value && `${value}`}
+      value={value ? `${value}` : ''}
     />
   )
 }

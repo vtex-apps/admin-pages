@@ -20,7 +20,6 @@ export interface GetSchemaPropsOrContentParams {
   messages?: RenderContext['messages']
   properties?: Record<string, JSONSchema6Definition>
   propsOrContent?: Record<string, any>
-  shouldTranslate?: boolean
 }
 
 export interface GetSchemaPropsOrContentFromRuntimeParams {

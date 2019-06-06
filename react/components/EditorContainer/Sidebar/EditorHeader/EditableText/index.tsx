@@ -18,9 +18,9 @@ const EditableText: React.FC<Props> = ({
   <input
     className={`bn font-body input-reset ${baseClassName} ${styles.input}`}
     onChange={onChange}
-    placeholder={placeholder}
+    placeholder={placeholder || ''}
     type="text"
-    value={value}
+    value={value || ''}
   />
 )
 

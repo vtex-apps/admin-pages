@@ -28,6 +28,7 @@ declare global {
     composition: 'blocks' | 'children'
     configurationsIds?: string[]
     content: object
+    contentMapId: string
     implementationIndex: number
     implements: string[]
     props: object

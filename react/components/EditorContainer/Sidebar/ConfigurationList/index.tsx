@@ -216,6 +216,7 @@ class ConfigurationList extends React.Component<Props, State> {
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
       isContent: true,
+      messages: this.props.iframeRuntime.messages,
       propsOrContent: content,
       runtime: this.props.iframeRuntime,
     }) || {}
@@ -454,7 +455,7 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      await this.refetchConfigurations()
+      const newQueryData = await this.refetchConfigurations()
 
       await iframeRuntime.updateRuntime({
         conditions: editor.activeConditions,
@@ -465,19 +466,21 @@ class ConfigurationList extends React.Component<Props, State> {
         iframeRuntime.extensions
       )
 
-      const newActiveExtension = clone({
-        ...partialNewActiveExtension,
-        content: getSchemaPropsOrContent({
-          i18nMapping,
-          isContent: true,
-          messages: iframeRuntime.messages,
-          properties: this.componentProperties,
-          propsOrContent: partialNewActiveExtension.content,
-          shouldTranslate: false,
-        }),
-      })
+      const newListContent = newQueryData.data.listContentWithSchema
 
-      this.activeExtension = newActiveExtension
+      const newConfigurations = (newListContent && newListContent.content) || []
+
+      const newActiveConfiguration =
+        newConfigurations.find(item =>
+          partialNewActiveExtension.contentMapId.startsWith(item.contentId)
+        ) || newConfigurations[0]
+
+      const newActiveContent = JSON.parse(newActiveConfiguration.contentJSON)
+
+      this.activeExtension = {
+        ...partialNewActiveExtension,
+        content: newActiveContent,
+      }
 
       this.props.formMeta.setWasModified(false, () => {
         this.handleConfigurationClose()

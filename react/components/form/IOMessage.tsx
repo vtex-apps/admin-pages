@@ -16,14 +16,30 @@ const IOMessage: React.FunctionComponent<CustomWidgetProps> = props => {
     setWasModified,
   } = useFormMetaContext()
 
-  const i18nKey = props.value
+  const isValueI18nKey = React.useMemo(
+    () => typeof props.formContext.messages[props.value] !== 'undefined',
+    [props.value]
+  )
+
+  const i18nKey = React.useMemo(
+    () => {
+      if (isValueI18nKey) {
+        return props.value
+      }
+
+      return 'store/' + generateUuid()
+    },
+    [isValueI18nKey]
+  )
 
   const initialValue = React.useMemo(
     () =>
-      translateMessage({
-        dictionary: props.formContext.messages,
-        id: i18nKey,
-      }),
+      isValueI18nKey
+        ? translateMessage({
+            dictionary: props.formContext.messages,
+            id: i18nKey,
+          })
+        : props.value,
     []
   )
 
