@@ -150,3 +150,12 @@ export const formatToFormData = (route: Route): RouteFormData => {
     })),
   }
 }
+
+export const generateNewRouteId = (interfaceId: string, path: string) => {
+  return `${interfaceId}#${path.replace(
+    /\//gi,
+    (_, offset: number, fullString: string) => {
+      return offset === 0 || offset === fullString.length - 1 ? '' : '-'
+    }
+  )}`
+}
