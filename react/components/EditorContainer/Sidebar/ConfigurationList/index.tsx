@@ -1,3 +1,4 @@
+import { ApolloQueryResult } from 'apollo-client'
 import { JSONSchema6 } from 'json-schema'
 import throttle from 'lodash.throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
@@ -221,6 +222,42 @@ class ConfigurationList extends React.Component<Props, State> {
       runtime: this.props.iframeRuntime,
     }) || {}
 
+  private getNewActiveExtension = (
+    queryResult: ApolloQueryResult<ListContentData>
+  ) => {
+    const { editor, iframeRuntime } = this.props
+
+    const partialNewActiveExtension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
+
+    const newListContent =
+      queryResult.data && queryResult.data.listContentWithSchema
+
+    const newConfigurations = (newListContent && newListContent.content) || []
+
+    const newActiveConfiguration =
+      newConfigurations.find(configuration =>
+        partialNewActiveExtension.contentMapId.startsWith(
+          configuration.contentId
+        )
+      ) ||
+      newConfigurations[0] ||
+      {}
+
+    const newActiveContentJson = newActiveConfiguration.contentJSON
+
+    const newActiveContent: object = newActiveContentJson
+      ? JSON.parse(newActiveContentJson)
+      : {}
+
+    return {
+      ...partialNewActiveExtension,
+      content: newActiveContent,
+    }
+  }
+
   private handleConditionChange = (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => {
@@ -304,9 +341,7 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      this.props.iframeRuntime.updateRuntime()
-
-      await this.refetchConfigurations()
+      await this.updateIframeAndStorefront()
 
       editor.setIsLoading(false)
 
@@ -455,32 +490,7 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      const newQueryData = await this.refetchConfigurations()
-
-      await iframeRuntime.updateRuntime({
-        conditions: editor.activeConditions,
-      })
-
-      const partialNewActiveExtension = getExtension(
-        editor.editTreePath,
-        iframeRuntime.extensions
-      )
-
-      const newListContent = newQueryData.data.listContentWithSchema
-
-      const newConfigurations = (newListContent && newListContent.content) || []
-
-      const newActiveConfiguration =
-        newConfigurations.find(item =>
-          partialNewActiveExtension.contentMapId.startsWith(item.contentId)
-        ) || newConfigurations[0]
-
-      const newActiveContent = JSON.parse(newActiveConfiguration.contentJSON)
-
-      this.activeExtension = {
-        ...partialNewActiveExtension,
-        content: newActiveContent,
-      }
+      await this.updateIframeAndStorefront()
 
       this.props.formMeta.setWasModified(false, () => {
         this.handleConfigurationClose()
@@ -577,6 +587,18 @@ class ConfigurationList extends React.Component<Props, State> {
       template,
       treePath,
     })
+  }
+
+  private updateIframeAndStorefront = async () => {
+    const { editor, iframeRuntime } = this.props
+
+    const newListContent = await this.refetchConfigurations()
+
+    await iframeRuntime.updateRuntime({
+      conditions: editor.activeConditions,
+    })
+
+    this.activeExtension = this.getNewActiveExtension(newListContent)
   }
 }
 

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- When deleting a content configuration, the configuration list's `activeExtension` wasn't being updated and `updateRuntime` wasn't being run synchronously.
+
 ## [3.14.0] - 2019-06-06
 
 ### Added
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Prevent invalid values at `TextArea``.
+- Prevent invalid values at `TextArea`.
 
 ### Removed
 
