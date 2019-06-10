@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.14.1] - 2019-06-10
+
 ### Fixed
 
 - When deleting a content configuration, the configuration list's `activeExtension` wasn't being updated and `updateRuntime` wasn't being run synchronously.
