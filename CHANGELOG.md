@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.0.0-beta] - 2019-06-10
+
 ### Changed
 
 - [BREAKING] Change routes to be compliance with new admin 3.x architecture `/admin/app/<route>`.
