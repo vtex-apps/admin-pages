@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.14.2] - 2019-06-11
+
 ### Changed
 
 - Styles Editor feedback `Toast` is now positioned to the left.
