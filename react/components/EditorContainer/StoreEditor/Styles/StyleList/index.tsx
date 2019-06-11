@@ -135,14 +135,14 @@ const StyleList: React.FunctionComponent<Props> = ({
                       })
                         .then(() => {
                           showToast({
-                            horizontalPosition: 'right',
+                            horizontalPosition: 'left',
                             message: intl.formatMessage(messages.newSuccess),
                           })
                         })
                         .catch(e => {
                           console.error(e)
                           showToast({
-                            horizontalPosition: 'right',
+                            horizontalPosition: 'left',
                             message: intl.formatMessage(messages.newFail),
                           })
                         })
@@ -165,7 +165,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                           saveSelectedStyle({ variables: { id } })
                             .then(() => {
                               showToast({
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(
                                   messages.saveSuccess,
                                   { name }
@@ -175,7 +175,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                             .catch(e => {
                               console.error(e)
                               showToast({
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(messages.saveFail, {
                                   name,
                                 }),
@@ -193,7 +193,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                   },
                                 },
                                 duration: Infinity,
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(
                                   messages.deleteSuccess,
                                   { name }
@@ -203,7 +203,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                             .catch(e => {
                               console.error(e)
                               showToast({
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(
                                   messages.deleteFail
                                 ),
@@ -223,7 +223,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                           })
                             .then(() => {
                               showToast({
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(
                                   messages.duplicateSuccess,
                                   { name }
@@ -233,7 +233,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                             .catch(e => {
                               console.error(e)
                               showToast({
-                                horizontalPosition: 'right',
+                                horizontalPosition: 'left',
                                 message: intl.formatMessage(
                                   messages.duplicateFail,
                                   { name }

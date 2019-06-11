@@ -170,12 +170,12 @@ const StyleEditor: React.FunctionComponent<Props> = ({
                         value: path,
                       })
                       showToast({
-                        horizontalPosition: 'right',
+                        horizontalPosition: 'left',
                         message: intl.formatMessage(messages.saveSuccessful),
                       })
                     } else {
                       showToast({
-                        horizontalPosition: 'right',
+                        horizontalPosition: 'left',
                         message: intl.formatMessage(messages.saveFailed),
                       })
                     }
