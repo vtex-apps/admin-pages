@@ -114,15 +114,18 @@ class EditorProvider extends Component<Props, State> {
           this.state.iframeRuntime.history &&
           !this.unlisten
         ) {
+          console.log(this.state.iframeRuntime)
           this.unlisten = this.state.iframeRuntime.history.listen(
             (location, action) => {
               const pathFromCurrentPage = this.state.iframeRuntime!.route.path
               const isRootPath =
                 pathFromCurrentPage === '/' || location.pathname === '/'
-              const hasParamsChanged = !equals(
-                location.state.navigationRoute.params,
-                this.state.iframeRuntime!.route.params
-              )
+              const hasParamsChanged =
+                !location.state ||
+                !equals(
+                  location.state.navigationRoute.params,
+                  this.state.iframeRuntime!.route.params
+                )
 
               const isDifferentPath = isRootPath
                 ? pathFromCurrentPage !== location.pathname
@@ -332,6 +335,10 @@ class EditorProvider extends Component<Props, State> {
       iframeWindow,
       messages,
       mode,
+      onChangeIframeUrl: url => {
+        window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
+        window.top.location.assign(`/admin/cms/storefront${url}`)
+      },
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
       setIsLoading: this.handleSetIsLoading,
