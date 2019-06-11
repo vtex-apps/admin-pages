@@ -10,7 +10,7 @@
 
 - [ ] Updated `README.md`.
 - [ ] Updated `CHANGELOG.md`.
-- [ ] Link PR to a Clubhouse story (if applicable).
+- [ ] Linked this PR to a Clubhouse story (if applicable).
 - [ ] Updated/created tests (important for bug fixes).
 - [ ] Delete workspace after merge (f applicable).
 
