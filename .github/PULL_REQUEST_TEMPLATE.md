@@ -12,7 +12,7 @@
 - [ ] Updated `CHANGELOG.md`.
 - [ ] Linked this PR to a Clubhouse story (if applicable).
 - [ ] Updated/created tests (important for bug fixes).
-- [ ] Delete workspace after merge (f applicable).
+- [ ] Deleted the workspace after merging this PR (if applicable).
 
 #### Screenshots or example usage
 
