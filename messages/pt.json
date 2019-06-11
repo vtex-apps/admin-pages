@@ -20,7 +20,7 @@
   "admin/pages.admin.pages.form.save.error": "Erro ao salvar rota.",
   "admin/pages.admin.pages.form.save.success": "Sucesso",
   "admin/pages.admin.pages.form.templates.conditional.addButton": "Adicionar template condicional",
-  "admin/pages.admin.pages.form.templates.conditional.description": "Um template condicional permite o uso de um layout diferente na sua página. Esse layout aparacerá quando corresponder às condições definidas.",
+  "admin/pages.admin.pages.form.templates.conditional.description": "Um template condicional permite o uso de um layout diferente na sua página. Esse layout aparecerá quando corresponder às condições definidas.",
   "admin/pages.admin.pages.form.templates.conditional.template.label": "Templates",
   "admin/pages.admin.pages.form.templates.conditional.title": "Condicional",
   "admin/pages.admin.pages.form.templates.field.default": "Padrão",
