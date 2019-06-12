@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.14.4] - 2019-06-12
+
 ### Changed
 
 - Improve `StoreForm` typing and refactor some parts of it.
