@@ -31,6 +31,24 @@ interface State {
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
+const getUrlProperties = (href: string) => {
+  const match: string = href.match(
+    /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
+  )
+  return (
+    match && {
+      hash: match[7],
+      host: match[2],
+      hostname: match[3],
+      href,
+      pathname: match[5],
+      port: match[4],
+      protocol: match[1],
+      search: match[6],
+    }
+  )
+}
+
 const viewPorts: { [name: string]: Viewport[] } = {
   default: ['mobile', 'tablet', 'desktop'],
   desktop: [],
@@ -337,7 +355,12 @@ class EditorProvider extends Component<Props, State> {
       mode,
       onChangeIframeUrl: url => {
         window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
-        window.top.location.assign(`/admin/cms/storefront${url}`)
+
+        const convertedUrl = getUrlProperties(url)
+        const storePath = convertedUrl ? convertedUrl.pathname : url
+        const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
+
+        window.top.location.assign(`/admin/cms/storefront${pathname}`)
       },
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
