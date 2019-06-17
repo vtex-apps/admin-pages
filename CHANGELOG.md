@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Adds the ability to navigate to a specific URL by editing the storefront URL in the UI
 
 ## [4.0.0-beta] - 2019-06-10
 
