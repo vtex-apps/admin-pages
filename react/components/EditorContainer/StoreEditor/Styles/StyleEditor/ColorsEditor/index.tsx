@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 
@@ -61,9 +61,8 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     [onSave]
   )
 
-  const startEditing = useMemo(
-    () => (token: string) =>
-      history.push(EditorPath.colors.replace(IdParam, token)),
+  const startEditing = useCallback(
+    (token: string) => history.push(EditorPath.colors.replace(IdParam, token)),
     [history]
   )
 
