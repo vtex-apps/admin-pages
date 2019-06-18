@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, RouteComponentProps, Switch } from 'react-router'
 
 import ColorsEditor from './ColorsEditor'
@@ -50,9 +50,15 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
   style,
 }) => {
   const stylesheet = data && data.generateStyleSheet
-  if (stylesheet) {
-    setStyleAsset({ type: 'stylesheet', value: stylesheet })
-  }
+
+  useEffect(
+    () => {
+      if (stylesheet) {
+        setStyleAsset({ type: 'stylesheet', value: stylesheet })
+      }
+    },
+    [stylesheet]
+  )
 
   const renderEditorSelector = (_: RouteComponentProps) => (
     <EditorSelector {...{ config, name, onSave, stopEditing }} />
