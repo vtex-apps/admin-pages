@@ -211,7 +211,7 @@
   "admin/pages.editor.styles.edit.custom-font.upload-description-max-size": "(Tamaño máximo 2MB)",
   "admin/pages.editor.styles.edit.custom-font.upload-description": "Cargue los archivos de fuentes en formatos .ttf o .woff",
   "admin/pages.editor.styles.edit.custom-font.upload": "Subir",
-  "admin/pages.editor.styles.edit.font-family.add-font-description": "You can add custom font families to your store, let’s add some?",
+  "admin/pages.editor.styles.edit.font-family.add-font-description": "Puedes agregar familias de fuentes personalizadas a tu tienda, ¿vamos a agregar algunas?",
   "admin/pages.editor.styles.edit.font-family.add-font": "Agregar fuente personalizada",
   "admin/pages.editor.styles.edit.font-family.title": "Familia tipográfica",
   "admin/pages.editor.styles.edit.save.failed": "Error al guardar estilo.",
