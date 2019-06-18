@@ -64,7 +64,7 @@ const Topbar: React.FunctionComponent<Props> = ({
         visible ? 'ph5 f6 h-3em w-100 flex justify-between items-center' : 'dn'
       }
     >
-      <div className="flex items-stretch">
+      <div className="flex items-stretch w-100">
         {mode ? (
           <Fragment>
             <ModeButton changeMode={changeMode} mode={undefined} />
@@ -79,7 +79,7 @@ const Topbar: React.FunctionComponent<Props> = ({
                 mode={buttonMode}
               />
             ))}
-            <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
+            <div className="flex items-center flex-grow-1 mv4 pl5 bw1 bl b--muted-5">
               <div className="nowrap">
                 <FormattedMessage id="admin/pages.editor.container.editpath.label" />
               </div>
