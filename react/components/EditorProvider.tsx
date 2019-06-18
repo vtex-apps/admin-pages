@@ -31,6 +31,25 @@ interface State {
 // tslint:disable-next-line:no-empty
 const noop = () => {}
 
+const getUrlProperties = (href: string) => {
+  const match = href.match(
+    /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
+  )
+
+  return (
+    match && {
+      hash: match[7],
+      host: match[2],
+      hostname: match[3],
+      href,
+      pathname: match[5],
+      port: match[4],
+      protocol: match[1],
+      search: match[6],
+    }
+  )
+}
+
 const viewPorts: { [name: string]: Viewport[] } = {
   default: ['mobile', 'tablet', 'desktop'],
   desktop: [],
@@ -119,10 +138,12 @@ class EditorProvider extends Component<Props, State> {
               const pathFromCurrentPage = this.state.iframeRuntime!.route.path
               const isRootPath =
                 pathFromCurrentPage === '/' || location.pathname === '/'
-              const hasParamsChanged = !equals(
-                location.state.navigationRoute.params,
-                this.state.iframeRuntime!.route.params
-              )
+              const hasParamsChanged =
+                !location.state ||
+                !equals(
+                  location.state.navigationRoute.params,
+                  this.state.iframeRuntime!.route.params
+                )
 
               const isDifferentPath = isRootPath
                 ? pathFromCurrentPage !== location.pathname
@@ -302,6 +323,16 @@ class EditorProvider extends Component<Props, State> {
     this.setState({ mode })
   }
 
+  public handleChangeIframeUrl = (url: string) => {
+    window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
+
+    const convertedUrl = getUrlProperties(url)
+    const storePath = convertedUrl ? convertedUrl.pathname : url
+    const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
+
+    window.top.location.assign(`/admin/cms/storefront${pathname}`)
+  }
+
   public render() {
     const {
       children,
@@ -332,6 +363,7 @@ class EditorProvider extends Component<Props, State> {
       iframeWindow,
       messages,
       mode,
+      onChangeIframeUrl: this.handleChangeIframeUrl,
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
       setIsLoading: this.handleSetIsLoading,

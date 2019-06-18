@@ -63,7 +63,7 @@ const EditorContainer: React.FC<Props> = ({
   viewports,
   visible,
 }) => {
-  const { editMode, editExtensionPoint, viewport, iframeWindow } = editor
+  const { editMode, editExtensionPoint, viewport, iframeWindow, onChangeIframeUrl } = editor
   const [storeEditMode, setStoreEditMode] = useState<StoreEditMode>()
 
   const highlightExtensionPoint = useCallback(
@@ -111,6 +111,7 @@ const EditorContainer: React.FC<Props> = ({
               <Topbar
                 changeMode={setStoreEditMode}
                 mode={storeEditMode}
+                onChangeUrlPath={onChangeIframeUrl}
                 urlPath={iframeWindow.location.pathname}
                 visible={visible}
               />
