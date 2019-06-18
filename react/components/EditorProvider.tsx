@@ -32,9 +32,10 @@ interface State {
 const noop = () => {}
 
 const getUrlProperties = (href: string) => {
-  const match: string = href.match(
+  const match = href.match(
     /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
   )
+
   return (
     match && {
       hash: match[7],
@@ -132,7 +133,6 @@ class EditorProvider extends Component<Props, State> {
           this.state.iframeRuntime.history &&
           !this.unlisten
         ) {
-          console.log(this.state.iframeRuntime)
           this.unlisten = this.state.iframeRuntime.history.listen(
             (location, action) => {
               const pathFromCurrentPage = this.state.iframeRuntime!.route.path
@@ -323,6 +323,16 @@ class EditorProvider extends Component<Props, State> {
     this.setState({ mode })
   }
 
+  public handleChangeIframeUrl = url => {
+    window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
+
+    const convertedUrl = getUrlProperties(url)
+    const storePath = convertedUrl ? convertedUrl.pathname : url
+    const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
+
+    window.top.location.assign(`/admin/cms/storefront${pathname}`)
+  }
+
   public render() {
     const {
       children,
@@ -353,15 +363,7 @@ class EditorProvider extends Component<Props, State> {
       iframeWindow,
       messages,
       mode,
-      onChangeIframeUrl: url => {
-        window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
-
-        const convertedUrl = getUrlProperties(url)
-        const storePath = convertedUrl ? convertedUrl.pathname : url
-        const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
-
-        window.top.location.assign(`/admin/cms/storefront${pathname}`)
-      },
+      onChangeIframeUrl: this.handleChangeIframeUrl,
       removeCondition: this.handleRemoveCondition,
       setDevice: this.handleSetDevice,
       setIsLoading: this.handleSetIsLoading,

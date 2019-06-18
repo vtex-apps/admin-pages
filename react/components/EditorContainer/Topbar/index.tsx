@@ -23,7 +23,6 @@ const Topbar: React.FunctionComponent<Props> = ({
   urlPath,
   visible,
 }) => {
-  const editor = useEditorContext()
   const [urlInputDisabled, setUrlInputDisabled] = useState(false)
   const [url, setUrl] = useState(urlPath)
 
@@ -36,7 +35,7 @@ const Topbar: React.FunctionComponent<Props> = ({
 
   const onEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
-    callback: (...args: any[]) => any
+    callback: () => void
   ) => event.key === 'Enter' && callback()
 
   const handleNavigateToUrl = () => {
@@ -47,10 +46,8 @@ const Topbar: React.FunctionComponent<Props> = ({
     onChangeUrlPath(url)
   }
 
-  const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    onEnter(e, () => {
-      handleNavigateToUrl()
-    })
+  const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    onEnter(e, handleNavigateToUrl)
   }
 
   const handleChangeUrl = (e: React.ChangeEvent<HTMLInputElement>) => {
