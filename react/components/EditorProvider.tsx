@@ -323,7 +323,7 @@ class EditorProvider extends Component<Props, State> {
     this.setState({ mode })
   }
 
-  public handleChangeIframeUrl = url => {
+  public handleChangeIframeUrl = (url: string) => {
     window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
 
     const convertedUrl = getUrlProperties(url)
