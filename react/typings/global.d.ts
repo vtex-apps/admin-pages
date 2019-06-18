@@ -96,6 +96,7 @@ declare global {
 
   type RuntimeHistory = History & {
     block: (s: string) => () => void
+    replace: (s: string) => void
     listen: (
       listenCb: (location: HistoryLocation, action: string) => void
     ) => () => void
@@ -157,6 +158,7 @@ declare global {
     editMode: boolean
     editTreePath: string | null
     getIsLoading: () => boolean
+    onChangeIframeUrl: (url: string) => void
     iframeWindow: Window
     messages: RenderRuntime['messages']
     mode: EditorMode
