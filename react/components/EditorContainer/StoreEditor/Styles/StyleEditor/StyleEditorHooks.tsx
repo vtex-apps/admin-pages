@@ -23,6 +23,17 @@ type ConfigReducer = (
   partialConfig: DeepPartial<TachyonsConfig>
 ) => TachyonsConfig
 
+defineMessages({
+  saveFailed: {
+    defaultMessage: 'An error occurred while saving your style.',
+    id: 'admin/pages.editor.styles.edit.save.failed',
+  },
+  saveSuccessful: {
+    defaultMessage: 'Style saved successfully.',
+    id: 'admin/pages.editor.styles.edit.save.successful',
+  },
+})
+
 const StyleEditorStates: React.FunctionComponent<Props> = ({
   style,
   intl,
@@ -48,17 +59,6 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
     editing: editingState,
     name: nameState,
   }
-
-  defineMessages({
-    saveFailed: {
-      defaultMessage: 'An error occurred while saving your style.',
-      id: 'admin/pages.editor.styles.edit.save.failed',
-    },
-    saveSuccessful: {
-      defaultMessage: 'Style saved successfully.',
-      id: 'admin/pages.editor.styles.edit.save.successful',
-    },
-  })
 
   const saveStyle = useCallback(
     async () => {

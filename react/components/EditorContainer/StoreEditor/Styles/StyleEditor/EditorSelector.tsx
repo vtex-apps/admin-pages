@@ -13,6 +13,17 @@ interface Props {
   stopEditing: () => void
 }
 
+defineMessages({
+  colorsTitle: {
+    defaultMessage: 'Colors',
+    id: 'admin/pages.editor.styles.edit.colors.title',
+  },
+  typographyTitle: {
+    defaultMessage: 'Typography',
+    id: 'admin/pages.editor.styles.edit.typography.title',
+  },
+})
+
 const EditorSelector: React.FunctionComponent<Props> = ({
   config,
   name,
@@ -25,22 +36,12 @@ const EditorSelector: React.FunctionComponent<Props> = ({
     },
   } = config
 
-  defineMessages({
-    colorsTitle: {
-      defaultMessage: 'Colors',
-      id: 'admin/pages.editor.styles.edit.colors.title',
-    },
-    typographyTitle: {
-      defaultMessage: 'Typography',
-      id: 'admin/pages.editor.styles.edit.typography.title',
-    },
-  })
-
   const colorEditorProps = {
     path: EditorPath.colors.replace(IdParam, ''),
     titleId: 'admin/pages.editor.styles.edit.colors.title',
     widget: <Colors colors={[emphasis, action_primary]} />,
   }
+
   const typographyEditorProps = {
     path: EditorPath.typography,
     titleId: 'admin/pages.editor.styles.edit.typography.title',

@@ -5,6 +5,13 @@ import AvailableEditor from '../AvailableEditor'
 import StyleEditorHeader from '../StyleEditorHeader'
 import { EditorPath } from '../StyleEditorRouter'
 
+defineMessages({
+  fontFamilyTitle: {
+    defaultMessage: 'Font Family',
+    id: 'admin/pages.editor.styles.edit.font-family.title',
+  },
+})
+
 const TypographyEditor: React.FunctionComponent = () => {
   const title = (
     <FormattedMessage
@@ -12,13 +19,6 @@ const TypographyEditor: React.FunctionComponent = () => {
       defaultMessage="Typography"
     />
   )
-
-  defineMessages({
-    fontFamilyTitle: {
-      defaultMessage: 'Font Family',
-      id: 'admin/pages.editor.styles.edit.font-family.title',
-    },
-  })
 
   return (
     <>
