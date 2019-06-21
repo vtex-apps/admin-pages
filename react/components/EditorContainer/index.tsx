@@ -2,6 +2,8 @@ import debounce from 'lodash.debounce'
 import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
+import { FormattedMessage } from 'react-intl'
+import { Alert } from 'vtex.styleguide'
 
 import { State as HighlightOverlayState } from '../../HighlightOverlay'
 
@@ -63,7 +65,13 @@ const EditorContainer: React.FC<Props> = ({
   viewports,
   visible,
 }) => {
-  const { editMode, editExtensionPoint, viewport, iframeWindow, onChangeIframeUrl } = editor
+  const {
+    editMode,
+    editExtensionPoint,
+    viewport,
+    iframeWindow,
+    onChangeIframeUrl,
+  } = editor
   const [storeEditMode, setStoreEditMode] = useState<StoreEditMode>()
 
   const highlightExtensionPoint = useCallback(
@@ -93,6 +101,7 @@ const EditorContainer: React.FC<Props> = ({
   )
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
+  const isDevelopment = runtime && runtime.production === false
 
   return (
     <FormMetaProvider>
@@ -106,7 +115,7 @@ const EditorContainer: React.FC<Props> = ({
               visible={visible}
             />
           )}
-          <div className="min-vh-100 flex-grow-1 db-ns dn">
+          <div className="flex-grow-1 db-ns dn">
             {runtime && (
               <Topbar
                 changeMode={setStoreEditMode}
@@ -116,10 +125,20 @@ const EditorContainer: React.FC<Props> = ({
                 visible={visible}
               />
             )}
+            {isDevelopment && (
+              <div className="pa5 bg-muted-5">
+                <Alert type="warning">
+                  <FormattedMessage
+                    id="admin/pages.editor.container.dev-mode-warning.text"
+                    defaultMessage="You are in development mode. Changes to the content will not go to production."
+                  />
+                </Alert>
+              </div>
+            )}
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
                 visible && runtime
-                  ? 'calc--height-relative'
+                  ? `calc--height-relative${isDevelopment ? '--dev' : ''}`
                   : 'top-0 w-100 h-100'
               }`}
             >

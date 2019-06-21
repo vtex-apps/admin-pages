@@ -46,7 +46,9 @@ const Topbar: React.FunctionComponent<Props> = ({
     onChangeUrlPath(url)
   }
 
-  const handleUrlKeyPress = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+  const handleUrlKeyPress = (
+    e: React.KeyboardEvent<HTMLInputElement>
+  ): void => {
     onEnter(e, handleNavigateToUrl)
   }
 
