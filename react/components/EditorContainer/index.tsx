@@ -130,7 +130,7 @@ const EditorContainer: React.FC<Props> = ({
                 <Alert type="warning">
                   <FormattedMessage
                     id="admin/pages.editor.container.dev-mode-warning.text"
-                    defaultMessage="You are in develompent mode. Changes to the content will not go to production."
+                    defaultMessage="You are in development mode. Changes to the content will not go to production."
                   />
                 </Alert>
               </div>
