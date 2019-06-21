@@ -141,6 +141,7 @@
   "admin/pages.editor.components.modal.button.discard": "Descartar",
   "admin/pages.editor.components.modal.text": "Você tem modificações não salvas.",
   "admin/pages.editor.components.title": "Blocos",
+  "admin/pages.editor.container.dev-mode-warning.text": "Você está em modo de desenvolvimento. Mudanças no conteúdo não poderão ir pra loja em produção.",
   "admin/pages.editor.configuration.button.create": "Novo conteúdo",
   "admin/pages.editor.configuration.condition.date.from": "Início:",
   "admin/pages.editor.configuration.condition.date.to": "Fim:",

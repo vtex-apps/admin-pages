@@ -2,6 +2,7 @@ import debounce from 'lodash.debounce'
 import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
+import { FormattedMessage } from 'react-intl'
 import { Alert } from 'vtex.styleguide'
 
 import { State as HighlightOverlayState } from '../../HighlightOverlay'
@@ -127,8 +128,10 @@ const EditorContainer: React.FC<Props> = ({
             {isDevelopment && (
               <div className="pa5 bg-muted-5">
                 <Alert type="warning">
-                  Você está em modo de desenvolvimento. Mudanças no conteúdo não
-                  poderão ir pra loja em produção.
+                  <FormattedMessage
+                    id="admin/pages.editor.container.dev-mode-warning.text"
+                    defaultMessage="You are in develompent mode. Changes to the content will not go to production."
+                  />
                 </Alert>
               </div>
             )}

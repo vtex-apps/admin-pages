@@ -141,6 +141,7 @@
   "admin/pages.editor.components.modal.button.discard": "Discard",
   "admin/pages.editor.components.modal.text": "You have unsaved modifications.",
   "admin/pages.editor.components.title": "Blocks",
+  "admin/pages.editor.container.dev-mode-warning.text": "You are in develompent mode. Changes to the content will not go to production.",
   "admin/pages.editor.configuration.button.create": "New content",
   "admin/pages.editor.configuration.condition.date.from": "Start:",
   "admin/pages.editor.configuration.condition.date.to": "End:",
