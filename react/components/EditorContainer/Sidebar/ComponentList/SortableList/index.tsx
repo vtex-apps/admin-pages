@@ -8,7 +8,7 @@ import SortableListItem from './SortableListItem'
 interface CustomProps {
   components: NormalizedComponent[]
   onDelete: (treePath: string) => void
-  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onEdit: (component: NormalizedComponent) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void

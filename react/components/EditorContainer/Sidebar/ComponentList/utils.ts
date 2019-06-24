@@ -104,7 +104,7 @@ const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
     const normalized = {
       ...component,
       components: [],
-      isEditable: component.schema && 'properties' in component.schema,
+      isEditable: !!component.schema && 'properties' in component.schema,
       isSortable: false,
     }
     const parentId = parentTreePath(modifiedTreePath)

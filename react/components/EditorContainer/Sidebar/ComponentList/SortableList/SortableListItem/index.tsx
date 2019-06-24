@@ -13,7 +13,7 @@ import { ActionMenuOption } from './typings'
 interface CustomProps extends SortableElementProps {
   component: NormalizedComponent
   onDelete: (treePath: string) => void
-  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onEdit: (event: NormalizedComponent) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
@@ -81,7 +81,7 @@ class SortableListItem extends Component<Props, State> {
           <Item
             hasSubItems={hasSubItems}
             isSortable={component.isSortable}
-            onEdit={onEdit}
+            onEdit={this.handleClick}
             onMouseEnter={onMouseEnter}
             onMouseLeave={onMouseLeave}
             title={component.name}
@@ -126,6 +126,10 @@ class SortableListItem extends Component<Props, State> {
         )}
       </>
     )
+  }
+
+  private handleClick = () => {
+    this.props.onEdit(this.props.component)
   }
 
   private handleDelete = () => {

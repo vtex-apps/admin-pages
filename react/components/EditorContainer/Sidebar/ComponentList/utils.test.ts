@@ -45,47 +45,55 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.category-menu.title',
             treePath: 'store.home/$before_0/category-menu',
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.login.title',
             treePath: 'store.home/$before_0/login',
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.menu',
             treePath: 'store.home/$before_0/menu-link',
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.minicart.title',
             treePath: 'store.home/$before_0/minicart',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -137,17 +145,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.header.title',
             treePath: 'store.home/$before_0/menu',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
@@ -160,29 +171,34 @@ describe('normalize', () => {
                 components: [
                   {
                     components: [],
+                    isEditable: false,
                     isSortable: false,
                     name: 'editor.product-rating.start.title',
                     treePath:
                       'store.home/shelf#home/product-summary/product-rating/start',
                   },
                 ],
+                isEditable: false,
                 isSortable: false,
                 name: 'editor.product-rating.title',
                 treePath:
                   'store.home/shelf#home/product-summary/product-rating',
               },
             ],
+            isEditable: false,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -217,18 +233,21 @@ describe('normalize', () => {
             components: [
               {
                 components: [],
+                isEditable: false,
                 isSortable: false,
                 name: 'editor.product-summary.star.title',
                 treePath:
                   'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
               },
             ],
+            isEditable: false,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath:
               'store.home/shelf#home/spacer/placeholder/flex/product-summary',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
@@ -265,12 +284,14 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
@@ -279,17 +300,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -334,24 +358,28 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.around-carousel.title',
         treePath: 'store.home/carousel#home/$around_0',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.around-shelf.title',
         treePath: 'store.home/shelf#home/$around_0',
@@ -360,17 +388,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -399,6 +430,7 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
+        isEditable: false,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/layout#home',
@@ -407,11 +439,13 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/layout#homeCollection/button',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.product-summary.title',
         treePath: 'store.home/layout#homeCollection',
@@ -465,6 +499,7 @@ describe('normalize', () => {
         components: [
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.rich-text.title',
             treePath:
@@ -472,6 +507,7 @@ describe('normalize', () => {
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -479,6 +515,7 @@ describe('normalize', () => {
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -486,6 +523,7 @@ describe('normalize', () => {
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -493,6 +531,7 @@ describe('normalize', () => {
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -500,12 +539,14 @@ describe('normalize', () => {
           },
           {
             components: [],
+            isEditable: false,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
               'store.home/flex-layout.row#homeCollections/flex-layout.col#rightCollection/info-card#homeCollectionsDisney',
           },
         ],
+        isEditable: false,
         isSortable: false,
         name: 'editor.row.title',
         treePath: 'store.home/flex-layout.row#homeCollections',
