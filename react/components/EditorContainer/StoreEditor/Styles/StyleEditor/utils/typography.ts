@@ -71,10 +71,13 @@ export function getTypeTokenDropdownOptions(
   const options = (() => {
     switch (key) {
       case 'fontFamily':
-        return fontFamilies.map(({ fontFamily }) => ({
-          label: fontFamily,
-          value: fontFamily,
-        }))
+        return [
+          ...fontFamilies.map(({ fontFamily, id }) => ({
+            label: fontFamily,
+            value: id,
+          })),
+          { label: 'Default', value: '' },
+        ]
       case 'fontWeight':
         return [
           { label: 'Thin', value: '100' },
@@ -94,8 +97,8 @@ export function getTypeTokenDropdownOptions(
           { label: '24px', value: '1.5rem' },
           { label: '20px', value: '1.25rem' },
           { label: '16px', value: '1rem' },
-          { label: '14px', value: '.875rem' },
-          { label: '12px', value: '.75rem' },
+          { label: '14px', value: '0.875rem' },
+          { label: '12px', value: '0.75rem' },
         ]
       case 'letterSpacing':
         return [
@@ -115,9 +118,12 @@ export function getTypeTokenDropdownOptions(
     }
   })()
 
+  const equalsCurrentValue = ({ value }: DropdownOption) =>
+    value === (font[key] || '')
+
   const currentIfNotInOptions =
-    options.find(({ value }) => value === font[key]) == null
-      ? [{ label: startCase(font[key].split(',')[0]), value: font[key] }]
+    options.find(equalsCurrentValue) == null
+      ? [{ label: startCase(font[key]), value: font[key] as string }]
       : []
 
   return [...currentIfNotInOptions, ...options]

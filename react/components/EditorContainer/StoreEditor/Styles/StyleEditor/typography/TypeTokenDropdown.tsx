@@ -7,11 +7,14 @@ import { FontFamily } from '../queries/ListFontsQuery'
 import { getTypeTokenDropdownOptions } from '../utils/typography'
 
 function getOnChange(key: keyof Font, dispatch: Dispatch<Partial<Font>>) {
-  return (_: React.ChangeEvent, value: string) => dispatch({ [key]: value })
+  return (_: React.ChangeEvent, value: string) => {
+    // Workaround since Dropdown does not work well with nil values
+    dispatch({ [key]: value === '' ? null : value })
+  }
 }
 
 function getValue(key: keyof Font, font: Font): string {
-  return font[key]
+  return font[key] || ''
 }
 
 interface EntryProps {
