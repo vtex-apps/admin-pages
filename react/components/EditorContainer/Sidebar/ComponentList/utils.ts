@@ -101,7 +101,12 @@ export const normalize = (components: SidebarComponent[]) => {
 const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
   const nodes: Record<string, NormalizedComponent> = {}
   orderedNodes.forEach(({ modifiedTreePath, ...component }) => {
-    const normalized = { ...component, isSortable: false, components: [] }
+    const normalized = {
+      ...component,
+      components: [],
+      isEditable: component.schema && 'properties' in component.schema,
+      isSortable: false,
+    }
     const parentId = parentTreePath(modifiedTreePath)
     nodes[modifiedTreePath] = normalized
 

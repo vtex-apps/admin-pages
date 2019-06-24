@@ -121,10 +121,14 @@ export function getComponents(
 
       return treePathA > treePathB ? 1 : -1
     })
-    .map<SidebarComponent>(treePath => ({
-      name: extensions[treePath].title || getComponentSchema(treePath).title!,
-      treePath,
-    }))
+    .map<SidebarComponent>(treePath => {
+      const schema = getComponentSchema(treePath)
+      return {
+        name: extensions[treePath].title || schema.title!,
+        schema,
+        treePath,
+      }
+    })
 }
 
 export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {

@@ -63,18 +63,30 @@ describe('getComponents', () => {
     ).toEqual([
       {
         name: 'Carousel',
+        schema: {
+          title: 'Carousel',
+        },
         treePath: 'store/home/carousel',
       },
       {
         name: 'Shelf',
+        schema: {
+          title: 'Shelf',
+        },
         treePath: 'store/home/shelf',
       },
       {
         name: 'Arrow',
+        schema: {
+          title: 'Arrow',
+        },
         treePath: 'store/home/shelf/arrow',
       },
       {
         name: 'Shelf Title',
+        schema: {
+          title: 'Shelf Title',
+        },
         treePath: 'store/home/shelf/title',
       },
     ])
@@ -106,18 +118,30 @@ describe('getComponents', () => {
     ).toEqual([
       {
         name: 'Shelf',
+        schema: {
+          title: 'Shelf',
+        },
         treePath: 'store/home/shelf',
       },
       {
         name: 'Carousel',
+        schema: {
+          title: 'Carousel',
+        },
         treePath: 'store/home/carousel',
       },
       {
         name: 'Arrow',
+        schema: {
+          title: 'Arrow',
+        },
         treePath: 'store/home/shelf/arrow',
       },
       {
         name: 'Shelf Title',
+        schema: {
+          title: 'Shelf Title',
+        },
         treePath: 'store/home/shelf/title',
       },
     ])
@@ -141,6 +165,9 @@ describe('getComponents', () => {
     ).toEqual([
       {
         name: 'Shelf',
+        schema: {
+          title: 'Shelf',
+        },
         treePath: 'store/home/shelf',
       },
     ])
