@@ -153,7 +153,7 @@ export default class HighlightOverlay extends Component<Props, State> {
         ? (element.getBoundingClientRect() as DOMRect)
         : this.INITIAL_HIGHLIGHT_RECT
 
-      if (element) {
+      if (element && !this.state.editMode) {
         this.debouncedScrollTo(element)
       }
 
