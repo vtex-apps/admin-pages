@@ -25,10 +25,10 @@ declare global {
     blockId: string
     blocks?: InnerBlock[]
     component: string | null
-    composition: 'blocks' | 'children'
+    composition?: 'blocks' | 'children'
     configurationsIds?: string[]
     content: object
-    contentMapId: string
+    contentMapId?: string
     implementationIndex: number
     implements: string[]
     props: object

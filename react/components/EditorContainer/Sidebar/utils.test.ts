@@ -217,7 +217,7 @@ describe('getIsSitewide', () => {
         },
       ],
       component: 'vtex.render-runtime@8.17.2/LayoutContainer',
-      composition: 'children',
+      composition: 'children' as Extension['composition'],
       content: {},
       context: {},
       implementationIndex: 0,
