@@ -195,6 +195,13 @@ query ListStyles {
       }
       typography {
         styles {
+          heading_1 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
           heading_2 {
             fontFamily
             fontWeight
@@ -202,7 +209,77 @@ query ListStyles {
             textTransform
             letterSpacing
           }
+          heading_3 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          heading_4 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          heading_5 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
           heading_6 {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          body {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          small {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          mini {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          action {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          action__small {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          action__large {
+            fontFamily
+            fontWeight
+            fontSize
+            textTransform
+            letterSpacing
+          }
+          code {
             fontFamily
             fontWeight
             fontSize

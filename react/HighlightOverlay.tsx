@@ -108,7 +108,7 @@ export default class HighlightOverlay extends Component<Props, State> {
           this.handleMouseLeaveHighlight
         )
         element.removeEventListener('click', this.handleClickHighlight)
-        element.style.cursor = null
+        element.style.cursor = 'default'
       }
     })
   }

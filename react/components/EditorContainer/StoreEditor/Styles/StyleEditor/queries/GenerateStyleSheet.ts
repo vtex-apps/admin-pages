@@ -1,7 +1,7 @@
 import { Query } from 'react-apollo'
 import GenerateStyleSheet from '../graphql/GenerateStyleSheet.graphql'
 
-interface GenerateStyleSheetData {
+export interface GenerateStyleSheetData {
   generateStyleSheet: string
 }
 
