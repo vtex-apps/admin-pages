@@ -60,7 +60,7 @@ class SortableListItem extends Component<Props, State> {
     return (
       <>
         <div
-          className="flex items-center bb bg-white hover-bg-light-silver b--light-silver"
+          className="flex items-center bb bg-white b--light-silver"
           data-tree-path={component.treePath}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
@@ -80,6 +80,7 @@ class SortableListItem extends Component<Props, State> {
           )}
           <Item
             hasSubItems={hasSubItems}
+            isEditable={component.isEditable}
             isSortable={component.isSortable}
             onEdit={this.handleClick}
             onMouseEnter={onMouseEnter}
