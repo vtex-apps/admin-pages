@@ -135,6 +135,16 @@ const EditorContainer: React.FC<Props> = ({
                 </Alert>
               </div>
             )}
+            {runtime && runtime.workspace === 'master' && (
+              <div className="pa5 bg-muted-5">
+                <Alert type="warning">
+                  <FormattedMessage
+                    id="admin/pages.editor.container.master-workspace-warning.text"
+                    defaultMessage="Changes to the content will have an immediate effect. Prefer using draft mode."
+                  />
+                </Alert>
+              </div>
+            )}
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
                 visible && runtime

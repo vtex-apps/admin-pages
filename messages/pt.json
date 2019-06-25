@@ -154,6 +154,7 @@
   "admin/pages.editor.configuration.scope.template.saved": "Salvo no",
   "admin/pages.editor.container.dev-mode-warning.text": "Você está em modo de desenvolvimento. Mudanças no conteúdo não poderão ir pra loja em produção.",
   "admin/pages.editor.container.editpath.label": "URL da página:",
+  "admin/pages.editor.container.master-workspace-warning.text": "Mudanças no conteúdo terão um efeito mediato. Prefira usar o modo rascunho.",
   "admin/pages.editor.image-uploader.change": "Trocar imagem",
   "admin/pages.editor.image-uploader.empty.button": "Fazer upload",
   "admin/pages.editor.image-uploader.empty.text": "Arraste sua imagem aqui",
