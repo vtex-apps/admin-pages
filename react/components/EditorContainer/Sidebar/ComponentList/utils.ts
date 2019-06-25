@@ -87,11 +87,12 @@ export const normalize = (components: SidebarComponent[]) => {
     return []
   }
   const rootId = components[0].treePath.split('/')[0]
-  const root = { treePath: rootId, name: 'root' }
+  const root = { treePath: rootId, name: 'root', isEditable: false }
   const allComponents = [root, ...components]
 
   const modifiedComponents = hideNonExistentNodesInTreePath(allComponents).sort(
-    (cmp1, cmp2) => modifiedPathLength(cmp1) - modifiedPathLength(cmp2)
+    (cmp1: ModifiedSidebarComponent, cmp2: ModifiedSidebarComponent) =>
+      modifiedPathLength(cmp1) - modifiedPathLength(cmp2)
   )
 
   const nodes = buildTree(modifiedComponents)
@@ -104,7 +105,6 @@ const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
     const normalized = {
       ...component,
       components: [],
-      isEditable: !!component.schema && 'properties' in component.schema,
       isSortable: false,
     }
     const parentId = parentTreePath(modifiedTreePath)

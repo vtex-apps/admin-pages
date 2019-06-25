@@ -62,31 +62,23 @@ describe('getComponents', () => {
       getComponents(mockExtensions as any, mockComponents as any, 'store/home')
     ).toEqual([
       {
+        isEditable: true,
         name: 'Carousel',
-        schema: {
-          title: 'Carousel',
-        },
         treePath: 'store/home/carousel',
       },
       {
+        isEditable: true,
         name: 'Shelf',
-        schema: {
-          title: 'Shelf',
-        },
         treePath: 'store/home/shelf',
       },
       {
+        isEditable: true,
         name: 'Arrow',
-        schema: {
-          title: 'Arrow',
-        },
         treePath: 'store/home/shelf/arrow',
       },
       {
+        isEditable: true,
         name: 'Shelf Title',
-        schema: {
-          title: 'Shelf Title',
-        },
         treePath: 'store/home/shelf/title',
       },
     ])
@@ -117,31 +109,23 @@ describe('getComponents', () => {
       )
     ).toEqual([
       {
+        isEditable: true,
         name: 'Shelf',
-        schema: {
-          title: 'Shelf',
-        },
         treePath: 'store/home/shelf',
       },
       {
+        isEditable: true,
         name: 'Carousel',
-        schema: {
-          title: 'Carousel',
-        },
         treePath: 'store/home/carousel',
       },
       {
+        isEditable: true,
         name: 'Arrow',
-        schema: {
-          title: 'Arrow',
-        },
         treePath: 'store/home/shelf/arrow',
       },
       {
+        isEditable: true,
         name: 'Shelf Title',
-        schema: {
-          title: 'Shelf Title',
-        },
         treePath: 'store/home/shelf/title',
       },
     ])
@@ -164,10 +148,8 @@ describe('getComponents', () => {
       getComponents(extensions as any, components as any, 'store/home')
     ).toEqual([
       {
+        isEditable: true,
         name: 'Shelf',
-        schema: {
-          title: 'Shelf',
-        },
         treePath: 'store/home/shelf',
       },
     ])

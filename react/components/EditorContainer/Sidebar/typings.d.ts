@@ -26,7 +26,7 @@ export interface ModalContext {
 
 export interface SidebarComponent {
   name: string
-  schema?: JSONSchema6
+  isEditable: boolean
   treePath: string
 }
 

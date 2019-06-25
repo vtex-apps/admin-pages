@@ -24,20 +24,46 @@ describe('normalize', () => {
 
   it('nests store.home/ level components', () => {
     const input: SidebarComponent[] = [
-      { name: 'editor.footer.title', treePath: 'store.home/$after_0' },
-      { name: 'editor.header.title', treePath: 'store.home/$before_0' },
       {
+        isEditable: true,
+        name: 'editor.footer.title',
+        treePath: 'store.home/$after_0',
+      },
+      {
+        isEditable: true,
+        name: 'editor.header.title',
+        treePath: 'store.home/$before_0',
+      },
+      {
+        isEditable: true,
         name: 'editor.category-menu.title',
         treePath: 'store.home/$before_0/category-menu',
       },
-      { name: 'editor.login.title', treePath: 'store.home/$before_0/login' },
-      { name: 'editor.menu', treePath: 'store.home/$before_0/menu-link' },
       {
+        isEditable: true,
+        name: 'editor.login.title',
+        treePath: 'store.home/$before_0/login',
+      },
+      {
+        isEditable: true,
+        name: 'editor.menu',
+        treePath: 'store.home/$before_0/menu-link',
+      },
+      {
+        isEditable: true,
         name: 'editor.minicart.title',
         treePath: 'store.home/$before_0/minicart',
       },
-      { name: 'editor.carousel.title', treePath: 'store.home/carousel#home' },
-      { name: 'editor.shelf.title', treePath: 'store.home/shelf#home' },
+      {
+        isEditable: true,
+        name: 'editor.carousel.title',
+        treePath: 'store.home/carousel#home',
+      },
+      {
+        isEditable: true,
+        name: 'editor.shelf.title',
+        treePath: 'store.home/shelf#home',
+      },
     ]
 
     const expectedOutput: NormalizedComponent[] = [
@@ -45,55 +71,55 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.category-menu.title',
             treePath: 'store.home/$before_0/category-menu',
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.login.title',
             treePath: 'store.home/$before_0/login',
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.menu',
             treePath: 'store.home/$before_0/menu-link',
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.minicart.title',
             treePath: 'store.home/$before_0/minicart',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -107,34 +133,42 @@ describe('normalize', () => {
   it('preserves multilevel structures', () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
+        isEditable: true,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0/menu',
       },
       {
+        isEditable: true,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
+        isEditable: true,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath: 'store.home/shelf#home/product-summary',
       },
       {
+        isEditable: true,
         name: 'editor.product-rating.title',
         treePath: 'store.home/shelf#home/product-summary/product-rating',
       },
       {
+        isEditable: true,
         name: 'editor.product-rating.start.title',
         treePath: 'store.home/shelf#home/product-summary/product-rating/start',
       },
       {
+        isEditable: true,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
       },
@@ -145,20 +179,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.header.title',
             treePath: 'store.home/$before_0/menu',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
@@ -171,34 +205,34 @@ describe('normalize', () => {
                 components: [
                   {
                     components: [],
-                    isEditable: false,
+                    isEditable: true,
                     isSortable: false,
                     name: 'editor.product-rating.start.title',
                     treePath:
                       'store.home/shelf#home/product-summary/product-rating/start',
                   },
                 ],
-                isEditable: false,
+                isEditable: true,
                 isSortable: false,
                 name: 'editor.product-rating.title',
                 treePath:
                   'store.home/shelf#home/product-summary/product-rating',
               },
             ],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -211,16 +245,19 @@ describe('normalize', () => {
   it('should treat "closest" node as next root', () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath:
           'store.home/shelf#home/spacer/placeholder/flex/product-summary',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.star.title',
         treePath:
           'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
       },
       {
+        isEditable: true,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
@@ -233,21 +270,21 @@ describe('normalize', () => {
             components: [
               {
                 components: [],
-                isEditable: false,
+                isEditable: true,
                 isSortable: false,
                 name: 'editor.product-summary.star.title',
                 treePath:
                   'store.home/shelf#home/spacer/placeholder/flex/product-summary/star',
               },
             ],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath:
               'store.home/shelf#home/spacer/placeholder/flex/product-summary',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
@@ -260,22 +297,27 @@ describe('normalize', () => {
   it('handles unordered components', () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath: 'store.home/shelf#home/product-summary',
       },
       {
+        isEditable: true,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
+        isEditable: true,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
+        isEditable: true,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
@@ -284,14 +326,14 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
@@ -300,20 +342,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -326,30 +368,37 @@ describe('normalize', () => {
   it(`handles components with 'around' blocks`, () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
+        isEditable: true,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath: 'store.home/shelf#home/product-summary',
       },
       {
+        isEditable: true,
         name: 'editor.around-shelf.title',
         treePath: 'store.home/shelf#home/$around_0',
       },
       {
+        isEditable: true,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
+        isEditable: true,
         name: 'editor.around-carousel.title',
         treePath: 'store.home/carousel#home/$around_0',
       },
       {
+        isEditable: true,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
       },
@@ -358,28 +407,28 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.header.title',
         treePath: 'store.home/$before_0',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.around-carousel.title',
         treePath: 'store.home/carousel#home/$around_0',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/carousel#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.around-shelf.title',
         treePath: 'store.home/shelf#home/$around_0',
@@ -388,20 +437,20 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/shelf#home/product-summary',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.shelf.title',
         treePath: 'store.home/shelf#home',
       },
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.footer.title',
         treePath: 'store.home/$after_0',
@@ -414,14 +463,17 @@ describe('normalize', () => {
   it('should handle treePaths with same beginning but that are different blocks', () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.carousel.title',
         treePath: 'store.home/layout#home',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath: 'store.home/layout#homeCollection',
       },
       {
+        isEditable: true,
         name: 'editor.product-summary.title',
         treePath: 'store.home/layout#homeCollection/button',
       },
@@ -430,7 +482,7 @@ describe('normalize', () => {
     const expectedOutput: NormalizedComponent[] = [
       {
         components: [],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.carousel.title',
         treePath: 'store.home/layout#home',
@@ -439,13 +491,13 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'editor.product-summary.title',
             treePath: 'store.home/layout#homeCollection/button',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.product-summary.title',
         treePath: 'store.home/layout#homeCollection',
@@ -459,35 +511,42 @@ describe('normalize', () => {
   it('should put components in closest ancestor', () => {
     const input: SidebarComponent[] = [
       {
+        isEditable: true,
         name: 'editor.row.title',
         treePath: 'store.home/flex-layout.row#homeCollections',
       },
       {
+        isEditable: true,
         name: 'admin/editor.rich-text.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#leftCollection/rich-text#homeCollectionsTitle',
       },
       {
+        isEditable: true,
         name: 'admin/editor.info-card.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerDCComics',
       },
       {
+        isEditable: true,
         name: 'admin/editor.info-card.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsBottom/info-card#homeBannerMarvel',
       },
       {
+        isEditable: true,
         name: 'admin/editor.info-card.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerAngel',
       },
       {
+        isEditable: true,
         name: 'admin/editor.info-card.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#middleCollection/flex-layout.row#homeCollectionsTop/info-card#homeBannerSeaHunter',
       },
       {
+        isEditable: true,
         name: 'admin/editor.info-card.title',
         treePath:
           'store.home/flex-layout.row#homeCollections/flex-layout.col#rightCollection/info-card#homeCollectionsDisney',
@@ -499,7 +558,7 @@ describe('normalize', () => {
         components: [
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.rich-text.title',
             treePath:
@@ -507,7 +566,7 @@ describe('normalize', () => {
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -515,7 +574,7 @@ describe('normalize', () => {
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -523,7 +582,7 @@ describe('normalize', () => {
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -531,7 +590,7 @@ describe('normalize', () => {
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
@@ -539,14 +598,14 @@ describe('normalize', () => {
           },
           {
             components: [],
-            isEditable: false,
+            isEditable: true,
             isSortable: false,
             name: 'admin/editor.info-card.title',
             treePath:
               'store.home/flex-layout.row#homeCollections/flex-layout.col#rightCollection/info-card#homeCollectionsDisney',
           },
         ],
-        isEditable: false,
+        isEditable: true,
         isSortable: false,
         name: 'editor.row.title',
         treePath: 'store.home/flex-layout.row#homeCollections',
@@ -560,6 +619,7 @@ describe('normalize', () => {
 describe('isRootComponent', () => {
   it(`returns true when called with 'store.home/header.full'`, () => {
     const input: SidebarComponent = {
+      isEditable: true,
       name: 'header',
       treePath: 'store.home/header.full',
     }
@@ -571,6 +631,7 @@ describe('isRootComponent', () => {
 
   it(`returns true when called with 'store.home/footer'`, () => {
     const input: SidebarComponent = {
+      isEditable: true,
       name: 'footer',
       treePath: 'store.home/footer',
     }
@@ -582,6 +643,7 @@ describe('isRootComponent', () => {
 
   it(`returns true when called with 'store.home/test'`, () => {
     const input: SidebarComponent = {
+      isEditable: true,
       name: 'test',
       treePath: 'store.home/test',
     }
@@ -593,6 +655,7 @@ describe('isRootComponent', () => {
 
   it(`returns false when called with 'store.home/header/login'`, () => {
     const input: SidebarComponent = {
+      isEditable: true,
       name: 'login',
       treePath: 'store.home/header.full/login',
     }
@@ -604,6 +667,7 @@ describe('isRootComponent', () => {
 
   it(`returns false when called with 'store.home/shelf/product-summary'`, () => {
     const input: SidebarComponent = {
+      isEditable: true,
       name: 'product-summary',
       treePath: 'store.home/shelf/product-summary',
     }

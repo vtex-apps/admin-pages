@@ -123,9 +123,15 @@ export function getComponents(
     })
     .map<SidebarComponent>(treePath => {
       const schema = getComponentSchema(treePath)
+      const extension = pathOr<Partial<Extension>, Extension>(
+        {},
+        [treePath],
+        extensions
+      )
+
       return {
+        isEditable: extension.composition !== 'children',
         name: extensions[treePath].title || schema.title!,
-        schema,
         treePath,
       }
     })
