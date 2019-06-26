@@ -152,6 +152,7 @@
   "admin/pages.editor.configuration.scope.sitewide.saved": "admin/pages.editor.configuration.scope.sitewide.saved",
   "admin/pages.editor.configuration.scope.template.context": "admin/pages.editor.configuration.scope.template.context",
   "admin/pages.editor.configuration.scope.template.saved": "admin/pages.editor.configuration.scope.template.saved",
+  "admin/pages.editor.container.dev-mode-warning.text": "admin/pages.editor.container.dev-mode-warning.text",
   "admin/pages.editor.container.editpath.label": "admin/pages.editor.container.editpath.label",
   "admin/pages.editor.image-uploader.change": "admin/pages.editor.image-uploader.change",
   "admin/pages.editor.image-uploader.empty.button": "admin/pages.editor.image-uploader.empty.button",

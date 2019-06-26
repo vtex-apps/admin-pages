@@ -8,7 +8,7 @@ import SortableListItem from './SortableListItem'
 interface CustomProps {
   components: NormalizedComponent[]
   onDelete: (treePath: string) => void
-  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onEdit: (component: NormalizedComponent) => void
   onMouseEnter: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
@@ -19,7 +19,7 @@ type Props = CustomProps
 
 const SortableList = SortableContainer<Props>(
   ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }) => (
-    <ul className="mv0 pl0 overflow-y-auto pointer">
+    <ul className="mv0 pl0 overflow-y-auto">
       {components.map((component, index) => (
         <SortableListItem
           component={component}

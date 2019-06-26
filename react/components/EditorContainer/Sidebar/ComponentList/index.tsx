@@ -250,19 +250,19 @@ class ComponentList extends Component<Props, State> {
     )
   }
 
-  private handleEdit = (event: React.MouseEvent<HTMLDivElement>) => {
+  private handleEdit = (component: NormalizedComponent) => {
     if (this.state.changes.length > 0) {
       this.setState({
         isModalOpen: true,
       })
     } else {
       const { editor, highlightHandler } = this.props
+      const { treePath, isEditable } = component
 
-      const treePath = event.currentTarget.getAttribute('data-tree-path')
-
-      editor.editExtensionPoint(treePath)
-
-      highlightHandler(null)
+      if (isEditable) {
+        editor.editExtensionPoint(treePath)
+        highlightHandler(null)
+      }
     }
   }
 

@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Prevent click on extensions that have `composition === 'children'`.
+- Change style of items: `ExpandArrow` and `Item` hovers have been separated and no cursor and no hover on uneditable items.
+
 ## [4.1.0] - 2019-06-21
+
 ### Added
+
 - Add warning to top of storefront when user is in development mode telling
   changes to content can't be promoted
 
 ## [4.0.0] - 2019-06-18
+
 ### Added
+
 - Adds the ability to navigate to a specific URL by editing the storefront URL in the UI
 
 ## [4.0.0-beta] - 2019-06-10
