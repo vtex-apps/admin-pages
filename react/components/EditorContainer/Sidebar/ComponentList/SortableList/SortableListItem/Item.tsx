@@ -5,6 +5,7 @@ import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
   hasSubItems?: boolean
+  isEditable: boolean
   isSortable?: boolean
   isChild?: boolean
   onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -24,6 +25,7 @@ const messages = defineMessages({
 const Item: React.FunctionComponent<Props> = ({
   hasSubItems,
   intl,
+  isEditable,
   isSortable,
   isChild,
   onEdit,
@@ -35,17 +37,18 @@ const Item: React.FunctionComponent<Props> = ({
   let leftPaddingClassName = 'pl8'
   if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
-  } else if (isSortable) {
+  } else if (isSortable || hasSubItems) {
     leftPaddingClassName = 'pl2'
-  } else if (hasSubItems) {
-    leftPaddingClassName = 'pl3'
   }
 
   return (
     <div
       className={classnames(
         'w-100 pv5 pr0 dark-gray bg-inherit tl',
-        leftPaddingClassName
+        leftPaddingClassName,
+        {
+          'hover-bg-light-silver': isEditable,
+        }
       )}
       data-tree-path={treePath}
       key={treePath}
@@ -55,6 +58,7 @@ const Item: React.FunctionComponent<Props> = ({
       style={{
         ...{ animationDuration: '0.2s' },
         ...(!hasSubItems || isSortable ? { marginLeft: 1 } : null),
+        ...{ cursor: isEditable ? 'pointer' : 'default' },
       }}
     >
       <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>

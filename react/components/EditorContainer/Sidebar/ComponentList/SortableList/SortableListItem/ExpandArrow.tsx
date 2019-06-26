@@ -17,15 +17,15 @@ const ExpandArrow: React.FunctionComponent<Props> = ({
   isExpanded,
   onClick,
 }) => (
-  <SideItem horizontalPaddingClassName="ph2" isPointer onClick={onClick}>
+  <SideItem horizontalPaddingClassName="ph3" isPointer onClick={onClick}>
     <div
       className={classnames(`flex items-center color-inherit`, {
-        'pl6 ml2': hasLeftMargin,
+        ph4: hasLeftMargin,
       })}
       style={hasLeftMargin ? {} : { marginRight: 3 }}
     >
       <div
-        className={classnames('color-inherit', styles['transition'], {
+        className={classnames('color-inherit', styles.transition, {
           'rotate-90': isExpanded,
         })}
       >

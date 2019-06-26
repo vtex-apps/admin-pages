@@ -62,18 +62,22 @@ describe('getComponents', () => {
       getComponents(mockExtensions as any, mockComponents as any, 'store/home')
     ).toEqual([
       {
+        isEditable: true,
         name: 'Carousel',
         treePath: 'store/home/carousel',
       },
       {
+        isEditable: true,
         name: 'Shelf',
         treePath: 'store/home/shelf',
       },
       {
+        isEditable: true,
         name: 'Arrow',
         treePath: 'store/home/shelf/arrow',
       },
       {
+        isEditable: true,
         name: 'Shelf Title',
         treePath: 'store/home/shelf/title',
       },
@@ -105,18 +109,22 @@ describe('getComponents', () => {
       )
     ).toEqual([
       {
+        isEditable: true,
         name: 'Shelf',
         treePath: 'store/home/shelf',
       },
       {
+        isEditable: true,
         name: 'Carousel',
         treePath: 'store/home/carousel',
       },
       {
+        isEditable: true,
         name: 'Arrow',
         treePath: 'store/home/shelf/arrow',
       },
       {
+        isEditable: true,
         name: 'Shelf Title',
         treePath: 'store/home/shelf/title',
       },
@@ -140,6 +148,7 @@ describe('getComponents', () => {
       getComponents(extensions as any, components as any, 'store/home')
     ).toEqual([
       {
+        isEditable: true,
         name: 'Shelf',
         treePath: 'store/home/shelf',
       },
