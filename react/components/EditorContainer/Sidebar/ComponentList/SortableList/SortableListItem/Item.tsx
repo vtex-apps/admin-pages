@@ -37,10 +37,8 @@ const Item: React.FunctionComponent<Props> = ({
   let leftPaddingClassName = 'pl8'
   if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
-  } else if (isSortable) {
+  } else if (isSortable || hasSubItems) {
     leftPaddingClassName = 'pl2'
-  } else if (hasSubItems) {
-    leftPaddingClassName = 'pl3'
   }
 
   return (
