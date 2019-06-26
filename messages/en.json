@@ -154,7 +154,7 @@
   "admin/pages.editor.configuration.scope.template.saved": "Saved in",
   "admin/pages.editor.container.dev-mode-warning.text": "You are in development mode. Changes to the content will not go to production.",
   "admin/pages.editor.container.editpath.label": "Page URL:",
-  "admin/pages.editor.container.master-workspace-warning.text": "Changes to the content will have an immediate effect. Prefer using draft mode.",
+  "admin/pages.editor.container.master-workspace-warning.text": "You are editing the live store. Changes will have immediate effect.",
   "admin/pages.editor.image-uploader.change": "Change image",
   "admin/pages.editor.image-uploader.empty.button": "Upload",
   "admin/pages.editor.image-uploader.empty.text": "Drag your image here",

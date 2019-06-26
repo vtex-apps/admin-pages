@@ -140,7 +140,7 @@ const EditorContainer: React.FC<Props> = ({
                 <Alert type="warning">
                   <FormattedMessage
                     id="admin/pages.editor.container.master-workspace-warning.text"
-                    defaultMessage="Changes to the content will have an immediate effect. Prefer using draft mode."
+                    defaultMessage="You are editing the live store. Changes will have immediate effect."
                   />
                 </Alert>
               </div>
