@@ -1,5 +1,10 @@
 import React, { useContext, useReducer, useState } from 'react'
-import { FormattedMessage } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl,
+} from 'react-intl'
 import { matchPath, RouteComponentProps } from 'react-router'
 import { Button, Spinner, Tab, Tabs, ToastContext } from 'vtex.styleguide'
 
@@ -65,9 +70,24 @@ function canSave(family: string, files: FontFileInput[]) {
   )
 }
 
-const FontEditorWrapper: React.FunctionComponent<
-  RouteComponentProps<CustomFontParams>
-> = props => {
+defineMessages({
+  addFontSuccess: {
+    defaultMessage: 'Font family saved succesfully.',
+    id: 'admin/pages.editor.styles.edit.font-family.add-font-success',
+  },
+  removeFontFailure: {
+    defaultMessage: 'Cannot delete font family, because some style uses it.',
+    id: 'admin/pages.editor.styles.edit.font-family.remove-font-failure',
+  },
+  removeFontSuccess: {
+    defaultMessage: 'Font family removed succesfully.',
+    id: 'admin/pages.editor.styles.edit.font-family.remove-font-success',
+  },
+})
+
+type WrapperProps = RouteComponentProps<CustomFontParams> & InjectedIntlProps
+
+const FontEditorWrapper: React.FunctionComponent<WrapperProps> = props => {
   return (
     <ListFontsQuery>
       {queryResult => (
@@ -95,6 +115,7 @@ const FontEditorWrapper: React.FunctionComponent<
 
 interface Props
   extends RouteComponentProps<CustomFontParams>,
+    InjectedIntlProps,
     ListFontsQueryResult {
   deleteFont: DeleteFontFamilyFn
   saveFont: SaveFontFamilyFn
@@ -107,6 +128,7 @@ const CustomFont: React.FunctionComponent<Props> = ({
   data,
   deleteFont,
   error,
+  intl,
   loading,
   loadingDelete,
   loadingSave,
@@ -168,7 +190,11 @@ const CustomFont: React.FunctionComponent<Props> = ({
         // TODO: treat errors on delete
         return
       }
-      showToast('Font family saved succesfully.')
+      showToast(
+        intl.formatMessage({
+          id: 'admin/pages.editor.styles.edit.font-family.add-font-success',
+        })
+      )
       history.goBack()
     })
   }
@@ -185,10 +211,20 @@ const CustomFont: React.FunctionComponent<Props> = ({
         return
       }
       if (result.data.deleteFontFamily != null) {
-        showToast('Font family removed succesfully.')
+        showToast(
+          intl.formatMessage({
+            id:
+              'admin/pages.editor.styles.edit.font-family.remove-font-success',
+          })
+        )
         history.goBack()
       } else {
-        showToast('Cannot delete font family, because some style uses it')
+        showToast(
+          intl.formatMessage({
+            id:
+              'admin/pages.editor.styles.edit.font-family.remove-font-failure',
+          })
+        )
       }
     })
   }
@@ -265,4 +301,4 @@ const CustomFont: React.FunctionComponent<Props> = ({
   )
 }
 
-export default FontEditorWrapper
+export default injectIntl(FontEditorWrapper)
