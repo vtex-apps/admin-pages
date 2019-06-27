@@ -217,6 +217,7 @@
   "admin/pages.editor.styles.edit.font-family.remove-font-failure": "Cannot delete font family, because some style uses it.",
   "admin/pages.editor.styles.edit.font-family.remove-font-success": "Font family removed succesfully.",
   "admin/pages.editor.styles.edit.font-family.title": "Font Family",
+  "admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder": "Pick a style",
   "admin/pages.editor.styles.edit.save.failed": "An error occurred while saving your style.",
   "admin/pages.editor.styles.edit.save.successful": "Style saved successfully.",
   "admin/pages.editor.styles.edit.type-tokens.title": "Type Tokens",
