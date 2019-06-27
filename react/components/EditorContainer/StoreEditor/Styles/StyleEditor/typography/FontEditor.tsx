@@ -178,13 +178,18 @@ const CustomFont: React.FunctionComponent<Props> = ({
     deleteFont({ variables: { id: id as string } }).then(result => {
       if (
         result == null ||
+        result.data == null ||
         (result.errors != null && result.errors.length > 0)
       ) {
         // TODO: treat erros on delete
         return
       }
-      showToast('Font family removed succesfully.')
-      history.goBack()
+      if (result.data.deleteFontFamily != null) {
+        showToast('Font family removed succesfully.')
+        history.goBack()
+      } else {
+        showToast('Cannot delete font family, because some style uses it')
+      }
     })
   }
 

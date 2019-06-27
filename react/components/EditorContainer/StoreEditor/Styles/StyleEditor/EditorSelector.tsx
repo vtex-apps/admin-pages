@@ -65,7 +65,7 @@ const EditorSelector: React.FunctionComponent<Props> = ({
       />
       <div className="ph6">
         <AvailableEditor {...colorEditorProps} />
-        {/* <AvailableEditor {...typographyEditorProps} /> */}
+        <AvailableEditor {...typographyEditorProps} />
       </div>
     </>
   )
