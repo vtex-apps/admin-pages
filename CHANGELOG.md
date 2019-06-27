@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Create `onFileDrop` props on `ImageUploader` to make it work both as a `react-jsonschema-form` widget and a standalone component.
+
 ## [3.15.1] - 2019-06-26
 
 ### Changed

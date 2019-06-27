@@ -217,8 +217,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             schema={{
               title: 'admin/pages.editor.store.settings.pwa.android-logo-icon',
             }}
-            shouldMutate={false}
-            onChange={(_: any, icon: File) => uploadIcon({ icon })}
+            onFileDrop={(icon: File) => uploadIcon({ icon })}
           />
         </div>
         <div className="w-100 pt4">
@@ -232,8 +231,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             schema={{
               title: 'admin/pages.editor.store.settings.pwa.ios-logo-icon',
             }}
-            shouldMutate={false}
-            onChange={(_: any, icon: File) => uploadIcon({ icon, iOS: true })}
+            onFileDrop={(icon: File) => uploadIcon({ icon, iOS: true })}
           />
         </div>
       </div>
