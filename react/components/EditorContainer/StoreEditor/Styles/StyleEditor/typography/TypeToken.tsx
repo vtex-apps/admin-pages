@@ -78,6 +78,7 @@ const TypeToken: React.FunctionComponent<Props> = ({
               font={font}
               dispatch={dispatch}
               fontFamilies={data.listFonts}
+              key={key}
               id={key as keyof Font}
             />
           ))}

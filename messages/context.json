@@ -219,6 +219,7 @@
   "admin/pages.editor.styles.edit.font-family.remove-font-failure": "admin/pages.editor.styles.edit.font-family.remove-font-failure",
   "admin/pages.editor.styles.edit.font-family.remove-font-success": "admin/pages.editor.styles.edit.font-family.remove-font-success",
   "admin/pages.editor.styles.edit.font-family.title": "admin/pages.editor.styles.edit.font-family.title",
+  "admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder": "admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder",
   "admin/pages.editor.styles.edit.save.failed": "admin/pages.editor.styles.edit.save.failed",
   "admin/pages.editor.styles.edit.save.successful": "admin/pages.editor.styles.edit.save.successful",
   "admin/pages.editor.styles.edit.type-tokens.title": "admin/pages.editor.styles.edit.type-tokens.title",

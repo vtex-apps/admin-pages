@@ -219,6 +219,7 @@
   "admin/pages.editor.styles.edit.font-family.remove-font-failure": "Não é possível excluir a família de fontes, porque algum estilo a utiliza.",
   "admin/pages.editor.styles.edit.font-family.remove-font-success": "Família de fontes removida com sucesso.",
   "admin/pages.editor.styles.edit.font-family.title": "Família de Fontes",
+  "admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder": "Escolha um estilo",
   "admin/pages.editor.styles.edit.save.failed": "Erro ao salvar estilo.",
   "admin/pages.editor.styles.edit.save.successful": "Estilo salvo com sucesso.",
   "admin/pages.editor.styles.edit.type-tokens.title": "Type Tokens",
