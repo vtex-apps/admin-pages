@@ -4,9 +4,9 @@ import { graphql, MutationFunc } from 'react-apollo'
 import {
   defineMessages,
   FormattedMessage,
+  InjectedIntl,
   InjectedIntlProps,
   injectIntl,
-  InjectedIntl,
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
@@ -22,8 +22,8 @@ import styles from './imageUploader.css'
 
 interface Props extends InjectedIntlProps {
   disabled?: boolean
-  shouldMutate?: boolean
-  onChange: (pathname: string | null, file: File) => any
+  onChange?: (pathname: string | null) => void
+  onFileDrop?: (file: File) => void
   schema: JSONSchema6
   uploadFile?: MutationFunc<MutationData>
   value: string
@@ -53,7 +53,6 @@ const messages = defineMessages({
 class ImageUploader extends Component<Props, State> {
   public static defaultProps = {
     disabled: false,
-    shouldMutate: true,
     value: '',
   }
 
@@ -167,9 +166,8 @@ class ImageUploader extends Component<Props, State> {
   }
 
   private handleImageDrop = async (acceptedFiles: File[]) => {
-    const { intl, uploadFile, shouldMutate } = this.props as {
+    const { intl, uploadFile } = this.props as {
       intl: InjectedIntl
-      shouldMutate: boolean
       uploadFile: MutationFunc<MutationData>
     }
 
@@ -179,7 +177,7 @@ class ImageUploader extends Component<Props, State> {
       try {
         let url = null
 
-        if (shouldMutate && uploadFile) {
+        if (uploadFile) {
           const {
             data: {
               uploadFile: { fileUrl },
@@ -192,7 +190,11 @@ class ImageUploader extends Component<Props, State> {
 
         if (this.props.onChange) {
           const path = url && new URL(url).pathname
-          await this.props.onChange(path, acceptedFiles[0])
+          this.props.onChange(path)
+        }
+
+        if (this.props.onFileDrop) {
+          this.props.onFileDrop(acceptedFiles[0])
         }
 
         this.setState({ isLoading: false })
