@@ -16,14 +16,15 @@
 
 #### Screenshots or example usage
 
-#### Types of changes
+#### Type of changes
 
-<!--- Choose the types related to the PR and delete the non-related ones. -->
-
-- Bug fix (a non-breaking change which fixes an issue)
-- New feature (a non-breaking change which adds functionality)
-- Breaking change (fix or feature that would cause existing functionality to change)
-- Technical improvements (chores, refactors and overall reduction of technical debt)
+<!--- Add a ✔️ where applicable -->
+✔️ | Type of Change
+---|---
+_ | Bug fix <!-- a non-breaking change which fixes an issue -->
+_ | New feature <!-- a non-breaking change which adds functionality -->
+_ | Breaking change <!-- fix or feature that would cause existing functionality to change -->
+_ | Technical improvements <!-- chores, refactors and overall reduction of technical debt -->
 
 #### Notes
 
