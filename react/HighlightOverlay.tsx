@@ -153,7 +153,7 @@ export default class HighlightOverlay extends Component<Props, State> {
         ? (element.getBoundingClientRect() as DOMRect)
         : this.INITIAL_HIGHLIGHT_RECT
 
-      if (element) {
+      if (element && !this.state.editMode) {
         this.debouncedScrollTo(element)
       }
 
@@ -219,9 +219,8 @@ export default class HighlightOverlay extends Component<Props, State> {
       left,
       pointerEvents: 'none',
       top,
-      transition: highlight
-        ? 'top 0.3s, left 0.3s, width 0.3s, height 0.3s'
-        : undefined,
+      transition:
+        'opacity 100ms ease-out, top 0.3s, left 0.3s, width 0.3s, height 0.3s',
       width,
       zIndex: 999,
     }
@@ -230,8 +229,8 @@ export default class HighlightOverlay extends Component<Props, State> {
       <div
         id="editor-provider-overlay"
         style={highlightStyle}
-        className={`absolute ${
-          highlight ? 'br2 b--blue b--dashed ba bg-light-blue o-50' : ''
+        className={`absolute bg-light-blue br2 b--blue b--dashed ba ${
+          highlight ? 'o-50' : 'o-0'
         }`}
       />
     )

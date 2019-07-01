@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Turn auto scroll off when selecting a block.
+- Minor improvements to `HiglightOverlay` style.
+
 ## [4.1.2] - 2019-06-27
 
 ### Changed
