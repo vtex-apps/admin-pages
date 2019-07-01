@@ -9,6 +9,7 @@ import { matchPath, RouteComponentProps } from 'react-router'
 import { Button, Spinner, Tab, Tabs, ToastContext } from 'vtex.styleguide'
 
 import { ApolloError } from 'apollo-client'
+import { FetchResult } from 'react-apollo'
 import DeleteFontFamily, {
   DeleteFontFamilyFn,
 } from '../mutations/DeleteFontFamily'
@@ -40,6 +41,35 @@ interface FontFileUpdate {
 
 export type FontFileAction = FontFileAppend | FontFileRemove | FontFileUpdate
 
+const {
+  addFontSuccessMessage,
+  fileLinkMessage,
+  fileUploadMessage,
+  removeFontFailureMessage,
+  removeFontSuccessMessage,
+} = defineMessages({
+  addFontSuccessMessage: {
+    defaultMessage: 'Font family saved succesfully.',
+    id: 'admin/pages.editor.styles.edit.font-family.add-font-success',
+  },
+  fileLinkMessage: {
+    defaultMessage: 'File link',
+    id: 'admin/pages.editor.styles.edit.custom-font.file-link',
+  },
+  fileUploadMessage: {
+    defaultMessage: 'Upload a file',
+    id: 'admin/pages.editor.styles.edit.custom-font.file-upload',
+  },
+  removeFontFailureMessage: {
+    defaultMessage: 'Cannot delete font family, because some style uses it.',
+    id: 'admin/pages.editor.styles.edit.font-family.remove-font-failure',
+  },
+  removeFontSuccessMessage: {
+    defaultMessage: 'Font family removed succesfully.',
+    id: 'admin/pages.editor.styles.edit.font-family.remove-font-success',
+  },
+})
+
 function reducer(
   prevState: FontFileInput[],
   action: FontFileAction
@@ -70,46 +100,36 @@ function canSave(family: string, files: FontFileInput[]) {
   )
 }
 
-defineMessages({
-  addFontSuccess: {
-    defaultMessage: 'Font family saved succesfully.',
-    id: 'admin/pages.editor.styles.edit.font-family.add-font-success',
-  },
-  removeFontFailure: {
-    defaultMessage: 'Cannot delete font family, because some style uses it.',
-    id: 'admin/pages.editor.styles.edit.font-family.remove-font-failure',
-  },
-  removeFontSuccess: {
-    defaultMessage: 'Font family removed succesfully.',
-    id: 'admin/pages.editor.styles.edit.font-family.remove-font-success',
-  },
-})
+function hasErrorCode(error: ApolloError | void, code: string): boolean {
+  if (error == null || error.graphQLErrors == null) {
+    return false
+  }
 
-type WrapperProps = RouteComponentProps<CustomFontParams> & InjectedIntlProps
+  const errorWithCode = error.graphQLErrors.find(
+    ({ extensions }) =>
+      extensions && extensions.exception && extensions.exception.code === code
+  )
 
-const FontEditorWrapper: React.FunctionComponent<WrapperProps> = props => {
+  return errorWithCode !== undefined
+}
+
+function FontEditorTitle() {
   return (
-    <ListFontsQuery>
-      {queryResult => (
-        <DeleteFontFamily>
-          {(deleteFont, { loading: deleteLoading, error: deleteError }) => (
-            <SaveFontFamily>
-              {(saveFont, { loading: saveLoading, error: saveError }) => (
-                <CustomFont
-                  {...props}
-                  {...queryResult}
-                  saveFont={saveFont}
-                  deleteFont={deleteFont}
-                  loadingSave={saveLoading}
-                  loadingDelete={deleteLoading}
-                  mutationError={deleteError || saveError}
-                />
-              )}
-            </SaveFontFamily>
-          )}
-        </DeleteFontFamily>
-      )}
-    </ListFontsQuery>
+    <FormattedMessage
+      id="admin/pages.editor.styles.edit.custom-font.title"
+      defaultMessage="Custom Font"
+    />
+  )
+}
+
+function FontEditorLoading() {
+  return (
+    <>
+      <StyleEditorHeader title={<FontEditorTitle />} />
+      <div className="pv8 flex justify-center">
+        <Spinner />
+      </div>
+    </>
   )
 }
 
@@ -156,22 +176,8 @@ const CustomFont: React.FunctionComponent<Props> = ({
   const [fontFamily] = familyState
   const [fontFiles] = filesReducer
 
-  const title = (
-    <FormattedMessage
-      id="admin/pages.editor.styles.edit.custom-font.title"
-      defaultMessage="Custom Font"
-    />
-  )
-
   if (loading) {
-    return (
-      <>
-        <StyleEditorHeader title={title} />
-        <div className="pv8 flex justify-center">
-          <Spinner />
-        </div>
-      </>
-    )
+    return <FontEditorLoading />
   }
 
   if (error != null || data == null) {
@@ -187,46 +193,25 @@ const CustomFont: React.FunctionComponent<Props> = ({
       variables: { font: { fontFamily, fontFiles, id } },
     }).then(result => {
       if (result == null || result.data == null) {
-        // TODO: treat errors on delete
-        return
+        return // TODO: treat errors on delete
       }
-      showToast(
-        intl.formatMessage({
-          id: 'admin/pages.editor.styles.edit.font-family.add-font-success',
-        })
-      )
+      showToast(intl.formatMessage(addFontSuccessMessage))
       history.goBack()
     })
   }
 
   const disableDelete = loadingSave || loadingDelete
   const onDelete = () => {
-    deleteFont({ variables: { id: id as string } }).then(result => {
-      if (
-        result == null ||
-        result.data == null ||
-        (result.errors != null && result.errors.length > 0)
-      ) {
-        // TODO: treat erros on delete
-        return
-      }
-      if (result.data.deleteFontFamily != null) {
-        showToast(
-          intl.formatMessage({
-            id:
-              'admin/pages.editor.styles.edit.font-family.remove-font-success',
-          })
-        )
+    deleteFont({ variables: { id: id as string } })
+      .then(() => {
+        showToast(intl.formatMessage(removeFontSuccessMessage))
         history.goBack()
-      } else {
-        showToast(
-          intl.formatMessage({
-            id:
-              'admin/pages.editor.styles.edit.font-family.remove-font-failure',
-          })
-        )
-      }
-    })
+      })
+      .catch(result => {
+        if (hasErrorCode(result, 'USED_FONT_DELETE')) {
+          showToast(intl.formatMessage(removeFontFailureMessage))
+        }
+      })
   }
 
   const fontFileTabProps = {
@@ -234,12 +219,7 @@ const CustomFont: React.FunctionComponent<Props> = ({
       matchPath(pathname, customFontFile) != null ||
       matchPath(pathname, EditorPath.customFont.replace(IdParam, '')) != null,
     key: 0,
-    label: (
-      <FormattedMessage
-        id="admin/pages.editor.styles.edit.custom-font.file-upload"
-        defaultMessage="Upload a file"
-      />
-    ),
+    label: intl.formatMessage(fileUploadMessage),
     onClick: () =>
       history.replace(EditorPath.customFontFile.replace(IdParam, id || '')),
   }
@@ -248,18 +228,13 @@ const CustomFont: React.FunctionComponent<Props> = ({
     active: matchPath(pathname, customFontLink) != null,
     disabled: true,
     key: 1,
-    label: (
-      <FormattedMessage
-        id="admin/pages.editor.styles.edit.custom-font.file-link"
-        defaultMessage="File link"
-      />
-    ),
+    label: intl.formatMessage(fileLinkMessage),
     onClick: () => history.replace(EditorPath.customFontLink),
   }
 
   return (
     <>
-      <StyleEditorHeader title={title}>
+      <StyleEditorHeader title={<FontEditorTitle />}>
         <div>
           {id != null && (
             <Button
@@ -298,6 +273,34 @@ const CustomFont: React.FunctionComponent<Props> = ({
         </Tabs>
       </div>
     </>
+  )
+}
+
+type WrapperProps = RouteComponentProps<CustomFontParams> & InjectedIntlProps
+
+const FontEditorWrapper: React.FunctionComponent<WrapperProps> = props => {
+  return (
+    <ListFontsQuery>
+      {queryResult => (
+        <DeleteFontFamily>
+          {(deleteFont, { loading: deleteLoading, error: deleteError }) => (
+            <SaveFontFamily>
+              {(saveFont, { loading: saveLoading, error: saveError }) => (
+                <CustomFont
+                  {...props}
+                  {...queryResult}
+                  saveFont={saveFont}
+                  deleteFont={deleteFont}
+                  loadingSave={saveLoading}
+                  loadingDelete={deleteLoading}
+                  mutationError={deleteError || saveError}
+                />
+              )}
+            </SaveFontFamily>
+          )}
+        </DeleteFontFamily>
+      )}
+    </ListFontsQuery>
   )
 }
 
