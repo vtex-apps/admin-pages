@@ -7,44 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Changed
-
-- Turn auto scroll off when selecting a block.
-- Minor improvements to `HiglightOverlay` style.
-
-## [4.1.2] - 2019-06-27
-
-### Changed
-
-- Changes from `v3.15.2`.
-
-## [4.1.1] - 2019-06-26
-
-### Changed
-
-- Prevent click on extensions that have `composition === 'children'`.
-- Change style of items: `ExpandArrow` and `Item` hovers have been separated and no cursor and no hover on uneditable items.
-
-## [4.1.0] - 2019-06-21
-
-### Added
-
-- Add warning to top of storefront when user is in development mode telling
-  changes to content can't be promoted
-
-## [4.0.0] - 2019-06-18
-
-### Added
-
-- Adds the ability to navigate to a specific URL by editing the storefront URL in the UI
-
-## [4.0.0-beta] - 2019-06-10
-
-### Changed
-
-- [BREAKING] Change routes to be compliance with new admin 3.x architecture `/admin/app/<route>`.
-- [BREAKING] Injects this admin in admin 3.x navigation (loosing compatibility with admin 2.x).
-- Remove some context function calls that were previously injected by admin 2.x
+## [4.1.3] - 2019-07-01
 
 ## [3.15.2] - 2019-06-27
 
