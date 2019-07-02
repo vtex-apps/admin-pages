@@ -168,22 +168,17 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
 }
 
 export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
-  if (schema.type === 'object') {
-    for (const prop in schema.properties) {
-      if (schema.properties.hasOwnProperty(prop)) {
-        const property = schema.properties[prop]
-        if (!property.isLayout) {
-          return true
-        } else if (property.type === 'object') {
-          const hasContent = hasContentPropsInSchema(property)
-          if (hasContent) {
-            return true
-          }
-        }
+  return (
+    schema.type === 'object' &&
+    Object.values(schema.properties || {}).some(property => {
+      if (
+        !property.isLayout ||
+        (property.type === 'object' && hasContentPropsInSchema(property))
+      ) {
+        return true
       }
-    }
-  }
-  return false
+    })
+  )
 }
 
 export const getIsDefaultContent: (
