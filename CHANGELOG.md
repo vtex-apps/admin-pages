@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.15.4] - 2019-07-02
+
 ### Changed
 
 - Conditions to show extension on components list: stop considering block `composition` type, and uses whether they're editable or not.
