@@ -120,6 +120,7 @@ export const getExtension = (
     configurationsIds = [],
     content = {},
     contentMapId = '',
+    hasContentSchema = false,
     implementationIndex = 0,
     implements: extensionImplements = [],
     props = {},
@@ -138,6 +139,7 @@ export const getExtension = (
     configurationsIds,
     content,
     contentMapId,
+    hasContentSchema,
     implementationIndex,
     implements: extensionImplements,
     props: props || {},
@@ -183,7 +185,7 @@ export const getSchemaPropsOrContent = ({
   validate(propsOrContent)
   const dataFromSchema = validate.validatedData!.reduce(
     (acc: any, { value, format, dataPath, isLayout }: any) => {
-      if (isLayout) {
+      if (isLayout !== isContent) {
         return acc
       }
       if (IOMESSAGE_FORMAT_TYPE.includes(format) && messages) {
@@ -268,10 +270,11 @@ export const updateExtensionFromForm = ({
 
 const getIOMessageAjv = () => {
   const opts = {
+    nullable: true,
     shouldStoreValidSchema: true,
     useDefaults: true,
-    nullable: true,
   }
+
   const ajv = new Ajv(opts)
   const validationFunction = (value: string) => {
     return value.length >= 0

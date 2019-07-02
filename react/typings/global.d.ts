@@ -29,6 +29,7 @@ declare global {
     configurationsIds?: string[]
     content: object
     contentMapId?: string
+    hasContentSchema: boolean
     implementationIndex: number
     implements: string[]
     props: object
