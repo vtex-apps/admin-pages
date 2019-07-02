@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Properly handle `JSONSchema` dependencies and arrays
+
 ## [3.15.2] - 2019-06-27
 
 ### Fixed
