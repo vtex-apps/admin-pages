@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useCallback } from 'react'
 import { DropEvent, DropzoneOptions, useDropzone } from 'react-dropzone'
 import {
   defineMessages,
@@ -28,12 +28,12 @@ import {
 } from '../utils/typography'
 import { FontFileAction } from './FontEditor'
 
-defineMessages({
+const { pickStylePlaceholder, removeMessage } = defineMessages({
   pickStylePlaceholder: {
     defaultMessage: 'Pick a style',
     id: 'admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder',
   },
-  remove: {
+  removeMessage: {
     defaultMessage: 'Remove',
     id: 'admin/pages.admin.redirects.form.button.remove',
   },
@@ -53,6 +53,11 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
 }) => {
   const [files, dispatchFiles] = filesReducer
   const [family, setFamily] = familyState
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setFamily(e.target.value),
+    [setFamily]
+  )
 
   const removeFile = (index: number) => dispatchFiles({ type: 'remove', index })
 
@@ -96,9 +101,7 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
             size="small"
             label={label}
             value={family}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setFamily(e.target.value)
-            }
+            onChange={onInputChange}
           />
         )}
       </FormattedMessage>
@@ -117,7 +120,7 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   )
 }
 
-interface FontFileItemProps extends Pick<InjectedIntlProps, 'intl'> {
+interface FontFileItemProps extends InjectedIntlProps {
   fileName: string
   onRemove: () => void
   onStyleUpdate: (style: FontFlavour) => void
@@ -138,9 +141,7 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
     },
     options: [
       {
-        label: intl.formatMessage({
-          id: 'admin/pages.admin.redirects.form.button.remove',
-        }),
+        label: intl.formatMessage(removeMessage),
         onClick: onRemove,
       },
     ],
@@ -150,10 +151,7 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
     onChange: (_: React.ChangeEvent, value: string) =>
       onStyleUpdate(stringToFlavour(value)),
     options: STYLE_FLAVOUR_OPTIONS,
-    placeholder: intl.formatMessage({
-      id:
-        'admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder',
-    }),
+    placeholder: intl.formatMessage(pickStylePlaceholder),
     value: flavourToString(style),
     variation: 'inline',
   }
