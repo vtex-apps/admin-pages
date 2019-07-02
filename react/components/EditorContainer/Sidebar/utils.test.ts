@@ -3,6 +3,7 @@ import {
   getComponents,
   getIsDefaultContent,
   getIsSitewide,
+  hasContentPropsInSchema,
 } from './utils'
 
 describe('getComponents', () => {
@@ -36,23 +37,31 @@ describe('getComponents', () => {
   const mockComponents = {
     'vtex.carousel': {
       schema: {
+        properties: { mock: {} },
         title: 'Carousel',
+        type: 'object',
       },
     },
     'vtex.no-schema': {},
     'vtex.shelf': {
       schema: {
+        properties: { mock: {} },
         title: 'Shelf',
+        type: 'object',
       },
     },
     'vtex.shelf-arrow': {
       schema: {
+        properties: { mock: {} },
         title: 'Arrow',
+        type: 'object',
       },
     },
     'vtex.shelf-title': {
       schema: {
+        properties: { mock: {} },
         title: 'Shelf Title',
+        type: 'object',
       },
     },
   }
@@ -140,7 +149,9 @@ describe('getComponents', () => {
     const components = {
       'vtex.shelf': {
         getSchema: () => ({
+          properties: { mock: {} },
           title: 'Shelf',
+          type: 'object',
         }),
       },
     }
@@ -229,6 +240,7 @@ describe('getIsSitewide', () => {
       composition: 'children' as Extension['composition'],
       content: {},
       context: {},
+      hasContentSchema: false,
       implementationIndex: 0,
       implements: [''],
       preview: { type: 'block' },
@@ -246,6 +258,7 @@ describe('getIsSitewide', () => {
       content: {},
       contentMapId: 'gZQaBBQyU2DLvGaM9icNdg',
       context: {},
+      hasContentSchema: false,
       implementationIndex: 0,
       implements: [''],
       preview: null,
@@ -266,6 +279,7 @@ describe('getIsSitewide', () => {
       component: 'vtex.store@2.11.0/HomeWrapper',
       content: {},
       context: {},
+      hasContentSchema: false,
       implementationIndex: 0,
       implements: [''],
       preview: null,
@@ -282,6 +296,7 @@ describe('getIsSitewide', () => {
       component: 'vtex.store-header@2.11.0/index',
       content: {},
       context: {},
+      hasContentSchema: false,
       implementationIndex: 0,
       implements: [''],
       preview: null,
@@ -299,6 +314,7 @@ describe('getIsSitewide', () => {
       content: {},
       contentMapId: 'eiYc7wanqAEYiPY5DJdRPT',
       context: {},
+      hasContentSchema: false,
       implementationIndex: 0,
       implements: [''],
       preview: null,
@@ -336,5 +352,39 @@ describe('getIsDefaultContent', () => {
 
   it('should return false when origin is null (declared by user)', () => {
     expect(getIsDefaultContent({ origin: null })).toBe(false)
+  })
+})
+
+describe('#hasContentPropsInSchema', () => {
+  it(`should return false when schema isn't type object`, () => {
+    expect(hasContentPropsInSchema({ title: 'Test' })).toBe(false)
+    expect(hasContentPropsInSchema({ type: 'number' })).toBe(false)
+  })
+
+  it(`should return true if there are properties with isLayout falsy`, () => {
+    expect(
+      hasContentPropsInSchema({
+        type: 'object',
+        properties: { test: { isLayout: false } },
+      })
+    ).toBe(true)
+    expect(
+      hasContentPropsInSchema({ type: 'object', properties: { test: {} } })
+    ).toBe(true)
+  })
+
+  it(`should return true if there are nested properties with isLayout falsy`, () => {
+    expect(
+      hasContentPropsInSchema({
+        type: 'object',
+        properties: { test: { isLayout: false } },
+      })
+    ).toBe(true)
+    expect(
+      hasContentPropsInSchema({
+        type: 'object',
+        properties: { test: { type: 'object', properties: { lala: {} } } },
+      })
+    ).toBe(true)
   })
 })

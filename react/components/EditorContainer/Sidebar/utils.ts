@@ -1,3 +1,4 @@
+import { JSONSchema6 } from 'json-schema'
 import { has, path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
@@ -17,7 +18,18 @@ const isSamePage = (page: string, treePath: string) => {
 
 const getParentContainerBlocksGetter = (extensions: Extensions) => (
   parentPath: string
-) => pathOr<InnerBlock[], InnerBlock[]>([], [parentPath, 'blocks'], extensions)
+) => {
+  const children = pathOr<InnerBlock[], InnerBlock[]>(
+    [],
+    [parentPath, 'children'],
+    extensions
+  )
+  return pathOr<InnerBlock[], InnerBlock[]>(
+    children,
+    [parentPath, 'blocks'],
+    extensions
+  )
+}
 
 const getComponentNameGetterFromExtensions = (extensions: Extensions) => (
   treePath: string
@@ -51,39 +63,60 @@ export function getComponents(
   const getComponentName = getComponentNameGetterFromExtensions(extensions)
   const getComponentSchema = getComponentSchemaGetter(components, extensions)
 
+  const sidebarComponentMap: Record<string, SidebarComponent> = {}
+  const isComponentEditableMap: Record<string, boolean> = {}
+
   return Object.keys(extensions)
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
-      const component = extensions[treePath]
       const componentName = getComponentName(treePath)
       const hasTitleInSchema = has('title', schema)
-      const hasTitle = hasTitleInSchema || has('title', extensions[treePath])
+      const hasTitleInBlock = has('title', extensions[treePath])
+      const extension = pathOr<Partial<Extension>, Extension>(
+        {},
+        [treePath],
+        extensions
+      )
 
-      const isLayoutComponent = component.composition === 'children'
       const isRoot = isRootComponent(2)({ treePath })
+
+      const isEditable = isComponentEditableMap[componentName]
+        ? isComponentEditableMap[componentName]
+        : (isComponentEditableMap[componentName] =
+            extension.hasContentSchema || hasContentPropsInSchema(schema))
 
       if (schema && !hasTitleInSchema) {
         console.warn(generateWarningMessage(componentName))
       }
 
-      return (
+      const shouldShow =
         isSamePage(page, treePath) &&
         !!schema &&
-        hasTitle &&
-        (isRoot || !isLayoutComponent)
-      )
+        (hasTitleInBlock || (isRoot || (hasTitleInSchema && isEditable)))
+
+      if (shouldShow) {
+        sidebarComponentMap[treePath] = {
+          isEditable,
+          name: extensions[treePath].title || schema.title!,
+          treePath,
+        }
+      }
+
+      return shouldShow
     })
     .sort((treePathA, treePathB) => {
-      const parentPathA = `${treePathA.split('/')[0]}/${
-        treePathA.split('/')[1]
-      }`
+      const splitTreePathA = treePathA.split('/')
+      const parentPathA = splitTreePathA
+        .slice(0, splitTreePathA.length - 1)
+        .join('/')
 
-      const parentPathB = `${treePathB.split('/')[0]}/${
-        treePathB.split('/')[1]
-      }`
+      const splitTreePathB = treePathB.split('/')
+      const parentPathB = splitTreePathB
+        .slice(0, splitTreePathB.length - 1)
+        .join('/')
 
-      const nameA = treePathA.split('/')[treePathA.split('/').length - 1]
-      const nameB = treePathB.split('/')[treePathB.split('/').length - 1]
+      const nameA = splitTreePathA[splitTreePathA.length - 1]
+      const nameB = splitTreePathB[splitTreePathB.length - 1]
 
       if (parentPathA !== parentPathB) {
         return 0
@@ -121,20 +154,7 @@ export function getComponents(
 
       return treePathA > treePathB ? 1 : -1
     })
-    .map<SidebarComponent>(treePath => {
-      const schema = getComponentSchema(treePath)
-      const extension = pathOr<Partial<Extension>, Extension>(
-        {},
-        [treePath],
-        extensions
-      )
-
-      return {
-        isEditable: extension.composition !== 'children',
-        name: extensions[treePath].title || schema.title!,
-        treePath,
-      }
-    })
+    .map<SidebarComponent>(treePath => sidebarComponentMap[treePath])
 }
 
 export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
@@ -144,6 +164,20 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
     (blockPath.length > 0 &&
       ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
     false
+  )
+}
+
+export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
+  return (
+    schema.type === 'object' &&
+    Object.values(schema.properties || {}).some(property => {
+      if (
+        !property.isLayout ||
+        (property.type === 'object' && hasContentPropsInSchema(property))
+      ) {
+        return true
+      }
+    })
   )
 }
 
