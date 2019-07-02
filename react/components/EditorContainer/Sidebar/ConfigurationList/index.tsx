@@ -82,7 +82,7 @@ const omitUndefined = pickBy(val => typeof val !== 'undefined')
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
   private componentImplementation: RenderComponent<any, any> | null
-  private componentProperties: ComponentSchema['properties']
+  private componentSchema: ComponentSchema
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
   private activeExtension: Extension
@@ -118,7 +118,7 @@ class ConfigurationList extends React.Component<Props, State> {
       runtime: iframeRuntime,
     })
 
-    this.componentProperties = componentSchema.properties
+    this.componentSchema = componentSchema
 
     this.componentTitle = componentSchema.title
       ? formatIOMessage({
@@ -448,8 +448,8 @@ class ConfigurationList extends React.Component<Props, State> {
       i18nMapping,
       isContent: true,
       messages: iframeRuntime.messages,
-      properties: this.componentProperties,
       propsOrContent: this.state.formData,
+      schema: this.componentSchema,
     })
 
     const contentId =
