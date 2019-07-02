@@ -1,4 +1,5 @@
-import { merge, mergeDeepRight, pickBy, reduce, toPairs } from 'ramda'
+import { assocPath, mergeDeepRight, reduce, toPairs, merge } from 'ramda'
+import Ajv from 'vtex.ajv'
 import { global, Window } from 'vtex.render-runtime'
 
 import {
@@ -8,6 +9,10 @@ import {
   TranslateMessageParams,
   UpdateExtensionFromFormParams,
 } from './typings'
+
+export const IOMESSAGE_FORMAT_TYPE = 'IOMessage'
+export const RICHTEXT_FORMAT_TYPE = 'RichText'
+export const IO_MESSAGE_FORMATS = [IOMESSAGE_FORMAT_TYPE, RICHTEXT_FORMAT_TYPE]
 
 const reduceProperties = (isContent: boolean) => (
   acc: ComponentSchemaProperties,
@@ -171,58 +176,33 @@ export const getSchemaPropsOrContent = ({
   i18nMapping,
   isContent = false,
   messages,
-  properties,
+  schema,
   propsOrContent,
 }: GetSchemaPropsOrContentParams): object => {
-  if (!properties || !propsOrContent) {
-    return {}
-  }
-
-  const keysWithData = Object.keys(properties).filter(
-    key => propsOrContent[key] !== undefined
+  const validate = getIOMessageAjv().compile(schema)
+  validate(propsOrContent)
+  const dataFromSchema = validate.validatedData!.reduce(
+    (acc: any, { value, format, dataPath, isLayout }: any) => {
+      if (isLayout) {
+        return acc
+      }
+      if (IOMESSAGE_FORMAT_TYPE.includes(format) && messages) {
+        const id =
+          i18nMapping && i18nMapping[value] !== undefined
+            ? i18nMapping[value]
+            : value
+        const ioMessage = translateMessage({
+          dictionary: messages,
+          id,
+        })
+        return { ...acc, ...assocPath(dataPath, ioMessage, acc) }
+      } else {
+        return { ...acc, ...assocPath(dataPath, value, acc) }
+      }
+    },
+    {}
   )
-
-  return keysWithData.reduce((acc, currKey: string) => {
-    const currProperty = properties[currKey]
-
-    if (
-      !currProperty ||
-      (!currProperty.isLayout !== isContent && currProperty.type !== 'object')
-    ) {
-      return acc
-    }
-
-    let adaptedProperty: Record<string, unknown> = {}
-
-    if (currProperty.type === 'object') {
-      adaptedProperty[currKey] = getSchemaPropsOrContent({
-        i18nMapping,
-        isContent,
-        messages,
-        properties: currProperty.properties,
-        propsOrContent: propsOrContent[currKey],
-      })
-    } else if (
-      ['IOMessage', 'RichText'].includes(currProperty.format) &&
-      messages
-    ) {
-      const id =
-        propsOrContent[
-          i18nMapping && i18nMapping[currKey] !== undefined
-            ? i18nMapping[currKey]
-            : currKey
-        ]
-
-      adaptedProperty[currKey] = translateMessage({
-        dictionary: messages,
-        id,
-      })
-    } else {
-      adaptedProperty[currKey] = propsOrContent[currKey]
-    }
-
-    return merge(acc, adaptedProperty)
-  }, {})
+  return keepTheBlanks(dataFromSchema, propsOrContent)
 }
 
 export const getSchemaPropsOrContentFromRuntime = ({
@@ -248,8 +228,8 @@ export const getSchemaPropsOrContentFromRuntime = ({
   return getSchemaPropsOrContent({
     isContent,
     messages,
-    properties: componentSchema.properties,
     propsOrContent,
+    schema: componentSchema,
   })
 }
 
@@ -284,4 +264,44 @@ export const updateExtensionFromForm = ({
     ...runtime.extensions[treePath],
     [isContent ? 'content' : 'props']: data,
   })
+}
+
+const getIOMessageAjv = () => {
+  const opts = {
+    shouldStoreValidSchema: true,
+    useDefaults: true,
+    nullable: true,
+  }
+  const ajv = new Ajv(opts)
+  const validationFunction = (value: string) => {
+    return value.length >= 0
+  }
+
+  IO_MESSAGE_FORMATS.forEach(format => {
+    ajv.addFormat(format, {
+      type: 'string',
+      validate: validationFunction,
+    })
+  })
+
+  return ajv
+}
+
+const keepTheBlanks = (
+  validData: object,
+  formData: Record<string, any> | undefined
+) => {
+  if (!formData) {
+    return validData
+  }
+
+  return merge(
+    validData,
+    toPairs(formData).reduce((acc, [prop, value]) => {
+      if (!(prop in validData)) {
+        return { ...acc, [prop]: value == null ? null : value }
+      }
+      return acc
+    }, {})
+  )
 }

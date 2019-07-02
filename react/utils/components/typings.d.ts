@@ -18,7 +18,7 @@ export interface GetSchemaPropsOrContentParams {
   i18nMapping?: FormMetaContext['i18nMapping']
   isContent?: boolean
   messages?: RenderContext['messages']
-  properties?: Record<string, JSONSchema6Definition>
+  schema?: JSONSchema6Definition
   propsOrContent?: Record<string, any>
 }
 
