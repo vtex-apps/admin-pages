@@ -3,7 +3,7 @@ import { Query } from 'react-apollo'
 
 import { PageHeader } from 'vtex.styleguide'
 
-import Section from './components/admin/pages/List/Section'
+import List from './components/admin/institutional/List/index'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
@@ -66,7 +66,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
       <div className="center mw8">
         <PageHeader title="Institucional" />
         <div className="ph7">
-          <Section
+          <List
             hasCreateButton
             routes={institutionalRoutes}
             titleId="admin/pages.admin.pages.list.section.standard"

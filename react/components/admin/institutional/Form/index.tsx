@@ -9,6 +9,7 @@ import Form from './Form'
 import { OperationsResults } from './Operations'
 
 import { generateNewRouteId } from '../../pages/Form/utils'
+import { isNewRoute } from '../../pages/utils'
 
 import { formatStatements } from '../../../../utils/conditions'
 
@@ -30,6 +31,8 @@ interface State {
   data: RouteFormData
   isLoading: boolean
   formErrors: any
+  isDeletable: boolean
+  isInfoEditable: boolean
 }
 
 const messages = defineMessages({
@@ -55,29 +58,33 @@ class FormContainer extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    // const { declarer } = props.initialData || { declarer: null }
+    const { declarer } = props.initialData || { declarer: null }
 
-    // const isNew = isNewRoute(props.initialData)
-
-    // const isDeletable = !declarer && !isNew
-    // const isInfoEditable = !declarer || isNew
+    const isNew = isNewRoute(props.initialData)
 
     this.state = {
       data: props.initialData,
       formErrors: {},
+      isDeletable: !isNew,
+      isInfoEditable: !declarer || isNew,
       isLoading: false,
     }
   }
 
   public render() {
-    const { data, isLoading } = this.state
+    const { onExit } = this.props
+    const { data, isDeletable, isInfoEditable, isLoading, formErrors } = this.state
 
     return (
       <Form
         data={data}
+        errors={formErrors}
         handleChangeFieldValue={this.handleChangeFieldValue}
+        isDeletable={isDeletable}
+        isInfoEditable={isInfoEditable}
         isLoading={isLoading}
         onSubmit={this.handleSave}
+        onExit={onExit}
       />
     )
   }
@@ -150,6 +157,10 @@ class FormContainer extends React.PureComponent<Props, State> {
           uuid,
         },
       }
+
+      console.log('----- variables:', variables)
+      return
+      
 
       this.setState({ isLoading: true }, async () => {
         try {
