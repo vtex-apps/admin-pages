@@ -185,7 +185,7 @@ export const getSchemaPropsOrContent = ({
   validate(propsOrContent)
   const dataFromSchema = validate.validatedData!.reduce(
     (acc: any, { value, format, dataPath, isLayout }: any) => {
-      if (isLayout !== isContent) {
+      if (isLayout) {
         return acc
       }
       if (IOMESSAGE_FORMAT_TYPE.includes(format) && messages) {
