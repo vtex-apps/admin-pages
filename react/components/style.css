@@ -1,0 +1,33 @@
+.gc_seo_button__close,
+.gc_seo_button__maximize,
+.gc_seo_button__minimize {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  margin-right: 5px;
+}
+
+.gc_seo_button__close {
+  background: #ff3d44;
+}
+
+.gc_seo_button__maximize {
+  background: #ffa721;
+}
+
+.gc_seo_button__minimize {
+  background: #7ed321;
+}
+
+.gc_seo__title {
+  color: #1a0dab;
+}
+
+.gc_seo__url {
+  color: #006621;
+}
+
+.gc_seo__description {
+  color: #545454;
+}
