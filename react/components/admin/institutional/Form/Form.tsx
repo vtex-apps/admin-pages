@@ -10,12 +10,18 @@ import {
   Textarea,
 } from 'vtex.styleguide'
 
+import FormFieldSeparator from '../../FormFieldSeparator'
+import { FormErrors } from '../../pages/Form/typings'
 
 interface CustomProps {
   data: any
+  errors: FormErrors
   handleChangeFieldValue: (field: keyof RouteFormData) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   isLoading: boolean
   onSubmit: (event: React.FormEvent) => void
+  onExit: () => void
+  isDeletable: boolean
+  isInfoEditable: boolean
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -61,13 +67,15 @@ const messages = defineMessages({
 
 const Form = ({
   data,
+  errors,
   handleChangeFieldValue,
   intl,
   isLoading,
+  onExit,
   onSubmit,
 }: Props) => (
   <form onSubmit={() => null}>
-    <h2 className="mv7 f5 normal">Criar página</h2>
+    <p className="mv7 f5 normal">Geral</p>
     
     <Input
       disabled={false}
@@ -75,14 +83,24 @@ const Form = ({
       onChange={handleChangeFieldValue('title')}
       required
       value={data.title}
-      errorMessage={null}
+      errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
+    />
+    <FormFieldSeparator />
+    <Input
+      disabled={false}
+      label={intl.formatMessage(messages.fieldPath)}
+      onChange={handleChangeFieldValue('path')}
+      placeholder={intl.formatMessage(messages.pathHint)}
+      required
+      value={data.path || ''}
+      errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
     />
 
     <div className="flex justify-end mt7">
       <div className="mr6">
         <Button
           disabled={isLoading}
-          onClick={() => null}
+          onClick={onExit}
           size="small"
           variation="tertiary"
         >

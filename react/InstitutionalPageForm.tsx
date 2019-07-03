@@ -10,18 +10,11 @@ import { RouteFormData } from 'pages'
 import Form from './components/admin/institutional/Form'
 import Operations from './components/admin/institutional/Form/Operations'
 
-import {
-  NEW_ROUTE_ID,
-  ROUTES_LIST,
-  WRAPPER_PATH,
-} from './components/admin/pages/consts'
+import { INSTITUTIONAL_ROUTES_LIST, NEW_ROUTE_ID } from './components/admin/pages/consts'
 import Title from './components/admin/pages/Form/Title'
 import { formatToFormData } from './components/admin/pages/Form/utils'
 import { getRouteTitle } from './components/admin/pages/utils'
-import {
-  TargetPathContextProps,
-  withTargetPath,
-} from './components/admin/TargetPathContext'
+import { TargetPathContextProps, withTargetPath } from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
@@ -98,10 +91,8 @@ class PageForm extends Component<Props, State> {
   }
 
   public async componentDidMount() {
-    const { client, setTargetPath } = this.props
+    const { client } = this.props
     const { formData } = this.state
-
-    setTargetPath(WRAPPER_PATH)
 
     if (equals(formData, this.defaultFormData) && !this.isNew) {
       // didnt find in cache
@@ -142,7 +133,7 @@ class PageForm extends Component<Props, State> {
 
     return (
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
-        <div className="center mw8 mt8">
+        <div className="center mw8 mv8">
           <Operations>
             {({ deletePage, savePage }) => (
               <Box>
@@ -178,7 +169,7 @@ class PageForm extends Component<Props, State> {
   }
 
   private exit = () => {
-    this.props.runtime.navigate({ page: ROUTES_LIST, params: {} })
+    this.props.runtime.navigate({ page: INSTITUTIONAL_ROUTES_LIST, params: {} })
   }
 }
 
