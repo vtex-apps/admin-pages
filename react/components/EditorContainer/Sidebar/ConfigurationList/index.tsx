@@ -446,7 +446,6 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const content = getSchemaPropsOrContent({
       i18nMapping,
-      isContent: true,
       messages: iframeRuntime.messages,
       propsOrContent: this.state.formData,
       schema: this.componentSchema,
