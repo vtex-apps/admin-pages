@@ -2,16 +2,13 @@ import { RouteFormData } from 'pages'
 import * as React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
-import {
-  Button,
-  Checkbox,
-  EXPERIMENTAL_Select as Select,
-  Input,
-  Textarea,
-} from 'vtex.styleguide'
+import { Button, Input, Textarea } from 'vtex.styleguide'
+
+import SeoPreview from '../../../SeoPreview'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
+import SeparatorWithLine from '../../pages/SeparatorWithLine'
 
 interface CustomProps {
   data: any
@@ -76,7 +73,6 @@ const Form = ({
 }: Props) => (
   <form onSubmit={() => null}>
     <p className="mv7 f5 normal">Geral</p>
-    
     <Input
       disabled={false}
       label={intl.formatMessage(messages.fieldTitle)}
@@ -95,6 +91,29 @@ const Form = ({
       value={data.path || ''}
       errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
     />
+    <FormFieldSeparator />
+    <SeparatorWithLine />
+
+    <p className="mv7 f5 normal">SEO</p>
+    <div className="flex-ns justify-between">
+      <div className="w-100 w-50-ns pr4-ns">
+        <Textarea
+          disabled={false}
+          label={intl.formatMessage(messages.seoDescription)}
+          onChange={handleChangeFieldValue('metaTagDescription')}
+          resize="vertical"
+          value={data.metaTagDescription}
+        />
+      </div>
+
+      <div className="w-100 w-50-ns pl4-ns">
+        <SeoPreview
+          title="Pagina institucional"
+          url="http://www.vtex.com"
+          description="Lorem ipsum dolor sit"
+        />
+      </div>
+    </div>
 
     <div className="flex justify-end mt7">
       <div className="mr6">
