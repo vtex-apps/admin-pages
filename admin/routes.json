@@ -25,6 +25,10 @@
     "component": "InstitutionalPageList",
     "path": "/admin/app/cms/institutional"
   },
+  "admin.app.cms.institutional-details": {
+    "component": "InstitutionalPageForm",
+    "path": "/admin/app/cms/institutional/*id"
+  },
   "admin.app.cms.settings": {
     "component": "Settings",
     "path": "/admin/app/cms/settings"

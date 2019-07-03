@@ -24,6 +24,8 @@ const PageListWithQuery = () => {
   return (
     <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
       {({ data, loading: isLoading }) => {
+        console.log('----- data:', data);
+        
         return <PageList isLoading={isLoading} data={data} />
       }}
     </Query>
