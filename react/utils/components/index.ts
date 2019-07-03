@@ -1,4 +1,4 @@
-import { assocPath, mergeDeepRight, reduce, toPairs, merge } from 'ramda'
+import { assocPath, merge, mergeDeepRight, reduce, toPairs } from 'ramda'
 import Ajv from 'vtex.ajv'
 import { global, Window } from 'vtex.render-runtime'
 
@@ -176,7 +176,6 @@ export const getImplementation = (component: string) => {
 
 export const getSchemaPropsOrContent = ({
   i18nMapping,
-  isContent = false,
   messages,
   schema,
   propsOrContent,
@@ -204,7 +203,7 @@ export const getSchemaPropsOrContent = ({
     },
     {}
   )
-  return keepTheBlanks(dataFromSchema, propsOrContent)
+  return keepTheBlanks(dataFromSchema, propsOrContent, schema)
 }
 
 export const getSchemaPropsOrContentFromRuntime = ({
@@ -228,7 +227,6 @@ export const getSchemaPropsOrContentFromRuntime = ({
   })
 
   return getSchemaPropsOrContent({
-    isContent,
     messages,
     propsOrContent,
     schema: componentSchema,
@@ -292,7 +290,8 @@ const getIOMessageAjv = () => {
 
 const keepTheBlanks = (
   validData: object,
-  formData: Record<string, any> | undefined
+  formData: Record<string, any> | undefined,
+  schema: Record<string, ComponentSchema>
 ) => {
   if (!formData) {
     return validData
@@ -302,9 +301,31 @@ const keepTheBlanks = (
     validData,
     toPairs(formData).reduce((acc, [prop, value]) => {
       if (!(prop in validData)) {
-        return { ...acc, [prop]: value == null ? null : value }
+        return {
+          ...acc,
+          [prop]: value == null ? getSchemaEmptyObj(schema, prop) : value,
+        }
       }
       return acc
     }, {})
   )
+}
+
+const emptyFields: Record<string, any> = {
+  any: {},
+  array: [],
+  boolean: false,
+  integer: null,
+  number: null,
+  object: {},
+  string: '',
+}
+
+const getSchemaEmptyObj = (schema: ComponentSchema, prop: string) => {
+  const type =
+    schema &&
+    schema.properties &&
+    schema.properties[prop] &&
+    schema.properties[prop].type
+  return type ? emptyFields[type] : null
 }
