@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.15.6] - 2019-07-03
+
 ### Fixed
 
 - Add empty field by type when form field is not modified
