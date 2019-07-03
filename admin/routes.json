@@ -9,10 +9,6 @@
     "component": "PageList",
     "path": "/admin/app/cms/pages"
   },
-  "admin.app.cms.pages.institutional-page-list": {
-    "component": "InstitutionalPageList",
-    "path": "/admin/app/cms/institutional"
-  },
   "admin.app.cms.pages.page-details": {
     "component": "PageForm",
     "path": "/admin/app/cms/pages/*id"
@@ -24,6 +20,10 @@
   "admin.app.cms.pages.redirect-details": {
     "component": "RedirectForm",
     "path": "/admin/app/cms/redirects/*id"
+  },
+  "admin.app.cms.institutional": {
+    "component": "InstitutionalPageList",
+    "path": "/admin/app/cms/institutional"
   },
   "admin.app.cms.settings": {
     "component": "Settings",

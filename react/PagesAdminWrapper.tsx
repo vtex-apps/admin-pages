@@ -17,10 +17,10 @@ const fields = {
     path: 'pages',
     titleId: 'admin/pages.admin.tabs.pages',
   },
-  institutional: {
-    path: 'institutional',
-    titleId: 'admin/pages.admin.tabs.institutional-pages',
-  },
+  // institutional: {
+  //   path: 'institutional',
+  //   titleId: 'admin/pages.admin.tabs.institutional-pages',
+  // },
   redirects: {
     path: 'redirects',
     titleId: 'admin/pages.admin.tabs.redirects',
@@ -45,10 +45,10 @@ defineMessages({
     defaultMessage: 'Pages',
     id: 'admin/pages.admin.tabs.pages',
   },
-  institutional: {
-    defaultMessage: 'Institutional',
-    id: 'admin/pages.admin.tabs.institutional-pages',
-  },
+  // institutional: {
+  //   defaultMessage: 'Institutional',
+  //   id: 'admin/pages.admin.tabs.institutional-pages',
+  // },
   redirects: {
     defaultMessage: 'Redirects',
     id: 'admin/pages.admin.tabs.redirects',

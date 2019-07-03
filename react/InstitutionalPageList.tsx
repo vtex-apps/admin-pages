@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo } from 'react'
 import { Query } from 'react-apollo'
 
-import { WRAPPER_PATH } from './components/admin/pages/consts'
+import { PageHeader } from 'vtex.styleguide'
+
 import Section from './components/admin/pages/List/Section'
-import { useTargetPathContext } from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
@@ -30,11 +30,6 @@ const PageListWithQuery = () => {
 
 const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) => {
   const { startLoading, stopLoading } = useAdminLoadingContext()
-  const { setTargetPath } = useTargetPathContext()
-
-  useEffect(() => {
-    setTargetPath('institutional')
-  }, [])
 
   useEffect(
     () => {
@@ -67,11 +62,18 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
   }
 
   return (
-    <Section
-      hasCreateButton
-      routes={institutionalRoutes}
-      titleId="admin/pages.admin.pages.list.section.standard"
-    />
+    <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
+      <div className="center mw8">
+        <PageHeader title="Institucional" />
+        <div className="ph7">
+          <Section
+            hasCreateButton
+            routes={institutionalRoutes}
+            titleId="admin/pages.admin.pages.list.section.standard"
+          />
+        </div>
+      </div>
+    </div>
   )
 }
 
