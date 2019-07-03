@@ -9,6 +9,10 @@
     "component": "PageList",
     "path": "/admin/app/cms/pages"
   },
+  "admin.app.cms.pages.institutional-page-list": {
+    "component": "InstitutionalPageList",
+    "path": "/admin/app/cms/institutional"
+  },
   "admin.app.cms.pages.page-details": {
     "component": "PageForm",
     "path": "/admin/app/cms/pages/*id"
