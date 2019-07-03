@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Add allErrors to ajv validation
+
 ## [4.2.4] - 2019-07-03
 
 ### Changed
