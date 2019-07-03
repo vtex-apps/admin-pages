@@ -268,6 +268,7 @@ export const updateExtensionFromForm = ({
 
 const getIOMessageAjv = () => {
   const opts = {
+    allErrors: true,
     nullable: true,
     shouldStoreValidSchema: true,
     useDefaults: true,
