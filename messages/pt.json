@@ -103,6 +103,7 @@
   "admin/pages.admin.redirects.upload-modal.success.subtitle": "Seus redirecionamentos foram carregados.",
   "admin/pages.admin.redirects.upload-modal.success.title": "Arquivo carregado com sucesso.",
   "admin/pages.admin.tabs.pages": "Páginas",
+  "admin/pages.admin.tabs.institutional-pages": "Institucional",
   "admin/pages.admin.tabs.redirects": "Redirecionamentos",
   "admin/pages.admin.tabs.settings": "Configurações",
   "admin/pages.editor.component-list.action-menu.delete": "Remover",
