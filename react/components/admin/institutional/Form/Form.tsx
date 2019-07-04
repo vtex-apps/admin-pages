@@ -8,6 +8,7 @@ import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
 
+import RichTextEditor from '../../../RichTextEditor'
 import SeoPreview from '../../../SeoPreview'
 
 interface CustomProps {
@@ -73,15 +74,9 @@ const Form = ({
 }: Props) => (
   <form onSubmit={() => null}>
     <p className="mv7 f4 b">Conteúdo</p>
-    <Input
-      disabled={false}
-      label={intl.formatMessage(messages.fieldTitle)}
-      onChange={handleChangeFieldValue('pageTitle')}
-      required
-      value={data.pageTitle}
-      // errorMessage={errors.pageTitle && intl.formatMessage({ id: errors.pageTitle })}
-    />
+    <RichTextEditor />
     <FormFieldSeparator />
+
     <Textarea
       disabled={false}
       label={'Conteúdo'}
