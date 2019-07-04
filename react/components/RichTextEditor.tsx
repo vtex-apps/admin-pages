@@ -1,6 +1,5 @@
 import {
   ContentBlock,
-  DraftHandleValue,
   Editor,
   EditorState,
   RichUtils,
@@ -50,33 +49,9 @@ const RichTextEditor = () => {
     }
   }
   const handleChange = (state: EditorState) => {
+    console.log('----- state:', state)
+    
     return setEditorState(state)
-  }
-
-  const handleKeyCommand = (command: string, editorState: EditorState): DraftHandleValue => {
-    const newState = RichUtils.handleKeyCommand(editorState, command)
-    if (newState) {
-      handleChange(newState)
-      return 'handled'
-    }
-    return 'not-handled'
-  }
-
-  const mapKeyToEditorCommand = (e: any): string | null => {
-    if (e.keyCode === 9 /* TAB */) {
-      const newEditorState = RichUtils.onTab(
-        e,
-        editorState,
-        4 /* maxDepth */
-      )
-      if (newEditorState !== editorState) {
-        handleChange(newEditorState)
-      }
-
-      return null
-    }
-
-    return null
   }
 
   const toggleBlockType = (blockType: string) => {
@@ -85,7 +60,7 @@ const RichTextEditor = () => {
         editorState,
         blockType
       )
-    );
+    )
   }
 
   const toggleInlineStyle = (inlineStyle: string) => {
@@ -94,29 +69,19 @@ const RichTextEditor = () => {
         editorState,
         inlineStyle
       )
-    );
+    )
   }
 
   return (
     <div className={styles.RichEditor_root}>
-      <BlockStyleControls
-        editorState={editorState}
-        onToggle={toggleBlockType}
-      />
-      <InlineStyleControls
-        editorState={editorState}
-        onToggle={toggleInlineStyle}
-      />
+      <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
+      <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
       <div className={className}>
         <Editor
           editorState={editorState}
           onChange={(state) => handleChange(state)}
           blockStyleFn={getBlockStyle}
           customStyleMap={styleMap}
-          handleKeyCommand={handleKeyCommand}
-          keyBindingFn={mapKeyToEditorCommand}
-          placeholder="Tell a story..."
-          spellCheck={true}
         />
       </div>
     </div>
