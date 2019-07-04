@@ -1,7 +1,6 @@
 import React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
-import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
@@ -26,6 +25,7 @@ interface Props {
 export interface OperationsResults {
   deletePage: MutationFn<any, DeleteRouteVariables>
   savePage: MutationFn<any, SaveRouteVariables>
+  saveContent: MutationFn<any, any>
 }
 
 // TODO: add save SEO mutation

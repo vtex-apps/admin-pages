@@ -44,7 +44,7 @@ class PageForm extends Component<Props, State> {
   private isNew: boolean
   private defaultFormData: RouteFormData = {
     auth: false,
-    blockId: '',
+    blockId: 'vtex.store@2.x:store.institutional',
     context: null,
     declarer: null,
     domain: 'store',
@@ -135,7 +135,7 @@ class PageForm extends Component<Props, State> {
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
           <Operations>
-            {({ deletePage, savePage }) => (
+            {({ deletePage, savePage, saveContent }) => (
               <Box>
                 {this.isNew ? (
                   <FormattedMessage id="admin/pages.admin.pages.form.title.new">
@@ -154,6 +154,7 @@ class PageForm extends Component<Props, State> {
                       onDelete={deletePage}
                       onExit={this.exit}
                       onSave={savePage}
+                      onSaveContent={saveContent}
                       // templates={templates}
                       showToast={showToast}
                       hideToast={hideToast}

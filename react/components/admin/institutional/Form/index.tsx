@@ -19,16 +19,22 @@ interface ComponentProps {
   onDelete: () => {}
   onExit: () => void
   onSave: OperationsResults['savePage']
+  onSaveContent: OperationsResults['saveContent']
   // runtime: RenderContext
   // templates: Template[]
   showToast: ToastConsumerFunctions['showToast']
   hideToast: ToastConsumerFunctions['hideToast']
 }
 
+interface RouteContentFromData {
+  pageTitle?: string
+  pageContent?: string
+}
+
 type Props = ComponentProps & InjectedIntlProps
 
 interface State {
-  data: RouteFormData
+  data: RouteFormData & RouteContentFromData
   isLoading: boolean
   formErrors: any
   isDeletable: boolean
@@ -71,6 +77,11 @@ class FormContainer extends React.PureComponent<Props, State> {
     }
   }
 
+  // public async componentDidMount() {
+  //   // @ts-ignore
+  //   await this.props.onDelete({ variables: { uuid: 'qAdpvMagNhKHMoyo7hJEw6' }})
+  // }
+
   public render() {
     const { onExit } = this.props
     const { data, isDeletable, isInfoEditable, isLoading, formErrors } = this.state
@@ -105,7 +116,7 @@ class FormContainer extends React.PureComponent<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { intl, onExit, onSave, showToast } = this.props
+    const { intl, onExit, onSave, showToast, onSaveContent } = this.props
 
     event.preventDefault()
 
@@ -121,46 +132,15 @@ class FormContainer extends React.PureComponent<Props, State> {
         interfaceId,
         metaTagDescription,
         metaTagKeywords,
+        pageContent,
+        pageTitle,
         pages,
         path,
-        routeId,
+        routeId: _routeId,
         title,
         uuid,
       } = this.state.data
-
-      const variables = {
-        route: {
-          auth,
-          blockId,
-          context,
-          declarer,
-          domain,
-          interfaceId,
-          metaTags: {
-            description: metaTagDescription,
-            keywords: (metaTagKeywords || []).map(({ value }) => value),
-          },
-          pages: pages.map(page => {
-            return {
-              condition: {
-                allMatches: page.condition.allMatches,
-                id: page.condition.id || undefined,
-                statements: formatStatements(page.condition.statements),
-              },
-              pageId: page.pageId || undefined,
-              template: page.template,
-            }
-          }),
-          path,
-          routeId: routeId || generateNewRouteId(interfaceId, path),
-          title,
-          uuid,
-        },
-      }
-
-      console.log('----- variables:', variables)
-      return
-      
+      const routeId = _routeId || generateNewRouteId(interfaceId, path)
 
       this.setState({ isLoading: true }, async () => {
         try {
@@ -189,10 +169,34 @@ class FormContainer extends React.PureComponent<Props, State> {
                   }
                 }),
                 path,
-                routeId: routeId || generateNewRouteId(interfaceId, path),
+                routeId,
                 title,
                 uuid,
               },
+            },
+          })
+
+          await onSaveContent({
+            variables: {
+              blockId,
+              configuration: {
+                condition: {
+                  allMatches: true,
+                  id: 'vtex.rich-text@0.x:rich-text',
+                  pageContext: {
+                    id: '*',
+                    type: '*',
+                  },
+                  statements: [],
+                },
+                contentId: '',
+                contentJSON: JSON.stringify({ text: pageTitle }),
+                label: null,
+                origin: 'vtex.rich-text@0.x:rich-text',
+              },
+              lang: 'pt-BR',
+              template: 'vtex.store@2.x:store.institutional',
+              treePath: `${routeId}/rich-text`,
             },
           })
 
