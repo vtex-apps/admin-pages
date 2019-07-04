@@ -4,11 +4,11 @@ import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
 import { Button, Input, Textarea } from 'vtex.styleguide'
 
-import SeoPreview from '../../../SeoPreview'
-
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
+
+import SeoPreview from '../../../SeoPreview'
 
 interface CustomProps {
   data: any
@@ -72,8 +72,8 @@ const Form = ({
   onSubmit,
 }: Props) => (
   <form onSubmit={() => null}>
-    <p className="mv7 f5 normal">Geral</p>
-    <Input
+    <p className="mv7 f4 b">Conteúdo</p>
+    {/* <Input
       disabled={false}
       label={intl.formatMessage(messages.fieldTitle)}
       onChange={handleChangeFieldValue('title')}
@@ -91,12 +91,31 @@ const Form = ({
       value={data.path || ''}
       errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
     />
-    <FormFieldSeparator />
-    <SeparatorWithLine />
+    <FormFieldSeparator /> */}
 
-    <p className="mv7 f5 normal">SEO</p>
+    <SeparatorWithLine />
+    <p className="mv7 f4 b">SEO</p>
     <div className="flex-ns justify-between">
       <div className="w-100 w-50-ns pr4-ns">
+        <Input
+          disabled={false}
+          label={intl.formatMessage(messages.fieldTitle)}
+          onChange={handleChangeFieldValue('title')}
+          required
+          value={data.title}
+          errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
+        />
+        <FormFieldSeparator />
+        <Input
+          disabled={false}
+          label={intl.formatMessage(messages.fieldPath)}
+          onChange={handleChangeFieldValue('path')}
+          placeholder={intl.formatMessage(messages.pathHint)}
+          required
+          value={data.path || ''}
+          errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
+        />
+        <FormFieldSeparator />
         <Textarea
           disabled={false}
           label={intl.formatMessage(messages.seoDescription)}
@@ -108,9 +127,9 @@ const Form = ({
 
       <div className="w-100 w-50-ns pl4-ns">
         <SeoPreview
-          title="Pagina institucional"
-          url="http://www.vtex.com"
-          description="Lorem ipsum dolor sit"
+          title={data.title}
+          url={data.path}
+          description={data.metaTagDescription}
         />
       </div>
     </div>

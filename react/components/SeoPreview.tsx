@@ -9,7 +9,7 @@ interface Props {
 }
 
 const SeoPreview = ({ title, description, url }: Props) => (
-  <div className="pl5 pt4 ba br2 b--muted-4 h-100 pb4">
+  <div className="pl5 pt4 ba br2 bw1 b--muted-4 h-100 pb4">
     <div>
       <span className={styles.gc_seo_button__close} />
       <span className={styles.gc_seo_button__maximize} />
