@@ -13,7 +13,7 @@ import SeoPreview from '../../../SeoPreview'
 interface CustomProps {
   data: any
   errors: FormErrors
-  handleChangeFieldValue: (field: keyof RouteFormData) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  handleChangeFieldValue: (field: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
   isLoading: boolean
   onSubmit: (event: React.FormEvent) => void
   onExit: () => void
@@ -73,25 +73,23 @@ const Form = ({
 }: Props) => (
   <form onSubmit={() => null}>
     <p className="mv7 f4 b">Conteúdo</p>
-    {/* <Input
-      disabled={false}
-      label={intl.formatMessage(messages.fieldTitle)}
-      onChange={handleChangeFieldValue('title')}
-      required
-      value={data.title}
-      errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
-    />
-    <FormFieldSeparator />
     <Input
       disabled={false}
-      label={intl.formatMessage(messages.fieldPath)}
-      onChange={handleChangeFieldValue('path')}
-      placeholder={intl.formatMessage(messages.pathHint)}
+      label={intl.formatMessage(messages.fieldTitle)}
+      onChange={handleChangeFieldValue('pageTitle')}
       required
-      value={data.path || ''}
-      errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
+      value={data.pageTitle}
+      // errorMessage={errors.pageTitle && intl.formatMessage({ id: errors.pageTitle })}
     />
-    <FormFieldSeparator /> */}
+    <FormFieldSeparator />
+    <Textarea
+      disabled={false}
+      label={'Conteúdo'}
+      onChange={handleChangeFieldValue('pageContent')}
+      resize="vertical"
+      value={data.pageContent}
+    />
+    <FormFieldSeparator />
 
     <SeparatorWithLine />
     <p className="mv7 f4 b">SEO</p>
