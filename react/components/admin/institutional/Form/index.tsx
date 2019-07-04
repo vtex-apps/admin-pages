@@ -27,7 +27,6 @@ interface ComponentProps {
 }
 
 interface RouteContentFromData {
-  pageTitle?: string
   pageContent?: string
 }
 
@@ -133,7 +132,6 @@ class FormContainer extends React.PureComponent<Props, State> {
         metaTagDescription,
         metaTagKeywords,
         pageContent,
-        pageTitle,
         pages,
         path,
         routeId: _routeId,
@@ -190,7 +188,7 @@ class FormContainer extends React.PureComponent<Props, State> {
                   statements: [],
                 },
                 contentId: '',
-                contentJSON: JSON.stringify({ text: pageTitle }),
+                contentJSON: JSON.stringify({ text: pageContent }),
                 label: null,
                 origin: 'vtex.rich-text@0.x:rich-text',
               },
