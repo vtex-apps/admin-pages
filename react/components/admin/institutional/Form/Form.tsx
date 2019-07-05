@@ -77,15 +77,6 @@ const Form = ({
     <RichTextEditor />
     <FormFieldSeparator />
 
-    <Textarea
-      disabled={false}
-      label={'Conteúdo'}
-      onChange={handleChangeFieldValue('pageContent')}
-      resize="vertical"
-      value={data.pageContent}
-    />
-    <FormFieldSeparator />
-
     <SeparatorWithLine />
     <p className="mv7 f4 b">SEO</p>
     <div className="flex-ns justify-between">

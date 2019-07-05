@@ -43,15 +43,19 @@
   border-top: 1px solid #ddd;
   cursor: text;
   font-size: 16px;
-  height: 10rem;
+  height: 20rem;
   padding: 10px;
+  overflow: auto;
+}
+
+.RichEditor_editor div {
+  height: 100%;
 }
 
 .RichEditor_editor .public-DraftEditorPlaceholder-root,
 .RichEditor_editor .public-DraftEditor-content {
   margin: 0 -15px -15px;
   padding: 15px;
-  height: 100%;
 }
 
 .RichEditor_hidePlaceholder .public-DraftEditorPlaceholder-root {
