@@ -15,23 +15,15 @@ const messages = defineMessages({
     defaultMessage: 'Add',
     id: 'admin/pages.admin.rich-text-editor.add-button',
   },
-  label: {
-    defaultMessage: 'Image link',
-    id: 'admin/pages.admin.rich-text-editor.add-image-label',
-  },
-  placeholder: {
-    defaultMessage: 'Link',
-    id: 'admin/pages.admin.rich-text-editor.add-image-placeholder',
-  },
 })
 
-const ImageInput = ({ onAdd, intl }: Props) => {
+const LinkInput = ({ onAdd, intl }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false)
-  const [imageLink, setImageLink] = React.useState()
+  const [link, setLink] = React.useState()
 
   const handleAddImage = () => {
     setIsOpen(false)
-    return onAdd(imageLink)
+    return onAdd(link)
   }
 
   return (
@@ -40,15 +32,15 @@ const ImageInput = ({ onAdd, intl }: Props) => {
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={{}}
-        label={'Image'}
+        label={'Link'}
       />
 
       {isOpen && (
         <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2">
           <div className="mb4">
             <Input
-              label={intl.formatMessage(messages.label)}
-              onChange={(e: any) => setImageLink(e.target.value)}
+              label={'URL'}
+              onChange={(e: any) => setLink(e.target.value)}
             />
           </div>
           <Button onClick={handleAddImage} size="small">
@@ -60,4 +52,4 @@ const ImageInput = ({ onAdd, intl }: Props) => {
   )
 }
 
-export default injectIntl(ImageInput)
+export default injectIntl(LinkInput)
