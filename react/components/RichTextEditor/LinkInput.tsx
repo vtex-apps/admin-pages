@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 
-import { Button, Input } from 'vtex.styleguide'
+import { Button, IconLink, Input } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
 
@@ -32,7 +32,7 @@ const LinkInput = ({ onAdd, intl }: Props) => {
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={{}}
-        label={'Link'}
+        label={<IconLink />}
       />
 
       {isOpen && (
