@@ -8,7 +8,7 @@ import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
 
-import RichTextEditor from '../../../RichTextEditor'
+import RichTextEditor from '../../../RichTextEditor/index'
 import SeoPreview from '../../../SeoPreview'
 
 interface CustomProps {
