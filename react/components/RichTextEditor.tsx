@@ -1,43 +1,37 @@
 import {
+  AtomicBlockUtils,
+  CompositeDecorator,
   ContentBlock,
+  ContentState,
   Editor,
   EditorState,
   RichUtils,
-  AtomicBlockUtils,
 } from 'draft-js'
 import * as React from 'react'
 
 import styles from './style.css'
 
 import ImageInput from './RichTextEditor/ImageInput'
+import Link from './RichTextEditor/Link'
+import LinkInput from './RichTextEditor/LinkInput'
 import Media from './RichTextEditor/Media'
 import StyleButton from './RichTextEditor/StyleButton'
 
-// custom overrides for "code" style.
-const styleMap = {
-  CODE: {
-    backgroundColor: 'rgba(0, 0, 0, 0.05)',
-    fontFamily: '"Inconsolata", "Menlo", "Consolas", monospace',
-    fontSize: 16,
-    padding: 2,
-  },
-}
-
 const INLINE_STYLES = [
-  {label: 'Bold', style: 'BOLD'},
-  {label: 'Italic', style: 'ITALIC'},
-  {label: 'Underline', style: 'UNDERLINE'},
+  { label: 'Bold', style: 'BOLD' },
+  { label: 'Italic', style: 'ITALIC' },
+  { label: 'Underline', style: 'UNDERLINE' },
 ]
 
 const BLOCK_TYPES = [
-  {label: 'H1', style: 'header-one'},
-  {label: 'H2', style: 'header-two'},
-  {label: 'H3', style: 'header-three'},
-  {label: 'H4', style: 'header-four'},
-  {label: 'H5', style: 'header-five'},
-  {label: 'H6', style: 'header-six'},
-  {label: 'UL', style: 'unordered-list-item'},
-  {label: 'OL', style: 'ordered-list-item'},
+  { label: 'H1', style: 'header-one' },
+  { label: 'H2', style: 'header-two' },
+  { label: 'H3', style: 'header-three' },
+  { label: 'H4', style: 'header-four' },
+  { label: 'H5', style: 'header-five' },
+  { label: 'H6', style: 'header-six' },
+  { label: 'UL', style: 'unordered-list-item' },
+  { label: 'OL', style: 'ordered-list-item' },
 ]
 
 const BlockStyleControls = (props: any) => {
@@ -82,15 +76,6 @@ const InlineStyleControls = (props: any) => {
   )
 }
 
-function getBlockStyle(block: ContentBlock): string {
-  switch (block.getType()) {
-    case 'blockquote': 
-      return styles.RichEditor_blockquote
-    default: 
-      return ''
-  }
-}
-
 function mediaBlockRenderer(block: ContentBlock) {
   if (block.getType() === 'atomic') {
     return {
@@ -102,8 +87,26 @@ function mediaBlockRenderer(block: ContentBlock) {
   return null
 }
 
+function findLinkEntities(
+  contentBlock: ContentBlock,
+  callback: (start: number, end: number) => void,
+  contentState: ContentState
+) {
+  return contentBlock.findEntityRanges(
+    (character) => {
+      const entityKey = character.getEntity()
+      return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() === 'LINK'
+      )
+    },
+    callback
+  )
+}
+
 const RichTextEditor = () => {
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
+  const decorator = new CompositeDecorator([{ strategy: findLinkEntities, component: Link }])
+  const [editorState, setEditorState] = React.useState(EditorState.createEmpty(decorator))
 
   let className = `${styles.RichEditor_editor}`
   const contentState = editorState.getCurrentContent()
@@ -126,6 +129,22 @@ const RichTextEditor = () => {
       newEditorState,
       entityKey,
       ' '
+    ))
+  }
+
+  const handleAddLink = (linkUrl: string) => {
+    const contentState = editorState.getCurrentContent()
+    const contentStateWithEntity = contentState.createEntity(
+      'LINK',
+      'IMMUTABLE',
+      { url: linkUrl }
+    )
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity })
+    return setEditorState(RichUtils.toggleLink(
+      newEditorState,
+      newEditorState.getSelection(),
+      entityKey
     ))
   }
 
@@ -154,22 +173,15 @@ const RichTextEditor = () => {
   return (
     <div className="bw1 br2 b--solid b--muted-4">
       <div className="pa4">
-        <BlockStyleControls
-          editorState={editorState}
-          onToggle={toggleBlockType}
-        />
-        <InlineStyleControls
-          editorState={editorState}
-          onToggle={toggleInlineStyle}
-        />
+        <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
+        <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
         <ImageInput onAdd={handleAddImage} />
+        <LinkInput onAdd={handleAddLink} />
       </div>
       <div className={className}>
         <Editor
           editorState={editorState}
           onChange={(state) => handleChange(state)}
-          blockStyleFn={getBlockStyle}
-          customStyleMap={styleMap}
           blockRendererFn={mediaBlockRenderer}
         />
       </div>
