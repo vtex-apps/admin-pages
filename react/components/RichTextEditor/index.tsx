@@ -11,11 +11,11 @@ import * as React from 'react'
 
 import styles from './style.css'
 
-import ImageInput from './RichTextEditor/ImageInput'
-import Link from './RichTextEditor/Link'
-import LinkInput from './RichTextEditor/LinkInput'
-import Media from './RichTextEditor/Media'
-import StyleButton from './RichTextEditor/StyleButton'
+import ImageInput from './ImageInput'
+import Link from './Link'
+import LinkInput from './LinkInput'
+import Media from './Media'
+import StyleButton from './StyleButton'
 
 const INLINE_STYLES = [
   { label: 'Bold', style: 'BOLD' },
