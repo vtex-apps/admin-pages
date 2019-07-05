@@ -229,5 +229,9 @@
   "admin/pages.editor.styles.select.delete-success": "Estilo '{name}' foi deletado.",
   "admin/pages.editor.styles.select.delete.toast.undo": "Desfazer",
   "admin/pages.editor.styles.select.save-fail": "Erro ao selecionar estilo '{name}'.",
-  "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado."
+  "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
+
+  "admin/pages.admin.rich-text-editor.add-image-label": "Link da imagem",
+  "admin/pages.admin.rich-text-editor.add-image-placeholder": "Link",
+  "admin/pages.admin.rich-text-editor.add-image-btn": "Adicionar"
 }
