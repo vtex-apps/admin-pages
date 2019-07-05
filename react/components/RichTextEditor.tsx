@@ -3,10 +3,15 @@ import {
   Editor,
   EditorState,
   RichUtils,
+  AtomicBlockUtils,
 } from 'draft-js'
 import * as React from 'react'
 
 import styles from './style.css'
+
+import ImageInput from './RichTextEditor/ImageInput'
+import Media from './RichTextEditor/Media'
+import StyleButton from './RichTextEditor/StyleButton'
 
 // custom overrides for "code" style.
 const styleMap = {
@@ -34,25 +39,6 @@ const BLOCK_TYPES = [
   {label: 'UL', style: 'unordered-list-item'},
   {label: 'OL', style: 'ordered-list-item'},
 ]
-
-interface StyleBtnProps {
-  label: string | JSX.Element
-  active: boolean
-  onToggle: (style: any) => void
-  style: any
-}
-const StyleButton = ({ active, onToggle, style, label }: StyleBtnProps) => {
-  const handleToggle = (e: any) => {
-    e.preventDefault()
-    onToggle(style)
-  }
-
-  return (
-    <span className={`f6 pointer mr3 ${active ? 'blue b' : ''}`} onMouseDown={handleToggle}>
-      {label}
-    </span>
-  )
-}
 
 const BlockStyleControls = (props: any) => {
   const { editorState } = props
@@ -105,6 +91,17 @@ function getBlockStyle(block: ContentBlock): string {
   }
 }
 
+function mediaBlockRenderer(block: ContentBlock) {
+  if (block.getType() === 'atomic') {
+    return {
+      component: Media,
+      editable: false,
+    }
+  }
+
+  return null
+}
+
 const RichTextEditor = () => {
   const [editorState, setEditorState] = React.useState(EditorState.createEmpty())
 
@@ -114,6 +111,22 @@ const RichTextEditor = () => {
     if (contentState.getBlockMap().first().getType() !== 'unstyled') {
       className += ` ${styles.RichEditor_hidePlaceholder}`
     }
+  }
+
+  const handleAddImage = (imageLink: string) => {
+    const contentState = editorState.getCurrentContent()
+    const contentStateWithEntity = contentState.createEntity(
+      'image',
+      'IMMUTABLE',
+      { src: imageLink }
+    )
+    const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
+    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity })
+    return setEditorState(AtomicBlockUtils.insertAtomicBlock(
+      newEditorState,
+      entityKey,
+      ' '
+    ))
   }
 
   const handleChange = (state: EditorState) => {
@@ -149,6 +162,7 @@ const RichTextEditor = () => {
           editorState={editorState}
           onToggle={toggleInlineStyle}
         />
+        <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>
         <Editor
@@ -156,6 +170,7 @@ const RichTextEditor = () => {
           onChange={(state) => handleChange(state)}
           blockStyleFn={getBlockStyle}
           customStyleMap={styleMap}
+          blockRendererFn={mediaBlockRenderer}
         />
       </div>
     </div>
