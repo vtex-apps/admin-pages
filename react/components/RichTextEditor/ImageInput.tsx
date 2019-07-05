@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 
-import { Button, Input } from 'vtex.styleguide'
+import { Button, IconImage, Input } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
 
@@ -40,7 +40,7 @@ const ImageInput = ({ onAdd, intl }: Props) => {
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={{}}
-        label={'Image'}
+        label={<IconImage />}
       />
 
       {isOpen && (

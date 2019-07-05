@@ -9,6 +9,14 @@ import {
 } from 'draft-js'
 import * as React from 'react'
 
+import {
+  IconBold,
+  IconItalic,
+  IconOrderedList,
+  IconUnderline,
+  IconUnorderedList,
+} from 'vtex.styleguide'
+
 import styles from './style.css'
 
 import ImageInput from './ImageInput'
@@ -18,9 +26,9 @@ import Media from './Media'
 import StyleButton from './StyleButton'
 
 const INLINE_STYLES = [
-  { label: 'Bold', style: 'BOLD' },
-  { label: 'Italic', style: 'ITALIC' },
-  { label: 'Underline', style: 'UNDERLINE' },
+  { label: <IconBold />, style: 'BOLD' },
+  { label: <IconItalic />, style: 'ITALIC' },
+  { label: <IconUnderline />, style: 'UNDERLINE' },
 ]
 
 const BLOCK_TYPES = [
@@ -30,8 +38,8 @@ const BLOCK_TYPES = [
   { label: 'H4', style: 'header-four' },
   { label: 'H5', style: 'header-five' },
   { label: 'H6', style: 'header-six' },
-  { label: 'UL', style: 'unordered-list-item' },
-  { label: 'OL', style: 'ordered-list-item' },
+  { label: <IconUnorderedList />, style: 'unordered-list-item' },
+  { label: <IconOrderedList />, style: 'ordered-list-item' },
 ]
 
 const BlockStyleControls = (props: any) => {
@@ -44,9 +52,9 @@ const BlockStyleControls = (props: any) => {
 
   return (
     <div className="mb3">
-      {BLOCK_TYPES.map((type) =>
+      {BLOCK_TYPES.map((type, i) =>
         <StyleButton
-          key={type.label}
+          key={i}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
