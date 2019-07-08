@@ -1,6 +1,7 @@
 import {
-  AtomicBlockUtils,
+  AtomicBlockUtils,  
   CompositeDecorator,
+  ContentState,
   Editor,
   EditorState,
   RichUtils,
@@ -22,7 +23,7 @@ import Link from './Link'
 import LinkInput from './LinkInput'
 import StyleButton from './StyleButton'
 
-import { convertToMarkdown, findLinkEntities, mediaBlockRenderer } from './utils'
+import { convertToEditorState, convertToMarkdown, findLinkEntities, mediaBlockRenderer } from './utils'
 
 const INLINE_STYLES = [
   { label: <IconBold />, style: 'BOLD' },
@@ -85,10 +86,14 @@ const InlineStyleControls = (props: any) => {
 
 interface Props {
   onChange?: (value: string) => void
+  initialState: string
 }
-const RichTextEditor = ({ onChange }: Props) => {
+
+const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   const decorator = new CompositeDecorator([{ strategy: findLinkEntities, component: Link }])
-  const [editorState, setEditorState] = React.useState(EditorState.createEmpty(decorator))
+  const [editorState, setEditorState] = React.useState(
+    EditorState.createWithContent(convertToEditorState(initialState), decorator)
+  )
 
   let className = `${styles.RichEditor_editor}`
   const contentState = editorState.getCurrentContent()

@@ -1,1 +1,1 @@
-declare module 'draftjs-to-markdown'
+declare module 'markdown-draft-js'

@@ -9,11 +9,11 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
-    "draftjs-to-markdown": "^0.5.1",
     "exenv": "^1.2.2",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "lodash.throttle": "^4.1.1",
+    "markdown-draft-js": "^1.6.0",
     "ramda": "^0.25.0",
     "react-draggable": "^3.0.5",
     "react-dropzone": "^10.1.3",

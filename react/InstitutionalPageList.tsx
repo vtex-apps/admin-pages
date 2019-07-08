@@ -46,12 +46,8 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
     () => {
       const routes = data && data.routes
       return (routes || []).filter((currRoute: Route) => {
-        const currRouteContext = currRoute.context || ''
-        return !(
-          currRouteContext.endsWith('SearchContext') ||
-          currRouteContext.endsWith('ProductContext') ||
-          currRoute.blockId.indexOf('custom') <= 0
-        )
+        // const currRouteContext = currRoute.context || ''
+        return currRoute.blockId.indexOf('institutional') >= 0
       })
     },
     [data]

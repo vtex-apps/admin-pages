@@ -118,7 +118,10 @@ const Form = ({
       <SeparatorWithLine />
 
       <p className="mv7 f4 b">Conteúdo</p>
-      <RichTextEditor onChange={(value: string) => handleChangeFieldValue('pageContent', value)} />
+      <RichTextEditor
+        initialState={data.pageContent}
+        onChange={(value: string) => handleChangeFieldValue('pageContent', value)}
+      />
 
       <div className="flex justify-end mt7">
         <div className="mr6">
