@@ -1,4 +1,3 @@
-import { RouteFormData } from 'pages'
 import * as React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
@@ -25,41 +24,33 @@ interface CustomProps {
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
-  createKeywordsMessage: {
-    defaultMessage: 'Create keyword "{keyword}"',
-    id: 'admin/pages.admin.pages.form.field.meta.keywords.create',
-  },
-  detailsTitle: {
-    defaultMessage: 'Page details',
-    id: 'admin/pages.admin.pages.form.details.title',
-  },
-  fieldLogin: {
-    defaultMessage: 'Requires authentication',
-    id: 'admin/pages.admin.pages.form.field.login',
+  contentSection: {
+    defaultMessage: 'Content',
+    id: 'admin/pages.admin.institutional.content.section-title',
   },
   fieldPath: {
     defaultMessage: 'URL',
-    id: 'admin/pages.admin.pages.form.field.path',
+    id: 'admin/pages.admin.institutional.general.url.label',
   },
   fieldTitle: {
     defaultMessage: 'Title',
-    id: 'admin/pages.admin.pages.form.field.title',
+    id: 'admin/pages.admin.institutional.general.title.label',
   },
-  noOptionsKeywordsMessage: {
-    defaultMessage: 'Type your keyword and press ENTER to add it.',
-    id: 'admin/pages.admin.pages.form.field.meta.description.no-options',
+  generalSection: {
+    defaultMessage: 'General',
+    id: 'admin/pages.admin.institutional.general.section-title',
   },
   pathHint: {
     defaultMessage: '/my-custom-page',
-    id: 'admin/pages.admin.pages.form.details.path-hint',
+    id: 'admin/pages.admin.institutional.general.url.placeholder',
   },
   seoDescription: {
     defaultMessage: 'Description',
-    id: 'admin/pages.admin.pages.form.field.meta.description',
+    id: 'admin/pages.admin.institutional.general.description.label',
   },
-  seoKeywords: {
-    defaultMessage: 'Keywords',
-    id: 'admin/pages.admin.pages.form.field.meta.keywords',
+  titleHint: {
+    defaultMessage: '/my-custom-page',
+    id: 'admin/pages.admin.institutional.general.title.placeholder',
   },
 })
 
@@ -87,6 +78,7 @@ const Form = ({
             disabled={false}
             label={intl.formatMessage(messages.fieldTitle)}
             onChange={handleEventValue}
+            placeholder={intl.formatMessage(messages.titleHint)}
             required
             value={data.title}
             errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
