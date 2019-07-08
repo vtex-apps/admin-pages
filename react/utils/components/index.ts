@@ -187,7 +187,7 @@ export const getSchemaPropsOrContent = ({
       if (isLayout) {
         return acc
       }
-      if (IOMESSAGE_FORMAT_TYPE.includes(format) && messages) {
+      if (IO_MESSAGE_FORMATS.includes(format) && messages) {
         const id =
           i18nMapping && i18nMapping[value] !== undefined
             ? i18nMapping[value]
