@@ -7,6 +7,7 @@ import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import Form from './Form'
 import { OperationsResults } from './Operations'
+import { getValidateFormState } from './utils'
 
 import { generateNewRouteId } from '../../pages/Form/utils'
 import { isNewRoute } from '../../pages/utils'
@@ -14,15 +15,12 @@ import { isNewRoute } from '../../pages/utils'
 import { formatStatements } from '../../../../utils/conditions'
 
 interface ComponentProps {
-  // isCustomPage: boolean
   initialData: RouteFormData
   initialContent: string
   onDelete: () => {}
   onExit: () => void
   onSave: OperationsResults['savePage']
   onSaveContent: OperationsResults['saveContent']
-  // runtime: RenderContext
-  // templates: Template[]
   showToast: ToastConsumerFunctions['showToast']
   hideToast: ToastConsumerFunctions['hideToast']
 }
@@ -33,7 +31,7 @@ interface RouteContentFromData {
 
 type Props = ComponentProps & InjectedIntlProps
 
-interface State {
+export interface State {
   data: RouteFormData & RouteContentFromData
   isLoading: boolean
   formErrors: any
@@ -113,8 +111,7 @@ class FormContainer extends React.PureComponent<Props, State> {
 
     event.preventDefault()
 
-    // const nextState = getValidateFormState(this.state)
-    const nextState = this.state
+    const nextState = getValidateFormState(this.state)
     if (isEmpty(nextState.formErrors)) {
       const {
         auth,
@@ -210,7 +207,7 @@ class FormContainer extends React.PureComponent<Props, State> {
         }
       })
     } else {
-      // this.setState(getValidateFormState)
+      this.setState(getValidateFormState)
     }
   }
 }

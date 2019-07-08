@@ -14,10 +14,6 @@ import {
 
 import { updateStoreAfterDelete, updateStoreAfterSave } from '../../pages/Form/utils'
 
-interface TemplateVariables {
-  interfaceId: string
-}
-
 interface Props {
   children: (mutations: any) => React.ReactNode
   routeId?: string 
