@@ -4,7 +4,6 @@ import {
   convertToRaw,
   EditorState,
 } from 'draft-js'
-// @ts-ignore
 import draftToMarkdown from 'draftjs-to-markdown'
 
 import Media from './Media'
