@@ -1,8 +1,6 @@
 import {
   AtomicBlockUtils,
   CompositeDecorator,
-  ContentBlock,
-  ContentState,
   Editor,
   EditorState,
   RichUtils,
@@ -22,8 +20,9 @@ import styles from './style.css'
 import ImageInput from './ImageInput'
 import Link from './Link'
 import LinkInput from './LinkInput'
-import Media from './Media'
 import StyleButton from './StyleButton'
+
+import { convertToMarkdown, findLinkEntities, mediaBlockRenderer } from './utils'
 
 const INLINE_STYLES = [
   { label: <IconBold />, style: 'BOLD' },
@@ -84,35 +83,10 @@ const InlineStyleControls = (props: any) => {
   )
 }
 
-function mediaBlockRenderer(block: ContentBlock) {
-  if (block.getType() === 'atomic') {
-    return {
-      component: Media,
-      editable: false,
-    }
-  }
-
-  return null
+interface Props {
+  onChange?: (value: string) => void
 }
-
-function findLinkEntities(
-  contentBlock: ContentBlock,
-  callback: (start: number, end: number) => void,
-  contentState: ContentState
-) {
-  return contentBlock.findEntityRanges(
-    (character) => {
-      const entityKey = character.getEntity()
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'LINK'
-      )
-    },
-    callback
-  )
-}
-
-const RichTextEditor = () => {
+const RichTextEditor = ({ onChange }: Props) => {
   const decorator = new CompositeDecorator([{ strategy: findLinkEntities, component: Link }])
   const [editorState, setEditorState] = React.useState(EditorState.createEmpty(decorator))
 
@@ -125,8 +99,8 @@ const RichTextEditor = () => {
   }
 
   const handleAddImage = (imageLink: string) => {
-    const contentState = editorState.getCurrentContent()
-    const contentStateWithEntity = contentState.createEntity(
+    const currentContentState = editorState.getCurrentContent()
+    const contentStateWithEntity = currentContentState.createEntity(
       'image',
       'IMMUTABLE',
       { src: imageLink }
@@ -141,8 +115,8 @@ const RichTextEditor = () => {
   }
 
   const handleAddLink = (linkUrl: string) => {
-    const contentState = editorState.getCurrentContent()
-    const contentStateWithEntity = contentState.createEntity(
+    const currentContentState = editorState.getCurrentContent()
+    const contentStateWithEntity = currentContentState.createEntity(
       'LINK',
       'IMMUTABLE',
       { url: linkUrl }
@@ -157,6 +131,10 @@ const RichTextEditor = () => {
   }
 
   const handleChange = (state: EditorState) => {
+    if (onChange) {
+      onChange(convertToMarkdown(state))
+    }
+
     return setEditorState(state)
   }
 

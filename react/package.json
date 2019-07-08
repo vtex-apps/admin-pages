@@ -9,6 +9,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "draft-js": "^0.10.5",
+    "draftjs-to-markdown": "^0.5.1",
     "exenv": "^1.2.2",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
