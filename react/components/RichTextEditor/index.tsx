@@ -50,7 +50,7 @@ const BlockStyleControls = (props: any) => {
     .getType()
 
   return (
-    <div className="mb3">
+    <>
       {BLOCK_TYPES.map((type, i) =>
         <StyleButton
           key={i}
@@ -60,7 +60,7 @@ const BlockStyleControls = (props: any) => {
           style={type.style}
         />
       )}
-    </div>
+    </>
   )
 }
 
@@ -69,7 +69,7 @@ const InlineStyleControls = (props: any) => {
   const currentStyle = editorState.getCurrentInlineStyle()
   
   return (
-    <div className="">
+    <>
       {INLINE_STYLES.map((type, i) =>
         <StyleButton
           key={i}
@@ -79,7 +79,7 @@ const InlineStyleControls = (props: any) => {
           style={type.style}
         />
       )}
-    </div>
+    </>
   )
 }
 
@@ -158,11 +158,11 @@ const RichTextEditor = ({ onChange }: Props) => {
 
   return (
     <div className="bw1 br2 b--solid b--muted-4">
-      <div className="pa4">
-        <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
+      <div className="pa4 flex flex-wrap-s">
         <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
-        <ImageInput onAdd={handleAddImage} />
+        <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
         <LinkInput onAdd={handleAddLink} />
+        <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>
         <Editor

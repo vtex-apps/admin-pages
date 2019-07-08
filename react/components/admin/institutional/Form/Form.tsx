@@ -79,12 +79,7 @@ const Form = ({
 
   return (
     <form onSubmit={() => null}>
-      <p className="mv7 f4 b">Conteúdo</p>
-      <RichTextEditor onChange={(value: string) => handleChangeFieldValue('pageContent', value)} />
-      <FormFieldSeparator />
-
-      <SeparatorWithLine />
-      <p className="mv7 f4 b">SEO</p>
+      <p className="mv7 f4 b">Geral</p>
       <div className="flex-ns justify-between">
         <div className="w-100 w-50-ns pr4-ns">
           <Input
@@ -126,6 +121,12 @@ const Form = ({
           />
         </div>
       </div>
+
+      <FormFieldSeparator />
+      <SeparatorWithLine />
+
+      <p className="mv7 f4 b">Conteúdo</p>
+      <RichTextEditor onChange={(value: string) => handleChangeFieldValue('pageContent', value)} />
 
       <div className="flex justify-end mt7">
         <div className="mr6">

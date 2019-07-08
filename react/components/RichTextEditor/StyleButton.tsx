@@ -14,9 +14,12 @@ const StyleButton = ({ active, onToggle, style, label }: StyleBtnProps) => {
   }
 
   return (
-    <span className={`f6 pointer mr3 ${active ? 'blue b' : ''}`} onMouseDown={handleToggle}>
+    <div
+      className={`f6 pointer mr3 flex flex-row justify-center items-center w2 h2 b--muted-4 br2 ba ${active ? 'c-action-primary bg-muted-5' : ''}`}
+      onMouseDown={handleToggle}
+    >
       {label}
-    </span>
+    </div>
   )
 }
 
