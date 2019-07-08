@@ -99,16 +99,12 @@ class FormContainer extends React.PureComponent<Props, State> {
     )
   }
 
-  private handleChangeFieldValue = (field: string) => (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const newDetailValue = e.target.value
-
-    this.setState(prevState => ({
+  private handleChangeFieldValue = (field: string, value: string | number | null) => {
+    return this.setState(prevState => ({
       ...prevState,
       data: {
         ...prevState.data,
-        [field]: newDetailValue,
+        [field]: value,
       },
       formErrors: {},
     }))
@@ -134,11 +130,11 @@ class FormContainer extends React.PureComponent<Props, State> {
         pageContent,
         pages,
         path,
-        routeId: _routeId,
+        routeId: routeIdCandidate,
         title,
         uuid,
       } = this.state.data
-      const routeId = _routeId || generateNewRouteId(interfaceId, path)
+      const routeId = routeIdCandidate || generateNewRouteId(interfaceId, path)
 
       this.setState({ isLoading: true }, async () => {
         try {

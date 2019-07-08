@@ -14,7 +14,7 @@ import SeoPreview from '../../../SeoPreview'
 interface CustomProps {
   data: any
   errors: FormErrors
-  handleChangeFieldValue: (field: string) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  handleChangeFieldValue: (field: string, value: string | number | null) => void
   isLoading: boolean
   onSubmit: (event: React.FormEvent) => void
   onExit: () => void
@@ -71,81 +71,91 @@ const Form = ({
   isLoading,
   onExit,
   onSubmit,
-}: Props) => (
-  <form onSubmit={() => null}>
-    <p className="mv7 f4 b">Conteúdo</p>
-    <RichTextEditor />
-    <FormFieldSeparator />
+}: Props) => {
+  const handleEventValue = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = event.target
+    return handleChangeFieldValue(name, value)
+  }
 
-    <SeparatorWithLine />
-    <p className="mv7 f4 b">SEO</p>
-    <div className="flex-ns justify-between">
-      <div className="w-100 w-50-ns pr4-ns">
-        <Input
-          disabled={false}
-          label={intl.formatMessage(messages.fieldTitle)}
-          onChange={handleChangeFieldValue('title')}
-          required
-          value={data.title}
-          errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
-        />
-        <FormFieldSeparator />
-        <Input
-          disabled={false}
-          label={intl.formatMessage(messages.fieldPath)}
-          onChange={handleChangeFieldValue('path')}
-          placeholder={intl.formatMessage(messages.pathHint)}
-          required
-          value={data.path || ''}
-          errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
-        />
-        <FormFieldSeparator />
-        <Textarea
-          disabled={false}
-          label={intl.formatMessage(messages.seoDescription)}
-          onChange={handleChangeFieldValue('metaTagDescription')}
-          resize="vertical"
-          value={data.metaTagDescription}
-        />
+  return (
+    <form onSubmit={() => null}>
+      <p className="mv7 f4 b">Conteúdo</p>
+      <RichTextEditor onChange={(value: string) => handleChangeFieldValue('pageContent', value)} />
+      <FormFieldSeparator />
+
+      <SeparatorWithLine />
+      <p className="mv7 f4 b">SEO</p>
+      <div className="flex-ns justify-between">
+        <div className="w-100 w-50-ns pr4-ns">
+          <Input
+            name="title"
+            disabled={false}
+            label={intl.formatMessage(messages.fieldTitle)}
+            onChange={handleEventValue}
+            required
+            value={data.title}
+            errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
+          />
+          <FormFieldSeparator />
+          <Input
+            name="path"
+            disabled={false}
+            label={intl.formatMessage(messages.fieldPath)}
+            onChange={handleEventValue}
+            placeholder={intl.formatMessage(messages.pathHint)}
+            required
+            value={data.path || ''}
+            errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
+          />
+          <FormFieldSeparator />
+          <Textarea
+            name="metaTagDescription"
+            disabled={false}
+            label={intl.formatMessage(messages.seoDescription)}
+            onChange={handleEventValue}
+            resize="vertical"
+            value={data.metaTagDescription}
+          />
+        </div>
+
+        <div className="w-100 w-50-ns pl4-ns">
+          <SeoPreview
+            title={data.title}
+            url={data.path}
+            description={data.metaTagDescription}
+          />
+        </div>
       </div>
 
-      <div className="w-100 w-50-ns pl4-ns">
-        <SeoPreview
-          title={data.title}
-          url={data.path}
-          description={data.metaTagDescription}
-        />
-      </div>
-    </div>
-
-    <div className="flex justify-end mt7">
-      <div className="mr6">
+      <div className="flex justify-end mt7">
+        <div className="mr6">
+          <Button
+            disabled={isLoading}
+            onClick={onExit}
+            size="small"
+            variation="tertiary"
+          >
+            <FormattedMessage
+              id="admin/pages.admin.pages.form.button.cancel"
+              defaultMessage="Cancel"
+            />
+          </Button>
+        </div>
         <Button
           disabled={isLoading}
-          onClick={onExit}
+          isLoading={isLoading}
+          onClick={onSubmit}
           size="small"
-          variation="tertiary"
+          variation="primary"
         >
           <FormattedMessage
-            id="admin/pages.admin.pages.form.button.cancel"
-            defaultMessage="Cancel"
+            id="admin/pages.admin.pages.form.button.save"
+            defaultMessage="Save"
           />
         </Button>
       </div>
-      <Button
-        disabled={isLoading}
-        isLoading={isLoading}
-        onClick={onSubmit}
-        size="small"
-        variation="primary"
-      >
-        <FormattedMessage
-          id="admin/pages.admin.pages.form.button.save"
-          defaultMessage="Save"
-        />
-      </Button>
-    </div>
-  </form>
-)
+    </form>
+  )
+}
 
 export default injectIntl(Form)
