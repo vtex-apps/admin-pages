@@ -1,11 +1,11 @@
 import React from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { Mutation, MutationFn } from 'react-apollo'
 
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
 import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
-
+import ListContentQuery from '../../../EditorContainer/queries/ListContent'
 
 import {
   DeleteRouteVariables,
@@ -20,6 +20,7 @@ interface TemplateVariables {
 
 interface Props {
   children: (mutations: any) => React.ReactNode
+  routeId?: string 
 }
 
 export interface OperationsResults {
@@ -28,10 +29,7 @@ export interface OperationsResults {
   saveContent: MutationFn<any, any>
 }
 
-// TODO: add save SEO mutation
-// TODO: add save content mutation
-
-const Operations = ({ children }: Props) => (
+const Operations = ({ children, routeId }: Props) => (
   <Mutation
     mutation={DeleteRoute}
     update={updateStoreAfterDelete}
@@ -42,15 +40,30 @@ const Operations = ({ children }: Props) => (
         update={updateStoreAfterSave}
       >
         {(savePage: any) =>
-          <SaveContentMutation>
-            {(saveContent: any) => 
-              children({
-                deletePage,
-                saveContent,
-                savePage,
-              })
-            }
-          </SaveContentMutation>
+          <ListContentQuery
+            variables={{
+              blockId: 'vtex.store@2.x:store.institutional',
+              pageContext: {
+                id: '*',
+                type: '*',
+              },
+              template: 'vtex.store@2.x:store.institutional',
+              treePath: `${routeId}/rich-text`,
+            }}
+          >
+            {(content: any) => (
+              <SaveContentMutation>
+                {(saveContent: any) => 
+                  children({
+                    content,
+                    deletePage,
+                    saveContent,
+                    savePage,
+                  })
+                }
+              </SaveContentMutation>
+            )}
+          </ListContentQuery>
         }
       </Mutation>
     )}

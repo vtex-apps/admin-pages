@@ -1,4 +1,4 @@
-import { equals } from 'ramda'
+import { equals, pathOr } from 'ramda'
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
@@ -125,7 +125,7 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
-    const { formData, isLoading } = this.state
+    const { formData, isLoading, routeId } = this.state
 
     if (isLoading) {
       return <Loader />
@@ -134,35 +134,40 @@ class PageForm extends Component<Props, State> {
     return (
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
-          <Operations>
-            {({ deletePage, savePage, saveContent }) => (
-              <Box>
-                {this.isNew ? (
-                  <FormattedMessage id="admin/pages.admin.pages.form.title.new">
-                    {text => <Title>{text}</Title>}
-                  </FormattedMessage>
-                ) : (
-                  formData && <Title>{getRouteTitle(formData)}</Title>
-                )}
-                <ToastConsumer>
-                  {({ showToast, hideToast }) => (
-                    <Form
-                      initialData={formData}
-                      // isCustomPage={formData.interfaceId.includes(
-                      //   'store.custom'
-                      // )}
-                      onDelete={deletePage}
-                      onExit={this.exit}
-                      onSave={savePage}
-                      onSaveContent={saveContent}
-                      // templates={templates}
-                      showToast={showToast}
-                      hideToast={hideToast}
-                    />
+          <Operations routeId={routeId}>
+            {({ deletePage, savePage, saveContent, content }) => {
+              const contentJSON: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentJSON'], content)
+              
+              if (content.loading) {
+                return <Loader />
+              }
+
+              return (
+                <Box>
+                  {this.isNew ? (
+                    <FormattedMessage id="admin/pages.admin.pages.form.title.new">
+                      {text => <Title>{text}</Title>}
+                    </FormattedMessage>
+                  ) : (
+                    formData && <Title>{getRouteTitle(formData)}</Title>
                   )}
-                </ToastConsumer>
-              </Box>
-            )}
+                  <ToastConsumer>
+                    {({ showToast, hideToast }) => (
+                      <Form
+                        initialData={formData}
+                        initialContent={contentJSON ? JSON.parse(contentJSON).text : ''}
+                        onDelete={deletePage}
+                        onExit={this.exit}
+                        onSave={savePage}
+                        onSaveContent={saveContent}
+                        showToast={showToast}
+                        hideToast={hideToast}
+                      />
+                    )}
+                  </ToastConsumer>
+                </Box>
+              )
+            }}
           </Operations>
         </div>
       </div>

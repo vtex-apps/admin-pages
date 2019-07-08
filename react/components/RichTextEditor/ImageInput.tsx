@@ -44,7 +44,7 @@ const ImageInput = ({ onAdd, intl }: Props) => {
       />
 
       {isOpen && (
-        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2">
+        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5">
           <div className="mb4">
             <Input
               label={intl.formatMessage(messages.label)}

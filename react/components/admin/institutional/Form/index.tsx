@@ -16,6 +16,7 @@ import { formatStatements } from '../../../../utils/conditions'
 interface ComponentProps {
   // isCustomPage: boolean
   initialData: RouteFormData
+  initialContent: string
   onDelete: () => {}
   onExit: () => void
   onSave: OperationsResults['savePage']
@@ -64,22 +65,19 @@ class FormContainer extends React.PureComponent<Props, State> {
     super(props)
 
     const { declarer } = props.initialData || { declarer: null }
-
     const isNew = isNewRoute(props.initialData)
 
     this.state = {
-      data: props.initialData,
+      data: {
+        ...props.initialData,
+        pageContent: props.initialContent,
+      },
       formErrors: {},
       isDeletable: !isNew,
       isInfoEditable: !declarer || isNew,
       isLoading: false,
     }
   }
-
-  // public async componentDidMount() {
-  //   // @ts-ignore
-  //   await this.props.onDelete({ variables: { uuid: 'qAdpvMagNhKHMoyo7hJEw6' }})
-  // }
 
   public render() {
     const { onExit } = this.props

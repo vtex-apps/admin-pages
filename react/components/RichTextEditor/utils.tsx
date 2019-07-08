@@ -1,10 +1,11 @@
 import {
   ContentBlock,
   ContentState,
+  convertFromRaw,
   convertToRaw,
   EditorState,
 } from 'draft-js'
-import draftToMarkdown from 'draftjs-to-markdown'
+import { draftToMarkdown, markdownToDraft } from 'markdown-draft-js'
 
 import Media from './Media'
 
@@ -39,4 +40,9 @@ export function findLinkEntities(
 export function convertToMarkdown(editorState: EditorState) {
   const rawContentState = convertToRaw(editorState.getCurrentContent())
   return draftToMarkdown(rawContentState)
+}
+
+export function convertToEditorState(markdownText: string) {
+  const rawMarkdown = markdownToDraft(markdownText)
+  return convertFromRaw(rawMarkdown)
 }
