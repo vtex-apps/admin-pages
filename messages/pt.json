@@ -233,5 +233,16 @@
 
   "admin/pages.admin.rich-text-editor.add-image-label": "Link da imagem",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "Link",
-  "admin/pages.admin.rich-text-editor.add-button": "Adicionar"
+  "admin/pages.admin.rich-text-editor.add-button": "Adicionar",
+
+  "admin/pages.admin.institutional.general.section-title": "Geral",
+  "admin/pages.admin.institutional.general.title.label": "Título",
+  "admin/pages.admin.institutional.general.title.placeholder": "ex.: Quem somos",
+  "admin/pages.admin.institutional.general.url.label": "URL",
+  "admin/pages.admin.institutional.general.url.placeholder": "ex.: /quem-somos",
+  "admin/pages.admin.institutional.general.description.label": "Descrição",
+  "admin/pages.admin.institutional.general.description.placeholder": "",
+  "admin/pages.admin.institutional.general.seo.page-title": "<Título da página>",
+  "admin/pages.admin.institutional.general.seo.description": "<A descrição é o texto geralmente utilizado pelo Google para a exibição dos resultados de texto das segundas e terceiras linhas dos resultados de busca, logo abaixo do título>",
+  "admin/pages.admin.institutional.content.section-title": "Conteúdo"
 }

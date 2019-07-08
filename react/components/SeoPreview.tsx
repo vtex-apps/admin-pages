@@ -1,12 +1,26 @@
 import * as React from 'react'
+import { defineMessages, injectIntl } from 'react-intl'
 
-interface Props {
+interface CustomProps {
   title?: string
   description?: string
   url?: string
 }
 
-const SeoPreview = ({ title, description, url }: Props) => (
+type Props = CustomProps & ReactIntl.InjectedIntlProps
+
+const messages = defineMessages({
+  seoDescription: {
+    defaultMessage: '<Page title>',
+    id: 'admin/pages.admin.institutional.general.seo.description',
+  },
+  seoTitle: {
+    defaultMessage: '<Page title>',
+    id: 'admin/pages.admin.institutional.general.seo.page-title',
+  },
+})
+
+const SeoPreview = ({ title, description, url, intl }: Props) => (
   <div className="pl5 pt4 ba br2 bw1 b--muted-4 h-100 pb4">
     <div>
       <span style={{ ...styles.button, ...styles.buttonClose }} />
@@ -14,9 +28,15 @@ const SeoPreview = ({ title, description, url }: Props) => (
       <span style={{ ...styles.button, ...styles.buttonMinimize }} />
     </div>
     <div className="pt5">
-      {title && <span className={`db f4 pb1 word-break`} style={styles.title}>{title}</span>}
-      {url && <span className={`db f6 pb1 word-break`} style={styles.url}>{url}</span>}
-      {description && <span className={`db pt2 f6 fw3 word-break`} style={styles.description}>{description}</span>}
+      <span className={`db f4 pb1 word-break ${!title && 'o-30'}`} style={styles.title}>
+        {title || intl.formatMessage(messages.seoTitle)}
+      </span>
+      <span className={`db f6 pb1 word-break ${!url && 'o-30'}`} style={styles.url}>
+        {url || '/<url>'}
+      </span>
+      <span className={`db pt2 f6 fw3 word-break ${!url && 'o-30'}`} style={styles.description}>
+        {description || intl.formatMessage(messages.seoDescription)}
+      </span>
     </div>
   </div>
 )
@@ -49,4 +69,4 @@ const styles = {
   },
 }
 
-export default SeoPreview
+export default injectIntl(SeoPreview)
