@@ -271,7 +271,7 @@ declare global {
     [key: string]: ComponentSchema
   }
 
-  interface ComponentSchema {
+  interface ComponentSchema extends JSONSchema6 {
     type?: string
     title?: string
     description?: string
