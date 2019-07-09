@@ -20,7 +20,7 @@ interface ComponentProps {
     id: string
     text: string
   }
-  onDelete: () => {}
+  onDelete: OperationsResults['deletePage']
   onExit: () => void
   onSave: OperationsResults['savePage']
   onSaveContent: OperationsResults['saveContent']
@@ -95,6 +95,7 @@ class FormContainer extends React.PureComponent<Props, State> {
         isInfoEditable={isInfoEditable}
         isLoading={isLoading}
         onSubmit={this.handleSave}
+        onDelete={this.handleDelete}
         onExit={onExit}
       />
     )
@@ -215,6 +216,41 @@ class FormContainer extends React.PureComponent<Props, State> {
     } else {
       this.setState(getValidateFormState)
     }
+  }
+
+  private handleDelete = () => {
+    const { showToast, intl, onDelete, onExit } = this.props
+    const { data } = this.state
+
+    this.setState({ isLoading: true }, async () => {
+      try {
+        if (!data.uuid) {
+          throw new Error('No uuid')
+        }
+
+        await onDelete({
+          variables: {
+            uuid: data.uuid,
+          },
+        })
+
+        showToast({
+          horizontalPosition: 'right',
+          message: intl.formatMessage(messages.deleteSuccess),
+        })
+
+        onExit()
+      } catch (err) {
+        this.setState({ isLoading: false }, () => {
+          console.log(err)
+
+          showToast({
+            horizontalPosition: 'right',
+            message: intl.formatMessage(messages.deleteError),
+          })
+        })
+      }
+    })
   }
 }
 

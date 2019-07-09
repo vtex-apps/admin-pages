@@ -16,6 +16,7 @@ interface CustomProps {
   handleChangeFieldValue: (field: string, value: string | number | null) => void
   isLoading: boolean
   onSubmit: (event: React.FormEvent) => void
+  onDelete: () => void
   onExit: () => void
   isDeletable: boolean
   isInfoEditable: boolean
@@ -59,7 +60,9 @@ const Form = ({
   errors,
   handleChangeFieldValue,
   intl,
+  isDeletable,
   isLoading,
+  onDelete,
   onExit,
   onSubmit,
 }: Props) => {
@@ -123,32 +126,50 @@ const Form = ({
         onChange={(value: string) => handleChangeFieldValue('pageContent', value)}
       />
 
-      <div className="flex justify-end mt7">
-        <div className="mr6">
+      <FormFieldSeparator />
+
+      <div className={`${isDeletable && 'flex justify-between'}`}>
+        {isDeletable && (
           <Button
             disabled={isLoading}
-            onClick={onExit}
+            onClick={onDelete}
             size="small"
-            variation="tertiary"
+            variation="danger"
           >
             <FormattedMessage
-              id="admin/pages.admin.pages.form.button.cancel"
-              defaultMessage="Cancel"
+              id="admin/pages.admin.pages.form.button.delete"
+              defaultMessage="Delete"
+            />
+          </Button>
+        )}
+
+        <div className="flex justify-end">
+          <div className="mr6">
+            <Button
+              disabled={isLoading}
+              onClick={onExit}
+              size="small"
+              variation="tertiary"
+            >
+              <FormattedMessage
+                id="admin/pages.admin.pages.form.button.cancel"
+                defaultMessage="Cancel"
+              />
+            </Button>
+          </div>
+          <Button
+            disabled={isLoading}
+            isLoading={isLoading}
+            onClick={onSubmit}
+            size="small"
+            variation="primary"
+          >
+            <FormattedMessage
+              id="admin/pages.admin.pages.form.button.save"
+              defaultMessage="Save"
             />
           </Button>
         </div>
-        <Button
-          disabled={isLoading}
-          isLoading={isLoading}
-          onClick={onSubmit}
-          size="small"
-          variation="primary"
-        >
-          <FormattedMessage
-            id="admin/pages.admin.pages.form.button.save"
-            defaultMessage="Save"
-          />
-        </Button>
       </div>
     </form>
   )
