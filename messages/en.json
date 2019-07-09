@@ -103,6 +103,7 @@
   "admin/pages.admin.redirects.upload-modal.success.subtitle": "Your redirects were uploaded.",
   "admin/pages.admin.redirects.upload-modal.success.title": "File uploaded successfully.",
   "admin/pages.admin.tabs.pages": "Pages",
+  "admin/pages.admin.tabs.institutional-pages": "Institutional",
   "admin/pages.admin.tabs.redirects": "Redirects",
   "admin/pages.admin.tabs.settings": "Settings",
   "admin/pages.editor.component-list.action-menu.delete": "Delete",
