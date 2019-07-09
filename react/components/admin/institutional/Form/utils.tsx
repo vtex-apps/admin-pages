@@ -1,7 +1,5 @@
 import { RouteFormData } from 'pages'
 
-import { State } from './index'
-
 const requiredMessage = 'admin/pages.admin.pages.form.templates.field.required'
 
 const validateFalsyPath = (path: keyof RouteFormData) => (
@@ -17,7 +15,7 @@ const validateUrlBeginning = (path: string) => {
   }
 }
 
-export const getValidateFormState = (prevState: State) => {
+export const getValidateFormState = (prevState: any) => {
   return {
     ...prevState,
     formErrors: {

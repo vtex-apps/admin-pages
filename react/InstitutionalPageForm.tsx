@@ -45,6 +45,7 @@ class PageForm extends Component<Props, State> {
   private defaultFormData: RouteFormData = {
     auth: false,
     blockId: 'vtex.store@2.x:store.institutional',
+    // context: 'vtex.store@2.x/InstitutionalContext',
     context: null,
     declarer: null,
     domain: 'store',
@@ -136,11 +137,12 @@ class PageForm extends Component<Props, State> {
         <div className="center mw8 mv8">
           <Operations routeId={routeId}>
             {({ deletePage, savePage, saveContent, content }) => {
-              const contentJSON: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentJSON'], content)
-              
               if (content.loading) {
                 return <Loader />
               }
+
+              const contentJSON: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentJSON'], content)
+              const contentId: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentId'], content)
 
               return (
                 <Box>
@@ -155,7 +157,10 @@ class PageForm extends Component<Props, State> {
                     {({ showToast, hideToast }) => (
                       <Form
                         initialData={formData}
-                        initialContent={contentJSON ? JSON.parse(contentJSON).text : ''}
+                        initialContent={{
+                          id: contentId || '',
+                          text: contentJSON ? JSON.parse(contentJSON).text : '',
+                        }}
                         onDelete={deletePage}
                         onExit={this.exit}
                         onSave={savePage}

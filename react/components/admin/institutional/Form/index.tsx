@@ -16,7 +16,10 @@ import { formatStatements } from '../../../../utils/conditions'
 
 interface ComponentProps {
   initialData: RouteFormData
-  initialContent: string
+  initialContent: {
+    id: string
+    text: string
+  }
   onDelete: () => {}
   onExit: () => void
   onSave: OperationsResults['savePage']
@@ -27,6 +30,7 @@ interface ComponentProps {
 
 interface RouteContentFromData {
   pageContent?: string
+  contentId: string
 }
 
 type Props = ComponentProps & InjectedIntlProps
@@ -68,7 +72,8 @@ class FormContainer extends React.PureComponent<Props, State> {
     this.state = {
       data: {
         ...props.initialData,
-        pageContent: props.initialContent,
+        contentId: props.initialContent.id,
+        pageContent: props.initialContent.text,
       },
       formErrors: {},
       isDeletable: !isNew,
@@ -116,6 +121,7 @@ class FormContainer extends React.PureComponent<Props, State> {
       const {
         auth,
         blockId,
+        contentId,
         context,
         declarer,
         domain,
@@ -178,7 +184,7 @@ class FormContainer extends React.PureComponent<Props, State> {
                   },
                   statements: [],
                 },
-                contentId: '',
+                contentId,
                 contentJSON: JSON.stringify({ text: pageContent }),
                 label: null,
                 origin: 'vtex.rich-text@0.x:rich-text',
