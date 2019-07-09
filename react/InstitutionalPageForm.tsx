@@ -45,8 +45,7 @@ class PageForm extends Component<Props, State> {
   private defaultFormData: RouteFormData = {
     auth: false,
     blockId: 'vtex.store@2.x:store.institutional',
-    // context: 'vtex.store@2.x/InstitutionalContext',
-    context: null,
+    context: 'vtex.store@2.x/InstitutionalContext',
     declarer: null,
     domain: 'store',
     interfaceId: 'vtex.store@2.x:store.institutional',
@@ -142,7 +141,7 @@ class PageForm extends Component<Props, State> {
               }
 
               const contentJSON: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentJSON'], content)
-              const contentId: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentId'], content)
+              const contentId: string | null = pathOr('', ['data', 'listContentWithSchema', 'content', '0', 'contentId'], content)
 
               return (
                 <Box>
@@ -158,7 +157,7 @@ class PageForm extends Component<Props, State> {
                       <Form
                         initialData={formData}
                         initialContent={{
-                          id: contentId || '',
+                          id: contentId!,
                           text: contentJSON ? JSON.parse(contentJSON).text : '',
                         }}
                         onDelete={deletePage}
