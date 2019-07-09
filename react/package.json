@@ -9,6 +9,7 @@
   "dependencies": {
     "classnames": "^2.2.6",
     "exenv": "^1.2.2",
+    "json-schema-traverse": "^0.4.1",
     "lodash.debounce": "^4.0.8",
     "lodash.startcase": "^4.4.0",
     "lodash.throttle": "^4.1.1",
