@@ -102,6 +102,8 @@ const EditorContainer: React.FC<Props> = ({
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
   const isDevelopment = runtime && runtime.production === false
+  const isMasterWorkspace = runtime && runtime.workspace === 'master'
+  const hasAlert = isMasterWorkspace || isDevelopment
 
   return (
     <FormMetaProvider>
@@ -135,7 +137,7 @@ const EditorContainer: React.FC<Props> = ({
                 </Alert>
               </div>
             )}
-            {runtime && runtime.workspace === 'master' && (
+            {isMasterWorkspace && (
               <div className="pa5 bg-muted-5">
                 <Alert type="warning">
                   <FormattedMessage
@@ -148,7 +150,7 @@ const EditorContainer: React.FC<Props> = ({
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
                 visible && runtime
-                  ? `calc--height-relative${isDevelopment ? '--dev' : ''}`
+                  ? `calc--height-relative${hasAlert ? '--dev' : ''}`
                   : 'top-0 w-100 h-100'
               }`}
             >
