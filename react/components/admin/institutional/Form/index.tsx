@@ -192,7 +192,7 @@ class FormContainer extends React.PureComponent<Props, State> {
               },
               lang: 'pt-BR',
               template: 'vtex.store@2.x:store.institutional',
-              treePath: `${routeId}/rich-text`,
+              treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
             },
           })
 
