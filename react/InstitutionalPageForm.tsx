@@ -9,6 +9,7 @@ import { RouteFormData } from 'pages'
 
 import Form from './components/admin/institutional/Form'
 import Operations from './components/admin/institutional/Form/Operations'
+import { parseStoreAppId } from './components/admin/institutional/utils'
 
 import { INSTITUTIONAL_ROUTES_LIST, NEW_ROUTE_ID } from './components/admin/pages/consts'
 import Title from './components/admin/pages/Form/Title'
@@ -20,6 +21,8 @@ import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
 
+import withStoreSettings, { FormProps } from './components/EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
+
 interface CustomProps {
   params: {
     id: string
@@ -29,9 +32,10 @@ interface CustomProps {
 
 type Props = WithApolloClient<
   CustomProps &
-    RenderContextProps &
-    TargetPathRenderProps &
-    TargetPathContextProps
+  RenderContextProps &
+  TargetPathRenderProps &
+  TargetPathContextProps &
+  FormProps
 >
 
 interface State {
@@ -42,21 +46,6 @@ interface State {
 
 class PageForm extends Component<Props, State> {
   private isNew: boolean
-  private defaultFormData: RouteFormData = {
-    auth: false,
-    blockId: 'vtex.store@2.x:store.institutional',
-    context: 'vtex.store@2.x/InstitutionalContext',
-    declarer: null,
-    domain: 'store',
-    interfaceId: 'vtex.store@2.x:store.institutional',
-    metaTagDescription: '',
-    metaTagKeywords: [],
-    pages: [],
-    path: '',
-    routeId: '',
-    title: '',
-    uuid: undefined,
-  }
 
   constructor(props: Props) {
     super(props)
@@ -84,7 +73,7 @@ class PageForm extends Component<Props, State> {
     this.state = {
       formData: currentRoute
         ? formatToFormData(currentRoute)
-        : this.defaultFormData,
+        : this.defaultFormData(),
       isLoading: !this.isNew,
       routeId,
     }
@@ -94,7 +83,7 @@ class PageForm extends Component<Props, State> {
     const { client } = this.props
     const { formData } = this.state
 
-    if (equals(formData, this.defaultFormData) && !this.isNew) {
+    if (equals(formData, this.defaultFormData()) && !this.isNew) {
       // didnt find in cache
       try {
         const {
@@ -125,6 +114,7 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
+    const { store } = this.props
     const { formData, isLoading, routeId } = this.state
 
     if (isLoading) {
@@ -134,7 +124,7 @@ class PageForm extends Component<Props, State> {
     return (
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
-          <Operations routeId={routeId}>
+          <Operations routeId={routeId} store={store}>
             {({ deletePage, savePage, saveContent, content }) => {
               if (content.loading) {
                 return <Loader />
@@ -155,6 +145,7 @@ class PageForm extends Component<Props, State> {
                   <ToastConsumer>
                     {({ showToast, hideToast }) => (
                       <Form
+                        store={store}
                         initialData={formData}
                         initialContent={{
                           id: contentId!,
@@ -181,6 +172,31 @@ class PageForm extends Component<Props, State> {
   private exit = () => {
     this.props.runtime.navigate({ page: INSTITUTIONAL_ROUTES_LIST, params: {} })
   }
+
+  private defaultFormData = (): RouteFormData => {
+    const storeAppId = parseStoreAppId(this.props.store)
+    return {
+      auth: false,
+      blockId: `${storeAppId}:store.institutional`,
+      context: `${storeAppId}/InstitutionalContext`,
+      declarer: null,
+      domain: 'store',
+      interfaceId: `${storeAppId}:store.institutional`,
+      metaTagDescription: '',
+      metaTagKeywords: [],
+      pages: [],
+      path: '',
+      routeId: '',
+      title: '',
+      uuid: undefined,  
+    }    
+  }
 }
 
-export default withApollo(withRuntimeContext(withTargetPath(PageForm)))
+export default withApollo(
+  withRuntimeContext(
+    withTargetPath(
+      withStoreSettings(PageForm)
+    )
+  )
+)

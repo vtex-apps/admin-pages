@@ -9,8 +9,12 @@ import Form from './Form'
 import { OperationsResults } from './Operations'
 import { getValidateFormState } from './utils'
 
+import { parseStoreAppId } from '../utils'
+
 import { generateNewRouteId } from '../../pages/Form/utils'
 import { isNewRoute } from '../../pages/utils'
+
+import { FormProps } from '../../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
 import { formatStatements } from '../../../../utils/conditions'
 
@@ -33,7 +37,7 @@ interface RouteContentFromData {
   contentId: string
 }
 
-type Props = ComponentProps & InjectedIntlProps
+type Props = ComponentProps & InjectedIntlProps & FormProps
 
 export interface State {
   data: RouteFormData & RouteContentFromData
@@ -113,7 +117,8 @@ class FormContainer extends React.PureComponent<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { intl, onExit, onSave, showToast, onSaveContent } = this.props
+    const { intl, onExit, onSave, showToast, onSaveContent, store } = this.props
+    const storeAppId = parseStoreAppId(store)
 
     event.preventDefault()
 
@@ -191,7 +196,7 @@ class FormContainer extends React.PureComponent<Props, State> {
                 origin: 'vtex.rich-text@0.x:rich-text',
               },
               lang: 'pt-BR',
-              template: 'vtex.store@2.x:store.institutional',
+              template: `${storeAppId}:store.institutional`,
               treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
             },
           })
