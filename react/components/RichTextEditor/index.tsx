@@ -1,7 +1,6 @@
 import {
   AtomicBlockUtils,  
   CompositeDecorator,
-  ContentState,
   Editor,
   EditorState,
   RichUtils,
@@ -23,7 +22,12 @@ import Link from './Link'
 import LinkInput from './LinkInput'
 import StyleButton from './StyleButton'
 
-import { convertToEditorState, convertToMarkdown, findLinkEntities, mediaBlockRenderer } from './utils'
+import {
+  convertToEditorState,
+  convertToMarkdown,
+  findLinkEntities,
+  mediaBlockRenderer,
+} from './utils'
 
 const INLINE_STYLES = [
   { label: <IconBold />, style: 'BOLD' },
@@ -167,7 +171,7 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
         <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
         <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
         <LinkInput onAdd={handleAddLink} />
-        <ImageInput onAdd={handleAddImage} />
+        {/* <ImageInput onAdd={handleAddImage} /> */}
       </div>
       <div className={className}>
         <Editor
