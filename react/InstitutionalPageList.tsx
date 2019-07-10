@@ -45,7 +45,6 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
   const institutionalRoutes = useMemo(
     () => {
       const routes = data && data.routes
-      console.log('----- routes:', routes)
       return (routes || []).filter((currRoute: Route) => {
         return (currRoute.context || '').endsWith('InstitutionalContext')
       })

@@ -6,7 +6,7 @@ import { handleCornerCases } from '../../utils/utils'
 import AvailableApp from '../queries/AvailableApp.graphql'
 import InstalledApp from '../queries/InstalledApp.graphql'
 
-interface InstalledApp {
+export interface InstalledApp {
   slug: string
   name: string
   vendor: string
@@ -27,7 +27,7 @@ class InstalledAppQuery extends Query<
   InstalledAppVariables
 > {}
 
-interface AvailableApp {
+export interface AvailableApp {
   id: string
   title: string
   installed: boolean
