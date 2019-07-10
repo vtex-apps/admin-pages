@@ -59,7 +59,7 @@ export function convertToEditorState(markdownText: string) {
         type: 'atomic',
       }),
     },
-    // remarkablePlugins: [buildImageBLock],
+    remarkablePlugins: [buildImageBLock],
   })
   return convertFromRaw(rawMarkdown)
 }

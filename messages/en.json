@@ -241,7 +241,7 @@
   "admin/pages.admin.institutional.general.url.label": "URL",
   "admin/pages.admin.institutional.general.url.placeholder": "e.g.: /about-us",
   "admin/pages.admin.institutional.general.description.label": "Description",
-  "admin/pages.admin.institutional.general.description.placeholder": "",
+  "admin/pages.admin.institutional.general.description.placeholder": "Description",
   "admin/pages.admin.institutional.general.seo.page-title": "<Page title>",
   "admin/pages.admin.institutional.general.seo.description": "<The description is the text commonly used by Google to display text results from the second and third lines of the search results, just below the title>",
   "admin/pages.admin.institutional.content.section-title": "Content"
