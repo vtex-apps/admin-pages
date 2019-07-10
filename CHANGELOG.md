@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Set correct height when master workspace alert is shown.
+
 ## [4.2.6] - 2019-07-09
 
 ### Changed
