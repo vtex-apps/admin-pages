@@ -56,10 +56,7 @@ export const getUiSchema = (
         .filter(
           (pointer: string) => pointer && !noUISchemaProp.includes(pointer)
         )
-      uiSchema = {
-        ...uiSchema,
-        ...assocPath(widgetPath, schema.widget, uiSchema),
-      }
+      uiSchema = assocPath(widgetPath, schema.widget, uiSchema)
     }
   }
 
