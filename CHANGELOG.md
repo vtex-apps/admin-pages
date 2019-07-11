@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Add support to uiSchema from JSONSchema dependencies
+
 ## [3.15.8] - 2019-07-08
 
 ### Fixed
