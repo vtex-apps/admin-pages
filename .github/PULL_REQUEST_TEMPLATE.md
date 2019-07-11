@@ -19,13 +19,18 @@
 #### Type of changes
 
 <!--- Add a ✔️ where applicable -->
-✔️ | Type of Change
----|---
-_ | Bug fix <!-- a non-breaking change which fixes an issue -->
-_ | New feature <!-- a non-breaking change which adds functionality -->
-_ | Breaking change <!-- fix or feature that would cause existing functionality to change -->
-_ | Technical improvements <!-- chores, refactors and overall reduction of technical debt -->
+
+| ✔️  | Type of Change                                                                            |
+| --- | ----------------------------------------------------------------------------------------- |
+| \_  | Bug fix <!-- a non-breaking change which fixes an issue -->                               |
+| \_  | New feature <!-- a non-breaking change which adds functionality -->                       |
+| \_  | Breaking change <!-- fix or feature that would cause existing functionality to change --> |
+| \_  | Technical improvements <!-- chores, refactors and overall reduction of technical debt --> |
 
 #### Notes
 
 <!-- Put any relevant information that doesn't fit in the other sections here. -->
+
+#### How does this PR make you feel? [:link:](http://giphy.com/categories/emotions/)
+
+![](put .gif link here - can be found under "advanced" on giphy)
