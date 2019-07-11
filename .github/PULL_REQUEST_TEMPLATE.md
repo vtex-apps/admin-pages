@@ -6,13 +6,13 @@
 
 [Workspace](url)
 
-#### Checklist/Reminders
+<!-- Your friendly Checklist/Reminders 📝 -->
 
-- [ ] Updated `README.md`.
-- [ ] Updated `CHANGELOG.md`.
-- [ ] Linked this PR to a Clubhouse story (if applicable).
-- [ ] Updated/created tests (important for bug fixes).
-- [ ] Deleted the workspace after merging this PR (if applicable).
+<!-- 📒 Update `README.md`. -->
+<!-- ❕ Update `CHANGELOG.md`. -->
+<!-- 🔮 Link this PR to a Clubhouse story (if applicable). -->
+<!-- 🤖 Update/create tests (important for bug fixes). -->
+<!-- 🚿 Delete the workspace after merging this PR (if applicable). -->
 
 #### Screenshots or example usage
 
