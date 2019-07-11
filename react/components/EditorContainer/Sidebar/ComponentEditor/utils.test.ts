@@ -103,38 +103,37 @@ describe('getUiSchema', () => {
   }
 
   it('should get ui schema for dependencies', () => {
-    expect(
-      getUiSchema({}, mockComponents['vtex.schema-with-dependencies']
-        .schema as ComponentSchema)
-    ).toEqual({
+    const uiSchema = {
       bar: { 'ui:widget': 'textarea' },
       baz: { 'ui:widget': 'IOMessage' },
-    })
+    }
+    const result = getUiSchema({}, mockComponents[
+      'vtex.schema-with-dependencies'
+    ].schema as ComponentSchema)
+    expect(result).toEqual(uiSchema)
   })
 
   it('should get ui schema for nested dependencies', () => {
-    expect(
-      getUiSchema({}, mockComponents['vtex.schema-with-nested-dependencies']
-        .schema as ComponentSchema)
-    ).toEqual({
+    const uiSchema = {
       baar: { 'ui:widget': 'textarea' },
       baz: { 'ui:widget': 'IOMessage' },
-    })
+    }
+    const result = getUiSchema({}, mockComponents[
+      'vtex.schema-with-nested-dependencies'
+    ].schema as ComponentSchema)
+    expect(result).toEqual(uiSchema)
   })
 
   it('should deal with empty schemas', () => {
-    expect(
-      getUiSchema({}, mockComponents['vtex.no-schema']
-        .schema as ComponentSchema)
-    ).toEqual({})
+    const result = getUiSchema({}, mockComponents['vtex.no-schema']
+      .schema as ComponentSchema)
+    expect(result).toEqual({})
   })
 
   it('should get ui schema for simple schemas', () => {
-    expect(
-      getUiSchema({}, mockComponents['vtex.simple-schema']
-        .schema as ComponentSchema)
-    ).toEqual({
-      foo: { bar: { 'ui:widget': 'textarea' } },
-    })
+    const uiSchema = { foo: { bar: { 'ui:widget': 'textarea' } } }
+    const result = getUiSchema({}, mockComponents['vtex.simple-schema']
+      .schema as ComponentSchema)
+    expect(result).toEqual(uiSchema)
   })
 })
