@@ -110,7 +110,7 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   const handleAddImage = (imageLink: string) => {
     const currentContentState = editorState.getCurrentContent()
     const contentStateWithEntity = currentContentState.createEntity(
-      'image',
+      'IMAGE',
       'IMMUTABLE',
       { src: imageLink }
     )
