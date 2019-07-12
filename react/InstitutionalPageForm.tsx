@@ -114,7 +114,7 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
-    const { store } = this.props
+    const { store, runtime } = this.props
     const { formData, isLoading, routeId } = this.state
 
     if (isLoading) {
@@ -151,6 +151,7 @@ class PageForm extends Component<Props, State> {
                           id: contentId!,
                           text: contentJSON ? JSON.parse(contentJSON).text : '',
                         }}
+                        culture={runtime.culture}
                         onDelete={deletePage}
                         onExit={this.exit}
                         onSave={savePage}

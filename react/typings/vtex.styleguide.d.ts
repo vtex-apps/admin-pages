@@ -16,6 +16,7 @@ declare module 'vtex.styleguide' {
     resize?: CSSProperties['resize']
     value?: string
     label?: string
+    size?: 'small' | 'large' | 'regular'
   }
 
   interface ToastProviderProps {

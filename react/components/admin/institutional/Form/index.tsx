@@ -19,6 +19,7 @@ import { FormProps } from '../../../EditorContainer/StoreEditor/Store/StoreForm/
 import { formatStatements } from '../../../../utils/conditions'
 
 interface ComponentProps {
+  culture: RenderContext['culture']
   initialData: RouteFormData
   initialContent: {
     id: string
@@ -117,7 +118,7 @@ class FormContainer extends React.PureComponent<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { intl, onExit, onSave, showToast, onSaveContent, store } = this.props
+    const { intl, onExit, onSave, showToast, onSaveContent, store, culture } = this.props
     const storeAppId = parseStoreAppId(store)
 
     event.preventDefault()
@@ -183,7 +184,7 @@ class FormContainer extends React.PureComponent<Props, State> {
               configuration: {
                 condition: {
                   allMatches: true,
-                  id: 'vtex.rich-text@0.x:rich-text',
+                  id: 'vtex.rich-text@0.x:rich-text.static',
                   pageContext: {
                     id: '*',
                     type: '*',
@@ -193,11 +194,11 @@ class FormContainer extends React.PureComponent<Props, State> {
                 contentId,
                 contentJSON: JSON.stringify({ text: pageContent }),
                 label: null,
-                origin: 'vtex.rich-text@0.x:rich-text',
+                origin: 'vtex.rich-text@0.x:rich-text.static',
               },
-              lang: 'pt-BR',
+              lang: culture.locale,
               template: `${storeAppId}:store.institutional`,
-              treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
+              treePath: `${routeId}/flex-layout.row#institutional-body/rich-text.static`,
             },
           })
 

@@ -51,7 +51,7 @@ const Operations = ({ children, routeId, store }: Props) => {
                   type: '*',
                 },
                 template: `${storeAppId}:store.institutional`,
-                treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
+                treePath: `${routeId}/flex-layout.row#institutional-body/rich-text.static`,
               }}
             >
               {(content: any) => (
