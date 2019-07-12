@@ -162,7 +162,9 @@ const CustomFont: React.FunctionComponent<Props> = ({
   const paramId = match ? match.params.id : undefined
 
   const fonts = (data && data.listFonts) || []
-  const editFamily = fonts.find(family => family.id === paramId) || {
+  const editFamily = fonts.find(
+    family => encodeURIComponent(family.id) === paramId
+  ) || {
     fontFamily: '',
     fonts: [],
     id: undefined,
