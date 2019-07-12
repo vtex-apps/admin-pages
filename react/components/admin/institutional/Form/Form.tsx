@@ -105,6 +105,7 @@ const Form = ({
             onChange={handleEventValue}
             resize="vertical"
             value={data.metaTagDescription}
+            size="small"
           />
         </div>
 
