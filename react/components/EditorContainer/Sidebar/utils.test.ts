@@ -440,8 +440,8 @@ describe('#hasContentPropsInSchema', () => {
   it(`should return true if there are properties with isLayout falsy`, () => {
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { isLayout: false } },
+        type: 'object',
       })
     ).toBe(true)
     expect(
@@ -452,14 +452,14 @@ describe('#hasContentPropsInSchema', () => {
   it(`should return true if there are nested properties with isLayout falsy`, () => {
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { isLayout: false } },
+        type: 'object',
       })
     ).toBe(true)
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { type: 'object', properties: { lala: {} } } },
+        type: 'object',
       })
     ).toBe(true)
   })
