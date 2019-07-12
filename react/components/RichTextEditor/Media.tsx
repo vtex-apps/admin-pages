@@ -14,7 +14,7 @@ const Media = (props: any) => {
   const { src } = entity.getData()
   const type = entity.getType()
 
-  if (type === 'image') {
+  if (type === 'IMAGE') {
     return <Image src={src} />
   }
 
