@@ -171,7 +171,7 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
         <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
         <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
         <LinkInput onAdd={handleAddLink} />
-        {/* <ImageInput onAdd={handleAddImage} /> */}
+        <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>
         <Editor
