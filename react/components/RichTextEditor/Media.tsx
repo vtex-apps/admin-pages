@@ -6,7 +6,11 @@ const Image = ({ src }: { src: string }) => {
 
 const Media = (props: any) => {
   const { contentState, block } = props
-  const entity = contentState.getEntity(block.getEntityAt(0))
+  const blockEntity = block.getEntityAt(0)
+
+  if (!blockEntity) { return null }
+
+  const entity = contentState.getEntity(blockEntity)
   const { src } = entity.getData()
   const type = entity.getType()
 
