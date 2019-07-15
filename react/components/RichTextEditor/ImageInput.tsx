@@ -61,7 +61,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
   const [imageUrl, setImageUrl] = React.useState()
   const [error, setError] = React.useState<string | null>()
 
-  const onDropImage = React.useCallback(async (files: File[]) => {
+  const onDropImage = async (files: File[]) => {
     setError(null)
 
     try {
@@ -81,7 +81,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
       setError(intl.formatMessage(messages.genericError))
       setIsLoading(false)
     }
-  }, [])
+  }
 
   const {
     getInputProps,

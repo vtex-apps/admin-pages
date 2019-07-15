@@ -108,14 +108,26 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   }
 
   const handleAddImage = (imageUrl: string) => {
-    const currentContentState = editorState.getCurrentContent()
+    const currentOffset = editorState
+      .getCurrentContent()
+      .getBlockMap()
+      .keySeq()
+      .findIndex(key => key === editorState.getSelection().getStartKey())
+
+    // TODO: find out a better way to handle it
+    // if editor is out of focus we force the image to be appended, not prepended
+    const defEditorState = currentOffset === 0
+      ? EditorState.moveFocusToEnd(editorState)
+      : editorState
+
+    const currentContentState = defEditorState.getCurrentContent()
     const contentStateWithEntity = currentContentState.createEntity(
       'IMAGE',
       'IMMUTABLE',
       { src: imageUrl }
     )
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity })
+    const newEditorState = EditorState.set(defEditorState, { currentContent: contentStateWithEntity })
     return setEditorState(AtomicBlockUtils.insertAtomicBlock(
       newEditorState,
       entityKey,
