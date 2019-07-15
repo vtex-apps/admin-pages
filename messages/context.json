@@ -234,6 +234,8 @@
   "admin/pages.admin.rich-text-editor.add-image-label": "admin/pages.admin.rich-text-editor.add-image-label",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "admin/pages.admin.rich-text-editor.add-image-placeholder",
   "admin/pages.admin.rich-text-editor.add-button": "admin/pages.admin.rich-text-editor.add-image-btn",
+  "admin/pages.admin.rich-text-editor.upload-image-label": "admin/pages.admin.rich-text-editor.upload-image-label",
+  "admin/pages.admin.rich-text-editor.upload-button": "admin/pages.admin.rich-text-editor.upload-button",
 
   "admin/pages.admin.institutional.general.section-title": "admin/pages.admin.institutional.general.section-title",
   "admin/pages.admin.institutional.general.title.label": "admin/pages.admin.institutional.general.title.label",
