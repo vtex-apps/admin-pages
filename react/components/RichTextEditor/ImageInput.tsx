@@ -1,14 +1,27 @@
 import * as React from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { graphql, MutationFunc } from 'react-apollo'
+import { useDropzone } from 'react-dropzone'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 
-import { Button, IconImage, Input } from 'vtex.styleguide'
+import { Button, IconClose, IconImage, Input, Spinner } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
 
-interface Props {
-  onAdd: (link: string) => void
-  intl: any 
+import SeparatorWithLine from '../admin/pages/SeparatorWithLine'
+
+import UploadFile from '../../queries/UploadFile.graphql'
+
+interface MutationData {
+  uploadFile: { fileUrl: string }
 }
+
+interface Props {
+  intl: InjectedIntl
+  onAdd: (imageUrl: string) => void
+  uploadFile?: MutationFunc<MutationData>
+}
+
+const MAX_SIZE = 4 * 1024 * 1024
 
 const messages = defineMessages({
   btn: {
@@ -25,13 +38,47 @@ const messages = defineMessages({
   },
 })
 
-const ImageInput = ({ onAdd, intl }: Props) => {
+const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
+  const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
-  const [imageLink, setImageLink] = React.useState()
+  const [imageUrl, setImageUrl] = React.useState()
+  const [error, setError] = React.useState<string | null>()
+
+  const onDropImage = React.useCallback(async (files: File[]) => {
+    setError(null)
+
+    try {
+      if (files && files[0]) {
+        setIsLoading(true)
+
+        const {data: { uploadFile: { fileUrl} } } = await uploadFile!({ variables: { file: files[0] } }) as { data: MutationData }
+
+        setIsLoading(false)
+        setIsOpen(false)
+
+        return onAdd(fileUrl)
+      } else {
+        return setError('Imagem muito grande')
+      }
+    } catch (err) {
+      setError('Error')
+      setIsLoading(false)
+    }
+  }, [])
+
+  const {
+    getInputProps,
+    getRootProps,
+  } = useDropzone({
+    accept: 'image/*',
+    maxSize: MAX_SIZE,
+    multiple: false,
+    onDrop: onDropImage,
+  })
 
   const handleAddImage = () => {
     setIsOpen(false)
-    return onAdd(imageLink)
+    return onAdd(imageUrl)
   }
 
   return (
@@ -44,20 +91,53 @@ const ImageInput = ({ onAdd, intl }: Props) => {
       />
 
       {isOpen && (
-        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5">
-          <div className="mb4">
-            <Input
-              label={intl.formatMessage(messages.label)}
-              onChange={(e: any) => setImageLink(e.target.value)}
-            />
+        <div className="absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5">
+          {isLoading && (
+            <div className="absolute flex justify-center items-center top-0 left-0 h-100 w-100 br2 z-1 bg-black-05">
+              <Spinner />
+            </div>
+          )}
+
+          <div className={`flex flex-column ${isLoading && 'o-20'}`}>
+            <div className="mb4">
+              <Input
+                label={intl.formatMessage(messages.label)}
+                onChange={(e: any) => setImageUrl(e.target.value)}
+                placeholder="URL da imagem"
+              />
+            </div>
+
+            <Button onClick={handleAddImage} size="small">
+              { intl.formatMessage(messages.btn) }
+            </Button>
+
+            <SeparatorWithLine />
+
+            <div className="flex flex-column">
+              <span className="db mb3 w-100 c-on-base t-small">Upload an image</span>
+              <div { ...getRootProps() } className="flex flex-column">
+                <input { ...getInputProps() } />
+                <Button size="small">
+                  Upload image
+                </Button>
+              </div>
+            </div>
+
+            {error && (
+              <div className="flex flex-row c-danger t-small justify-center items-center mt5">
+                <IconClose />
+                <span>{ error }</span>
+              </div>
+            )}
           </div>
-          <Button onClick={handleAddImage} size="small">
-            { intl.formatMessage(messages.btn) }
-          </Button>
         </div>
       )}
     </div>
   )
 }
 
-export default injectIntl(ImageInput)
+export default injectIntl(
+  graphql<Props>(UploadFile, {
+    name: 'uploadFile',
+  })(ImageInput)
+)
