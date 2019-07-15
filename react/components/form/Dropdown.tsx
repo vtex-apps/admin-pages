@@ -8,10 +8,6 @@ import { CustomWidgetProps } from './typings'
 interface Props extends CustomWidgetProps, InjectedIntlProps {
   onClose?: () => void
   onOpen?: () => void
-  // options: {
-  //   emptyValue: string
-  //   enumOptions: Array<{ label: string }>
-  // }
   options: { [key: string]: boolean | number | string | object | null }
 }
 
