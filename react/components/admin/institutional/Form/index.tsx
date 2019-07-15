@@ -25,9 +25,9 @@ interface ComponentProps {
     id: string
     text: string
   }
-  onDelete: OperationsResults['deletePage']
+  onDelete: OperationsResults['deleteRoute']
   onExit: () => void
-  onSave: OperationsResults['savePage']
+  onSave: OperationsResults['saveRoute']
   onSaveContent: OperationsResults['saveContent']
   showToast: ToastConsumerFunctions['showToast']
   hideToast: ToastConsumerFunctions['hideToast']

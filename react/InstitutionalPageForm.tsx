@@ -1,4 +1,4 @@
-import { equals, pathOr } from 'ramda'
+import { pathOr } from 'ramda'
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
@@ -19,7 +19,6 @@ import { TargetPathContextProps, withTargetPath } from './components/admin/Targe
 import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
-import RoutesQuery from './queries/Routes.graphql'
 
 import withStoreSettings, { FormProps } from './components/EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
@@ -52,28 +51,9 @@ class PageForm extends Component<Props, State> {
 
     const routeId = decodeURIComponent(props.params.id)
 
-    const { client } = props
-    let currentRoute = null
-
-    // Find route from cache
-    try {
-      const { routes } = client.readQuery<{ routes: Route[] }>({
-        query: RoutesQuery,
-        variables: { domain: 'store' },
-      }) || { routes: [] }
-      currentRoute = routes.find(
-        ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId
-      )
-    } catch (e) {
-      // console.error(e)
-    }
-
     this.isNew = routeId === NEW_ROUTE_ID
-
     this.state = {
-      formData: currentRoute
-        ? formatToFormData(currentRoute)
-        : this.defaultFormData(),
+      formData: this.defaultFormData(),
       isLoading: !this.isNew,
       routeId,
     }
@@ -81,14 +61,11 @@ class PageForm extends Component<Props, State> {
 
   public async componentDidMount() {
     const { client } = this.props
-    const { formData } = this.state
 
-    if (equals(formData, this.defaultFormData()) && !this.isNew) {
-      // didnt find in cache
+    if (!this.isNew) {
       try {
-        const {
-          data: { route },
-        } = await client.query<{ route: Route }>({
+        const { data: { route } } = await client.query<{ route: Route }>({
+          fetchPolicy: 'no-cache', // TODO: add updater to mutation
           query: RouteQuery,
           variables: {
             domain: 'store',
@@ -125,7 +102,7 @@ class PageForm extends Component<Props, State> {
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
           <Operations routeId={routeId} store={store}>
-            {({ deletePage, savePage, saveContent, content }) => {
+            {({ deleteRoute, saveRoute, saveContent, content }) => {
               if (content.loading) {
                 return <Loader />
               }
@@ -152,9 +129,9 @@ class PageForm extends Component<Props, State> {
                           text: contentJSON ? JSON.parse(contentJSON).text : '',
                         }}
                         culture={runtime.culture}
-                        onDelete={deletePage}
+                        onDelete={deleteRoute}
                         onExit={this.exit}
-                        onSave={savePage}
+                        onSave={saveRoute}
                         onSaveContent={saveContent}
                         showToast={showToast}
                         hideToast={hideToast}

@@ -25,8 +25,8 @@ interface Props {
 }
 
 export interface OperationsResults {
-  deletePage: MutationFn<any, DeleteRouteVariables>
-  savePage: MutationFn<any, SaveRouteVariables>
+  deleteRoute: MutationFn<any, DeleteRouteVariables>
+  saveRoute: MutationFn<any, SaveRouteVariables>
   saveContent: MutationFn<any, any>
 }
 
@@ -37,12 +37,12 @@ const Operations = ({ children, routeId, store }: Props) => {
       mutation={DeleteRoute}
       update={updateStoreAfterDelete}
     >
-      {(deletePage: any) => (
+      {(deleteRoute: any) => (
         <Mutation
           mutation={SaveRoute}
           update={updateStoreAfterSave}
         >
-          {(savePage: any) =>
+          {(saveRoute: any) =>
             <ListContentQuery
               variables={{
                 blockId: `${storeAppId}:store.institutional`,
@@ -59,9 +59,9 @@ const Operations = ({ children, routeId, store }: Props) => {
                   {(saveContent: any) => 
                     children({
                       content,
-                      deletePage,
+                      deleteRoute,
                       saveContent,
-                      savePage,
+                      saveRoute,
                     })
                   }
                 </SaveContentMutation>
