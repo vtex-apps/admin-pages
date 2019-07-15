@@ -231,9 +231,11 @@
   "admin/pages.editor.styles.select.save-fail": "Erro ao selecionar estilo '{name}'.",
   "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
 
-  "admin/pages.admin.rich-text-editor.add-image-label": "Link da imagem",
-  "admin/pages.admin.rich-text-editor.add-image-placeholder": "Link",
+  "admin/pages.admin.rich-text-editor.add-image-label": "URL da imagem",
+  "admin/pages.admin.rich-text-editor.add-image-placeholder": "URL",
   "admin/pages.admin.rich-text-editor.add-button": "Adicionar",
+  "admin/pages.admin.rich-text-editor.upload-image-label": "Escolher imagem para upload",
+  "admin/pages.admin.rich-text-editor.upload-button": "Fazer upload",
 
   "admin/pages.admin.institutional.general.section-title": "Geral",
   "admin/pages.admin.institutional.general.title.label": "Título",

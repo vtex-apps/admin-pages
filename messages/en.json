@@ -234,6 +234,8 @@
   "admin/pages.admin.rich-text-editor.add-image-label": "Image's url",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "Link",
   "admin/pages.admin.rich-text-editor.add-button": "Add",
+  "admin/pages.admin.rich-text-editor.upload-image-label": "Choose an image to upload",
+  "admin/pages.admin.rich-text-editor.upload-button": "Upload",
 
   "admin/pages.admin.institutional.general.section-title": "General",
   "admin/pages.admin.institutional.general.title.label": "Title",
