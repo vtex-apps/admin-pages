@@ -14,7 +14,10 @@ const FontFamilyList: React.FunctionComponent<Props> = ({ font, history }) => {
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
       onClick={() =>
         history.push(
-          EditorPath.customFontFile.replace(IdParam, font.id as string)
+          EditorPath.customFontFile.replace(
+            IdParam,
+            encodeURIComponent(font.id as string)
+          )
         )
       }
     >

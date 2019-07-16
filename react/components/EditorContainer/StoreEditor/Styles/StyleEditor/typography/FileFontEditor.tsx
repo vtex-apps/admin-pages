@@ -1,6 +1,11 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useCallback } from 'react'
 import { DropEvent, DropzoneOptions, useDropzone } from 'react-dropzone'
-import { FormattedMessage } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  InjectedIntlProps,
+  injectIntl,
+} from 'react-intl'
 import {
   ActionMenu,
   ButtonWithIcon,
@@ -23,7 +28,18 @@ import {
 } from '../utils/typography'
 import { FontFileAction } from './FontEditor'
 
-interface FileFontEditorProps {
+const { pickStylePlaceholder, removeMessage } = defineMessages({
+  pickStylePlaceholder: {
+    defaultMessage: 'Pick a style',
+    id: 'admin/pages.editor.styles.edit.font-family.style-dropdown-placeholder',
+  },
+  removeMessage: {
+    defaultMessage: 'Remove',
+    id: 'admin/pages.admin.redirects.form.button.remove',
+  },
+})
+
+interface FileFontEditorProps extends InjectedIntlProps {
   familyState: [string, Dispatch<SetStateAction<string>>]
   filesReducer: [FontFileInput[], Dispatch<FontFileAction>]
   showToast: ToastConsumerFunctions['showToast']
@@ -32,10 +48,16 @@ interface FileFontEditorProps {
 const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   filesReducer,
   familyState,
+  intl,
   showToast,
 }) => {
   const [files, dispatchFiles] = filesReducer
   const [family, setFamily] = familyState
+
+  const onInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setFamily(e.target.value),
+    [setFamily]
+  )
 
   const removeFile = (index: number) => dispatchFiles({ type: 'remove', index })
 
@@ -70,22 +92,24 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
 
   return (
     <div className="mv6 w-100">
-      <Input
-        size="small"
-        label={
-          <FormattedMessage
-            id="admin/pages.editor.styles.edit.font-family.title"
-            defaultMessage="Font Family"
+      <FormattedMessage
+        id="admin/pages.editor.styles.edit.font-family.title"
+        defaultMessage="Font Family"
+      >
+        {label => (
+          <Input
+            size="small"
+            label={label}
+            value={family}
+            onChange={onInputChange}
           />
-        }
-        value={family}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          setFamily(e.target.value)
-        }
-      />
+        )}
+      </FormattedMessage>
       {files.map((file, index) => (
         <FontFileItem
           fileName={getFileName(file)}
+          key={getFileName(file)}
+          intl={intl}
           onRemove={() => removeFile(index)}
           onStyleUpdate={(style: FontFlavour) => updateFile(index, style)}
           style={getFontFlavour(files[index])}
@@ -96,7 +120,7 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   )
 }
 
-interface FontFileItemProps {
+interface FontFileItemProps extends InjectedIntlProps {
   fileName: string
   onRemove: () => void
   onStyleUpdate: (style: FontFlavour) => void
@@ -105,6 +129,7 @@ interface FontFileItemProps {
 
 const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
   fileName,
+  intl,
   onRemove,
   onStyleUpdate,
   style,
@@ -116,12 +141,7 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
     },
     options: [
       {
-        label: (
-          <FormattedMessage
-            id="admin/pages.admin.redirects.form.button.remove"
-            defaultMessage="Remove"
-          />
-        ),
+        label: intl.formatMessage(removeMessage),
         onClick: onRemove,
       },
     ],
@@ -131,6 +151,7 @@ const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
     onChange: (_: React.ChangeEvent, value: string) =>
       onStyleUpdate(stringToFlavour(value)),
     options: STYLE_FLAVOUR_OPTIONS,
+    placeholder: intl.formatMessage(pickStylePlaceholder),
     value: flavourToString(style),
     variation: 'inline',
   }
@@ -192,4 +213,4 @@ const FontFileUploadComponent: React.FunctionComponent<FontFileUploadProps> = ({
   )
 }
 
-export default FileFontEditor
+export default injectIntl(FileFontEditor)
