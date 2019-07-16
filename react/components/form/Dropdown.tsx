@@ -42,7 +42,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
             label: formatIOMessage({ id: `${option.label}`, intl }),
           }))
         : [],
-    [options]
+    [options.enumOptions]
   )
 
   return (

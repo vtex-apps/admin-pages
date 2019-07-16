@@ -164,11 +164,11 @@ describe('getComponents', () => {
               },
             },
             'store/home/header': {
-              component: 'vtex.schema-without-title',
+              component: 'no-component',
               title: 'My custom header',
             },
             'store/home/layout': {
-              component: 'vtex.schema-without-title',
+              component: 'no-component',
               props: {
                 elements: ['carousel', 'shelf'],
               },
