@@ -8,10 +8,7 @@ import { CustomWidgetProps } from './typings'
 interface Props extends CustomWidgetProps, InjectedIntlProps {
   onClose?: () => void
   onOpen?: () => void
-  options: {
-    emptyValue: string
-    enumOptions: Array<{ label: string }>
-  }
+  options: { [key: string]: boolean | number | string | object | null }
 }
 
 const Dropdown: React.FunctionComponent<Props> = ({
@@ -30,9 +27,22 @@ const Dropdown: React.FunctionComponent<Props> = ({
   value,
 }) => {
   const handleChange = React.useCallback(
-    ({ target: { value } }: React.ChangeEvent<HTMLSelectElement>) =>
-      onChange(!value ? options.emptyValue : value),
+    ({
+      target: { value: optionValue },
+    }: React.ChangeEvent<HTMLSelectElement>) =>
+      onChange(!optionValue ? options.emptyValue : optionValue),
     []
+  )
+
+  const dropdownOptions = React.useMemo(
+    () =>
+      Array.isArray(options.enumOptions)
+        ? options.enumOptions.map(option => ({
+            ...option,
+            label: formatIOMessage({ id: `${option.label}`, intl }),
+          }))
+        : [],
+    [options.enumOptions]
   )
 
   return (
@@ -44,10 +54,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
       onChange={handleChange}
       onClose={onClose}
       onOpen={onOpen}
-      options={options.enumOptions.map(option => ({
-        ...option,
-        label: formatIOMessage({ id: `${option.label}`, intl }),
-      }))}
+      options={dropdownOptions}
       placeholder={
         placeholder ? formatIOMessage({ id: placeholder, intl }) : ''
       }
