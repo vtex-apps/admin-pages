@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Institutional pages simplified form
+
 ## [4.2.7] - 2019-07-10
 
 ## [3.15.8] - 2019-07-08
