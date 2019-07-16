@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Properly hiding nested "layout" components.
+
 ## [3.16.0] - 2019-07-16
 
 ## [3.15.9] - 2019-07-11

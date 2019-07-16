@@ -6,6 +6,16 @@ import {
   hasContentPropsInSchema,
 } from './utils'
 
+function consoleWarnSetup() {
+  beforeEach(() => {
+    jest.spyOn(console, 'warn').mockImplementation(() => undefined)
+  })
+
+  afterEach(() => {
+    ;(console.warn as any).mockRestore()
+  })
+}
+
 describe('getComponents', () => {
   const mockExtensions = {
     'store/header': {
@@ -140,6 +150,78 @@ describe('getComponents', () => {
     ])
   })
 
+  describe('schema with no titles', () => {
+    consoleWarnSetup()
+
+    it('should show extension that have only title in the blocks (extensions) and no schema', () => {
+      expect(
+        getComponents(
+          {
+            'store/home': {
+              component: 'vtex.LayoutContainer',
+              props: {
+                elements: ['header', 'layout'],
+              },
+            },
+            'store/home/header': {
+              component: 'no-component',
+              title: 'My custom header',
+            },
+            'store/home/layout': {
+              component: 'no-component',
+              props: {
+                elements: ['carousel', 'shelf'],
+              },
+            },
+          } as any,
+          {} as any,
+          'store/home'
+        )
+      ).toEqual([
+        {
+          isEditable: false,
+          name: 'My custom header',
+          treePath: 'store/home/header',
+        },
+      ])
+    })
+
+    it('should filter components that extensions that have falsy titles (undefined, null or empty string)', () => {
+      expect(
+        getComponents(
+          {
+            'store/home': {
+              component: 'vtex.LayoutContainer',
+              props: {
+                elements: ['header', 'layout'],
+              },
+            },
+            'store/home/header': {
+              component: 'vtex.schema-without-title',
+              title: 'My custom header',
+            },
+            'store/home/layout': {
+              component: 'vtex.schema-without-title',
+              props: {
+                elements: ['carousel', 'shelf'],
+              },
+            },
+          } as any,
+          {
+            'vtex.schema-without-title': { schema: {} },
+          } as any,
+          'store/home'
+        )
+      ).toEqual([
+        {
+          isEditable: false,
+          name: 'My custom header',
+          treePath: 'store/home/header',
+        },
+      ])
+    })
+  })
+
   it('should get components with getSchema instead of schema', () => {
     const extensions = {
       'store/home/shelf': {
@@ -167,13 +249,7 @@ describe('getComponents', () => {
   })
 
   describe('Warning for titleless schema', () => {
-    beforeEach(() => {
-      jest.spyOn(console, 'warn').mockImplementation(() => undefined)
-    })
-
-    afterEach(() => {
-      ;(console.warn as any).mockRestore()
-    })
+    consoleWarnSetup()
 
     it('should call console.warn when component has a schema with no title', () => {
       const extensions = {
@@ -371,8 +447,8 @@ describe('#hasContentPropsInSchema', () => {
   it(`should return true if there are properties with isLayout falsy`, () => {
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { isLayout: false } },
+        type: 'object',
       })
     ).toBe(true)
     expect(
@@ -383,14 +459,14 @@ describe('#hasContentPropsInSchema', () => {
   it(`should return true if there are nested properties with isLayout falsy`, () => {
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { isLayout: false } },
+        type: 'object',
       })
     ).toBe(true)
     expect(
       hasContentPropsInSchema({
-        type: 'object',
         properties: { test: { type: 'object', properties: { lala: {} } } },
+        type: 'object',
       })
     ).toBe(true)
   })

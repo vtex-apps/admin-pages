@@ -70,8 +70,8 @@ export function getComponents(
     .filter(treePath => {
       const schema = getComponentSchema(treePath)
       const componentName = getComponentName(treePath)
-      const hasTitleInSchema = has('title', schema)
-      const hasTitleInBlock = has('title', extensions[treePath])
+      const hasTitleInSchema = schema && !!schema.title
+      const hasTitleInBlock = !!extensions[treePath].title
       const extension = pathOr<Partial<Extension>, Extension>(
         {},
         [treePath],
@@ -91,8 +91,8 @@ export function getComponents(
 
       const shouldShow =
         isSamePage(page, treePath) &&
-        !!schema &&
-        (hasTitleInBlock || (isRoot || (hasTitleInSchema && isEditable)))
+        (hasTitleInBlock ||
+          ((!!schema && isRoot) || (hasTitleInSchema && isEditable)))
 
       if (shouldShow) {
         sidebarComponentMap[treePath] = {
