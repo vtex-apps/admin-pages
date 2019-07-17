@@ -14,7 +14,7 @@
     },
     {
       "isNew": true,
-      "labelId": "admin/pages.admin.tabs.institutional-pages",
+      "labelId": "admin/pages.admin-menu-button.institutional-pages",
       "path": "/admin/cms/institutional"
     }
   ]

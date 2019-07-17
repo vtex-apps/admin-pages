@@ -1,6 +1,7 @@
 {
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.storefront": "Storefront",
+  "admin/pages.admin-menu-button.institutional-pages": "Institucional",
   "admin/pages.admin.loading": "Cargando",
   "admin/pages.admin.pages.form.button.cancel": "Cancelar",
   "admin/pages.admin.pages.form.button.delete": "Borrar",
@@ -103,7 +104,6 @@
   "admin/pages.admin.redirects.upload-modal.success.subtitle": "Sus redirecciones se han cargado.",
   "admin/pages.admin.redirects.upload-modal.success.title": "Archivo cargado con éxito.",
   "admin/pages.admin.tabs.pages": "Páginas",
-  "admin/pages.admin.tabs.institutional-pages": "Institucional",
   "admin/pages.admin.tabs.redirects": "Redirecciones",
   "admin/pages.admin.tabs.settings": "Configuraciones",
   "admin/pages.editor.component-list.action-menu.delete": "Borrar",

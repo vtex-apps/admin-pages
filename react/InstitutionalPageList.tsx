@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { Query } from 'react-apollo'
+import { InjectedIntl, injectIntl } from 'react-intl'
 
 import { PageHeader } from 'vtex.styleguide'
 
@@ -16,19 +17,24 @@ interface QueryData {
 interface PageListProps {
   data?: QueryData
   isLoading: boolean
+  intl: InjectedIntl
 }
 
 const PageListWithQuery = () => {
   return (
     <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
       {({ data, loading: isLoading }) => {
-        return <PageList isLoading={isLoading} data={data} />
+        return <PageListWithIntl isLoading={isLoading} data={data} />
       }}
     </Query>
   )
 }
 
-const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) => {
+const PageList: React.FunctionComponent<PageListProps> = ({
+  data,
+  isLoading,
+  intl,
+}) => {
   const { startLoading, stopLoading } = useAdminLoadingContext()
 
   useEffect(
@@ -59,7 +65,12 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
   return (
     <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
       <div className="center mw8">
-        <PageHeader title="Institucional" />
+        <PageHeader
+          title={intl.formatMessage({
+            id: 'admin/pages.admin-menu-button.institutional-pages',
+            defaultMessage: 'Institutional',
+          })}
+        />
         <div className="ph7">
           <List
             hasCreateButton
@@ -71,5 +82,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({ data, isLoading }) =
     </div>
   )
 }
+
+const PageListWithIntl = injectIntl(PageList)
 
 export default React.memo(PageListWithQuery)

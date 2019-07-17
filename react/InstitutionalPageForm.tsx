@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda'
 import React, { Component } from 'react'
-import { withApollo, WithApolloClient, Query } from 'react-apollo'
+import { Query, withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'

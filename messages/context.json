@@ -1,6 +1,7 @@
 {
   "admin/pages.admin-menu-button.pages": "admin/pages.admin-menu-button.pages",
   "admin/pages.admin-menu-button.storefront": "admin/pages.admin-menu-button.storefront",
+  "admin/pages.admin-menu-button.institutional-pages": "admin/pages.admin.tabs.institutional-pages",
   "admin/pages.admin.loading": "admin/pages.admin.loading",
   "admin/pages.admin.pages.form.button.cancel": "admin/pages.admin.pages.form.button.cancel",
   "admin/pages.admin.pages.form.button.delete": "admin/pages.admin.pages.form.button.delete",
@@ -103,7 +104,6 @@
   "admin/pages.admin.redirects.upload-modal.success.subtitle": "admin/pages.admin.redirects.upload-modal.success.subtitle",
   "admin/pages.admin.redirects.upload-modal.success.title": "admin/pages.admin.redirects.upload-modal.success.title",
   "admin/pages.admin.tabs.pages": "admin/pages.admin.tabs.pages",
-  "admin/pages.admin.tabs.institutional-pages": "admin/pages.admin.tabs.institutional-pages",
   "admin/pages.admin.tabs.redirects": "admin/pages.admin.tabs.redirects",
   "admin/pages.admin.tabs.settings": "admin/pages.admin.tabs.settings",
   "admin/pages.editor.component-list.action-menu.delete": "admin/pages.editor.component-list.action-menu.delete",
