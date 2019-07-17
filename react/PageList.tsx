@@ -64,6 +64,10 @@ const PageList: React.FunctionComponent<PageListProps> = ({
         (acc: CategorizedRoutes, currRoute: Route) => {
           const currRouteContext = currRoute.context || ''
 
+          if (currRouteContext.endsWith('InstitutionalContext')) {
+            return acc
+          }
+
           if (currRouteContext.endsWith('SearchContext')) {
             return {
               ...acc,

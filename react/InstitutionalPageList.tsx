@@ -67,8 +67,8 @@ const PageList: React.FunctionComponent<PageListProps> = ({
       <div className="center mw8">
         <PageHeader
           title={intl.formatMessage({
-            id: 'admin/pages.admin-menu-button.institutional-pages',
             defaultMessage: 'Institutional',
+            id: 'admin/pages.admin-menu-button.institutional-pages',
           })}
         />
         <div className="ph7">
