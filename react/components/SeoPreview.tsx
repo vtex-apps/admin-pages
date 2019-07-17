@@ -11,7 +11,7 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
   seoDescription: {
-    defaultMessage: '<Page title>',
+    defaultMessage: '<Page description>',
     id: 'admin/pages.admin.institutional.general.seo.description',
   },
   seoTitle: {
@@ -28,13 +28,22 @@ const SeoPreview = ({ title, description, url, intl }: Props) => (
       <span style={{ ...styles.button, ...styles.buttonMinimize }} />
     </div>
     <div className="pt5">
-      <span className={`db f4 pb1 word-break ${!title && 'o-30'}`} style={styles.title}>
+      <span
+        className={`db f4 pb1 word-break ${!title && 'o-30'}`}
+        style={styles.title}
+      >
         {title || intl.formatMessage(messages.seoTitle)}
       </span>
-      <span className={`db f6 pb1 word-break ${!url && 'o-30'}`} style={styles.url}>
+      <span
+        className={`db f6 pb1 word-break ${!url && 'o-30'}`}
+        style={styles.url}
+      >
         {`${window.location.origin}/${url || '<url>'}`}
       </span>
-      <span className={`db pt2 f6 fw3 word-break ${!description && 'o-30'}`} style={styles.description}>
+      <span
+        className={`db pt2 f6 fw3 word-break ${!description && 'o-30'}`}
+        style={styles.description}
+      >
         {description || intl.formatMessage(messages.seoDescription)}
       </span>
     </div>

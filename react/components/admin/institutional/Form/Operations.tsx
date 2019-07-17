@@ -14,9 +14,15 @@ import {
   SaveRouteVariables,
 } from '../../pages/Form/typings'
 
-import { updateStoreAfterDelete, updateStoreAfterSave } from '../../pages/Form/utils'
+import {
+  updateStoreAfterDelete,
+  updateStoreAfterSave,
+} from '../../pages/Form/utils'
 
-import { AvailableApp, InstalledApp } from '../../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
+import {
+  AvailableApp,
+  InstalledApp,
+} from '../../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
 interface Props {
   children: (mutations: any) => React.ReactNode
@@ -33,16 +39,10 @@ export interface OperationsResults {
 const Operations = ({ children, routeId, store }: Props) => {
   const storeAppId = parseStoreAppId(store)
   return (
-    <Mutation
-      mutation={DeleteRoute}
-      update={updateStoreAfterDelete}
-    >
+    <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
       {(deleteRoute: any) => (
-        <Mutation
-          mutation={SaveRoute}
-          update={updateStoreAfterSave}
-        >
-          {(saveRoute: any) =>
+        <Mutation mutation={SaveRoute} update={updateStoreAfterSave}>
+          {(saveRoute: any) => (
             <ListContentQuery
               variables={{
                 blockId: `${storeAppId}:store.institutional`,
@@ -51,12 +51,12 @@ const Operations = ({ children, routeId, store }: Props) => {
                   type: '*',
                 },
                 template: `${storeAppId}:store.institutional`,
-                treePath: `${routeId}/flex-layout.row#institutional-body/rich-text.static`,
+                treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
               }}
             >
               {(content: any) => (
                 <SaveContentMutation>
-                  {(saveContent: any) => 
+                  {(saveContent: any) =>
                     children({
                       content,
                       deleteRoute,
@@ -67,7 +67,7 @@ const Operations = ({ children, routeId, store }: Props) => {
                 </SaveContentMutation>
               )}
             </ListContentQuery>
-          }
+          )}
         </Mutation>
       )}
     </Mutation>

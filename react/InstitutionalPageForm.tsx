@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda'
 import React, { Component } from 'react'
-import { withApollo, WithApolloClient } from 'react-apollo'
+import { withApollo, WithApolloClient, Query } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -11,16 +11,26 @@ import Form from './components/admin/institutional/Form'
 import Operations from './components/admin/institutional/Form/Operations'
 import { parseStoreAppId } from './components/admin/institutional/utils'
 
-import { INSTITUTIONAL_ROUTES_LIST, NEW_ROUTE_ID } from './components/admin/pages/consts'
+import {
+  INSTITUTIONAL_ROUTES_LIST,
+  NEW_ROUTE_ID,
+} from './components/admin/pages/consts'
 import Title from './components/admin/pages/Form/Title'
 import { formatToFormData } from './components/admin/pages/Form/utils'
 import { getRouteTitle } from './components/admin/pages/utils'
-import { TargetPathContextProps, withTargetPath } from './components/admin/TargetPathContext'
+import {
+  TargetPathContextProps,
+  withTargetPath,
+} from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
+
+import ContentIOMessageQuery from './queries/ContentIOMessage.graphql'
 import RouteQuery from './queries/Route.graphql'
 
-import withStoreSettings, { FormProps } from './components/EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
+import withStoreSettings, {
+  FormProps,
+} from './components/EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
 interface CustomProps {
   params: {
@@ -31,10 +41,10 @@ interface CustomProps {
 
 type Props = WithApolloClient<
   CustomProps &
-  RenderContextProps &
-  TargetPathRenderProps &
-  TargetPathContextProps &
-  FormProps
+    RenderContextProps &
+    TargetPathRenderProps &
+    TargetPathContextProps &
+    FormProps
 >
 
 interface State {
@@ -64,7 +74,9 @@ class PageForm extends Component<Props, State> {
 
     if (!this.isNew) {
       try {
-        const { data: { route } } = await client.query<{ route: Route }>({
+        const {
+          data: { route },
+        } = await client.query<{ route: Route }>({
           fetchPolicy: 'no-cache', // TODO: add updater to mutation
           query: RouteQuery,
           variables: {
@@ -107,38 +119,74 @@ class PageForm extends Component<Props, State> {
                 return <Loader />
               }
 
-              const contentJSON: string | null = pathOr(null, ['data', 'listContentWithSchema', 'content', '0', 'contentJSON'], content)
-              const contentId: string | null = pathOr('', ['data', 'listContentWithSchema', 'content', '0', 'contentId'], content)
+              const contentJSON: string | null = pathOr(
+                null,
+                [
+                  'data',
+                  'listContentWithSchema',
+                  'content',
+                  '0',
+                  'contentJSON',
+                ],
+                content
+              )
+              const contentText: string = contentJSON
+                ? JSON.parse(contentJSON).text
+                : ''
+              const contentId: string | null = pathOr(
+                '',
+                ['data', 'listContentWithSchema', 'content', '0', 'contentId'],
+                content
+              )
 
               return (
-                <Box>
-                  {this.isNew ? (
-                    <FormattedMessage id="admin/pages.admin.pages.form.title.new">
-                      {text => <Title>{text}</Title>}
-                    </FormattedMessage>
-                  ) : (
-                    formData && <Title>{getRouteTitle(formData)}</Title>
-                  )}
-                  <ToastConsumer>
-                    {({ showToast, hideToast }) => (
-                      <Form
-                        store={store}
-                        initialData={formData}
-                        initialContent={{
-                          id: contentId!,
-                          text: contentJSON ? JSON.parse(contentJSON).text : '',
-                        }}
-                        culture={runtime.culture}
-                        onDelete={deleteRoute}
-                        onExit={this.exit}
-                        onSave={saveRoute}
-                        onSaveContent={saveContent}
-                        showToast={showToast}
-                        hideToast={hideToast}
-                      />
-                    )}
-                  </ToastConsumer>
-                </Box>
+                <Query
+                  query={ContentIOMessageQuery}
+                  variables={{
+                    args: {
+                      messages: [{ id: contentText || '' }],
+                      provider: contentId,
+                      to: runtime.culture.locale,
+                    },
+                  }}
+                >
+                  {({ data, loading }: any) => {
+                    if (loading) {
+                      return <Loader />
+                    }
+
+                    return (
+                      <Box>
+                        {this.isNew ? (
+                          <FormattedMessage id="admin/pages.admin.pages.form.title.new">
+                            {text => <Title>{text}</Title>}
+                          </FormattedMessage>
+                        ) : (
+                          formData && <Title>{getRouteTitle(formData)}</Title>
+                        )}
+                        <ToastConsumer>
+                          {({ showToast, hideToast }) => (
+                            <Form
+                              store={store}
+                              initialData={formData}
+                              initialContent={{
+                                id: contentId!,
+                                text: data.translate[0] || contentText,
+                              }}
+                              culture={runtime.culture}
+                              onDelete={deleteRoute}
+                              onExit={this.exit}
+                              onSave={saveRoute}
+                              onSaveContent={saveContent}
+                              showToast={showToast}
+                              hideToast={hideToast}
+                            />
+                          )}
+                        </ToastConsumer>
+                      </Box>
+                    )
+                  }}
+                </Query>
               )
             }}
           </Operations>
@@ -166,15 +214,11 @@ class PageForm extends Component<Props, State> {
       path: '',
       routeId: '',
       title: '',
-      uuid: undefined,  
-    }    
+      uuid: undefined,
+    }
   }
 }
 
 export default withApollo(
-  withRuntimeContext(
-    withTargetPath(
-      withStoreSettings(PageForm)
-    )
-  )
+  withRuntimeContext(withTargetPath(withStoreSettings(PageForm)))
 )

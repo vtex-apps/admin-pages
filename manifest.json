@@ -18,7 +18,8 @@
     "vtex.pwa-graphql": "1.x",
     "vtex.store": "2.x",
     "vtex.styles-graphql": "1.x",
-    "vtex.styleguide": "9.x"
+    "vtex.styleguide": "9.x",
+    "vtex.messages": "1.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],

@@ -89,7 +89,13 @@ class FormContainer extends React.PureComponent<Props, State> {
 
   public render() {
     const { onExit } = this.props
-    const { data, isDeletable, isInfoEditable, isLoading, formErrors } = this.state
+    const {
+      data,
+      isDeletable,
+      isInfoEditable,
+      isLoading,
+      formErrors,
+    } = this.state
 
     return (
       <Form
@@ -106,7 +112,10 @@ class FormContainer extends React.PureComponent<Props, State> {
     )
   }
 
-  private handleChangeFieldValue = (field: string, value: string | number | null) => {
+  private handleChangeFieldValue = (
+    field: string,
+    value: string | number | null
+  ) => {
     return this.setState(prevState => ({
       ...prevState,
       data: {
@@ -118,7 +127,15 @@ class FormContainer extends React.PureComponent<Props, State> {
   }
 
   private handleSave = (event: React.FormEvent) => {
-    const { intl, onExit, onSave, showToast, onSaveContent, store, culture } = this.props
+    const {
+      intl,
+      onExit,
+      onSave,
+      showToast,
+      onSaveContent,
+      store,
+      culture,
+    } = this.props
     const storeAppId = parseStoreAppId(store)
 
     event.preventDefault()
@@ -184,7 +201,7 @@ class FormContainer extends React.PureComponent<Props, State> {
               configuration: {
                 condition: {
                   allMatches: true,
-                  id: 'vtex.rich-text@0.x:rich-text.static',
+                  id: 'vtex.rich-text@0.x:rich-text',
                   pageContext: {
                     id: '*',
                     type: '*',
@@ -194,11 +211,11 @@ class FormContainer extends React.PureComponent<Props, State> {
                 contentId,
                 contentJSON: JSON.stringify({ text: pageContent }),
                 label: null,
-                origin: 'vtex.rich-text@0.x:rich-text.static',
+                origin: 'vtex.rich-text@0.x:rich-text',
               },
               lang: culture.locale,
               template: `${storeAppId}:store.institutional`,
-              treePath: `${routeId}/flex-layout.row#institutional-body/rich-text.static`,
+              treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
             },
           })
 

@@ -50,7 +50,7 @@ const messages = defineMessages({
     id: 'admin/pages.admin.institutional.general.description.label',
   },
   titleHint: {
-    defaultMessage: '/my-custom-page',
+    defaultMessage: 'e.g.: About us',
     id: 'admin/pages.admin.institutional.general.title.placeholder',
   },
 })
@@ -66,7 +66,9 @@ const Form = ({
   onExit,
   onSubmit,
 }: Props) => {
-  const handleEventValue = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleEventValue = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = event.target
     return handleChangeFieldValue(name, value)
   }
@@ -84,7 +86,9 @@ const Form = ({
             placeholder={intl.formatMessage(messages.titleHint)}
             required
             value={data.title}
-            errorMessage={errors.title && intl.formatMessage({ id: errors.title })}
+            errorMessage={
+              errors.title && intl.formatMessage({ id: errors.title })
+            }
           />
           <FormFieldSeparator />
           <Input
@@ -95,7 +99,9 @@ const Form = ({
             placeholder={intl.formatMessage(messages.pathHint)}
             required
             value={data.path || ''}
-            errorMessage={errors.path && intl.formatMessage({ id: errors.path })}
+            errorMessage={
+              errors.path && intl.formatMessage({ id: errors.path })
+            }
           />
           <FormFieldSeparator />
           <Textarea
@@ -124,7 +130,9 @@ const Form = ({
       <p className="mv7 f4 b">Conteúdo</p>
       <RichTextEditor
         initialState={data.pageContent}
-        onChange={(value: string) => handleChangeFieldValue('pageContent', value)}
+        onChange={(value: string) =>
+          handleChangeFieldValue('pageContent', value)
+        }
       />
 
       <FormFieldSeparator />
