@@ -1,21 +1,32 @@
-{
-  "section": "storeSetup",
-  "subSection": "cms",
-  "subSectionItems": [
-    {
-      "isNew": true,
-      "labelId": "admin/pages.admin-menu-button.storefront",
-      "path": "/admin/cms/storefront"
-    },
-    {
-      "isNew": true,
-      "labelId": "admin/pages.admin-menu-button.pages",
-      "path": "/admin/cms/pages"
-    },
-    {
-      "isNew": true,
-      "labelId": "admin/pages.admin-menu-button.institutional-pages",
-      "path": "/admin/cms/institutional"
-    }
-  ]
-}
+[
+  {
+    "section": "storeSetup",
+    "subSection": "cms",
+    "subSectionItems": [
+      {
+        "isNew": true,
+        "labelId": "admin/pages.admin-menu-button.storefront",
+        "path": "/admin/cms/storefront"
+      },
+      {
+        "isNew": true,
+        "labelId": "admin/pages.admin-menu-button.pages",
+        "path": "/admin/cms/pages"
+      }
+    ]
+  },
+  {
+    "section": "gocommerce",
+    "subSection": "onlinestore",
+    "subSectionItems": [
+      {
+        "labelId": "admin/pages.admin-menu-button.storefront",
+        "path": "/admin/cms/storefront"
+      },
+      {
+        "labelId": "admin/pages.admin-menu-button.pages",
+        "path": "/admin/cms/institutional"
+      }
+    ]
+  }
+]
