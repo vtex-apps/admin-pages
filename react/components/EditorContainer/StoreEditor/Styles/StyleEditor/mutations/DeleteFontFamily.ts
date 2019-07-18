@@ -27,7 +27,11 @@ const updateFontsAfterDelete = (
   result: DeleteFontFamilyResult
 ) => {
   const listData = cache.readQuery<ListFontsData>({ query: ListFonts })
-  if (result.data == null || listData == null) {
+  if (
+    result.data == null ||
+    result.data.deleteFontFamily == null ||
+    listData == null
+  ) {
     return
   }
   const { listFonts: families } = listData

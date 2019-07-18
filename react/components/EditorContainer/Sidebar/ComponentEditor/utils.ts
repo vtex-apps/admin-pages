@@ -1,4 +1,5 @@
-import { has, map, mergeDeepLeft, pickBy } from 'ramda'
+import traverse from 'json-schema-traverse'
+import { assocPath, mergeDeepLeft } from 'ramda'
 
 import {
   getComponentSchema,
@@ -17,7 +18,7 @@ import { GetSchemasArgs } from './typings'
  * @return {object} A object defining the complete `UiSchema` that matches all the schema
  *  properties.
  */
-const getUiSchema = (
+export const getUiSchema = (
   componentUiSchema: UISchema,
   componentSchema: ComponentSchema
 ): UISchema => {
@@ -37,45 +38,29 @@ const getUiSchema = (
    *
    * @param {object} properties The schema properties to be analysed.
    */
-  const getDeepUiSchema = (properties: any): UISchema => {
-    const deepProperties = pickBy(
-      property => has('properties', property),
-      properties
-    )
-    const itemsProperties = pickBy(
-      property => has('properties', property),
-      properties.items
-    )
 
-    return {
-      ...map(
-        (value: ComponentSchema) => value.widget,
-        pickBy(property => has('widget', property), properties)
-      ),
-      ...(deepProperties &&
-        map(property => getDeepUiSchema(property.properties), deepProperties)),
-      ...(itemsProperties &&
-        map(item => getDeepUiSchema(item), itemsProperties)),
+  const arrayAttrs = /(anyOf|oneOf|allOf|dependencies)(\/\d+|\/\w+)?/g
+  const noUISchemaProp = [
+    'definitions',
+    'properties',
+    'patternProperties',
+    'additionalProperties',
+  ]
+  let uiSchema = {}
+
+  const getWidget = (...args: any[]) => {
+    const [schema, JSONPointer] = args
+    if (schema.widget) {
+      const widgetPath = JSONPointer.replace(arrayAttrs, '')
+        .split('/')
+        .filter(
+          (pointer: string) => pointer && !noUISchemaProp.includes(pointer)
+        )
+      uiSchema = assocPath(widgetPath, schema.widget, uiSchema)
     }
   }
 
-  const uiSchema = {
-    ...map(value => value.widget, pickBy(
-      property => has('widget', property),
-      componentSchema.properties as ComponentSchemaProperties
-    ) as { widget: any }),
-    ...map(property => getDeepUiSchema(property.properties), pickBy(
-      property => has('properties', property),
-      componentSchema.properties as ComponentSchemaProperties
-    ) as ComponentSchemaProperties),
-    ...map(
-      property => getDeepUiSchema(property),
-      pickBy<{}, ComponentSchemaProperties>(
-        property => has('items', property),
-        componentSchema.properties || {}
-      )
-    ),
-  }
+  traverse(componentSchema, getWidget)
 
   return mergeDeepLeft(uiSchema, componentUiSchema || {})
 }

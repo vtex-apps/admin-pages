@@ -27,7 +27,7 @@ const TypeTokensList: React.FunctionComponent<Props> = ({ history, style }) => {
       <StyleEditorHeader title={title} />
       <div className="ph6">
         {tokens.map(({ name }) => (
-          <TypeTokenEntry name={name} history={history} />
+          <TypeTokenEntry name={name} key={name} history={history} />
         ))}
       </div>
     </>
