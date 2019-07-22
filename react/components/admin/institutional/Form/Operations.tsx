@@ -10,10 +10,11 @@ import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
 import ListContentQuery from '../../../EditorContainer/queries/ListContent'
 
 import {
+  DeleteMutationResult,
   DeleteRouteVariables,
+  SaveMutationResult,
   SaveRouteVariables,
 } from '../../pages/Form/typings'
-
 import {
   updateStoreAfterDelete,
   updateStoreAfterSave,
@@ -39,9 +40,15 @@ export interface OperationsResults {
 const Operations = ({ children, routeId, store }: Props) => {
   const storeAppId = parseStoreAppId(store)
   return (
-    <Mutation mutation={DeleteRoute} update={updateStoreAfterDelete}>
-      {(deleteRoute: any) => (
-        <Mutation mutation={SaveRoute} update={updateStoreAfterSave}>
+    <Mutation<DeleteMutationResult['data'], DeleteRouteVariables>
+      mutation={DeleteRoute}
+      update={updateStoreAfterDelete}
+    >
+      {deleteRoute => (
+        <Mutation<SaveMutationResult['data'], SaveRouteVariables>
+          mutation={SaveRoute}
+          update={updateStoreAfterSave}
+        >
           {(saveRoute: any) => (
             <ListContentQuery
               variables={{
@@ -54,9 +61,9 @@ const Operations = ({ children, routeId, store }: Props) => {
                 treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
               }}
             >
-              {(content: any) => (
+              {content => (
                 <SaveContentMutation>
-                  {(saveContent: any) =>
+                  {saveContent =>
                     children({
                       content,
                       deleteRoute,
