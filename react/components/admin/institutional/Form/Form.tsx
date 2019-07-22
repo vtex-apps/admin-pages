@@ -127,7 +127,7 @@ const Form = ({
       <FormFieldSeparator />
       <SeparatorWithLine />
 
-      <p className="mv7 f4 b">Conteúdo</p>
+      <p className="mv7 f4 b">{intl.formatMessage(messages.contentSection)}</p>
       <RichTextEditor
         initialState={data.pageContent}
         onChange={(value: string) =>
