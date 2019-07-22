@@ -2,9 +2,9 @@ import * as React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 
 interface CustomProps {
-  title?: string
-  description?: string
-  url?: string
+  title?: string | null
+  description?: string | null
+  url?: string | null
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps

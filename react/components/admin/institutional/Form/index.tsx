@@ -17,6 +17,7 @@ import { isNewRoute } from '../../pages/utils'
 import { FormProps } from '../../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
 import { formatStatements } from '../../../../utils/conditions'
+import { FormErrors } from '../../pages/Form/typings'
 
 interface ComponentProps {
   culture: RenderContext['culture']
@@ -33,7 +34,7 @@ interface ComponentProps {
   hideToast: ToastConsumerFunctions['hideToast']
 }
 
-interface RouteContentFromData {
+export interface RouteContentFromData {
   pageContent?: string
   contentId: string
 }
@@ -43,7 +44,7 @@ type Props = ComponentProps & InjectedIntlProps & FormProps
 export interface State {
   data: RouteFormData & RouteContentFromData
   isLoading: boolean
-  formErrors: any
+  formErrors: FormErrors
   isDeletable: boolean
   isInfoEditable: boolean
 }

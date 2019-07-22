@@ -1,4 +1,5 @@
 import { RouteFormData } from 'pages'
+import { State } from './index'
 
 const requiredMessage = 'admin/pages.admin.pages.form.templates.field.required'
 
@@ -15,14 +16,16 @@ const validateUrlBeginning = (path: string) => {
   }
 }
 
-export const getValidateFormState = (prevState: any) => {
+export const getValidateFormState = (prevState: State) => {
   return {
     ...prevState,
     formErrors: {
       ...prevState.formErrors,
       ...(validateUrlBeginning(prevState.data.path) as Record<string, string>),
       ...validateFalsyPath('path')(prevState.data),
-      ...(prevState.isInfoEditable ? validateFalsyPath('title')(prevState.data) : {}),
+      ...(prevState.isInfoEditable
+        ? validateFalsyPath('title')(prevState.data)
+        : {}),
     },
   }
 }

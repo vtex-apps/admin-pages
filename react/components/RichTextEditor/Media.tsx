@@ -1,34 +1,8 @@
 import * as React from 'react'
 
-import {
-  CompositeDecorator,
-  ContentBlock,
-  ContentState,
-  DraftInlineStyle,
-  DraftStyleMap,
-  SelectionState,
-} from 'draft-js'
-import { List } from 'immutable'
+import { Media } from 'draft-js'
 
-interface MediaProps {
-  block: ContentBlock
-  blockProps: { [key: string]: any } | undefined
-  blockStyleFn?: (block: ContentBlock) => string
-  contentState: ContentState
-  customStyleFn?: (
-    style: DraftInlineStyle,
-    block: ContentBlock
-  ) => DraftStyleMap
-  customStyleMap: DraftStyleMap
-  decorator: CompositeDecorator
-  direction: string
-  forceSelection: boolean
-  offsetKey: string
-  selection: SelectionState
-  tree: List<any>
-}
-
-const Media = (props: MediaProps) => {
+const Media = (props: Media) => {
   const { contentState, block } = props
   const blockEntity = block.getEntityAt(0)
 

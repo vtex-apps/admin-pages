@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 
 import { Button, IconLink, Input } from 'vtex.styleguide'
 
@@ -7,7 +7,7 @@ import StyleButton from './StyleButton'
 
 interface Props {
   onAdd: (link: string) => void
-  intl: any 
+  intl: InjectedIntl
 }
 
 const messages = defineMessages({
@@ -28,10 +28,10 @@ const LinkInput = ({ onAdd, intl }: Props) => {
 
   return (
     <div className="relative">
-      <StyleButton 
+      <StyleButton
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
-        style={{}}
+        style={null}
         label={<IconLink />}
       />
 
@@ -40,11 +40,13 @@ const LinkInput = ({ onAdd, intl }: Props) => {
           <div className="mb4">
             <Input
               label={'URL'}
-              onChange={(e: any) => setLink(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setLink(e.target.value)
+              }
             />
           </div>
           <Button onClick={handleAddImage} size="small">
-            { intl.formatMessage(messages.btn) }
+            {intl.formatMessage(messages.btn)}
           </Button>
         </div>
       )}

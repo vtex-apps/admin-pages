@@ -1,5 +1,5 @@
 import {
-  AtomicBlockUtils,  
+  AtomicBlockUtils,
   CompositeDecorator,
   Editor,
   EditorState,
@@ -46,7 +46,11 @@ const BLOCK_TYPES = [
   { label: <IconOrderedList />, style: 'ordered-list-item' },
 ]
 
-const BlockStyleControls = (props: any) => {
+interface BlockStyleControlsProps {
+  editorState: EditorState
+  onToggle: (blockType: string) => void
+}
+const BlockStyleControls = (props: BlockStyleControlsProps) => {
   const { editorState } = props
   const selection = editorState.getSelection()
   const blockType = editorState
@@ -56,7 +60,7 @@ const BlockStyleControls = (props: any) => {
 
   return (
     <>
-      {BLOCK_TYPES.map((type, i) =>
+      {BLOCK_TYPES.map((type, i) => (
         <StyleButton
           key={i}
           active={type.style === blockType}
@@ -64,18 +68,22 @@ const BlockStyleControls = (props: any) => {
           onToggle={props.onToggle}
           style={type.style}
         />
-      )}
+      ))}
     </>
   )
 }
 
-const InlineStyleControls = (props: any) => {
+interface InlineStyleControlsProps {
+  editorState: EditorState
+  onToggle: (inlineStyle: string) => void
+}
+const InlineStyleControls = (props: InlineStyleControlsProps) => {
   const { editorState } = props
   const currentStyle = editorState.getCurrentInlineStyle()
-  
+
   return (
     <>
-      {INLINE_STYLES.map((type, i) =>
+      {INLINE_STYLES.map((type, i) => (
         <StyleButton
           key={i}
           active={currentStyle.has(type.style)}
@@ -83,18 +91,20 @@ const InlineStyleControls = (props: any) => {
           onToggle={props.onToggle}
           style={type.style}
         />
-      )}
+      ))}
     </>
   )
 }
 
 interface Props {
   onChange?: (value: string) => void
-  initialState: string
+  initialState?: string
 }
 
 const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
-  const decorator = new CompositeDecorator([{ strategy: findLinkEntities, component: Link }])
+  const decorator = new CompositeDecorator([
+    { strategy: findLinkEntities, component: Link },
+  ])
   const [editorState, setEditorState] = React.useState(
     EditorState.createWithContent(convertToEditorState(initialState), decorator)
   )
@@ -102,7 +112,12 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   let className = `${styles.RichEditor_editor}`
   const contentState = editorState.getCurrentContent()
   if (!contentState.hasText()) {
-    if (contentState.getBlockMap().first().getType() !== 'unstyled') {
+    if (
+      contentState
+        .getBlockMap()
+        .first()
+        .getType() !== 'unstyled'
+    ) {
       className += ` ${styles.RichEditor_hidePlaceholder}`
     }
   }
@@ -116,9 +131,10 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
 
     // TODO: find out a better way to handle it
     // if editor is out of focus we force the image to be appended, not prepended
-    const defEditorState = currentOffset === 0
-      ? EditorState.moveFocusToEnd(editorState)
-      : editorState
+    const defEditorState =
+      currentOffset === 0
+        ? EditorState.moveFocusToEnd(editorState)
+        : editorState
 
     const currentContentState = defEditorState.getCurrentContent()
     const contentStateWithEntity = currentContentState.createEntity(
@@ -127,12 +143,12 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
       { src: imageUrl }
     )
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-    const newEditorState = EditorState.set(defEditorState, { currentContent: contentStateWithEntity })
-    return setEditorState(AtomicBlockUtils.insertAtomicBlock(
-      newEditorState,
-      entityKey,
-      ' '
-    ))
+    const newEditorState = EditorState.set(defEditorState, {
+      currentContent: contentStateWithEntity,
+    })
+    return setEditorState(
+      AtomicBlockUtils.insertAtomicBlock(newEditorState, entityKey, ' ')
+    )
   }
 
   const handleAddLink = (linkUrl: string) => {
@@ -143,12 +159,16 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
       { url: linkUrl }
     )
     const entityKey = contentStateWithEntity.getLastCreatedEntityKey()
-    const newEditorState = EditorState.set(editorState, { currentContent: contentStateWithEntity })
-    return setEditorState(RichUtils.toggleLink(
-      newEditorState,
-      newEditorState.getSelection(),
-      entityKey
-    ))
+    const newEditorState = EditorState.set(editorState, {
+      currentContent: contentStateWithEntity,
+    })
+    return setEditorState(
+      RichUtils.toggleLink(
+        newEditorState,
+        newEditorState.getSelection(),
+        entityKey
+      )
+    )
   }
 
   const handleChange = (state: EditorState) => {
@@ -160,35 +180,31 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   }
 
   const toggleBlockType = (blockType: string) => {
-    handleChange(
-      RichUtils.toggleBlockType(
-        editorState,
-        blockType
-      )
-    )
+    handleChange(RichUtils.toggleBlockType(editorState, blockType))
   }
 
   const toggleInlineStyle = (inlineStyle: string) => {
-    handleChange(
-      RichUtils.toggleInlineStyle(
-        editorState,
-        inlineStyle
-      )
-    )
+    handleChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
   }
 
   return (
     <div className="bw1 br2 b--solid b--muted-4">
       <div className="pa4 flex flex-wrap-s">
-        <InlineStyleControls editorState={editorState} onToggle={toggleInlineStyle} />
-        <BlockStyleControls editorState={editorState} onToggle={toggleBlockType} />
+        <InlineStyleControls
+          editorState={editorState}
+          onToggle={toggleInlineStyle}
+        />
+        <BlockStyleControls
+          editorState={editorState}
+          onToggle={toggleBlockType}
+        />
         <LinkInput onAdd={handleAddLink} />
         <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>
         <Editor
           editorState={editorState}
-          onChange={(state) => handleChange(state)}
+          onChange={state => handleChange(state)}
           blockRendererFn={mediaBlockRenderer}
         />
       </div>

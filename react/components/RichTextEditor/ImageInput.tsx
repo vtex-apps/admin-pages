@@ -68,7 +68,13 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
       if (files && files[0]) {
         setIsLoading(true)
 
-        const {data: { uploadFile: { fileUrl} } } = await uploadFile!({ variables: { file: files[0] } }) as { data: MutationData }
+        const {
+          data: {
+            uploadFile: { fileUrl },
+          },
+        } = (await uploadFile!({ variables: { file: files[0] } })) as {
+          data: MutationData
+        }
 
         setIsLoading(false)
         setIsOpen(false)
@@ -83,10 +89,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
     }
   }
 
-  const {
-    getInputProps,
-    getRootProps,
-  } = useDropzone({
+  const { getInputProps, getRootProps } = useDropzone({
     accept: 'image/*',
     maxSize: MAX_SIZE,
     multiple: false,
@@ -100,10 +103,10 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
 
   return (
     <div className="relative">
-      <StyleButton 
+      <StyleButton
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
-        style={{}}
+        style={null}
         label={<IconImage />}
       />
 
@@ -119,29 +122,35 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
             <div className="mb4">
               <Input
                 label={intl.formatMessage(messages.addLabel)}
-                onChange={(e: any) => setImageUrl(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setImageUrl(e.target.value)
+                }
                 placeholder={intl.formatMessage(messages.addPlaceholder)}
               />
             </div>
 
             <Button onClick={handleAddImage} size="small">
-              { intl.formatMessage(messages.addBtn) }
+              {intl.formatMessage(messages.addBtn)}
             </Button>
 
             <SeparatorWithLine />
 
             <div className="flex flex-column">
-              <span className="db mb3 w-100 c-on-base t-small">{intl.formatMessage(messages.uploadLabel)}</span>
-              <div { ...getRootProps() } className="flex flex-column">
-                <input { ...getInputProps() } />
-                <Button size="small">{intl.formatMessage(messages.uploadBtn)}</Button>
+              <span className="db mb3 w-100 c-on-base t-small">
+                {intl.formatMessage(messages.uploadLabel)}
+              </span>
+              <div {...getRootProps()} className="flex flex-column">
+                <input {...getInputProps()} />
+                <Button size="small">
+                  {intl.formatMessage(messages.uploadBtn)}
+                </Button>
               </div>
             </div>
 
             {error && (
               <div className="flex flex-row c-danger t-small justify-center items-center mt5">
                 <IconClose />
-                <span>{ error }</span>
+                <span>{error}</span>
               </div>
             )}
           </div>

@@ -1,7 +1,10 @@
+import { RouteFormData } from 'pages'
 import * as React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
 import { Button, Input, Textarea } from 'vtex.styleguide'
+
+import { RouteContentFromData } from './index'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
@@ -11,7 +14,7 @@ import RichTextEditor from '../../../RichTextEditor/index'
 import SeoPreview from '../../../SeoPreview'
 
 interface CustomProps {
-  data: any
+  data: RouteFormData & RouteContentFromData
   errors: FormErrors
   handleChangeFieldValue: (field: string, value: string | number | null) => void
   isLoading: boolean
@@ -110,7 +113,7 @@ const Form = ({
             label={intl.formatMessage(messages.seoDescription)}
             onChange={handleEventValue}
             resize="vertical"
-            value={data.metaTagDescription}
+            value={data.metaTagDescription!}
             size="small"
           />
         </div>

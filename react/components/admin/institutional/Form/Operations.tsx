@@ -49,7 +49,7 @@ const Operations = ({ children, routeId, store }: Props) => {
           mutation={SaveRoute}
           update={updateStoreAfterSave}
         >
-          {(saveRoute: any) => (
+          {saveRoute => (
             <ListContentQuery
               variables={{
                 blockId: `${storeAppId}:store.institutional`,
