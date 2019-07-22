@@ -38,7 +38,7 @@ const SeoPreview = ({ title, description, url, intl }: Props) => (
         className={`db f6 pb1 word-break ${!url && 'o-30'}`}
         style={styles.url}
       >
-        {`${window.location.origin}${url || '<url>'}`}
+        {`${window.location.origin}${url || '/<url>'}`}
       </span>
       <span
         className={`db pt2 f6 fw3 word-break ${!description && 'o-30'}`}
