@@ -93,12 +93,9 @@ const EditorContainer: React.FC<Props> = ({
     [editMode, editExtensionPoint]
   )
 
-  useEffect(
-    () => {
-      highlightExtensionPoint(null)
-    },
-    [editMode]
-  )
+  useEffect(() => {
+    highlightExtensionPoint(null)
+  }, [editMode])
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
   const isDevelopment = runtime && runtime.production === false
@@ -109,7 +106,7 @@ const EditorContainer: React.FC<Props> = ({
     <FormMetaProvider>
       <ModalProvider>
         <IframeNavigationController iframeRuntime={runtime} />
-        <div className="w-100 h-100 min-vh-100 flex flex-column flex-row-reverse-l flex-wrap-l bg-base bb bw1 b--muted-5">
+        <div className="w-100 h-100 min-vh-100 flex flex-row-reverse flex-wrap-l bg-base bb bw1 b--muted-5">
           {!storeEditMode && runtime && (
             <Sidebar
               highlightHandler={highlightExtensionPoint}
