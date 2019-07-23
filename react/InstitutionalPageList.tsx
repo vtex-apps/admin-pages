@@ -37,26 +37,20 @@ const PageList: React.FunctionComponent<PageListProps> = ({
 }) => {
   const { startLoading, stopLoading } = useAdminLoadingContext()
 
-  useEffect(
-    () => {
-      if (isLoading) {
-        startLoading()
-      } else {
-        stopLoading()
-      }
-    },
-    [isLoading]
-  )
+  useEffect(() => {
+    if (isLoading) {
+      startLoading()
+    } else {
+      stopLoading()
+    }
+  }, [isLoading])
 
-  const institutionalRoutes = useMemo(
-    () => {
-      const routes = data && data.routes
-      return (routes || []).filter((currRoute: Route) => {
-        return (currRoute.context || '').endsWith('InstitutionalContext')
-      })
-    },
-    [data]
-  )
+  const institutionalRoutes = useMemo(() => {
+    const routes = data && data.routes
+    return (routes || []).filter((currRoute: Route) => {
+      return (currRoute.context || '').endsWith('ContentPageContext')
+    })
+  }, [data])
 
   if (isLoading) {
     return <Loader />

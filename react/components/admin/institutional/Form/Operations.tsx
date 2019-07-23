@@ -52,13 +52,13 @@ const Operations = ({ children, routeId, store }: Props) => {
           {saveRoute => (
             <ListContentQuery
               variables={{
-                blockId: `${storeAppId}:store.institutional`,
+                blockId: `${storeAppId}:store.content`,
                 pageContext: {
                   id: '*',
                   type: '*',
                 },
-                template: `${storeAppId}:store.institutional`,
-                treePath: `${routeId}/flex-layout.row#institutional-body/rich-text`,
+                template: `${storeAppId}:store.content`,
+                treePath: `${routeId}/flex-layout.row#content-body/rich-text`,
               }}
             >
               {content => (

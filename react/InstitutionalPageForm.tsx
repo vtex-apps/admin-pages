@@ -203,11 +203,11 @@ class PageForm extends Component<Props, State> {
     const storeAppId = parseStoreAppId(this.props.store)
     return {
       auth: false,
-      blockId: `${storeAppId}:store.institutional`,
-      context: `${storeAppId}/InstitutionalContext`,
+      blockId: `${storeAppId}:store.content`,
+      context: `${storeAppId}/ContentPageContext`,
       declarer: null,
       domain: 'store',
-      interfaceId: `${storeAppId}:store.institutional`,
+      interfaceId: `${storeAppId}:store.content`,
       metaTagDescription: '',
       metaTagKeywords: [],
       pages: [],
