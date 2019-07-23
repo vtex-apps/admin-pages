@@ -30,31 +30,31 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 const messages = defineMessages({
   contentSection: {
     defaultMessage: 'Content',
-    id: 'admin/pages.admin.institutional.content.section-title',
+    id: 'admin/pages.admin.content.content.section-title',
   },
   fieldPath: {
     defaultMessage: 'URL',
-    id: 'admin/pages.admin.institutional.general.url.label',
+    id: 'admin/pages.admin.content.general.url.label',
   },
   fieldTitle: {
     defaultMessage: 'Title',
-    id: 'admin/pages.admin.institutional.general.title.label',
+    id: 'admin/pages.admin.content.general.title.label',
   },
   generalSection: {
     defaultMessage: 'General',
-    id: 'admin/pages.admin.institutional.general.section-title',
+    id: 'admin/pages.admin.content.general.section-title',
   },
   pathHint: {
     defaultMessage: '/my-custom-page',
-    id: 'admin/pages.admin.institutional.general.url.placeholder',
+    id: 'admin/pages.admin.content.general.url.placeholder',
   },
   seoDescription: {
     defaultMessage: 'Description',
-    id: 'admin/pages.admin.institutional.general.description.label',
+    id: 'admin/pages.admin.content.general.description.label',
   },
   titleHint: {
     defaultMessage: 'e.g.: About us',
-    id: 'admin/pages.admin.institutional.general.title.placeholder',
+    id: 'admin/pages.admin.content.general.title.placeholder',
   },
 })
 

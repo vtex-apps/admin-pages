@@ -1,7 +1,7 @@
 {
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.storefront": "Storefront",
-  "admin/pages.admin-menu-button.institutional-pages": "Institucional",
+  "admin/pages.admin-menu-button.content-pages": "Institucional",
   "admin/pages.admin.loading": "Carregando",
   "admin/pages.admin.pages.form.button.cancel": "Cancelar",
   "admin/pages.admin.pages.form.button.delete": "Deletar",
@@ -241,14 +241,14 @@
   "admin/pages.admin.rich-text-editor.upload-image-label": "Escolher imagem para upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Fazer upload",
 
-  "admin/pages.admin.institutional.general.section-title": "Geral",
-  "admin/pages.admin.institutional.general.title.label": "Título",
-  "admin/pages.admin.institutional.general.title.placeholder": "ex.: Quem somos",
-  "admin/pages.admin.institutional.general.url.label": "URL",
-  "admin/pages.admin.institutional.general.url.placeholder": "ex.: /quem-somos",
-  "admin/pages.admin.institutional.general.description.label": "Descrição",
-  "admin/pages.admin.institutional.general.description.placeholder": "Descrição",
-  "admin/pages.admin.institutional.general.seo.page-title": "<Título da página>",
-  "admin/pages.admin.institutional.general.seo.description": "<A descrição é o texto geralmente utilizado pelo Google para a exibição dos resultados de texto das segundas e terceiras linhas dos resultados de busca, logo abaixo do título>",
-  "admin/pages.admin.institutional.content.section-title": "Conteúdo"
+  "admin/pages.admin.content.general.section-title": "Geral",
+  "admin/pages.admin.content.general.title.label": "Título",
+  "admin/pages.admin.content.general.title.placeholder": "ex.: Quem somos",
+  "admin/pages.admin.content.general.url.label": "URL",
+  "admin/pages.admin.content.general.url.placeholder": "ex.: /quem-somos",
+  "admin/pages.admin.content.general.description.label": "Descrição",
+  "admin/pages.admin.content.general.description.placeholder": "Descrição",
+  "admin/pages.admin.content.general.seo.page-title": "<Título da página>",
+  "admin/pages.admin.content.general.seo.description": "<A descrição é o texto geralmente utilizado pelo Google para a exibição dos resultados de texto das segundas e terceiras linhas dos resultados de busca, logo abaixo do título>",
+  "admin/pages.admin.content.content.section-title": "Conteúdo"
 }

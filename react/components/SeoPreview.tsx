@@ -12,11 +12,11 @@ type Props = CustomProps & ReactIntl.InjectedIntlProps
 const messages = defineMessages({
   seoDescription: {
     defaultMessage: '<Page description>',
-    id: 'admin/pages.admin.institutional.general.seo.description',
+    id: 'admin/pages.admin.content.general.seo.description',
   },
   seoTitle: {
     defaultMessage: '<Page title>',
-    id: 'admin/pages.admin.institutional.general.seo.page-title',
+    id: 'admin/pages.admin.content.general.seo.page-title',
   },
 })
 
