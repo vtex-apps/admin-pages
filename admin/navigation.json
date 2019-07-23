@@ -25,7 +25,7 @@
       },
       {
         "labelId": "admin/pages.admin-menu-button.pages",
-        "path": "/admin/cms/institutional"
+        "path": "/admin/cms/content"
       }
     ]
   }
