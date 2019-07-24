@@ -50,6 +50,7 @@ const getContainerProps = (layout: Viewport) => {
 }
 
 interface Props {
+  availableCultures: string[]
   editor: EditorContext
   runtime: RenderContext | null
   toggleShowAdminControls: () => void
@@ -58,6 +59,7 @@ interface Props {
 }
 
 const EditorContainer: React.FC<Props> = ({
+  availableCultures,
   children,
   editor,
   runtime,
@@ -117,11 +119,13 @@ const EditorContainer: React.FC<Props> = ({
           <div className="flex-grow-1 db-ns dn">
             {runtime && (
               <Topbar
+                availableCultures={availableCultures}
                 changeMode={setStoreEditMode}
                 mode={storeEditMode}
                 onChangeUrlPath={onChangeIframeUrl}
                 urlPath={iframeWindow.location.pathname}
                 visible={visible}
+                runtime={runtime}
               />
             )}
             {isDevelopment && (
