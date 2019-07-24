@@ -5,10 +5,11 @@ import { withApollo } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
 
-import { defineMessages, injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl'
 import {
   editorMessagesFromRuntime,
   getAvailableCultures,
+  LabelledLocale,
 } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
@@ -21,7 +22,7 @@ type Props = RenderContextProps &
 interface State {
   activeConditions: string[]
   allMatches: boolean
-  availableCultures: string[]
+  availableCultures: LabelledLocale[]
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null

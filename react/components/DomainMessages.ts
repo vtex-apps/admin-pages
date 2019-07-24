@@ -42,6 +42,11 @@ interface Languages {
   }
 }
 
+export interface LabelledLocale {
+  label: string
+  value: string
+}
+
 const messagesToReactIntlFormat = (messages: Message[]) =>
   reduce(
     (acc, { key, message }) => ({ ...acc, [key]: message }),
@@ -127,6 +132,6 @@ export const getAvailableCultures = async ({
         },
       ]
     },
-    [] as any[]
+    [] as LabelledLocale[]
   )
 }

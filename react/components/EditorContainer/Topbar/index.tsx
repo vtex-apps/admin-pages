@@ -1,16 +1,16 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Input } from 'vtex.styleguide'
 import EditableText from '../Sidebar/EditorHeader/EditableText'
 
 import { Dropdown } from 'vtex.styleguide'
+import { LabelledLocale } from '../../DomainMessages'
 import { useEditorContext } from '../../EditorContext'
 import ModeButton from './components/ModeButton'
 
 const modes: StoreEditMode[] = ['settings', 'theme']
 
 interface Props {
-  availableCultures: string[]
+  availableCultures: LabelledLocale[]
   changeMode: (mode?: StoreEditMode) => void
   mode?: StoreEditMode
   urlPath: string
@@ -32,12 +32,9 @@ const Topbar: React.FunctionComponent<Props> = ({
   const [url, setUrl] = useState(urlPath)
   const [locale, setLocale] = useState(runtime.culture.locale)
 
-  useEffect(
-    () => {
-      setUrl(urlPath)
-    },
-    [urlPath]
-  )
+  useEffect(() => {
+    setUrl(urlPath)
+  }, [urlPath])
 
   const onEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,

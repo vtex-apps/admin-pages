@@ -17,6 +17,7 @@ import StoreEditor from './StoreEditor'
 import Topbar from './Topbar'
 
 import '../../editbar.global.css'
+import { LabelledLocale } from '../DomainMessages'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
 
@@ -50,7 +51,7 @@ const getContainerProps = (layout: Viewport) => {
 }
 
 interface Props {
-  availableCultures: string[]
+  availableCultures: LabelledLocale[]
   editor: EditorContext
   runtime: RenderContext | null
   toggleShowAdminControls: () => void

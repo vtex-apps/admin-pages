@@ -157,7 +157,7 @@ declare global {
 
   interface EditorContext extends EditorConditionSection {
     allMatches: boolean
-    availableCultures: string[]
+    availableCultures: LabelledLocale[]
     editMode: boolean
     editTreePath: string | null
     getIsLoading: () => boolean
