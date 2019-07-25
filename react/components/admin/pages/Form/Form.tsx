@@ -118,7 +118,7 @@ const Form: React.FunctionComponent<Props> = ({
     <form onSubmit={onSave}>
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
-        disabled={!isInfoEditable}
+        disabled={!!data.context}
         label={intl.formatMessage(messages.fieldTitle)}
         onChange={detailChangeHandlerGetter('title')}
         required
