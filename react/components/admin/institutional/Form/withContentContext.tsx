@@ -50,7 +50,7 @@ export interface ContentContextProps {
   saveContent: MutationFn<any, any>
 }
 
-function withContentContext(WrappedComponent: React.ComponentType) {
+function withContentContext(WrappedComponent: React.ComponentType<any>) {
   return (props: any) => {
     const routeId = decodeURIComponent(props.params.id)
     const storeAppId = parseStoreAppId(props.store)

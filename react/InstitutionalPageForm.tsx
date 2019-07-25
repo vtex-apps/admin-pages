@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -36,14 +35,12 @@ interface CustomProps {
   runtime: RenderContext
 }
 
-type Props = WithApolloClient<
-  CustomProps &
-    RenderContextProps &
-    TargetPathRenderProps &
-    TargetPathContextProps &
-    FormProps &
-    ContentContextProps
->
+type Props = CustomProps &
+  RenderContextProps &
+  TargetPathRenderProps &
+  TargetPathContextProps &
+  FormProps &
+  ContentContextProps
 
 interface State {
   formData: RouteFormData
@@ -136,9 +133,6 @@ class PageForm extends Component<Props, State> {
   }
 }
 
-// @ts-ignore
-export default withApollo(
-  withRuntimeContext(
-    withTargetPath(withStoreSettings(withContentContext(PageForm)))
-  )
+export default withRuntimeContext(
+  withTargetPath(withStoreSettings(withContentContext(PageForm)))
 )
