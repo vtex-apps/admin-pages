@@ -1,8 +1,9 @@
 import React from 'react'
-import { Mutation, MutationFn } from 'react-apollo'
+import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
 import { parseStoreAppId } from '../utils'
 
+import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
@@ -31,53 +32,66 @@ interface Props {
   store: AvailableApp & InstalledApp & { settings: string }
 }
 
+interface TemplateVariables {
+  interfaceId: string
+}
+
 export interface OperationsResults {
   deleteRoute: MutationFn<any, DeleteRouteVariables>
   saveRoute: MutationFn<any, SaveRouteVariables>
   saveContent: MutationFn<any, any>
+  templatesResults: QueryResult<any, TemplateVariables>
 }
 
 const Operations = ({ children, routeId, store }: Props) => {
   const storeAppId = parseStoreAppId(store)
   return (
-    <Mutation<DeleteMutationResult['data'], DeleteRouteVariables>
-      mutation={DeleteRoute}
-      update={updateStoreAfterDelete}
+    <Query<Template[], TemplateVariables>
+      query={AvailableTemplates}
+      variables={{ interfaceId: `${storeAppId}:store.content` }}
     >
-      {deleteRoute => (
-        <Mutation<SaveMutationResult['data'], SaveRouteVariables>
-          mutation={SaveRoute}
-          update={updateStoreAfterSave}
+      {templates => (
+        <Mutation<DeleteMutationResult['data'], DeleteRouteVariables>
+          mutation={DeleteRoute}
+          update={updateStoreAfterDelete}
         >
-          {saveRoute => (
-            <ListContentQuery
-              variables={{
-                blockId: `${storeAppId}:store.content`,
-                pageContext: {
-                  id: '*',
-                  type: '*',
-                },
-                template: `${storeAppId}:store.content`,
-                treePath: `${routeId}/flex-layout.row#content-body/rich-text`,
-              }}
+          {deleteRoute => (
+            <Mutation<SaveMutationResult['data'], SaveRouteVariables>
+              mutation={SaveRoute}
+              update={updateStoreAfterSave}
             >
-              {content => (
-                <SaveContentMutation>
-                  {saveContent =>
-                    children({
-                      content,
-                      deleteRoute,
-                      saveContent,
-                      saveRoute,
-                    })
-                  }
-                </SaveContentMutation>
+              {saveRoute => (
+                <ListContentQuery
+                  variables={{
+                    blockId: '',
+                    pageContext: {
+                      id: '*',
+                      type: '*',
+                    },
+                    template: `${storeAppId}:store.content`,
+                    treePath: `${routeId}/flex-layout.row#content-body/rich-text`,
+                  }}
+                >
+                  {content => (
+                    <SaveContentMutation>
+                      {saveContent =>
+                        children({
+                          content,
+                          deleteRoute,
+                          saveContent,
+                          saveRoute,
+                          templates,
+                        })
+                      }
+                    </SaveContentMutation>
+                  )}
+                </ListContentQuery>
               )}
-            </ListContentQuery>
+            </Mutation>
           )}
         </Mutation>
       )}
-    </Mutation>
+    </Query>
   )
 }
 export default Operations

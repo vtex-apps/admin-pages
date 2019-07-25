@@ -11,13 +11,12 @@ import { getValidateFormState } from './utils'
 
 import { parseStoreAppId } from '../utils'
 
+import { FormErrors } from '../../pages/Form/typings'
 import { generateNewRouteId } from '../../pages/Form/utils'
-import { isNewRoute } from '../../pages/utils'
 
 import { FormProps } from '../../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
 
 import { formatStatements } from '../../../../utils/conditions'
-import { FormErrors } from '../../pages/Form/typings'
 
 interface ComponentProps {
   culture: RenderContext['culture']
@@ -72,8 +71,7 @@ class FormContainer extends React.PureComponent<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const { declarer } = props.initialData || { declarer: null }
-    const isNew = isNewRoute(props.initialData)
+    const isNew = !props.initialData.uuid
 
     this.state = {
       data: {
@@ -83,7 +81,7 @@ class FormContainer extends React.PureComponent<Props, State> {
       },
       formErrors: {},
       isDeletable: !isNew,
-      isInfoEditable: !declarer || isNew,
+      isInfoEditable: isNew,
       isLoading: false,
     }
   }
@@ -215,7 +213,7 @@ class FormContainer extends React.PureComponent<Props, State> {
                 origin: 'vtex.rich-text@0.x:rich-text',
               },
               lang: culture.locale,
-              template: `${storeAppId}:store.content`,
+              template: blockId,
               treePath: `${routeId}/flex-layout.row#content-body/rich-text`,
             },
           })

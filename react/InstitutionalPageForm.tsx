@@ -1,6 +1,5 @@
-import { pathOr } from 'ramda'
 import React, { Component } from 'react'
-import { Query, withApollo, WithApolloClient } from 'react-apollo'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -8,7 +7,9 @@ import { Box, ToastConsumer } from 'vtex.styleguide'
 import { RouteFormData } from 'pages'
 
 import Form from './components/admin/institutional/Form'
-import Operations from './components/admin/institutional/Form/Operations'
+import withContentContext, {
+  ContentContextProps,
+} from './components/admin/institutional/Form/withContentContext'
 import { parseStoreAppId } from './components/admin/institutional/utils'
 
 import {
@@ -22,11 +23,7 @@ import {
   TargetPathContextProps,
   withTargetPath,
 } from './components/admin/TargetPathContext'
-import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
-
-import ContentIOMessageQuery from './queries/ContentIOMessage.graphql'
-import RouteQuery from './queries/Route.graphql'
 
 import withStoreSettings, {
   FormProps,
@@ -44,12 +41,12 @@ type Props = WithApolloClient<
     RenderContextProps &
     TargetPathRenderProps &
     TargetPathContextProps &
-    FormProps
+    FormProps &
+    ContentContextProps
 >
 
 interface State {
   formData: RouteFormData
-  isLoading: boolean
   routeId: string
 }
 
@@ -59,137 +56,55 @@ class PageForm extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    const routeId = decodeURIComponent(props.params.id)
+    const { params, route } = props
+    const routeId = decodeURIComponent(params.id)
 
     this.isNew = routeId === NEW_ROUTE_ID
     this.state = {
-      formData: this.defaultFormData(),
-      isLoading: !this.isNew,
+      formData: route ? formatToFormData(route) : this.defaultFormData(),
       routeId,
     }
   }
 
-  public async componentDidMount() {
-    const { client } = this.props
-
-    if (!this.isNew) {
-      try {
-        const {
-          data: { route },
-        } = await client.query<{ route: Route }>({
-          fetchPolicy: 'no-cache', // TODO: add updater to mutation
-          query: RouteQuery,
-          variables: {
-            domain: 'store',
-            routeId: this.state.routeId,
-          },
-        })
-
-        if (route) {
-          this.setState({
-            formData: formatToFormData(route),
-            isLoading: false,
-          })
-        } else {
-          this.exit()
-        }
-      } catch (err) {
-        console.error(err)
-        this.exit()
-      }
-    } else {
-      this.setState({ isLoading: false })
-    }
-  }
-
   public render() {
-    const { store, runtime } = this.props
-    const { formData, isLoading, routeId } = this.state
-
-    if (isLoading) {
-      return <Loader />
-    }
+    const {
+      store,
+      runtime,
+      content,
+      saveRoute,
+      deleteRoute,
+      saveContent,
+    } = this.props
+    const { formData } = this.state
 
     return (
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
-          <Operations routeId={routeId} store={store}>
-            {({ deleteRoute, saveRoute, saveContent, content }) => {
-              if (content.loading) {
-                return <Loader />
-              }
-
-              const contentJSON: string | null = pathOr(
-                null,
-                [
-                  'data',
-                  'listContentWithSchema',
-                  'content',
-                  '0',
-                  'contentJSON',
-                ],
-                content
-              )
-              const contentText: string = contentJSON
-                ? JSON.parse(contentJSON).text
-                : ''
-              const contentId: string | null = pathOr(
-                '',
-                ['data', 'listContentWithSchema', 'content', '0', 'contentId'],
-                content
-              )
-
-              return (
-                <Query
-                  query={ContentIOMessageQuery}
-                  variables={{
-                    args: {
-                      messages: [{ id: contentText || '' }],
-                      provider: contentId,
-                      to: runtime.culture.locale,
-                    },
-                  }}
-                >
-                  {({ data, loading }: any) => {
-                    if (loading) {
-                      return <Loader />
-                    }
-
-                    return (
-                      <Box>
-                        {this.isNew ? (
-                          <FormattedMessage id="admin/pages.admin.pages.form.title.new">
-                            {text => <Title>{text}</Title>}
-                          </FormattedMessage>
-                        ) : (
-                          formData && <Title>{getRouteTitle(formData)}</Title>
-                        )}
-                        <ToastConsumer>
-                          {({ showToast, hideToast }) => (
-                            <Form
-                              store={store}
-                              initialData={formData}
-                              initialContent={{
-                                id: contentId!,
-                                text: data.translate[0] || contentText,
-                              }}
-                              culture={runtime.culture}
-                              onDelete={deleteRoute}
-                              onExit={this.exit}
-                              onSave={saveRoute}
-                              onSaveContent={saveContent}
-                              showToast={showToast}
-                              hideToast={hideToast}
-                            />
-                          )}
-                        </ToastConsumer>
-                      </Box>
-                    )
-                  }}
-                </Query>
-              )
-            }}
-          </Operations>
+          <Box>
+            {this.isNew ? (
+              <FormattedMessage id="admin/pages.admin.pages.form.title.new">
+                {text => <Title>{text}</Title>}
+              </FormattedMessage>
+            ) : (
+              formData && <Title>{getRouteTitle(formData)}</Title>
+            )}
+            <ToastConsumer>
+              {({ showToast, hideToast }) => (
+                <Form
+                  store={store}
+                  initialData={formData}
+                  initialContent={content}
+                  culture={runtime.culture}
+                  onDelete={deleteRoute}
+                  onExit={this.exit}
+                  onSave={saveRoute}
+                  onSaveContent={saveContent}
+                  showToast={showToast}
+                  hideToast={hideToast}
+                />
+              )}
+            </ToastConsumer>
+          </Box>
         </div>
       </div>
     )
@@ -200,14 +115,16 @@ class PageForm extends Component<Props, State> {
   }
 
   private defaultFormData = (): RouteFormData => {
-    const storeAppId = parseStoreAppId(this.props.store)
+    const { blockId, store, interfaceId } = this.props
+    const storeAppId = parseStoreAppId(store)
+
     return {
       auth: false,
-      blockId: `${storeAppId}:store.content`,
+      blockId,
       context: `${storeAppId}/ContentPageContext`,
       declarer: null,
       domain: 'store',
-      interfaceId: `${storeAppId}:store.content`,
+      interfaceId,
       metaTagDescription: '',
       metaTagKeywords: [],
       pages: [],
@@ -219,6 +136,9 @@ class PageForm extends Component<Props, State> {
   }
 }
 
+// @ts-ignore
 export default withApollo(
-  withRuntimeContext(withTargetPath(withStoreSettings(PageForm)))
+  withRuntimeContext(
+    withTargetPath(withStoreSettings(withContentContext(PageForm)))
+  )
 )
