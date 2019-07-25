@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [4.3.1] - 2019-07-24
 
+### Fixed
+
+- Sidebar position in smaller windows.
+
+## [4.3.0] - 2019-07-16
+
+### Changed
+
+- Changes from `v3.15.9`, `v3.16.0` and `v3.16.1`.
+
 ## [3.16.1] - 2019-07-16
 
 ### Fixed
@@ -23,11 +33,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add support to uiSchema from JSONSchema dependencies
 
+## [4.2.7] - 2019-07-10
+
+## [4.2.6] - 2019-07-09
+
+### Changed
+
+- Changes from `v3.15.8`.
+
 ## [3.15.8] - 2019-07-08
 
 ### Fixed
 
 - Add `RichText` type to i18n Mapping
+
+## [4.2.5] - 2019-07-04
+
+### Changed
+
+- Changes from `v3.15.7`.
 
 ## [3.15.7] - 2019-07-03
 
@@ -35,17 +59,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add allErrors to ajv validation
 
+## [4.2.4] - 2019-07-03
+
+### Changed
+
+- Changes from `v3.15.6`.
+
 ## [3.15.6] - 2019-07-03
 
 ### Fixed
 
 - Add empty field by type when form field is not modified
 
+## [4.2.3] - 2019-07-03
+
+### Changed
+
+- Changes from `v3.15.5`.
+
 ## [3.15.5] - 2019-07-03
 
 ### Fixed
 
 - Content save is now sending values properly.
+
+## [4.2.2] - 2019-07-02
+
+### Changed
+
+- Changes from `v3.15.4`.
 
 ## [3.15.4] - 2019-07-02
 
@@ -57,6 +99,52 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Showing nested components that are editable.
 - Components list sort logic.
+
+## [4.2.1] - 2019-07-02
+
+### Changed
+
+- Changes from `v3.15.3`.
+
+## [4.2.0] - 2019-07-01
+
+- Alert to inform the user in `master` workspace that his changes go to the production store.
+
+## [4.1.3] - 2019-07-01
+
+## [4.1.2] - 2019-06-27
+
+### Changed
+
+- Changes from `v3.15.2`.
+
+## [4.1.1] - 2019-06-26
+
+### Changed
+
+- Prevent click on extensions that have `composition === 'children'`.
+- Change style of items: `ExpandArrow` and `Item` hovers have been separated and no cursor and no hover on uneditable items.
+
+## [4.1.0] - 2019-06-21
+
+### Added
+
+- Add warning to top of storefront when user is in development mode telling
+  changes to content can't be promoted
+
+## [4.0.0] - 2019-06-18
+
+### Added
+
+- Adds the ability to navigate to a specific URL by editing the storefront URL in the UI
+
+## [4.0.0-beta] - 2019-06-10
+
+### Changed
+
+- [BREAKING] Change routes to be compliance with new admin 3.x architecture `/admin/app/<route>`.
+- [BREAKING] Injects this admin in admin 3.x navigation (loosing compatibility with admin 2.x).
+- Remove some context function calls that were previously injected by admin 2.x
 
 ## [3.15.3] - 2019-07-02
 
