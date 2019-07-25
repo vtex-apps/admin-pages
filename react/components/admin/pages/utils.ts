@@ -1,14 +1,27 @@
 import startCase from 'lodash.startcase'
 
 type NewRouteTypeArg = Pick<Route, 'uuid' | 'declarer'>
-export const isNewRoute = (route: NewRouteTypeArg) => !route.uuid && !route.declarer
+export const isNewRoute = (route: NewRouteTypeArg) =>
+  !route.uuid && !route.declarer
 
-type GetRouteTitleArg = Pick<Route, 'title' | 'blockId' | 'interfaceId'> & NewRouteTypeArg
+type GetRouteTitleArg = Pick<Route, 'title' | 'blockId' | 'interfaceId'> &
+  NewRouteTypeArg
+
 export const getRouteTitle = (route: GetRouteTitleArg) => {
-  if(isNewRoute(route)) {
-    return route.title || ''
+  const { blockId, declarer, interfaceId, title } = route
+
+  const nameFromInterfaceOrBlock = startCase(
+    blockId.split('#')[1] ||
+      interfaceId.split('.')[interfaceId.split('.').length - 1]
+  )
+
+  if (isNewRoute(route)) {
+    return title || ''
   }
-  return route.title || startCase(route.blockId.split('#')[1] || route.interfaceId.split('.')[route.interfaceId.split('.').length - 1])
+
+  return declarer
+    ? nameFromInterfaceOrBlock || title
+    : title || nameFromInterfaceOrBlock
 }
 
 export const isStoreRoute = (domain: Route['domain']) => domain === 'store'
