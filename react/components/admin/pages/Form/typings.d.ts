@@ -36,7 +36,8 @@ interface ConditionsOnSaveRouteVariables {
 }
 
 export interface SaveRouteVariables {
-  route: Route
+  route: Partial<Route> &
+    Pick<Route, 'declarer' | 'domain' | 'path' | 'routeId'>
 }
 
 export interface DeleteRouteVariables {
