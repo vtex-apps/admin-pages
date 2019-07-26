@@ -16,6 +16,7 @@ declare module 'vtex.styleguide' {
     resize?: CSSProperties['resize']
     value?: string
     label?: string
+    size?: 'small' | 'large' | 'regular'
   }
 
   interface ToastProviderProps {
@@ -155,12 +156,19 @@ declare module 'vtex.styleguide' {
   export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
   export class EXPERIMENTAL_Select extends Component<any> {}
   export const IconArrowBack: ComponentType<any>
+  export const IconBold: ComponentType<any>
   export const IconEdit: ComponentType<any>
   export const IconCaretDown: ComponentType<any>
   export const IconCaretUp: ComponentType<any>
   export const IconClear: ComponentType<any>
   export const IconClose: ComponentType<any>
+  export const IconItalic: ComponentType<any>
+  export const IconImage: ComponentType<any>
+  export const IconLink: ComponentType<any>
   export const IconOptionsDots: ComponentType<any>
+  export const IconOrderedList: ComponentType<any>
+  export const IconUnderline: ComponentType<any>
+  export const IconUnorderedList: ComponentType<any>
   export const IconUpload: ComponentType<any>
   export const Input: ComponentType<any>
   export const Modal: ComponentType<any>

@@ -1,0 +1,3 @@
+query ContentIOMessage($args: TranslateArgs!) {
+  translate(args: $args)
+}

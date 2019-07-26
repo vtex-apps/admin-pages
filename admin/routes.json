@@ -21,6 +21,14 @@
     "component": "RedirectForm",
     "path": "/admin/app/cms/redirects/*id"
   },
+  "admin.app.cms.content": {
+    "component": "InstitutionalPageList",
+    "path": "/admin/app/cms/content"
+  },
+  "admin.app.cms.content-details": {
+    "component": "InstitutionalPageForm",
+    "path": "/admin/app/cms/content/*id"
+  },
   "admin.app.cms.settings": {
     "component": "Settings",
     "path": "/admin/app/cms/settings"

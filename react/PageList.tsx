@@ -41,54 +41,52 @@ const PageList: React.FunctionComponent<PageListProps> = ({
     setTargetPath(WRAPPER_PATH)
   }, [])
 
-  useEffect(
-    () => {
-      if (isLoading) {
-        startLoading()
-      } else {
-        stopLoading()
-      }
-    },
-    [isLoading]
-  )
+  useEffect(() => {
+    if (isLoading) {
+      startLoading()
+    } else {
+      stopLoading()
+    }
+  }, [isLoading])
 
-  const categorizedRoutes = useMemo(
-    () => {
-      const routes = data && data.routes
+  const categorizedRoutes = useMemo(() => {
+    const routes = data && data.routes
 
-      const storeRoutes = routes
-        ? routes.filter(route => isStoreRoute(route.domain))
-        : []
+    const storeRoutes = routes
+      ? routes.filter(route => isStoreRoute(route.domain))
+      : []
 
-      return storeRoutes.reduce(
-        (acc: CategorizedRoutes, currRoute: Route) => {
-          const currRouteContext = currRoute.context || ''
+    return storeRoutes.reduce(
+      (acc: CategorizedRoutes, currRoute: Route) => {
+        const currRouteContext = currRoute.context || ''
 
-          if (currRouteContext.endsWith('SearchContext')) {
-            return {
-              ...acc,
-              multipleProducts: [...acc.multipleProducts, currRoute],
-            }
-          }
-
-          if (currRouteContext.endsWith('ProductContext')) {
-            return {
-              ...acc,
-              singleProduct: [...acc.singleProduct, currRoute],
-            }
-          }
-
-          return { ...acc, noProducts: [...acc.noProducts, currRoute] }
-        },
-        {
-          multipleProducts: [],
-          noProducts: [],
-          singleProduct: [],
+        if (currRouteContext.endsWith('ContentPageContext')) {
+          return acc
         }
-      )
-    },
-    [data]
-  )
+
+        if (currRouteContext.endsWith('SearchContext')) {
+          return {
+            ...acc,
+            multipleProducts: [...acc.multipleProducts, currRoute],
+          }
+        }
+
+        if (currRouteContext.endsWith('ProductContext')) {
+          return {
+            ...acc,
+            singleProduct: [...acc.singleProduct, currRoute],
+          }
+        }
+
+        return { ...acc, noProducts: [...acc.noProducts, currRoute] }
+      },
+      {
+        multipleProducts: [],
+        noProducts: [],
+        singleProduct: [],
+      }
+    )
+  }, [data])
 
   return !isLoading ? (
     <List categorizedRoutes={categorizedRoutes} />

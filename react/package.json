@@ -8,6 +8,8 @@
   },
   "dependencies": {
     "classnames": "^2.2.6",
+    "draft-js": "^0.10.5",
+    "draftjs-md-converter": "^1.2.0",
     "exenv": "^1.2.2",
     "json-schema-traverse": "^0.4.1",
     "lodash.debounce": "^4.0.8",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@types/classnames": "^2.2.6",
+    "@types/draft-js": "^0.10.34",
     "@types/file-saver": "^2.0.0",
     "@types/graphql": "^14.0.7",
     "@types/intl": "^1.2.0",

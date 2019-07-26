@@ -1,5 +1,4 @@
 import { RouteFormData } from 'pages'
-import PropTypes from 'prop-types'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'

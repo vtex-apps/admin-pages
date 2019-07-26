@@ -1,6 +1,7 @@
 {
   "admin/pages.admin-menu-button.pages": "admin/pages.admin-menu-button.pages",
   "admin/pages.admin-menu-button.storefront": "admin/pages.admin-menu-button.storefront",
+  "admin/pages.admin-menu-button.content-pages": "admin/pages.admin.tabs.content-pages",
   "admin/pages.admin.loading": "admin/pages.admin.loading",
   "admin/pages.admin.pages.form.button.cancel": "admin/pages.admin.pages.form.button.cancel",
   "admin/pages.admin.pages.form.button.delete": "admin/pages.admin.pages.form.button.delete",
@@ -232,5 +233,22 @@
   "admin/pages.editor.styles.select.delete-success": "admin/pages.editor.styles.select.delete-success",
   "admin/pages.editor.styles.select.delete.toast.undo": "admin/pages.editor.styles.select.delete.toast.undo",
   "admin/pages.editor.styles.select.save-fail": "admin/pages.editor.styles.select.save-fail",
-  "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success"
+  "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success",
+
+  "admin/pages.admin.rich-text-editor.add-image-label": "admin/pages.admin.rich-text-editor.add-image-label",
+  "admin/pages.admin.rich-text-editor.add-image-placeholder": "admin/pages.admin.rich-text-editor.add-image-placeholder",
+  "admin/pages.admin.rich-text-editor.add-button": "admin/pages.admin.rich-text-editor.add-image-btn",
+  "admin/pages.admin.rich-text-editor.upload-image-label": "admin/pages.admin.rich-text-editor.upload-image-label",
+  "admin/pages.admin.rich-text-editor.upload-button": "admin/pages.admin.rich-text-editor.upload-button",
+
+  "admin/pages.admin.content.general.section-title": "admin/pages.admin.content.general.section-title",
+  "admin/pages.admin.content.general.title.label": "admin/pages.admin.content.general.title.label",
+  "admin/pages.admin.content.general.title.placeholder": "admin/pages.admin.content.general.title.placeholder",
+  "admin/pages.admin.content.general.url.label": "admin/pages.admin.content.general.url.label",
+  "admin/pages.admin.content.general.url.placeholder": "admin/pages.admin.content.general.url.placeholder",
+  "admin/pages.admin.content.general.description.label": "admin/pages.admin.content.general.description.label",
+  "admin/pages.admin.content.general.description.placeholder": "admin/pages.admin.content.general.description.placeholder",
+  "admin/pages.admin.content.general.seo.page-title": "admin/pages.admin.content.general.seo.page-title",
+  "admin/pages.admin.content.general.seo.description": "admin/pages.admin.content.general.seo.description",
+  "admin/pages.admin.content.content.section-title": "admin/pages.admin.content.content.section-title"
 }

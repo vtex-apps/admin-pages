@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Simplified form to create content pages.
+
 ## [4.3.1] - 2019-07-24
 
 ### Fixed
