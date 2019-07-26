@@ -6,8 +6,8 @@ import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import Form from './Form'
-import { OperationsResults } from './Operations'
 import { getValidateFormState } from './utils'
+import { OperationsResults } from './withContentContext'
 
 import { parseStoreAppId } from '../utils'
 

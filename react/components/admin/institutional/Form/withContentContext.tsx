@@ -2,8 +2,6 @@ import { pathOr } from 'ramda'
 import * as React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
-import { parseStoreAppId } from '../utils'
-
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
