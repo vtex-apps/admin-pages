@@ -30,6 +30,25 @@ interface TemplateVariables {
   interfaceId: string
 }
 
+interface RouteVariables {
+  domain: string
+  routeId: string
+}
+
+interface MessagesVariables {
+  args: {
+    provider: string
+    to: string
+    from?: string
+    messages: Array<{
+      id: string
+      content?: string
+      description?: string
+    }>
+    behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
+  }
+}
+
 export interface OperationsResults {
   deleteRoute: MutationFn<any, DeleteRouteVariables>
   saveRoute: MutationFn<any, SaveRouteVariables>
@@ -50,14 +69,24 @@ export interface ContentContextProps {
   saveContent: MutationFn<any, any>
 }
 
-function withContentContext(WrappedComponent: React.ComponentType<any>) {
-  return (props: any) => {
-    const routeId = decodeURIComponent(props.params.id)
-    const storeAppId = parseStoreAppId(props.store)
+interface Params {
+  culture: {
+    locale: string
+  }
+  routeId: string
+  storeAppId: string
+}
+
+function withContentContext<T>(
+  WrappedComponent: React.ComponentType<T>,
+  getParams: (props: T) => Params
+) {
+  return (props: T) => {
+    const { storeAppId, routeId, culture } = getParams(props)
     const interfaceId = `${storeAppId}:store.content`
 
     return (
-      <Query<any, any>
+      <Query<any, RouteVariables>
         query={RouteQuery}
         variables={{ domain: 'store', routeId }}
       >
@@ -110,20 +139,20 @@ function withContentContext(WrappedComponent: React.ComponentType<any>) {
                       const contentText: string = contentJSON
                         ? JSON.parse(contentJSON).text
                         : ''
-                      const contentId: string | null = pathOr(
+                      const contentId: string = pathOr(
                         '',
                         ['listContentWithSchema', 'content', '0', 'contentId'],
                         dataContent!
                       )
 
                       return (
-                        <Query
+                        <Query<any, MessagesVariables>
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
                               messages: [{ id: contentText || '' }],
                               provider: contentId,
-                              to: props.runtime.culture.locale,
+                              to: culture.locale,
                             },
                           }}
                         >

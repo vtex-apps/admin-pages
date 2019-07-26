@@ -134,5 +134,13 @@ class PageForm extends Component<Props, State> {
 }
 
 export default withRuntimeContext(
-  withTargetPath(withStoreSettings(withContentContext(PageForm)))
+  withTargetPath(
+    withStoreSettings(
+      withContentContext(PageForm, ({ params, runtime, store }: Props) => ({
+        culture: runtime.culture,
+        routeId: decodeURIComponent(params.id),
+        storeAppId: parseStoreAppId(store),
+      }))
+    )
+  )
 )
