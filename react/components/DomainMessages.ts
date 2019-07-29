@@ -116,22 +116,26 @@ export const getAvailableCultures = async ({
   let { supported } = languages
   supported = Array.from(new Set(concat(supported, DEFAULT_LANGUAGES)))
 
-  return supported.reduce(
-    (acc, locale) => {
-      const [lang, country] = locale.split('-')
-      if (!lang || !country) {
-        return acc
-      }
-      const i18nId = `admin/pages.editor.locale.${lang}`
+  return supported
+    .reduce(
+      (acc, locale) => {
+        const [lang, country] = locale.split('-')
+        if (!lang || !country) {
+          return acc
+        }
+        const i18nId = `admin/pages.editor.locale.${lang}`
 
-      return [
-        ...acc,
-        {
-          label: `${intl.formatMessage({ id: i18nId })} (${locale})`,
-          value: locale,
-        },
-      ]
-    },
-    [] as LabelledLocale[]
-  )
+        return [
+          ...acc,
+          {
+            label: `${intl.formatMessage({ id: i18nId })} (${locale})`,
+            value: locale,
+          },
+        ]
+      },
+      [] as LabelledLocale[]
+    )
+    .sort((a: LabelledLocale, b: LabelledLocale) =>
+      a.label.localeCompare(b.label)
+    )
 }
