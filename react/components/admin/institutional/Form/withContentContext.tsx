@@ -1,18 +1,8 @@
 import { pathOr } from 'ramda'
 import * as React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
 
-import { Button, EmptyState } from 'vtex.styleguide'
-
-import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
-import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
-import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
-import RouteQuery from '../../../../queries/Route.graphql'
-import SaveRoute from '../../../../queries/SaveRoute.graphql'
-
-import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
-import ListContentQuery from '../../../EditorContainer/queries/ListContent'
+import UnallowedWarning from './UnallowedWarning'
 
 import {
   DeleteMutationResult,
@@ -25,7 +15,15 @@ import {
   updateStoreAfterSave,
 } from '../../pages/Form/utils'
 
+import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
+import ListContentQuery from '../../../EditorContainer/queries/ListContent'
 import Loader from '../../../Loader'
+
+import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
+import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
+import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
+import RouteQuery from '../../../../queries/Route.graphql'
+import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
 interface TemplateVariables {
   interfaceId: string
@@ -111,36 +109,7 @@ function withContentContext<T>(
                 )
 
                 if (!elegibleTemplates.length) {
-                  return (
-                    <div>
-                      <EmptyState
-                        title={
-                          <FormattedMessage
-                            id="admin/pages.admin.content.not-supported.title"
-                            defaultMessage="This feature is not available :/"
-                          />
-                        }
-                      >
-                        <p>
-                          <FormattedMessage id="admin/pages.admin.content.not-supported.description" />
-                        </p>
-                        <div className="pt5">
-                          <Button variation="secondary" size="small">
-                            <a
-                              className="link c-action-primary"
-                              href="https://github.com/vtex-apps/admin-pages/blob/next/react/components/admin/institutional/README.md"
-                              target="_blank"
-                            >
-                              <FormattedMessage
-                                id="admin/pages.admin.content.not-supported.action"
-                                defaultMessage="See instructions"
-                              />
-                            </a>
-                          </Button>
-                        </div>
-                      </EmptyState>
-                    </div>
-                  )
+                  return <UnallowedWarning />
                 }
 
                 const blockId = elegibleTemplates[0].id
