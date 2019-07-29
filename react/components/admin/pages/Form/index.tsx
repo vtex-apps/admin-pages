@@ -1,3 +1,4 @@
+import { diff } from 'deep-object-diff'
 import { RouteFormData } from 'pages'
 import { isEmpty } from 'ramda'
 import React, { Component } from 'react'
@@ -249,7 +250,18 @@ class FormContainer extends Component<Props, State> {
         routeId,
         title,
         uuid,
-      } = this.state.data
+      } = isNewRoute(this.props.initialData)
+        ? this.state.data
+        : {
+            ...(diff(this.props.initialData, this.state.data) as Partial<
+              RouteFormData
+            >),
+            declarer: this.state.data.declarer,
+            domain: this.state.data.domain,
+            path: this.state.data.path,
+            routeId: this.state.data.routeId,
+            uuid: this.state.data.uuid,
+          }
 
       this.setState({ isLoading: true }, async () => {
         try {
@@ -262,23 +274,35 @@ class FormContainer extends Component<Props, State> {
                 declarer,
                 domain,
                 interfaceId,
-                metaTags: {
-                  description: metaTagDescription,
-                  keywords: (metaTagKeywords || []).map(({ value }) => value),
-                },
-                pages: pages.map(page => {
-                  return {
-                    condition: {
-                      allMatches: page.condition.allMatches,
-                      id: page.condition.id || undefined,
-                      statements: formatStatements(page.condition.statements),
-                    },
-                    pageId: page.pageId || undefined,
-                    template: page.template,
-                  }
-                }),
+                metaTags:
+                  metaTagDescription || metaTagKeywords
+                    ? {
+                        description: metaTagDescription,
+                        keywords: (metaTagKeywords || []).map(
+                          ({ value }) => value
+                        ),
+                      }
+                    : undefined,
+                pages:
+                  pages &&
+                  pages.map(page => {
+                    return {
+                      condition: {
+                        allMatches: page.condition.allMatches,
+                        id: page.condition.id || undefined,
+                        statements: formatStatements(page.condition.statements),
+                      },
+                      pageId: page.pageId || undefined,
+                      template: page.template,
+                    }
+                  }),
                 path,
-                routeId: routeId || generateNewRouteId(interfaceId, path),
+                routeId:
+                  routeId ||
+                  generateNewRouteId(
+                    interfaceId || this.state.data.interfaceId,
+                    path
+                  ),
                 title,
                 uuid,
               },

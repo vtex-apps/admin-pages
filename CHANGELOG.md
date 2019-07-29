@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Changes from `v3.17.0`.
+
+## [3.17.0] - 2019-07-29
+
+### Added
+
+- It is now possible to edit the title of contextless routes.
+
+### Changed
+
+- Change title that is shown in pages list.
+- Send partial route data to be saved.
+
 ## [4.4.0] - 2019-07-26
 
 - Simplified form to create content pages.

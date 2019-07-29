@@ -1,6 +1,6 @@
 import { DataProxy } from 'apollo-cache'
 import { RouteFormData } from 'pages'
-import { indexBy, pathOr, prop, values } from 'ramda'
+import { indexBy, pathOr, pickBy, prop, values } from 'ramda'
 import { ConditionsOperator } from 'vtex.styleguide'
 
 import Routes from '../../../../queries/Routes.graphql'
@@ -79,7 +79,14 @@ export const updateStoreAfterSave = (
 
       const newRoutesByPath = {
         ...routesByPath,
-        ...(savedRoutePath ? { [savedRoutePath]: savedRoute } : null),
+        ...(savedRoutePath
+          ? {
+              [savedRoutePath]: {
+                ...routesByPath[savedRoutePath],
+                ...pickBy(val => val != null, savedRoute || {}),
+              },
+            }
+          : null),
       }
       const newRoutes = values(newRoutesByPath)
 
