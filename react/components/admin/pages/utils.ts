@@ -4,6 +4,8 @@ type NewRouteTypeArg = Pick<Route, 'uuid' | 'declarer'>
 export const isNewRoute = (route: NewRouteTypeArg) =>
   !route.uuid && !route.declarer
 
+export const isUserRoute = (route: NewRouteTypeArg) => !route.declarer
+
 type GetRouteTitleArg = Pick<Route, 'title' | 'blockId' | 'interfaceId'> &
   NewRouteTypeArg
 
