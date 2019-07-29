@@ -302,7 +302,12 @@ class FormContainer extends Component<Props, State> {
                     }
                   }),
                 path,
-                routeId: routeId || generateNewRouteId(interfaceId!, path!),
+                routeId:
+                  routeId ||
+                  generateNewRouteId(
+                    interfaceId || this.state.data.interfaceId,
+                    path
+                  ),
                 title,
                 uuid,
               },
