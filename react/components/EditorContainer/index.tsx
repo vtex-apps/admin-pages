@@ -98,7 +98,7 @@ const EditorContainer: React.FC<Props> = ({
 
   useEffect(() => {
     highlightExtensionPoint(null)
-  }, [editMode])
+  }, [editMode, highlightExtensionPoint])
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
   const isDevelopment = runtime && runtime.production === false

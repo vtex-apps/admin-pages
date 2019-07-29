@@ -30,12 +30,12 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
 
       highlightHandler(treePath)
     },
-    []
+    [highlightHandler]
   )
 
   const handleMouseLeave = React.useCallback(() => {
     highlightHandler(null)
-  }, [])
+  }, [highlightHandler])
 
   return (
     <Fragment>

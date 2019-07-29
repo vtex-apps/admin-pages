@@ -39,7 +39,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({
 
   useEffect(() => {
     setTargetPath(WRAPPER_PATH)
-  }, [])
+  }, [setTargetPath])
 
   useEffect(() => {
     if (isLoading) {
@@ -47,7 +47,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({
     } else {
       stopLoading()
     }
-  }, [isLoading])
+  }, [isLoading, startLoading, stopLoading])
 
   const categorizedRoutes = useMemo(() => {
     const routes = data && data.routes

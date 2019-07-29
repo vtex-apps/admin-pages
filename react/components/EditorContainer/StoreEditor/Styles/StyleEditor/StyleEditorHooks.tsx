@@ -60,46 +60,49 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
     name: nameState,
   }
 
-  const saveStyle = useCallback(
-    async () => {
-      await renameStyle({ variables: { id: style.id, name } })
-      const result = await updateStyle({
-        variables: { id: style.id, config },
+  const saveStyle = useCallback(async () => {
+    await renameStyle({ variables: { id: style.id, name } })
+    const result = await updateStyle({
+      variables: { id: style.id, config },
+    })
+    const styleInfo = result && result.data && result.data.updateStyle
+    if (styleInfo) {
+      const { path, selected } = styleInfo
+      setStyleAsset({
+        keepSheet: true,
+        selected,
+        type: 'path',
+        value: path,
       })
-      const styleInfo = result && result.data && result.data.updateStyle
-      if (styleInfo) {
-        const { path, selected } = styleInfo
-        setStyleAsset({
-          keepSheet: true,
-          selected,
-          type: 'path',
-          value: path,
-        })
-        showToast({
-          horizontalPosition: 'left',
-          message: intl.formatMessage({
-            id: 'admin/pages.editor.styles.edit.save.successful',
-          }),
-        })
-      } else {
-        showToast({
-          horizontalPosition: 'left',
-          message: intl.formatMessage({
-            id: 'admin/pages.editor.styles.edit.save.failed',
-          }),
-        })
-      }
-    },
-    [style, name, config]
-  )
+      showToast({
+        horizontalPosition: 'left',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.styles.edit.save.successful',
+        }),
+      })
+    } else {
+      showToast({
+        horizontalPosition: 'left',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.styles.edit.save.failed',
+        }),
+      })
+    }
+  }, [
+    renameStyle,
+    style.id,
+    name,
+    updateStyle,
+    config,
+    setStyleAsset,
+    showToast,
+    intl,
+  ])
 
-  const onSave = useCallback(
-    () => {
-      setEditing(false)
-      saveStyle()
-    },
-    [saveStyle, setEditing]
-  )
+  const onSave = useCallback(() => {
+    setEditing(false)
+    saveStyle()
+  }, [saveStyle, setEditing])
 
   return (
     <GenerateStyleSheetQuery

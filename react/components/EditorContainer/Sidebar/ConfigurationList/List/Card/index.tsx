@@ -82,19 +82,15 @@ const Card = ({
     },
   ]
 
-  const appName = React.useMemo(
-    () => {
-      if (!isDefaultContent) {
-        return null
-      }
+  const appName = React.useMemo(() => {
+    if (!isDefaultContent) {
+      return null
+    }
 
-      const splitOrigin =
-        configuration.origin && configuration.origin.split('@')
+    const splitOrigin = configuration.origin && configuration.origin.split('@')
 
-      return splitOrigin && splitOrigin[0]
-    },
-    [configuration.origin]
-  )
+    return splitOrigin && splitOrigin[0]
+  }, [configuration.origin, isDefaultContent])
 
   const conditionPageContext = configuration.condition.pageContext
 

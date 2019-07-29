@@ -23,19 +23,16 @@ const I18nInput: React.FunctionComponent<Props> = props => {
 
   const isValueI18nKey = React.useMemo(
     () => typeof props.formContext.messages[props.value] !== 'undefined',
-    [props.value]
+    [props.formContext.messages, props.value]
   )
 
-  const i18nKey = React.useMemo(
-    () => {
-      if (isValueI18nKey) {
-        return props.value
-      }
+  const i18nKey = React.useMemo(() => {
+    if (isValueI18nKey) {
+      return props.value
+    }
 
-      return 'store/' + generateUuid()
-    },
-    [isValueI18nKey]
-  )
+    return 'store/' + generateUuid()
+  }, [isValueI18nKey, props.value])
 
   const initialValue = React.useMemo(
     () =>
@@ -45,7 +42,7 @@ const I18nInput: React.FunctionComponent<Props> = props => {
             id: i18nKey,
           })
         : props.value,
-    []
+    [i18nKey, isValueI18nKey, props.formContext.messages, props.value]
   )
 
   const [value, setValue] = React.useState(initialValue)
@@ -67,20 +64,23 @@ const I18nInput: React.FunctionComponent<Props> = props => {
           [mappedI18nKey]: newValue,
         })
       }, 200),
-    []
+    [addToI18nMapping, getI18nMapping, i18nKey, mappedI18nKey, props]
   )
 
-  const handleChange = React.useCallback((newValue: string) => {
-    const wasModified = getWasModified()
+  const handleChange = React.useCallback(
+    (newValue: string) => {
+      const wasModified = getWasModified()
 
-    updateIframeValue(newValue)
+      updateIframeValue(newValue)
 
-    if (!wasModified) {
-      setWasModified(true)
-    }
+      if (!wasModified) {
+        setWasModified(true)
+      }
 
-    setValue(newValue)
-  }, [])
+      setValue(newValue)
+    },
+    [getWasModified, setWasModified, updateIframeValue]
+  )
 
   const finalProps = {
     ...props,

@@ -28,14 +28,14 @@ const TextArea: React.FunctionComponent<Props> = ({
         onBlur(id, event.target.value)
       }
     },
-    []
+    [id, onBlur]
   )
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       onChange(event.target.value || '')
     },
-    []
+    [onChange]
   )
 
   const handleFocus = React.useCallback(
@@ -44,7 +44,7 @@ const TextArea: React.FunctionComponent<Props> = ({
         onFocus(id, event.target.value)
       }
     },
-    []
+    [id, onFocus]
   )
 
   const [currentError] = Array.isArray(rawErrors) ? rawErrors : ['']

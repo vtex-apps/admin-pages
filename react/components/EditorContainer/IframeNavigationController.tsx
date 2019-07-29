@@ -20,31 +20,28 @@ const IframeNavigationController: React.FunctionComponent<Props> = ({
 
   const wasModified = getWasModified()
 
-  useEffect(
-    () => {
-      let unblock: (() => void) | void
-      let unlisten: (() => void) | void
+  useEffect(() => {
+    let unblock: (() => void) | void
+    let unlisten: (() => void) | void
 
-      if (wasModified && iframeRuntime && iframeRuntime.history) {
-        unblock = iframeRuntime.history.block('Are you sure you want to leave?')
-        unlisten = iframeRuntime.history.listen((_, action) => {
-          const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
-          if (hasNavigated) {
-            unblock = maybeCall(unblock)
-            unlisten = maybeCall(unlisten)
-            setWasModified(false)
-            editExtensionPoint(null)
-          }
-        })
-      }
+    if (wasModified && iframeRuntime && iframeRuntime.history) {
+      unblock = iframeRuntime.history.block('Are you sure you want to leave?')
+      unlisten = iframeRuntime.history.listen((_, action) => {
+        const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
+        if (hasNavigated) {
+          unblock = maybeCall(unblock)
+          unlisten = maybeCall(unlisten)
+          setWasModified(false)
+          editExtensionPoint(null)
+        }
+      })
+    }
 
-      return () => {
-        unblock = maybeCall(unblock)
-        unlisten = maybeCall(unlisten)
-      }
-    },
-    [wasModified]
-  )
+    return () => {
+      unblock = maybeCall(unblock)
+      unlisten = maybeCall(unlisten)
+    }
+  }, [editExtensionPoint, iframeRuntime, setWasModified, wasModified])
 
   return <></>
 }

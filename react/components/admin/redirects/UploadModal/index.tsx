@@ -41,42 +41,36 @@ const UploadModal: React.FunctionComponent<Props & MutationRenderProps> = ({
         setModalStep('ERROR')
       }
     },
-    []
+    [saveRedirectFromFile]
   )
 
-  const resetState = useCallback(
-    async () => {
-      onClose()
-      setModalStep('PROMPT')
-      if (currentStep === 'SUCCESS') {
-        await refetchRedirects()
-      }
-    },
-    [currentStep]
-  )
+  const resetState = useCallback(async () => {
+    onClose()
+    setModalStep('PROMPT')
+    if (currentStep === 'SUCCESS') {
+      await refetchRedirects()
+    }
+  }, [currentStep, onClose, refetchRedirects])
 
-  const CurrentComponent = useMemo(
-    () => {
-      switch (currentStep) {
-        case 'PROMPT':
-          return (
-            <UploadPrompt
-              hasRedirects={hasRedirects}
-              saveRedirectFromFile={saveRedirectFromFileCb}
-            />
-          )
-        case 'LOADING':
-          return <Loading />
-        case 'SUCCESS':
-          return <UploadSuccess onButtonClick={resetState} />
-        case 'ERROR':
-          return <UploadError error={error} />
-        default:
-          return null
-      }
-    },
-    [currentStep]
-  )
+  const CurrentComponent = useMemo(() => {
+    switch (currentStep) {
+      case 'PROMPT':
+        return (
+          <UploadPrompt
+            hasRedirects={hasRedirects}
+            saveRedirectFromFile={saveRedirectFromFileCb}
+          />
+        )
+      case 'LOADING':
+        return <Loading />
+      case 'SUCCESS':
+        return <UploadSuccess onButtonClick={resetState} />
+      case 'ERROR':
+        return <UploadError error={error} />
+      default:
+        return null
+    }
+  }, [currentStep, error, hasRedirects, resetState, saveRedirectFromFileCb])
 
   return (
     <Modal centered isOpen={isOpen} onClose={resetState}>

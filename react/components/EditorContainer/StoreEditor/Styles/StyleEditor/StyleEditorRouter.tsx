@@ -51,14 +51,11 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
 }) => {
   const stylesheet = data && data.generateStyleSheet
 
-  useEffect(
-    () => {
-      if (stylesheet) {
-        setStyleAsset({ type: 'stylesheet', value: stylesheet })
-      }
-    },
-    [stylesheet]
-  )
+  useEffect(() => {
+    if (stylesheet) {
+      setStyleAsset({ type: 'stylesheet', value: stylesheet })
+    }
+  }, [setStyleAsset, stylesheet])
 
   const renderEditorSelector = (_: RouteComponentProps) => (
     <EditorSelector {...{ config, name, onSave, stopEditing }} />
