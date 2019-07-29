@@ -45,7 +45,6 @@ interface AvailableAppVariables {
   id: string
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class AvailableAppQuery extends Query<
   AvailableAppData,
   AvailableAppVariables

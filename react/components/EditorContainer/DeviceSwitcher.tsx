@@ -144,7 +144,6 @@ class DeviceComponent extends Component<
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
   public handleClick = ({ currentTarget }: Event) => {
     const { setViewport } = this.props

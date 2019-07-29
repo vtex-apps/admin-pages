@@ -1,4 +1,5 @@
-/* tslint:disable:max-classes-per-file class-name*/
+/* eslint-disable @typescript-eslint/camelcase */
+/* eslint-disable @typescript-eslint/class-name-casing */
 declare module 'vtex.styleguide' {
   import { ReactDatePickerProps } from '@types/react-datepicker'
   import { Component, ComponentType, CSSProperties, ReactNode } from 'react'

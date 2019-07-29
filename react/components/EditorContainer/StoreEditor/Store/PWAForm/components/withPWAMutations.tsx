@@ -33,7 +33,6 @@ interface UpdateManifestIconVariables {
   iOS: boolean
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class UpdateManifestIconMutation extends Mutation<
   UpdateManifestData,
   UpdateManifestIconVariables
@@ -43,7 +42,6 @@ interface UpdatePWASettingsData {
   settings: PWASettings
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class UpdatePWASettingsMutation extends Mutation<
   PWASettings,
   UpdatePWASettingsData
@@ -62,8 +60,8 @@ export interface MutationProps {
 }
 
 const withPWAMutations = (
-  WrappedComponent: React.ComponentType<MutationProps & any>
-) => (props: any) => (
+  WrappedComponent: React.ComponentType<MutationProps>
+) => (props: object) => (
   <UpdateManifestMutation mutation={UpdateManifest}>
     {(updateManifestMutate, updateManifestRest) => (
       <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
