@@ -12,7 +12,7 @@ import {
 } from 'vtex.styleguide'
 
 import { formatStatements } from '../../../../utils/conditions'
-import { isNewRoute } from '../utils'
+import { isNewRoute, isUserRoute } from '../utils'
 import { generateNewRouteId } from './utils'
 
 import Form from './Form'
@@ -255,7 +255,7 @@ class FormContainer extends Component<Props, State> {
         routeId,
         title,
         uuid,
-      } = isNewRoute(this.props.initialData)
+      } = isUserRoute(this.props.initialData)
         ? this.state.data
         : {
             ...(diff(this.props.initialData, this.state.data) as Partial<

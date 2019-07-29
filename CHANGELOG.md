@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Send all route data when it's a user route.
+
 ## [3.17.0] - 2019-07-29
 
 ### Added
