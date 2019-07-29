@@ -1,4 +1,4 @@
-# VTEX Content Pages
+# VTEX Custom Content
 
 ## Description
 
