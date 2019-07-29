@@ -62,7 +62,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         iframeRuntime,
         isContent,
       }),
-    [editor.editTreePath, editor.mode]
+    [contentSchema, editor.editTreePath, iframeRuntime, isContent]
   )
 
   const schema = useMemo(

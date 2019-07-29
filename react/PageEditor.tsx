@@ -35,7 +35,7 @@ const PageEditor: ComponentWithCustomMessage = (props: PageEditorProps) => {
 
   useEffect(() => {
     stopLoading()
-  }, [])
+  }, [stopLoading])
 
   return (
     <div className="h-100 overflow-y-auto bg-light-silver">

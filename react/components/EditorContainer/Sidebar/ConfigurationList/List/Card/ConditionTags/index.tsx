@@ -41,7 +41,7 @@ const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
 
       return textByKind[kind]
     },
-    [conditions]
+    [intl]
   )
 
   return (

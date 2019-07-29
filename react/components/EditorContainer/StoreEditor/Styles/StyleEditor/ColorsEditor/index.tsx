@@ -48,18 +48,15 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     />
   )
 
-  const Header = useMemo(
-    () => {
-      return ({ name }: { name: string | React.ReactNode }) => (
-        <StyleEditorHeader
-          onButtonClick={onSave}
-          buttonLabel={saveButtonLabel}
-          title={name}
-        />
-      )
-    },
-    [onSave]
-  )
+  const Header = useMemo(() => {
+    return ({ name }: { name: string | React.ReactNode }) => (
+      <StyleEditorHeader
+        onButtonClick={onSave}
+        buttonLabel={saveButtonLabel}
+        title={name}
+      />
+    )
+  }, [onSave, saveButtonLabel])
 
   const startEditing = useCallback(
     (token: string) => history.push(EditorPath.colors.replace(IdParam, token)),
@@ -99,7 +96,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
           colorsInfo={fromPairs(group)}
         />
       )),
-    [groups]
+    [font, groups, semanticColors, startEditing]
   )
 
   if (id) {

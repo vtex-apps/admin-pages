@@ -43,33 +43,30 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   const { showToast } = useContext(ToastContext)
 
-  useEffect(
-    () => {
-      if (submitting) {
-        const { slug: app, version } = store
+  useEffect(() => {
+    if (submitting) {
+      const { slug: app, version } = store
 
-        mutate({
-          variables: { app, version, settings: JSON.stringify(formData) },
-        })
-          .then(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.success',
-              })
-            )
+      mutate({
+        variables: { app, version, settings: JSON.stringify(formData) },
+      })
+        .then(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.success',
+            })
           )
-          .catch(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.error',
-              })
-            )
+        )
+        .catch(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.error',
+            })
           )
-          .finally(() => setSubmitting(false))
-      }
-    },
-    [submitting]
-  )
+        )
+        .finally(() => setSubmitting(false))
+    }
+  }, [formData, intl, mutate, showToast, store, submitting])
 
   const { settingsSchema, settingsUiSchema } = store
 

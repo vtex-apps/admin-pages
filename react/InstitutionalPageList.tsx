@@ -43,7 +43,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({
     } else {
       stopLoading()
     }
-  }, [isLoading])
+  }, [isLoading, startLoading, stopLoading])
 
   const institutionalRoutes = useMemo(() => {
     const routes = data && data.routes

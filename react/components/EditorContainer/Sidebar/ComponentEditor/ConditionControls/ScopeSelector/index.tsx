@@ -35,7 +35,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
             },
           ]
         : standardOptions,
-    [isSitewide]
+    [intl, isSitewide, standardOptions]
   )
 
   return (

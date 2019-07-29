@@ -31,7 +31,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
       target: { value: optionValue },
     }: React.ChangeEvent<HTMLSelectElement>) =>
       onChange(!optionValue ? options.emptyValue : optionValue),
-    []
+    [onChange, options.emptyValue]
   )
 
   const dropdownOptions = React.useMemo(
@@ -42,7 +42,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
             label: formatIOMessage({ id: `${option.label}`, intl }),
           }))
         : [],
-    [options.enumOptions]
+    [intl, options.enumOptions]
   )
 
   return (

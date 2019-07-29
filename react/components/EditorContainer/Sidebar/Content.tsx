@@ -34,22 +34,19 @@ const Content = (props: Props) => {
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
-  const initialComponents = useMemo(() => getInitialComponents(props), [])
+  const initialComponents = useMemo(() => getInitialComponents(props), [props])
 
   const [components, setComponents] = useState(initialComponents)
 
   const path = useRef('')
 
-  useEffect(
-    () => {
-      if (path.current !== iframeRuntime.route.path) {
-        setComponents(getInitialComponents(props))
-        editor.setIsLoading(false)
-        path.current = iframeRuntime.route.path
-      }
-    },
-    [iframeRuntime.route.path]
-  )
+  useEffect(() => {
+    if (path.current !== iframeRuntime.route.path) {
+      setComponents(getInitialComponents(props))
+      editor.setIsLoading(false)
+      path.current = iframeRuntime.route.path
+    }
+  }, [editor, iframeRuntime.route.path, props])
 
   if (editor.editTreePath === null) {
     return (
