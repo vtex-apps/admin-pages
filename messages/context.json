@@ -251,6 +251,9 @@
   "admin/pages.admin.content.general.seo.page-title": "admin/pages.admin.content.general.seo.page-title",
   "admin/pages.admin.content.general.seo.description": "admin/pages.admin.content.general.seo.description",
   "admin/pages.admin.content.content.section-title": "admin/pages.admin.content.content.section-title",
+  "admin/pages.admin.content.not-supported.title": "admin/pages.admin.content.not-supported.title",
+  "admin/pages.admin.content.not-supported.description": "admin/pages.admin.content.not-supported.description",
+  "admin/pages.admin.content.not-supported.action": "admin/pages.admin.content.not-supported.action",
   
   "admin/pages.editor.settings.language": "admin/pages.editor.settings.language",
   "admin/pages.editor.locale.aa": "admin/pages.editor.locale.aa",

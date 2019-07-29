@@ -1,6 +1,9 @@
 import { pathOr } from 'ramda'
 import * as React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
+
+import { Button, EmptyState } from 'vtex.styleguide'
 
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
@@ -103,9 +106,44 @@ function withContentContext<T>(
                   return <Loader />
                 }
 
-                const blockId = dataTemplates!.availableTemplates.filter(
+                const elegibleTemplates = dataTemplates!.availableTemplates.filter(
                   (template: Template) => template.id !== interfaceId
-                )[0].id
+                )
+
+                if (!elegibleTemplates.length) {
+                  return (
+                    <div>
+                      <EmptyState
+                        title={
+                          <FormattedMessage
+                            id="admin/pages.admin.content.not-supported.title"
+                            defaultMessage="This feature is not available :/"
+                          />
+                        }
+                      >
+                        <p>
+                          <FormattedMessage id="admin/pages.admin.content.not-supported.description" />
+                        </p>
+                        <div className="pt5">
+                          <Button variation="secondary" size="small">
+                            <a
+                              className="link c-action-primary"
+                              href="https://github.com/vtex-apps/admin-pages/blob/next/react/components/admin/institutional/README.md"
+                              target="_blank"
+                            >
+                              <FormattedMessage
+                                id="admin/pages.admin.content.not-supported.action"
+                                defaultMessage="See instructions"
+                              />
+                            </a>
+                          </Button>
+                        </div>
+                      </EmptyState>
+                    </div>
+                  )
+                }
+
+                const blockId = elegibleTemplates[0].id
 
                 return (
                   <ListContentQuery
