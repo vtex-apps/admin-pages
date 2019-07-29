@@ -139,7 +139,6 @@ class List extends Component<Props, State> {
     return {
       items,
       properties: {
-        // tslint:disable:object-literal-sort-keys
         from: {
           title: intl.formatMessage(messages.tableFrom),
           type: 'string',
@@ -185,7 +184,6 @@ class List extends Component<Props, State> {
           title: intl.formatMessage(messages.endDateTitle),
           type: 'string',
         },
-        // tslint:enable:object-literal-sort-keys
       },
     }
   }

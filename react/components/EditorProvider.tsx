@@ -35,7 +35,6 @@ interface State {
   viewport: Viewport
 }
 
-// tslint:disable-next-line:no-empty
 const noop = () => {}
 
 const getUrlProperties = (href: string) => {
