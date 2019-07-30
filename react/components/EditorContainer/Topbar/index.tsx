@@ -1,37 +1,40 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Input } from 'vtex.styleguide'
 import EditableText from '../Sidebar/EditorHeader/EditableText'
 
+import { Dropdown } from 'vtex.styleguide'
+import { LabelledLocale } from '../../DomainMessages'
 import { useEditorContext } from '../../EditorContext'
 import ModeButton from './components/ModeButton'
 
 const modes: StoreEditMode[] = ['settings', 'theme']
 
 interface Props {
+  availableCultures: LabelledLocale[]
   changeMode: (mode?: StoreEditMode) => void
   mode?: StoreEditMode
   urlPath: string
   onChangeUrlPath: (url: string) => void
   visible: boolean
+  runtime: RenderContext
 }
 
 const Topbar: React.FunctionComponent<Props> = ({
+  availableCultures,
   changeMode,
   mode,
   onChangeUrlPath,
   urlPath,
   visible,
+  runtime,
 }) => {
   const [urlInputDisabled, setUrlInputDisabled] = useState(false)
   const [url, setUrl] = useState(urlPath)
+  const [locale, setLocale] = useState(runtime.culture.locale)
 
-  useEffect(
-    () => {
-      setUrl(urlPath)
-    },
-    [urlPath]
-  )
+  useEffect(() => {
+    setUrl(urlPath)
+  }, [urlPath])
 
   const onEnter = (
     event: React.KeyboardEvent<HTMLInputElement>,
@@ -81,6 +84,23 @@ const Topbar: React.FunctionComponent<Props> = ({
                 mode={buttonMode}
               />
             ))}
+            <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
+              <FormattedMessage
+                id="admin/pages.editor.settings.language"
+                defaultMessage="Language"
+              />
+              <Dropdown
+                variation="inline"
+                size="small"
+                options={availableCultures}
+                value={locale}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  const { emitter } = runtime
+                  setLocale(e.target.value)
+                  emitter.emit('localesChanged', e.target.value)
+                }}
+              />
+            </div>
             <div className="flex items-center flex-grow-1 mv4 pl5 bw1 bl b--muted-5">
               <div className="nowrap">
                 <FormattedMessage id="admin/pages.editor.container.editpath.label" />

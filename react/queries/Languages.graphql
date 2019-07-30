@@ -1,0 +1,6 @@
+query Languages {
+  languages {
+    default
+    supported
+  }
+}

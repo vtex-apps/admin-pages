@@ -1,6 +1,7 @@
 import { Component, ReactElement } from 'react'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
+import { getAvailableCultures } from '../components/DomainMessages'
 
 declare global {
   declare module '*.graphql' {
@@ -156,6 +157,7 @@ declare global {
 
   interface EditorContext extends EditorConditionSection {
     allMatches: boolean
+    availableCultures: LabelledLocale[]
     editMode: boolean
     editTreePath: string | null
     getIsLoading: () => boolean

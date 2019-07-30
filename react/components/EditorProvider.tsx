@@ -5,17 +5,24 @@ import { withApollo } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
 
-import { editorMessagesFromRuntime } from './DomainMessages'
+import { injectIntl } from 'react-intl'
+import {
+  editorMessagesFromRuntime,
+  getAvailableCultures,
+  LabelledLocale,
+} from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
 import MessagesContext, { IMessagesContext } from './MessagesContext'
 
 type Props = RenderContextProps &
+  ReactIntl.InjectedIntlProps &
   IMessagesContext & { client: ApolloClient<any> }
 
 interface State {
   activeConditions: string[]
   allMatches: boolean
+  availableCultures: LabelledLocale[]
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null
@@ -65,6 +72,7 @@ class EditorProvider extends Component<Props, State> {
     this.state = {
       activeConditions: [],
       allMatches: true,
+      availableCultures: [],
       editMode: false,
       editTreePath: null,
       iframeRuntime: null,
@@ -83,7 +91,7 @@ class EditorProvider extends Component<Props, State> {
         messages,
         shouldUpdateRuntime
       ) => {
-        const { client } = this.props
+        const { client, intl } = this.props
         let formattedEditorMessages = {}
 
         try {
@@ -112,7 +120,10 @@ class EditorProvider extends Component<Props, State> {
           this.props.runtime.updateComponentAssets({})
         }
 
+        const availableCultures = await getAvailableCultures({ client, intl })
+
         const newState = {
+          availableCultures,
           iframeRuntime: runtime,
           ...(this.state.iframeRuntime
             ? ({} as object)
@@ -342,6 +353,7 @@ class EditorProvider extends Component<Props, State> {
     const {
       activeConditions,
       allMatches,
+      availableCultures,
       editMode,
       editTreePath,
       iframeRuntime,
@@ -356,6 +368,7 @@ class EditorProvider extends Component<Props, State> {
       activeConditions,
       addCondition: this.handleAddCondition,
       allMatches,
+      availableCultures,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
@@ -377,6 +390,7 @@ class EditorProvider extends Component<Props, State> {
       <ToastProvider positioning="parent">
         <EditorContext.Provider value={editor}>
           <EditorContainer
+            availableCultures={this.state.availableCultures}
             editor={editor}
             runtime={iframeRuntime}
             toggleShowAdminControls={this.handleToggleShowAdminControls}
@@ -399,9 +413,9 @@ class EditorProvider extends Component<Props, State> {
 
 const EditorWithMessageContext = (props: Omit<Props, 'setMessages'>) => (
   <MessagesContext.Consumer>
-    {({ setMessages }) => (
-      <EditorProvider {...props} setMessages={setMessages} />
-    )}
+    {({ setMessages }) => {
+      return <EditorProvider {...props} setMessages={setMessages} />
+    }}
   </MessagesContext.Consumer>
 )
 
@@ -411,4 +425,4 @@ const EditorWithApolloAndRuntime = withRuntimeContext(
   >(EditorWithMessageContext)
 )
 
-export default EditorWithApolloAndRuntime
+export default injectIntl(EditorWithApolloAndRuntime)
