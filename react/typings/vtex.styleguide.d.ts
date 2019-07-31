@@ -40,7 +40,7 @@ declare module 'vtex.styleguide' {
   export interface ToastConsumerFunctions {
     showToast: ShowToastFunction
     hideToast: () => void
-    toastState: any
+    toastState: unknown
   }
   interface ToastConsumerProps {
     children: (mutations: ToastConsumerFunctions) => React.ReactNode
@@ -49,8 +49,8 @@ declare module 'vtex.styleguide' {
   interface ConditionsStatement {
     subject: string
     verb: string
-    object: any
-    error: any
+    object: unknown
+    error: unknown
   }
 
   type ConditionsOperator = 'any' | 'all'
@@ -80,7 +80,7 @@ declare module 'vtex.styleguide' {
 
   interface ConditionOptionObject {
     renderFn: ConditionsRenderFn
-    extraParams: Record<string, any>
+    extraParams: Record<string, unknown>
   }
 
   interface ConditionsOptionVerb {
@@ -143,48 +143,48 @@ declare module 'vtex.styleguide' {
   > &
     StyleguideDatePickerCustomProps
 
-  export const ActionMenu: ComponentType<any>
-  export const Alert: ComponentType<any>
-  export const Box: ComponentType<any>
-  export const Button: ComponentType<any>
-  export const ButtonWithIcon: ComponentType<any>
-  export const Card: ComponentType<any>
-  export const Checkbox: ComponentType<any>
+  export const ActionMenu: ComponentType<Record<string, unknown>>
+  export const Alert: ComponentType<Record<string, unknown>>
+  export const Box: ComponentType<Record<string, unknown>>
+  export const Button: ComponentType<Record<string, unknown>>
+  export const ButtonWithIcon: ComponentType<Record<string, unknown>>
+  export const Card: ComponentType<Record<string, unknown>>
+  export const Checkbox: ComponentType<Record<string, unknown>>
   export class DatePicker extends Component<DatePickerProps> {}
-  export const ColorPicker: ComponentType<any>
-  export const Dropdown: ComponentType<any>
-  export const EmptyState: ComponentType<any>
+  export const ColorPicker: ComponentType<Record<string, unknown>>
+  export const Dropdown: ComponentType<Record<string, unknown>>
+  export const EmptyState: ComponentType<Record<string, unknown>>
   export class EXPERIMENTAL_Conditions extends Component<ConditionsProps> {}
-  export class EXPERIMENTAL_Select extends Component<any> {}
-  export const IconArrowBack: ComponentType<any>
-  export const IconBold: ComponentType<any>
-  export const IconEdit: ComponentType<any>
-  export const IconCaretDown: ComponentType<any>
-  export const IconCaretUp: ComponentType<any>
-  export const IconClear: ComponentType<any>
-  export const IconClose: ComponentType<any>
-  export const IconItalic: ComponentType<any>
-  export const IconImage: ComponentType<any>
-  export const IconLink: ComponentType<any>
-  export const IconOptionsDots: ComponentType<any>
-  export const IconOrderedList: ComponentType<any>
-  export const IconUnderline: ComponentType<any>
-  export const IconUnorderedList: ComponentType<any>
-  export const IconUpload: ComponentType<any>
-  export const Input: ComponentType<any>
-  export const Modal: ComponentType<any>
-  export const PageHeader: ComponentType<any>
-  export const Pagination: ComponentType<any>
-  export const Radio: ComponentType<any>
-  export const RadioGroup: ComponentType<any>
-  export const Spinner: ComponentType<any>
+  export class EXPERIMENTAL_Select extends Component<Record<string, unknown>> {}
+  export const IconArrowBack: ComponentType<Record<string, unknown>>
+  export const IconBold: ComponentType<Record<string, unknown>>
+  export const IconEdit: ComponentType<Record<string, unknown>>
+  export const IconCaretDown: ComponentType<Record<string, unknown>>
+  export const IconCaretUp: ComponentType<Record<string, unknown>>
+  export const IconClear: ComponentType<Record<string, unknown>>
+  export const IconClose: ComponentType<Record<string, unknown>>
+  export const IconItalic: ComponentType<Record<string, unknown>>
+  export const IconImage: ComponentType<Record<string, unknown>>
+  export const IconLink: ComponentType<Record<string, unknown>>
+  export const IconOptionsDots: ComponentType<Record<string, unknown>>
+  export const IconOrderedList: ComponentType<Record<string, unknown>>
+  export const IconUnderline: ComponentType<Record<string, unknown>>
+  export const IconUnorderedList: ComponentType<Record<string, unknown>>
+  export const IconUpload: ComponentType<Record<string, unknown>>
+  export const Input: ComponentType<Record<string, unknown>>
+  export const Modal: ComponentType<Record<string, unknown>>
+  export const PageHeader: ComponentType<Record<string, unknown>>
+  export const Pagination: ComponentType<Record<string, unknown>>
+  export const Radio: ComponentType<Record<string, unknown>>
+  export const RadioGroup: ComponentType<Record<string, unknown>>
+  export const Spinner: ComponentType<Record<string, unknown>>
   export class Textarea extends Component<TextareaProps> {}
-  export const Tab: ComponentType<any>
-  export const Table: ComponentType<any>
-  export const Tabs: ComponentType<any>
-  export const Tag: ComponentType<any>
+  export const Tab: ComponentType<Record<string, unknown>>
+  export const Table: ComponentType<Record<string, unknown>>
+  export const Tabs: ComponentType<Record<string, unknown>>
+  export const Tag: ComponentType<Record<string, unknown>>
   export class ToastConsumer extends Component<ToastConsumerProps> {}
   export class ToastProvider extends Component<ToastProviderProps> {}
   export const ToastContext: React.ContextType<ToastConsumerFunctions>
-  export const Toggle: ComponentType<any>
+  export const Toggle: ComponentType<Record<string, unknown>>
 }

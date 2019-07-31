@@ -26,8 +26,8 @@ export const widgets: Record<string, Widget> = {
   'image-uploader': (ImageUploader as unknown) as Widget,
 }
 
-export default class Form extends React.Component<FormProps<any>> {
-  public shouldComponentUpdate(nextProps: FormProps<any>) {
+export default class Form extends React.Component<FormProps<unknown>> {
+  public shouldComponentUpdate(nextProps: FormProps<unknown>) {
     return (
       !equals(this.props.formContext, nextProps.formContext) ||
       !equals(this.props.formData, nextProps.formData)

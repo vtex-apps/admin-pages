@@ -11,6 +11,9 @@ interface Props extends CustomWidgetProps, InjectedIntlProps {
   min?: number
   rawErrors?: string[]
   type?: string
+  schema: CustomWidgetProps['schema'] & {
+    readonly?: boolean
+  }
 }
 
 const BaseInput: React.FunctionComponent<Props> = props => {
@@ -35,7 +38,7 @@ const BaseInput: React.FunctionComponent<Props> = props => {
 
   const schemaType = schema.type === 'number' ? 'number' : 'text'
 
-  const type = (options as any).inputType || props.type || schemaType
+  const type = options.inputType || props.type || schemaType
 
   const currentError = rawErrors && rawErrors[0]
 
@@ -46,7 +49,7 @@ const BaseInput: React.FunctionComponent<Props> = props => {
   return (
     <Input
       autoFocus={autofocus}
-      disabled={disabled || (schema as any).disabled}
+      disabled={disabled || schema.disabled}
       error={!!currentError}
       errorMessage={currentError}
       helpText={
@@ -60,16 +63,16 @@ const BaseInput: React.FunctionComponent<Props> = props => {
       onBlur={
         onBlur &&
         ((event: React.ChangeEvent<HTMLInputElement>) =>
-          (onBlur as any)(id, event.target.value))
+          onBlur(id, event.target.value))
       }
       onChange={onChange}
       onFocus={
         onFocus &&
         ((event: React.ChangeEvent<HTMLInputElement>) =>
-          (onFocus as any)(id, event.target.value))
+          onFocus(id, event.target.value))
       }
       placeholder={placeholder}
-      readOnly={readonly || (schema as any).readonly}
+      readOnly={readonly || schema.readonly}
       required={required}
       type={type}
       value={value ? `${value}` : ''}

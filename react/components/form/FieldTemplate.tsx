@@ -4,7 +4,7 @@ import { FieldTemplateProps } from 'react-jsonschema-form'
 import { ComponentEditorFormContext } from '../EditorContainer/Sidebar/typings'
 
 interface Props {
-  children?: React.ReactElement<any>
+  children?: React.ReactElement<unknown>
   classNames: string
   formContext: ComponentEditorFormContext
   hidden?: boolean

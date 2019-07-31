@@ -12,11 +12,11 @@ const DEFAULT_LANGUAGES = ['en-US', 'pt-BR', 'es-AR']
 interface Props {
   runtime: RenderContext
   domain: string
-  client: ApolloClient<any>
+  client: ApolloClient<unknown>
 }
 
 interface AvailableCulturesProps {
-  client: ApolloClient<any>
+  client: ApolloClient<unknown>
   intl: InjectedIntl
 }
 

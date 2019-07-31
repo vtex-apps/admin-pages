@@ -81,7 +81,7 @@ const omitUndefined = pickBy(val => typeof val !== 'undefined')
 
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
-  private componentImplementation: RenderComponent<any, any> | null
+  private componentImplementation: RenderComponent<unknown, unknown> | null
   private componentSchema: ComponentSchema
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
@@ -523,14 +523,12 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleFormChange: FormProps<{
     formData: object
   }>['onChange'] = event => {
-    const { formMeta, iframeRuntime, editor } = this.props
+    const { formMeta, iframeRuntime, treePath } = this.props
 
     if (
+      this.state.formData &&
       !formMeta.getWasModified() &&
-      !equals(
-        omitUndefined((this.state.formData || {}) as Dictionary<any>),
-        omitUndefined(event.formData)
-      )
+      !equals(omitUndefined(this.state.formData), omitUndefined(event.formData))
     ) {
       formMeta.setWasModified(true)
     }
@@ -542,7 +540,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: event.formData,
         isContent: true,
         runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
+        treePath,
       })
     }
   }

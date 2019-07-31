@@ -2,7 +2,7 @@ import 'draft-js'
 declare module 'draft-js' {
   export interface Media {
     block: ContentBlock
-    blockProps: { [key: string]: any } | undefined
+    blockProps: { [key: string]: unknown } | undefined
     blockStyleFn?: (block: ContentBlock) => string
     contentState: ContentState
     customStyleFn?: (
@@ -15,7 +15,7 @@ declare module 'draft-js' {
     forceSelection: boolean
     offsetKey: string
     selection: SelectionState
-    tree: Immutable.List<any>
+    tree: Immutable.List<unknown>
   }
 
   export interface Link {

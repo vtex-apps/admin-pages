@@ -13,12 +13,12 @@ const StoreIframe: React.FunctionComponent<Props> = React.memo(({ path }) => {
       const oldError = iframeRef.current.contentWindow.console.error
       iframeRef.current.contentWindow.console.log = function newLog() {
         Array.prototype.unshift.call(arguments, `[Iframe]: `)
-        oldLog.apply(this, arguments as any)
+        oldLog.apply(this, arguments)
       }
 
       iframeRef.current.contentWindow.console.error = function newError() {
         Array.prototype.unshift.call(arguments, `[Iframe]: `)
-        oldError.apply(this, arguments as any)
+        oldError.apply(this, arguments)
       }
     }
   }, [])

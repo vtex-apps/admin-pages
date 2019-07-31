@@ -4,10 +4,10 @@ import { RenderComponent } from 'vtex.render-runtime'
 
 import { FormMetaContext } from '../../components/EditorContainer/Sidebar/typings'
 
-type PropsOrContent = Record<string, any>
+export type PropsOrContent = Extension['content'] | Extension['props']
 
 export interface GetComponentSchemaParams {
-  component: RenderComponent<any, any> | null
+  component: RenderComponent<unknown, unknown> | null
   contentSchema?: JSONSchema6
   propsOrContent: PropsOrContent
   runtime: RenderContext
@@ -19,11 +19,11 @@ export interface GetSchemaPropsOrContentParams {
   isContent?: boolean
   messages?: RenderContext['messages']
   schema?: JSONSchema6Definition
-  propsOrContent?: Record<string, any>
+  propsOrContent?: Record<string, unknown>
 }
 
 export interface GetSchemaPropsOrContentFromRuntimeParams {
-  component: RenderComponent<any, any> | null
+  component: RenderComponent<unknown, unknown> | null
   contentSchema?: JSONSchema6
   isContent?: boolean
   messages?: RenderContext['messages']

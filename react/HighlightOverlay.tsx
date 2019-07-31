@@ -41,7 +41,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     highlightTreePath: PropTypes.string,
   }
 
-  public highlightRemovalTimeout: any
+  public highlightRemovalTimeout: ReturnType<Window['setTimeout']> | null
 
   private INITIAL_HIGHLIGHT_RECT = {
     height: 0,
@@ -60,7 +60,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
   }, 75)
 
-  constructor(props: any) {
+  public constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -95,14 +95,12 @@ export default class HighlightOverlay extends Component<Props, State> {
     elements.forEach((e: Element) => {
       const element = e as HTMLElement
       if (editMode) {
-        element.addEventListener('mouseover', this
-          .handleMouseOverHighlight as any)
+        element.addEventListener('mouseover', this.handleMouseOverHighlight)
         element.addEventListener('mouseleave', this.handleMouseLeaveHighlight)
         element.addEventListener('click', this.handleClickHighlight)
         element.style.cursor = 'pointer'
       } else {
-        element.removeEventListener('mouseover', this
-          .handleMouseOverHighlight as any)
+        element.removeEventListener('mouseover', this.handleMouseOverHighlight)
         element.removeEventListener(
           'mouseleave',
           this.handleMouseLeaveHighlight
@@ -168,8 +166,8 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
   }
 
-  public handleMouseOverHighlight = (e: any) => {
-    if (!e.currentTarget) {
+  public handleMouseOverHighlight = (e: React.MouseEvent) => {
+    if (!e.currentTarget || !this.highlightRemovalTimeout) {
       return
     }
 
@@ -185,7 +183,7 @@ export default class HighlightOverlay extends Component<Props, State> {
       clearTimeout(this.highlightRemovalTimeout)
     }
 
-    this.highlightRemovalTimeout = setTimeout(
+    this.highlightRemovalTimeout = window.setTimeout(
       this.tryRemoveHighlight,
       HIGHLIGHT_REMOVAL_TIMEOUT_MS
     )
@@ -195,7 +193,7 @@ export default class HighlightOverlay extends Component<Props, State> {
     this.state.highlightHandler(null)
   }
 
-  public handleClickHighlight = (e: any) => {
+  public handleClickHighlight = (e: Event) => {
     if (!e.currentTarget) {
       return
     }

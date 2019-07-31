@@ -3,7 +3,7 @@ declare module 'vtex.render-runtime' {
   import { Component, ComponentType, ReactElement } from 'react'
 
   export const ExtensionPoint: ReactElement
-  export const Helmet: ComponentType<any>
+  export const Helmet: ComponentType<unknown>
   export const Link: ReactElement
   export const NoSSR: ReactElement
   export const RenderContextConsumer: ReactElement
@@ -21,14 +21,14 @@ declare module 'vtex.render-runtime' {
   export declare const useRuntime: () => RenderContext
 
   interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
-    getCustomMessages?: (locale: string) => any
+    getCustomMessages?: (locale: string) => unknown
     schema: ComponentSchema
-    getSchema?: (props: object, otherArgs?: any) => ComponentSchema
-    uiSchema?: UISchema
+    getSchema?: (props: object, otherArgs?: unknown) => ComponentSchema
+    uiSchema?: object
   }
 
   export interface ComponentsRegistry {
-    [component: string]: RenderComponent<any, any>
+    [component: string]: RenderComponent<unknown, unknown>
   }
 
   export interface Window extends Window {

@@ -3,8 +3,9 @@ export default function setupDate() {
 
   function mockDate(isoDate: string) {
     global.Date = class extends RealDate {
-      constructor(...args: any[]) {
+      public constructor(...args: number[]) {
         super()
+
         if (args.length > 0) {
           return new RealDate(
             args[0],
@@ -18,7 +19,7 @@ export default function setupDate() {
         }
         return new RealDate(isoDate)
       }
-    } as any
+    }
   }
 
   beforeAll(() => {

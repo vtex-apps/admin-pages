@@ -11,7 +11,7 @@ interface IconsProps {
 interface DeviceComponentProps {
   id: Viewport
   key: Viewport
-  onClick: (event: any) => void
+  onClick: (event: Event) => void
   selected: boolean
 }
 

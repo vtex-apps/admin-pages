@@ -16,17 +16,26 @@ import {
   updateStoreAfterSave,
 } from '../../pages/Form/utils'
 
-import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
-import ListContentQuery from '../../../EditorContainer/queries/ListContent'
-
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import RouteQuery from '../../../../queries/Route.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
+import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
+import ListContentQuery from '../../../EditorContainer/queries/ListContent'
+
+interface TemplateData {
+  availableTemplates: {
+    id: string
+  }[]
+}
 
 interface TemplateVariables {
   interfaceId: string
+}
+
+interface RouteData {
+  route: string
 }
 
 interface RouteVariables {
@@ -34,38 +43,42 @@ interface RouteVariables {
   routeId: string
 }
 
+interface MessagesData {
+  translate: string[]
+}
+
 interface MessagesVariables {
   args: {
     provider: string
     to: string
     from?: string
-    messages: Array<{
+    messages: {
       id: string
       content?: string
       description?: string
-    }>
+    }[]
     behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
   }
 }
 
 export interface OperationsResults {
-  deleteRoute: MutationFn<any, DeleteRouteVariables>
-  saveRoute: MutationFn<any, SaveRouteVariables>
-  saveContent: MutationFn<any, any>
-  templatesResults: QueryResult<any, TemplateVariables>
+  deleteRoute: MutationFn<unknown, DeleteRouteVariables>
+  saveRoute: MutationFn<unknown, SaveRouteVariables>
+  saveContent: MutationFn<unknown, unknown>
+  templatesResults: QueryResult<unknown, TemplateVariables>
 }
 
 export interface ContentContextProps {
-  route: any
+  route: Route
   blockId: string
   interfaceId: string
   content: {
     id: string
     text: string
   }
-  deleteRoute: MutationFn<any, DeleteRouteVariables>
-  saveRoute: MutationFn<any, SaveRouteVariables>
-  saveContent: MutationFn<any, any>
+  deleteRoute: MutationFn<unknown, DeleteRouteVariables>
+  saveRoute: MutationFn<unknown, SaveRouteVariables>
+  saveContent: MutationFn<unknown, unknown>
 }
 
 interface Params {
@@ -80,12 +93,12 @@ function withContentContext<T>(
   WrappedComponent: React.ComponentType<T>,
   getParams: (props: T) => Params
 ) {
-  return (props: T) => {
+  const ComponentWithContent = (props: T) => {
     const { storeAppId, routeId, culture } = getParams(props)
     const interfaceId = `${storeAppId}:store.content`
 
     return (
-      <Query<any, RouteVariables>
+      <Query<RouteData, RouteVariables>
         query={RouteQuery}
         variables={{ domain: 'store', routeId }}
       >
@@ -95,7 +108,7 @@ function withContentContext<T>(
           }
 
           return (
-            <Query<any, TemplateVariables>
+            <Query<TemplateData, TemplateVariables>
               query={AvailableTemplates}
               variables={{ interfaceId }}
             >
@@ -104,15 +117,17 @@ function withContentContext<T>(
                   return <Loader />
                 }
 
-                const elegibleTemplates = dataTemplates!.availableTemplates.filter(
-                  (template: Template) => template.id !== interfaceId
-                )
+                const eligibleTemplates =
+                  dataTemplates &&
+                  dataTemplates.availableTemplates.filter(
+                    (template: Template) => template.id !== interfaceId
+                  )
 
-                if (!elegibleTemplates.length) {
+                if (!eligibleTemplates || !eligibleTemplates.length) {
                   return <UnallowedWarning />
                 }
 
-                const blockId = elegibleTemplates[0].id
+                const blockId = eligibleTemplates[0].id
 
                 return (
                   <ListContentQuery
@@ -139,7 +154,7 @@ function withContentContext<T>(
                           '0',
                           'contentJSON',
                         ],
-                        dataContent!
+                        dataContent || {}
                       )
                       const contentText: string = contentJSON
                         ? JSON.parse(contentJSON).text
@@ -147,11 +162,11 @@ function withContentContext<T>(
                       const contentId: string = pathOr(
                         '',
                         ['listContentWithSchema', 'content', '0', 'contentId'],
-                        dataContent!
+                        dataContent || {}
                       )
 
                       return (
-                        <Query<any, MessagesVariables>
+                        <Query<MessagesData, MessagesVariables>
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
@@ -161,10 +176,7 @@ function withContentContext<T>(
                             },
                           }}
                         >
-                          {({
-                            data: dataMessage,
-                            loading: loadingMessage,
-                          }: QueryResult<any, any>) => {
+                          {({ data: dataMessage, loading: loadingMessage }) => {
                             if (loadingMessage) {
                               return <Loader />
                             }
@@ -174,7 +186,7 @@ function withContentContext<T>(
                               text: pathOr(
                                 contentText,
                                 ['translate', 0],
-                                dataMessage
+                                dataMessage || {}
                               ),
                             }
 
@@ -199,7 +211,7 @@ function withContentContext<T>(
                                         {saveContent => (
                                           <WrappedComponent
                                             {...props}
-                                            route={(dataRoute || {}).route}
+                                            route={dataRoute && dataRoute.route}
                                             saveRoute={saveRoute}
                                             deleteRoute={deleteRoute}
                                             saveContent={saveContent}
@@ -227,6 +239,8 @@ function withContentContext<T>(
       </Query>
     )
   }
+
+  return ComponentWithContent
 }
 
 export default withContentContext

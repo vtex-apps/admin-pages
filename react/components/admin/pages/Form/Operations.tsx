@@ -10,6 +10,7 @@ import {
   DeleteRouteVariables,
   SaveMutationResult,
   SaveRouteVariables,
+  TemplateMutationResult,
 } from './typings'
 import { updateStoreAfterDelete, updateStoreAfterSave } from './utils'
 
@@ -23,13 +24,16 @@ interface Props {
 }
 
 export interface OperationsResults {
-  deleteRoute: MutationFn<any, DeleteRouteVariables>
-  saveRoute: MutationFn<any, SaveRouteVariables>
-  templatesResults: QueryResult<any, TemplateVariables>
+  deleteRoute: MutationFn<DeleteMutationResult['data'], DeleteRouteVariables>
+  saveRoute: MutationFn<SaveMutationResult['data'], SaveRouteVariables>
+  templatesResults: QueryResult<
+    TemplateMutationResult['data'],
+    TemplateVariables
+  >
 }
 
 const Operations = ({ interfaceId, children }: Props) => (
-  <Query<Template[], TemplateVariables>
+  <Query<TemplateMutationResult['data'], TemplateVariables>
     query={AvailableTemplates}
     variables={{ interfaceId }}
   >
