@@ -2,6 +2,7 @@
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.storefront": "Storefront",
   "admin/pages.admin-menu-button.content-pages": "Institucional",
+  "admin/pages.admin-menu-button.storefront-smb": "Escaparate",
   "admin/pages.admin.loading": "Cargando",
   "admin/pages.admin.pages.form.button.cancel": "Cancelar",
   "admin/pages.admin.pages.form.button.delete": "Borrar",
@@ -254,7 +255,7 @@
   "admin/pages.admin.content.not-supported.title": "Esta funcionalidad no está disponible :/",
   "admin/pages.admin.content.not-supported.description": "El tema instalado en su tienda no admite la creación de páginas de contenido. Si necesita crear páginas, elija otro tema que admita esta función, o si usa un tema personalizado, pídale al desarrollador que siga las instrucciones en el siguiente enlace.",
   "admin/pages.admin.content.not-supported.action": "Instrucciones",
-  
+
   "admin/pages.editor.settings.language": "Lengua",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abjasio",

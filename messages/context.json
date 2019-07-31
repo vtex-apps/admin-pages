@@ -2,6 +2,7 @@
   "admin/pages.admin-menu-button.pages": "admin/pages.admin-menu-button.pages",
   "admin/pages.admin-menu-button.storefront": "admin/pages.admin-menu-button.storefront",
   "admin/pages.admin-menu-button.content-pages": "admin/pages.admin.tabs.content-pages",
+  "admin/pages.admin-menu-button.storefront-smb": "admin/pages.admin-menu-button.storefront-smb",
   "admin/pages.admin.loading": "admin/pages.admin.loading",
   "admin/pages.admin.pages.form.button.cancel": "admin/pages.admin.pages.form.button.cancel",
   "admin/pages.admin.pages.form.button.delete": "admin/pages.admin.pages.form.button.delete",
@@ -254,7 +255,7 @@
   "admin/pages.admin.content.not-supported.title": "admin/pages.admin.content.not-supported.title",
   "admin/pages.admin.content.not-supported.description": "admin/pages.admin.content.not-supported.description",
   "admin/pages.admin.content.not-supported.action": "admin/pages.admin.content.not-supported.action",
-  
+
   "admin/pages.editor.settings.language": "admin/pages.editor.settings.language",
   "admin/pages.editor.locale.aa": "admin/pages.editor.locale.aa",
   "admin/pages.editor.locale.ab": "admin/pages.editor.locale.ab",

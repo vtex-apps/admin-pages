@@ -2,6 +2,7 @@
   "admin/pages.admin-menu-button.pages": "Pages",
   "admin/pages.admin-menu-button.storefront": "Storefront",
   "admin/pages.admin-menu-button.content-pages": "Content Pages",
+  "admin/pages.admin-menu-button.storefront-smb": "Storefront",
   "admin/pages.admin.loading": "Loading",
   "admin/pages.admin.pages.form.button.cancel": "Cancel",
   "admin/pages.admin.pages.form.button.delete": "Delete",
@@ -254,7 +255,7 @@
   "admin/pages.admin.content.not-supported.title": "This feature is not available :/",
   "admin/pages.admin.content.not-supported.description": "The theme installed in your store does not support the creation of content pages. If you need to create pages, choose another theme that supports this feature, or if you use a custom theme, ask the developer to follow the instructions in the link below.",
   "admin/pages.admin.content.not-supported.action": "See instructions",
-  
+
   "admin/pages.editor.settings.language": "Language",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abkhazian",
