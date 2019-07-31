@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from 'apollo-client'
 import { JSONSchema6 } from 'json-schema'
-import throttle from 'lodash.throttle'
+import throttle from 'lodash/throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
@@ -412,9 +412,7 @@ class ConfigurationList extends React.Component<Props, State> {
               },
               {
                 entity: intl.formatMessage({
-                  id: `admin/pages.editor.components.condition.scope.entity.${
-                    pageContext.type
-                  }`,
+                  id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
                 }),
                 template: intl.formatMessage({
                   id: 'admin/pages.editor.components.condition.scope.template',

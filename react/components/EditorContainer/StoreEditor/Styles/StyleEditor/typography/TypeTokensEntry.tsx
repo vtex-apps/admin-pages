@@ -1,7 +1,7 @@
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
 
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 
 import { EditorPath, IdParam } from '../StyleEditorRouter'
 

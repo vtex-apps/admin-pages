@@ -1,4 +1,4 @@
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { xprod } from 'ramda'
 
 import { FontFileInput } from '../mutations/SaveFontFamily'

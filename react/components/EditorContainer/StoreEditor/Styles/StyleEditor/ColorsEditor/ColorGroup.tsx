@@ -1,4 +1,4 @@
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { find, mapObjIndexed, propEq } from 'ramda'
 import React from 'react'
 

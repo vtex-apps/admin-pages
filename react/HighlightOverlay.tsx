@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce'
+import debounce from 'lodash/debounce'
 import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
 import { canUseDOM } from 'vtex.render-runtime'
