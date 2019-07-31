@@ -1,4 +1,3 @@
-import { State } from '../index'
 import newPage from './__fixtures__/newPage'
 import { getChangeTemplateConditionalTemplateState } from './getChangeTemplateConditionalTemplateState'
 
@@ -19,9 +18,9 @@ describe('getChangeTemplateConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+    }
 
     expect(
       getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState)
@@ -49,7 +48,7 @@ describe('getChangeTemplateConditionalTemplateState', () => {
   })
 
   it('should clear formError', () => {
-    const mockState = ({
+    const mockState = {
       data: {
         pages: [
           {
@@ -64,12 +63,12 @@ describe('getChangeTemplateConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
       formErrors: {
         title: 'oi',
       },
-    } as unknown) as State
+    }
 
     expect(
       getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState)

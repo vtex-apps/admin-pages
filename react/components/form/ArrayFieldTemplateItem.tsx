@@ -31,7 +31,7 @@ interface IProps {
   onClose: () => void
   onOpen: (e: React.MouseEvent) => void
   showDragHandle: boolean
-  schema: any
+  schema: object
 }
 
 interface State {

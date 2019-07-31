@@ -12,6 +12,12 @@ export interface SaveMutationResult {
   }
 }
 
+export interface TemplateMutationResult {
+  data?: {
+    availableTemplates: Template[]
+  }
+}
+
 export type QueryData = RoutesQuery | null
 
 export interface RoutesQuery {

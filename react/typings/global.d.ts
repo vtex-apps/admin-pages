@@ -114,7 +114,7 @@ declare global {
     emitter: RenderRuntime['emitter']
     extensions: RenderRuntime['extensions']
     fetchComponent: (component: string) => Promise<void>
-    getSettings: (app: string) => any
+    getSettings: (app: string) => unknown
     history: RuntimeHistory | null
     messages: RenderRuntime['messages']
     navigate: (options: NavigateOptions) => boolean
@@ -186,7 +186,7 @@ declare global {
     emitter: EventEmitter
     workspace: string
     disableSSR: boolean
-    hints: any
+    hints: unknown
     page: string
     version: string
     culture: Culture
@@ -202,7 +202,7 @@ declare global {
     query?: Record<string, string>
     start: boolean
     settings: {
-      [app: string]: any
+      [app: string]: unknown
     }
     cacheHints: CacheHints
     preview?: boolean
@@ -277,15 +277,10 @@ declare global {
     type?: string
     title?: string
     description?: string
-    enumNames?: any
-    widget?: any
-    items?: any
     minItems?: number
     properties?: ComponentSchemaProperties
     isLayout?: boolean
   }
-
-  type UISchema = any
 
   interface Window {
     __provideRuntime?: (

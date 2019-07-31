@@ -6,8 +6,8 @@ declare module 'pages' {
   interface Statements {
     subject: string
     verb: string
-    object: any
-    error: any
+    object: unknown
+    error: unknown
   }
 
   interface ConditionFormsData {

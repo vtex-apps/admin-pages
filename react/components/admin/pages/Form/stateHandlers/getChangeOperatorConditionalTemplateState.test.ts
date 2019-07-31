@@ -1,4 +1,3 @@
-import { State } from '../index'
 import newPage from './__fixtures__/newPage'
 import setupDate from './__fixtures__/setupDate'
 import { getChangeOperatorConditionalTemplateState } from './getChangeOperatorConditionalTemplateState'
@@ -22,9 +21,9 @@ describe('getChangeOperatorConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)
@@ -67,9 +66,9 @@ describe('getChangeOperatorConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)
@@ -115,9 +114,9 @@ describe('getChangeOperatorConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'any')(mockState)
@@ -148,7 +147,7 @@ describe('getChangeOperatorConditionalTemplateState', () => {
   })
 
   it('should clear formError', () => {
-    const mockState = ({
+    const mockState = {
       data: {
         pages: [
           {
@@ -163,12 +162,12 @@ describe('getChangeOperatorConditionalTemplateState', () => {
             ...newPage,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
       formErrors: {
         title: 'oi',
       },
-    } as unknown) as State
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)

@@ -1,5 +1,7 @@
+import { JSONSchema6 } from 'json-schema'
 import traverse from 'json-schema-traverse'
 import { assocPath, mergeDeepLeft } from 'ramda'
+import { UiSchema, Widget } from 'react-jsonschema-form'
 
 import {
   getComponentSchema,
@@ -19,9 +21,9 @@ import { GetSchemasArgs } from './typings'
  *  properties.
  */
 export const getUiSchema = (
-  componentUiSchema: UISchema,
+  componentUiSchema: UiSchema,
   componentSchema: ComponentSchema
-): UISchema => {
+): UiSchema => {
   /**
    * It goes deep into the schema tree to find widget definitions, generating
    * the correct path to the property.
@@ -48,8 +50,10 @@ export const getUiSchema = (
   ]
   let uiSchema = {}
 
-  const getWidget = (...args: any[]) => {
-    const [schema, JSONPointer] = args
+  const getWidget = (
+    schema: JSONSchema6 & { widget: Widget },
+    JSONPointer: string
+  ) => {
     if (schema.widget) {
       const widgetPath = JSONPointer.replace(arrayAttrs, '')
         .split('/')
@@ -62,7 +66,7 @@ export const getUiSchema = (
 
   traverse(componentSchema, getWidget)
 
-  return mergeDeepLeft(uiSchema, componentUiSchema || {})
+  return mergeDeepLeft(uiSchema, componentUiSchema)
 }
 
 export const getSchemas = ({
@@ -85,7 +89,7 @@ export const getSchemas = ({
   const componentUiSchema =
     componentImplementation && componentImplementation.uiSchema
       ? componentImplementation.uiSchema
-      : null
+      : {}
 
   const uiSchemaFromComponent = getUiSchema(componentUiSchema, componentSchema)
 

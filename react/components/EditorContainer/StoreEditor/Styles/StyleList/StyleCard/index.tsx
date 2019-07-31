@@ -52,7 +52,7 @@ const StyleCard: React.FunctionComponent<Props> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const setIsLoadingWrapper = (fn: () => Promise<any>) => async () => {
+  const setIsLoadingWrapper = (fn: () => Promise<unknown>) => async () => {
     setIsLoading(true)
     await fn()
     setIsLoading(false)

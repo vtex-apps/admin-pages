@@ -17,7 +17,7 @@ import MessagesContext, { IMessagesContext } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  IMessagesContext & { client: ApolloClient<any> }
+  IMessagesContext & { client: ApolloClient<unknown> }
 
 interface State {
   activeConditions: string[]

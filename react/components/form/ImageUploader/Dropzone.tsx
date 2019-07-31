@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import ReactDropzone, { DropzoneOptions } from 'react-dropzone'
 
 interface Props {
-  children: ReactElement<any>
+  children: ReactElement<unknown>
   disabled: boolean
   extraClasses?: string
   onClick: React.MouseEventHandler<HTMLElement>

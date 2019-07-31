@@ -1,3 +1,5 @@
+import { ConditionsOperator } from 'vtex.styleguide'
+
 const newPage = {
   condition: {
     allMatches: true,
@@ -13,7 +15,7 @@ const newPage = {
       },
     ],
   },
-  operator: 'all',
+  operator: 'all' as ConditionsOperator,
   pageId: '',
   template: '',
 }

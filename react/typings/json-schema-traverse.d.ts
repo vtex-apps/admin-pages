@@ -1,7 +1,11 @@
 declare module 'json-schema-traverse' {
-  var traverse: (
+  const traverse: (
     schema: ComponentSchema,
-    opts: (...args: any[]) => any | void
+    opts: (
+      schema: JSONSchema6 & { widget: Widget },
+      JSONPointer: string
+    ) => void
   ) => void
-  export = traverse
+
+  export default traverse
 }
