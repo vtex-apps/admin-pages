@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce'
+import debounce from 'lodash/debounce'
 import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'

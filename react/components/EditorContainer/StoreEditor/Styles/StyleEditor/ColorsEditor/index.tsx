@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
 
 import StyleEditorHeader from '../StyleEditorHeader'

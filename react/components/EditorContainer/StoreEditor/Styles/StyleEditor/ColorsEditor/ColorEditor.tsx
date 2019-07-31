@@ -1,4 +1,4 @@
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { groupBy, mapObjIndexed } from 'ramda'
 import React from 'react'
 import { ColorPicker } from 'vtex.styleguide'

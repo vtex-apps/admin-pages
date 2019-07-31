@@ -1,6 +1,6 @@
 import React, { Dispatch } from 'react'
 
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { Dropdown } from 'vtex.styleguide'
 
 import { FontFamily } from '../queries/ListFontsQuery'
