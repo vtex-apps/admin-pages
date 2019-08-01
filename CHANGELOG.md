@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Removed
+
+- Settings tab from the Pages admin.
+
 ## [4.6.1] - 2019-08-01
 
 ### Added
