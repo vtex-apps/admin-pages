@@ -29,10 +29,6 @@
     "component": "InstitutionalPageForm",
     "path": "/admin/app/cms/content/*id"
   },
-  "admin.app.cms.settings": {
-    "component": "Settings",
-    "path": "/admin/app/cms/settings"
-  },
   "admin.app.cms.storefront-home": {
     "component": "PageEditor",
     "path": "/admin/app/cms/storefront"

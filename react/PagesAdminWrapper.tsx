@@ -21,10 +21,6 @@ const fields = {
     path: 'redirects',
     titleId: 'admin/pages.admin.tabs.redirects',
   },
-  settings: {
-    path: 'settings',
-    titleId: 'admin/pages.admin.tabs.settings',
-  },
 }
 
 interface FieldInfo {
@@ -44,10 +40,6 @@ defineMessages({
   redirects: {
     defaultMessage: 'Redirects',
     id: 'admin/pages.admin.tabs.redirects',
-  },
-  settings: {
-    defaultMessage: 'Settings',
-    id: 'admin/pages.admin.tabs.settings',
   },
 })
 
