@@ -106,7 +106,6 @@
   "admin/pages.admin.redirects.upload-modal.success.title": "File uploaded successfully.",
   "admin/pages.admin.tabs.pages": "Pages",
   "admin/pages.admin.tabs.redirects": "Redirects",
-  "admin/pages.admin.tabs.settings": "Settings",
   "admin/pages.editor.component-list.action-menu.delete": "Delete",
   "admin/pages.editor.component-list.action-menu.reset": "Reset",
   "admin/pages.editor.component-list.button.save": "Save",
