@@ -5,6 +5,7 @@ The Pages Admin is a platform to dynamically edit a VTEX Store, making it possib
 ## Continuous Integrations
 
 ### Travis CI
+
 [![Build Status](https://travis-ci.org/vtex-apps/pages-editor.svg?branch=master)](https://travis-ci.org/vtex-apps/pages-editor)
 
 ## How to make your Component editable
@@ -74,8 +75,8 @@ static getSchema = ({numberOfBanners}) => {
   // Call's the function if the numberOfBanners its passed
   const generatedSchema = numberOfBanners && getRepeatedProperties(numberOfBanners)
 
-  /** 
-  * Returns a schema embedding the generated properties and the static property needed 
+  /**
+  * Returns a schema embedding the generated properties and the static property needed
   * to type the number of banners wanted.
   */
   return {
@@ -90,3 +91,7 @@ static getSchema = ({numberOfBanners}) => {
   }
 }
 ```
+
+## Custom Content Pages
+
+See [docs](https://github.com/vtex-apps/admin-pages/blob/master/docs/CONTENT_PAGES.md)

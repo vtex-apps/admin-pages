@@ -2,6 +2,7 @@
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.storefront": "Storefront",
   "admin/pages.admin-menu-button.content-pages": "Institucional",
+  "admin/pages.admin-menu-button.storefront-smb": "Editor de layout",
   "admin/pages.admin.loading": "Carregando",
   "admin/pages.admin.pages.form.button.cancel": "Cancelar",
   "admin/pages.admin.pages.form.button.delete": "Deletar",
@@ -251,7 +252,10 @@
   "admin/pages.admin.content.general.seo.page-title": "<Título da página>",
   "admin/pages.admin.content.general.seo.description": "<A descrição é o texto geralmente utilizado pelo Google para a exibição dos resultados de texto das segundas e terceiras linhas dos resultados de busca, logo abaixo do título>",
   "admin/pages.admin.content.content.section-title": "Conteúdo",
-  
+  "admin/pages.admin.content.not-supported.title": "Funcionalidade não suportada :/",
+  "admin/pages.admin.content.not-supported.description": "O tema instalado na sua loja não suporta a criação de páginas institucionais. Caso necessite criar páginas, escolha algum outro tema que suporte essa funcionalidade ou, caso utilize algum tema personalizado, solicite ao desenvolvedor que siga as instruções indicadas no link abaixo.",
+  "admin/pages.admin.content.not-supported.action": "Ver instruções",
+
   "admin/pages.editor.settings.language": "Língua",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abcázio",

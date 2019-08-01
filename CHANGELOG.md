@@ -7,7 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Instructions to use content page.
+
+### Fixed
+
+- Avoid crash when trying to create a content page in a theme that doesn't support it.
+
 ## [4.6.0] - 2019-07-30
+
 ### Added
 
 - Store's locale switcher at topbar

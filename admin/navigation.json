@@ -20,7 +20,7 @@
     "subSection": "onlinestore",
     "subSectionItems": [
       {
-        "labelId": "admin/pages.admin-menu-button.storefront",
+        "labelId": "admin/pages.admin-menu-button.storefront-smb",
         "path": "/admin/cms/storefront"
       },
       {

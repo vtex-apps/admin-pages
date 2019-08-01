@@ -2,14 +2,7 @@ import { pathOr } from 'ramda'
 import * as React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
-import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
-import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
-import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
-import RouteQuery from '../../../../queries/Route.graphql'
-import SaveRoute from '../../../../queries/SaveRoute.graphql'
-
-import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
-import ListContentQuery from '../../../EditorContainer/queries/ListContent'
+import UnallowedWarning from './UnallowedWarning'
 
 import {
   DeleteMutationResult,
@@ -22,7 +15,15 @@ import {
   updateStoreAfterSave,
 } from '../../pages/Form/utils'
 
+import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
+import ListContentQuery from '../../../EditorContainer/queries/ListContent'
 import Loader from '../../../Loader'
+
+import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
+import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
+import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
+import RouteQuery from '../../../../queries/Route.graphql'
+import SaveRoute from '../../../../queries/SaveRoute.graphql'
 
 interface TemplateVariables {
   interfaceId: string
@@ -103,9 +104,15 @@ function withContentContext<T>(
                   return <Loader />
                 }
 
-                const blockId = dataTemplates!.availableTemplates.filter(
+                const elegibleTemplates = dataTemplates!.availableTemplates.filter(
                   (template: Template) => template.id !== interfaceId
-                )[0].id
+                )
+
+                if (!elegibleTemplates.length) {
+                  return <UnallowedWarning />
+                }
+
+                const blockId = elegibleTemplates[0].id
 
                 return (
                   <ListContentQuery
