@@ -17,6 +17,21 @@ interface Props extends RouteComponentProps<ColorRouteParams> {
   onSave: () => void
 }
 
+const updateColor = (updateStyle: Props['updateStyle']) => (
+  token: string,
+  colorInfo: ColorInfo
+) => {
+  const { configField, color } = colorInfo
+  const partialConfig = {
+    semanticColors: {
+      [configField]: {
+        [token]: color,
+      },
+    },
+  }
+  updateStyle(partialConfig)
+}
+
 const ColorsEditor: React.FunctionComponent<Props> = ({
   config: {
     semanticColors,
@@ -120,21 +135,6 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
       <div className="flex-grow-1">{colourGroups}</div>
     </>
   )
-}
-
-const updateColor = (updateStyle: Props['updateStyle']) => (
-  token: string,
-  colorInfo: ColorInfo
-) => {
-  const { configField, color } = colorInfo
-  const partialConfig = {
-    semanticColors: {
-      [configField]: {
-        [token]: color,
-      },
-    },
-  }
-  updateStyle(partialConfig)
 }
 
 export default ColorsEditor

@@ -52,6 +52,22 @@ const getComponentSchemaGetter = (
   )
 }
 
+export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
+  return (
+    schema.type === 'object' &&
+    Object.values(schema.properties || {}).some(property => {
+      if (
+        !property.isLayout ||
+        (property.type === 'object' && hasContentPropsInSchema(property))
+      ) {
+        return true
+      }
+
+      return false
+    })
+  )
+}
+
 export function getComponents(
   extensions: Extensions,
   components: ComponentsRegistry | null,
@@ -163,20 +179,6 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
     (blockPath.length > 0 &&
       ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
     false
-  )
-}
-
-export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
-  return (
-    schema.type === 'object' &&
-    Object.values(schema.properties || {}).some(property => {
-      if (
-        !property.isLayout ||
-        (property.type === 'object' && hasContentPropsInSchema(property))
-      ) {
-        return true
-      }
-    })
   )
 }
 

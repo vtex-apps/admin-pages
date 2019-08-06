@@ -35,6 +35,10 @@ export const FONT_FILE_EXTENSIONS = [
 
 const WEIGHT_STYLE_SEPARATOR = ','
 
+export function flavourToString(value: FontFlavour | undefined) {
+  return value && value.join(WEIGHT_STYLE_SEPARATOR)
+}
+
 export const STYLE_FLAVOUR_OPTIONS = xprod(
   Object.entries(FontStyle),
   Object.entries(FontWeight)
@@ -42,10 +46,6 @@ export const STYLE_FLAVOUR_OPTIONS = xprod(
   label: (weightLabel + ' ' + styleLabel).trim(),
   value: flavourToString([styleValue, weightValue] as FontFlavour),
 }))
-
-export function flavourToString(value: FontFlavour | undefined) {
-  return value && value.join(WEIGHT_STYLE_SEPARATOR)
-}
 
 export function stringToFlavour(value: string) {
   return value.split(WEIGHT_STYLE_SEPARATOR) as FontFlavour
