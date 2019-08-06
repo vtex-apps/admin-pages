@@ -1,4 +1,4 @@
-import { JSONSchema6 } from 'json-schema'
+import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
 import { defineMessages } from 'react-intl'
@@ -32,7 +32,9 @@ interface CustomProps {
   onClose: () => void
   onOpen: (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
   showDragHandle: boolean
-  schema: object
+  schema: {
+    items: { properties: JSONSchema6 }
+  }
 }
 
 type PropsFromItemTemplateProps = Pick<
@@ -79,10 +81,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     [props.isOpen, props.onOpen, props.onClose]
   )
 
-  // TODO: fix types
-  const imagePropertyKey = Object.entries(schema.items.properties)
+  const imagePropertyKey = Object.entries(schema.items.properties!)
     .reduce(
-      (acc, [property, propertySchema]: any) => {
+      (acc, [property, propertySchema]: SchemaTuple) => {
         if (
           propertySchema.widget &&
           propertySchema.widget['ui:widget'] === 'image-uploader'
