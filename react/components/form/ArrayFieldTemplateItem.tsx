@@ -90,10 +90,13 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
 
         return 0
       })
+      .find(key => {
+        return !!children.props.formData[key]
+      })
 
     const imagePreview =
-      imagePropertyKey.length > 0 &&
-      children.props.formData[imagePropertyKey[0]]
+      imagePropertyKey && children.props.formData[imagePropertyKey]
+
     const title =
       children.props.formData.__editorItemTitle ||
       path(['items', 'properties', '__editorItemTitle', 'default'], schema)
@@ -105,18 +108,19 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         }`}
       >
         <div
-          className="accordion-label outline-0"
-          onClick={this.handleItemClick}
-          onKeyDown={this.handleItemKeyDown}
-          role="treeitem"
-          tabIndex={0}
+          className={`accordion-label ${imagePreview ? 'h4' : 'h3'}`}
+          onClick={this.handleLabelClick}
         >
-          <div className="flex items-center">
+          <div className="flex items-center overflow-hidden">
             {showDragHandle && <Handle />}
             {imagePreview ? (
-              <img className="br3" src={imagePreview} />
+              <img
+                className="br3 ml7"
+                style={{ maxWidth: 'calc(100% - 3rem)' }}
+                src={imagePreview}
+              />
             ) : (
-              <label className="f6 accordion-label-title">
+              <label className="ml7 f6 accordion-label-title">
                 <SimpleFormattedMessage
                   id={title || 'admin/pages.admin.pages.form.field.array.item'}
                 />

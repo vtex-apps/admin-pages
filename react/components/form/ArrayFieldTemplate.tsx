@@ -60,7 +60,11 @@ class ArrayFieldTemplate extends Component<
 
     return (
       <Fragment>
-        {title && <SimpleFormattedMessage id={title} />}
+        {title && (
+          <FormattedMessage id={title}>
+            {text => <h4 className="mb4 mt0">{text}</h4>}
+          </FormattedMessage>
+        )}
         <ArrayList
           pressDelay={200}
           getHelperDimensions={getHelperDimensions}
