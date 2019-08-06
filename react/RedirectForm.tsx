@@ -85,12 +85,12 @@ class RedirectForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-          console.log('Invalid ID. Navigating to redirect list...')
+          console.warn('Invalid ID. Navigating to redirect list...')
 
           navigate({ to: BASE_URL })
         }
       } catch (err) {
-        console.log(err)
+        console.error(err)
 
         navigate({ to: BASE_URL })
       }

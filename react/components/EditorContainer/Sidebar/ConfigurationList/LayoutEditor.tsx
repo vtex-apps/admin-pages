@@ -143,7 +143,7 @@ class LayoutEditor extends Component<Props> {
         this.exit()
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
 
       editor.setIsLoading(false)
     } finally {

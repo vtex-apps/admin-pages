@@ -23,7 +23,7 @@ const cacheAccessParameters = {
 }
 
 const logCacheError = () => {
-  console.log('No cache found for "Routes".')
+  console.warn('No cache found for "Routes".')
 }
 
 const readRedirectsFromStore = (store: DataProxy): QueryData =>

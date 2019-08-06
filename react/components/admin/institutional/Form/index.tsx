@@ -264,7 +264,7 @@ class FormContainer extends React.PureComponent<Props, State> {
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           showToast({
             horizontalPosition: 'right',
