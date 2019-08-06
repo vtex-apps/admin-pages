@@ -81,36 +81,37 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     [props.isOpen, props.onOpen, props.onClose]
   )
 
-  const imagePropertyKey = Object.entries(schema.items.properties!)
-    .reduce(
-      (acc, [property, propertySchema]: SchemaTuple) => {
-        if (
-          propertySchema.widget &&
-          propertySchema.widget['ui:widget'] === 'image-uploader'
-        ) {
-          acc.push(property)
+  const imagePreview = useMemo(() => {
+    const imagePropertyKey = Object.entries(schema.items.properties!)
+      .reduce(
+        (acc, [property, propertySchema]: SchemaTuple) => {
+          if (
+            propertySchema.widget &&
+            propertySchema.widget['ui:widget'] === 'image-uploader'
+          ) {
+            acc.push(property)
+          }
+          return acc
+        },
+        [] as string[]
+      )
+      .sort((first, second) => {
+        if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
+          return 1
         }
-        return acc
-      },
-      [] as string[]
-    )
-    .sort((first, second) => {
-      if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
-        return 1
-      }
 
-      if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
-        return -1
-      }
+        if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
+          return -1
+        }
 
-      return 0
-    })
-    .find(key => {
-      return !!children.props.formData[key]
-    })
+        return 0
+      })
+      .find(key => {
+        return !!children.props.formData[key]
+      })
 
-  const imagePreview =
-    imagePropertyKey && children.props.formData[imagePropertyKey]
+    return imagePropertyKey && children.props.formData[imagePropertyKey]
+  }, [schema.items.properties, children.props.formData])
 
   const title =
     children.props.formData.__editorItemTitle ||
