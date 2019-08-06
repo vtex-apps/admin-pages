@@ -251,7 +251,7 @@
   "admin/pages.admin.content.general.seo.page-title": "<Page title>",
   "admin/pages.admin.content.general.seo.description": "<The description is the text commonly used by Google to display text results from the second and third lines of the search results, just below the title>",
   "admin/pages.admin.content.content.section-title": "Content",
-  "admin/pages.admin.content.not-supported.title": "This feature is not available :/",
+  "admin/pages.admin.content.not-supported.title": "This feature is not available",
   "admin/pages.admin.content.not-supported.description": "The theme installed in your store does not support the creation of custom content pages. If you need to create pages, choose another theme that supports this feature, or if you use a custom theme, ask the developer to follow the instructions in the link below.",
   "admin/pages.admin.content.not-supported.action": "See instructions",
 

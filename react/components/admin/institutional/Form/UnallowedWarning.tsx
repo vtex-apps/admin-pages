@@ -18,7 +18,7 @@ const UnallowedWarning = () => (
       <Button
         variation="secondary"
         size="small"
-        href="https://github.com/vtex-apps/admin-pages/blob/master/docs/CONTENT_PAGES.md"
+        href="https://github.com/vtex-apps/admin-pages/blob/master/docs/CONTENT_PAGE.md"
         target="_blank"
       >
         <FormattedMessage
