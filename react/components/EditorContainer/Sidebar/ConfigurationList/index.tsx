@@ -504,7 +504,7 @@ class ConfigurationList extends React.Component<Props, State> {
         message: 'Something went wrong. Please try again.',
       })
 
-      console.log(err)
+      console.error(err)
     }
   }
 

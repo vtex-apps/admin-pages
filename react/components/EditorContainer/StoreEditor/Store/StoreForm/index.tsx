@@ -91,7 +91,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
         {...schemas}
         formData={formData}
         onSubmit={() => setSubmitting(true)}
-        onError={e => console.log('Bad input numbers: ', e.length)}
+        onError={e => console.error('Bad input numbers: ', e.length)}
         onChange={({ formData: newFormData }) => setFormData(newFormData)}
         showErrorList={false}
         FieldTemplate={FieldTemplate}

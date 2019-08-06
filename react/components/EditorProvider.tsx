@@ -100,7 +100,7 @@ class EditorProvider extends Component<Props, State> {
             runtime,
           })
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
 
         const newMessages = {

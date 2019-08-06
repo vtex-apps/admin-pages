@@ -214,7 +214,7 @@ class FormContainer extends Component<Props, State> {
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           showToast({
             horizontalPosition: 'right',

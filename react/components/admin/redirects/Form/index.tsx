@@ -282,7 +282,7 @@ class Form extends Component<Props, State> {
         this.handleExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           this.props.showToast({
             horizontalPosition: 'right',
@@ -329,7 +329,7 @@ class Form extends Component<Props, State> {
         this.handleExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           this.props.showToast({
             horizontalPosition: 'right',
