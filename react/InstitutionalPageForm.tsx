@@ -78,29 +78,31 @@ class PageForm extends Component<Props, State> {
       <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
         <div className="center mw8 mv8">
           <Box>
-            {this.isNew ? (
-              <FormattedMessage id="admin/pages.admin.pages.form.title.new">
-                {text => <Title>{text}</Title>}
-              </FormattedMessage>
-            ) : (
-              formData && <Title>{getRouteTitle(formData)}</Title>
-            )}
-            <ToastConsumer>
-              {({ showToast, hideToast }) => (
-                <Form
-                  store={store}
-                  initialData={formData}
-                  initialContent={content}
-                  culture={runtime.culture}
-                  onDelete={deleteRoute}
-                  onExit={this.exit}
-                  onSave={saveRoute}
-                  onSaveContent={saveContent}
-                  showToast={showToast}
-                  hideToast={hideToast}
-                />
+            <div className="pa4">
+              {this.isNew ? (
+                <FormattedMessage id="admin/pages.admin.pages.form.title.new">
+                  {text => <Title>{text}</Title>}
+                </FormattedMessage>
+              ) : (
+                formData && <Title>{getRouteTitle(formData)}</Title>
               )}
-            </ToastConsumer>
+              <ToastConsumer>
+                {({ showToast, hideToast }) => (
+                  <Form
+                    store={store}
+                    initialData={formData}
+                    initialContent={content}
+                    culture={runtime.culture}
+                    onDelete={deleteRoute}
+                    onExit={this.exit}
+                    onSave={saveRoute}
+                    onSaveContent={saveContent}
+                    showToast={showToast}
+                    hideToast={hideToast}
+                  />
+                )}
+              </ToastConsumer>
+            </div>
           </Box>
         </div>
       </div>
