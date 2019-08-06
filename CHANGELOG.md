@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Responsiveness in content pages form and list
+
 ## [4.7.0] - 2019-08-01
 
 ### Removed
