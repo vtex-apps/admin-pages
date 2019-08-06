@@ -93,7 +93,7 @@ class PageForm extends Component<Props, State> {
                   initialContent={content}
                   culture={runtime.culture}
                   onDelete={deleteRoute}
-                  onExit={this.exit}
+                  onExit={this.handleExit}
                   onSave={saveRoute}
                   onSaveContent={saveContent}
                   showToast={showToast}
@@ -105,10 +105,6 @@ class PageForm extends Component<Props, State> {
         </div>
       </div>
     )
-  }
-
-  private exit = () => {
-    this.props.runtime.navigate({ page: INSTITUTIONAL_ROUTES_LIST, params: {} })
   }
 
   private defaultFormData = (): RouteFormData => {
@@ -130,6 +126,10 @@ class PageForm extends Component<Props, State> {
       title: '',
       uuid: undefined,
     }
+  }
+
+  private handleExit = () => {
+    this.props.runtime.navigate({ page: INSTITUTIONAL_ROUTES_LIST, params: {} })
   }
 }
 

@@ -392,7 +392,7 @@ class EditorProvider extends Component<Props, State> {
             availableCultures={this.state.availableCultures}
             editor={editor}
             runtime={iframeRuntime}
-            toggleShowAdminControls={this.handleToggleShowAdminControls}
+            onShowAdminControlsToggle={this.handleToggleShowAdminControls}
             viewports={this.getAvailableViewports(device)}
             visible={showAdminControls}
           >

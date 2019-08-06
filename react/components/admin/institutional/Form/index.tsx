@@ -100,13 +100,13 @@ class FormContainer extends React.PureComponent<Props, State> {
       <Form
         data={data}
         errors={formErrors}
-        handleChangeFieldValue={this.handleChangeFieldValue}
         isDeletable={isDeletable}
         isInfoEditable={isInfoEditable}
         isLoading={isLoading}
-        onSubmit={this.handleSave}
         onDelete={this.handleDelete}
         onExit={onExit}
+        onFieldValueChange={this.handleChangeFieldValue}
+        onSubmit={this.handleSave}
       />
     )
   }

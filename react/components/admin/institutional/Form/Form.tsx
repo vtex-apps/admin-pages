@@ -16,11 +16,11 @@ import SeoPreview from '../../../SeoPreview'
 interface CustomProps {
   data: RouteFormData & RouteContentFromData
   errors: FormErrors
-  handleChangeFieldValue: (field: string, value: string | number | null) => void
   isLoading: boolean
-  onSubmit: (event: React.FormEvent) => void
   onDelete: () => void
   onExit: () => void
+  onFieldValueChange: (field: string, value: string | number | null) => void
+  onSubmit: (event: React.FormEvent) => void
   isDeletable: boolean
   isInfoEditable: boolean
 }
@@ -61,19 +61,19 @@ const messages = defineMessages({
 const Form = ({
   data,
   errors,
-  handleChangeFieldValue,
   intl,
   isDeletable,
   isLoading,
   onDelete,
   onExit,
+  onFieldValueChange,
   onSubmit,
 }: Props) => {
   const handleEventValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target
-    return handleChangeFieldValue(name, value)
+    return onFieldValueChange(name, value)
   }
 
   return (
@@ -133,9 +133,7 @@ const Form = ({
       <p className="mv7 f4 b">{intl.formatMessage(messages.contentSection)}</p>
       <RichTextEditor
         initialState={data.pageContent}
-        onChange={(value: string) =>
-          handleChangeFieldValue('pageContent', value)
-        }
+        onChange={(value: string) => onFieldValueChange('pageContent', value)}
       />
 
       <FormFieldSeparator />

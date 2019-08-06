@@ -118,12 +118,12 @@ class RedirectList extends Component<Props, State> {
                           <Pagination
                             currentItemFrom={paginationFrom + 1}
                             currentItemTo={paginationTo}
-                            onNextClick={this.getGoToNextPage(
+                            onNextClick={this.getNextPageNavigationHandler(
                               redirects.length,
                               total,
                               fetchMore
                             )}
-                            onPrevClick={this.goToPrevPage}
+                            onPrevClick={this.handlePrevPageNavigation}
                             textOf={intl.formatMessage(messages.paginationOf)}
                             textShowRows={intl.formatMessage(messages.showRows)}
                             totalItems={total}
@@ -132,7 +132,7 @@ class RedirectList extends Component<Props, State> {
                         <UploadModal
                           isOpen={isModalOpen}
                           hasRedirects={hasRedirects}
-                          onClose={this.closeModal}
+                          onClose={this.handleModalClose}
                           refetchRedirects={refetch}
                         />
                       </Box>
@@ -149,7 +149,7 @@ class RedirectList extends Component<Props, State> {
     )
   }
 
-  private getGoToNextPage = (
+  private getNextPageNavigationHandler = (
     dataLength: number,
     total: number,
     fetchMore: QueryResult<
@@ -196,7 +196,7 @@ class RedirectList extends Component<Props, State> {
       ? paginationFrom + PAGINATION_STEP
       : total
 
-  private goToPrevPage = () => {
+  private handlePrevPageNavigation = () => {
     this.setState(prevState => ({
       ...prevState,
       paginationFrom: prevState.paginationFrom - PAGINATION_STEP,
@@ -205,7 +205,7 @@ class RedirectList extends Component<Props, State> {
   }
 
   private openModal = () => this.setState({ isModalOpen: true })
-  private closeModal = () => this.setState({ isModalOpen: false })
+  private handleModalClose = () => this.setState({ isModalOpen: false })
 }
 
 export default injectIntl(withTargetPath(RedirectList))

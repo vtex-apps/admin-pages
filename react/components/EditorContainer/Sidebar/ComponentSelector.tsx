@@ -24,6 +24,8 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
 }) => {
   const editor = useEditorContext()
 
+  const handleEditModeToggle = editor.toggleEditMode
+
   const handleMouseEnter = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement | HTMLLIElement>) => {
       const treePath = event.currentTarget.getAttribute('data-tree-path')
@@ -44,7 +46,7 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
           <FormattedMessage id="admin/pages.editor.components.title" />
         </h3>
         <div
-          onClick={editor.toggleEditMode}
+          onClick={handleEditModeToggle}
           className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
         >
           <span className="pr5 b--light-gray flex items-center">
