@@ -7,11 +7,9 @@ import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
   schema: object
-  openedItem: number | null
-  onOpen: (
-    index: number
-  ) => (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
-  onClose: () => void
+  openedItem: number[]
+  onOpen: (index: number) => (e: React.MouseEvent) => void
+  onClose: (index: number) => () => void
   sorting?: boolean
 }
 
@@ -32,9 +30,9 @@ const ArrayList = ({
       <ArrayFieldTemplateItem
         key={element.index}
         schema={schema}
-        isOpen={openedItem === element.index}
+        isOpen={openedItem.includes(element.index)}
         onOpen={onOpen(element.index)}
-        onClose={onClose}
+        onClose={onClose(element.index)}
         formIndex={element.index}
         showDragHandle={items.length > 1}
         {...element}

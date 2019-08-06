@@ -23,12 +23,13 @@ interface Props {
 
 interface State {
   sorting?: boolean
-  openedItem: number | null
+  openedItems: number[]
 }
 
 function getHelperDimensions({ node }: SortStart): Dimensions {
   const label = node.querySelector('.accordion-label') as HTMLElement
   const width = node instanceof HTMLElement ? node.offsetWidth : 0
+
   return {
     height: label && label.offsetHeight,
     width,
@@ -49,31 +50,36 @@ class ArrayFieldTemplate extends Component<
   public constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
-      openedItem: null,
+      openedItems: [],
     }
   }
 
   public render() {
     const { canAdd, items, schema, title } = this.props
-    const { openedItem, sorting } = this.state
+    const { openedItems: openedItem, sorting } = this.state
 
     return (
       <Fragment>
         {title && <SimpleFormattedMessage id={title} />}
         <ArrayList
-          items={items}
-          sorting={sorting}
-          schema={schema}
-          openedItem={openedItem}
-          onOpen={this.handleOpen}
-          onClose={this.handleClose}
-          onSortStart={this.handleSortStart}
-          onSortEnd={this.handleSortEnd}
+          pressDelay={200}
+          getHelperDimensions={getHelperDimensions}
+          getContainer={() =>
+            document.getElementById('component-editor-container') ||
+            document.body
+          }
           helperClass="accordion-item--dragged"
-          distance={5}
+          items={items}
           lockAxis="y"
           lockToContainerEdges
-          getHelperDimensions={getHelperDimensions}
+          onClose={this.handleClose}
+          onOpen={this.handleOpen}
+          onSortEnd={this.handleSortEnd}
+          onSortStart={this.handleSortStart}
+          openedItem={openedItem}
+          schema={schema}
+          sorting={sorting}
+          updateBeforeSortStart={this.handleUpdateBeforeSortStart}
           useDragHandle
         />
         <div className="pt4">
@@ -97,20 +103,34 @@ class ArrayFieldTemplate extends Component<
   ) => {
     e.stopPropagation()
 
-    this.setState({
-      openedItem: index,
+    this.setState(state => ({
+      ...state,
+      openedItems: state.openedItems.concat(index),
+    }))
+  }
+
+  private handleUpdateBeforeSortStart = () => {
+    return new Promise(resolve => {
+      this.setState(
+        {
+          openedItems: [],
+        },
+        () => {
+          resolve()
+        }
+      )
     })
   }
 
-  private handleClose = () => {
-    this.setState({
-      openedItem: -1,
-    })
+  private handleClose = (index: number) => () => {
+    this.setState(state => ({
+      ...state,
+      openedItems: state.openedItems.filter(id => id !== index),
+    }))
   }
 
   private handleSortStart = () => {
     this.setState({
-      openedItem: -1,
       sorting: true,
     })
   }
@@ -134,7 +154,7 @@ class ArrayFieldTemplate extends Component<
 
     onAddClick(e)
     this.setState({
-      openedItem: items.length,
+      openedItems: this.state.openedItems.concat(items.length),
     })
   }
 }

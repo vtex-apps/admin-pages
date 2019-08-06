@@ -247,7 +247,7 @@
   position: relative;
   justify-content: space-between;
   margin: 0 -24px 0;
-  height: 57px;
+  max-height: 100px;
   padding: 19px 16.5px 14px 16px;
   cursor: pointer;
   user-select: none;
@@ -325,7 +325,7 @@
 }
 
 .accordion-handle {
-  display: none;
+  display: block;
   position: absolute;
   left: 5px;
   padding: 3px;

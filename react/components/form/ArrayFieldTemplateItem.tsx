@@ -1,8 +1,8 @@
-import { createKeydownFromClick } from 'keydown-from-click'
+import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { Component } from 'react'
-import { FormattedMessage, defineMessages } from 'react-intl'
-import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
+import { defineMessages } from 'react-intl'
+import { ArrayFieldTemplateProps, UiSchema } from 'react-jsonschema-form'
 import {
   SortableElement,
   SortableElementProps,
@@ -44,6 +44,8 @@ type PropsFromItemTemplateProps = Pick<
 >
 type Props = CustomProps & SortableElementProps & PropsFromItemTemplateProps
 
+type SchemaTuple = [string, JSONSchema6 & { widget: UiSchema }]
+
 defineMessages({
   defaultTitle: {
     defaultMessage: 'Item',
@@ -63,6 +65,35 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
       showDragHandle,
     } = this.props
 
+    // TODO: fix types
+    const imagePropertyKey = Object.entries(schema.items.properties)
+      .reduce(
+        (acc, [property, propertySchema]: any) => {
+          if (
+            propertySchema.widget &&
+            propertySchema.widget['ui:widget'] === 'image-uploader'
+          ) {
+            acc.push(property)
+          }
+          return acc
+        },
+        [] as string[]
+      )
+      .sort((first, second) => {
+        if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
+          return 1
+        }
+
+        if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
+          return -1
+        }
+
+        return 0
+      })
+
+    const imagePreview =
+      imagePropertyKey.length > 0 &&
+      children.props.formData[imagePropertyKey[0]]
     const title =
       children.props.formData.__editorItemTitle ||
       path(['items', 'properties', '__editorItemTitle', 'default'], schema)
@@ -82,13 +113,15 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         >
           <div className="flex items-center">
             {showDragHandle && <Handle />}
-            <FormattedMessage
-              id={title || 'admin/pages.admin.pages.form.field.array.item'}
-            >
-              {message => (
-                <span className="f6 accordion-label-title">{message}</span>
-              )}
-            </FormattedMessage>
+            {imagePreview ? (
+              <img className="br3" src={imagePreview} />
+            ) : (
+              <label className="f6 accordion-label-title">
+                <SimpleFormattedMessage
+                  id={title || 'admin/pages.admin.pages.form.field.array.item'}
+                />
+              </label>
+            )}
           </div>
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (

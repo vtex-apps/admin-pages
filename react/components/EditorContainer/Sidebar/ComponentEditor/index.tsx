@@ -83,7 +83,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <ContentContainer containerClassName="h-100 overflow-y-auto overflow-x-hidden">
+      <ContentContainer
+        id="component-editor-container"
+        containerClassName="h-100 overflow-y-auto overflow-x-hidden"
+      >
         <EditorHeader
           isTitleEditable={isContent}
           onClose={onClose}
