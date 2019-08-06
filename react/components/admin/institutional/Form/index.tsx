@@ -68,7 +68,7 @@ const messages = defineMessages({
 })
 
 class FormContainer extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const isNew = !props.initialData.uuid

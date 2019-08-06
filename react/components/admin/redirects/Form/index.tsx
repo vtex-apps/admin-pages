@@ -89,7 +89,7 @@ class Form extends Component<Props, State> {
   private isEditingRedirect: boolean
   private minDate = new Date()
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.isEditingRedirect = props.initialData.id !== NEW_REDIRECT_ID

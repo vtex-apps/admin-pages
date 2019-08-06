@@ -53,7 +53,7 @@ class Scheduler extends Component<Props, State> {
 
   private initialState: State
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.currDate = new Date()

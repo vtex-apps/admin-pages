@@ -46,7 +46,7 @@ class ArrayFieldTemplate extends Component<
     schema: PropTypes.object,
   }
 
-  constructor(props: Props & ArrayFieldTemplateProps) {
+  public constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
       openedItem: null,

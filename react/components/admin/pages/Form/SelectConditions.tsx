@@ -26,7 +26,7 @@ class SelectConditions extends React.Component<Props> {
   private options: ConditionsProps['options']
   private labels: ConditionsProps['labels']
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const intl = props.intl

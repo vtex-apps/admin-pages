@@ -64,7 +64,7 @@ class PageForm extends Component<Props, State> {
     uuid: undefined,
   }
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const routeId = decodeURIComponent(props.params.id)

@@ -50,7 +50,7 @@ interface State {
 class PageForm extends Component<Props, State> {
   private isNew: boolean
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { params, route } = props

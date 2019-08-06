@@ -56,7 +56,7 @@ class ImageUploader extends Component<Props, State> {
     value: '',
   }
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -101,9 +101,7 @@ class ImageUploader extends Component<Props, State> {
                 style={backgroundImageStyle}
               >
                 <div
-                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${
-                    styles.gradient
-                  }`}
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
                 >
                   <div className="flex justify-center mb3">
                     <ImageIcon stroke="#fff" />

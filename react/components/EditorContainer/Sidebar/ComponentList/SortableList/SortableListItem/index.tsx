@@ -36,7 +36,7 @@ const messages = defineMessages({
 class SortableListItem extends Component<Props, State> {
   private actionMenuOptions: ActionMenuOption[]
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.actionMenuOptions = [
