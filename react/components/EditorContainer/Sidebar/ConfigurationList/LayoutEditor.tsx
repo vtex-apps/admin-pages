@@ -21,7 +21,7 @@ interface Props {
 class LayoutEditor extends Component<Props> {
   private block: Extension
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { editor, iframeRuntime } = this.props

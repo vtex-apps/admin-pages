@@ -108,7 +108,7 @@ class DeviceComponent extends Component<
   DeviceComponentProps,
   DeviceComponentState
 > {
-  constructor(props: DeviceComponentProps) {
+  public constructor(props: DeviceComponentProps) {
     super(props)
 
     this.state = {

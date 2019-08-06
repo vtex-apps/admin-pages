@@ -42,7 +42,7 @@ class List extends Component<Props, State> {
       .isRequired,
   }
 
-  constructor(props: Props, context: RenderContext) {
+  public constructor(props: Props, context: RenderContext) {
     super(props)
 
     this.state = {

@@ -33,7 +33,7 @@ interface State extends FormMetaContextT {
 }
 
 export class FormMetaProvider extends Component<{}, State> {
-  constructor(props: {}) {
+  public constructor(props: {}) {
     super(props)
 
     this.state = {

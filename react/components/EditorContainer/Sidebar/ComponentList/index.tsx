@@ -84,7 +84,7 @@ class ComponentList extends Component<Props, State> {
 
   private block: Extension
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { iframeRuntime } = props

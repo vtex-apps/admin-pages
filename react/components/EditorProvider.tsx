@@ -65,7 +65,7 @@ const viewPorts: { [name: string]: Viewport[] } = {
 class EditorProvider extends Component<Props, State> {
   private unlisten?: (() => void) | void
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.state = {

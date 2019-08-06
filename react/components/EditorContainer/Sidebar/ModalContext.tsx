@@ -30,7 +30,7 @@ export const ModalConsumer = ModalContext.Consumer
 type State = ModalContextT
 
 export class ModalProvider extends Component<{}, State> {
-  constructor(props: {}) {
+  public constructor(props: {}) {
     super(props)
 
     this.state = {

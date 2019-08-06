@@ -92,7 +92,7 @@ class ConfigurationList extends React.Component<Props, State> {
     200
   )
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { editor, iframeRuntime, intl, modal, queryData } = props
