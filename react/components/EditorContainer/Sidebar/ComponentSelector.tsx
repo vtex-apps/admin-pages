@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react'
+import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 

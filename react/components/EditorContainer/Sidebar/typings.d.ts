@@ -1,5 +1,3 @@
-import { JSONSchema6 } from 'json-schema'
-
 export interface FormMetaContext {
   addToI18nMapping: (newEntry: Record<string, string>) => void
   clearI18nMapping: () => void
@@ -15,13 +13,11 @@ export interface ModalContext {
   close: () => void
   isOpen: boolean
   open: () => void
-  setHandlers: (
-    handlers: {
-      actionHandler?: ModalContext['actionHandler']
-      cancelHandler?: ModalContext['cancelHandler']
-      closeCallbackHandler?: ModalContext['closeCallbackHandler']
-    }
-  ) => void
+  setHandlers: (handlers: {
+    actionHandler?: ModalContext['actionHandler']
+    cancelHandler?: ModalContext['cancelHandler']
+    closeCallbackHandler?: ModalContext['closeCallbackHandler']
+  }) => void
 }
 
 export interface SidebarComponent {

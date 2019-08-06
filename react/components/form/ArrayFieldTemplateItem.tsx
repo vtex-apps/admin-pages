@@ -23,7 +23,7 @@ const Handle = SortableHandle(() => (
   <DragHandle size={12} className="accordion-handle" />
 ))
 
-interface IProps {
+interface CustomProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
@@ -41,7 +41,7 @@ type PropsFromItemTemplateProps = Pick<
   ArrayFieldTemplateProps['items'][0],
   'onDropIndexClick' | 'hasRemove' | 'children'
 >
-type Props = IProps & SortableElementProps & PropsFromItemTemplateProps
+type Props = CustomProps & SortableElementProps & PropsFromItemTemplateProps
 
 defineMessages({
   defaultTitle: {
@@ -123,7 +123,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     }
   }
 
-  private renderChildren = (_: string) => (styles: React.CSSProperties) => (
+  private renderChildren = () => (styles: React.CSSProperties) => (
     <animated.div style={styles}>{this.props.children}</animated.div>
   )
 }

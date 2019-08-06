@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button, Spinner } from 'vtex.styleguide'
+import { Button } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'

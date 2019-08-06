@@ -13,7 +13,14 @@ interface ArrayListProps {
   sorting?: boolean
 }
 
-const ArrayList = ({ items, schema, openedItem, onOpen, onClose, sorting }: ArrayListProps & SortableContainerProps) => (
+const ArrayList = ({
+  items,
+  schema,
+  openedItem,
+  onOpen,
+  onClose,
+  sorting,
+}: ArrayListProps & SortableContainerProps) => (
   <div
     className={`accordion-list-container ${
       sorting ? 'accordion-list-container--sorting' : ''
@@ -22,7 +29,6 @@ const ArrayList = ({ items, schema, openedItem, onOpen, onClose, sorting }: Arra
     {items.map(element => (
       <ArrayFieldTemplateItem
         key={element.index}
-        children={<div> oi</div>}
         schema={schema}
         isOpen={openedItem === element.index}
         onOpen={onOpen(element.index)}

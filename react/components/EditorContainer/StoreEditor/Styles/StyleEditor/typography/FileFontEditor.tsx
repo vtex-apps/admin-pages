@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react'
-import { DropEvent, DropzoneOptions, useDropzone } from 'react-dropzone'
+import { DropzoneOptions, useDropzone } from 'react-dropzone'
 import {
   defineMessages,
   FormattedMessage,
@@ -64,11 +64,7 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   const updateFile = (index: number, style: FontFlavour) =>
     dispatchFiles({ type: 'update', index, style })
 
-  const onDrop = (
-    acceptedFiles: File[],
-    rejectedFiles: File[],
-    event: DropEvent
-  ): void => {
+  const onDrop = (acceptedFiles: File[], rejectedFiles: File[]): void => {
     if (rejectedFiles.length > 0) {
       showToast(
         'Uploaded files must be under 2MB and have one of the extensions: ' +

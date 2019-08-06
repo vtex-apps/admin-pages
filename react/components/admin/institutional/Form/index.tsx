@@ -9,8 +9,6 @@ import Form from './Form'
 import { getValidateFormState } from './utils'
 import { OperationsResults } from './withContentContext'
 
-import { parseStoreAppId } from '../utils'
-
 import { FormErrors } from '../../pages/Form/typings'
 import { generateNewRouteId } from '../../pages/Form/utils'
 
@@ -132,11 +130,8 @@ class FormContainer extends React.PureComponent<Props, State> {
       onSave,
       showToast,
       onSaveContent,
-      store,
       culture,
     } = this.props
-    const storeAppId = parseStoreAppId(store)
-
     event.preventDefault()
 
     const nextState = getValidateFormState(this.state)

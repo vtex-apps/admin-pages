@@ -1,7 +1,4 @@
-import { Component, ReactElement } from 'react'
-
 import { State as HighlightOverlayState } from '../HighlightOverlay'
-import { getAvailableCultures } from '../components/DomainMessages'
 
 declare global {
   declare module '*.graphql' {
