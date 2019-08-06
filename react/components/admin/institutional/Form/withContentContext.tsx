@@ -2,6 +2,7 @@ import { pathOr } from 'ramda'
 import * as React from 'react'
 import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
+import Loader from './Loader'
 import UnallowedWarning from './UnallowedWarning'
 
 import {
@@ -17,7 +18,6 @@ import {
 
 import SaveContentMutation from '../../../EditorContainer/mutations/SaveContent'
 import ListContentQuery from '../../../EditorContainer/queries/ListContent'
-import Loader from '../../../Loader'
 
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'

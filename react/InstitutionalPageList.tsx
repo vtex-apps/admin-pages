@@ -4,8 +4,8 @@ import { InjectedIntl, injectIntl } from 'react-intl'
 
 import { PageHeader } from 'vtex.styleguide'
 
+import Loader from './components/admin/institutional/Form/Loader'
 import List from './components/admin/institutional/List/index'
-import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
 
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
