@@ -82,23 +82,6 @@ const getComponentRole = (
   return getBlockRole(treePathTail)
 }
 
-export const normalize = (components: SidebarComponent[]) => {
-  if (components.length === 0) {
-    return []
-  }
-  const rootId = components[0].treePath.split('/')[0]
-  const root = { treePath: rootId, name: 'root', isEditable: false }
-  const allComponents = [root, ...components]
-
-  const modifiedComponents = hideNonExistentNodesInTreePath(allComponents).sort(
-    (cmp1: ModifiedSidebarComponent, cmp2: ModifiedSidebarComponent) =>
-      modifiedPathLength(cmp1) - modifiedPathLength(cmp2)
-  )
-
-  const nodes = buildTree(modifiedComponents)
-  return hoistSurroundingBlocks(nodes, rootId)
-}
-
 const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
   const nodes: Record<string, NormalizedComponent> = {}
   orderedNodes.forEach(({ modifiedTreePath, ...component }) => {
@@ -118,14 +101,6 @@ const buildTree = (orderedNodes: ModifiedSidebarComponent[]) => {
   return nodes
 }
 
-const hoistSurroundingBlocks = (
-  nodes: Record<string, NormalizedComponent>,
-  rootId: string
-) => {
-  const childrenByRole = partitionNodesChildrenByRole(nodes)
-  return hoistSubtrees(nodes[rootId], childrenByRole, true)
-}
-
 const partitionNodesChildrenByRole = (
   nodes: Record<string, NormalizedComponent>
 ) => {
@@ -137,6 +112,7 @@ const partitionNodesChildrenByRole = (
       },
       { around: [], after: [], before: [], blocks: [] }
     )
+
   return Object.values(nodes).reduce(
     (childrenByRole: Record<string, ComponentsByRole>, node) => {
       childrenByRole[node.treePath] = partitionChildrenByRole(node)
@@ -173,6 +149,33 @@ const hoistSubtrees = (
   }
 
   return [...current]
+}
+
+const hoistSurroundingBlocks = (
+  nodes: Record<string, NormalizedComponent>,
+  rootId: string
+) => {
+  const childrenByRole = partitionNodesChildrenByRole(nodes)
+
+  return hoistSubtrees(nodes[rootId], childrenByRole, true)
+}
+
+export const normalize = (components: SidebarComponent[]) => {
+  if (components.length === 0) {
+    return []
+  }
+  const rootId = components[0].treePath.split('/')[0]
+  const root = { treePath: rootId, name: 'root', isEditable: false }
+  const allComponents = [root, ...components]
+
+  const modifiedComponents = hideNonExistentNodesInTreePath(allComponents).sort(
+    (cmp1: ModifiedSidebarComponent, cmp2: ModifiedSidebarComponent) =>
+      modifiedPathLength(cmp1) - modifiedPathLength(cmp2)
+  )
+
+  const nodes = buildTree(modifiedComponents)
+
+  return hoistSurroundingBlocks(nodes, rootId)
 }
 
 export const pureSplice = <T>(index: number, target: T[]) => [
