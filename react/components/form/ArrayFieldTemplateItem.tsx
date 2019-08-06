@@ -1,6 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
-import React, { Component } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { defineMessages } from 'react-intl'
 import { ArrayFieldTemplateProps, UiSchema } from 'react-jsonschema-form'
 import {
@@ -35,9 +35,6 @@ interface CustomProps {
   schema: object
 }
 
-interface State {
-  autoHeight: boolean
-}
 type PropsFromItemTemplateProps = Pick<
   ArrayFieldTemplateProps['items'][0],
   'onDropIndexClick' | 'hasRemove' | 'children'
@@ -46,133 +43,131 @@ type Props = CustomProps & SortableElementProps & PropsFromItemTemplateProps
 
 type SchemaTuple = [string, JSONSchema6 & { widget: UiSchema }]
 
-defineMessages({
+const messages = defineMessages({
   defaultTitle: {
     defaultMessage: 'Item',
     id: 'admin/pages.admin.pages.form.field.array.item',
   },
 })
 
-class ArrayFieldTemplateItem extends Component<Props, State> {
-  public render() {
-    const {
-      children,
-      schema,
-      formIndex,
-      hasRemove,
-      onDropIndexClick,
-      isOpen,
-      showDragHandle,
-    } = this.props
+const ArrayFieldTemplateItem: React.FC<Props> = props => {
+  const {
+    children,
+    schema,
+    formIndex,
+    hasRemove,
+    onDropIndexClick,
+    isOpen,
+    showDragHandle,
+  } = props
 
-    // TODO: fix types
-    const imagePropertyKey = Object.entries(schema.items.properties)
-      .reduce(
-        (acc, [property, propertySchema]: any) => {
-          if (
-            propertySchema.widget &&
-            propertySchema.widget['ui:widget'] === 'image-uploader'
-          ) {
-            acc.push(property)
-          }
-          return acc
-        },
-        [] as string[]
-      )
-      .sort((first, second) => {
-        if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
-          return 1
+  const TransitionChildren = useMemo(
+    () => (_: string) => (styles: React.CSSProperties) => (
+      <animated.div style={styles}>{props.children}</animated.div>
+    ),
+    [props.children]
+  )
+
+  const handleLabelClick = useCallback(
+    (e: React.MouseEvent) => {
+      if (props.isOpen) {
+        props.onClose()
+      } else {
+        props.onOpen(e)
+      }
+    },
+    [props.isOpen, props.onOpen, props.onClose]
+  )
+
+  // TODO: fix types
+  const imagePropertyKey = Object.entries(schema.items.properties)
+    .reduce(
+      (acc, [property, propertySchema]: any) => {
+        if (
+          propertySchema.widget &&
+          propertySchema.widget['ui:widget'] === 'image-uploader'
+        ) {
+          acc.push(property)
         }
+        return acc
+      },
+      [] as string[]
+    )
+    .sort((first, second) => {
+      if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
+        return 1
+      }
 
-        if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
-          return -1
-        }
+      if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
+        return -1
+      }
 
-        return 0
-      })
-      .find(key => {
-        return !!children.props.formData[key]
-      })
+      return 0
+    })
+    .find(key => {
+      return !!children.props.formData[key]
+    })
 
-    const imagePreview =
-      imagePropertyKey && children.props.formData[imagePropertyKey]
+  const imagePreview =
+    imagePropertyKey && children.props.formData[imagePropertyKey]
 
-    const title =
-      children.props.formData.__editorItemTitle ||
-      path(['items', 'properties', '__editorItemTitle', 'default'], schema)
+  const title =
+    children.props.formData.__editorItemTitle ||
+    path(['items', 'properties', '__editorItemTitle', 'default'], schema)
 
-    return (
+  return (
+    <div
+      className={`accordion-item bb b--light-silver ${
+        showDragHandle ? '' : 'accordion-item--handle-hidden'
+      }`}
+    >
       <div
-        className={`accordion-item bb b--light-silver ${
-          showDragHandle ? '' : 'accordion-item--handle-hidden'
-        }`}
+        className={`accordion-label ${imagePreview ? 'h4' : 'h3'}`}
+        onClick={handleLabelClick}
       >
-        <div
-          className={`accordion-label ${imagePreview ? 'h4' : 'h3'}`}
-          onClick={this.handleLabelClick}
-        >
-          <div className="flex items-center overflow-hidden">
-            {showDragHandle && <Handle />}
-            {imagePreview ? (
-              <img
-                className="br3 ml7"
-                style={{ maxWidth: 'calc(100% - 3rem)' }}
-                src={imagePreview}
-              />
-            ) : (
-              <label className="ml7 f6 accordion-label-title">
-                <SimpleFormattedMessage
-                  id={title || 'admin/pages.admin.pages.form.field.array.item'}
-                />
-              </label>
-            )}
-          </div>
-          <div className="flex items-center accordion-label-buttons">
-            {hasRemove && (
-              <button
-                type="button"
-                className="accordion-icon-button accordion-icon-button--remove"
-                onClick={stopPropagation(onDropIndexClick(formIndex))}
-              >
-                <TrashSimple size={15} />
-              </button>
-            )}
-          </div>
+        <div className="flex items-center overflow-hidden">
+          {showDragHandle && <Handle />}
+          {imagePreview ? (
+            <img
+              className="br3 ml7"
+              style={{ maxWidth: 'calc(100% - 3rem)' }}
+              src={imagePreview}
+            />
+          ) : (
+            <label className="ml7 f6 accordion-label-title">
+              <SimpleFormattedMessage id={title || messages.defaultTitle.id} />
+            </label>
+          )}
         </div>
-        <div
-          className={`accordion-content ${
-            isOpen ? 'accordion-content--open' : ''
-          }`}
-        >
-          <Transition
-            native
-            config={{ duration: 300 }}
-            items={isOpen ? ['children'] : []}
-            from={{ opacity: 0, height: 0 }}
-            enter={{ opacity: 1, height: 'auto' }}
-            leave={{ opacity: 0, height: 0 }}
-          >
-            {this.renderChildren}
-          </Transition>
+        <div className="flex items-center accordion-label-buttons">
+          {hasRemove && (
+            <button
+              type="button"
+              className="accordion-icon-button accordion-icon-button--remove"
+              onClick={stopPropagation(onDropIndexClick(formIndex))}
+            >
+              <TrashSimple size={15} />
+            </button>
+          )}
         </div>
       </div>
-    )
-  }
-
-  private handleItemClick = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
-    const { isOpen, onOpen, onClose } = this.props
-
-    if (isOpen) {
-      onClose()
-    } else {
-      onOpen(e)
-    }
-  }
-
-  private handleItemKeyDown = createKeydownFromClick(this.handleItemClick)
-
-  private renderChildren = () => (styles: React.CSSProperties) => (
-    <animated.div style={styles}>{this.props.children}</animated.div>
+      <div
+        className={`accordion-content ${
+          isOpen ? 'accordion-content--open' : ''
+        }`}
+      >
+        <Transition
+          native
+          config={{ duration: 300 }}
+          items={isOpen ? ['children'] : []}
+          from={{ opacity: 0, height: 0 }}
+          enter={{ opacity: 1, height: 'auto' }}
+          leave={{ opacity: 0, height: 0 }}
+        >
+          {TransitionChildren}
+        </Transition>
+      </div>
+    </div>
   )
 }
 
