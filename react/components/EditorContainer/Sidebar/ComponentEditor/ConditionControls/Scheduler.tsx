@@ -18,7 +18,7 @@ import Typings from './typings'
 
 interface CustomProps {
   initialValues?: Typings.DateRange
-  updateCondition: (dates: Typings.DateRange) => void
+  onConditionUpdate: (dates: Typings.DateRange) => void
 }
 
 type Props = CustomProps & InjectedIntlProps & RenderContextProps
@@ -95,7 +95,7 @@ class Scheduler extends Component<Props, State> {
         <Toggle
           checked={this.state.shouldDisplayFrom}
           label={intl.formatMessage(messages.toggleStart)}
-          onChange={this.toggleFromVisibility}
+          onChange={this.handleFromVisibilityToggle}
         />
 
         {this.state.shouldDisplayFrom && (
@@ -123,7 +123,7 @@ class Scheduler extends Component<Props, State> {
         <Toggle
           checked={this.state.shouldDisplayTo}
           label={intl.formatMessage(messages.toggleEnd)}
-          onChange={this.toggleToVisibility}
+          onChange={this.handleToVisibilityToggle}
         />
 
         {this.state.shouldDisplayTo && (
@@ -150,7 +150,7 @@ class Scheduler extends Component<Props, State> {
   }
 
   private getConditionUpdater = (dates: Typings.DateRange) => () => {
-    this.props.updateCondition({
+    this.props.onConditionUpdate({
       from: dates.from || this.state.from,
       to: dates.to || this.state.to,
     })
@@ -203,7 +203,7 @@ class Scheduler extends Component<Props, State> {
     )
   }
 
-  private toggleFromVisibility = () => {
+  private handleFromVisibilityToggle = () => {
     if (this.state.from) {
       const from = undefined
 
@@ -221,7 +221,7 @@ class Scheduler extends Component<Props, State> {
     }
   }
 
-  private toggleToVisibility = () => {
+  private handleToVisibilityToggle = () => {
     if (this.state.to) {
       const to = undefined
 

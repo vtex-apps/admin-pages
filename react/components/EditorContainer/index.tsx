@@ -53,8 +53,8 @@ const getContainerProps = (layout: Viewport) => {
 interface Props {
   availableCultures: LabelledLocale[]
   editor: EditorContext
+  onShowAdminControlsToggle: () => void
   runtime: RenderContext | null
-  toggleShowAdminControls: () => void
   viewports: Viewport[]
   visible: boolean
 }
@@ -63,8 +63,8 @@ const EditorContainer: React.FC<Props> = ({
   availableCultures,
   children,
   editor,
+  onShowAdminControlsToggle,
   runtime,
-  toggleShowAdminControls,
   viewports,
   visible,
 }) => {
@@ -183,7 +183,7 @@ const EditorContainer: React.FC<Props> = ({
                     <DeviceSwitcher
                       inPreview={!visible}
                       setViewport={editor.setViewport}
-                      toggleEditMode={toggleShowAdminControls}
+                      toggleEditMode={onShowAdminControlsToggle}
                       viewport={editor.viewport}
                       viewports={viewports}
                     />

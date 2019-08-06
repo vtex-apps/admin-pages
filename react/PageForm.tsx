@@ -121,11 +121,11 @@ class PageForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-          this.exit()
+          this.handleExit()
         }
       } catch (err) {
         console.error(err)
-        this.exit()
+        this.handleExit()
       }
     } else {
       this.setState({ isLoading: false })
@@ -163,7 +163,7 @@ class PageForm extends Component<Props, State> {
                           'store.custom'
                         )}
                         onDelete={deleteRoute}
-                        onExit={this.exit}
+                        onExit={this.handleExit}
                         onSave={saveRoute}
                         templates={templates}
                         showToast={showToast}
@@ -180,7 +180,7 @@ class PageForm extends Component<Props, State> {
     )
   }
 
-  private exit = () => {
+  private handleExit = () => {
     this.props.runtime.navigate({ page: ROUTES_LIST, params: {} })
   }
 }
