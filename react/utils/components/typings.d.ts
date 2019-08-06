@@ -1,5 +1,4 @@
 import { JSONSchema6 } from 'json-schema'
-import { InjectedIntl } from 'react-intl'
 import { RenderComponent } from 'vtex.render-runtime'
 
 import { FormMetaContext } from '../../components/EditorContainer/Sidebar/typings'

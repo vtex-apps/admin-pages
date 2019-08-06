@@ -21,7 +21,7 @@ const Select: React.FunctionComponent<Props> = ({
 }) => (
   <Fragment>
     <ReactSelect
-      className={`f6 ${!!errorMessage ? 'b--danger bw1' : ''}`}
+      className={`f6 ${errorMessage ? 'b--danger bw1' : ''}`}
       arrowRenderer={(
         { onMouseDown, isOpen }: any // ArrowRendererProps isn't defining isOpen.
       ) => (
@@ -42,7 +42,7 @@ const Select: React.FunctionComponent<Props> = ({
       }}
       options={options}
       style={
-        !!errorMessage
+        errorMessage
           ? {
               borderColor: '#ff4c4c',
               borderWidth: '.125rem',

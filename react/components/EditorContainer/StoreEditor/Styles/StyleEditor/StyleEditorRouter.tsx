@@ -57,7 +57,7 @@ const StyleEditorRouter: React.FunctionComponent<Props> = ({
     }
   }, [setStyleAsset, stylesheet])
 
-  const renderEditorSelector = (_: RouteComponentProps) => (
+  const renderEditorSelector = () => (
     <EditorSelector {...{ config, name, onSave, stopEditing }} />
   )
 

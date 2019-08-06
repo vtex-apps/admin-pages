@@ -1,7 +1,7 @@
 import ApolloClient from 'apollo-client'
 import { concat, keys, map, reduce, splitEvery } from 'ramda'
 
-import { defineMessages, InjectedIntl } from 'react-intl'
+import { InjectedIntl } from 'react-intl'
 import languagesQuery from '../queries/Languages.graphql'
 import messagesForDomainQuery from '../queries/MessagesForDomain.graphql'
 
@@ -71,11 +71,7 @@ export const editorMessagesFromRuntime = async ({
   domain,
   runtime,
 }: Props) => {
-  const {
-    components,
-    renderMajor,
-    route: { path },
-  } = runtime
+  const { components, renderMajor } = runtime
   const componentNames = keys(components)
   const componentsBatch = splitEvery(MAX_COMPONENTES_PER_QUERY, componentNames)
   const responses = map(

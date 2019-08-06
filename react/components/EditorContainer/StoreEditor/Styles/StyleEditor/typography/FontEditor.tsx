@@ -9,7 +9,6 @@ import { matchPath, RouteComponentProps } from 'react-router'
 import { Button, Spinner, Tab, Tabs, ToastContext } from 'vtex.styleguide'
 
 import { ApolloError } from 'apollo-client'
-import { FetchResult } from 'react-apollo'
 import DeleteFontFamily, {
   DeleteFontFamilyFn,
 } from '../mutations/DeleteFontFamily'

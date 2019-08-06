@@ -1,5 +1,4 @@
-import { JSONSchema6 } from 'json-schema'
-import { has, path, pathOr } from 'ramda'
+import { path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'

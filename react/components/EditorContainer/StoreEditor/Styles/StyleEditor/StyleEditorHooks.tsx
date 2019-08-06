@@ -52,7 +52,7 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
   const [config] = configReducer
 
   const editingState = useState(false)
-  const [_, setEditing] = editingState
+  const setEditing = editingState[1]
 
   const hooks = {
     config: configReducer,
