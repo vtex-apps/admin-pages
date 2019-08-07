@@ -59,11 +59,13 @@ const StyleCard: React.FunctionComponent<Props> = ({
   }
 
   const {
-    action_primary,
-    action_secondary,
-    base,
-    emphasis,
-  } = config.semanticColors.background
+    background: {
+      action_primary: actionPrimary,
+      action_secondary: actionSecondary,
+      base,
+      emphasis,
+    },
+  } = config.semanticColors
 
   const typography = config.typography.styles.heading_2
 
@@ -130,7 +132,7 @@ const StyleCard: React.FunctionComponent<Props> = ({
               <Typography typography={typography} />
               <div className="pl5">
                 <Colors
-                  colors={[emphasis, action_primary, action_secondary, base]}
+                  colors={[emphasis, actionPrimary, actionSecondary, base]}
                 />
               </div>
             </div>
