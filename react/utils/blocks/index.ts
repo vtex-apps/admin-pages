@@ -12,8 +12,12 @@ export const getBlockRole = (treePathTail: string): BlockRolesForTree => {
 
 export const getBlockPath = (
   extensions: RenderContext['extensions'],
-  treePath: string
+  treePath: string | null
 ): BlockPath => {
+  if (!treePath) {
+    return []
+  }
+
   const splitTreePath = treePath.split('/')
 
   const blockId = extensions[treePath].blockId
@@ -81,11 +85,15 @@ export const getParentBlockId = (
 }
 
 export const getRelativeBlocksIds = (
-  treePath: string,
+  treePath: string | null,
   extensions: RenderContext['extensions'],
   targetObj: RelativeBlocks
-) =>
-  Object.entries(targetObj).reduce<RelativeBlocks>(
+) => {
+  if (!treePath) {
+    return {}
+  }
+
+  return Object.entries(targetObj).reduce<RelativeBlocks>(
     (acc, [currKey, currValue]) =>
       currValue
         ? {
@@ -97,6 +105,7 @@ export const getRelativeBlocksIds = (
         : acc,
     {}
   )
+}
 
 export const getSitewideTreePath = (treePath: string) =>
   ['*', ...treePath.split('/').slice(1)].join('/')

@@ -73,7 +73,7 @@ class LayoutEditor extends Component<Props> {
     updateExtensionFromForm({
       data: event,
       runtime: iframeRuntime,
-      treePath: editor.editTreePath!,
+      treePath: editor.editTreePath,
     })
   }
 
@@ -109,7 +109,7 @@ class LayoutEditor extends Component<Props> {
     const extensionProps = this.getExtensionProps()
 
     const parsedRelativeBlocks = getRelativeBlocksIds(
-      editor.editTreePath!,
+      editor.editTreePath,
       iframeRuntime.extensions,
       {
         after: this.block.after,
@@ -132,7 +132,7 @@ class LayoutEditor extends Component<Props> {
           },
           blockPath: getBlockPath(
             iframeRuntime.extensions,
-            editor.editTreePath!
+            editor.editTreePath
           ),
         },
       })

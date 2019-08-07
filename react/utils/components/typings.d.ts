@@ -39,5 +39,5 @@ export interface UpdateExtensionFromFormParams {
   data: object
   isContent?: boolean
   runtime: RenderContext
-  treePath: string
+  treePath: string | null
 }

@@ -105,6 +105,8 @@ const EditorContainer: React.FC<Props> = ({
   const isMasterWorkspace = runtime && runtime.workspace === 'master'
   const hasAlert = isMasterWorkspace || isDevelopment
 
+  const urlPath = iframeWindow ? iframeWindow.location.pathname : ''
+
   return (
     <FormMetaProvider>
       <ModalProvider>
@@ -124,7 +126,7 @@ const EditorContainer: React.FC<Props> = ({
                 changeMode={setStoreEditMode}
                 mode={storeEditMode}
                 onChangeUrlPath={onChangeIframeUrl}
-                urlPath={iframeWindow.location.pathname}
+                urlPath={urlPath}
                 visible={visible}
                 runtime={runtime}
               />

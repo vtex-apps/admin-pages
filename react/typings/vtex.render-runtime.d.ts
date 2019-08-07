@@ -20,22 +20,22 @@ declare module 'vtex.render-runtime' {
 
   export declare const useRuntime: () => RenderContext
 
-  interface RenderComponent<P = {}, S = {}> extends Component<P, S> {
+  interface RenderComponent {
     getCustomMessages?: (locale: string) => unknown
-    schema: ComponentSchema
+    schema?: ComponentSchema
     getSchema?: (props: object, otherArgs?: unknown) => ComponentSchema
     uiSchema?: object
   }
 
   export interface ComponentsRegistry {
-    [component: string]: RenderComponent<unknown, unknown>
+    [component: string]: RenderComponent
   }
 
   export interface Window extends Window {
     __RENDER_8_COMPONENTS__: ComponentsRegistry
   }
 
-  export const buildCacheLocator = (
+  export const buildCacheLocator: (
     app: string,
     type: string,
     cacheId: string
