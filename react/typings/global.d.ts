@@ -1,3 +1,5 @@
+import { JSONSchema6 } from 'json-schema'
+
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 
 declare global {
