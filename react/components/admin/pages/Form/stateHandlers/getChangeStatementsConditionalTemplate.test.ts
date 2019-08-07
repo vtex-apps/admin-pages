@@ -1,17 +1,20 @@
-import newPage from './__fixtures__/newPage'
+import NEW_PAGE from './__fixtures__/newPage'
+import BASE_STATE from './__fixtures__/state'
 import { getChangeStatementsConditionalTemplate } from './getChangeStatementsConditionalTemplate'
 
 describe('getChangeStatementsConditionalTemplate', () => {
   it('should change statement inside condition given a page uniqueId', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             condition: {
               allMatches: false,
               statements: [],
@@ -19,7 +22,7 @@ describe('getChangeStatementsConditionalTemplate', () => {
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
         ],
@@ -28,31 +31,29 @@ describe('getChangeStatementsConditionalTemplate', () => {
 
     expect(
       getChangeStatementsConditionalTemplate(3, [
-        { subject: 'Date', verb: '=' },
+        { error: '', object: {}, subject: 'Date', verb: '=' },
       ])(mockState)
-    ).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 10,
+    ).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 10,
+          },
+          {
+            ...NEW_PAGE,
+            condition: {
+              allMatches: false,
+              statements: [{ subject: 'Date', verb: '=' }],
             },
-            {
-              ...newPage,
-              condition: {
-                allMatches: false,
-                statements: [{ subject: 'Date', verb: '=' }],
-              },
-              uniqueId: 3,
-            },
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
+            uniqueId: 3,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+    })
   })
 })

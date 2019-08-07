@@ -1,11 +1,12 @@
 import { RouteFormData } from 'pages'
+
 import { State } from '../index'
 
-const requiredMessage = 'admin/pages.admin.pages.form.templates.field.required'
+const REQUIRED_MESSAGE = 'admin/pages.admin.pages.form.templates.field.required'
 
 const validateFalsyPath = (path: keyof RouteFormData) => (
   data: RouteFormData
-) => !data[path] && { [path]: requiredMessage }
+) => !data[path] && { [path]: REQUIRED_MESSAGE }
 
 const validateUrlBeginning = (path: string) => {
   if (path.startsWith('/')) {
@@ -19,11 +20,11 @@ const validateUrlBeginning = (path: string) => {
 const validateConditionalTemplates: (data: RouteFormData) => { pages?: {} } = (
   data: RouteFormData
 ) => {
-  return data.pages.reduce(
+  return data.pages.reduce<Record<string, unknown>>(
     (acc, { uniqueId, condition, template }) => {
-      const templateError = !template && { template: requiredMessage }
+      const templateError = !template && { template: REQUIRED_MESSAGE }
       const conditionError = !condition.statements.length && {
-        condition: requiredMessage,
+        condition: REQUIRED_MESSAGE,
       }
 
       if (templateError || conditionError) {
@@ -37,7 +38,7 @@ const validateConditionalTemplates: (data: RouteFormData) => { pages?: {} } = (
       }
       return acc
     },
-    {} as any
+    {}
   )
 }
 

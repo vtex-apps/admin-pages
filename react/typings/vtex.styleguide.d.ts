@@ -49,7 +49,7 @@ declare module 'vtex.styleguide' {
   interface ConditionsStatement {
     subject: string
     verb: string
-    object: unknown
+    object: Record<string, unknown>
     error: unknown
   }
 

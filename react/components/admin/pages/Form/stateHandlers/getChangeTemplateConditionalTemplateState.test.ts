@@ -1,21 +1,24 @@
-import newPage from './__fixtures__/newPage'
+import NEW_PAGE from './__fixtures__/newPage'
+import BASE_STATE from './__fixtures__/state'
 import { getChangeTemplateConditionalTemplateState } from './getChangeTemplateConditionalTemplateState'
 
 describe('getChangeTemplateConditionalTemplateState', () => {
   it('should modify template given a unique ID', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
         ],
@@ -24,43 +27,43 @@ describe('getChangeTemplateConditionalTemplateState', () => {
 
     expect(
       getChangeTemplateConditionalTemplateState(3, 'store/test')(mockState)
-    ).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 10,
-            },
-            {
-              ...newPage,
-              template: 'store/test',
-              uniqueId: 3,
-            },
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
+    ).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 10,
+          },
+          {
+            ...NEW_PAGE,
+            template: 'store/test',
+            uniqueId: 3,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+    })
   })
 
   it('should clear formError', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
         ],
