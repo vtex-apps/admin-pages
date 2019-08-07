@@ -80,11 +80,12 @@ function reducer(
       prevState.splice(action.index, 1)
       return [...prevState]
     case 'update':
-      const {
-        style: [fontStyle, fontWeight],
-        index,
-      } = action
-      prevState[index] = { ...prevState[index], fontWeight, fontStyle }
+      prevState[action.index] = {
+        ...prevState[action.index],
+        fontStyle: action.style[0],
+        fontWeight: action.style[1],
+      }
+
       return [...prevState]
   }
 }
