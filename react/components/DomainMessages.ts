@@ -1,5 +1,5 @@
 import ApolloClient from 'apollo-client'
-import { concat, keys, map, reduce, splitEvery } from 'ramda'
+import { concat, keys, map, splitEvery } from 'ramda'
 
 import { InjectedIntl } from 'react-intl'
 import languagesQuery from '../queries/Languages.graphql'
@@ -48,11 +48,7 @@ export interface LabelledLocale {
 }
 
 const messagesToReactIntlFormat = (messages: Message[]) =>
-  reduce(
-    (acc, { key, message }) => ({ ...acc, [key]: message }),
-    {} as Record<string, string>,
-    messages
-  )
+  messages.reduce((acc, { key, message }) => ({ ...acc, [key]: message }), {})
 
 const reduceP = async <T, K>(
   fn: (acc: K, item: T) => Promise<K>,

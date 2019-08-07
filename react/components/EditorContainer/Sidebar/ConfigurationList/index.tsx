@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from 'apollo-client'
 import { JSONSchema6 } from 'json-schema'
 import throttle from 'lodash/throttle'
-import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
+import { clone, equals, isEmpty, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
@@ -77,7 +77,14 @@ const messages = defineMessages({
   },
 })
 
-const omitUndefined = pickBy(val => typeof val !== 'undefined')
+const omitUndefined = (obj: Extension['content']) =>
+  Object.entries(obj).reduce((acc, [currKey, currValue]) => {
+    if (typeof currValue === 'undefined') {
+      return acc
+    }
+
+    return { ...acc, [currKey]: currValue }
+  }, {})
 
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
