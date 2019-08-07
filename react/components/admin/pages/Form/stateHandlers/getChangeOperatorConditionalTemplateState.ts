@@ -1,4 +1,5 @@
 import { ConditionsProps } from 'vtex.styleguide'
+
 import { State } from '../index'
 
 export const getChangeOperatorConditionalTemplateState = (

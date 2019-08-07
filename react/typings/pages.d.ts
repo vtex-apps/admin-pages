@@ -6,7 +6,7 @@ declare module 'pages' {
   interface Statements {
     subject: string
     verb: string
-    object: unknown
+    object: Record<string, unknown>
     error: unknown
   }
 

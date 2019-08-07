@@ -1,69 +1,69 @@
-import { State } from '../index'
-import newPage from './__fixtures__/newPage'
+import NEW_PAGE from './__fixtures__/newPage'
+import BASE_STATE from './__fixtures__/state'
 import { getRemoveConditionalTemplateState } from './getRemoveConditionalTemplateState'
 
 describe('getRemoveConditionalTemplateState', () => {
   it('should remove the given page with the given uniqueId from "data.pages"', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+    }
 
-    expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
+    expect(getRemoveConditionalTemplateState(10)(mockState)).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+    })
   })
 
   it(`should clear form errors`, () => {
-    const mockState = ({
+    const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
       formErrors: {
         title: 'oi',
       },
-    } as unknown) as State
+    }
 
-    expect(getRemoveConditionalTemplateState(10)(mockState)).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-        formErrors: {},
-      })
-    )
+    expect(getRemoveConditionalTemplateState(10)(mockState)).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+      formErrors: {},
+    })
   })
 })

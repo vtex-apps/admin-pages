@@ -58,6 +58,7 @@
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.1",
     "intl": "^1.2.5",
+    "mockdate": "^2.0.4",
     "moment": "^2.22.2",
     "react": "^16.8.1",
     "react-apollo": "^2.5.3",

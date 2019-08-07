@@ -4608,6 +4608,11 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   dependencies:
     minimist "0.0.8"
 
+mockdate@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/mockdate/-/mockdate-2.0.4.tgz#105459332b3b7ea13993b690856f221906f59f33"
+  integrity sha512-rQ1mgf9rQU3fh5NtHZGmGwua4A51Jz1LSoJNc21Y9B4KX2AYGx8RMPUbB6E1Fq6uZMS2bioqlHA+26vt4qBiOw==
+
 moment@^2.22.2:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"

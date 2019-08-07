@@ -6,6 +6,7 @@ export const getRemoveConditionalTemplateState = (uniqueId: number) => (
   const newPages = prevState.data.pages.filter(
     page => page.uniqueId !== uniqueId
   )
+
   return {
     ...prevState,
     data: { ...prevState.data, pages: newPages },

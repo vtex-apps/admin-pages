@@ -25,13 +25,16 @@ declare global {
     component: string | null
     composition?: 'blocks' | 'children'
     configurationsIds?: string[]
-    content: object
+    content: Record<string, unknown>
     contentMapId?: string
     hasContentSchema: boolean
-    implementationIndex: number
-    implements: string[]
-    props: object
+    implementationIndex?: number
+    implements?: string[]
+    preview: object | null
+    props: Record<string, unknown>
+    render: 'client' | 'lazy' | 'server'
     shouldRender?: boolean
+    track: string[]
     title?: string
   }
 
