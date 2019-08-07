@@ -35,7 +35,7 @@ const fillManifest = (manifest: Manifest): Manifest => ({
   ...manifest,
   display: manifest.display || 'standalone',
   orientation: manifest.orientation || 'portrait',
-  start_url: manifest.start_url || '/',
+  ['start_url']: manifest.start_url || '/',
 })
 
 const isManifestValid = (manifest: Manifest): boolean =>
@@ -178,7 +178,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             color={{ hex: manifest.theme_color }}
             colorHistory={colorHistory}
             onChange={(color: { hex: string }) => {
-              setManifest({ ...manifest, theme_color: color.hex })
+              setManifest({ ...manifest, ['theme_color']: color.hex })
               setColorHistory([...colorHistory, color.hex])
             }}
           />
@@ -195,7 +195,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               color={{ hex: manifest.background_color }}
               colorHistory={colorHistory}
               onChange={(color: { hex: string }) => {
-                setManifest({ ...manifest, background_color: color.hex })
+                setManifest({ ...manifest, ['background_color']: color.hex })
                 setColorHistory([...colorHistory, color.hex])
               }}
             />
@@ -267,7 +267,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               label={intl.formatMessage(messages.startUrl)}
               value={manifest.start_url}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setManifest({ ...manifest, start_url: e.target.value })
+                setManifest({ ...manifest, ['start_url']: e.target.value })
               }
             />
           </div>
