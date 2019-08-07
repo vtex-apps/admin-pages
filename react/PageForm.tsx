@@ -142,7 +142,10 @@ class PageForm extends Component<Props, State> {
         ) : (
           <Operations interfaceId={formData.interfaceId}>
             {({ deleteRoute, saveRoute, templatesResults }) => {
-              const templates = templatesResults.data.availableTemplates || []
+              const templates =
+                (templatesResults.data &&
+                  templatesResults.data.availableTemplates) ||
+                []
               const loading = templatesResults.loading
               return loading ? (
                 <Loader />

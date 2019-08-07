@@ -62,24 +62,22 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
   const [error, setError] = React.useState<string | null>()
 
   const onDropImage = async (files: File[]) => {
+    if (!uploadFile) {
+      return undefined
+    }
+
     setError(null)
 
     try {
       if (files && files[0]) {
         setIsLoading(true)
 
-        const {
-          data: {
-            uploadFile: { fileUrl },
-          },
-        } = (await uploadFile!({ variables: { file: files[0] } })) as {
-          data: MutationData
-        }
+        const result = await uploadFile({ variables: { file: files[0] } })
 
         setIsLoading(false)
         setIsOpen(false)
 
-        return onAdd(fileUrl)
+        return result && result.data && onAdd(result.data.uploadFile.fileUrl)
       } else {
         return setError(intl.formatMessage(messages.fileSizeError))
       }

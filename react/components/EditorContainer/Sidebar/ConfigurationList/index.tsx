@@ -49,7 +49,7 @@ interface Props {
 interface State {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
-  formData?: object
+  formData?: Extension['content']
   newLabel?: string
 }
 
@@ -81,7 +81,7 @@ const omitUndefined = pickBy(val => typeof val !== 'undefined')
 
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
-  private componentImplementation: RenderComponent<unknown, unknown> | null
+  private componentImplementation: RenderComponent | null
   private componentSchema: ComponentSchema
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
@@ -95,12 +95,9 @@ class ConfigurationList extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props)
 
-    const { editor, iframeRuntime, intl, modal, queryData } = props
+    const { iframeRuntime, intl, modal, queryData, treePath } = props
 
-    const extension = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
+    const extension = getExtension(treePath, iframeRuntime.extensions)
 
     this.component = extension.component
 
@@ -212,7 +209,7 @@ class ConfigurationList extends React.Component<Props, State> {
     origin: null,
   })
 
-  private getFormData = (content: object): object =>
+  private getFormData = (content: Extension['content']): Extension['content'] =>
     getSchemaPropsOrContentFromRuntime({
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
@@ -225,10 +222,10 @@ class ConfigurationList extends React.Component<Props, State> {
   private getNewActiveExtension = (
     queryResult: ApolloQueryResult<ListContentData>
   ) => {
-    const { editor, iframeRuntime } = this.props
+    const { iframeRuntime, treePath } = this.props
 
     const partialNewActiveExtension = getExtension(
-      editor.editTreePath,
+      treePath,
       iframeRuntime.extensions
     )
 
@@ -248,7 +245,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const newActiveContentJson = newActiveConfiguration.contentJSON
 
-    const newActiveContent: object = newActiveContentJson
+    const newActiveContent: Extension['content'] = newActiveContentJson
       ? JSON.parse(newActiveContentJson)
       : {}
 
@@ -277,7 +274,7 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleContentBack = async () => {
-    const { editor, formMeta, iframeRuntime } = this.props
+    const { formMeta, iframeRuntime, treePath } = this.props
 
     this.handleConfigurationClose()
 
@@ -286,7 +283,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: this.activeExtension.content,
         isContent: true,
         runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
+        treePath,
       })
     }
   }
@@ -374,19 +371,23 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, intl, showToast } = this.props
+    const { editor, iframeRuntime, intl, showToast, treePath } = this.props
+
+    if (!treePath) {
+      return
+    }
 
     const baseContent =
       newConfiguration.contentId !== NEW_CONFIGURATION_ID
-        ? (JSON.parse(newConfiguration.contentJSON) as object)
+        ? (JSON.parse(newConfiguration.contentJSON) as Extension['content'])
         : {}
 
     const formData = this.getFormData(baseContent)
 
     editor.setIsLoading(true)
 
-    await iframeRuntime.updateExtension(editor.editTreePath!, {
-      ...iframeRuntime.extensions[editor.editTreePath!],
+    await iframeRuntime.updateExtension(treePath, {
+      ...iframeRuntime.extensions[treePath],
       component: this.component,
       content: formData,
     })
@@ -436,7 +437,7 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
-    if (editor.getIsLoading()) {
+    if (editor.getIsLoading() || !this.state.configuration) {
       return
     }
 
@@ -450,14 +451,14 @@ class ConfigurationList extends React.Component<Props, State> {
     })
 
     const contentId =
-      this.state.configuration!.contentId === NEW_CONFIGURATION_ID
+      this.state.configuration.contentId === NEW_CONFIGURATION_ID
         ? null
-        : this.state.configuration!.contentId
+        : this.state.configuration.contentId
 
     const label =
       this.state.newLabel !== undefined
         ? this.state.newLabel
-        : this.state.configuration!.label
+        : this.state.configuration.label
 
     const configuration = {
       ...this.state.configuration,
@@ -470,7 +471,7 @@ class ConfigurationList extends React.Component<Props, State> {
     }
 
     const blockId = path<string>(
-      ['extensions', editor.editTreePath || '', 'blockId'],
+      ['extensions', treePath || '', 'blockId'],
       iframeRuntime
     )
 
@@ -574,10 +575,14 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private refetchConfigurations = async () => {
-    const { editor, iframeRuntime, refetch, template, treePath } = this.props
+    const { iframeRuntime, refetch, template, treePath } = this.props
+
+    if (!treePath) {
+      return undefined
+    }
 
     return await refetch({
-      blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
+      blockId: iframeRuntime.extensions[treePath].blockId,
       pageContext: iframeRuntime.route.pageContext,
       template,
       treePath,
@@ -589,11 +594,13 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const newListContent = await this.refetchConfigurations()
 
-    await iframeRuntime.updateRuntime({
-      conditions: editor.activeConditions,
-    })
+    if (newListContent) {
+      await iframeRuntime.updateRuntime({
+        conditions: editor.activeConditions,
+      })
 
-    this.activeExtension = this.getNewActiveExtension(newListContent)
+      this.activeExtension = this.getNewActiveExtension(newListContent)
+    }
   }
 }
 

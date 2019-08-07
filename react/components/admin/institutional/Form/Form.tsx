@@ -113,7 +113,7 @@ const Form = ({
             label={intl.formatMessage(messages.seoDescription)}
             onChange={handleEventValue}
             resize="vertical"
-            value={data.metaTagDescription!}
+            value={data.metaTagDescription}
             size="small"
           />
         </div>

@@ -70,14 +70,14 @@ const Content = (props: Props) => {
 
   const treePath = isSitewide
     ? getSitewideTreePath(editor.editTreePath)
-    : editor.editTreePath!
+    : editor.editTreePath
 
   return (
     <ToastConsumer>
       {({ showToast }) => (
         <ListContentQuery
           variables={{
-            blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
+            blockId: iframeRuntime.extensions[treePath].blockId,
             pageContext: iframeRuntime.route.pageContext,
             template,
             treePath,

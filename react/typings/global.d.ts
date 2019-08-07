@@ -159,7 +159,7 @@ declare global {
     editTreePath: string | null
     getIsLoading: () => boolean
     onChangeIframeUrl: (url: string) => void
-    iframeWindow: Window
+    iframeWindow?: Window
     messages: RenderRuntime['messages']
     mode: EditorMode
     viewport: Viewport

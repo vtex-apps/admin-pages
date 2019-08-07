@@ -10,7 +10,10 @@ interface StyleBtnProps {
 const StyleButton = ({ active, onToggle, style, label }: StyleBtnProps) => {
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
-    onToggle(style!)
+
+    if (style) {
+      onToggle(style)
+    }
   }
 
   return (

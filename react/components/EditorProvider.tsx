@@ -26,7 +26,7 @@ interface State {
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null
-  iframeWindow: Window
+  iframeWindow?: Window
   isLoading: boolean
   messages: RenderRuntime['messages']
   mode: EditorMode
@@ -91,6 +91,8 @@ class EditorProvider extends Component<Props, State> {
         shouldUpdateRuntime
       ) => {
         const { client, intl } = this.props
+        const stateIframeRuntime = this.state.iframeRuntime
+
         let formattedEditorMessages = {}
 
         try {
@@ -124,8 +126,8 @@ class EditorProvider extends Component<Props, State> {
         const newState = {
           availableCultures,
           iframeRuntime: runtime,
-          ...(this.state.iframeRuntime
-            ? ({} as object)
+          ...(stateIframeRuntime
+            ? {}
             : {
                 iframeWindow: (window.self.document.getElementById(
                   'store-iframe'
@@ -139,20 +141,20 @@ class EditorProvider extends Component<Props, State> {
         })
 
         if (
-          this.state.iframeRuntime &&
-          this.state.iframeRuntime.history &&
+          stateIframeRuntime &&
+          stateIframeRuntime.history &&
           !this.unlisten
         ) {
-          this.unlisten = this.state.iframeRuntime.history.listen(
+          this.unlisten = stateIframeRuntime.history.listen(
             (location, action) => {
-              const pathFromCurrentPage = this.state.iframeRuntime!.route.path
+              const pathFromCurrentPage = stateIframeRuntime.route.path
               const isRootPath =
                 pathFromCurrentPage === '/' || location.pathname === '/'
               const hasParamsChanged =
                 !location.state ||
                 !equals(
                   location.state.navigationRoute.params,
-                  this.state.iframeRuntime!.route.params
+                  stateIframeRuntime.route.params
                 )
 
               const isDifferentPath = isRootPath

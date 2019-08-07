@@ -32,7 +32,7 @@ const getParentContainerBlocksGetter = (extensions: Extensions) => (
 
 const getComponentNameGetterFromExtensions = (extensions: Extensions) => (
   treePath: string
-) => extensions[treePath].component || ''
+) => (extensions[treePath] && extensions[treePath].component) || ''
 
 const getComponentSchemaGetter = (
   components: ComponentsRegistry | null,
@@ -86,12 +86,12 @@ export function getComponents(
       const schema = getComponentSchema(treePath)
       const componentName = getComponentName(treePath)
       const hasTitleInSchema = schema && !!schema.title
-      const hasTitleInBlock = !!extensions[treePath].title
       const extension = pathOr<Partial<Extension>, Extension>(
         {},
         [treePath],
         extensions
       )
+      const hasTitleInBlock = !!extension.title
 
       const isRoot = isRootComponent(2)({ treePath })
 
@@ -112,7 +112,7 @@ export function getComponents(
       if (shouldShow) {
         sidebarComponentMap[treePath] = {
           isEditable,
-          name: extensions[treePath].title || schema.title!,
+          name: extension.title || schema.title,
           treePath,
         }
       }
