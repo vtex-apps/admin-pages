@@ -1,4 +1,4 @@
-import { path } from 'ramda'
+import { pathOr } from 'ramda'
 import React from 'react'
 import { Query, QueryResult } from 'react-apollo'
 import { defineMessages } from 'react-intl'
@@ -66,7 +66,7 @@ function withPWASettings<T>(
     T & PWAData & Omit<QueryResult<PWAData, {}>, 'data' | 'loading'>
   >
 ) {
-  return (props: T) => (
+  const ComponentWithPWASettings = (props: T) => (
     <PWAQuery query={PWA}>
       {handleCornerCases<PWAData, {}>(options, ({ data, ...restPWAQuery }) => {
         if (
@@ -74,10 +74,12 @@ function withPWASettings<T>(
           !data.manifest.background_color ||
           !data.manifest.theme_color
         ) {
-          const color = path(
+          const color: string = pathOr(
+            '',
             ['selectedStyle', 'config', 'semanticColors', 'background', 'base'],
             data
           )
+
           return (
             <WrappedComponent
               {...props}
@@ -85,8 +87,8 @@ function withPWASettings<T>(
               {...restPWAQuery}
               manifest={{
                 ...(data.manifest || {}),
-                background_color: color as string,
-                theme_color: color as string,
+                ['background_color']: color,
+                ['theme_color']: color,
               }}
             />
           )
@@ -95,6 +97,8 @@ function withPWASettings<T>(
       })}
     </PWAQuery>
   )
+
+  return ComponentWithPWASettings
 }
 
 export default withPWASettings

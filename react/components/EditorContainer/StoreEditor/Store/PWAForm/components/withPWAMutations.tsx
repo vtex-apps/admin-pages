@@ -61,34 +61,38 @@ export interface MutationProps {
 
 const withPWAMutations = (
   WrappedComponent: React.ComponentType<MutationProps>
-) => (props: object) => (
-  <UpdateManifestMutation mutation={UpdateManifest}>
-    {(updateManifestMutate, updateManifestRest) => (
-      <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
-        {(updateManifestIconMutate, updateManifestIconRest) => (
-          <UpdatePWASettingsMutation mutation={UpdatePWASettings}>
-            {(updatePWASettingsMutate, updatePWASettingsRest) => (
-              <WrappedComponent
-                {...props}
-                updateManifest={{
-                  mutate: updateManifestMutate,
-                  ...updateManifestRest,
-                }}
-                updateManifestIcon={{
-                  mutate: updateManifestIconMutate,
-                  ...updateManifestIconRest,
-                }}
-                updatePWASettings={{
-                  mutate: updatePWASettingsMutate,
-                  ...updatePWASettingsRest,
-                }}
-              />
-            )}
-          </UpdatePWASettingsMutation>
-        )}
-      </UpdateManifestIconMutation>
-    )}
-  </UpdateManifestMutation>
-)
+) => {
+  const ComponentWithPWAMutations = (props: object) => (
+    <UpdateManifestMutation mutation={UpdateManifest}>
+      {(updateManifestMutate, updateManifestRest) => (
+        <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
+          {(updateManifestIconMutate, updateManifestIconRest) => (
+            <UpdatePWASettingsMutation mutation={UpdatePWASettings}>
+              {(updatePWASettingsMutate, updatePWASettingsRest) => (
+                <WrappedComponent
+                  {...props}
+                  updateManifest={{
+                    mutate: updateManifestMutate,
+                    ...updateManifestRest,
+                  }}
+                  updateManifestIcon={{
+                    mutate: updateManifestIconMutate,
+                    ...updateManifestIconRest,
+                  }}
+                  updatePWASettings={{
+                    mutate: updatePWASettingsMutate,
+                    ...updatePWASettingsRest,
+                  }}
+                />
+              )}
+            </UpdatePWASettingsMutation>
+          )}
+        </UpdateManifestIconMutation>
+      )}
+    </UpdateManifestMutation>
+  )
+
+  return ComponentWithPWAMutations
+}
 
 export default withPWAMutations
