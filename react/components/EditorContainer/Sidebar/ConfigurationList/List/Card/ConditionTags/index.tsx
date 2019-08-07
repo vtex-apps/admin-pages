@@ -55,7 +55,7 @@ const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
           return null
         }
 
-        return Object.entries(parsedConditionObj).reduce<Array<JSX.Element>>(
+        return Object.entries(parsedConditionObj).reduce<JSX.Element[]>(
           (acc, [key, value]) => {
             const tagTitle = messages[key]
 
