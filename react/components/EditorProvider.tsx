@@ -13,11 +13,11 @@ import {
 } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
-import MessagesContext, { IMessagesContext } from './MessagesContext'
+import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  IMessagesContext & { client: ApolloClient<unknown> }
+  MessagesContextProps & { client: ApolloClient<unknown> }
 
 interface State {
   activeConditions: string[]

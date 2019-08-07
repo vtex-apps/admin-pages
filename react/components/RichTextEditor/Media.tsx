@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { Media } from 'draft-js'
+import { Media as MediaProps } from 'draft-js'
 
-const Media = (props: Media) => {
+const Media = (props: MediaProps) => {
   const { contentState, block } = props
   const blockEntity = block.getEntityAt(0)
 
