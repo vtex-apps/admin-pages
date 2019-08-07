@@ -4,7 +4,10 @@ interface DropdownOption {
 }
 
 export const ORIENTATION_OPTIONS: DropdownOption[] = [
-  { value: 'any', label: 'admin/pages.editor.store.settings.pwa.orientation.any' },
+  {
+    value: 'any',
+    label: 'admin/pages.editor.store.settings.pwa.orientation.any',
+  },
   {
     label: 'admin/pages.editor.store.settings.pwa.orientation.natural',
     value: 'natural',
@@ -14,11 +17,13 @@ export const ORIENTATION_OPTIONS: DropdownOption[] = [
     value: 'landscape',
   },
   {
-    label: 'admin/pages.editor.store.settings.pwa.orientation.landscape-primary',
+    label:
+      'admin/pages.editor.store.settings.pwa.orientation.landscape-primary',
     value: 'landscape-primary',
   },
   {
-    label: 'admin/pages.editor.store.settings.pwa.orientation.landscape-secondary',
+    label:
+      'admin/pages.editor.store.settings.pwa.orientation.landscape-secondary',
     value: 'landscape-secondary',
   },
   {
@@ -30,7 +35,8 @@ export const ORIENTATION_OPTIONS: DropdownOption[] = [
     value: 'portrait-primary',
   },
   {
-    label: 'admin/pages.editor.store.settings.pwa.orientation.portrait-secondary',
+    label:
+      'admin/pages.editor.store.settings.pwa.orientation.portrait-secondary',
     value: 'portrait-secondary',
   },
 ]

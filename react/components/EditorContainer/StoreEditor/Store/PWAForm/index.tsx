@@ -240,6 +240,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
           <div className="w-100 flex justify-center items-center">
             <img
+              alt={intl.formatMessage({
+                id: 'admin/pages.editor.store.settings.pwa.splash-screen',
+              })}
               className="h5 shadow-1 mb3"
               src={`../../${splash.src}?v=${Date.now()}`}
             />

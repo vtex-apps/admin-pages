@@ -43,14 +43,10 @@ const UploadError: React.FunctionComponent<Props> = ({ error }) => {
         <FormattedMessage id="admin/pages.admin.redirects.upload-modal.fail.message" />
       </p>
       <hr
-        className={`b--muted-4 br-0 bl-0 bt-0 mh0 mv0 ${
-          styles['full-modal-width']
-        }`}
+        className={`b--muted-4 br-0 bl-0 bt-0 mh0 mv0 ${styles['full-modal-width']}`}
       />
       <div
-        className={`overflow-y-auto ${styles['error-container']} ${
-          styles['full-modal-width']
-        }`}
+        className={`overflow-y-auto ${styles['error-container']} ${styles['full-modal-width']}`}
       >
         {errors.map((errorObj, id) => {
           return (

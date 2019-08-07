@@ -25,16 +25,13 @@ export function findLinkEntities(
   callback: (start: number, end: number) => void,
   contentState: ContentState
 ) {
-  return contentBlock.findEntityRanges(
-    (character) => {
-      const entityKey = character.getEntity()
-      return (
-        entityKey !== null &&
-        contentState.getEntity(entityKey).getType() === 'LINK'
-      )
-    },
-    callback
-  )
+  return contentBlock.findEntityRanges(character => {
+    const entityKey = character.getEntity()
+    return (
+      entityKey !== null &&
+      contentState.getEntity(entityKey).getType() === 'LINK'
+    )
+  }, callback)
 }
 
 export function convertToMarkdown(editorState: EditorState) {

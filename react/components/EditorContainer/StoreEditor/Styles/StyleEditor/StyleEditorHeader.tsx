@@ -17,15 +17,12 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
   onButtonClick,
   title,
 }) => {
-  const onBack = useCallback(
-    () => {
-      history.goBack()
-      if (afterOnBack) {
-        afterOnBack()
-      }
-    },
-    [history, afterOnBack]
-  )
+  const onBack = useCallback(() => {
+    history.goBack()
+    if (afterOnBack) {
+      afterOnBack()
+    }
+  }, [history, afterOnBack])
 
   return (
     <div className="mh6 mt6">
