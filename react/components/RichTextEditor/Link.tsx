@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { Link } from 'draft-js'
+import { Link as LinkProps } from 'draft-js'
 
-const Link = (props: Link) => {
+const Link = (props: LinkProps) => {
   const { contentState, entityKey, children } = props
   const { url } = contentState.getEntity(entityKey).getData()
 

@@ -1,10 +1,12 @@
 import React from 'react'
 
-export interface IMessagesContext {
+export interface MessagesContextProps {
   setMessages: (newMessages?: object) => void
 }
 
-const MessagesContext: React.Context<IMessagesContext> = React.createContext({
+const MessagesContext: React.Context<
+  MessagesContextProps
+> = React.createContext({
   setMessages: () => {},
 })
 
