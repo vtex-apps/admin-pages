@@ -63,14 +63,16 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     />
   )
 
-  const Header = useMemo(() => {
-    return ({ name }: { name: string | React.ReactNode }) => (
+  const MemoizedHeader = useMemo(() => {
+    const Header = ({ name }: { name: string | React.ReactNode }) => (
       <StyleEditorHeader
         onButtonClick={onSave}
         buttonLabel={saveButtonLabel}
         title={name}
       />
     )
+
+    return Header
   }, [onSave, saveButtonLabel])
 
   const startEditing = useCallback(
@@ -104,11 +106,12 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     () =>
       toPairs(groups).map(([groupName, group]) => (
         <ColorGroup
-          groupName={startCase(groupName as string)}
+          colorsInfo={fromPairs(group)}
           font={font}
+          groupName={startCase(groupName as string)}
+          key={groupName}
           semanticColors={semanticColors}
           startEditing={startEditing}
-          colorsInfo={fromPairs(group)}
         />
       )),
     [font, groups, semanticColors, startEditing]
@@ -117,7 +120,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
   if (id) {
     return (
       <>
-        <Header name={startCase(id)} />
+        <MemoizedHeader name={startCase(id)} />
         <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
           <ColorEditor
             updateColor={updateColor(updateStyle)}
@@ -131,7 +134,7 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Header name={colorsLabel} />
+      <MemoizedHeader name={colorsLabel} />
       <div className="flex-grow-1">{colourGroups}</div>
     </>
   )

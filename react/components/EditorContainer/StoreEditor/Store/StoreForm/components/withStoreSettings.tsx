@@ -78,7 +78,7 @@ const options = {
 function withStoreSettings<T>(
   WrappedComponent: React.ComponentType<T & FormProps>
 ) {
-  return (props: T) => (
+  const ComponentWithStoreSettings = (props: T) => (
     <InstalledAppQuery query={InstalledApp} variables={{ slug: 'vtex.store' }}>
       {handleCornerCases<InstalledAppData, InstalledAppVariables>(
         options,
@@ -108,6 +108,8 @@ function withStoreSettings<T>(
       )}
     </InstalledAppQuery>
   )
+
+  return ComponentWithStoreSettings
 }
 
 export default withStoreSettings
