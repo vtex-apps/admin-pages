@@ -1,4 +1,4 @@
-export type DateRange = {
+export interface DateRange {
   from?: Date
   to?: Date
 }

@@ -135,9 +135,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
   async function handleSubmit() {
     setSubmitting(true)
     try {
-      const mutations: Array<Promise<ManifestMutationData | void>> = [
-        saveManifest(),
-      ]
+      const mutations: Promise<ManifestMutationData | void>[] = [saveManifest()]
       if (!equals(settings, pwaSettings)) {
         mutations.push(saveSettings())
       }

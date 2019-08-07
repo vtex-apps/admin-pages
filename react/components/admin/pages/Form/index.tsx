@@ -163,7 +163,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleMetaTagKeywords = (
-    values: Array<{ label: string; value: string }>
+    values: { label: string; value: string }[]
   ) => {
     this.setState(prevState => ({
       ...prevState,

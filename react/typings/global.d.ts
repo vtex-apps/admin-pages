@@ -237,11 +237,11 @@ declare global {
       allMatches: boolean
       id: string
       pageContext: RenderRuntime['route']['pageContext']
-      statements: Array<{
+      statements: {
         objectJSON: string
         subject: ConditionSubject
         verb: string
-      }>
+      }[]
     }
     contentId: string
     contentJSON: string
