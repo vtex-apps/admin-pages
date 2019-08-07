@@ -23,6 +23,7 @@ const Select: React.FunctionComponent<Props> = ({
     <ReactSelect
       className={`f6 ${errorMessage ? 'b--danger bw1' : ''}`}
       arrowRenderer={(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { onMouseDown, isOpen }: any // ArrowRendererProps isn't defining isOpen.
       ) => (
         <div onMouseDown={onMouseDown}>
