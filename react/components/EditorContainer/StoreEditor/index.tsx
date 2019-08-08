@@ -4,7 +4,7 @@ import Store from './Store'
 import Styles from './Styles'
 
 interface Props {
-  editor: EditorContext
+  editor: EditorContextType
   mode: StoreEditMode
   visible?: boolean
 }

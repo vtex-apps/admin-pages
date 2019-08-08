@@ -365,7 +365,7 @@ class EditorProvider extends Component<Props, State> {
       viewport,
     } = this.state
 
-    const editor: EditorContext = {
+    const editor: EditorContextType = {
       activeConditions,
       addCondition: this.handleAddCondition,
       allMatches,

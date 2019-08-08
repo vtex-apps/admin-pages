@@ -11,7 +11,7 @@ import ComponentEditor from '../ComponentEditor'
 import { FormMetaContext, ModalContext } from '../typings'
 
 interface Props {
-  editor: EditorContext
+  editor: EditorContextType
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   modal: ModalContext
