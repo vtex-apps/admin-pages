@@ -102,10 +102,10 @@ class ArrayFieldTemplate extends Component<
     )
   }
 
-  private handleOpen = (index: number) => (
-    e: Pick<React.MouseEvent, 'stopPropagation'>
-  ) => {
-    e.stopPropagation()
+  private handleOpen = (index: number) => (e: React.MouseEvent | unknown) => {
+    if (e instanceof Event) {
+      e.stopPropagation()
+    }
 
     this.setState(state => ({
       ...state,

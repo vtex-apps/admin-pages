@@ -1,7 +1,7 @@
-import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
+import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
-import { defineMessages } from 'react-intl'
+import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ArrayFieldTemplateProps, UiSchema } from 'react-jsonschema-form'
 import {
   SortableElement,
@@ -9,15 +9,14 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc'
 import { animated, Transition } from 'react-spring/renderprops'
-
+import ActionMenu from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
+import { ActionMenuOption } from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import DragHandle from '../icons/DragHandle'
-import TrashSimple from '../icons/TrashSimple'
+import styles from './ArrayFieldTemplateItem.css'
+import SimpleFormattedMessage from './SimpleFormattedMessage'
 
-const stopPropagation = (fn: (e: React.MouseEvent) => void) => (
-  e: React.MouseEvent
-) => {
+const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation()
-  return fn(e)
 }
 
 const Handle = SortableHandle(() => (
@@ -30,7 +29,7 @@ interface CustomProps {
   hasRemove: boolean
   isOpen: boolean
   onClose: () => void
-  onOpen: (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
+  onOpen: (e: React.MouseEvent | ActionMenuOption) => void
   showDragHandle: boolean
   schema: {
     items: { properties: JSONSchema6 }
@@ -41,7 +40,10 @@ type PropsFromItemTemplateProps = Pick<
   ArrayFieldTemplateProps['items'][0],
   'onDropIndexClick' | 'hasRemove' | 'children'
 >
-type Props = CustomProps & SortableElementProps & PropsFromItemTemplateProps
+type Props = IProps &
+  SortableElementProps &
+  PropsFromItemTemplateProps &
+  InjectedIntlProps
 
 type SchemaTuple = [string, JSONSchema6 & { widget: UiSchema }]
 
@@ -50,28 +52,37 @@ const messages = defineMessages({
     defaultMessage: 'Item',
     id: 'admin/pages.admin.pages.form.field.array.item',
   },
+  delete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.admin.pages.form.field.array.item.delete',
+  },
+  edit: {
+    defaultMessage: 'Edit',
+    id: 'admin/pages.admin.pages.form.field.array.item.edit',
+  },
 })
 
 const ArrayFieldTemplateItem: React.FC<Props> = props => {
   const {
     children,
-    schema,
     formIndex,
     hasRemove,
-    onDropIndexClick,
+    intl,
     isOpen,
+    onDropIndexClick,
+    schema,
     showDragHandle,
   } = props
 
   const TransitionChildren = useMemo(
-    () => (_: string) => (styles: React.CSSProperties) => (
-      <animated.div style={styles}>{props.children}</animated.div>
+    () => (_: string) => (style: React.CSSProperties) => (
+      <animated.div style={style}>{props.children}</animated.div>
     ),
     [props.children]
   )
 
   const handleLabelClick = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.MouseEvent | ActionMenuOption) => {
       if (props.isOpen) {
         props.onClose()
       } else {
@@ -113,6 +124,29 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     return imagePropertyKey && children.props.formData[imagePropertyKey]
   }, [schema.items.properties, children.props.formData])
 
+  const actionMenuOptions: ActionMenuOption[] = useMemo(() => {
+    const options: ActionMenuOption[] = [
+      {
+        label: intl.formatMessage(messages.edit),
+        onClick: e => {
+          handleLabelClick(e)
+        },
+      },
+    ]
+
+    if (hasRemove) {
+      options.push({
+        label: intl.formatMessage(messages.delete),
+        onClick: () => {
+          const e = new Event('click')
+          onDropIndexClick(formIndex)(e)
+        },
+      })
+    }
+
+    return options
+  }, [handleLabelClick, onDropIndexClick])
+
   const title =
     children.props.formData.__editorItemTitle ||
     path(['items', 'properties', '__editorItemTitle', 'default'], schema)
@@ -141,16 +175,11 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
             </label>
           )}
         </div>
-        <div className="flex items-center accordion-label-buttons">
-          {hasRemove && (
-            <button
-              type="button"
-              className="accordion-icon-button accordion-icon-button--remove"
-              onClick={stopPropagation(onDropIndexClick(formIndex))}
-            >
-              <TrashSimple size={15} />
-            </button>
-          )}
+        <div
+          className={`absolute mr3 top-0 right-0 ${styles['action-menu-container']}`}
+          onClick={stopPropagation}
+        >
+          <ActionMenu menuWidth={200} options={actionMenuOptions} />
         </div>
       </div>
       <div
@@ -173,4 +202,4 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   )
 }
 
-export default SortableElement<Props>(ArrayFieldTemplateItem)
+export default injectIntl(SortableElement<Props>(ArrayFieldTemplateItem))

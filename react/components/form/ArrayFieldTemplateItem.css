@@ -1,0 +1,8 @@
+:global(.accordion-label) .action-menu-container {
+  opacity: 0;
+  transition: opacity ease-in 100ms;
+}
+
+:global(.accordion-label):hover .action-menu-container {
+  opacity: 1;
+}
