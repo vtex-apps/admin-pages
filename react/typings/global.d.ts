@@ -157,7 +157,7 @@ declare global {
     removeCondition?: (conditionId: string) => void
   }
 
-  interface EditorContext extends EditorConditionSection {
+  interface EditorContextType extends EditorConditionSection {
     allMatches: boolean
     availableCultures: LabelledLocale[]
     editMode: boolean
@@ -174,10 +174,6 @@ declare global {
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
-  }
-
-  interface EditorContextProps {
-    editor: EditorContext
   }
 
   interface RenderRuntime {

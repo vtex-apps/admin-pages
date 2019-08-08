@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-export const initialEditorContextState: EditorContext = {
+export const initialEditorContextState: EditorContextType = {
   activeConditions: [],
   addCondition: () => {},
   allMatches: true,

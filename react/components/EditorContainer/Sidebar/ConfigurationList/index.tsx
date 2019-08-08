@@ -32,7 +32,7 @@ import List from './List'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
-  editor: EditorContext
+  editor: EditorContextType
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl

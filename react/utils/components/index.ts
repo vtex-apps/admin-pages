@@ -107,7 +107,7 @@ export const getComponentSchema = ({
 }
 
 export const getExtension = (
-  editTreePath: EditorContext['editTreePath'],
+  editTreePath: EditorContextType['editTreePath'],
   extensions: RenderContext['extensions']
 ): Required<Extension> => {
   const {

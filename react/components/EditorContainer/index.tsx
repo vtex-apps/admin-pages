@@ -52,7 +52,7 @@ const getContainerProps = (layout: Viewport) => {
 
 interface Props {
   availableCultures: LabelledLocale[]
-  editor: EditorContext
+  editor: EditorContextType
   onShowAdminControlsToggle: () => void
   runtime: RenderContext | null
   viewports: Viewport[]
