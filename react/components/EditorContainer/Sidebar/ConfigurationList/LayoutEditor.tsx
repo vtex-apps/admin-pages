@@ -8,7 +8,7 @@ import {
 } from '../../../../utils/components'
 import { UpdateBlockMutationFn } from '../../mutations/UpdateBlock'
 import ComponentEditor from '../ComponentEditor'
-import { FormMetaContext, ModalContext } from '../typings'
+import { FormDataContainer, FormMetaContext, ModalContext } from '../typings'
 
 interface Props {
   editor: EditorContextType
@@ -60,7 +60,7 @@ class LayoutEditor extends Component<Props> {
       iframeRuntime.extensions
     )
 
-    return extension.props
+    return extension.props as FormDataContainer
   }
 
   private handleChange = (event: IChangeEvent) => {
