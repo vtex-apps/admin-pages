@@ -4,6 +4,7 @@ import { Mutation, MutationFn, MutationResult } from 'react-apollo'
 import UpdateManifest from '../mutations/UpdateManifest.graphql'
 import UpdateManifestIcon from '../mutations/UpdateManifestIcon.graphql'
 import UpdatePWASettings from '../mutations/UpdatePWASettings.graphql'
+import { PWAFormProps } from '../typings'
 
 import { PWASettings } from './withPWASettings'
 
@@ -60,9 +61,9 @@ export interface MutationProps {
 }
 
 const withPWAMutations = (
-  WrappedComponent: React.ComponentType<MutationProps>
+  WrappedComponent: React.ComponentType<PWAFormProps>
 ) => {
-  const ComponentWithPWAMutations = (props: object) => (
+  const ComponentWithPWAMutations = (props: PWAFormProps) => (
     <UpdateManifestMutation mutation={UpdateManifest}>
       {(updateManifestMutate, updateManifestRest) => (
         <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
