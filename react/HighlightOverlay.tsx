@@ -166,8 +166,12 @@ export default class HighlightOverlay extends Component<Props, State> {
     }
   }
 
-  public handleMouseOverHighlight = (e: React.MouseEvent) => {
-    if (!e.currentTarget || !this.highlightRemovalTimeout) {
+  public handleMouseOverHighlight: EventListener = e => {
+    if (
+      !e.currentTarget ||
+      !(e.currentTarget instanceof HTMLElement) ||
+      !this.highlightRemovalTimeout
+    ) {
       return
     }
 
