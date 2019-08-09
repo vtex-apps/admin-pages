@@ -11,7 +11,7 @@ interface IconsProps {
 interface DeviceComponentProps {
   id: Viewport
   key: Viewport
-  onClick: (event: Event) => void
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void
   selected: boolean
 }
 
@@ -145,7 +145,9 @@ class DeviceComponent extends Component<
 }
 
 class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
-  public handleClick = ({ currentTarget }: Event) => {
+  public handleClick = ({
+    currentTarget,
+  }: React.MouseEvent<HTMLDivElement>) => {
     const { setViewport } = this.props
 
     if (currentTarget && currentTarget instanceof HTMLElement) {
