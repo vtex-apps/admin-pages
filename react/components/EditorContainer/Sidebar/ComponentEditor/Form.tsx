@@ -14,6 +14,7 @@ import Radio from '../../../form/Radio'
 import RichText from '../../../form/RichText'
 import TextArea from '../../../form/TextArea'
 import Toggle from '../../../form/Toggle'
+import { FormDataContainer } from '../typings'
 
 export const widgets: Record<string, Widget> = {
   BaseInput,
@@ -26,8 +27,10 @@ export const widgets: Record<string, Widget> = {
   'image-uploader': (ImageUploader as unknown) as Widget,
 }
 
-export default class Form extends React.Component<FormProps<unknown>> {
-  public shouldComponentUpdate(nextProps: FormProps<unknown>) {
+type Props = FormProps<FormDataContainer>
+
+export default class Form extends React.Component<Props> {
+  public shouldComponentUpdate(nextProps: Props) {
     return (
       !equals(this.props.formContext, nextProps.formContext) ||
       !equals(this.props.formData, nextProps.formData)

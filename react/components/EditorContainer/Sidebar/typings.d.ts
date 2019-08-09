@@ -33,3 +33,8 @@ export interface ModifiedSidebarComponent extends SidebarComponent {
 export interface ComponentEditorFormContext {
   isLayoutMode: boolean
 }
+
+// eslint-disable-next-line @typescript-eslint/prefer-interface
+export type FormDataContainer = {
+  formData: object
+}

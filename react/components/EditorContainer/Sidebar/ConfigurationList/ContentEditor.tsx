@@ -3,13 +3,14 @@ import React from 'react'
 import { FormProps } from 'react-jsonschema-form'
 
 import ComponentEditor from '../ComponentEditor'
+import { FormDataContainer } from '../typings'
 
 interface Props {
   componentTitle?: ComponentSchema['title']
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
   contentSchema?: JSONSchema6
-  data?: object
+  data?: FormDataContainer
   iframeRuntime: RenderContext
   isDefault: boolean
   isNew?: boolean
@@ -18,7 +19,7 @@ interface Props {
   onConditionChange: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
-  onFormChange: FormProps<{ formData: object }>['onChange']
+  onFormChange: FormProps<FormDataContainer>['onChange']
   onSave: () => void
   onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -27,7 +28,7 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   componentTitle,
   condition,
   contentSchema,
-  data = {},
+  data = { formData: {} },
   iframeRuntime,
   isDefault,
   isNew,

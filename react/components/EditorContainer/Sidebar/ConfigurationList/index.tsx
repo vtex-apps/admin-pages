@@ -23,7 +23,7 @@ import {
   ListContentData,
   ListContentQueryResult,
 } from '../../queries/ListContent'
-import { FormMetaContext, ModalContext } from '../typings'
+import { FormDataContainer, FormMetaContext, ModalContext } from '../typings'
 import { getIsDefaultContent, isUnidentifiedPageContext } from '../utils'
 
 import { NEW_CONFIGURATION_ID } from './consts'
@@ -170,7 +170,7 @@ class ConfigurationList extends React.Component<Props, State> {
         componentTitle={this.state.newLabel}
         condition={this.state.condition}
         contentSchema={this.contentSchema}
-        data={this.state.formData}
+        data={this.state.formData as FormDataContainer}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
         isNew={this.state.configuration.contentId === NEW_CONFIGURATION_ID}
