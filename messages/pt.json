@@ -143,6 +143,7 @@
   "admin/pages.editor.components.labelEditor.label": "Nome da configuração",
   "admin/pages.editor.components.modal.button.discard": "Descartar",
   "admin/pages.editor.components.modal.text": "Você tem modificações não salvas.",
+  "admin/pages.editor.components.no-image": "Sem imagem",
   "admin/pages.editor.components.title": "Blocos",
   "admin/pages.editor.configuration.button.create": "Novo conteúdo",
   "admin/pages.editor.configuration.condition.date.from": "Início:",

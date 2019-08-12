@@ -143,6 +143,7 @@
   "admin/pages.editor.components.labelEditor.label": "Configuration name",
   "admin/pages.editor.components.modal.button.discard": "Discard",
   "admin/pages.editor.components.modal.text": "You have unsaved modifications.",
+  "admin/pages.editor.components.no-image": "No image",
   "admin/pages.editor.components.title": "Blocks",
   "admin/pages.editor.configuration.button.create": "New content",
   "admin/pages.editor.configuration.condition.date.from": "Start:",

@@ -9,6 +9,7 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc'
 import { animated, Transition } from 'react-spring/renderprops'
+import ImageIcon from '../../images/ImageIcon'
 import ActionMenu from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
 import { ActionMenuOption } from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import DragHandle from '../icons/DragHandle'
@@ -63,6 +64,10 @@ const messages = defineMessages({
     defaultMessage: 'Edit',
     id: 'admin/pages.admin.pages.form.field.array.item.edit',
   },
+  noImage: {
+    defaultMessage: 'No image',
+    id: 'admin/pages.editor.components.no-image',
+  },
 })
 
 const ArrayFieldTemplateItem: React.FC<Props> = props => {
@@ -94,6 +99,17 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     },
     [props.isOpen, props.onOpen, props.onClose]
   )
+
+  const hasImageUploader = useMemo(() => {
+    return Object.values(schema.items.properties!).some(
+      (propertySchema: JSONSchema6 & { widget: UiSchema }) => {
+        return (
+          propertySchema.widget &&
+          propertySchema.widget['ui:widget'] === 'image-uploader'
+        )
+      }
+    )
+  }, [schema.items.properties])
 
   const imagePreview = useMemo(() => {
     const imagePropertyKey = Object.entries(schema.items.properties!)
@@ -162,31 +178,42 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     >
       <div
         className={`accordion-label flex items-center overflow-hidden relative ${
-          imagePreview ? 'h4' : 'h3'
+          hasImageUploader ? 'h4' : 'h3'
         }`}
         onClick={handleLabelClick}
       >
         {showDragHandle && <Handle />}
-        <div className={`relative mr3 ${styles['preview-container']}`}>
-          {imagePreview ? (
+        <div
+          className={`relative mr3 flex items-center ${styles['preview-container']}`}
+        >
+          {hasImageUploader ? (
             <>
+              {imagePreview ? (
+                <img
+                  className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
+                  src={imagePreview}
+                />
+              ) : (
+                <div className="w-100 h-100 flex flex-column items-center justify-center bg-muted-5 br3">
+                  <ImageIcon />
+                  <p className="c-muted-1 f6 mb0 mt4">
+                    {intl.formatMessage(messages.noImage)}
+                  </p>
+                </div>
+              )}
               <div
-                className={`br3 absolute w-100 h-100 ${styles['preview-overlay']}`}
+                className={`br3 absolute w-100 h-100 top-0 ${styles['preview-overlay']}`}
               ></div>
-              <img
-                className={`br3 h-100 w-100 ${styles['preview-image']}`}
-                src={imagePreview}
-              />
             </>
           ) : (
-            <label className="ml7 f6 accordion-label-title">
+            <label className="f6 accordion-label-title">
               {intl.formatMessage(
                 title ? { id: title } : messages.defaultTitle
               )}
             </label>
           )}
           <div
-            className={`absolute top-0 right-0 ${styles['action-menu-container']}`}
+            className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
             onClick={stopPropagation}
           >
             <ActionMenu
