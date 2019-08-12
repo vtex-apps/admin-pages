@@ -6,26 +6,28 @@ import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 
 interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
-  schema: object
-  openedItem: number[]
-  onOpen: (index: number) => (e: React.MouseEvent) => void
   onClose: (index: number) => () => void
+  onOpen: (index: number) => (e: React.MouseEvent) => void
+  openedItem: number[]
+  schema: object
   sorting?: boolean
 }
 
-const ArrayList = ({
+const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
+  children,
   items,
   schema,
   openedItem,
   onOpen,
   onClose,
   sorting,
-}: ArrayListProps & SortableContainerProps) => (
+}) => (
   <div
     className={`accordion-list-container ${
       sorting ? 'accordion-list-container--sorting' : ''
     }`}
   >
+    {children}
     {items.map(element => (
       <ArrayFieldTemplateItem
         key={element.index}

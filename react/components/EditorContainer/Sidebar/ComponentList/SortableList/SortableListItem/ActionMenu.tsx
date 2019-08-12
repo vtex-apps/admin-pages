@@ -7,21 +7,33 @@ import {
 import { ActionMenuOption } from './typings'
 
 interface Props {
-  options: ActionMenuOption[]
+  buttonSize?: string
   menuWidth?: number | string
+  options: ActionMenuOption[]
+  variation?: string
 }
 
-const ActionMenu: React.FunctionComponent<Props> = ({ menuWidth, options }) => (
+const ActionMenu: React.FunctionComponent<Props> = ({
+  buttonSize,
+  menuWidth,
+  options,
+  variation,
+}) => (
   <StyleguideActionMenu
     buttonProps={{
-      icon: <IconOptionsDots />,
+      icon: <IconOptionsDots color="currentColor" />,
+      size: buttonSize,
       type: 'button',
-      variation: 'tertiary',
+      variation,
     }}
     hideCaretIcon
     menuWidth={menuWidth}
     options={options}
   />
 )
+
+ActionMenu.defaultProps = {
+  variation: 'tertiary',
+}
 
 export default ActionMenu

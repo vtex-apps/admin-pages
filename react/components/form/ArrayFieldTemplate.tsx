@@ -8,11 +8,11 @@ import {
   SortStart,
 } from 'react-sortable-hoc'
 import { ButtonWithIcon } from 'vtex.styleguide'
+import AddButton from './AddButton'
 
 import AddIcon from '../icons/AddIcon'
 
 import ArrayList from './ArrayList'
-import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 interface Props {
   canAdd?: boolean
@@ -66,7 +66,7 @@ class ArrayFieldTemplate extends Component<
           </FormattedMessage>
         )}
         <ArrayList
-          pressDelay={200}
+          canAdd={canAdd}
           getHelperDimensions={getHelperDimensions}
           getContainer={() =>
             document.getElementById('component-editor-container') ||
@@ -81,23 +81,14 @@ class ArrayFieldTemplate extends Component<
           onSortEnd={this.handleSortEnd}
           onSortStart={this.handleSortStart}
           openedItem={openedItem}
+          pressDelay={200}
           schema={schema}
           sorting={sorting}
           updateBeforeSortStart={this.handleUpdateBeforeSortStart}
           useDragHandle
-        />
-        <div className="pt4">
-          {canAdd && (
-            <ButtonWithIcon
-              icon={<AddIcon />}
-              onClick={this.handleAddItem}
-              size="small"
-              variation="secondary"
-            >
-              <FormattedMessage id="admin/pages.editor.components.arrayTemplate.button.add" />
-            </ButtonWithIcon>
-          )}
-        </div>
+        >
+          {canAdd ? <AddButton onClick={this.handleAddItem} /> : null}
+        </ArrayList>
       </Fragment>
     )
   }

@@ -1,8 +1,44 @@
-:global(.accordion-label) .action-menu-container {
+.action-menu-container {
   opacity: 0;
   transition: opacity ease-in 100ms;
 }
 
-:global(.accordion-label):hover .action-menu-container {
+.preview-container:hover .action-menu-container {
   opacity: 1;
+}
+
+.preview-container {
+  height: 100%;
+  width: calc(100% - 3rem);
+}
+
+.preview-image {
+  object-fit: cover;
+  transition: filter ease-in 100ms;
+}
+
+.preview-overlay {
+  background-color: black;
+  opacity: 0;
+  transition: opacity ease-in 100ms;
+  will-change: opacity;
+}
+
+.preview-container:hover .preview-overlay {
+  opacity: 0.15;
+}
+
+.drag-handle-container {
+  transform: translateZ(0);
+  transition: transform ease-in-out 100ms;
+}
+
+.drag-handle-container:hover,
+:global(.accordion-item--dragged) .drag-handle-container {
+  transform: scale(1.1);
+}
+
+.drag-handle-container:hover circle,
+:global(.accordion-item--dragged) .drag-handle-container circle {
+  fill: #368df7;
 }

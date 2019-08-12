@@ -13,14 +13,17 @@ import ActionMenu from '../EditorContainer/Sidebar/ComponentList/SortableList/So
 import { ActionMenuOption } from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import DragHandle from '../icons/DragHandle'
 import styles from './ArrayFieldTemplateItem.css'
-import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation()
 }
 
 const Handle = SortableHandle(() => (
-  <DragHandle size={12} className="accordion-handle" />
+  <div
+    className={`flex flex-grow-1 h-100 items-center justify-center ${styles['drag-handle-container']}`}
+  >
+    <DragHandle size={12} className="accordion-handle" />
+  </div>
 ))
 
 interface CustomProps {
@@ -153,33 +156,46 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   return (
     <div
-      className={`accordion-item bb b--light-silver ${
+      className={`accordion-item bg-white bb b--light-silver ${
         showDragHandle ? '' : 'accordion-item--handle-hidden'
       }`}
     >
       <div
-        className={`accordion-label ${imagePreview ? 'h4' : 'h3'}`}
+        className={`accordion-label flex items-center overflow-hidden relative ${
+          imagePreview ? 'h4' : 'h3'
+        }`}
         onClick={handleLabelClick}
       >
-        <div className="flex items-center overflow-hidden">
-          {showDragHandle && <Handle />}
+        {showDragHandle && <Handle />}
+        <div className={`relative mr3 ${styles['preview-container']}`}>
           {imagePreview ? (
-            <img
-              className="br3 ml7"
-              style={{ maxWidth: 'calc(100% - 3rem)' }}
-              src={imagePreview}
-            />
+            <>
+              <div
+                className={`br3 absolute w-100 h-100 ${styles['preview-overlay']}`}
+              ></div>
+              <img
+                className={`br3 h-100 w-100 ${styles['preview-image']}`}
+                src={imagePreview}
+              />
+            </>
           ) : (
             <label className="ml7 f6 accordion-label-title">
-              <SimpleFormattedMessage id={title || messages.defaultTitle.id} />
+              {intl.formatMessage(
+                title ? { id: title } : messages.defaultTitle
+              )}
             </label>
           )}
-        </div>
-        <div
-          className={`absolute mr3 top-0 right-0 ${styles['action-menu-container']}`}
-          onClick={stopPropagation}
-        >
-          <ActionMenu menuWidth={200} options={actionMenuOptions} />
+          <div
+            className={`absolute top-0 right-0 ${styles['action-menu-container']}`}
+            onClick={stopPropagation}
+          >
+            <ActionMenu
+              variation="primary"
+              menuWidth={200}
+              options={actionMenuOptions}
+              buttonSize="small"
+            />
+          </div>
         </div>
       </div>
       <div
