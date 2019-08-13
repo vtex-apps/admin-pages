@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
@@ -7,10 +7,7 @@ import {
   SortableContainerProps,
   SortStart,
 } from 'react-sortable-hoc'
-import { ButtonWithIcon } from 'vtex.styleguide'
 import AddButton from './AddButton'
-
-import AddIcon from '../icons/AddIcon'
 
 import ArrayList from './ArrayList'
 
@@ -18,7 +15,7 @@ interface Props {
   canAdd?: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void
-  schema?: object
+  schema: JSONSchema6
 }
 
 interface State {
@@ -40,14 +37,7 @@ class ArrayFieldTemplate extends Component<
   Props & ArrayFieldTemplateProps,
   State
 > {
-  public static propTypes = {
-    canAdd: PropTypes.bool,
-    items: PropTypes.array,
-    onAddClick: PropTypes.func.isRequired,
-    schema: PropTypes.object,
-  }
-
-  public constructor(props: Props & ArrayFieldTemplateProps) {
+  constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
       openedItems: [],
@@ -66,7 +56,6 @@ class ArrayFieldTemplate extends Component<
           </FormattedMessage>
         )}
         <ArrayList
-          canAdd={canAdd}
           getHelperDimensions={getHelperDimensions}
           getContainer={() =>
             document.getElementById('component-editor-container') ||

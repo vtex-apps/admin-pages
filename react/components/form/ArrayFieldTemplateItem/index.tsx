@@ -3,31 +3,21 @@ import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ArrayFieldTemplateProps, UiSchema } from 'react-jsonschema-form'
-import {
-  SortableElement,
-  SortableElementProps,
-  SortableHandle,
-} from 'react-sortable-hoc'
-import { animated, Transition } from 'react-spring/renderprops'
-import ImageIcon from '../../images/ImageIcon'
-import ActionMenu from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
-import { ActionMenuOption } from '../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
-import DragHandle from '../icons/DragHandle'
+import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
+import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
+import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import styles from './ArrayFieldTemplateItem.css'
+
+import ExpandableItemContent from './ExpandableItemContent'
+import Handle from './Handle'
+import NoImagePlaceholder from './NoImagePlaceholder'
+import PreviewOverlay from './PreviewOverlay'
 
 const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation()
 }
 
-const Handle = SortableHandle(() => (
-  <div
-    className={`flex flex-grow-1 h-100 items-center justify-center ${styles['drag-handle-container']}`}
-  >
-    <DragHandle size={12} className="accordion-handle" />
-  </div>
-))
-
-interface CustomProps {
+interface IProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
@@ -35,9 +25,7 @@ interface CustomProps {
   onClose: () => void
   onOpen: (e: React.MouseEvent | ActionMenuOption) => void
   showDragHandle: boolean
-  schema: {
-    items: { properties: JSONSchema6 }
-  }
+  schema: JSONSchema6
 }
 
 type PropsFromItemTemplateProps = Pick<
@@ -64,10 +52,6 @@ const messages = defineMessages({
     defaultMessage: 'Edit',
     id: 'admin/pages.admin.pages.form.field.array.item.edit',
   },
-  noImage: {
-    defaultMessage: 'No image',
-    id: 'admin/pages.editor.components.no-image',
-  },
 })
 
 const ArrayFieldTemplateItem: React.FC<Props> = props => {
@@ -81,13 +65,6 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     schema,
     showDragHandle,
   } = props
-
-  const TransitionChildren = useMemo(
-    () => (_: string) => (style: React.CSSProperties) => (
-      <animated.div style={style}>{props.children}</animated.div>
-    ),
-    [props.children]
-  )
 
   const handleLabelClick = useCallback(
     (e: React.MouseEvent | ActionMenuOption) => {
@@ -194,16 +171,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
                   src={imagePreview}
                 />
               ) : (
-                <div className="w-100 h-100 flex flex-column items-center justify-center bg-muted-5 br3">
-                  <ImageIcon />
-                  <p className="c-muted-1 f6 mb0 mt4">
-                    {intl.formatMessage(messages.noImage)}
-                  </p>
-                </div>
+                <NoImagePlaceholder />
               )}
-              <div
-                className={`br3 absolute w-100 h-100 top-0 ${styles['preview-overlay']}`}
-              ></div>
+              <PreviewOverlay />
             </>
           ) : (
             <label className="f6 accordion-label-title">
@@ -225,22 +195,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
           </div>
         </div>
       </div>
-      <div
-        className={`accordion-content ${
-          isOpen ? 'accordion-content--open' : ''
-        }`}
-      >
-        <Transition
-          native
-          config={{ duration: 300 }}
-          items={isOpen ? ['children'] : []}
-          from={{ opacity: 0, height: 0 }}
-          enter={{ opacity: 1, height: 'auto' }}
-          leave={{ opacity: 0, height: 0 }}
-        >
-          {TransitionChildren}
-        </Transition>
-      </div>
+      <ExpandableItemContent isOpen={isOpen}>
+        {props.children}
+      </ExpandableItemContent>
     </div>
   )
 }
