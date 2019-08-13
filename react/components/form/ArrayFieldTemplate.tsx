@@ -12,10 +12,11 @@ import AddButton from './AddButton'
 import ArrayList from './ArrayList'
 
 interface Props {
-  canAdd?: boolean
+  canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void
-  schema: JSONSchema6
+  // TODO: remove this any
+  schema: any
 }
 
 interface State {

@@ -10,7 +10,7 @@ interface ArrayListProps {
   onClose: (index: number) => () => void
   onOpen: (index: number) => (e: React.MouseEvent | ActionMenuOption) => void
   openedItem: number[]
-  schema: JSONSchema6
+  schema: ComponentSchema
   sorting?: boolean
 }
 

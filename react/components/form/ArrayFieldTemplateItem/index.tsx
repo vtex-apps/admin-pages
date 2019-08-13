@@ -17,6 +17,10 @@ const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation()
 }
 
+function itemIsJsonSchema(items: JSONSchema6['items']): items is JSONSchema6 {
+  return typeof items !== 'boolean'
+}
+
 interface IProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
@@ -25,7 +29,7 @@ interface IProps {
   onClose: () => void
   onOpen: (e: React.MouseEvent | ActionMenuOption) => void
   showDragHandle: boolean
-  schema: JSONSchema6
+  schema: ComponentSchema
 }
 
 type PropsFromItemTemplateProps = Pick<
@@ -37,7 +41,7 @@ type Props = IProps &
   PropsFromItemTemplateProps &
   InjectedIntlProps
 
-type SchemaTuple = [string, JSONSchema6 & { widget: UiSchema }]
+type SchemaTuple = [string, ComponentSchema]
 
 const messages = defineMessages({
   defaultTitle: {
@@ -78,47 +82,60 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   )
 
   const hasImageUploader = useMemo(() => {
-    return Object.values(schema.items.properties!).some(
-      (propertySchema: JSONSchema6 & { widget: UiSchema }) => {
-        return (
-          propertySchema.widget &&
-          propertySchema.widget['ui:widget'] === 'image-uploader'
-        )
-      }
-    )
-  }, [schema.items.properties])
-
-  const imagePreview = useMemo(() => {
-    const imagePropertyKey = Object.entries(schema.items.properties!)
-      .reduce(
-        (acc, [property, propertySchema]: SchemaTuple) => {
-          if (
+    return (
+      schema.items &&
+      schema.items.properties &&
+      Object.values(schema.items.properties).some(
+        (propertySchema: ComponentSchema) => {
+          return (
             propertySchema.widget &&
             propertySchema.widget['ui:widget'] === 'image-uploader'
-          ) {
-            acc.push(property)
-          }
-          return acc
-        },
-        [] as string[]
+          )
+        }
       )
-      .sort((first, second) => {
-        if (first.indexOf('mobile') !== -1 && second.indexOf('mobile') === -1) {
-          return 1
-        }
+    )
+  }, [schema.items && schema.items.properties])
 
-        if (first.indexOf('mobile') === -1 && second.indexOf('mobile') !== -1) {
-          return -1
-        }
+  const imagePreview = useMemo(() => {
+    const imagePropertyKey =
+      schema.items &&
+      schema.items.properties &&
+      Object.entries(schema.items.properties)
+        .reduce(
+          (acc, [property, propertySchema]: SchemaTuple) => {
+            if (
+              propertySchema.widget &&
+              propertySchema.widget['ui:widget'] === 'image-uploader'
+            ) {
+              acc.push(property)
+            }
+            return acc
+          },
+          [] as string[]
+        )
+        .sort((first, second) => {
+          if (
+            first.indexOf('mobile') !== -1 &&
+            second.indexOf('mobile') === -1
+          ) {
+            return 1
+          }
 
-        return 0
-      })
-      .find(key => {
-        return !!children.props.formData[key]
-      })
+          if (
+            first.indexOf('mobile') === -1 &&
+            second.indexOf('mobile') !== -1
+          ) {
+            return -1
+          }
+
+          return 0
+        })
+        .find(key => {
+          return !!children.props.formData[key]
+        })
 
     return imagePropertyKey && children.props.formData[imagePropertyKey]
-  }, [schema.items.properties, children.props.formData])
+  }, [schema.items && schema.items.properties, children.props.formData])
 
   const actionMenuOptions: ActionMenuOption[] = useMemo(() => {
     const options: ActionMenuOption[] = [

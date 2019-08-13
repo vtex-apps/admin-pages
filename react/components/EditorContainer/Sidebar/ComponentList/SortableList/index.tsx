@@ -17,8 +17,8 @@ interface CustomProps {
 
 type Props = CustomProps
 
-const SortableList = SortableContainer<Props>(
-  ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }) => (
+const SortableList = SortableContainer(
+  ({ components, onDelete, onEdit, onMouseEnter, onMouseLeave }: Props) => (
     <ul className="mv0 pl0 overflow-y-auto">
       {components.map((component, index) => (
         <SortableListItem
