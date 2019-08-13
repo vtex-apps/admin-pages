@@ -171,7 +171,11 @@ function withContentContext<T>(
 
                             const content = {
                               id: contentId,
-                              text: dataMessage.translate[0] || contentText,
+                              text: pathOr(
+                                contentText,
+                                ['translate', 0],
+                                dataMessage
+                              ),
                             }
 
                             return (
