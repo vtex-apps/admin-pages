@@ -18,10 +18,6 @@ const stopPropagation = (e: React.MouseEvent) => {
   e.stopPropagation()
 }
 
-function itemIsJsonSchema(items: JSONSchema6['items']): items is JSONSchema6 {
-  return typeof items !== 'boolean'
-}
-
 interface IProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
