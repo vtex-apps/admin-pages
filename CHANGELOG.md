@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Avoid crash when content translation fails
+
 ## [4.7.1] - 2019-08-06
 
 ### Fixed
