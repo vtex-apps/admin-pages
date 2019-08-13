@@ -1,6 +1,6 @@
 import { equals, last, path, pick } from 'ramda'
 import React, { useContext, useState } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 import {
   Button,
   ColorPicker,
@@ -15,13 +15,14 @@ import {
 import ImageUploader from '../../../../form/ImageUploader'
 import withPWAMutations, {
   ManifestMutationData,
+  PWAMutationProps,
 } from './components/withPWAMutations'
 import withPWASettings, {
   Manifest,
   PWAImage,
+  PWASettingsProps,
 } from './components/withPWASettings'
 import { messages } from './messages'
-import { PWAFormProps } from './typings'
 import {
   DISPLAY_OPTIONS,
   ORIENTATION_OPTIONS,
@@ -44,7 +45,9 @@ const isManifestValid = (manifest: Manifest): boolean =>
       manifest.theme_color
   )
 
-const PWAForm: React.FunctionComponent<PWAFormProps> = ({
+type Props = InjectedIntlProps & PWAMutationProps & PWASettingsProps
+
+const PWAForm: React.FunctionComponent<Props> = ({
   manifest: pwaManifest,
   splashes,
   iOSIcons,
@@ -334,4 +337,8 @@ const PWAForm: React.FunctionComponent<PWAFormProps> = ({
   )
 }
 
-export default injectIntl(withPWASettings(withPWAMutations(PWAForm)))
+export default injectIntl(
+  withPWASettings<InjectedIntlProps>(
+    withPWAMutations<InjectedIntlProps & PWASettingsProps>(PWAForm)
+  )
+)

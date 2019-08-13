@@ -34,10 +34,10 @@ const reduceProperties = (isContent: boolean) => (
 }
 
 const hideLayoutOrContentFromSchema = (
-  schema: ComponentSchema,
+  schema: ComponentSchema | ComponentSchema[],
   isContent: boolean
 ) => {
-  if (Boolean(schema.isLayout) === isContent) {
+  if (Array.isArray(schema) || Boolean(schema.isLayout) === isContent) {
     return {}
   }
 
@@ -57,15 +57,19 @@ const hideLayoutOrContentFromSchema = (
 }
 
 const setArraySchemaDefaultsDeep: (
-  schema: ComponentSchema
-) => ComponentSchema = schema => {
-  if (schema.type === 'array') {
-    schema.items = setArraySchemaDefaultsDeep(schema.items)
+  schema: ComponentSchema | ComponentSchema['items']
+) => ComponentSchema | ComponentSchema[] = schema => {
+  if (!schema || Array.isArray(schema) || schema.type !== 'array') {
+    return typeof schema === 'undefined' ? {} : schema
+  }
 
-    if (!schema.minItems || schema.minItems < 1) {
-      schema.minItems = 1
-    }
+  schema.items = setArraySchemaDefaultsDeep(schema.items)
 
+  if (!schema.minItems || schema.minItems < 1) {
+    schema.minItems = 1
+  }
+
+  if (schema.items && !Array.isArray(schema.items)) {
     schema.items.properties = {
       __editorItemTitle: {
         default: schema.items.title,

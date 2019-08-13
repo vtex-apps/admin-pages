@@ -1,11 +1,8 @@
 import { ConditionsStatement } from 'vtex.styleguide'
 
-import { DateVerbOptions } from './typings'
+import { DateInfo, DateVerbOptions } from './typings'
 
-const formatDateInfo = (
-  dateInfo: { date: Date; to: Date; from: Date },
-  verb: DateVerbOptions
-) =>
+const formatDateInfo = (dateInfo: DateInfo, verb: DateVerbOptions) =>
   ({
     between: {
       from: dateInfo.from,
@@ -24,7 +21,9 @@ const formatDateInfo = (
 
 export const formatStatements = (statements: ConditionsStatement[]) =>
   statements.map(({ object, subject, verb }) => ({
-    objectJSON: JSON.stringify(formatDateInfo(object, verb as DateVerbOptions)),
+    objectJSON: JSON.stringify(
+      formatDateInfo(object as DateInfo, verb as DateVerbOptions)
+    ),
     subject: subject as ConditionSubject,
     verb,
   }))

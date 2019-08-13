@@ -278,6 +278,7 @@ declare global {
     minItems?: number
     properties?: ComponentSchemaProperties
     isLayout?: boolean
+    items?: ComponentSchema | ComponentSchema[]
   }
 
   interface Window {
