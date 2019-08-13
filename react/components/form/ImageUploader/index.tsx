@@ -10,9 +10,8 @@ import {
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
-import { Button, Spinner } from 'vtex.styleguide'
+import { IconUpload, Spinner } from 'vtex.styleguide'
 
-import ImageIcon from '../../../images/ImageIcon'
 import UploadFile from '../../../queries/UploadFile.graphql'
 
 import Dropzone from './Dropzone'
@@ -104,7 +103,7 @@ class ImageUploader extends Component<Props, State> {
                   className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
                 >
                   <div className="flex justify-center mb3">
-                    <ImageIcon stroke="#fff" />
+                    <IconUpload />
                   </div>
                   <span className="white">
                     <FormattedMessage
@@ -139,21 +138,31 @@ class ImageUploader extends Component<Props, State> {
               <Spinner />
             ) : (
               <Fragment>
-                <div className="mb3">
-                  <ImageIcon />
+                <div className="mb3 c-action-primary">
+                  <IconUpload />
                 </div>
-                <div className="mb5 f6 tc gray">
-                  <FormattedMessage
-                    id="admin/pages.editor.image-uploader.empty.text"
-                    defaultMessage="Drag your image here"
-                  />
-                </div>
-                <Button size="small" variation="secondary">
+                <div className="mb4 tc gray c-action-primary b underline">
                   <FormattedMessage
                     id="admin/pages.editor.image-uploader.empty.button"
                     defaultMessage="Upload"
                   />
-                </Button>
+                </div>
+                <p className="mv0 c-muted-2 f7">
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.subtext-1"
+                    defaultMessage="or"
+                  />{' '}
+                  <span className="b">
+                    <FormattedMessage
+                      id="admin/pages.editor.image-uploader.empty.subtext-2"
+                      defaultMessage="drag and drop"
+                    />
+                  </span>{' '}
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.subtext-3"
+                    defaultMessage="an image"
+                  />
+                </p>
               </Fragment>
             )}
           </div>
