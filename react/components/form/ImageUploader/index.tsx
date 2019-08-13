@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
@@ -10,14 +11,14 @@ import {
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
-import { IconEdit, IconUpload, Spinner } from 'vtex.styleguide'
+import { Spinner } from 'vtex.styleguide'
 
 import UploadFile from '../../../queries/UploadFile.graphql'
 
 import Dropzone from './Dropzone'
+import EmptyState from './EmptyState'
 import ErrorAlert from './ErrorAlert'
-
-import styles from './imageUploader.css'
+import ImagePreview from './ImagePreview'
 
 interface Props extends InjectedIntlProps {
   disabled?: boolean
@@ -72,48 +73,6 @@ class ImageUploader extends Component<Props, State> {
     } = this.props
     const { error, isLoading } = this.state
 
-    const backgroundImageStyle = {
-      backgroundImage: `url("${value}")`,
-    }
-
-    if (value) {
-      return (
-        <Fragment>
-          <FormattedMessage id={title as string}>
-            {text => <span className="w-100 db mb3">{text}</span>}
-          </FormattedMessage>
-          <Dropzone
-            disabled={disabled || isLoading}
-            extraClasses={
-              !isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'
-            }
-            onClick={this.handleErrorReset}
-            onDrop={this.handleImageDrop}
-          >
-            {isLoading ? (
-              <div className="w-100 h-100 flex justify-center items-center">
-                <Spinner />
-              </div>
-            ) : (
-              <div
-                className="w-100 h-100 relative bg-center contain"
-                style={backgroundImageStyle}
-              >
-                <div
-                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.overlay}`}
-                >
-                  <div className="absolute bg-action-primary br2 flex h2 items-center justify-center mr3 mt3 right-0 top-0 w2 white">
-                    <IconEdit size={14} />
-                  </div>
-                </div>
-              </div>
-            )}
-          </Dropzone>
-          {error && <ErrorAlert message={error} />}
-        </Fragment>
-      )
-    }
-
     return (
       <Fragment>
         <FormattedMessage id={title as string}>
@@ -121,45 +80,24 @@ class ImageUploader extends Component<Props, State> {
         </FormattedMessage>
         <Dropzone
           disabled={disabled || isLoading}
-          extraClasses={`ba bw1 b--dashed b--light-gray ${
-            !isLoading ? 'cursor' : ''
-          }`}
+          extraClasses={classnames({
+            'ba b--dashed bw1 b--light-gray': !value || isLoading,
+            'bg-light-gray pointer': !!value,
+            'bg-white b--solid': isLoading,
+            cursor: !isLoading && !value,
+          })}
           onClick={this.handleErrorReset}
           onDrop={this.handleImageDrop}
         >
-          <div className="h-100 flex flex-column justify-center items-center">
-            {isLoading ? (
+          {isLoading ? (
+            <div className="w-100 h-100 flex justify-center items-center">
               <Spinner />
-            ) : (
-              <Fragment>
-                <div className="mb3 c-action-primary">
-                  <IconUpload />
-                </div>
-                <div className="mb4 tc gray c-action-primary b underline">
-                  <FormattedMessage
-                    id="admin/pages.editor.image-uploader.empty.button"
-                    defaultMessage="Upload"
-                  />
-                </div>
-                <p className="mv0 c-muted-2 f7">
-                  <FormattedMessage
-                    id="admin/pages.editor.image-uploader.empty.subtext-1"
-                    defaultMessage="or"
-                  />{' '}
-                  <span className="b">
-                    <FormattedMessage
-                      id="admin/pages.editor.image-uploader.empty.subtext-2"
-                      defaultMessage="drag and drop"
-                    />
-                  </span>{' '}
-                  <FormattedMessage
-                    id="admin/pages.editor.image-uploader.empty.subtext-3"
-                    defaultMessage="an image"
-                  />
-                </p>
-              </Fragment>
-            )}
-          </div>
+            </div>
+          ) : !!value ? (
+            <ImagePreview imageUrl={value} />
+          ) : (
+            <EmptyState />
+          )}
         </Dropzone>
         {error && <ErrorAlert message={error} />}
       </Fragment>
