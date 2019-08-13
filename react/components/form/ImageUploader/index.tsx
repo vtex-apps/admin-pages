@@ -10,7 +10,7 @@ import {
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
-import { IconUpload, Spinner } from 'vtex.styleguide'
+import { IconEdit, IconUpload, Spinner } from 'vtex.styleguide'
 
 import UploadFile from '../../../queries/UploadFile.graphql'
 
@@ -100,17 +100,11 @@ class ImageUploader extends Component<Props, State> {
                 style={backgroundImageStyle}
               >
                 <div
-                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.overlay}`}
                 >
-                  <div className="flex justify-center mb3">
-                    <IconUpload />
+                  <div className="absolute bg-action-primary br2 flex h2 items-center justify-center mr3 mt3 right-0 top-0 w2 white">
+                    <IconEdit size={14} />
                   </div>
-                  <span className="white">
-                    <FormattedMessage
-                      id="admin/pages.editor.image-uploader.change"
-                      defaultMessage="Change image"
-                    />
-                  </span>
                 </div>
               </div>
             )}
