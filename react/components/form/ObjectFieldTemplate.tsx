@@ -26,18 +26,10 @@ const hasFieldToBeDisplayed = (
   )
 }
 
-interface Props {
-  formContext: ComponentEditorFormContext
-  properties: ObjectFieldTemplateProps['properties']
-  schema: ComponentSchema
-}
-
-const ObjectFieldTemplate: React.FunctionComponent<Props> = ({
-  formContext,
-  properties,
-  schema,
-}) =>
-  hasFieldToBeDisplayed(schema, formContext) ? (
+const ObjectFieldTemplate: React.FunctionComponent<
+  ObjectFieldTemplateProps
+> = ({ formContext, properties, schema }) =>
+  hasFieldToBeDisplayed(schema as ComponentSchema, formContext) ? (
     <Fragment>{properties.map(property => property.content)}</Fragment>
   ) : null
 

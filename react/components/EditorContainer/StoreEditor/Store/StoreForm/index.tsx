@@ -3,7 +3,7 @@ import { assoc, dissoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
-import Form from 'react-jsonschema-form'
+import Form, { UiSchema } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
 
@@ -70,17 +70,17 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   const { settingsSchema, settingsUiSchema } = store
 
-  const schema = tryParseJson(settingsSchema)
-  const uiSchema = tryParseJson(settingsUiSchema)
+  const schema = tryParseJson<JSONSchema6>(settingsSchema)
+  const uiSchema = tryParseJson<UiSchema>(settingsUiSchema)
 
   const schemas = {
     ...(schema && {
       schema: assoc<JSONSchema6>(
         'properties',
-        formatSchema(dissoc('title', schema).properties, intl),
+        formatSchema(dissoc('title', schema).properties || {}, intl),
         schema
       ),
-      title: formatIOMessage({ id: schema.title, intl }),
+      title: formatIOMessage({ id: schema.title || '', intl }),
     }),
     ...(uiSchema && { uiSchema }),
   }

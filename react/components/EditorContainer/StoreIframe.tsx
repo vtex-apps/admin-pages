@@ -4,7 +4,7 @@ interface Props {
   path?: string
 }
 
-const StoreIframe: React.FunctionComponent<Props> = React.memo(({ path }) => {
+const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
   const iframeRef = useRef<HTMLIFrameElement>(null)
 
   useEffect(() => {
@@ -32,6 +32,6 @@ const StoreIframe: React.FunctionComponent<Props> = React.memo(({ path }) => {
       frameBorder="0"
     />
   )
-})
+}
 
-export default StoreIframe
+export default React.memo(StoreIframe)

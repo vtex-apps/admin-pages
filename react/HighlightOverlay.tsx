@@ -120,50 +120,52 @@ export default class HighlightOverlay extends Component<Props, State> {
 
     const iframeBody = document.querySelector('body')
 
-    if (highlightTreePath && elements && provider) {
-      const paddingFromIframeBody = iframeBody
-        ? {
-            left: parseInt(
-              window.getComputedStyle(iframeBody, null).paddingLeft || '0',
-              10
-            ),
-            right: parseInt(
-              window.getComputedStyle(iframeBody, null).paddingRight || '0',
-              10
-            ),
-          }
-        : {
-            left: 0,
-            right: 0,
-          }
-
-      const providerRect = provider.getBoundingClientRect() as DOMRect
-
-      const elementsArray: Element[] = Array.prototype.slice.call(elements)
-
-      const element = elementsArray.find(currElement => {
-        const currRect = currElement.getBoundingClientRect()
-
-        return currRect.width > 0 && currRect.height > 0
-      })
-
-      const rect = element
-        ? (element.getBoundingClientRect() as DOMRect)
-        : this.INITIAL_HIGHLIGHT_RECT
-
-      if (element && !this.state.editMode) {
-        this.debouncedScrollTo(element)
-      }
-
-      // Add offset from render provider main div
-      rect.y += -providerRect.y
-      rect.x +=
-        -providerRect.x +
-        (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
-
-      DEFAULT_HIGHLIGHT_RECT = rect
-      return rect
+    if (!highlightTreePath || !elements || !provider) {
+      return
     }
+
+    const paddingFromIframeBody = iframeBody
+      ? {
+          left: parseInt(
+            window.getComputedStyle(iframeBody, null).paddingLeft || '0',
+            10
+          ),
+          right: parseInt(
+            window.getComputedStyle(iframeBody, null).paddingRight || '0',
+            10
+          ),
+        }
+      : {
+          left: 0,
+          right: 0,
+        }
+
+    const providerRect = provider.getBoundingClientRect() as DOMRect
+
+    const elementsArray: Element[] = Array.prototype.slice.call(elements)
+
+    const element = elementsArray.find(currElement => {
+      const currRect = currElement.getBoundingClientRect()
+
+      return currRect.width > 0 && currRect.height > 0
+    })
+
+    const rect = element
+      ? (element.getBoundingClientRect() as DOMRect)
+      : this.INITIAL_HIGHLIGHT_RECT
+
+    if (element && !this.state.editMode) {
+      this.debouncedScrollTo(element)
+    }
+
+    // Add offset from render provider main div
+    rect.y += -providerRect.y
+    rect.x +=
+      -providerRect.x +
+      (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
+
+    DEFAULT_HIGHLIGHT_RECT = rect
+    return rect
   }
 
   public handleMouseOverHighlight: EventListener = e => {

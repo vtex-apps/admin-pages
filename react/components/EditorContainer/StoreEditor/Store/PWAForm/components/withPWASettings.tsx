@@ -25,7 +25,7 @@ export interface Manifest {
   display?: string
 }
 
-export interface PWAData {
+interface PWAData {
   manifest: Manifest
   iOSIcons: PWAImage[]
   splashes: PWAImage[]
@@ -40,6 +40,8 @@ export interface PWAData {
     }
   }
 }
+
+export type PWASettingsProps = PWAData & Pick<QueryResult<PWAData>, 'refetch'>
 
 class PWAQuery extends Query<PWAData, {}> {}
 
@@ -62,13 +64,11 @@ const options = {
 }
 
 function withPWASettings<T>(
-  WrappedComponent: React.ComponentType<
-    T & PWAData & Omit<QueryResult<PWAData, {}>, 'data' | 'loading'>
-  >
+  WrappedComponent: React.ComponentType<T & PWASettingsProps>
 ) {
   const ComponentWithPWASettings = (props: T) => (
     <PWAQuery query={PWA}>
-      {handleCornerCases<PWAData, {}>(options, ({ data, ...restPWAQuery }) => {
+      {handleCornerCases<PWAData, {}>(options, ({ data, refetch }) => {
         if (
           !data.manifest ||
           !data.manifest.background_color ||
@@ -84,16 +84,16 @@ function withPWASettings<T>(
             <WrappedComponent
               {...props}
               {...data}
-              {...restPWAQuery}
               manifest={{
                 ...(data.manifest || {}),
                 ['background_color']: color,
                 ['theme_color']: color,
               }}
+              refetch={refetch}
             />
           )
         }
-        return <WrappedComponent {...props} {...data} {...restPWAQuery} />
+        return <WrappedComponent {...props} {...data} refetch={refetch} />
       })}
     </PWAQuery>
   )
