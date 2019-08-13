@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
@@ -166,9 +167,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   return (
     <div
-      className={`accordion-item bg-white bb b--light-silver ${
-        showDragHandle ? '' : 'accordion-item--handle-hidden'
-      }`}
+      className={classnames('accordion-item bg-white bb b--light-silver', {
+        'accordion-item--handle-hidden': showDragHandle,
+      })}
     >
       <div
         className={`accordion-label flex items-center overflow-hidden relative ${
@@ -178,7 +179,11 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
       >
         {showDragHandle && <Handle />}
         <div
-          className={`relative mr3 flex items-center ${styles['preview-container']}`}
+          className={classnames(
+            'relative mr3 flex items-center',
+            styles['preview-container'],
+            { 'ml-auto': !showDragHandle }
+          )}
         >
           {hasImageUploader ? (
             <>
