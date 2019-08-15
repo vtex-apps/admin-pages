@@ -15,7 +15,7 @@ const Media = (props: MediaProps) => {
   const type = entity.getType()
 
   if (type === 'IMAGE') {
-    return <img src={src} />
+    return <img alt={src} src={src} />
   }
 
   return null
