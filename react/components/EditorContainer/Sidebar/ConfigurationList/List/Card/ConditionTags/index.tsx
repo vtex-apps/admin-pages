@@ -65,7 +65,7 @@ const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
 
             return [
               ...acc,
-              <div className="mt3">
+              <div className="mt3" key={key}>
                 <Tag
                   kind={item.subject}
                   text={format({ kind: item.subject, value })}
