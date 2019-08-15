@@ -25,11 +25,12 @@ const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
 
   return (
     <iframe
-      id="store-iframe"
       className="w-100 h-100"
+      frameBorder="0"
+      id="store-iframe"
       ref={iframeRef}
       src={path ? `/${path}` : '/'}
-      frameBorder="0"
+      title="store-iframe"
     />
   )
 }
