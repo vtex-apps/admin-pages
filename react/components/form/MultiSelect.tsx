@@ -29,7 +29,7 @@ const MultiSelect: React.FunctionComponent<Props> = ({
 }) => (
   <Fragment>
     {(label || (schema && schema.title)) && (
-      <label>
+      <label htmlFor={id}>
         <span className="dib mb3 w-100">
           <span>{label || (schema && schema.title)}</span>
         </span>
