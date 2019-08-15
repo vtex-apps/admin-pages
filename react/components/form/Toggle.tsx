@@ -8,7 +8,6 @@ import { CustomWidgetProps } from './typings'
 type Props = CustomWidgetProps & InjectedIntlProps
 
 const Toggle: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   intl,
@@ -19,7 +18,6 @@ const Toggle: React.FunctionComponent<Props> = ({
   value,
 }) => (
   <StyleguideToggle
-    autoFocus={autofocus}
     checked={value}
     disabled={disabled || disabledBySchema || readonly}
     id={id}
@@ -31,7 +29,6 @@ const Toggle: React.FunctionComponent<Props> = ({
 )
 
 Toggle.defaultProps = {
-  autofocus: false,
   disabled: false,
   readonly: false,
 }

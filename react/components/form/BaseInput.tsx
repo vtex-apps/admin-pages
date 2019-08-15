@@ -18,7 +18,6 @@ interface Props extends CustomWidgetProps, InjectedIntlProps {
 
 const BaseInput: React.FunctionComponent<Props> = props => {
   const {
-    autofocus,
     disabled,
     id,
     intl,
@@ -48,7 +47,6 @@ const BaseInput: React.FunctionComponent<Props> = props => {
 
   return (
     <Input
-      autoFocus={autofocus}
       disabled={disabled || schema.disabled}
       error={!!currentError}
       errorMessage={currentError}
@@ -81,7 +79,6 @@ const BaseInput: React.FunctionComponent<Props> = props => {
 }
 
 BaseInput.defaultProps = {
-  autofocus: false,
   disabled: false,
   placeholder: '',
   rawErrors: [],
