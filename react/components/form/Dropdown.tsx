@@ -12,7 +12,6 @@ interface Props extends CustomWidgetProps, InjectedIntlProps {
 }
 
 const Dropdown: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   intl,
@@ -47,7 +46,6 @@ const Dropdown: React.FunctionComponent<Props> = ({
 
   return (
     <StyleguideDropdown
-      autoFocus={autofocus}
       disabled={disabled || (schema && schema.disabled)}
       id={id}
       label={formatIOMessage({ id: label, intl })}
@@ -65,7 +63,6 @@ const Dropdown: React.FunctionComponent<Props> = ({
 }
 
 Dropdown.defaultProps = {
-  autofocus: false,
   disabled: false,
   readonly: false,
   required: false,

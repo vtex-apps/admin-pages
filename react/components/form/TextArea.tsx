@@ -8,7 +8,6 @@ import { CustomWidgetProps } from './typings'
 type Props = CustomWidgetProps & InjectedIntlProps
 
 const TextArea: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   intl,
@@ -51,7 +50,6 @@ const TextArea: React.FunctionComponent<Props> = ({
 
   return (
     <Textarea
-      autoFocus={autofocus}
       disabled={disabled}
       error={!!currentError}
       errorMessage={currentError}
