@@ -1,6 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
-import { FormattedMessage } from 'react-intl'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   Dimensions,
@@ -11,7 +11,7 @@ import AddButton from './AddButton'
 
 import ArrayList from './ArrayList'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void
@@ -21,7 +21,7 @@ interface Props {
 
 interface State {
   sorting?: boolean
-  openedItems: number[]
+  openItem: number | null
 }
 
 function getHelperDimensions({ node }: SortStart): Dimensions {
@@ -41,20 +41,17 @@ class ArrayFieldTemplate extends Component<
   constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
-      openedItems: [],
+      openItem: null,
     }
   }
 
   public render() {
-    const { canAdd, items, schema, title } = this.props
-    const { openedItems: openedItem, sorting } = this.state
-
+    const { canAdd, intl, items, schema, title } = this.props
+    const { openItem, sorting } = this.state
     return (
       <Fragment>
-        {title && (
-          <FormattedMessage id={title}>
-            {text => <h4 className="mb4 mt0">{text}</h4>}
-          </FormattedMessage>
+        {!openItem && title && (
+          <h4 className="mb4 mt0">{intl.formatMessage({ id: title })}</h4>
         )}
         <ArrayList
           getHelperDimensions={getHelperDimensions}
@@ -70,7 +67,7 @@ class ArrayFieldTemplate extends Component<
           onOpen={this.handleOpen}
           onSortEnd={this.handleSortEnd}
           onSortStart={this.handleSortStart}
-          openedItem={openedItem}
+          openItem={openItem}
           pressDelay={200}
           schema={schema}
           sorting={sorting}
@@ -88,9 +85,16 @@ class ArrayFieldTemplate extends Component<
       e.stopPropagation()
     }
 
+    if (typeof this.props.formContext.setComponentFormState === 'function') {
+      this.props.formContext.setComponentFormState({
+        onClose: this.handleClose(index),
+        title: this.props.intl.formatMessage({ id: this.props.title }),
+      })
+    }
+
     this.setState(state => ({
       ...state,
-      openedItems: state.openedItems.concat(index),
+      openItem: index,
     }))
   }
 
@@ -98,7 +102,7 @@ class ArrayFieldTemplate extends Component<
     return new Promise(resolve => {
       this.setState(
         {
-          openedItems: [],
+          openItem: null,
         },
         () => {
           resolve()
@@ -108,9 +112,13 @@ class ArrayFieldTemplate extends Component<
   }
 
   private handleClose = (index: number) => () => {
+    if (typeof this.props.formContext.setComponentFormState === 'function') {
+      this.props.formContext.setComponentFormState(null)
+    }
+
     this.setState(state => ({
       ...state,
-      openedItems: state.openedItems.filter(id => id !== index),
+      openItem: null,
     }))
   }
 
@@ -140,14 +148,26 @@ class ArrayFieldTemplate extends Component<
     const { onAddClick, items } = this.props
 
     onAddClick(e)
+
     this.setState({
-      openedItems: this.state.openedItems.concat(items.length),
+      openItem: items.length,
     })
+
+    if (typeof this.props.formContext.setComponentFormState === 'function') {
+      this.props.formContext.setComponentFormState({
+        onClose: this.handleClose(items.length),
+        title: this.props.intl.formatMessage({ id: this.props.title }),
+      })
+    }
   }
 }
 
+const ArrayFieldTemplateWithIntl = injectIntl(ArrayFieldTemplate)
+
 const StatelessArrayFieldTemplate: React.FunctionComponent<
   ArrayFieldTemplateProps
-> = props => <ArrayFieldTemplate {...props} />
+> = props => {
+  return <ArrayFieldTemplateWithIntl {...props} />
+}
 
 export default StatelessArrayFieldTemplate

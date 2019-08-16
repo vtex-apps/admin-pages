@@ -1,4 +1,3 @@
-import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
@@ -9,7 +8,7 @@ interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
   onClose: (index: number) => () => void
   onOpen: (index: number) => (e: React.MouseEvent | ActionMenuOption) => void
-  openedItem: number[]
+  openItem: number | null
   schema: ComponentSchema
   sorting?: boolean
 }
@@ -18,7 +17,7 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
   children,
   items,
   schema,
-  openedItem,
+  openItem,
   onOpen,
   onClose,
   sorting,
@@ -28,19 +27,34 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
       sorting ? 'accordion-list-container--sorting' : ''
     }`}
   >
-    {children}
-    {items.map(element => (
+    {openItem === null || openItem >= items.length ? (
+      <>
+        {children}
+        {items.map(element => (
+          <ArrayFieldTemplateItem
+            key={element.index}
+            schema={schema}
+            isOpen={openItem === element.index}
+            onOpen={onOpen(element.index)}
+            onClose={onClose(element.index)}
+            formIndex={element.index}
+            showDragHandle={items.length > 1}
+            {...element}
+          />
+        ))}
+      </>
+    ) : (
       <ArrayFieldTemplateItem
-        key={element.index}
+        key={openItem}
         schema={schema}
-        isOpen={openedItem.includes(element.index)}
-        onOpen={onOpen(element.index)}
-        onClose={onClose(element.index)}
-        formIndex={element.index}
+        isOpen
+        onOpen={onOpen(openItem)}
+        onClose={onClose(openItem)}
+        formIndex={openItem}
         showDragHandle={items.length > 1}
-        {...element}
+        {...items[openItem]}
       />
-    ))}
+    )}
   </div>
 )
 

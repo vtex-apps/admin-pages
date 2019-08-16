@@ -34,6 +34,12 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
+interface ComponentFormState {
+  onClose: () => void
+  onTitleChange?: () => void
+  title: string
+}
+
 const ComponentEditor: React.FunctionComponent<Props> = ({
   condition,
   contentSchema,
@@ -51,6 +57,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
+  const [
+    componentFormState,
+    setComponentFormState,
+  ] = React.useState<ComponentFormState | null>(null)
 
   const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
@@ -89,9 +99,13 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
       >
         <EditorHeader
           isTitleEditable={isContent}
-          onClose={onClose}
-          onTitleChange={onTitleChange}
-          title={title}
+          onClose={componentFormState ? componentFormState.onClose : onClose}
+          onTitleChange={
+            componentFormState
+              ? componentFormState.onTitleChange
+              : onTitleChange
+          }
+          title={componentFormState ? componentFormState.title : title}
         />
 
         <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
@@ -100,6 +114,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
               addMessages: iframeRuntime.addMessages,
               isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
+              setComponentFormState,
             }}
             formData={data}
             onChange={onChange}
@@ -121,33 +136,35 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         )}
       </ContentContainer>
 
-      <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
-        <Button
-          disabled={shouldDisableSaveButton}
-          onClick={onSave}
-          size="small"
-          variation="primary"
-        >
-          <FormattedMessage
-            defaultMessage="Save"
-            id="admin/pages.editor.components.button.save"
-          />
-        </Button>
-
-        <div className="mr5">
+      {!componentFormState && (
+        <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
           <Button
-            disabled={isLoading}
-            onClick={onClose}
+            disabled={shouldDisableSaveButton}
+            onClick={onSave}
             size="small"
-            variation="tertiary"
+            variation="primary"
           >
             <FormattedMessage
-              defaultMessage="Cancel"
-              id="admin/pages.editor.components.button.cancel"
+              defaultMessage="Save"
+              id="admin/pages.editor.components.button.save"
             />
           </Button>
+
+          <div className="mr5">
+            <Button
+              disabled={isLoading}
+              onClick={onClose}
+              size="small"
+              variation="tertiary"
+            >
+              <FormattedMessage
+                defaultMessage="Cancel"
+                id="admin/pages.editor.components.button.cancel"
+              />
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </Fragment>
   )
 }

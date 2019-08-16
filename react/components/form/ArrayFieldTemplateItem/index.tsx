@@ -1,9 +1,8 @@
 import classnames from 'classnames'
-import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
-import { ArrayFieldTemplateProps, UiSchema } from 'react-jsonschema-form'
+import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
 import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
@@ -164,58 +163,59 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   return (
     <div
       className={classnames('accordion-item bg-white bb b--light-silver', {
+        'absolute left-0 top-0 ph6 w-100 z-1': isOpen,
         'accordion-item--handle-hidden': showDragHandle,
       })}
     >
-      <div
-        className={`accordion-label flex items-center overflow-hidden relative ${
-          hasImageUploader ? 'h4' : 'h3'
-        }`}
-        onClick={handleLabelClick}
-      >
-        {showDragHandle && <Handle />}
+      {isOpen ? (
+        props.children
+      ) : (
         <div
-          className={classnames(
-            'relative mr3 flex items-center',
-            styles['preview-container'],
-            { 'ml-auto': !showDragHandle }
-          )}
+          className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative ${
+            hasImageUploader ? 'h4' : 'h3'
+          }`}
+          onClick={handleLabelClick}
         >
-          {hasImageUploader ? (
-            <>
-              {imagePreview ? (
-                <img
-                  className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
-                  src={imagePreview}
-                />
-              ) : (
-                <NoImagePlaceholder />
-              )}
-              <PreviewOverlay />
-            </>
-          ) : (
-            <label className="f6 accordion-label-title">
-              {intl.formatMessage(
-                title ? { id: title } : messages.defaultTitle
-              )}
-            </label>
-          )}
+          {showDragHandle && <Handle />}
           <div
-            className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
-            onClick={stopPropagation}
+            className={classnames(
+              'relative mr3 flex items-center',
+              styles['preview-container']
+            )}
           >
-            <ActionMenu
-              variation="primary"
-              menuWidth={200}
-              options={actionMenuOptions}
-              buttonSize="small"
-            />
+            {hasImageUploader ? (
+              <>
+                {imagePreview ? (
+                  <img
+                    className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
+                    src={imagePreview}
+                  />
+                ) : (
+                  <NoImagePlaceholder />
+                )}
+                <PreviewOverlay />
+              </>
+            ) : (
+              <label className="f6 accordion-label-title">
+                {intl.formatMessage(
+                  title ? { id: title } : messages.defaultTitle
+                )}
+              </label>
+            )}
+            <div
+              className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
+              onClick={stopPropagation}
+            >
+              <ActionMenu
+                variation="primary"
+                menuWidth={200}
+                options={actionMenuOptions}
+                buttonSize="small"
+              />
+            </div>
           </div>
         </div>
-      </div>
-      <ExpandableItemContent isOpen={isOpen}>
-        {props.children}
-      </ExpandableItemContent>
+      )}
     </div>
   )
 }
