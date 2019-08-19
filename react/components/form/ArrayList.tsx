@@ -8,7 +8,9 @@ interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
   schema: object
   openedItem: number | null
-  onOpen: (index: number) => (e: React.MouseEvent) => void
+  onOpen: (
+    index: number
+  ) => (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
   onClose: () => void
   sorting?: boolean
 }

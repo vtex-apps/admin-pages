@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage } from 'react-intl'
 
@@ -52,10 +53,18 @@ const getTitle = (mode?: StoreEditMode) => {
 }
 
 const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
+  const handleClick = React.useCallback(() => changeMode(mode), [
+    changeMode,
+    mode,
+  ])
+
+  const handleKeyDown = useKeydownFromClick(handleClick)
+
   return (
     <div
       className="pointer h-3em flex justify-center items-center mr5"
-      onClick={() => changeMode(mode)}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       {icon(mode)}
       <div className={`pl3 b mid-gray fw5 ${mode ? '' : 'c-action-primary'}`}>

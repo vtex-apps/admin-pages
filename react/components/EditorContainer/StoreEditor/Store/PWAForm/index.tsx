@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import { equals, last, path, pick } from 'ramda'
 import React, { useContext, useState } from 'react'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
@@ -66,6 +67,14 @@ const PWAForm: React.FunctionComponent<Props> = ({
   ])
   const [submitting, setSubmitting] = useState(false)
   const [showSpecific, setShowSpecific] = useState(false)
+
+  const toggleSpecific = React.useCallback(
+    () => setShowSpecific(!showSpecific),
+    [showSpecific]
+  )
+
+  const toggleSpecificByKeyDown = useKeydownFromClick(toggleSpecific)
+
   const { showToast } = useContext(ToastContext)
 
   const [splash = null] = splashes || []
@@ -252,7 +261,8 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div
         className="pb3 link pointer c-muted-1"
-        onClick={() => setShowSpecific(!showSpecific)}
+        onClick={toggleSpecific}
+        onKeyDown={toggleSpecificByKeyDown}
       >
         <span className="pr4">
           <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />

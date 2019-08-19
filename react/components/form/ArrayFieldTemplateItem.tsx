@@ -1,3 +1,4 @@
+import { createKeydownFromClick } from 'keydown-from-click'
 import { path } from 'ramda'
 import React, { Component } from 'react'
 import { FormattedMessage, defineMessages } from 'react-intl'
@@ -8,6 +9,7 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc'
 import { animated, Transition } from 'react-spring/renderprops'
+
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
 
@@ -28,7 +30,7 @@ interface CustomProps {
   hasRemove: boolean
   isOpen: boolean
   onClose: () => void
-  onOpen: (e: React.MouseEvent) => void
+  onOpen: (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
   showDragHandle: boolean
   schema: object
 }
@@ -71,7 +73,11 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           showDragHandle ? '' : 'accordion-item--handle-hidden'
         }`}
       >
-        <div className="accordion-label" onClick={this.handleLabelClick}>
+        <div
+          className="accordion-label"
+          onClick={this.handleItemClick}
+          onKeyDown={this.handleItemKeyDown}
+        >
           <div className="flex items-center">
             {showDragHandle && <Handle />}
             <FormattedMessage
@@ -114,7 +120,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     )
   }
 
-  private handleLabelClick = (e: React.MouseEvent) => {
+  private handleItemClick = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
     const { isOpen, onOpen, onClose } = this.props
 
     if (isOpen) {
@@ -123,6 +129,8 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
       onOpen(e)
     }
   }
+
+  private handleItemKeyDown = createKeydownFromClick(this.handleItemClick)
 
   private renderChildren = () => (styles: React.CSSProperties) => (
     <animated.div style={styles}>{this.props.children}</animated.div>
