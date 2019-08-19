@@ -59,11 +59,13 @@ const Item: React.FunctionComponent<Props> = ({
       onKeyDown={handleKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      role="treeitem"
       style={{
         ...{ animationDuration: '0.2s' },
         ...(!hasSubItems || isSortable ? { marginLeft: 1 } : null),
         ...{ cursor: isEditable ? 'pointer' : 'default' },
       }}
+      tabIndex={0}
     >
       <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
         {typeof title === 'string' ? (

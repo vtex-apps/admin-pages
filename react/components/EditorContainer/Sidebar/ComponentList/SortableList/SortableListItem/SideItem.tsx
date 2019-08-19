@@ -30,6 +30,8 @@ const SideItem: React.FunctionComponent<Props> = ({
       onClick={onClick}
       onKeyDown={handleKeyDown}
       onMouseEnter={onMouseEnter}
+      role="button"
+      tabIndex={0}
     >
       {children}
     </div>

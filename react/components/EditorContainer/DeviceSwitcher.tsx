@@ -141,6 +141,8 @@ class DeviceComponent extends Component<
         onKeyDown={this.handleKeyDown}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        role="button"
+        tabIndex={0}
       >
         <Icons id={id} colorFill={selected || hover ? 'blue' : 'mid-gray'} />
       </div>
@@ -232,6 +234,8 @@ class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
           } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
           onClick={toggleEditMode}
           onKeyDown={this.handleKeyDown}
+          role="button"
+          tabIndex={0}
         >
           {inPreview ? (
             <IconEdit size={16} color="currentColor" solid />

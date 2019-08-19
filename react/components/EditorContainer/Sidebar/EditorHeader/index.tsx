@@ -26,7 +26,13 @@ const EditorHeader: React.FC<Props> = ({
     <div className="w-100 ph5 pv4">
       <div className="w-100 flex justify-between">
         <div className="w-100 flex items-center">
-          <span className="pointer" onClick={onClose} onKeyDown={handleKeyDown}>
+          <span
+            className="pointer"
+            onClick={onClose}
+            onKeyDown={handleKeyDown}
+            role="button"
+            tabIndex={0}
+          >
             <IconArrowBack color="#727273" size={12} />
           </span>
 

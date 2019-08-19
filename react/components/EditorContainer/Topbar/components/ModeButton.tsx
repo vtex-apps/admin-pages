@@ -65,6 +65,8 @@ const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
       className="pointer h-3em flex justify-center items-center mr5"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
     >
       {icon(mode)}
       <div className={`pl3 b mid-gray fw5 ${mode ? '' : 'c-action-primary'}`}>
