@@ -13,6 +13,8 @@ interface Props {
   variation?: string
 }
 
+const icon = <IconOptionsDots color="currentColor" />
+
 const ActionMenu: React.FunctionComponent<Props> = ({
   buttonSize,
   menuWidth,
@@ -21,7 +23,7 @@ const ActionMenu: React.FunctionComponent<Props> = ({
 }) => (
   <StyleguideActionMenu
     buttonProps={{
-      icon: <IconOptionsDots color="currentColor" />,
+      icon,
       size: buttonSize,
       type: 'button',
       variation,
