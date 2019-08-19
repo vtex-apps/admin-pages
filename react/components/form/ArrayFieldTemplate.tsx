@@ -48,6 +48,7 @@ class ArrayFieldTemplate extends Component<
   public render() {
     const { canAdd, intl, items, schema, title } = this.props
     const { openItem, sorting } = this.state
+
     return (
       <Fragment>
         {!openItem && title && (
@@ -83,8 +84,8 @@ class ArrayFieldTemplate extends Component<
       e.stopPropagation()
     }
 
-    if (typeof this.props.formContext.setComponentFormState === 'function') {
-      this.props.formContext.setComponentFormState({
+    if (typeof this.props.formContext.pushComponentFormState === 'function') {
+      this.props.formContext.pushComponentFormState({
         onClose: this.handleClose(index),
         title: this.props.intl.formatMessage({ id: this.props.title }),
       })
@@ -97,8 +98,8 @@ class ArrayFieldTemplate extends Component<
   }
 
   private handleClose = (index: number) => () => {
-    if (typeof this.props.formContext.setComponentFormState === 'function') {
-      this.props.formContext.setComponentFormState(null)
+    if (typeof this.props.formContext.popComponentFormState === 'function') {
+      this.props.formContext.popComponentFormState()
     }
 
     this.setState(state => ({
@@ -138,8 +139,8 @@ class ArrayFieldTemplate extends Component<
       openItem: items.length,
     })
 
-    if (typeof this.props.formContext.setComponentFormState === 'function') {
-      this.props.formContext.setComponentFormState({
+    if (typeof this.props.formContext.pushComponentFormState === 'function') {
+      this.props.formContext.pushComponentFormState({
         onClose: this.handleClose(items.length),
         title: this.props.intl.formatMessage({ id: this.props.title }),
       })

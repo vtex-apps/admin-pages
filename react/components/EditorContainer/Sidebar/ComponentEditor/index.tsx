@@ -1,5 +1,5 @@
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo } from 'react'
+import React, { Fragment, useMemo, useRef, useState } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
@@ -40,6 +40,29 @@ interface ComponentFormState {
   title: string
 }
 
+function useComponentFormStateStack() {
+  const [componentFormState, setComponentFormState] = useState<
+    ComponentFormState | undefined
+  >()
+  const stack = useRef<ComponentFormState[]>([])
+
+  function popComponentFormState() {
+    stack.current = stack.current.slice(0, stack.current.length - 1)
+    setComponentFormState(stack.current[stack.current.length - 1])
+  }
+
+  function pushComponentFormState(state: ComponentFormState) {
+    stack.current.push(state)
+    setComponentFormState(state)
+  }
+
+  return {
+    componentFormState,
+    popComponentFormState,
+    pushComponentFormState,
+  }
+}
+
 const ComponentEditor: React.FunctionComponent<Props> = ({
   condition,
   contentSchema,
@@ -57,10 +80,11 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
-  const [
+  const {
     componentFormState,
-    setComponentFormState,
-  ] = React.useState<ComponentFormState | null>(null)
+    popComponentFormState,
+    pushComponentFormState,
+  } = useComponentFormStateStack()
 
   const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
@@ -114,7 +138,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
               addMessages: iframeRuntime.addMessages,
               isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
-              setComponentFormState,
+              popComponentFormState,
+              pushComponentFormState,
             }}
             formData={data}
             onChange={onChange}
