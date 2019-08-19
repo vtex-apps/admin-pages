@@ -251,14 +251,6 @@
   user-select: none;
 }
 
-.accordion-content .accordion-label {
-  margin-left: 0;
-}
-
-.accordion-content .accordion-content {
-  padding-left: 14px;
-}
-
 .accordion-item--dragged .accordion-label {
   background-color: #fff;
 }
@@ -321,10 +313,6 @@
 .accordion-item--dragged .accordion-handle,
 .accordion-label:hover .accordion-handle {
   display: block;
-}
-
-.accordion-item--dragged .accordion-content {
-  display: none;
 }
 
 .iframe-pointer-none {

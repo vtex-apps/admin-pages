@@ -12,6 +12,10 @@
   width: calc(100% - 3rem);
 }
 
+.preview-text-container {
+  width: 100%;
+}
+
 .preview-image {
   object-fit: cover;
   transition: filter ease-in 100ms;

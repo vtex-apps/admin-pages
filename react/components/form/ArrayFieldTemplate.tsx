@@ -68,10 +68,8 @@ class ArrayFieldTemplate extends Component<
           onSortEnd={this.handleSortEnd}
           onSortStart={this.handleSortStart}
           openItem={openItem}
-          pressDelay={200}
           schema={schema}
           sorting={sorting}
-          updateBeforeSortStart={this.handleUpdateBeforeSortStart}
           useDragHandle
         >
           {canAdd ? <AddButton onClick={this.handleAddItem} /> : null}
@@ -96,19 +94,6 @@ class ArrayFieldTemplate extends Component<
       ...state,
       openItem: index,
     }))
-  }
-
-  private handleUpdateBeforeSortStart = () => {
-    return new Promise(resolve => {
-      this.setState(
-        {
-          openItem: null,
-        },
-        () => {
-          resolve()
-        }
-      )
-    })
   }
 
   private handleClose = (index: number) => () => {

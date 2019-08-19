@@ -8,7 +8,6 @@ import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList
 import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import styles from './ArrayFieldTemplateItem.css'
 
-import ExpandableItemContent from './ExpandableItemContent'
 import Handle from './Handle'
 import NoImagePlaceholder from './NoImagePlaceholder'
 import PreviewOverlay from './PreviewOverlay'
@@ -163,7 +162,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   return (
     <div
       className={classnames('accordion-item bg-white bb b--light-silver', {
-        'absolute left-0 top-0 ph6 w-100 z-1': isOpen,
+        'absolute left-0 top-0 ph6 w-100 h-100 z-1': isOpen,
         'accordion-item--handle-hidden': showDragHandle,
       })}
     >
@@ -179,8 +178,13 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
           {showDragHandle && <Handle />}
           <div
             className={classnames(
-              'relative mr3 flex items-center',
-              styles['preview-container']
+              'relative flex items-center',
+              styles['preview-container'],
+              {
+                mr3: showDragHandle,
+                [`${styles['preview-text-container']} ml3`]:
+                  !hasImageUploader && !showDragHandle,
+              }
             )}
           >
             {hasImageUploader ? (
