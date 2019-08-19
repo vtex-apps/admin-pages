@@ -1,7 +1,7 @@
 import React from 'react'
 import { SortableHandle } from 'react-sortable-hoc'
 
-import DragHandle from '../../icons/DragHandle'
+import DragHandle from '../../../icons/DragHandle'
 import styles from './ArrayFieldTemplateItem.css'
 
 const Handle = SortableHandle(() => (

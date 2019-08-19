@@ -85,7 +85,7 @@ class ArrayFieldTemplate extends Component<
 
     if (typeof this.props.formContext.pushComponentFormState === 'function') {
       this.props.formContext.pushComponentFormState({
-        onClose: this.handleClose(index),
+        onClose: this.handleClose,
         title: this.props.intl.formatMessage({ id: this.props.title }),
       })
     }
@@ -96,7 +96,7 @@ class ArrayFieldTemplate extends Component<
     }))
   }
 
-  private handleClose = (index: number) => () => {
+  private handleClose = () => {
     if (typeof this.props.formContext.popComponentFormState === 'function') {
       this.props.formContext.popComponentFormState()
     }
@@ -140,7 +140,7 @@ class ArrayFieldTemplate extends Component<
 
     if (typeof this.props.formContext.pushComponentFormState === 'function') {
       this.props.formContext.pushComponentFormState({
-        onClose: this.handleClose(items.length),
+        onClose: this.handleClose,
         title: this.props.intl.formatMessage({ id: this.props.title }),
       })
     }

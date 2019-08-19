@@ -1,6 +1,6 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import ImageIcon from '../../../images/ImageIcon'
+import ImageIcon from '../../../../images/ImageIcon'
 
 const NoImagePlaceholder = () => (
   <div className="w-100 h-100 flex flex-column items-center justify-center bg-muted-5 br3">

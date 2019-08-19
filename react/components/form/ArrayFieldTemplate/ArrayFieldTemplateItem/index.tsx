@@ -5,8 +5,8 @@ import React, { useCallback, useMemo } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
-import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
-import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
+import ActionMenu from '../../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
+import { ActionMenuOption } from '../../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
 import styles from './ArrayFieldTemplateItem.css'
 
 import Handle from './Handle'
@@ -21,7 +21,6 @@ interface IProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
-  isOpen: boolean
   onClose: () => void
   onOpen: (e: React.MouseEvent | ActionMenuOption) => void
   showDragHandle: boolean
@@ -72,7 +71,6 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     formIndex,
     hasRemove,
     intl,
-    isOpen,
     onDropIndexClick,
     schema,
     showDragHandle,
@@ -84,13 +82,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   const handleLabelClick = useCallback(
     (e: React.MouseEvent | ActionMenuOption) => {
-      if (props.isOpen) {
-        props.onClose()
-      } else {
-        props.onOpen(e)
-      }
+      props.onOpen(e)
     },
-    [props.isOpen, props.onOpen, props.onClose]
+    [props.onOpen, props.onClose]
   )
 
   const hasImageUploader = useMemo(() => {
@@ -181,64 +175,59 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   return (
     <div
       className={classnames('accordion-item bg-white bb b--light-silver', {
-        'absolute left-0 top-0 ph6 w-100 h-100 z-1': isOpen,
         'accordion-item--handle-hidden': showDragHandle,
       })}
     >
-      {isOpen ? (
-        props.children
-      ) : (
+      <div
+        className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative ${
+          hasImageUploader ? 'h4' : 'h3'
+        }`}
+        onClick={handleLabelClick}
+      >
+        {showDragHandle && <Handle />}
         <div
-          className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative ${
-            hasImageUploader ? 'h4' : 'h3'
-          }`}
-          onClick={handleLabelClick}
+          className={classnames(
+            'relative flex items-center',
+            styles['preview-container'],
+            {
+              mr3: showDragHandle,
+              [`${styles['preview-text-container']} ml3`]:
+                !hasImageUploader && !showDragHandle,
+            }
+          )}
         >
-          {showDragHandle && <Handle />}
+          {hasImageUploader ? (
+            <>
+              {imagePreview ? (
+                <img
+                  className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
+                  src={imagePreview}
+                />
+              ) : (
+                <NoImagePlaceholder />
+              )}
+              <PreviewOverlay />
+            </>
+          ) : (
+            <label className="f6 accordion-label-title">
+              {intl.formatMessage(
+                title ? { id: title } : messages.defaultTitle
+              )}
+            </label>
+          )}
           <div
-            className={classnames(
-              'relative flex items-center',
-              styles['preview-container'],
-              {
-                mr3: showDragHandle,
-                [`${styles['preview-text-container']} ml3`]:
-                  !hasImageUploader && !showDragHandle,
-              }
-            )}
+            className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
+            onClick={stopPropagation}
           >
-            {hasImageUploader ? (
-              <>
-                {imagePreview ? (
-                  <img
-                    className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
-                    src={imagePreview}
-                  />
-                ) : (
-                  <NoImagePlaceholder />
-                )}
-                <PreviewOverlay />
-              </>
-            ) : (
-              <label className="f6 accordion-label-title">
-                {intl.formatMessage(
-                  title ? { id: title } : messages.defaultTitle
-                )}
-              </label>
-            )}
-            <div
-              className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
-              onClick={stopPropagation}
-            >
-              <ActionMenu
-                variation="primary"
-                menuWidth={200}
-                options={actionMenuOptions}
-                buttonSize="small"
-              />
-            </div>
+            <ActionMenu
+              variation="primary"
+              menuWidth={200}
+              options={actionMenuOptions}
+              buttonSize="small"
+            />
           </div>
         </div>
-      )}
+      </div>
     </div>
   )
 }
