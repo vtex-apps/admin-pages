@@ -15,8 +15,7 @@ interface Props extends InjectedIntlProps {
   canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void
-  // TODO: remove this any
-  schema: any
+  schema: JSONSchema6
 }
 
 interface State {

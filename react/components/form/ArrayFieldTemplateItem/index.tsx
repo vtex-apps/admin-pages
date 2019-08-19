@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
@@ -24,7 +25,7 @@ interface IProps {
   onClose: () => void
   onOpen: (e: React.MouseEvent | ActionMenuOption) => void
   showDragHandle: boolean
-  schema: ComponentSchema
+  schema: JSONSchema6
 }
 
 type PropsFromItemTemplateProps = Pick<
@@ -53,6 +54,18 @@ const messages = defineMessages({
   },
 })
 
+function getComponentSchema(schema: JSONSchema6): ComponentSchema | null {
+  if (
+    schema.items &&
+    !Array.isArray(schema.items) &&
+    typeof schema.items === 'object' &&
+    typeof schema.items.properties === 'object'
+  ) {
+    return schema as ComponentSchema
+  }
+  return null
+}
+
 const ArrayFieldTemplateItem: React.FC<Props> = props => {
   const {
     children,
@@ -64,6 +77,10 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     schema,
     showDragHandle,
   } = props
+
+  const componentSchema = React.useMemo(() => getComponentSchema(schema), [
+    schema,
+  ])
 
   const handleLabelClick = useCallback(
     (e: React.MouseEvent | ActionMenuOption) => {
@@ -78,9 +95,10 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   const hasImageUploader = useMemo(() => {
     return (
-      schema.items &&
-      schema.items.properties &&
-      Object.values(schema.items.properties).some(
+      componentSchema &&
+      componentSchema.items &&
+      componentSchema.items.properties &&
+      Object.values(componentSchema.items.properties).some(
         (propertySchema: ComponentSchema) => {
           return (
             propertySchema.widget &&
@@ -89,13 +107,14 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
         }
       )
     )
-  }, [schema.items && schema.items.properties])
+  }, [componentSchema])
 
   const imagePreview = useMemo(() => {
     const imagePropertyKey =
-      schema.items &&
-      schema.items.properties &&
-      Object.entries(schema.items.properties)
+      componentSchema &&
+      componentSchema.items &&
+      componentSchema.items.properties &&
+      Object.entries(componentSchema.items.properties)
         .reduce(
           (acc, [property, propertySchema]: SchemaTuple) => {
             if (
@@ -130,7 +149,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
         })
 
     return imagePropertyKey && children.props.formData[imagePropertyKey]
-  }, [schema.items && schema.items.properties, children.props.formData])
+  }, [componentSchema, children.props.formData])
 
   const actionMenuOptions: ActionMenuOption[] = useMemo(() => {
     const options: ActionMenuOption[] = [

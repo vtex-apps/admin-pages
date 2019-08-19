@@ -1,3 +1,4 @@
+import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
@@ -9,7 +10,7 @@ interface ArrayListProps {
   onClose: (index: number) => () => void
   onOpen: (index: number) => (e: React.MouseEvent | ActionMenuOption) => void
   openItem: number | null
-  schema: ComponentSchema
+  schema: JSONSchema6
   sorting?: boolean
 }
 
