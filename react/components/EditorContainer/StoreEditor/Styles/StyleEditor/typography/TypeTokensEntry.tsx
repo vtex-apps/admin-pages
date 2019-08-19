@@ -1,7 +1,7 @@
+import { useKeydownFromClick } from 'keydown-from-click'
+import startCase from 'lodash/startCase'
 import React from 'react'
 import { RouteComponentProps } from 'react-router'
-
-import startCase from 'lodash/startCase'
 
 import { EditorPath, IdParam } from '../StyleEditorRouter'
 
@@ -14,10 +14,18 @@ const TypeTokenEntry: React.FunctionComponent<EntryProps> = ({
   name,
   history,
 }) => {
+  const handleClick = React.useCallback(
+    () => history.push(EditorPath.typeToken.replace(IdParam, name)),
+    [history, name]
+  )
+
+  const handleKeyDown = useKeydownFromClick(handleClick)
+
   return (
     <div
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
-      onClick={() => history.push(EditorPath.typeToken.replace(IdParam, name))}
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
     >
       <span className="f4">{startCase(name)}</span>
     </div>

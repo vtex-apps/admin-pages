@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
@@ -8,7 +9,7 @@ interface Props extends InjectedIntlProps {
   isEditable: boolean
   isSortable?: boolean
   isChild?: boolean
-  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onEdit: () => void
   onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void
   title: string
@@ -34,6 +35,8 @@ const Item: React.FunctionComponent<Props> = ({
   title,
   treePath,
 }) => {
+  const handleKeyDown = useKeydownFromClick(onEdit)
+
   let leftPaddingClassName = 'pl8'
   if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
@@ -53,6 +56,7 @@ const Item: React.FunctionComponent<Props> = ({
       data-tree-path={treePath}
       key={treePath}
       onClick={onEdit}
+      onKeyDown={handleKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       style={{

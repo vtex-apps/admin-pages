@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
@@ -20,7 +21,7 @@ interface Props {
   onDelete: () => void
 }
 
-function stopPropagation(e: React.MouseEvent) {
+function stopPropagation(e: Pick<Event, 'preventDefault' | 'stopPropagation'>) {
   e.preventDefault()
   e.stopPropagation()
 }
@@ -73,6 +74,16 @@ const Card = ({
   onClick,
   onDelete,
 }: Props & ReactIntl.InjectedIntlProps) => {
+  const handleMainClick = React.useCallback(() => {
+    if (!isDisabled) {
+      onClick(configuration)
+    }
+  }, [configuration, isDisabled, onClick])
+
+  const handleMainKeyDown = useKeydownFromClick(handleMainClick)
+
+  const stopPropagationByKeyDown = useKeydownFromClick(stopPropagation)
+
   const actionMenuOptions = [
     {
       label: intl.formatMessage(
@@ -119,11 +130,8 @@ const Card = ({
       className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary ${
         !isDisabled ? 'pointer' : ''
       }`}
-      onClick={() => {
-        if (!isDisabled) {
-          onClick(configuration)
-        }
-      }}
+      onClick={handleMainClick}
+      onKeyDown={handleMainKeyDown}
     >
       <div className="c-on-base">
         {configuration.label ||
@@ -169,6 +177,7 @@ const Card = ({
         className="absolute top-0 right-0 mt1"
         id="action-menu-parent"
         onClick={stopPropagation}
+        onKeyDown={stopPropagationByKeyDown}
       >
         <ActionMenu options={actionMenuOptions} />
       </div>

@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { IconEdit } from 'vtex.styleguide'
@@ -10,21 +11,28 @@ interface Props {
   runtime: RenderContext
 }
 
-const Entry = ({ route, runtime }: Props) => (
-  <div className="flex justify-between items-center">
-    <div className="f6">{getRouteTitle(route)}</div>
-    <div
-      className="flex pointer"
-      onClick={() => {
-        runtime.navigate({
-          page: ROUTES_FORM,
-          params: { id: encodeURIComponent(route.routeId) },
-        })
-      }}
-    >
-      <IconEdit color="silver" />
+const Entry = ({ route, runtime }: Props) => {
+  const handleClick = React.useCallback(() => {
+    runtime.navigate({
+      page: ROUTES_FORM,
+      params: { id: encodeURIComponent(route.routeId) },
+    })
+  }, [route.routeId, runtime])
+
+  const handleKeyDown = useKeydownFromClick(handleClick)
+
+  return (
+    <div className="flex justify-between items-center">
+      <div className="f6">{getRouteTitle(route)}</div>
+      <div
+        className="flex pointer"
+        onClick={handleClick}
+        onKeyDown={handleKeyDown}
+      >
+        <IconEdit color="silver" />
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default withRuntimeContext(Entry)

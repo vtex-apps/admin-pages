@@ -1,3 +1,4 @@
+import { createKeydownFromClick } from 'keydown-from-click'
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
 
@@ -11,7 +12,7 @@ interface IconsProps {
 interface DeviceComponentProps {
   id: Viewport
   key: Viewport
-  onClick: (event: React.MouseEvent<HTMLDivElement>) => void
+  onClick: (e: Pick<React.MouseEvent, 'currentTarget'>) => void
   selected: boolean
 }
 
@@ -116,6 +117,8 @@ class DeviceComponent extends Component<
     }
   }
 
+  private handleKeyDown = createKeydownFromClick(this.props.onClick)
+
   public handleMouseEnter = () => {
     this.setState({ hover: true })
   }
@@ -135,6 +138,7 @@ class DeviceComponent extends Component<
           selected ? 'b--blue' : 'b--transparent'
         }`}
         onClick={onClick}
+        onKeyDown={this.handleKeyDown}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
       >
@@ -147,13 +151,15 @@ class DeviceComponent extends Component<
 class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
   public handleClick = ({
     currentTarget,
-  }: React.MouseEvent<HTMLDivElement>) => {
+  }: Pick<React.MouseEvent, 'currentTarget'>) => {
     const { setViewport } = this.props
 
     if (currentTarget && currentTarget instanceof HTMLElement) {
       setViewport(currentTarget.id as Viewport)
     }
   }
+
+  private handleKeyDown = createKeydownFromClick(this.props.toggleEditMode)
 
   public render() {
     const { inPreview, toggleEditMode, viewport, viewports } = this.props
@@ -225,6 +231,7 @@ class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
             viewports.length > 0 ? 'bl-s b--light-gray' : ''
           } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
           onClick={toggleEditMode}
+          onKeyDown={this.handleKeyDown}
         >
           {inPreview ? (
             <IconEdit size={16} color="currentColor" solid />
