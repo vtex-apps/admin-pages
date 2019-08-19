@@ -1,6 +1,6 @@
 import { path } from 'ramda'
 import React, { Component } from 'react'
-import { defineMessages } from 'react-intl'
+import { FormattedMessage, defineMessages } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   SortableElement,
@@ -10,7 +10,6 @@ import {
 import { animated, Transition } from 'react-spring/renderprops'
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
-import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 const stopPropagation = (fn: (e: React.MouseEvent) => void) => (
   e: React.MouseEvent
@@ -75,11 +74,13 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         <div className="accordion-label" onClick={this.handleLabelClick}>
           <div className="flex items-center">
             {showDragHandle && <Handle />}
-            <label className="f6 accordion-label-title">
-              <SimpleFormattedMessage
-                id={title || 'admin/pages.admin.pages.form.field.array.item'}
-              />
-            </label>
+            <FormattedMessage
+              id={title || 'admin/pages.admin.pages.form.field.array.item'}
+            >
+              {message => (
+                <span className="f6 accordion-label-title">{message}</span>
+              )}
+            </FormattedMessage>
           </div>
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (
