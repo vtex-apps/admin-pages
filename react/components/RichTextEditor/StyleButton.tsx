@@ -22,6 +22,8 @@ const StyleButton = ({ active, onToggle, style, label }: StyleBtnProps) => {
         active ? 'c-action-primary bg-muted-5' : ''
       }`}
       onMouseDown={handleToggle}
+      role="button"
+      tabIndex={0}
     >
       {label}
     </div>

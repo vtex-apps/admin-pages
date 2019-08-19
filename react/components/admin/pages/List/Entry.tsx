@@ -28,6 +28,8 @@ const Entry = ({ route, runtime }: Props) => {
         className="flex pointer"
         onClick={handleClick}
         onKeyDown={handleKeyDown}
+        role="button"
+        tabIndex={0}
       >
         <IconEdit color="silver" />
       </div>

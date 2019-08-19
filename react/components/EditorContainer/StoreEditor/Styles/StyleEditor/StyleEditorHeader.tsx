@@ -35,6 +35,8 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
             className="pointer f3 ph4"
             onClick={onBack}
             onKeyDown={onBackByKeyDown}
+            role="button"
+            tabIndex={0}
           >
             <IconArrowBack />
           </div>

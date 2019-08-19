@@ -77,6 +77,8 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           className="accordion-label"
           onClick={this.handleItemClick}
           onKeyDown={this.handleItemKeyDown}
+          role="treeitem"
+          tabIndex={0}
         >
           <div className="flex items-center">
             {showDragHandle && <Handle />}

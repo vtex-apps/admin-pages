@@ -26,6 +26,8 @@ const TypeTokenEntry: React.FunctionComponent<EntryProps> = ({
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <span className="f4">{startCase(name)}</span>
     </div>

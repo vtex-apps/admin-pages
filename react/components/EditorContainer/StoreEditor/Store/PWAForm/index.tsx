@@ -260,9 +260,12 @@ const PWAForm: React.FunctionComponent<Props> = ({
         <div className="w-100 bb b--muted-4" />
       </div>
       <div
+        aria-checked={showSpecific}
         className="pb3 link pointer c-muted-1"
         onClick={toggleSpecific}
         onKeyDown={toggleSpecificByKeyDown}
+        role="switch"
+        tabIndex={0}
       >
         <span className="pr4">
           <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />

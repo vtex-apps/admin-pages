@@ -132,6 +132,8 @@ const Card = ({
       }`}
       onClick={handleMainClick}
       onKeyDown={handleMainKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <div className="c-on-base">
         {configuration.label ||
@@ -178,6 +180,8 @@ const Card = ({
         id="action-menu-parent"
         onClick={stopPropagation}
         onKeyDown={stopPropagationByKeyDown}
+        role="button"
+        tabIndex={0}
       >
         <ActionMenu options={actionMenuOptions} />
       </div>

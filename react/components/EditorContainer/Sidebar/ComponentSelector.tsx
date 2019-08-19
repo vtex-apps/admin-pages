@@ -52,6 +52,8 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
           className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
           onClick={handleEditModeToggle}
           onKeyPress={handleKeyPress}
+          role="button"
+          tabIndex={0}
         >
           <span className="pr5 b--light-gray flex items-center">
             <SelectionIcon stroke={editor.editMode ? '#368df7' : '#979899'} />

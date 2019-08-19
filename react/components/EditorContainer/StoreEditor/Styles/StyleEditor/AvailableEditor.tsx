@@ -24,6 +24,8 @@ const AvailableEditor: React.FunctionComponent<Props> = ({
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
       onClick={redirect}
       onKeyDown={redirectByKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <span className="f4">
         <FormattedMessage id={titleId} />

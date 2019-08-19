@@ -78,6 +78,8 @@ const ColorPreview: React.FunctionComponent<ColorPreviewProps> = ({
       className="pv5 ph6 flex items-center hover-bg-light-silver pointer"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <div
         className="ba br2 b--muted-5 flex justify-center items-center"

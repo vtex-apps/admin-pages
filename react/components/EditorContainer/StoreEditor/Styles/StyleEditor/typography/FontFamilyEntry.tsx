@@ -12,6 +12,10 @@ interface Props extends RouteComponentProps {
 const FontFamilyEntry: React.FunctionComponent<Props> = ({ font, history }) => {
   const encodedId = React.useMemo(() => encodeURIComponent(font.id), [font.id])
 
+  const isActive = React.useMemo(() => document.URL.includes(encodedId), [
+    encodedId,
+  ])
+
   const handleClick = React.useCallback(
     () => history.push(EditorPath.customFontFile.replace(IdParam, encodedId)),
     [encodedId, history]
@@ -21,9 +25,12 @@ const FontFamilyEntry: React.FunctionComponent<Props> = ({ font, history }) => {
 
   return (
     <div
+      aria-selected={isActive}
       className="pointer flex justify-between items-center pv6 bb b--muted-4"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
+      role="option"
+      tabIndex={0}
     >
       <span className="f4">{font.fontFamily}</span>
     </div>
