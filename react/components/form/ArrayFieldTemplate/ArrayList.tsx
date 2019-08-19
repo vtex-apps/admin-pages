@@ -1,5 +1,5 @@
 import { JSONSchema6 } from 'json-schema'
-import React from 'react'
+import React, { Fragment } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
 import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
@@ -29,12 +29,11 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
       sorting ? 'accordion-list-container--sorting' : ''
     }`}
   >
-    {openItem === null || openItem >= items.length ? (
-      <>
-        {children}
-        {items.map(element => (
+    <>
+      {children}
+      {items.map(element => (
+        <Fragment key={element.index}>
           <ArrayFieldTemplateItem
-            key={element.index}
             schema={schema}
             onOpen={onOpen(element.index)}
             onClose={onClose}
@@ -42,11 +41,12 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
             showDragHandle={items.length > 1}
             {...element}
           />
-        ))}
-      </>
-    ) : (
-      <ItemForm>{items[openItem].children}</ItemForm>
-    )}
+          <ItemForm shouldShow={element.index === openItem}>
+            {element.children}
+          </ItemForm>
+        </Fragment>
+      ))}
+    </>
   </div>
 )
 
