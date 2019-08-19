@@ -115,6 +115,10 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   const shouldDisableSaveButton =
     isLoading || (!formMeta.getWasModified() && !isNew)
 
+  const headerOnTitleChange = componentFormState
+    ? componentFormState.onTitleChange
+    : onTitleChange
+
   return (
     <Fragment>
       <ContentContainer
@@ -122,13 +126,9 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          isTitleEditable={isContent}
+          isTitleEditable={headerOnTitleChange && isContent}
           onClose={componentFormState ? componentFormState.onClose : onClose}
-          onTitleChange={
-            componentFormState
-              ? componentFormState.onTitleChange
-              : onTitleChange
-          }
+          onTitleChange={headerOnTitleChange}
           title={componentFormState ? componentFormState.title : title}
         />
 
