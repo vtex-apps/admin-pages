@@ -9,5 +9,6 @@ README.md
 CHANGELOG.md
 
 **/tests/**
-**/*.(test|spec).ts
+**/*.spec.ts
+**/*.test.ts
 **/__fixtures__
