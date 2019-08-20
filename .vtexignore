@@ -11,4 +11,4 @@ CHANGELOG.md
 **/tests/**
 **/*.spec.ts
 **/*.test.ts
-**/__fixtures__
+**/__fixtures__/**
