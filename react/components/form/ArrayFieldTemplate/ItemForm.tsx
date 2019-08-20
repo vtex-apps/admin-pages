@@ -9,9 +9,9 @@ interface Props {
 
 const ItemForm: React.FC<Props> = props => {
   const transitions = useTransition(props.shouldShow, null, {
-    enter: { transform: 'translateX(0rem)' },
-    from: { transform: 'translateX(18rem)' },
-    leave: { transform: 'translateX(18rem)' },
+    enter: { transform: 'translateX(0rem)', overflow: 'unset' },
+    from: { transform: 'translateX(18rem)', overflow: 'hidden' },
+    leave: { transform: 'translateX(18rem)', overflow: 'hidden' },
     unique: true,
   })
 
