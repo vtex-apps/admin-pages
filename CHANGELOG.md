@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Replace TSLint with ESLint.
+
+### Fixed
+
+- All linting issues pointed out by VTEX's ESLint config, from typings to a11y.
+
 ## [4.7.2] - 2019-08-13
 
 ### Fixed
