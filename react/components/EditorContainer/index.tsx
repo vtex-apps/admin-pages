@@ -9,6 +9,7 @@ import { State as HighlightOverlayState } from '../../HighlightOverlay'
 
 import DeviceSwitcher from './DeviceSwitcher'
 import Sidebar from './Sidebar'
+import SidebarMenu from './SidebarMenu'
 import { FormMetaProvider } from './Sidebar/FormMetaContext'
 import { ModalProvider } from './Sidebar/ModalContext'
 
@@ -96,9 +97,12 @@ const EditorContainer: React.FC<Props> = ({
     [editMode, editExtensionPoint]
   )
 
-  useEffect(() => {
-    highlightExtensionPoint(null)
-  }, [editMode, highlightExtensionPoint])
+  useEffect(
+    () => {
+      highlightExtensionPoint(null)
+    },
+    [editMode, highlightExtensionPoint]
+  )
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
   const isDevelopment = runtime && runtime.production === false
@@ -112,6 +116,9 @@ const EditorContainer: React.FC<Props> = ({
       <ModalProvider>
         <IframeNavigationController iframeRuntime={runtime} />
         <div className="w-100 h-100 min-vh-100 flex flex-row-reverse flex-wrap-l bg-base bb bw1 b--muted-5">
+          {!storeEditMode && runtime && (
+            <SidebarMenu runtime={runtime} visible={visible} />
+          )}
           {!storeEditMode && runtime && (
             <Sidebar
               highlightHandler={highlightExtensionPoint}
