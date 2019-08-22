@@ -26,7 +26,12 @@ const Select: React.FunctionComponent<Props> = ({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { onMouseDown, isOpen }: any // ArrowRendererProps isn't defining isOpen.
       ) => (
-        <div onMouseDown={onMouseDown} role="listbox" tabIndex={0}>
+        <div
+          className="outline-0"
+          onMouseDown={onMouseDown}
+          role="listbox"
+          tabIndex={0}
+        >
           {isOpen ? (
             <IconCaretUp color="#134cd8" size={8} />
           ) : (

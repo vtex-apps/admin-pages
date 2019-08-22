@@ -23,7 +23,7 @@ const TypeTokenEntry: React.FunctionComponent<EntryProps> = ({
 
   return (
     <div
-      className="pointer flex justify-between items-center pv6 bb b--muted-4"
+      className="pointer flex justify-between items-center pv6 bb b--muted-4 outline-0"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"

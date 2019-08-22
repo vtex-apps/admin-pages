@@ -134,7 +134,7 @@ class DeviceComponent extends Component<
     return (
       <div
         id={id}
-        className={`pointer flex justify-center pv3 mh4 w-20 bw1 bt ${
+        className={`pointer flex justify-center outline-0 pv3 mh4 w-20 bw1 bt ${
           selected ? 'b--blue' : 'b--transparent'
         }`}
         onClick={onClick}
@@ -231,7 +231,7 @@ class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
         <div
           className={`${
             viewports.length > 0 ? 'bl-s b--light-gray' : ''
-          } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
+          } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer  outline-0`}
           onClick={toggleEditMode}
           onKeyDown={this.handleKeyDown}
           role="button"

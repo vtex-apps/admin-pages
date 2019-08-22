@@ -49,7 +49,7 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
           <FormattedMessage id="admin/pages.editor.components.title" />
         </h3>
         <div
-          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn outline-0"
           onClick={handleEditModeToggle}
           onKeyPress={handleKeyPress}
           role="button"

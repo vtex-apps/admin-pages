@@ -25,7 +25,7 @@ const Entry = ({ route, runtime }: Props) => {
     <div className="flex justify-between items-center">
       <div className="f6">{getRouteTitle(route)}</div>
       <div
-        className="flex pointer"
+        className="flex pointer outline-0"
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         role="button"

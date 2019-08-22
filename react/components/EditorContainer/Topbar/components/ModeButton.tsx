@@ -62,7 +62,7 @@ const ModeButton: React.FunctionComponent<Props> = ({ changeMode, mode }) => {
 
   return (
     <div
-      className="pointer h-3em flex justify-center items-center mr5"
+      className="pointer h-3em flex justify-center items-center mr5 outline-0"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="button"

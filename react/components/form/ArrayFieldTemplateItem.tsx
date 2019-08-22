@@ -74,7 +74,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
         }`}
       >
         <div
-          className="accordion-label"
+          className="accordion-label outline-0"
           onClick={this.handleItemClick}
           onKeyDown={this.handleItemKeyDown}
           role="treeitem"

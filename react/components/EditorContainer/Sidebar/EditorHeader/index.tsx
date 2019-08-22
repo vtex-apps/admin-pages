@@ -27,7 +27,7 @@ const EditorHeader: React.FC<Props> = ({
       <div className="w-100 flex justify-between">
         <div className="w-100 flex items-center">
           <span
-            className="pointer"
+            className="pointer outline-0"
             onClick={onClose}
             onKeyDown={handleKeyDown}
             role="button"
