@@ -47,7 +47,7 @@ const Item: React.FunctionComponent<Props> = ({
   return (
     <div
       className={classnames(
-        'w-100 pv5 pr0 dark-gray bg-inherit tl',
+        'w-100 pv5 pr0 dark-gray bg-inherit tl outline-0',
         leftPaddingClassName,
         {
           'hover-bg-light-silver': isEditable,

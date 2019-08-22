@@ -32,7 +32,7 @@ const StyleEditorHeader: React.FunctionComponent<Props> = ({
       <div className="flex justify-between items-center mv4">
         <div className="flex items-center">
           <div
-            className="pointer f3 ph4"
+            className="pointer f3 ph4 outline-0"
             onClick={onBack}
             onKeyDown={onBackByKeyDown}
             role="button"

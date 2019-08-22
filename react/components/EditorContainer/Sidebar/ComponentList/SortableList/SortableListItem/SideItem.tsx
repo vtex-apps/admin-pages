@@ -23,7 +23,7 @@ const SideItem: React.FunctionComponent<Props> = ({
   return (
     <div
       className={classnames(
-        `flex items-center pv5 bg-inherit c-muted-3 hover-bg-light-silver hover-black-90`,
+        `flex items-center pv5 bg-inherit c-muted-3 hover-bg-light-silver hover-black-90 outline-0`,
         { pointer: isPointer },
         horizontalPaddingClassName
       )}

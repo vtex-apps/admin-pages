@@ -26,7 +26,7 @@ const FontFamilyEntry: React.FunctionComponent<Props> = ({ font, history }) => {
   return (
     <div
       aria-selected={isActive}
-      className="pointer flex justify-between items-center pv6 bb b--muted-4"
+      className="pointer flex justify-between items-center pv6 bb b--muted-4 outline-0"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       role="option"

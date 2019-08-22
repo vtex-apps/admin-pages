@@ -127,7 +127,7 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary ${
+      className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
       onClick={handleMainClick}
@@ -176,7 +176,7 @@ const Card = ({
       </div>
 
       <div
-        className="absolute top-0 right-0 mt1"
+        className="absolute top-0 right-0 mt1 outline-0"
         id="action-menu-parent"
         onClick={stopPropagation}
         onKeyDown={stopPropagationByKeyDown}

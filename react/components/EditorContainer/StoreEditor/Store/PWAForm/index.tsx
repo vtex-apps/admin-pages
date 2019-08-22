@@ -261,7 +261,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
       </div>
       <div
         aria-checked={showSpecific}
-        className="pb3 link pointer c-muted-1"
+        className="pb3 link pointer c-muted-1 outline-0"
         onClick={toggleSpecific}
         onKeyDown={toggleSpecificByKeyDown}
         role="switch"
