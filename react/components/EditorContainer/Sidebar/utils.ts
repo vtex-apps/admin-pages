@@ -54,16 +54,11 @@ const getComponentSchemaGetter = (
 export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
   return (
     schema.type === 'object' &&
-    Object.values(schema.properties || {}).some(property => {
-      if (
+    Object.values(schema.properties || {}).some(
+      property =>
         !property.isLayout ||
         (property.type === 'object' && hasContentPropsInSchema(property))
-      ) {
-        return true
-      }
-
-      return false
-    })
+    )
   )
 }
 
