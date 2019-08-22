@@ -5,7 +5,6 @@ import { graphql, MutationFunc } from 'react-apollo'
 import {
   defineMessages,
   FormattedMessage,
-  InjectedIntl,
   InjectedIntlProps,
   injectIntl,
 } from 'react-intl'
@@ -68,6 +67,7 @@ const ImageUploader: React.FC<Props> = props => {
   const {
     disabled,
     intl,
+    onChange,
     schema: { title },
     value,
   } = props
@@ -95,9 +95,9 @@ const ImageUploader: React.FC<Props> = props => {
           url = fileUrl
         }
 
-        if (props.onChange) {
+        if (onChange) {
           const path = url && new URL(url).pathname
-          props.onChange(path)
+          onChange(path)
         }
 
         if (props.onFileDrop) {
@@ -136,13 +136,13 @@ const ImageUploader: React.FC<Props> = props => {
       {
         label: intl.formatMessage(messages.delete),
         onClick: () => {
-          if (props.onChange) {
-            props.onChange(null)
+          if (onChange) {
+            onChange(null)
           }
         },
       },
     ],
-    [intl, props.onChange, dropZoneRef]
+    [intl, onChange, dropZoneRef]
   )
 
   return (
@@ -166,7 +166,7 @@ const ImageUploader: React.FC<Props> = props => {
           <div className="w-100 h-100 flex justify-center items-center">
             <Spinner />
           </div>
-        ) : !!value ? (
+        ) : value ? (
           <ImagePreview imageUrl={value}>
             <ActionMenu
               variation="primary"

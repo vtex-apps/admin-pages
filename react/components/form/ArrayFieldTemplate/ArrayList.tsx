@@ -9,7 +9,9 @@ import ItemForm from './ItemForm'
 interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
   onClose: () => void
-  onOpen: (index: number) => (e: React.MouseEvent | ActionMenuOption) => void
+  onOpen: (
+    index: number
+  ) => (e: Pick<React.MouseEvent, 'stopPropagation'> | ActionMenuOption) => void
   openItem: number | null
   schema: JSONSchema6
   sorting?: boolean

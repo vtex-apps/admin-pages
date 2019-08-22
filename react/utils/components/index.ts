@@ -75,7 +75,7 @@ const setArraySchemaDefaultsDeep: (
         default: schema.items.title,
         title: 'Item title',
         type: 'string',
-      } as any,
+      },
       ...schema.items.properties,
     }
   }

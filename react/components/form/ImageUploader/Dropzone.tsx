@@ -36,6 +36,8 @@ const Dropzone: React.FunctionComponent<Props> = React.forwardRef<
   </ReactDropzone>
 ))
 
+Dropzone.displayName = 'Dropzone'
+
 Dropzone.defaultProps = {
   extraClasses: '',
 }

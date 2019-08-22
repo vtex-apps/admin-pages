@@ -37,7 +37,7 @@ class ArrayFieldTemplate extends Component<
   Props & ArrayFieldTemplateProps,
   State
 > {
-  constructor(props: Props & ArrayFieldTemplateProps) {
+  public constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
       openItem: null,

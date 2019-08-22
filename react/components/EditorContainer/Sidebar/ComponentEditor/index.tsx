@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo, useRef, useState } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
@@ -10,6 +11,7 @@ import EditorHeader from '../EditorHeader'
 import { useFormMetaContext } from '../FormMetaContext'
 import { FormDataContainer } from '../typings'
 
+import styles from './ComponentEditor.css'
 import ConditionControls from './ConditionControls'
 import Form from './Form'
 import { getSchemas } from './utils'
@@ -132,7 +134,13 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
           title={componentFormState ? componentFormState.title : title}
         />
 
-        <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
+        <div
+          className={classnames(
+            'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5',
+            styles['form'],
+            { [styles['form--leave']]: componentFormState }
+          )}
+        >
           <Form
             formContext={{
               addMessages: iframeRuntime.addMessages,
@@ -161,35 +169,41 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         )}
       </ContentContainer>
 
-      {!componentFormState && (
-        <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
+      <div
+        className={classnames(
+          'pr4 pv4 flex-row-reverse w-100 bt bw1 b--light-silver',
+          {
+            dn: componentFormState,
+            flex: !componentFormState,
+          }
+        )}
+      >
+        <Button
+          disabled={shouldDisableSaveButton}
+          onClick={onSave}
+          size="small"
+          variation="primary"
+        >
+          <FormattedMessage
+            defaultMessage="Save"
+            id="admin/pages.editor.components.button.save"
+          />
+        </Button>
+
+        <div className="mr5">
           <Button
-            disabled={shouldDisableSaveButton}
-            onClick={onSave}
+            disabled={isLoading}
+            onClick={onClose}
             size="small"
-            variation="primary"
+            variation="tertiary"
           >
             <FormattedMessage
-              defaultMessage="Save"
-              id="admin/pages.editor.components.button.save"
+              defaultMessage="Cancel"
+              id="admin/pages.editor.components.button.cancel"
             />
           </Button>
-
-          <div className="mr5">
-            <Button
-              disabled={isLoading}
-              onClick={onClose}
-              size="small"
-              variation="tertiary"
-            >
-              <FormattedMessage
-                defaultMessage="Cancel"
-                id="admin/pages.editor.components.button.cancel"
-              />
-            </Button>
-          </div>
         </div>
-      )}
+      </div>
     </Fragment>
   )
 }

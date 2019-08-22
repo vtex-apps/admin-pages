@@ -1,3 +1,4 @@
+import { createKeydownFromClick } from 'keydown-from-click'
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
@@ -13,16 +14,18 @@ import Handle from './Handle'
 import NoImagePlaceholder from './NoImagePlaceholder'
 import PreviewOverlay from './PreviewOverlay'
 
-const stopPropagation = (e: React.MouseEvent) => {
+const stopPropagation = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
   e.stopPropagation()
 }
 
-interface IProps {
+interface CustomProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
   onClose: () => void
-  onOpen: (e: React.MouseEvent | ActionMenuOption) => void
+  onOpen: (
+    e: Pick<React.MouseEvent, 'stopPropagation'> | ActionMenuOption
+  ) => void
   showDragHandle: boolean
   schema: JSONSchema6
 }
@@ -31,7 +34,7 @@ type PropsFromItemTemplateProps = Pick<
   ArrayFieldTemplateProps['items'][0],
   'onDropIndexClick' | 'hasRemove' | 'children'
 >
-type Props = IProps &
+type Props = CustomProps &
   SortableElementProps &
   PropsFromItemTemplateProps &
   InjectedIntlProps
@@ -71,6 +74,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     formIndex,
     hasRemove,
     intl,
+    onOpen,
     onDropIndexClick,
     schema,
     showDragHandle,
@@ -80,12 +84,15 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     schema,
   ])
 
-  const handleLabelClick = useCallback(
-    (e: React.MouseEvent | ActionMenuOption) => {
-      props.onOpen(e)
+  const handleItemClick = useCallback(
+    (e: Pick<React.MouseEvent, 'stopPropagation'> | ActionMenuOption) => {
+      onOpen(e)
     },
-    [props.onOpen, props.onClose]
+    [onOpen]
   )
+
+  const handleItemKeyDown = createKeydownFromClick(handleItemClick)
+  const itemStopPropagation = createKeydownFromClick(stopPropagation)
 
   const hasImageUploader = useMemo(() => {
     return (
@@ -150,7 +157,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
       {
         label: intl.formatMessage(messages.edit),
         onClick: e => {
-          handleLabelClick(e)
+          handleItemClick(e)
         },
       },
     ]
@@ -166,7 +173,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     }
 
     return options
-  }, [handleLabelClick, onDropIndexClick])
+  }, [handleItemClick, onDropIndexClick, formIndex, hasRemove, intl])
 
   const title =
     children.props.formData.__editorItemTitle ||
@@ -182,7 +189,10 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
         className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative ${
           hasImageUploader ? 'h4' : 'h3'
         }`}
-        onClick={handleLabelClick}
+        onClick={handleItemClick}
+        onKeyDown={handleItemKeyDown}
+        role="treeitem"
+        tabIndex={0}
       >
         {showDragHandle && <Handle />}
         <div
@@ -200,6 +210,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
             <>
               {imagePreview ? (
                 <img
+                  alt="Preview"
                   className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
                   src={imagePreview}
                 />
@@ -209,15 +220,18 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
               <PreviewOverlay />
             </>
           ) : (
-            <label className="f6 accordion-label-title">
+            <span className="f6 accordion-label-title">
               {intl.formatMessage(
                 title ? { id: title } : messages.defaultTitle
               )}
-            </label>
+            </span>
           )}
           <div
             className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
             onClick={stopPropagation}
+            onKeyDown={itemStopPropagation}
+            role="button"
+            tabIndex={0}
           >
             <ActionMenu
               variation="primary"
