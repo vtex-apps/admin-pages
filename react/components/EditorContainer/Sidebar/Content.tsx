@@ -59,28 +59,31 @@ const Content = (props: Props) => {
     )
   }
 
-  const isSitewide = getIsSitewide(
-    iframeRuntime.extensions,
-    editor.editTreePath
-  )
+  const editTreePath = editor.editTreePath || ''
+
+  const blockId = iframeRuntime.extensions[editTreePath]
+    ? iframeRuntime.extensions[editTreePath].blockId
+    : ''
+
+  const isSitewide = getIsSitewide(iframeRuntime.extensions, editTreePath)
 
   const template = isSitewide
     ? '*'
     : iframeRuntime.pages[iframeRuntime.page].blockId
 
-  const treePath = isSitewide
-    ? getSitewideTreePath(editor.editTreePath)
-    : editor.editTreePath
+  const adaptedTreePath = isSitewide
+    ? getSitewideTreePath(editTreePath)
+    : editTreePath
 
   return (
     <ToastConsumer>
       {({ showToast }) => (
         <ListContentQuery
           variables={{
-            blockId: iframeRuntime.extensions[treePath].blockId,
+            blockId,
             pageContext: iframeRuntime.route.pageContext,
             template,
-            treePath,
+            treePath: adaptedTreePath,
           }}
         >
           {({ data, loading, refetch }) => (
@@ -105,7 +108,7 @@ const Content = (props: Props) => {
                         saveContent={saveContent}
                         showToast={showToast}
                         template={template}
-                        treePath={treePath}
+                        treePath={adaptedTreePath}
                       />
                     )
                   }
