@@ -1,7 +1,11 @@
 import React from 'react'
 import { InjectedIntlProps, injectIntl } from 'react-intl'
 
-import { useEditorContext } from '../../EditorContext'
+// import { useEditorContext } from '../../EditorContext'
+import BlocksIcon from '../../icon/Blocks'
+import PagesIcon from '../../icon/Pages'
+import SettingsIcon from '../../icon/Settings'
+import GalleryIcon from '../../icon/Gallery'
 import styles from './styles.css'
 
 interface Props extends InjectedIntlProps {
@@ -35,57 +39,29 @@ const SidebarMenu: React.FunctionComponent<Props> = ({
       }
     >
       <nav className="transition animated fadeIn b--light-silver bl z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x">
-        <div className="mv5 mb7 tc c-muted-1 f7">
-          <span
-            className="mb3 center"
-            style={{
-              width: '25px',
-              height: '25px',
-              display: 'block',
-              display: 'block',
-              outline: '1px solid blue',
-            }}
-          />
-          Content
+        <div className="mt2 pv5 tc c-emphasis pointer f7">
+          <span className="mb1 center db">
+            <BlocksIcon />
+          </span>
+          Blocks
         </div>
-        <div className="mv7 tc c-muted-1 f7">
-          <span
-            className="mb3 center"
-            style={{
-              width: '25px',
-              height: '25px',
-              display: 'block',
-              display: 'block',
-              outline: '1px solid blue',
-            }}
-          />
-          Editor
-        </div>
-        <div className="mv7 tc c-muted-1 f7">
-          <span
-            className="mb3 center"
-            style={{
-              width: '25px',
-              height: '25px',
-              display: 'block',
-              display: 'block',
-              outline: '1px solid blue',
-            }}
-          />
+        <div className="pv5 tc c-muted-1 hover-c-action-primary pointer f7">
+          <span className="mb1 center db">
+            <PagesIcon />
+          </span>
           Pages
         </div>
-        <div className="mv7 tc c-muted-1 f7">
-          <span
-            className="mb3 center"
-            style={{
-              width: '25px',
-              height: '25px',
-              display: 'block',
-              display: 'block',
-              outline: '1px solid blue',
-            }}
-          />
+        <div className="pv5 tc c-muted-1 hover-c-action-primary pointer f7">
+          <span className="mb1 center db">
+            <SettingsIcon />
+          </span>
           Settings
+        </div>
+        <div className="pv5 tc c-muted-1 hover-c-action-primary pointer f7">
+          <span className="mb1 center db">
+            <GalleryIcon />
+          </span>
+          Gallery
         </div>
       </nav>
     </div>
