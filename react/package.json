@@ -1,9 +1,26 @@
 {
-  "name": "vtex.admin-pages",
   "license": "UNLICENSED",
   "scripts": {
+    "lint:locales": "intl-equalizer",
     "pretest": "yarn",
     "test": "vtex-test-tools test"
+  },
+  "lint-staged": {
+    "**/*.+(json|css|md|graphql)": [
+      "npm run lint:locales",
+      "prettier --write",
+      "git add"
+    ],
+    "**/*.+(ts|tsx)": [
+      "eslint -c .eslintrc",
+      "npm run lint:locales",
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "intl-equalizer": {
+    "referenceLocale": "en",
+    "localeDirectory": "../messages/"
   },
   "dependencies": {
     "classnames": "^2.2.6",
@@ -46,6 +63,7 @@
     "@types/react-router-dom": "^4.3.2",
     "@types/react-select": "1.2.1",
     "@types/url-parse": "^1.4.3",
+    "@vtex/intl-equalizer": "^2.3.0",
     "@vtex/test-tools": "^1.0.0",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
@@ -56,11 +74,15 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-react-intl": "^2.0.0",
+    "eslint": "^6.2.1",
+    "eslint-config-vtex-react": "^5.0.1",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.1",
     "intl": "^1.2.5",
+    "lint-staged": "^9.2.3",
     "mockdate": "^2.0.4",
     "moment": "^2.22.2",
+    "prettier": "^1.18.2",
     "react": "^16.8.1",
     "react-apollo": "^2.5.3",
     "react-dom": "^16.8.1",
