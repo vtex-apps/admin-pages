@@ -186,7 +186,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
       })}
     >
       <div
-        className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative ${
+        className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative outline-0 ${
           hasImageUploader ? 'h4' : 'h3'
         }`}
         onClick={handleItemClick}
