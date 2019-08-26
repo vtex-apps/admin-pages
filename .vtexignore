@@ -10,7 +10,7 @@ README.md
 **/node_modules
 **/yarn-error.log
 
-**/tests
 **/*.{spec,test}.{ts,tsx}
-**/__fixtures__
-**/__mocks__
+**/tests/**
+**/__fixtures__/**
+**/__mocks__/**
