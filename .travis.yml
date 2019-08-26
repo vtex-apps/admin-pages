@@ -8,5 +8,3 @@ node_js:
 install:
   - yarn --cwd react
   - yarn
-script:
-  - ./lint.sh
