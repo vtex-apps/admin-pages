@@ -27,6 +27,21 @@ const DEFAULT_EXTENSIONS_COMPONENTS = [
 ]
 
 describe('getComponents', () => {
+  let spiedConsoleWarn: jest.MockInstance<
+    ReturnType<Console['warn']>,
+    Parameters<Console['warn']>
+  >
+
+  beforeEach(() => {
+    spiedConsoleWarn = jest
+      .spyOn(console, 'warn')
+      .mockImplementation(() => undefined)
+  })
+
+  afterEach(() => {
+    spiedConsoleWarn.mockRestore()
+  })
+
   it('should filter out components without either a schema or a title', () => {
     expect(getComponents(EXTENSIONS, COMPONENTS, 'store.home')).toEqual(
       DEFAULT_EXTENSIONS_COMPONENTS
@@ -172,9 +187,22 @@ describe('getComponents', () => {
 
       const components = {
         ...COMPONENTS,
-        'vtex.empty-string-title': { schema: {} },
-        'vtex.null-title': { schema: {} },
-        'vtex.undefined-title': { schema: {} },
+        'vtex.empty-string-title@0.0.1/EmptyStringTitle': {
+          schema: {
+            title: '',
+          },
+        },
+        'vtex.null-title@0.0.1/NullTitle': {
+          schema: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            title: null as any,
+          },
+        },
+        'vtex.undefined-title@0.0.1/UndefinedTitle': {
+          schema: {
+            title: undefined,
+          },
+        },
       }
 
       expect(getComponents(extensions, components, 'store.home')).toEqual(
@@ -205,21 +233,6 @@ describe('getComponents', () => {
   })
 
   describe('Warnings for schemas without title', () => {
-    let spiedConsoleWarn: jest.MockInstance<
-      ReturnType<Console['warn']>,
-      Parameters<Console['warn']>
-    >
-
-    beforeEach(() => {
-      spiedConsoleWarn = jest
-        .spyOn(console, 'warn')
-        .mockImplementation(() => undefined)
-    })
-
-    afterEach(() => {
-      spiedConsoleWarn.mockRestore()
-    })
-
     it('should call console.warn when component has a schema with no title', () => {
       const EXTENSION_ID = 'store.home/shelf#home/product-summary'
 

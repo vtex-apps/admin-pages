@@ -96,15 +96,15 @@ export function getComponents(
 
       const isRoot = isRootComponent(2)({ treePath })
 
-      const isEditable = isComponentEditableMap[componentName]
-        ? isComponentEditableMap[componentName]
-        : (isComponentEditableMap[componentName] =
-            extension.hasContentSchema || hasContentPropsInSchema(schema))
+      const isEditable =
+        isComponentEditableMap[componentName] !== undefined
+          ? isComponentEditableMap[componentName]
+          : (isComponentEditableMap[componentName] =
+              extension.hasContentSchema || hasContentPropsInSchema(schema))
 
       const shouldShow =
         isSamePage(page, treePath) &&
-        (hasTitleInBlock ||
-          ((!!schema && isRoot) || (hasTitleInSchema && isEditable)))
+        (hasTitleInBlock || (hasTitleInSchema && (isRoot || isEditable)))
 
       if (shouldShow) {
         sidebarComponentMap[treePath] = {
