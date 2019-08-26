@@ -36,15 +36,17 @@ interface RouteVariables {
 
 interface MessagesVariables {
   args: {
-    provider: string
-    to: string
     from?: string
+    to: string
     messages: Array<{
-      id: string
-      content?: string
-      description?: string
+      provider: string
+      messages: Array<{
+        id: string
+        content?: string
+        description?: string
+        behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
+      }>
     }>
-    behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
   }
 }
 
@@ -155,10 +157,12 @@ function withContentContext<T>(
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
-                              messages: {
-                                provider: contentId,
-                                messages: [{ id: contentText || '' }]
-                              },
+                              messages: [
+                                {
+                                  provider: contentId,
+                                  messages: [{ id: contentText || '' }],
+                                },
+                              ],
                               to: culture.locale,
                             },
                           }}
