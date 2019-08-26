@@ -20,12 +20,11 @@ interface Props {
   iframeRuntime: RenderContext
 }
 
-const getInitialComponents = (props: Props) =>
-  getComponents(
-    props.iframeRuntime.extensions,
-    getIframeRenderComponents(),
-    props.iframeRuntime.page
-  )
+const getInitialComponents = ({
+  extensions,
+  page,
+}: Pick<Props['iframeRuntime'], 'extensions' | 'page'>) =>
+  getComponents(extensions, getIframeRenderComponents(), page)
 
 const Content = (props: Props) => {
   const { highlightHandler, iframeRuntime } = props
@@ -35,18 +34,31 @@ const Content = (props: Props) => {
   const modal = useModalContext()
 
   const [components, setComponents] = useState(() =>
-    getInitialComponents(props)
+    getInitialComponents({
+      extensions: iframeRuntime.extensions,
+      page: iframeRuntime.page,
+    })
   )
 
   const path = useRef('')
 
   useEffect(() => {
     if (path.current !== iframeRuntime.route.path) {
-      setComponents(getInitialComponents(props))
+      setComponents(
+        getInitialComponents({
+          extensions: iframeRuntime.extensions,
+          page: iframeRuntime.page,
+        })
+      )
       editor.setIsLoading(false)
       path.current = iframeRuntime.route.path
     }
-  }, [editor, iframeRuntime.route.path, props])
+  }, [
+    editor,
+    iframeRuntime.extensions,
+    iframeRuntime.page,
+    iframeRuntime.route.path,
+  ])
 
   if (editor.editTreePath === null) {
     return (
