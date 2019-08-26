@@ -1,13 +1,16 @@
-.git/
-node_modules/
-react/node_modules/
-src/
-.eslintrc
-.gitignore
-package.json
-README.md
-CHANGELOG.md
+.git
+docs
+src
 
-**/tests/**
+.gitignore
+CHANGELOG.md
+README.md
+
+**/.DS_Store
+**/node_modules
+**/yarn-error.log
+
+**/tests
 **/*.{spec,test}.{ts,tsx}
-**/__fixtures__/**
+**/__fixtures__
+**/__mocks__
