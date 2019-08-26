@@ -155,8 +155,10 @@ function withContentContext<T>(
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
-                              messages: [{ id: contentText || '' }],
-                              provider: contentId,
+                              messages: {
+                                provider: contentId,
+                                messages: [{ id: contentText || '' }]
+                              },
                               to: culture.locale,
                             },
                           }}
