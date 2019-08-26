@@ -1,5 +1,8 @@
 {
   "license": "UNLICENSED",
+  "scripts": {
+    "test": "cd react && npm run test"
+  },
   "devDependencies": {
     "husky": "^3.0.4"
   },
