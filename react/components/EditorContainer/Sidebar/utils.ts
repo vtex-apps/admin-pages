@@ -2,6 +2,7 @@ import { path, pathOr } from 'ramda'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'
+import { isRootComponent } from './ComponentList/utils'
 import { SidebarComponent } from './typings'
 
 export const generateWarningMessage = (name: string) =>
@@ -80,25 +81,30 @@ export function getComponents(
       const schema = getComponentSchema(treePath)
       const componentName = getComponentName(treePath)
       const hasTitleInSchema = schema && !!schema.title
+
+      if (schema && !hasTitleInSchema) {
+        console.warn(generateWarningMessage(componentName))
+      }
+
       const extension = pathOr<Partial<Extension>, Extension>(
         {},
         [treePath],
         extensions
       )
+
       const hasTitleInBlock = !!extension.title
+
+      const isRoot = isRootComponent(2)({ treePath })
 
       const isEditable = isComponentEditableMap[componentName]
         ? isComponentEditableMap[componentName]
         : (isComponentEditableMap[componentName] =
             extension.hasContentSchema || hasContentPropsInSchema(schema))
 
-      if (schema && !hasTitleInSchema) {
-        console.warn(generateWarningMessage(componentName))
-      }
-
       const shouldShow =
         isSamePage(page, treePath) &&
-        (hasTitleInBlock || (hasTitleInSchema && isEditable))
+        (hasTitleInBlock ||
+          ((!!schema && isRoot) || (hasTitleInSchema && isEditable)))
 
       if (shouldShow) {
         sidebarComponentMap[treePath] = {
