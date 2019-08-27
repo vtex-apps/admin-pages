@@ -1,5 +1,13 @@
-query GetMessagesForDomain($components: [String!]!, $domain: String!, $renderMajor: Int!) {
-  messages(components: $components, domain: $domain, renderMajor: $renderMajor) {
+query GetMessagesForDomain(
+  $components: [String!]!
+  $domain: String!
+  $renderMajor: Int!
+) {
+  messages(
+    components: $components
+    domain: $domain
+    renderMajor: $renderMajor
+  ) {
     key
     message
   }

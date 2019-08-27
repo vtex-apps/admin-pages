@@ -14,7 +14,7 @@
   overflow: auto;
 }
 
-.RichEditor_editor div:not([data-block="true"]) {
+.RichEditor_editor div:not([data-block='true']) {
   height: 100%;
 }
 
