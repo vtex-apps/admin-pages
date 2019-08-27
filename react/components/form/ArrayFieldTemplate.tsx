@@ -46,7 +46,7 @@ class ArrayFieldTemplate extends Component<
     schema: PropTypes.object,
   }
 
-  constructor(props: Props & ArrayFieldTemplateProps) {
+  public constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
     this.state = {
       openedItem: null,
@@ -92,7 +92,9 @@ class ArrayFieldTemplate extends Component<
     )
   }
 
-  private handleOpen = (index: number) => (e: React.MouseEvent) => {
+  private handleOpen = (index: number) => (
+    e: Pick<React.MouseEvent, 'stopPropagation'>
+  ) => {
     e.stopPropagation()
 
     this.setState({

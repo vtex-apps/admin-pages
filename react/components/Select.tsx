@@ -21,11 +21,17 @@ const Select: React.FunctionComponent<Props> = ({
 }) => (
   <Fragment>
     <ReactSelect
-      className={`f6 ${!!errorMessage ? 'b--danger bw1' : ''}`}
+      className={`f6 ${errorMessage ? 'b--danger bw1' : ''}`}
       arrowRenderer={(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         { onMouseDown, isOpen }: any // ArrowRendererProps isn't defining isOpen.
       ) => (
-        <div onMouseDown={onMouseDown}>
+        <div
+          className="outline-0"
+          onMouseDown={onMouseDown}
+          role="listbox"
+          tabIndex={0}
+        >
           {isOpen ? (
             <IconCaretUp color="#134cd8" size={8} />
           ) : (
@@ -42,7 +48,7 @@ const Select: React.FunctionComponent<Props> = ({
       }}
       options={options}
       style={
-        !!errorMessage
+        errorMessage
           ? {
               borderColor: '#ff4c4c',
               borderWidth: '.125rem',

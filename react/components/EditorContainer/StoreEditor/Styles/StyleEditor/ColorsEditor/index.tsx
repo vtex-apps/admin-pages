@@ -2,7 +2,7 @@ import React, { useCallback, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { fromPairs, groupBy, toPairs } from 'ramda'
 
 import StyleEditorHeader from '../StyleEditorHeader'
@@ -15,6 +15,21 @@ interface Props extends RouteComponentProps<ColorRouteParams> {
   updateStyle: (partialConfig: Partial<TachyonsConfig>) => void
   config: TachyonsConfig
   onSave: () => void
+}
+
+const updateColor = (updateStyle: Props['updateStyle']) => (
+  token: string,
+  colorInfo: ColorInfo
+) => {
+  const { configField, color } = colorInfo
+  const partialConfig = {
+    semanticColors: {
+      [configField]: {
+        [token]: color,
+      },
+    },
+  }
+  updateStyle(partialConfig)
 }
 
 const ColorsEditor: React.FunctionComponent<Props> = ({
@@ -48,18 +63,17 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     />
   )
 
-  const Header = useMemo(
-    () => {
-      return ({ name }: { name: string | React.ReactNode }) => (
-        <StyleEditorHeader
-          onButtonClick={onSave}
-          buttonLabel={saveButtonLabel}
-          title={name}
-        />
-      )
-    },
-    [onSave]
-  )
+  const MemoizedHeader = useMemo(() => {
+    const Header = ({ name }: { name: string | React.ReactNode }) => (
+      <StyleEditorHeader
+        onButtonClick={onSave}
+        buttonLabel={saveButtonLabel}
+        title={name}
+      />
+    )
+
+    return Header
+  }, [onSave, saveButtonLabel])
 
   const startEditing = useCallback(
     (token: string) => history.push(EditorPath.colors.replace(IdParam, token)),
@@ -92,20 +106,21 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
     () =>
       toPairs(groups).map(([groupName, group]) => (
         <ColorGroup
-          groupName={startCase(groupName as string)}
+          colorsInfo={fromPairs(group)}
           font={font}
+          groupName={startCase(groupName as string)}
+          key={groupName}
           semanticColors={semanticColors}
           startEditing={startEditing}
-          colorsInfo={fromPairs(group)}
         />
       )),
-    [groups]
+    [font, groups, semanticColors, startEditing]
   )
 
   if (id) {
     return (
       <>
-        <Header name={startCase(id)} />
+        <MemoizedHeader name={startCase(id)} />
         <div className="flex-grow-1 overflow-y-auto overflow-x-hidden">
           <ColorEditor
             updateColor={updateColor(updateStyle)}
@@ -119,25 +134,10 @@ const ColorsEditor: React.FunctionComponent<Props> = ({
 
   return (
     <>
-      <Header name={colorsLabel} />
+      <MemoizedHeader name={colorsLabel} />
       <div className="flex-grow-1">{colourGroups}</div>
     </>
   )
-}
-
-const updateColor = (updateStyle: Props['updateStyle']) => (
-  token: string,
-  colorInfo: ColorInfo
-) => {
-  const { configField, color } = colorInfo
-  const partialConfig = {
-    semanticColors: {
-      [configField]: {
-        [token]: color,
-      },
-    },
-  }
-  updateStyle(partialConfig)
 }
 
 export default ColorsEditor

@@ -20,7 +20,7 @@ interface State {
 type RadioProps = Props & WidgetProps
 
 class Radio extends Component<RadioProps, State> {
-  constructor(props: RadioProps) {
+  public constructor(props: RadioProps) {
     super(props)
 
     this.state = {

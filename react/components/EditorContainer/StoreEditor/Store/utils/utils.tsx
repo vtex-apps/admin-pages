@@ -14,7 +14,7 @@ const Loading = (): React.ReactElement => (
 interface ErrorMessageProps extends InjectedIntlProps {
   title: string
   description: string
-  refetch: () => any
+  refetch: () => unknown
   refetching: boolean
 }
 
@@ -51,7 +51,7 @@ export function handleCornerCases<TData, TVariables>(
     x: Omit<QueryResult<TData, TVariables>, 'loading' | 'error'> & {
       data: TData // be sure data is not undefined
     }
-  ) => any
+  ) => JSX.Element
 ) {
   return ({
     loading,

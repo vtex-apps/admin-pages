@@ -1,4 +1,4 @@
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 
 type NewRouteTypeArg = Pick<Route, 'uuid' | 'declarer'>
 export const isNewRoute = (route: NewRouteTypeArg) =>

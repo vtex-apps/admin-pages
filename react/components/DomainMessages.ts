@@ -1,7 +1,7 @@
 import ApolloClient from 'apollo-client'
-import { concat, keys, map, reduce, splitEvery } from 'ramda'
+import { concat, keys, map, splitEvery } from 'ramda'
 
-import { defineMessages, InjectedIntl } from 'react-intl'
+import { InjectedIntl } from 'react-intl'
 import languagesQuery from '../queries/Languages.graphql'
 import messagesForDomainQuery from '../queries/MessagesForDomain.graphql'
 
@@ -12,11 +12,11 @@ const DEFAULT_LANGUAGES = ['en-US', 'pt-BR', 'es-AR']
 interface Props {
   runtime: RenderContext
   domain: string
-  client: ApolloClient<any>
+  client: ApolloClient<unknown>
 }
 
 interface AvailableCulturesProps {
-  client: ApolloClient<any>
+  client: ApolloClient<unknown>
   intl: InjectedIntl
 }
 
@@ -48,11 +48,7 @@ export interface LabelledLocale {
 }
 
 const messagesToReactIntlFormat = (messages: Message[]) =>
-  reduce(
-    (acc, { key, message }) => ({ ...acc, [key]: message }),
-    {} as Record<string, string>,
-    messages
-  )
+  messages.reduce((acc, { key, message }) => ({ ...acc, [key]: message }), {})
 
 const reduceP = async <T, K>(
   fn: (acc: K, item: T) => Promise<K>,
@@ -71,11 +67,7 @@ export const editorMessagesFromRuntime = async ({
   domain,
   runtime,
 }: Props) => {
-  const {
-    components,
-    renderMajor,
-    route: { path },
-  } = runtime
+  const { components, renderMajor } = runtime
   const componentNames = keys(components)
   const componentsBatch = splitEvery(MAX_COMPONENTES_PER_QUERY, componentNames)
   const responses = map(

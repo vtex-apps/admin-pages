@@ -3,7 +3,7 @@ import { assoc, dissoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
-import Form from 'react-jsonschema-form'
+import Form, { UiSchema } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
 
@@ -43,47 +43,44 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
 
   const { showToast } = useContext(ToastContext)
 
-  useEffect(
-    () => {
-      if (submitting) {
-        const { slug: app, version } = store
+  useEffect(() => {
+    if (submitting) {
+      const { slug: app, version } = store
 
-        mutate({
-          variables: { app, version, settings: JSON.stringify(formData) },
-        })
-          .then(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.success',
-              })
-            )
+      mutate({
+        variables: { app, version, settings: JSON.stringify(formData) },
+      })
+        .then(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.success',
+            })
           )
-          .catch(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.error',
-              })
-            )
+        )
+        .catch(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.error',
+            })
           )
-          .finally(() => setSubmitting(false))
-      }
-    },
-    [submitting]
-  )
+        )
+        .finally(() => setSubmitting(false))
+    }
+  }, [formData, intl, mutate, showToast, store, submitting])
 
   const { settingsSchema, settingsUiSchema } = store
 
-  const schema = tryParseJson(settingsSchema)
-  const uiSchema = tryParseJson(settingsUiSchema)
+  const schema = tryParseJson<JSONSchema6>(settingsSchema)
+  const uiSchema = tryParseJson<UiSchema>(settingsUiSchema)
 
   const schemas = {
     ...(schema && {
       schema: assoc<JSONSchema6>(
         'properties',
-        formatSchema(dissoc('title', schema).properties, intl),
+        formatSchema(dissoc('title', schema).properties || {}, intl),
         schema
       ),
-      title: formatIOMessage({ id: schema.title, intl }),
+      title: formatIOMessage({ id: schema.title || '', intl }),
     }),
     ...(uiSchema && { uiSchema }),
   }
@@ -94,7 +91,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
         {...schemas}
         formData={formData}
         onSubmit={() => setSubmitting(true)}
-        onError={e => console.log('Bad input numbers: ', e.length)}
+        onError={e => console.error('Bad input numbers: ', e.length)}
         onChange={({ formData: newFormData }) => setFormData(newFormData)}
         showErrorList={false}
         FieldTemplate={FieldTemplate}

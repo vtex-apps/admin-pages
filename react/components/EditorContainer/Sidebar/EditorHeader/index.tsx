@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { IconArrowBack } from 'vtex.styleguide'
@@ -17,13 +18,21 @@ const EditorHeader: React.FC<Props> = ({
   onTitleChange,
   title,
 }) => {
+  const handleKeyDown = useKeydownFromClick(onClose)
+
   const titleBaseClassName = 'w-100 ma0 lh-copy f5 fw5 near-black'
 
   return (
     <div className="w-100 ph5 pv4">
       <div className="w-100 flex justify-between">
         <div className="w-100 flex items-center">
-          <span className="pointer" onClick={onClose}>
+          <span
+            className="pointer outline-0"
+            onClick={onClose}
+            onKeyDown={handleKeyDown}
+            role="button"
+            tabIndex={0}
+          >
             <IconArrowBack color="#727273" size={12} />
           </span>
 

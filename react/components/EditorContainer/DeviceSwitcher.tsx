@@ -1,3 +1,4 @@
+import { createKeydownFromClick } from 'keydown-from-click'
 import React, { Component } from 'react'
 import { IconEdit } from 'vtex.styleguide'
 
@@ -11,7 +12,7 @@ interface IconsProps {
 interface DeviceComponentProps {
   id: Viewport
   key: Viewport
-  onClick: (event: any) => void
+  onClick: (e: Pick<React.MouseEvent, 'currentTarget'>) => void
   selected: boolean
 }
 
@@ -108,13 +109,15 @@ class DeviceComponent extends Component<
   DeviceComponentProps,
   DeviceComponentState
 > {
-  constructor(props: DeviceComponentProps) {
+  public constructor(props: DeviceComponentProps) {
     super(props)
 
     this.state = {
       hover: false,
     }
   }
+
+  private handleKeyDown = createKeydownFromClick(this.props.onClick)
 
   public handleMouseEnter = () => {
     this.setState({ hover: true })
@@ -131,12 +134,15 @@ class DeviceComponent extends Component<
     return (
       <div
         id={id}
-        className={`pointer flex justify-center pv3 mh4 w-20 bw1 bt ${
+        className={`pointer flex justify-center outline-0 pv3 mh4 w-20 bw1 bt ${
           selected ? 'b--blue' : 'b--transparent'
         }`}
         onClick={onClick}
+        onKeyDown={this.handleKeyDown}
         onMouseEnter={this.handleMouseEnter}
         onMouseLeave={this.handleMouseLeave}
+        role="button"
+        tabIndex={0}
       >
         <Icons id={id} colorFill={selected || hover ? 'blue' : 'mid-gray'} />
       </div>
@@ -144,15 +150,18 @@ class DeviceComponent extends Component<
   }
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
-  public handleClick = ({ currentTarget }: Event) => {
+  public handleClick = ({
+    currentTarget,
+  }: Pick<React.MouseEvent, 'currentTarget'>) => {
     const { setViewport } = this.props
 
     if (currentTarget && currentTarget instanceof HTMLElement) {
       setViewport(currentTarget.id as Viewport)
     }
   }
+
+  private handleKeyDown = createKeydownFromClick(this.props.toggleEditMode)
 
   public render() {
     const { inPreview, toggleEditMode, viewport, viewports } = this.props
@@ -222,8 +231,11 @@ class DeviceSwitcher extends React.PureComponent<DeviceSwitcherProps> {
         <div
           className={`${
             viewports.length > 0 ? 'bl-s b--light-gray' : ''
-          } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer`}
+          } flex flex-grow-1 justify-center items-center mid-gray hover-blue mv3 ph3 w-25 pointer  outline-0`}
           onClick={toggleEditMode}
+          onKeyDown={this.handleKeyDown}
+          role="button"
+          tabIndex={0}
         >
           {inPreview ? (
             <IconEdit size={16} color="currentColor" solid />

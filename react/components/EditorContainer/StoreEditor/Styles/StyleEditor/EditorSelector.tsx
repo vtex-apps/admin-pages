@@ -32,14 +32,14 @@ const EditorSelector: React.FunctionComponent<Props> = ({
 }) => {
   const {
     semanticColors: {
-      background: { emphasis, action_primary },
+      background: { action_primary: actionPrimary, emphasis },
     },
   } = config
 
   const colorEditorProps = {
     path: EditorPath.colors.replace(IdParam, ''),
     titleId: 'admin/pages.editor.styles.edit.colors.title',
-    widget: <Colors colors={[emphasis, action_primary]} />,
+    widget: <Colors colors={[emphasis, actionPrimary]} />,
   }
 
   const typographyEditorProps = {

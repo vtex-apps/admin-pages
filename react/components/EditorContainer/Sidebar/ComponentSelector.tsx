@@ -1,11 +1,12 @@
-import React, { Fragment, PureComponent } from 'react'
+import { useKeydownFromClick } from 'keydown-from-click'
+import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import SelectionIcon from '../../../images/SelectionIcon'
+import { useEditorContext } from '../../EditorContext'
 import UpdateBlockMutation from '../mutations/UpdateBlock'
 
-import { useEditorContext } from '../../EditorContext'
 import ComponentList from './ComponentList'
 import { SidebarComponent } from './typings'
 
@@ -24,18 +25,22 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
 }) => {
   const editor = useEditorContext()
 
+  const handleEditModeToggle = editor.toggleEditMode
+
+  const handleKeyPress = useKeydownFromClick(handleEditModeToggle)
+
   const handleMouseEnter = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement | HTMLLIElement>) => {
       const treePath = event.currentTarget.getAttribute('data-tree-path')
 
       highlightHandler(treePath)
     },
-    []
+    [highlightHandler]
   )
 
   const handleMouseLeave = React.useCallback(() => {
     highlightHandler(null)
-  }, [])
+  }, [highlightHandler])
 
   return (
     <Fragment>
@@ -44,8 +49,11 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
           <FormattedMessage id="admin/pages.editor.components.title" />
         </h3>
         <div
-          onClick={editor.toggleEditMode}
-          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn"
+          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn outline-0"
+          onClick={handleEditModeToggle}
+          onKeyPress={handleKeyPress}
+          role="button"
+          tabIndex={0}
         >
           <span className="pr5 b--light-gray flex items-center">
             <SelectionIcon stroke={editor.editMode ? '#368df7' : '#979899'} />

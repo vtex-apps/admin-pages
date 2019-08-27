@@ -1,10 +1,13 @@
 import React from 'react'
 
-export interface IMessagesContext {
+export interface MessagesContextProps {
   setMessages: (newMessages?: object) => void
 }
 
-// tslint:disable-next-line:no-empty
-const MessagesContext: React.Context<IMessagesContext> = React.createContext({setMessages: () => {}})
+const MessagesContext: React.Context<
+  MessagesContextProps
+> = React.createContext({
+  setMessages: () => {},
+})
 
 export default MessagesContext

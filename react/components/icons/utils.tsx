@@ -9,7 +9,10 @@ export interface IconProps {
   block?: boolean
 }
 
-export const calcIconSize: (d: Dimensions, s: number) => Dimensions = (iconBase, newSize) => {
+export const calcIconSize: (d: Dimensions, s: number) => Dimensions = (
+  iconBase,
+  newSize
+) => {
   const isHorizontal = iconBase.width >= iconBase.height
 
   const width = isHorizontal

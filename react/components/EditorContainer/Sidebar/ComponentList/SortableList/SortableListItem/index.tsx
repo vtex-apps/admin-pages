@@ -36,7 +36,7 @@ const messages = defineMessages({
 class SortableListItem extends Component<Props, State> {
   private actionMenuOptions: ActionMenuOption[]
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.actionMenuOptions = [
@@ -75,7 +75,7 @@ class SortableListItem extends Component<Props, State> {
             <ExpandArrow
               hasLeftMargin={!component.isSortable}
               isExpanded={this.state.isExpanded}
-              onClick={this.toggleExpansion}
+              onClick={this.handleExpansionToggle}
             />
           )}
           <Item
@@ -139,6 +139,13 @@ class SortableListItem extends Component<Props, State> {
     onDelete(component.treePath)
   }
 
+  private handleExpansionToggle = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isExpanded: !prevState.isExpanded,
+    }))
+  }
+
   private handleMouseEnter = () => {
     if (this.props.component.isSortable) {
       if (this.state.isExpanded) {
@@ -147,13 +154,6 @@ class SortableListItem extends Component<Props, State> {
         })
       }
     }
-  }
-
-  private toggleExpansion = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      isExpanded: !prevState.isExpanded,
-    }))
   }
 }
 

@@ -17,7 +17,7 @@ class ErrorListTemplate extends Component<ErrorListProps, State> {
     errors: PropTypes.arrayOf(PropTypes.object),
   }
 
-  constructor(props: ErrorListProps) {
+  public constructor(props: ErrorListProps) {
     super(props)
 
     this.state = {

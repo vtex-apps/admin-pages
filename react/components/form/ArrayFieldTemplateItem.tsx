@@ -1,6 +1,7 @@
+import { createKeydownFromClick } from 'keydown-from-click'
 import { path } from 'ramda'
 import React, { Component } from 'react'
-import { defineMessages } from 'react-intl'
+import { FormattedMessage, defineMessages } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   SortableElement,
@@ -8,9 +9,9 @@ import {
   SortableHandle,
 } from 'react-sortable-hoc'
 import { animated, Transition } from 'react-spring/renderprops'
+
 import DragHandle from '../icons/DragHandle'
 import TrashSimple from '../icons/TrashSimple'
-import SimpleFormattedMessage from './SimpleFormattedMessage'
 
 const stopPropagation = (fn: (e: React.MouseEvent) => void) => (
   e: React.MouseEvent
@@ -23,15 +24,15 @@ const Handle = SortableHandle(() => (
   <DragHandle size={12} className="accordion-handle" />
 ))
 
-interface IProps {
+interface CustomProps {
   children?: React.ReactElement<{ formData: number }> | React.ReactNode
   formIndex: number
   hasRemove: boolean
   isOpen: boolean
   onClose: () => void
-  onOpen: (e: React.MouseEvent) => void
+  onOpen: (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
   showDragHandle: boolean
-  schema: any
+  schema: object
 }
 
 interface State {
@@ -41,7 +42,7 @@ type PropsFromItemTemplateProps = Pick<
   ArrayFieldTemplateProps['items'][0],
   'onDropIndexClick' | 'hasRemove' | 'children'
 >
-type Props = IProps & SortableElementProps & PropsFromItemTemplateProps
+type Props = CustomProps & SortableElementProps & PropsFromItemTemplateProps
 
 defineMessages({
   defaultTitle: {
@@ -72,14 +73,22 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
           showDragHandle ? '' : 'accordion-item--handle-hidden'
         }`}
       >
-        <div className="accordion-label" onClick={this.handleLabelClick}>
+        <div
+          className="accordion-label outline-0"
+          onClick={this.handleItemClick}
+          onKeyDown={this.handleItemKeyDown}
+          role="treeitem"
+          tabIndex={0}
+        >
           <div className="flex items-center">
             {showDragHandle && <Handle />}
-            <label className="f6 accordion-label-title">
-              <SimpleFormattedMessage
-                id={title || 'admin/pages.admin.pages.form.field.array.item'}
-              />
-            </label>
+            <FormattedMessage
+              id={title || 'admin/pages.admin.pages.form.field.array.item'}
+            >
+              {message => (
+                <span className="f6 accordion-label-title">{message}</span>
+              )}
+            </FormattedMessage>
           </div>
           <div className="flex items-center accordion-label-buttons">
             {hasRemove && (
@@ -113,7 +122,7 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     )
   }
 
-  private handleLabelClick = (e: React.MouseEvent) => {
+  private handleItemClick = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
     const { isOpen, onOpen, onClose } = this.props
 
     if (isOpen) {
@@ -123,7 +132,9 @@ class ArrayFieldTemplateItem extends Component<Props, State> {
     }
   }
 
-  private renderChildren = (_: string) => (styles: React.CSSProperties) => (
+  private handleItemKeyDown = createKeydownFromClick(this.handleItemClick)
+
+  private renderChildren = () => (styles: React.CSSProperties) => (
     <animated.div style={styles}>{this.props.children}</animated.div>
   )
 }

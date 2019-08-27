@@ -2,7 +2,7 @@ import React, { Dispatch } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router'
 
-import startCase from 'lodash.startcase'
+import startCase from 'lodash/startCase'
 import { Spinner } from 'vtex.styleguide'
 
 import ListFontsQuery, { ListFontsQueryResult } from '../queries/ListFontsQuery'

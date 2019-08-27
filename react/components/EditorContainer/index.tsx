@@ -1,4 +1,4 @@
-import debounce from 'lodash.debounce'
+import debounce from 'lodash/debounce'
 import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
@@ -52,9 +52,9 @@ const getContainerProps = (layout: Viewport) => {
 
 interface Props {
   availableCultures: LabelledLocale[]
-  editor: EditorContext
+  editor: EditorContextType
+  onShowAdminControlsToggle: () => void
   runtime: RenderContext | null
-  toggleShowAdminControls: () => void
   viewports: Viewport[]
   visible: boolean
 }
@@ -63,8 +63,8 @@ const EditorContainer: React.FC<Props> = ({
   availableCultures,
   children,
   editor,
+  onShowAdminControlsToggle,
   runtime,
-  toggleShowAdminControls,
   viewports,
   visible,
 }) => {
@@ -98,12 +98,14 @@ const EditorContainer: React.FC<Props> = ({
 
   useEffect(() => {
     highlightExtensionPoint(null)
-  }, [editMode])
+  }, [editMode, highlightExtensionPoint])
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
   const isDevelopment = runtime && runtime.production === false
   const isMasterWorkspace = runtime && runtime.workspace === 'master'
   const hasAlert = isMasterWorkspace || isDevelopment
+
+  const urlPath = iframeWindow ? iframeWindow.location.pathname : ''
 
   return (
     <FormMetaProvider>
@@ -124,7 +126,7 @@ const EditorContainer: React.FC<Props> = ({
                 changeMode={setStoreEditMode}
                 mode={storeEditMode}
                 onChangeUrlPath={onChangeIframeUrl}
-                urlPath={iframeWindow.location.pathname}
+                urlPath={urlPath}
                 visible={visible}
                 runtime={runtime}
               />
@@ -183,7 +185,7 @@ const EditorContainer: React.FC<Props> = ({
                     <DeviceSwitcher
                       inPreview={!visible}
                       setViewport={editor.setViewport}
-                      toggleEditMode={toggleShowAdminControls}
+                      toggleEditMode={onShowAdminControlsToggle}
                       viewport={editor.viewport}
                       viewports={viewports}
                     />

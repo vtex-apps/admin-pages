@@ -35,7 +35,7 @@ export const formatSchema = (
   )
 }
 
-export const tryParseJson = (str: string): { [k: string]: any } => {
+export const tryParseJson = <T>(str: string): T => {
   let parsed = null
 
   try {

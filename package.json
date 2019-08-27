@@ -1,18 +1,14 @@
 {
   "license": "UNLICENSED",
-  "version": "4.5.0",
-  "devDependencies": {
-    "@vtex/intl-equalizer": "^2.2.1",
-    "husky": "^1.1.4",
-    "lint-staged": "^8.0.4",
-    "prettier": "^1.15.2"
-  },
   "scripts": {
-    "lint:locales": "intl-equalizer"
+    "test": "cd react && npm run test"
+  },
+  "devDependencies": {
+    "husky": "^3.0.4"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "cd react && npx lint-staged"
     }
   }
 }

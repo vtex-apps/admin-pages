@@ -2,7 +2,6 @@ import React, { Fragment } from 'react'
 import ReactSelect, { Option } from 'react-select'
 
 interface Props {
-  autofocus?: boolean
   disabled?: boolean
   id?: string
   label?: string
@@ -19,7 +18,6 @@ interface Props {
 }
 
 const MultiSelect: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   label,
@@ -31,14 +29,13 @@ const MultiSelect: React.FunctionComponent<Props> = ({
 }) => (
   <Fragment>
     {(label || (schema && schema.title)) && (
-      <label>
+      <label htmlFor={id}>
         <span className="dib mb3 w-100">
           <span>{label || (schema && schema.title)}</span>
         </span>
       </label>
     )}
     <ReactSelect
-      autoFocus={autofocus}
       disabled={
         disabled || (schema && schema.disabled) || enumOptions.length === 0
       }
@@ -58,7 +55,6 @@ const MultiSelect: React.FunctionComponent<Props> = ({
 )
 
 MultiSelect.defaultProps = {
-  autofocus: false,
   disabled: false,
   placeholder: '',
   value: [],

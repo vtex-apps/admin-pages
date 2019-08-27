@@ -1,4 +1,5 @@
-import startCase from 'lodash.startcase'
+import { useKeydownFromClick } from 'keydown-from-click'
+import startCase from 'lodash/startCase'
 import { find, mapObjIndexed, propEq } from 'ramda'
 import React from 'react'
 
@@ -62,15 +63,23 @@ const ColorPreview: React.FunctionComponent<ColorPreviewProps> = ({
   startEditing,
   token,
 }) => {
+  const handleClick = React.useCallback(() => startEditing(token), [
+    startEditing,
+    token,
+  ])
+
+  const handleKeyDown = useKeydownFromClick(handleClick)
+
   const backgroundColor = find(propEq('configField', 'background'), colorInfo)
   const textColor = find(propEq('configField', 'on'), colorInfo)
 
   return (
     <div
-      className="pv5 ph6 flex items-center hover-bg-light-silver pointer"
-      onClick={() => {
-        startEditing(token)
-      }}
+      className="pv5 ph6 flex items-center hover-bg-light-silver pointer outline-0"
+      onClick={handleClick}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <div
         className="ba br2 b--muted-5 flex justify-center items-center"

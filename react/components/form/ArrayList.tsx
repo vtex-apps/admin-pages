@@ -8,12 +8,21 @@ interface ArrayListProps {
   items: ArrayFieldTemplateProps['items']
   schema: object
   openedItem: number | null
-  onOpen: (index: number) => (e: React.MouseEvent) => void
+  onOpen: (
+    index: number
+  ) => (e: Pick<React.MouseEvent, 'stopPropagation'>) => void
   onClose: () => void
   sorting?: boolean
 }
 
-const ArrayList = ({ items, schema, openedItem, onOpen, onClose, sorting }: ArrayListProps & SortableContainerProps) => (
+const ArrayList = ({
+  items,
+  schema,
+  openedItem,
+  onOpen,
+  onClose,
+  sorting,
+}: ArrayListProps & SortableContainerProps) => (
   <div
     className={`accordion-list-container ${
       sorting ? 'accordion-list-container--sorting' : ''
@@ -22,7 +31,6 @@ const ArrayList = ({ items, schema, openedItem, onOpen, onClose, sorting }: Arra
     {items.map(element => (
       <ArrayFieldTemplateItem
         key={element.index}
-        children={<div> oi</div>}
         schema={schema}
         isOpen={openedItem === element.index}
         onOpen={onOpen(element.index)}

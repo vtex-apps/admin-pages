@@ -33,7 +33,6 @@ interface UpdateManifestIconVariables {
   iOS: boolean
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class UpdateManifestIconMutation extends Mutation<
   UpdateManifestData,
   UpdateManifestIconVariables
@@ -43,13 +42,12 @@ interface UpdatePWASettingsData {
   settings: PWASettings
 }
 
-// tslint:disable-next-line:max-classes-per-file
 class UpdatePWASettingsMutation extends Mutation<
   PWASettings,
   UpdatePWASettingsData
 > {}
 
-export interface MutationProps {
+export interface PWAMutationProps {
   updateManifest: {
     mutate: MutationFn<UpdateManifestData, UpdateManifestVariables>
   } & MutationResult<UpdateManifestData>
@@ -61,36 +59,40 @@ export interface MutationProps {
   } & MutationResult<PWASettings>
 }
 
-const withPWAMutations = (
-  WrappedComponent: React.ComponentType<MutationProps & any>
-) => (props: any) => (
-  <UpdateManifestMutation mutation={UpdateManifest}>
-    {(updateManifestMutate, updateManifestRest) => (
-      <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
-        {(updateManifestIconMutate, updateManifestIconRest) => (
-          <UpdatePWASettingsMutation mutation={UpdatePWASettings}>
-            {(updatePWASettingsMutate, updatePWASettingsRest) => (
-              <WrappedComponent
-                {...props}
-                updateManifest={{
-                  mutate: updateManifestMutate,
-                  ...updateManifestRest,
-                }}
-                updateManifestIcon={{
-                  mutate: updateManifestIconMutate,
-                  ...updateManifestIconRest,
-                }}
-                updatePWASettings={{
-                  mutate: updatePWASettingsMutate,
-                  ...updatePWASettingsRest,
-                }}
-              />
-            )}
-          </UpdatePWASettingsMutation>
-        )}
-      </UpdateManifestIconMutation>
-    )}
-  </UpdateManifestMutation>
-)
+const withPWAMutations = <T extends {}>(
+  WrappedComponent: React.ComponentType<T & PWAMutationProps>
+) => {
+  const ComponentWithPWAMutations = (props: T) => (
+    <UpdateManifestMutation mutation={UpdateManifest}>
+      {(updateManifestMutate, updateManifestRest) => (
+        <UpdateManifestIconMutation mutation={UpdateManifestIcon}>
+          {(updateManifestIconMutate, updateManifestIconRest) => (
+            <UpdatePWASettingsMutation mutation={UpdatePWASettings}>
+              {(updatePWASettingsMutate, updatePWASettingsRest) => (
+                <WrappedComponent
+                  {...props}
+                  updateManifest={{
+                    mutate: updateManifestMutate,
+                    ...updateManifestRest,
+                  }}
+                  updateManifestIcon={{
+                    mutate: updateManifestIconMutate,
+                    ...updateManifestIconRest,
+                  }}
+                  updatePWASettings={{
+                    mutate: updatePWASettingsMutate,
+                    ...updatePWASettingsRest,
+                  }}
+                />
+              )}
+            </UpdatePWASettingsMutation>
+          )}
+        </UpdateManifestIconMutation>
+      )}
+    </UpdateManifestMutation>
+  )
+
+  return ComponentWithPWAMutations
+}
 
 export default withPWAMutations

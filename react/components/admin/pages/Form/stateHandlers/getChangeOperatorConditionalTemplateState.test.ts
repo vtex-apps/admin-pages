@@ -1,6 +1,6 @@
-import { State } from '../index'
-import newPage from './__fixtures__/newPage'
+import NEW_PAGE from './__fixtures__/newPage'
 import setupDate from './__fixtures__/setupDate'
+import BASE_STATE from './__fixtures__/state'
 import { getChangeOperatorConditionalTemplateState } from './getChangeOperatorConditionalTemplateState'
 
 describe('getChangeOperatorConditionalTemplateState', () => {
@@ -8,167 +8,173 @@ describe('getChangeOperatorConditionalTemplateState', () => {
 
   it('should modify operator given a unique ID', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+      isInfoEditable: false,
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)
-    ).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 10,
-            },
-            expect.objectContaining({
-              ...newPage,
-              operator: 'all',
-              uniqueId: 3,
-            }),
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
+    ).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 10,
+          },
+          {
+            ...NEW_PAGE,
+            operator: 'all',
+            uniqueId: 3,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+    })
   })
 
   it('should set allMatches boolean to true given "all" as operator', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+      isInfoEditable: false,
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)
-    ).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 10,
-            },
-            {
-              ...newPage,
-              condition: expect.objectContaining({
-                allMatches: true,
-              }),
-              operator: 'all',
-              uniqueId: 3,
-            },
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
+    ).toMatchObject({
+      data: {
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 10,
+          },
+          {
+            ...NEW_PAGE,
+            condition: expect.objectContaining({
+              allMatches: true,
+            }),
+            operator: 'all',
+            uniqueId: 3,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
+      },
+    })
   })
 
   it('should set allMatches boolean to false given "any" as operator', () => {
     const mockState = {
+      ...BASE_STATE,
       data: {
+        ...BASE_STATE.data,
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
       },
-    } as State
+      isInfoEditable: false,
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'any')(mockState)
-    ).toEqual(
-      expect.objectContaining({
-        data: {
-          pages: [
-            {
-              ...newPage,
-              uniqueId: 10,
-            },
-            {
-              ...newPage,
-              condition: expect.objectContaining({
-                allMatches: false,
-              }),
-              operator: 'any',
-              uniqueId: 3,
-            },
-            {
-              ...newPage,
-              uniqueId: 5,
-            },
-          ],
-        },
-      })
-    )
-  })
-
-  it('should clear formError', () => {
-    const mockState = ({
+    ).toMatchObject({
       data: {
         pages: [
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 10,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
+            condition: expect.objectContaining({
+              allMatches: false,
+            }),
+            operator: 'any',
             uniqueId: 3,
           },
           {
-            ...newPage,
+            ...NEW_PAGE,
             uniqueId: 5,
           },
-        ] as any[],
+        ],
+      },
+    })
+  })
+
+  it('should clear formError', () => {
+    const mockState = {
+      ...BASE_STATE,
+      data: {
+        ...BASE_STATE.data,
+        pages: [
+          {
+            ...NEW_PAGE,
+            uniqueId: 10,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 3,
+          },
+          {
+            ...NEW_PAGE,
+            uniqueId: 5,
+          },
+        ],
       },
       formErrors: {
         title: 'oi',
       },
-    } as unknown) as State
+      isInfoEditable: false,
+    }
 
     expect(
       getChangeOperatorConditionalTemplateState(3, 'all')(mockState)

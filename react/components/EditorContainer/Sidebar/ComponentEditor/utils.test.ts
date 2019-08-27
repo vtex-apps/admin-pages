@@ -21,6 +21,7 @@ describe('getUiSchema', () => {
               },
               {
                 properties: {
+                  bar: {},
                   baz: { type: 'string', widget: { 'ui:widget': 'IOMessage' } },
                   foo: {
                     enum: ['1'],
@@ -69,6 +70,7 @@ describe('getUiSchema', () => {
               },
               {
                 properties: {
+                  bar: {},
                   baz: { type: 'string', widget: { 'ui:widget': 'IOMessage' } },
                   foo: {
                     enum: ['1'],

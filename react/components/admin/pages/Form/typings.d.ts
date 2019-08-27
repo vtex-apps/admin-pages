@@ -12,6 +12,12 @@ export interface SaveMutationResult {
   }
 }
 
+export interface TemplateMutationResult {
+  data?: {
+    availableTemplates: Template[]
+  }
+}
+
 export type QueryData = RoutesQuery | null
 
 export interface RoutesQuery {
@@ -52,10 +58,7 @@ export interface DateInfoFormat {
 
 export type DateStatementFormat = Record<keyof DateInfoFormat, Date>
 
-export type FormErrors = Omit<
-  Partial<{ [key in keyof Route]: key }>,
-  'pages'
-> & {
+export type FormErrors = Omit<Partial<Route>, 'pages'> & {
   pages?: {
     [key: string]: {
       template?: string

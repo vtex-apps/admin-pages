@@ -42,7 +42,7 @@ class List extends Component<Props, State> {
       .isRequired,
   }
 
-  constructor(props: Props, context: RenderContext) {
+  public constructor(props: Props, context: RenderContext) {
     super(props)
 
     this.state = {
@@ -73,7 +73,7 @@ class List extends Component<Props, State> {
       <EmptyState title={intl.formatMessage(messages.emptyState)}>
         <div className="pt5 flex flex-column tc">
           <div>
-            <CreateButton onClick={this.openNewItem} />
+            <CreateButton onClick={this.handleNewItemOpen} />
           </div>
           <p className="mv2">
             <FormattedMessage
@@ -101,7 +101,7 @@ class List extends Component<Props, State> {
         <Table
           fullWidth
           items={items}
-          onRowClick={this.viewItem}
+          onRowClick={this.handleItemView}
           schema={schema}
           toolbar={{
             density: {
@@ -120,7 +120,7 @@ class List extends Component<Props, State> {
               showAllLabel: intl.formatMessage(messages.showAll),
             },
             newLine: {
-              handleCallback: this.openNewItem,
+              handleCallback: this.handleNewItemOpen,
               label: intl.formatMessage(messages.newLine),
             },
             upload: {
@@ -139,7 +139,6 @@ class List extends Component<Props, State> {
     return {
       items,
       properties: {
-        // tslint:disable:object-literal-sort-keys
         from: {
           title: intl.formatMessage(messages.tableFrom),
           type: 'string',
@@ -185,23 +184,22 @@ class List extends Component<Props, State> {
           title: intl.formatMessage(messages.endDateTitle),
           type: 'string',
         },
-        // tslint:enable:object-literal-sort-keys
       },
     }
   }
 
-  private openNewItem = () => {
-    const { navigate } = this.props.runtime
-
-    navigate({ to: `${BASE_URL}/${NEW_REDIRECT_ID}` })
-  }
-
-  private viewItem = (event: { rowData: Redirect }) => {
+  private handleItemView = (event: { rowData: Redirect }) => {
     const { navigate } = this.props.runtime
 
     const selectedItem = event.rowData
 
     navigate({ to: `${BASE_URL}/${selectedItem.id}` })
+  }
+
+  private handleNewItemOpen = () => {
+    const { navigate } = this.props.runtime
+
+    navigate({ to: `${BASE_URL}/${NEW_REDIRECT_ID}` })
   }
 
   private handleUpload = () => this.props.openModal()

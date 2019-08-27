@@ -8,7 +8,6 @@ import { CustomWidgetProps } from './typings'
 type Props = CustomWidgetProps & InjectedIntlProps
 
 const TextArea: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   intl,
@@ -28,14 +27,14 @@ const TextArea: React.FunctionComponent<Props> = ({
         onBlur(id, event.target.value)
       }
     },
-    []
+    [id, onBlur]
   )
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
       onChange(event.target.value || '')
     },
-    []
+    [onChange]
   )
 
   const handleFocus = React.useCallback(
@@ -44,14 +43,13 @@ const TextArea: React.FunctionComponent<Props> = ({
         onFocus(id, event.target.value)
       }
     },
-    []
+    [id, onFocus]
   )
 
   const [currentError] = Array.isArray(rawErrors) ? rawErrors : ['']
 
   return (
     <Textarea
-      autoFocus={autofocus}
       disabled={disabled}
       error={!!currentError}
       errorMessage={currentError}

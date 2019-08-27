@@ -53,8 +53,8 @@ class ConditionControls extends PureComponent<Props> {
           <Separator />
 
           <Scheduler
+            onConditionUpdate={this.handleDateChange}
             initialValues={this.getDatesInitialValues()}
-            updateCondition={this.handleDateChange}
           />
         </div>
       </Fragment>

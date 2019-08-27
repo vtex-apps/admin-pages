@@ -1,8 +1,8 @@
 import * as React from 'react'
 
-import { Media } from 'draft-js'
+import { Media as MediaProps } from 'draft-js'
 
-const Media = (props: Media) => {
+const Media = (props: MediaProps) => {
   const { contentState, block } = props
   const blockEntity = block.getEntityAt(0)
 
@@ -15,7 +15,7 @@ const Media = (props: Media) => {
   const type = entity.getType()
 
   if (type === 'IMAGE') {
-    return <img src={src} />
+    return <img alt={src} src={src} />
   }
 
   return null

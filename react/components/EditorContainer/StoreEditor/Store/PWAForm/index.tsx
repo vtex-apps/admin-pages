@@ -1,8 +1,7 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import { equals, last, path, pick } from 'ramda'
 import React, { useContext, useState } from 'react'
-import { QueryResult } from 'react-apollo'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
-
 import {
   Button,
   ColorPicker,
@@ -17,12 +16,12 @@ import {
 import ImageUploader from '../../../../form/ImageUploader'
 import withPWAMutations, {
   ManifestMutationData,
-  MutationProps,
+  PWAMutationProps,
 } from './components/withPWAMutations'
 import withPWASettings, {
   Manifest,
-  PWAData,
   PWAImage,
+  PWASettingsProps,
 } from './components/withPWASettings'
 import { messages } from './messages'
 import {
@@ -35,7 +34,7 @@ const fillManifest = (manifest: Manifest): Manifest => ({
   ...manifest,
   display: manifest.display || 'standalone',
   orientation: manifest.orientation || 'portrait',
-  start_url: manifest.start_url || '/',
+  ['start_url']: manifest.start_url || '/',
 })
 
 const isManifestValid = (manifest: Manifest): boolean =>
@@ -47,7 +46,7 @@ const isManifestValid = (manifest: Manifest): boolean =>
       manifest.theme_color
   )
 
-type Props = PWAData & InjectedIntlProps & MutationProps & QueryResult
+type Props = InjectedIntlProps & PWAMutationProps & PWASettingsProps
 
 const PWAForm: React.FunctionComponent<Props> = ({
   manifest: pwaManifest,
@@ -68,6 +67,14 @@ const PWAForm: React.FunctionComponent<Props> = ({
   ])
   const [submitting, setSubmitting] = useState(false)
   const [showSpecific, setShowSpecific] = useState(false)
+
+  const toggleSpecific = React.useCallback(
+    () => setShowSpecific(!showSpecific),
+    [showSpecific]
+  )
+
+  const toggleSpecificByKeyDown = useKeydownFromClick(toggleSpecific)
+
   const { showToast } = useContext(ToastContext)
 
   const [splash = null] = splashes || []
@@ -135,9 +142,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
   async function handleSubmit() {
     setSubmitting(true)
     try {
-      const mutations: Array<Promise<ManifestMutationData | void>> = [
-        saveManifest(),
-      ]
+      const mutations: Promise<ManifestMutationData | void>[] = [saveManifest()]
       if (!equals(settings, pwaSettings)) {
         mutations.push(saveSettings())
       }
@@ -180,7 +185,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             color={{ hex: manifest.theme_color }}
             colorHistory={colorHistory}
             onChange={(color: { hex: string }) => {
-              setManifest({ ...manifest, theme_color: color.hex })
+              setManifest({ ...manifest, ['theme_color']: color.hex })
               setColorHistory([...colorHistory, color.hex])
             }}
           />
@@ -197,7 +202,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               color={{ hex: manifest.background_color }}
               colorHistory={colorHistory}
               onChange={(color: { hex: string }) => {
-                setManifest({ ...manifest, background_color: color.hex })
+                setManifest({ ...manifest, ['background_color']: color.hex })
                 setColorHistory([...colorHistory, color.hex])
               }}
             />
@@ -242,6 +247,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
           </div>
           <div className="w-100 flex justify-center items-center">
             <img
+              alt={intl.formatMessage({
+                id: 'admin/pages.editor.store.settings.pwa.splash-screen',
+              })}
               className="h5 shadow-1 mb3"
               src={`../../${splash.src}?v=${Date.now()}`}
             />
@@ -252,8 +260,12 @@ const PWAForm: React.FunctionComponent<Props> = ({
         <div className="w-100 bb b--muted-4" />
       </div>
       <div
-        className="pb3 link pointer c-muted-1"
-        onClick={() => setShowSpecific(!showSpecific)}
+        aria-checked={showSpecific}
+        className="pb3 link pointer c-muted-1 outline-0"
+        onClick={toggleSpecific}
+        onKeyDown={toggleSpecificByKeyDown}
+        role="switch"
+        tabIndex={0}
       >
         <span className="pr4">
           <FormattedMessage id="admin/pages.editor.store.settings.pwa.app-settings" />
@@ -269,7 +281,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               label={intl.formatMessage(messages.startUrl)}
               value={manifest.start_url}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setManifest({ ...manifest, start_url: e.target.value })
+                setManifest({ ...manifest, ['start_url']: e.target.value })
               }
             />
           </div>
@@ -338,4 +350,8 @@ const PWAForm: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(withPWASettings(withPWAMutations(PWAForm)))
+export default injectIntl(
+  withPWASettings<InjectedIntlProps>(
+    withPWAMutations<InjectedIntlProps & PWASettingsProps>(PWAForm)
+  )
+)

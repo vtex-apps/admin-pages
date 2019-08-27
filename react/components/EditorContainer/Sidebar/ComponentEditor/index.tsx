@@ -2,27 +2,27 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button, Spinner } from 'vtex.styleguide'
+import { Button } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
+import ContentContainer from '../ContentContainer'
 import EditorHeader from '../EditorHeader'
 import { useFormMetaContext } from '../FormMetaContext'
+import { FormDataContainer } from '../typings'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
 import { getSchemas } from './utils'
 
-import ContentContainer from '../ContentContainer'
-
 interface CustomProps {
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
-  data: object
+  data: FormDataContainer
   iframeRuntime: RenderContext
   isDefault?: boolean
   isNew?: boolean
   isSitewide?: boolean
-  onChange: FormProps<{ formData: object }>['onChange']
+  onChange: FormProps<FormDataContainer>['onChange']
   onClose: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
@@ -62,7 +62,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         iframeRuntime,
         isContent,
       }),
-    [editor.editTreePath, editor.mode]
+    [contentSchema, editor.editTreePath, iframeRuntime, isContent]
   )
 
   const schema = useMemo(

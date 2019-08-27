@@ -1,10 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
+import { Dropdown } from 'vtex.styleguide'
+
+import { LabelledLocale } from '../../DomainMessages'
 import EditableText from '../Sidebar/EditorHeader/EditableText'
 
-import { Dropdown } from 'vtex.styleguide'
-import { LabelledLocale } from '../../DomainMessages'
-import { useEditorContext } from '../../EditorContext'
 import ModeButton from './components/ModeButton'
 
 const modes: StoreEditMode[] = ['settings', 'theme']

@@ -1,3 +1,5 @@
+import COMPONENTS from './__fixtures__/components'
+import EXTENSIONS from './__fixtures__/extensions'
 import {
   generateWarningMessage,
   getComponents,
@@ -6,425 +8,301 @@ import {
   hasContentPropsInSchema,
 } from './utils'
 
-function consoleWarnSetup() {
+const DEFAULT_EXTENSIONS_COMPONENTS = [
+  {
+    isEditable: true,
+    name: 'admin/editor.carousel.title',
+    treePath: 'store.home/carousel#home',
+  },
+  {
+    isEditable: true,
+    name: 'admin/editor.shelf.title',
+    treePath: 'store.home/shelf#home',
+  },
+  {
+    isEditable: true,
+    name: 'admin/editor.productSummary.title',
+    treePath: 'store.home/shelf#home/product-summary',
+  },
+]
+
+describe('getComponents', () => {
+  let spiedConsoleWarn: jest.MockInstance<
+    ReturnType<Console['warn']>,
+    Parameters<Console['warn']>
+  >
+
   beforeEach(() => {
-    jest.spyOn(console, 'warn').mockImplementation(() => undefined)
+    spiedConsoleWarn = jest
+      .spyOn(console, 'warn')
+      .mockImplementation(() => undefined)
   })
 
   afterEach(() => {
-    ;(console.warn as any).mockRestore()
+    spiedConsoleWarn.mockRestore()
   })
-}
-
-describe('getComponents', () => {
-  const mockExtensions = {
-    'store/header': {
-      component: 'vtex.LayoutContainer',
-    },
-    'store/home': {
-      component: 'vtex.LayoutContainer',
-      props: {
-        elements: ['carousel', 'shelf'],
-      },
-    },
-    'store/home/carousel': {
-      component: 'vtex.carousel',
-    },
-    'store/home/no-schema': {
-      component: 'vtex.no-schema',
-    },
-    'store/home/shelf': {
-      component: 'vtex.shelf',
-    },
-    'store/home/shelf/arrow': {
-      component: 'vtex.shelf-arrow',
-    },
-    'store/home/shelf/title': {
-      component: 'vtex.shelf-title',
-    },
-  }
-
-  const mockComponents = {
-    'vtex.carousel': {
-      schema: {
-        properties: { mock: {} },
-        title: 'Carousel',
-        type: 'object',
-      },
-    },
-    'vtex.no-schema': {},
-    'vtex.shelf': {
-      schema: {
-        properties: { mock: {} },
-        title: 'Shelf',
-        type: 'object',
-      },
-    },
-    'vtex.shelf-arrow': {
-      schema: {
-        properties: { mock: {} },
-        title: 'Arrow',
-        type: 'object',
-      },
-    },
-    'vtex.shelf-title': {
-      schema: {
-        properties: { mock: {} },
-        title: 'Shelf Title',
-        type: 'object',
-      },
-    },
-  }
 
   it('should filter out components without either a schema or a title', () => {
-    expect(
-      getComponents(mockExtensions as any, mockComponents as any, 'store/home')
-    ).toEqual([
-      {
-        isEditable: true,
-        name: 'Carousel',
-        treePath: 'store/home/carousel',
-      },
-      {
-        isEditable: true,
-        name: 'Shelf',
-        treePath: 'store/home/shelf',
-      },
-      {
-        isEditable: true,
-        name: 'Arrow',
-        treePath: 'store/home/shelf/arrow',
-      },
-      {
-        isEditable: true,
-        name: 'Shelf Title',
-        treePath: 'store/home/shelf/title',
-      },
-    ])
+    expect(getComponents(EXTENSIONS, COMPONENTS, 'store.home')).toEqual(
+      DEFAULT_EXTENSIONS_COMPONENTS
+    )
   })
 
   it('should use blocks from extension to determine order', () => {
-    expect(
-      getComponents(
-        {
-          ...mockExtensions,
-          'store/home': {
-            blocks: [
-              {
-                blockId: 'vtex.shelf@2.x:shelf',
-                extensionPointId: 'shelf',
-              },
-              {
-                blockId: 'vtex.carousel@2.x:carousel',
-                extensionPointId: 'carousel',
-              },
-            ],
-            component: 'vtex.LayoutContainer',
-            props: {},
-          },
-        } as any,
-        mockComponents as any,
-        'store/home'
-      )
-    ).toEqual([
-      {
-        isEditable: true,
-        name: 'Shelf',
-        treePath: 'store/home/shelf',
+    const swap = <T>(indexA: number, indexB: number, arr: T[]) => {
+      const clonedArr = Array.from(arr)
+
+      const temp = clonedArr[indexA]
+
+      clonedArr[indexA] = clonedArr[indexB]
+
+      clonedArr[indexB] = temp
+
+      return clonedArr
+    }
+
+    const homeBlocks = EXTENSIONS['store.home'].blocks || []
+
+    const shelfExtensionsIndex = homeBlocks.findIndex(item =>
+      item.blockId.endsWith('shelf#home')
+    )
+
+    const carouselExtensionsIndex = homeBlocks.findIndex(item =>
+      item.blockId.endsWith('carousel#home')
+    )
+
+    const reorderedHomeBlocks = swap(
+      shelfExtensionsIndex,
+      carouselExtensionsIndex,
+      homeBlocks
+    )
+
+    const shelfComponentsIndex = DEFAULT_EXTENSIONS_COMPONENTS.findIndex(item =>
+      item.treePath.endsWith('shelf#home')
+    )
+
+    const carouselComponentsIndex = DEFAULT_EXTENSIONS_COMPONENTS.findIndex(
+      item => item.treePath.endsWith('carousel#home')
+    )
+
+    const reorderedDefaultComponentBlocks = swap(
+      shelfComponentsIndex,
+      carouselComponentsIndex,
+      DEFAULT_EXTENSIONS_COMPONENTS
+    )
+
+    const extensions = {
+      ...EXTENSIONS,
+      'store.home': {
+        ...EXTENSIONS['store.home'],
+        blocks: reorderedHomeBlocks,
       },
-      {
-        isEditable: true,
-        name: 'Carousel',
-        treePath: 'store/home/carousel',
-      },
-      {
-        isEditable: true,
-        name: 'Arrow',
-        treePath: 'store/home/shelf/arrow',
-      },
-      {
-        isEditable: true,
-        name: 'Shelf Title',
-        treePath: 'store/home/shelf/title',
-      },
-    ])
+    }
+
+    expect(getComponents(extensions, COMPONENTS, 'store.home')).toEqual(
+      reorderedDefaultComponentBlocks
+    )
   })
 
   describe('schema with no titles', () => {
-    consoleWarnSetup()
-
     it('should show extension that have only title in the blocks (extensions) and no schema', () => {
-      expect(
-        getComponents(
-          {
-            'store/home': {
-              component: 'vtex.LayoutContainer',
-              props: {
-                elements: ['header', 'layout'],
-              },
-            },
-            'store/home/header': {
-              component: 'no-component',
-              title: 'My custom header',
-            },
-            'store/home/layout': {
-              component: 'no-component',
-              props: {
-                elements: ['carousel', 'shelf'],
-              },
-            },
-          } as any,
-          {} as any,
-          'store/home'
-        )
-      ).toEqual([
+      const extensions: RenderRuntime['extensions'] = {
+        ...EXTENSIONS,
+        'store.home/title-in-blocks': {
+          after: [],
+          around: [],
+          before: [],
+          blockId: 'vtex.title-in-blocks@0.x:title-in-blocks',
+          blocks: [],
+          component: 'vtex.title-in-blocks@0.0.1/TitleInBlocks',
+          composition: 'blocks',
+          content: {},
+          hasContentSchema: false,
+          preview: null,
+          props: {},
+          render: 'server',
+          title: 'admin/title-in-blocks.title',
+          track: [],
+        },
+      }
+
+      expect(getComponents(extensions, {}, 'store.home')).toEqual([
         {
           isEditable: false,
-          name: 'My custom header',
-          treePath: 'store/home/header',
+          name: 'admin/title-in-blocks.title',
+          treePath: 'store.home/title-in-blocks',
         },
       ])
     })
 
-    it('should filter components that extensions that have falsy titles (undefined, null or empty string)', () => {
-      expect(
-        getComponents(
-          {
-            'store/home': {
-              component: 'vtex.LayoutContainer',
-              props: {
-                elements: ['header', 'layout'],
-              },
-            },
-            'store/home/header': {
-              component: 'vtex.schema-without-title',
-              title: 'My custom header',
-            },
-            'store/home/layout': {
-              component: 'vtex.schema-without-title',
-              props: {
-                elements: ['carousel', 'shelf'],
-              },
-            },
-          } as any,
-          {
-            'vtex.schema-without-title': { schema: {} },
-          } as any,
-          'store/home'
-        )
-      ).toEqual([
-        {
-          isEditable: false,
-          name: 'My custom header',
-          treePath: 'store/home/header',
+    it('should filter out components whose extensions have falsy titles', () => {
+      const extensions: RenderRuntime['extensions'] = {
+        ...EXTENSIONS,
+        'store.home/empty-string-title': {
+          after: [],
+          around: [],
+          before: [],
+          blockId: 'vtex.empty-string-title@0.x:empty-string-title',
+          blocks: [],
+          component: 'vtex.empty-string-title@0.0.1/EmptyStringTitle',
+          composition: 'blocks',
+          content: {},
+          hasContentSchema: false,
+          preview: null,
+          props: {},
+          render: 'server',
+          track: [],
         },
-      ])
+        'store.home/null-title': {
+          after: [],
+          around: [],
+          before: [],
+          blockId: 'vtex.null-title@0.x:null-title',
+          blocks: [],
+          component: 'vtex.null-title@0.0.1/NullTitle',
+          composition: 'blocks',
+          content: {},
+          hasContentSchema: false,
+          preview: null,
+          props: {},
+          render: 'server',
+          track: [],
+        },
+        'store.home/undefined-title': {
+          after: [],
+          around: [],
+          before: [],
+          blockId: 'vtex.undefined-title@0.x:undefined-title',
+          blocks: [],
+          component: 'vtex.undefined-title@0.0.1/UndefinedTitle',
+          composition: 'blocks',
+          content: {},
+          hasContentSchema: false,
+          preview: null,
+          props: {},
+          render: 'server',
+          track: [],
+        },
+      }
+
+      const components = {
+        ...COMPONENTS,
+        'vtex.empty-string-title@0.0.1/EmptyStringTitle': {
+          schema: {
+            title: '',
+          },
+        },
+        'vtex.null-title@0.0.1/NullTitle': {
+          schema: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            title: null as any,
+          },
+        },
+        'vtex.undefined-title@0.0.1/UndefinedTitle': {
+          schema: {
+            title: undefined,
+          },
+        },
+      }
+
+      expect(getComponents(extensions, components, 'store.home')).toEqual(
+        DEFAULT_EXTENSIONS_COMPONENTS
+      )
     })
   })
 
-  it('should get components with getSchema instead of schema', () => {
-    const extensions = {
-      'store/home/shelf': {
-        component: 'vtex.shelf',
-      },
-    }
+  it('should use getSchema as fallback for schema', () => {
     const components = {
-      'vtex.shelf': {
+      'vtex.shelf@1.25.0/Shelf': {
         getSchema: () => ({
           properties: { mock: {} },
-          title: 'Shelf',
+          title: 'admin/editor.shelf.title',
           type: 'object',
         }),
+        schema: undefined,
       },
     }
-    expect(
-      getComponents(extensions as any, components as any, 'store/home')
-    ).toEqual([
+
+    expect(getComponents(EXTENSIONS, components, 'store.home')).toEqual([
       {
         isEditable: true,
-        name: 'Shelf',
-        treePath: 'store/home/shelf',
+        name: 'admin/editor.shelf.title',
+        treePath: 'store.home/shelf#home',
       },
     ])
   })
 
-  describe('Warning for titleless schema', () => {
-    consoleWarnSetup()
-
+  describe('Warnings for schemas without title', () => {
     it('should call console.warn when component has a schema with no title', () => {
+      const EXTENSION_ID = 'store.home/shelf#home/product-summary'
+
       const extensions = {
-        'store/home/shelf': {
-          component: 'vtex.shelf',
-        },
+        [EXTENSION_ID]: EXTENSIONS[EXTENSION_ID],
       }
+
+      const COMPONENT_ID = 'vtex.product-summary@2.31.0/ProductSummaryCustom'
+
       const components = {
-        'vtex.shelf': {
+        [COMPONENT_ID]: {
           schema: {},
         },
       }
-      expect(
-        getComponents(extensions as any, components as any, 'store/home')
-      ).toEqual([])
 
-      expect(console.warn).toHaveBeenCalledTimes(1)
-      expect(console.warn).toHaveBeenCalledWith(
-        generateWarningMessage('vtex.shelf')
+      expect(getComponents(extensions, components, 'store.home')).toEqual([])
+
+      expect(spiedConsoleWarn).toHaveBeenCalledTimes(1)
+      expect(spiedConsoleWarn).toHaveBeenCalledWith(
+        generateWarningMessage(COMPONENT_ID)
       )
     })
 
     it('should call console.warn when component returns a schema from getSchema with no title', () => {
-      const extensions = {
-        'store/home/shelf': {
-          component: 'vtex.shelf',
-        },
-      }
+      const COMPONENT_ID = 'vtex.shelf@1.25.0/Shelf'
+
       const components = {
-        'vtex.shelf': {
+        ...COMPONENTS,
+        [COMPONENT_ID]: {
           getSchema: () => ({}),
         },
       }
-      expect(
-        getComponents(extensions as any, components as any, 'store/home')
-      ).toEqual([])
 
-      expect(console.warn).toHaveBeenCalledTimes(1)
-      expect(console.warn).toHaveBeenCalledWith(
-        generateWarningMessage('vtex.shelf')
+      expect(getComponents(EXTENSIONS, components, 'store.home')).toEqual(
+        DEFAULT_EXTENSIONS_COMPONENTS.filter(
+          item => item.treePath !== 'store.home/shelf#home'
+        )
+      )
+
+      expect(spiedConsoleWarn).toHaveBeenCalledTimes(1)
+      expect(spiedConsoleWarn).toHaveBeenCalledWith(
+        generateWarningMessage(COMPONENT_ID)
       )
     })
   })
 })
 
 describe('getIsSitewide', () => {
-  const mockExtensions = {
-    'store.home': {
-      after: ['$after_footer'],
-      around: [
-        '$around_homeWrapper',
-        '$around_storeWrapper',
-        '$around_challenge',
-      ],
-      before: ['$before_header.full'],
-      blockId: 'vtex.store-theme@2.x:store.home',
-      blocks: [
-        {
-          blockId: 'vtex.store-theme@2.x:carousel#home',
-          extensionPointId: 'carousel#home',
-        },
-      ],
-      component: 'vtex.render-runtime@8.17.2/LayoutContainer',
-      composition: 'children' as Extension['composition'],
-      content: {},
-      contentMapId: '',
-      context: {},
-      hasContentSchema: false,
-      implementationIndex: 0,
-      implements: [''],
-      preview: { type: 'block' },
-      props: {},
-      render: 'server',
-      track: [],
-    },
-    'store.home/$after_footer': {
-      after: [],
-      around: [],
-      before: [],
-      blockId: 'vtex.store-theme@2.x:footer',
-      blocks: [],
-      component: 'vtex.store-footer@2.6.15/index',
-      composition: 'children' as Extension['composition'],
-      content: {},
-      contentMapId: 'gZQaBBQyU2DLvGaM9icNdg',
-      context: {},
-      hasContentSchema: false,
-      implementationIndex: 0,
-      implements: [''],
-      preview: null,
-      props: {
-        showPaymentFormsInColor: false,
-        showSocialNetworksInColor: true,
-        showVtexLogoInColor: false,
-      },
-      render: 'server',
-      track: [],
-    },
-    'store.home/$around_homeWrapper': {
-      after: [],
-      around: [],
-      before: [],
-      blockId: 'vtex.store@2.x:homeWrapper',
-      blocks: [],
-      component: 'vtex.store@2.11.0/HomeWrapper',
-      composition: 'children' as Extension['composition'],
-      content: {},
-      contentMapId: '',
-      context: {},
-      hasContentSchema: false,
-      implementationIndex: 0,
-      implements: [''],
-      preview: null,
-      props: {},
-      render: 'server',
-      track: [],
-    },
-    'store.home/$before_header.full': {
-      after: [],
-      around: [],
-      before: [],
-      blockId: 'vtex.store-theme@2.x:header.full',
-      blocks: [],
-      component: 'vtex.store-header@2.11.0/index',
-      composition: 'children' as Extension['composition'],
-      content: {},
-      contentMapId: 'gZQaBBQyU2DLvGaM9icNdg',
-      context: {},
-      hasContentSchema: false,
-      implementationIndex: 0,
-      implements: [''],
-      preview: null,
-      props: {},
-      render: 'server',
-      track: [],
-    },
-    'store.home/carousel#home': {
-      after: [],
-      around: [],
-      before: [],
-      blockId: 'vtex.store-theme@2.x:carousel#home',
-      blocks: [],
-      component: 'vtex.carousel@2.8.0/Carousel',
-      composition: 'children' as Extension['composition'],
-      content: {},
-      contentMapId: 'eiYc7wanqAEYiPY5DJdRPT',
-      context: {},
-      hasContentSchema: false,
-      implementationIndex: 0,
-      implements: [''],
-      preview: null,
-      props: {},
-      render: 'server',
-      track: [],
-    },
-  }
-
   it('should return true for AFTER', () => {
     const mockEditTreePath = 'store.home/$after_footer'
-    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
+
+    expect(getIsSitewide(EXTENSIONS, mockEditTreePath)).toBe(true)
   })
 
   it('should return true for AROUND', () => {
     const mockEditTreePath = 'store.home/$around_homeWrapper'
-    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
+
+    expect(getIsSitewide(EXTENSIONS, mockEditTreePath)).toBe(true)
   })
 
   it('should return true for BEFORE', () => {
     const mockEditTreePath = 'store.home/$before_header.full'
-    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(true)
+
+    expect(getIsSitewide(EXTENSIONS, mockEditTreePath)).toBe(true)
   })
 
   it('should return false for blocks without role', () => {
     const mockEditTreePath = 'store.home/carousel#home'
-    expect(getIsSitewide(mockExtensions, mockEditTreePath)).toBe(false)
+
+    expect(getIsSitewide(EXTENSIONS, mockEditTreePath)).toBe(false)
   })
 })
 
@@ -438,7 +316,7 @@ describe('getIsDefaultContent', () => {
   })
 })
 
-describe('#hasContentPropsInSchema', () => {
+describe('hasContentPropsInSchema', () => {
   it(`should return false when schema isn't type object`, () => {
     expect(hasContentPropsInSchema({ title: 'Test' })).toBe(false)
     expect(hasContentPropsInSchema({ type: 'number' })).toBe(false)

@@ -1,4 +1,5 @@
 import classnames from 'classnames'
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
@@ -8,7 +9,7 @@ interface Props extends InjectedIntlProps {
   isEditable: boolean
   isSortable?: boolean
   isChild?: boolean
-  onEdit: (event: React.MouseEvent<HTMLDivElement>) => void
+  onEdit: () => void
   onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void
   title: string
@@ -34,6 +35,8 @@ const Item: React.FunctionComponent<Props> = ({
   title,
   treePath,
 }) => {
+  const handleKeyDown = useKeydownFromClick(onEdit)
+
   let leftPaddingClassName = 'pl8'
   if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
@@ -44,7 +47,7 @@ const Item: React.FunctionComponent<Props> = ({
   return (
     <div
       className={classnames(
-        'w-100 pv5 pr0 dark-gray bg-inherit tl',
+        'w-100 pv5 pr0 dark-gray bg-inherit tl outline-0',
         leftPaddingClassName,
         {
           'hover-bg-light-silver': isEditable,
@@ -53,13 +56,16 @@ const Item: React.FunctionComponent<Props> = ({
       data-tree-path={treePath}
       key={treePath}
       onClick={onEdit}
+      onKeyDown={handleKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
+      role="treeitem"
       style={{
         ...{ animationDuration: '0.2s' },
         ...(!hasSubItems || isSortable ? { marginLeft: 1 } : null),
         ...{ cursor: isEditable ? 'pointer' : 'default' },
       }}
+      tabIndex={0}
     >
       <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
         {typeof title === 'string' ? (

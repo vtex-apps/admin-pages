@@ -7,9 +7,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [4.7.3] - 2019-08-27
+### Added
 
-## [4.7.3] - 2019-08-26
+- `checkTypes` and `format` scripts to `react`'s `package.json`.
+
+### Changed
+
+- Replace TSLint with ESLint.
+- Move linting and pre-commit configurations to the `react` folder.
+- Update the Travis CI Node version.
+- Update the Travis CI script.
+- Update `react`'s `lint` script.
+
+### Fixed
+
+- All linting issues pointed out by VTEX's ESLint config, from typings to a11y.
+- Typo in the Portuguese version of the production workspace warning text.
+
+### Removed
+
+- Unused scripts.
+
+## [4.7.3] - 2019-08-27
 
 ## Fixed
 

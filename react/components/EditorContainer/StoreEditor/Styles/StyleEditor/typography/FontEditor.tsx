@@ -9,7 +9,6 @@ import { matchPath, RouteComponentProps } from 'react-router'
 import { Button, Spinner, Tab, Tabs, ToastContext } from 'vtex.styleguide'
 
 import { ApolloError } from 'apollo-client'
-import { FetchResult } from 'react-apollo'
 import DeleteFontFamily, {
   DeleteFontFamilyFn,
 } from '../mutations/DeleteFontFamily'
@@ -81,11 +80,12 @@ function reducer(
       prevState.splice(action.index, 1)
       return [...prevState]
     case 'update':
-      const {
-        style: [fontStyle, fontWeight],
-        index,
-      } = action
-      prevState[index] = { ...prevState[index], fontWeight, fontStyle }
+      prevState[action.index] = {
+        ...prevState[action.index],
+        fontStyle: action.style[0],
+        fontWeight: action.style[1],
+      }
+
       return [...prevState]
   }
 }

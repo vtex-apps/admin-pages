@@ -1,7 +1,6 @@
-import { Component, ReactElement } from 'react'
+import { JSONSchema6 } from 'json-schema'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
-import { getAvailableCultures } from '../components/DomainMessages'
 
 declare global {
   declare module '*.graphql' {
@@ -28,13 +27,16 @@ declare global {
     component: string | null
     composition?: 'blocks' | 'children'
     configurationsIds?: string[]
-    content: object
+    content: Record<string, unknown>
     contentMapId?: string
     hasContentSchema: boolean
-    implementationIndex: number
-    implements: string[]
-    props: object
+    implementationIndex?: number
+    implements?: string[]
+    preview: object | null
+    props: Record<string, unknown>
+    render: 'client' | 'lazy' | 'server'
     shouldRender?: boolean
+    track: string[]
     title?: string
   }
 
@@ -114,7 +116,7 @@ declare global {
     emitter: RenderRuntime['emitter']
     extensions: RenderRuntime['extensions']
     fetchComponent: (component: string) => Promise<void>
-    getSettings: (app: string) => any
+    getSettings: (app: string) => unknown
     history: RuntimeHistory | null
     messages: RenderRuntime['messages']
     navigate: (options: NavigateOptions) => boolean
@@ -155,14 +157,14 @@ declare global {
     removeCondition?: (conditionId: string) => void
   }
 
-  interface EditorContext extends EditorConditionSection {
+  interface EditorContextType extends EditorConditionSection {
     allMatches: boolean
     availableCultures: LabelledLocale[]
     editMode: boolean
     editTreePath: string | null
     getIsLoading: () => boolean
     onChangeIframeUrl: (url: string) => void
-    iframeWindow: Window
+    iframeWindow?: Window
     messages: RenderRuntime['messages']
     mode: EditorMode
     viewport: Viewport
@@ -174,10 +176,6 @@ declare global {
     toggleEditMode: () => void
   }
 
-  interface EditorContextProps {
-    editor: EditorContext
-  }
-
   interface RenderRuntime {
     account: string
     accountId: string
@@ -186,7 +184,7 @@ declare global {
     emitter: EventEmitter
     workspace: string
     disableSSR: boolean
-    hints: any
+    hints: unknown
     page: string
     version: string
     culture: Culture
@@ -202,7 +200,7 @@ declare global {
     query?: Record<string, string>
     start: boolean
     settings: {
-      [app: string]: any
+      [app: string]: unknown
     }
     cacheHints: CacheHints
     preview?: boolean
@@ -237,11 +235,11 @@ declare global {
       allMatches: boolean
       id: string
       pageContext: RenderRuntime['route']['pageContext']
-      statements: Array<{
+      statements: {
         objectJSON: string
         subject: ConditionSubject
         verb: string
-      }>
+      }[]
     }
     contentId: string
     contentJSON: string
@@ -277,15 +275,11 @@ declare global {
     type?: string
     title?: string
     description?: string
-    enumNames?: any
-    widget?: any
-    items?: any
     minItems?: number
     properties?: ComponentSchemaProperties
     isLayout?: boolean
+    items?: ComponentSchema | ComponentSchema[]
   }
-
-  type UISchema = any
 
   interface Window {
     __provideRuntime?: (

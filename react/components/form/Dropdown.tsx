@@ -12,7 +12,6 @@ interface Props extends CustomWidgetProps, InjectedIntlProps {
 }
 
 const Dropdown: React.FunctionComponent<Props> = ({
-  autofocus,
   disabled,
   id,
   intl,
@@ -31,7 +30,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
       target: { value: optionValue },
     }: React.ChangeEvent<HTMLSelectElement>) =>
       onChange(!optionValue ? options.emptyValue : optionValue),
-    []
+    [onChange, options.emptyValue]
   )
 
   const dropdownOptions = React.useMemo(
@@ -42,12 +41,11 @@ const Dropdown: React.FunctionComponent<Props> = ({
             label: formatIOMessage({ id: `${option.label}`, intl }),
           }))
         : [],
-    [options.enumOptions]
+    [intl, options.enumOptions]
   )
 
   return (
     <StyleguideDropdown
-      autoFocus={autofocus}
       disabled={disabled || (schema && schema.disabled)}
       id={id}
       label={formatIOMessage({ id: label, intl })}
@@ -65,7 +63,6 @@ const Dropdown: React.FunctionComponent<Props> = ({
 }
 
 Dropdown.defaultProps = {
-  autofocus: false,
   disabled: false,
   readonly: false,
   required: false,

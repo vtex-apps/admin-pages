@@ -9,8 +9,6 @@ import Form from './Form'
 import { getValidateFormState } from './utils'
 import { OperationsResults } from './withContentContext'
 
-import { parseStoreAppId } from '../utils'
-
 import { FormErrors } from '../../pages/Form/typings'
 import { generateNewRouteId } from '../../pages/Form/utils'
 
@@ -68,7 +66,7 @@ const messages = defineMessages({
 })
 
 class FormContainer extends React.PureComponent<Props, State> {
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const isNew = !props.initialData.uuid
@@ -100,13 +98,13 @@ class FormContainer extends React.PureComponent<Props, State> {
       <Form
         data={data}
         errors={formErrors}
-        handleChangeFieldValue={this.handleChangeFieldValue}
         isDeletable={isDeletable}
         isInfoEditable={isInfoEditable}
         isLoading={isLoading}
-        onSubmit={this.handleSave}
         onDelete={this.handleDelete}
         onExit={onExit}
+        onFieldValueChange={this.handleChangeFieldValue}
+        onSubmit={this.handleSave}
       />
     )
   }
@@ -132,11 +130,8 @@ class FormContainer extends React.PureComponent<Props, State> {
       onSave,
       showToast,
       onSaveContent,
-      store,
       culture,
     } = this.props
-    const storeAppId = parseStoreAppId(store)
-
     event.preventDefault()
 
     const nextState = getValidateFormState(this.state)
@@ -264,7 +259,7 @@ class FormContainer extends React.PureComponent<Props, State> {
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           showToast({
             horizontalPosition: 'right',

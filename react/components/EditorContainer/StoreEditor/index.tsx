@@ -4,18 +4,23 @@ import Store from './Store'
 import Styles from './Styles'
 
 interface Props {
-  editor: EditorContext
+  editor: EditorContextType
   mode: StoreEditMode
   visible?: boolean
 }
 
 const Mode = ({ editor, mode }: Props) => {
-  switch (mode) {
-    case 'theme':
-      return <Styles iframeWindow={editor.iframeWindow} />
-    case 'settings':
-      return <Store />
+  const { iframeWindow } = editor
+
+  if (mode === 'theme' && iframeWindow) {
+    return <Styles iframeWindow={iframeWindow} />
   }
+
+  if (mode === 'settings') {
+    return <Store />
+  }
+
+  return null
 }
 
 const StoreEditor: React.FunctionComponent<Props> = (props: Props) => {

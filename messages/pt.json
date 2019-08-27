@@ -155,7 +155,7 @@
   "admin/pages.editor.configuration.scope.template.saved": "Salvo no",
   "admin/pages.editor.container.dev-mode-warning.text": "Você está em modo de desenvolvimento. Mudanças no conteúdo não poderão ir pra loja em produção.",
   "admin/pages.editor.container.editpath.label": "URL da página:",
-  "admin/pages.editor.container.master-workspace-warning.text": "Você está editando a loja em produção. Mudanças no conteúdo terão um efeito mediato.",
+  "admin/pages.editor.container.master-workspace-warning.text": "Você está editando a loja em produção. Mudanças no conteúdo terão um efeito imediato.",
   "admin/pages.editor.image-uploader.change": "Trocar imagem",
   "admin/pages.editor.image-uploader.empty.button": "Fazer upload",
   "admin/pages.editor.image-uploader.empty.text": "Arraste sua imagem aqui",
@@ -234,13 +234,11 @@
   "admin/pages.editor.styles.select.delete.toast.undo": "Desfazer",
   "admin/pages.editor.styles.select.save-fail": "Erro ao selecionar estilo '{name}'.",
   "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
-
   "admin/pages.admin.rich-text-editor.add-image-label": "URL da imagem",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "URL",
   "admin/pages.admin.rich-text-editor.add-button": "Adicionar",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Escolher imagem para upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Fazer upload",
-
   "admin/pages.admin.content.general.section-title": "Geral",
   "admin/pages.admin.content.general.title.label": "Título",
   "admin/pages.admin.content.general.title.placeholder": "ex.: Quem somos",
@@ -254,7 +252,6 @@
   "admin/pages.admin.content.not-supported.title": "Funcionalidade não suportada",
   "admin/pages.admin.content.not-supported.description": "O tema instalado na sua loja não suporta a criação de páginas institucionais. Caso necessite criar páginas, escolha algum outro tema que suporte essa funcionalidade ou, caso utilize algum tema personalizado, solicite ao desenvolvedor que siga as instruções indicadas no link abaixo.",
   "admin/pages.admin.content.not-supported.action": "Ver instruções",
-
   "admin/pages.editor.settings.language": "Língua",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abcázio",

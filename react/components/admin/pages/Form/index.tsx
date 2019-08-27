@@ -70,7 +70,7 @@ const messages = defineMessages({
 })
 
 class FormContainer extends Component<Props, State> {
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { declarer } = props.initialData || { declarer: null }
@@ -163,7 +163,7 @@ class FormContainer extends Component<Props, State> {
   }
 
   private handleMetaTagKeywords = (
-    values: Array<{ label: string; value: string }>
+    values: { label: string; value: string }[]
   ) => {
     this.setState(prevState => ({
       ...prevState,
@@ -214,7 +214,7 @@ class FormContainer extends Component<Props, State> {
         onExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           showToast({
             horizontalPosition: 'right',

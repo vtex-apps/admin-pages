@@ -8,10 +8,10 @@ import {
 } from '../../../../utils/components'
 import { UpdateBlockMutationFn } from '../../mutations/UpdateBlock'
 import ComponentEditor from '../ComponentEditor'
-import { FormMetaContext, ModalContext } from '../typings'
+import { FormDataContainer, FormMetaContext, ModalContext } from '../typings'
 
 interface Props {
-  editor: EditorContext
+  editor: EditorContextType
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   modal: ModalContext
@@ -21,7 +21,7 @@ interface Props {
 class LayoutEditor extends Component<Props> {
   private block: Extension
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { editor, iframeRuntime } = this.props
@@ -60,7 +60,7 @@ class LayoutEditor extends Component<Props> {
       iframeRuntime.extensions
     )
 
-    return extension.props
+    return extension.props as FormDataContainer
   }
 
   private handleChange = (event: IChangeEvent) => {
@@ -73,7 +73,7 @@ class LayoutEditor extends Component<Props> {
     updateExtensionFromForm({
       data: event,
       runtime: iframeRuntime,
-      treePath: editor.editTreePath!,
+      treePath: editor.editTreePath,
     })
   }
 
@@ -109,7 +109,7 @@ class LayoutEditor extends Component<Props> {
     const extensionProps = this.getExtensionProps()
 
     const parsedRelativeBlocks = getRelativeBlocksIds(
-      editor.editTreePath!,
+      editor.editTreePath,
       iframeRuntime.extensions,
       {
         after: this.block.after,
@@ -132,7 +132,7 @@ class LayoutEditor extends Component<Props> {
           },
           blockPath: getBlockPath(
             iframeRuntime.extensions,
-            editor.editTreePath!
+            editor.editTreePath
           ),
         },
       })
@@ -143,7 +143,7 @@ class LayoutEditor extends Component<Props> {
         this.exit()
       })
     } catch (err) {
-      console.log(err)
+      console.error(err)
 
       editor.setIsLoading(false)
     } finally {

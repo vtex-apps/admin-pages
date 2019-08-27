@@ -35,7 +35,12 @@ const Sidebar: React.FunctionComponent<Props> = ({
   visible,
 }) => {
   const editor = useEditorContext()
-  const modal = useModalContext()
+  const {
+    actionHandler: handleModalAction,
+    cancelHandler: handleModalCancel,
+    close: handleModalClose,
+    isOpen: isModalOpen,
+  } = useModalContext()
 
   const isLoading = editor.getIsLoading()
 
@@ -60,10 +65,10 @@ const Sidebar: React.FunctionComponent<Props> = ({
         >
           <Modal
             isActionLoading={isLoading}
-            isOpen={modal.isOpen}
-            onClickAction={modal.actionHandler}
-            onClickCancel={modal.cancelHandler}
-            onClose={modal.close}
+            isOpen={isModalOpen}
+            onClickAction={handleModalAction}
+            onClickCancel={handleModalCancel}
+            onClose={handleModalClose}
             textButtonAction={intl.formatMessage(messages.save)}
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}

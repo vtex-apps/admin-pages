@@ -1,6 +1,5 @@
 import { MutationFn, MutationUpdaterFn } from 'react-apollo'
 import { RedirectsQuery } from '../typings'
-import { from } from 'zen-observable'
 
 export interface MutationResult {
   data?: {

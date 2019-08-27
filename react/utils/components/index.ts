@@ -6,6 +6,7 @@ import {
   GetComponentSchemaParams,
   GetSchemaPropsOrContentFromRuntimeParams,
   GetSchemaPropsOrContentParams,
+  PropsOrContent,
   TranslateMessageParams,
   UpdateExtensionFromFormParams,
 } from './typings'
@@ -33,10 +34,10 @@ const reduceProperties = (isContent: boolean) => (
 }
 
 const hideLayoutOrContentFromSchema = (
-  schema: ComponentSchema,
+  schema: ComponentSchema | ComponentSchema[],
   isContent: boolean
 ) => {
-  if (Boolean(schema.isLayout) === isContent) {
+  if (Array.isArray(schema) || Boolean(schema.isLayout) === isContent) {
     return {}
   }
 
@@ -56,15 +57,19 @@ const hideLayoutOrContentFromSchema = (
 }
 
 const setArraySchemaDefaultsDeep: (
-  schema: ComponentSchema
-) => ComponentSchema = schema => {
-  if (schema.type === 'array') {
-    schema.items = setArraySchemaDefaultsDeep(schema.items)
+  schema: ComponentSchema | ComponentSchema['items']
+) => ComponentSchema | ComponentSchema[] = schema => {
+  if (!schema || Array.isArray(schema) || schema.type !== 'array') {
+    return typeof schema === 'undefined' ? {} : schema
+  }
 
-    if (!schema.minItems || schema.minItems < 1) {
-      schema.minItems = 1
-    }
+  schema.items = setArraySchemaDefaultsDeep(schema.items)
 
+  if (!schema.minItems || schema.minItems < 1) {
+    schema.minItems = 1
+  }
+
+  if (schema.items && !Array.isArray(schema.items)) {
     schema.items.properties = {
       __editorItemTitle: {
         default: schema.items.title,
@@ -106,7 +111,7 @@ export const getComponentSchema = ({
 }
 
 export const getExtension = (
-  editTreePath: EditorContext['editTreePath'],
+  editTreePath: EditorContextType['editTreePath'],
   extensions: RenderContext['extensions']
 ): Required<Extension> => {
   const {
@@ -123,10 +128,13 @@ export const getExtension = (
     hasContentSchema = false,
     implementationIndex = 0,
     implements: extensionImplements = [],
+    preview = null,
     props = {},
+    render = 'server',
     shouldRender = false,
+    track = [],
     title = '',
-  } = extensions[editTreePath!] || {}
+  } = (editTreePath && extensions[editTreePath]) || {}
 
   return {
     after,
@@ -142,20 +150,13 @@ export const getExtension = (
     hasContentSchema,
     implementationIndex,
     implements: extensionImplements,
+    preview,
     props: props || {},
+    render,
     shouldRender,
+    track,
     title,
   }
-}
-
-export const getIframeImplementation = (component: string | null) => {
-  if (component === null) {
-    return null
-  }
-
-  const iframeRenderComponents = getIframeRenderComponents()
-
-  return iframeRenderComponents && iframeRenderComponents[component]
 }
 
 export const getIframeRenderComponents = () => {
@@ -170,67 +171,14 @@ export const getIframeRenderComponents = () => {
   return window.__RENDER_8_COMPONENTS__
 }
 
-export const getImplementation = (component: string) => {
-  return global.__RENDER_8_COMPONENTS__[component]
-}
-
-export const getSchemaPropsOrContent = ({
-  i18nMapping,
-  messages,
-  schema,
-  propsOrContent,
-}: GetSchemaPropsOrContentParams): object => {
-  const validate = getIOMessageAjv().compile(schema)
-  validate(propsOrContent)
-  const dataFromSchema = validate.validatedData!.reduce(
-    (acc: any, { value, format, dataPath, isLayout }: any) => {
-      if (isLayout) {
-        return acc
-      }
-      if (IO_MESSAGE_FORMATS.includes(format) && messages) {
-        const id =
-          i18nMapping && i18nMapping[value] !== undefined
-            ? i18nMapping[value]
-            : value
-        const ioMessage = translateMessage({
-          dictionary: messages,
-          id,
-        })
-        return { ...acc, ...assocPath(dataPath, ioMessage, acc) }
-      } else {
-        return { ...acc, ...assocPath(dataPath, value, acc) }
-      }
-    },
-    {}
-  )
-  return keepTheBlanks(dataFromSchema, propsOrContent, schema)
-}
-
-export const getSchemaPropsOrContentFromRuntime = ({
-  component,
-  contentSchema,
-  isContent = false,
-  messages,
-  propsOrContent,
-  runtime,
-}: GetSchemaPropsOrContentFromRuntimeParams) => {
-  if (!component) {
+export const getIframeImplementation = (component: string | null) => {
+  if (component === null) {
     return null
   }
 
-  const componentSchema = getComponentSchema({
-    component,
-    contentSchema,
-    isContent,
-    propsOrContent,
-    runtime,
-  })
+  const iframeRenderComponents = getIframeRenderComponents()
 
-  return getSchemaPropsOrContent({
-    messages,
-    propsOrContent,
-    schema: componentSchema,
-  })
+  return iframeRenderComponents && iframeRenderComponents[component]
 }
 
 export const translateMessage = ({
@@ -260,6 +208,10 @@ export const updateExtensionFromForm = ({
   runtime,
   treePath,
 }: UpdateExtensionFromFormParams) => {
+  if (!treePath) {
+    return
+  }
+
   return runtime.updateExtension(treePath, {
     ...runtime.extensions[treePath],
     [isContent ? 'content' : 'props']: data,
@@ -289,30 +241,7 @@ const getIOMessageAjv = () => {
   return ajv
 }
 
-const keepTheBlanks = (
-  validData: object,
-  formData: Record<string, any> | undefined,
-  schema: Record<string, ComponentSchema>
-) => {
-  if (!formData) {
-    return validData
-  }
-
-  return merge(
-    validData,
-    toPairs(formData).reduce((acc, [prop, value]) => {
-      if (!(prop in validData)) {
-        return {
-          ...acc,
-          [prop]: value == null ? getSchemaEmptyObj(schema, prop) : value,
-        }
-      }
-      return acc
-    }, {})
-  )
-}
-
-const emptyFields: Record<string, any> = {
+const emptyFields: Record<string, unknown> = {
   any: {},
   array: [],
   boolean: false,
@@ -329,4 +258,99 @@ const getSchemaEmptyObj = (schema: ComponentSchema, prop: string) => {
     schema.properties[prop] &&
     schema.properties[prop].type
   return type ? emptyFields[type] : null
+}
+
+const keepTheBlanks = (
+  validData: object,
+  formData: Record<string, unknown> | undefined,
+  schema: Record<string, ComponentSchema>
+): Record<string, unknown> => {
+  if (!formData) {
+    return validData as Record<string, unknown>
+  }
+
+  return merge(
+    validData,
+    toPairs(formData).reduce((acc, [prop, value]) => {
+      if (!(prop in validData)) {
+        return {
+          ...acc,
+          [prop]: value == null ? getSchemaEmptyObj(schema, prop) : value,
+        }
+      }
+      return acc
+    }, {})
+  )
+}
+
+export const getImplementation = (component: string) => {
+  return global.__RENDER_8_COMPONENTS__[component]
+}
+
+export const getSchemaPropsOrContent = ({
+  i18nMapping,
+  messages,
+  schema,
+  propsOrContent,
+}: GetSchemaPropsOrContentParams): PropsOrContent => {
+  const validate = getIOMessageAjv().compile(schema)
+  validate(propsOrContent)
+
+  if (!validate.validatedData) {
+    return {}
+  }
+
+  const dataFromSchema = validate.validatedData.reduce(
+    (acc, { value, format, dataPath, isLayout }) => {
+      if (isLayout) {
+        return acc
+      }
+
+      if (IO_MESSAGE_FORMATS.includes(format) && messages) {
+        const id =
+          i18nMapping && i18nMapping[value] !== undefined
+            ? i18nMapping[value]
+            : value
+
+        const ioMessage = translateMessage({
+          dictionary: messages,
+          id,
+        })
+
+        return { ...acc, ...assocPath(dataPath, ioMessage, acc) }
+      }
+
+      return { ...acc, ...assocPath(dataPath, value, acc) }
+    },
+    {}
+  )
+
+  return keepTheBlanks(dataFromSchema, propsOrContent, schema)
+}
+
+export const getSchemaPropsOrContentFromRuntime = ({
+  component,
+  contentSchema,
+  isContent = false,
+  messages,
+  propsOrContent,
+  runtime,
+}: GetSchemaPropsOrContentFromRuntimeParams) => {
+  if (!component) {
+    return null
+  }
+
+  const componentSchema = getComponentSchema({
+    component,
+    contentSchema,
+    isContent,
+    propsOrContent,
+    runtime,
+  })
+
+  return getSchemaPropsOrContent({
+    messages,
+    propsOrContent,
+    schema: componentSchema,
+  })
 }

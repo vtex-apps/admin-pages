@@ -1,3 +1,4 @@
+import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
@@ -20,7 +21,7 @@ interface Props {
   onDelete: () => void
 }
 
-function stopPropagation(e: React.MouseEvent) {
+function stopPropagation(e: Pick<Event, 'preventDefault' | 'stopPropagation'>) {
   e.preventDefault()
   e.stopPropagation()
 }
@@ -73,6 +74,16 @@ const Card = ({
   onClick,
   onDelete,
 }: Props & ReactIntl.InjectedIntlProps) => {
+  const handleMainClick = React.useCallback(() => {
+    if (!isDisabled) {
+      onClick(configuration)
+    }
+  }, [configuration, isDisabled, onClick])
+
+  const handleMainKeyDown = useKeydownFromClick(handleMainClick)
+
+  const stopPropagationByKeyDown = useKeydownFromClick(stopPropagation)
+
   const actionMenuOptions = [
     {
       label: intl.formatMessage(
@@ -82,19 +93,15 @@ const Card = ({
     },
   ]
 
-  const appName = React.useMemo(
-    () => {
-      if (!isDefaultContent) {
-        return null
-      }
+  const appName = React.useMemo(() => {
+    if (!isDefaultContent) {
+      return null
+    }
 
-      const splitOrigin =
-        configuration.origin && configuration.origin.split('@')
+    const splitOrigin = configuration.origin && configuration.origin.split('@')
 
-      return splitOrigin && splitOrigin[0]
-    },
-    [configuration.origin]
-  )
+    return splitOrigin && splitOrigin[0]
+  }, [configuration.origin, isDefaultContent])
 
   const conditionPageContext = configuration.condition.pageContext
 
@@ -120,14 +127,13 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary ${
+      className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
-      onClick={() => {
-        if (!isDisabled) {
-          onClick(configuration)
-        }
-      }}
+      onClick={handleMainClick}
+      onKeyDown={handleMainKeyDown}
+      role="button"
+      tabIndex={0}
     >
       <div className="c-on-base">
         {configuration.label ||
@@ -170,9 +176,12 @@ const Card = ({
       </div>
 
       <div
-        className="absolute top-0 right-0 mt1"
+        className="absolute top-0 right-0 mt1 outline-0"
         id="action-menu-parent"
         onClick={stopPropagation}
+        onKeyDown={stopPropagationByKeyDown}
+        role="button"
+        tabIndex={0}
       >
         <ActionMenu options={actionMenuOptions} />
       </div>

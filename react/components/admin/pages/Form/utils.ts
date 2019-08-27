@@ -1,7 +1,6 @@
 import { DataProxy } from 'apollo-cache'
 import { RouteFormData } from 'pages'
 import { indexBy, pathOr, pickBy, prop, values } from 'ramda'
-import { ConditionsOperator } from 'vtex.styleguide'
 
 import Routes from '../../../../queries/Routes.graphql'
 import { DateVerbOptions } from '../../../../utils/conditions/typings'
@@ -23,7 +22,7 @@ const cacheAccessParameters = {
 }
 
 const logCacheError = () => {
-  console.log('No cache found for "Routes".')
+  console.warn('No cache found for "Routes".')
 }
 
 const readRedirectsFromStore = (store: DataProxy): QueryData =>
@@ -150,9 +149,7 @@ export const formatToFormData = (route: Route): RouteFormData => {
           })
         ),
       },
-      operator: page.condition.allMatches
-        ? 'all'
-        : ('any' as ConditionsOperator),
+      operator: page.condition.allMatches ? 'all' : 'any',
       uniqueId: index,
     })),
   }

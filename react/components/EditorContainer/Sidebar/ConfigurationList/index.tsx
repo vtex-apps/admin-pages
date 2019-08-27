@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from 'apollo-client'
 import { JSONSchema6 } from 'json-schema'
-import throttle from 'lodash.throttle'
-import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
+import throttle from 'lodash/throttle'
+import { clone, equals, isEmpty, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
@@ -23,7 +23,7 @@ import {
   ListContentData,
   ListContentQueryResult,
 } from '../../queries/ListContent'
-import { FormMetaContext, ModalContext } from '../typings'
+import { FormDataContainer, FormMetaContext, ModalContext } from '../typings'
 import { getIsDefaultContent, isUnidentifiedPageContext } from '../utils'
 
 import { NEW_CONFIGURATION_ID } from './consts'
@@ -32,7 +32,7 @@ import List from './List'
 
 interface Props {
   deleteContent: DeleteContentMutationFn
-  editor: EditorContext
+  editor: EditorContextType
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
@@ -49,7 +49,7 @@ interface Props {
 interface State {
   condition: ExtensionConfiguration['condition']
   configuration?: ExtensionConfiguration
-  formData?: object
+  formData?: Extension['content']
   newLabel?: string
 }
 
@@ -77,11 +77,18 @@ const messages = defineMessages({
   },
 })
 
-const omitUndefined = pickBy(val => typeof val !== 'undefined')
+const omitUndefined = (obj: Extension['content']) =>
+  Object.entries(obj).reduce((acc, [currKey, currValue]) => {
+    if (typeof currValue === 'undefined') {
+      return acc
+    }
+
+    return { ...acc, [currKey]: currValue }
+  }, {})
 
 class ConfigurationList extends React.Component<Props, State> {
   private component: Extension['component']
-  private componentImplementation: RenderComponent<any, any> | null
+  private componentImplementation: RenderComponent | null
   private componentSchema: ComponentSchema
   private componentTitle: ComponentSchema['title']
   private contentSchema: JSONSchema6
@@ -92,15 +99,12 @@ class ConfigurationList extends React.Component<Props, State> {
     200
   )
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
-    const { editor, iframeRuntime, intl, modal, queryData } = props
+    const { iframeRuntime, intl, modal, queryData, treePath } = props
 
-    const extension = getExtension(
-      editor.editTreePath,
-      iframeRuntime.extensions
-    )
+    const extension = getExtension(treePath, iframeRuntime.extensions)
 
     this.component = extension.component
 
@@ -166,7 +170,7 @@ class ConfigurationList extends React.Component<Props, State> {
         componentTitle={this.state.newLabel}
         condition={this.state.condition}
         contentSchema={this.contentSchema}
-        data={this.state.formData}
+        data={this.state.formData as FormDataContainer}
         iframeRuntime={iframeRuntime}
         isDefault={getIsDefaultContent(this.state.configuration)}
         isNew={this.state.configuration.contentId === NEW_CONFIGURATION_ID}
@@ -212,7 +216,7 @@ class ConfigurationList extends React.Component<Props, State> {
     origin: null,
   })
 
-  private getFormData = (content: object): object =>
+  private getFormData = (content: Extension['content']): Extension['content'] =>
     getSchemaPropsOrContentFromRuntime({
       component: this.componentImplementation,
       contentSchema: this.contentSchema,
@@ -225,10 +229,10 @@ class ConfigurationList extends React.Component<Props, State> {
   private getNewActiveExtension = (
     queryResult: ApolloQueryResult<ListContentData>
   ) => {
-    const { editor, iframeRuntime } = this.props
+    const { iframeRuntime, treePath } = this.props
 
     const partialNewActiveExtension = getExtension(
-      editor.editTreePath,
+      treePath,
       iframeRuntime.extensions
     )
 
@@ -248,7 +252,7 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const newActiveContentJson = newActiveConfiguration.contentJSON
 
-    const newActiveContent: object = newActiveContentJson
+    const newActiveContent: Extension['content'] = newActiveContentJson
       ? JSON.parse(newActiveContentJson)
       : {}
 
@@ -277,7 +281,7 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleContentBack = async () => {
-    const { editor, formMeta, iframeRuntime } = this.props
+    const { formMeta, iframeRuntime, treePath } = this.props
 
     this.handleConfigurationClose()
 
@@ -286,7 +290,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: this.activeExtension.content,
         isContent: true,
         runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
+        treePath,
       })
     }
   }
@@ -374,19 +378,23 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, intl, showToast } = this.props
+    const { editor, iframeRuntime, intl, showToast, treePath } = this.props
+
+    if (!treePath) {
+      return
+    }
 
     const baseContent =
       newConfiguration.contentId !== NEW_CONFIGURATION_ID
-        ? (JSON.parse(newConfiguration.contentJSON) as object)
+        ? (JSON.parse(newConfiguration.contentJSON) as Extension['content'])
         : {}
 
     const formData = this.getFormData(baseContent)
 
     editor.setIsLoading(true)
 
-    await iframeRuntime.updateExtension(editor.editTreePath!, {
-      ...iframeRuntime.extensions[editor.editTreePath!],
+    await iframeRuntime.updateExtension(treePath, {
+      ...iframeRuntime.extensions[treePath],
       component: this.component,
       content: formData,
     })
@@ -412,9 +420,7 @@ class ConfigurationList extends React.Component<Props, State> {
               },
               {
                 entity: intl.formatMessage({
-                  id: `admin/pages.editor.components.condition.scope.entity.${
-                    pageContext.type
-                  }`,
+                  id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
                 }),
                 template: intl.formatMessage({
                   id: 'admin/pages.editor.components.condition.scope.template',
@@ -438,7 +444,7 @@ class ConfigurationList extends React.Component<Props, State> {
       treePath,
     } = this.props
 
-    if (editor.getIsLoading()) {
+    if (editor.getIsLoading() || !this.state.configuration) {
       return
     }
 
@@ -452,14 +458,14 @@ class ConfigurationList extends React.Component<Props, State> {
     })
 
     const contentId =
-      this.state.configuration!.contentId === NEW_CONFIGURATION_ID
+      this.state.configuration.contentId === NEW_CONFIGURATION_ID
         ? null
-        : this.state.configuration!.contentId
+        : this.state.configuration.contentId
 
     const label =
       this.state.newLabel !== undefined
         ? this.state.newLabel
-        : this.state.configuration!.label
+        : this.state.configuration.label
 
     const configuration = {
       ...this.state.configuration,
@@ -472,7 +478,7 @@ class ConfigurationList extends React.Component<Props, State> {
     }
 
     const blockId = path<string>(
-      ['extensions', editor.editTreePath || '', 'blockId'],
+      ['extensions', treePath || '', 'blockId'],
       iframeRuntime
     )
 
@@ -506,7 +512,7 @@ class ConfigurationList extends React.Component<Props, State> {
         message: 'Something went wrong. Please try again.',
       })
 
-      console.log(err)
+      console.error(err)
     }
   }
 
@@ -525,14 +531,12 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleFormChange: FormProps<{
     formData: object
   }>['onChange'] = event => {
-    const { formMeta, iframeRuntime, editor } = this.props
+    const { formMeta, iframeRuntime, treePath } = this.props
 
     if (
+      this.state.formData &&
       !formMeta.getWasModified() &&
-      !equals(
-        omitUndefined((this.state.formData || {}) as Dictionary<any>),
-        omitUndefined(event.formData)
-      )
+      !equals(omitUndefined(this.state.formData), omitUndefined(event.formData))
     ) {
       formMeta.setWasModified(true)
     }
@@ -544,7 +548,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: event.formData,
         isContent: true,
         runtime: iframeRuntime,
-        treePath: editor.editTreePath!,
+        treePath,
       })
     }
   }
@@ -578,10 +582,14 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private refetchConfigurations = async () => {
-    const { editor, iframeRuntime, refetch, template, treePath } = this.props
+    const { iframeRuntime, refetch, template, treePath } = this.props
+
+    if (!treePath) {
+      return undefined
+    }
 
     return await refetch({
-      blockId: iframeRuntime.extensions[editor.editTreePath!].blockId,
+      blockId: iframeRuntime.extensions[treePath].blockId,
       pageContext: iframeRuntime.route.pageContext,
       template,
       treePath,
@@ -593,11 +601,13 @@ class ConfigurationList extends React.Component<Props, State> {
 
     const newListContent = await this.refetchConfigurations()
 
-    await iframeRuntime.updateRuntime({
-      conditions: editor.activeConditions,
-    })
+    if (newListContent) {
+      await iframeRuntime.updateRuntime({
+        conditions: editor.activeConditions,
+      })
 
-    this.activeExtension = this.getNewActiveExtension(newListContent)
+      this.activeExtension = this.getNewActiveExtension(newListContent)
+    }
   }
 }
 

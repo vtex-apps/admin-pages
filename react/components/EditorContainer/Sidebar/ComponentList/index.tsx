@@ -23,7 +23,7 @@ import { getParentTreePath, normalize, pureSplice } from './utils'
 
 interface CustomProps {
   components: SidebarComponent[]
-  editor: EditorContext
+  editor: EditorContextType
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
   onMouseEnterComponent: (
@@ -84,7 +84,7 @@ class ComponentList extends Component<Props, State> {
 
   private block: Extension
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     const { iframeRuntime } = props

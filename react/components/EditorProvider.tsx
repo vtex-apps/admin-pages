@@ -13,11 +13,11 @@ import {
 } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
-import MessagesContext, { IMessagesContext } from './MessagesContext'
+import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  IMessagesContext & { client: ApolloClient<any> }
+  MessagesContextProps & { client: ApolloClient<unknown> }
 
 interface State {
   activeConditions: string[]
@@ -26,7 +26,7 @@ interface State {
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null
-  iframeWindow: Window
+  iframeWindow?: Window
   isLoading: boolean
   messages: RenderRuntime['messages']
   mode: EditorMode
@@ -35,12 +35,11 @@ interface State {
   viewport: Viewport
 }
 
-// tslint:disable-next-line:no-empty
 const noop = () => {}
 
 const getUrlProperties = (href: string) => {
   const match = href.match(
-    /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
+    /^(https?:)\/\/(([^:/?#]*)(?::([0-9]+))?)([/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/
   )
 
   return (
@@ -66,7 +65,7 @@ const viewPorts: { [name: string]: Viewport[] } = {
 class EditorProvider extends Component<Props, State> {
   private unlisten?: (() => void) | void
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -92,6 +91,8 @@ class EditorProvider extends Component<Props, State> {
         shouldUpdateRuntime
       ) => {
         const { client, intl } = this.props
+        const stateIframeRuntime = this.state.iframeRuntime
+
         let formattedEditorMessages = {}
 
         try {
@@ -101,7 +102,7 @@ class EditorProvider extends Component<Props, State> {
             runtime,
           })
         } catch (e) {
-          console.log(e)
+          console.error(e)
         }
 
         const newMessages = {
@@ -125,8 +126,8 @@ class EditorProvider extends Component<Props, State> {
         const newState = {
           availableCultures,
           iframeRuntime: runtime,
-          ...(this.state.iframeRuntime
-            ? ({} as object)
+          ...(stateIframeRuntime
+            ? {}
             : {
                 iframeWindow: (window.self.document.getElementById(
                   'store-iframe'
@@ -140,20 +141,20 @@ class EditorProvider extends Component<Props, State> {
         })
 
         if (
-          this.state.iframeRuntime &&
-          this.state.iframeRuntime.history &&
+          stateIframeRuntime &&
+          stateIframeRuntime.history &&
           !this.unlisten
         ) {
-          this.unlisten = this.state.iframeRuntime.history.listen(
+          this.unlisten = stateIframeRuntime.history.listen(
             (location, action) => {
-              const pathFromCurrentPage = this.state.iframeRuntime!.route.path
+              const pathFromCurrentPage = stateIframeRuntime.route.path
               const isRootPath =
                 pathFromCurrentPage === '/' || location.pathname === '/'
               const hasParamsChanged =
                 !location.state ||
                 !equals(
                   location.state.navigationRoute.params,
-                  this.state.iframeRuntime!.route.params
+                  stateIframeRuntime.route.params
                 )
 
               const isDifferentPath = isRootPath
@@ -364,7 +365,7 @@ class EditorProvider extends Component<Props, State> {
       viewport,
     } = this.state
 
-    const editor: EditorContext = {
+    const editor: EditorContextType = {
       activeConditions,
       addCondition: this.handleAddCondition,
       allMatches,
@@ -393,7 +394,7 @@ class EditorProvider extends Component<Props, State> {
             availableCultures={this.state.availableCultures}
             editor={editor}
             runtime={iframeRuntime}
-            toggleShowAdminControls={this.handleToggleShowAdminControls}
+            onShowAdminControlsToggle={this.handleToggleShowAdminControls}
             viewports={this.getAvailableViewports(device)}
             visible={showAdminControls}
           >
