@@ -98,6 +98,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     return (
       componentSchema &&
       componentSchema.items &&
+      !Array.isArray(componentSchema.items) &&
       componentSchema.items.properties &&
       Object.values(componentSchema.items.properties).some(
         (propertySchema: ComponentSchema) => {
@@ -114,6 +115,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     const imagePropertyKey =
       componentSchema &&
       componentSchema.items &&
+      !Array.isArray(componentSchema.items) &&
       componentSchema.items.properties &&
       Object.entries(componentSchema.items.properties)
         .reduce(
