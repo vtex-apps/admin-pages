@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.7.3] - 2019-08-26
+
+## Fixed
+
+- Make ContentIOMessage call newTranslate graphql resolver
+
 ## [4.7.2] - 2019-08-13
 
 ### Fixed
