@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.8.0] - 2019-08-27
+
 ### Added
 
 - `checkTypes` and `format` scripts to `react`'s `package.json`.
