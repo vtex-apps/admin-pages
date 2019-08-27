@@ -36,15 +36,17 @@ interface RouteVariables {
 
 interface MessagesVariables {
   args: {
-    provider: string
-    to: string
     from?: string
+    to: string
     messages: Array<{
-      id: string
-      content?: string
-      description?: string
+      provider: string
+      messages: Array<{
+        id: string
+        content?: string
+        description?: string
+        behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
+      }>
     }>
-    behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
   }
 }
 
@@ -155,8 +157,13 @@ function withContentContext<T>(
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
-                              messages: [{ id: contentText || '' }],
-                              provider: contentId,
+                              from: 'en-DV',
+                              messages: [
+                                {
+                                  provider: contentId,
+                                  messages: [{ id: contentText || '' }],
+                                },
+                              ],
                               to: culture.locale,
                             },
                           }}
@@ -173,7 +180,7 @@ function withContentContext<T>(
                               id: contentId,
                               text: pathOr(
                                 contentText,
-                                ['translate', 0],
+                                ['newTranslate', 0],
                                 dataMessage
                               ),
                             }
