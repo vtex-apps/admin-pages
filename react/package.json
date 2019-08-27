@@ -1,8 +1,11 @@
 {
   "license": "UNLICENSED",
   "scripts": {
+    "checkTypes": "tsc --noEmit",
+    "ci": "npm run lint:locales && npm run test",
+    "format": "prettier -l './**/*.+(json|css|md|graphql|ts|tsx)'",
+    "lint": "eslint -c .eslintrc ./ --ext ts,tsx --max-warnings=0",
     "lint:locales": "intl-equalizer",
-    "pretest": "yarn",
     "test": "vtex-test-tools test"
   },
   "lint-staged": {
