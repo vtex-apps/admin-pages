@@ -13,4 +13,4 @@ install:
   - yarn
 
 script:
-  yarn ci
+  cd react && yarn ci
