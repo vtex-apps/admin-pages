@@ -157,6 +157,7 @@ function withContentContext<T>(
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
+                              from: 'en-DV',
                               messages: [
                                 {
                                   provider: contentId,
@@ -179,7 +180,7 @@ function withContentContext<T>(
                               id: contentId,
                               text: pathOr(
                                 contentText,
-                                ['translate', 0],
+                                ['newTranslate', 0],
                                 dataMessage
                               ),
                             }
