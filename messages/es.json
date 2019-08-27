@@ -11,6 +11,7 @@
   "admin/pages.admin.pages.form.delete.success": "Eliminado con éxito.",
   "admin/pages.admin.pages.form.details.path-hint": "/nueva-pagina",
   "admin/pages.admin.pages.form.details.title": "Detalles de la página",
+  "admin/pages.admin.pages.form.field.array.item.apply": "Aplicar",
   "admin/pages.admin.pages.form.field.array.item.delete": "Borrar",
   "admin/pages.admin.pages.form.field.array.item.edit": "Editar",
   "admin/pages.admin.pages.form.field.array.item": "Ítem",

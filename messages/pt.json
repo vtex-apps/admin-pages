@@ -11,6 +11,7 @@
   "admin/pages.admin.pages.form.delete.success": "Success",
   "admin/pages.admin.pages.form.details.path-hint": "/nova-pagina",
   "admin/pages.admin.pages.form.details.title": "Detalhes da página",
+  "admin/pages.admin.pages.form.field.array.item.apply": "Aplicar",
   "admin/pages.admin.pages.form.field.array.item.delete": "Deletar",
   "admin/pages.admin.pages.form.field.array.item.edit": "Editar",
   "admin/pages.admin.pages.form.field.array.item": "Item",

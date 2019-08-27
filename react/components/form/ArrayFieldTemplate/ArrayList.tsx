@@ -43,7 +43,7 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
             showDragHandle={items.length > 1}
             {...element}
           />
-          <ItemForm shouldShow={element.index === openItem}>
+          <ItemForm shouldShow={element.index === openItem} onClose={onClose}>
             {element.children}
           </ItemForm>
         </Fragment>
