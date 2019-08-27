@@ -35,7 +35,7 @@ interface TemplateVariables {
 }
 
 interface RouteData {
-  route: string
+  route: Route
 }
 
 interface RouteVariables {
