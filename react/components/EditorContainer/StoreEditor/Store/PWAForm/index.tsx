@@ -28,6 +28,7 @@ import {
   DISPLAY_OPTIONS,
   ORIENTATION_OPTIONS,
   TOAST_DURATION,
+  INSTALL_PROMPT_OPTIONS,
 } from './utils/constants'
 
 const fillManifest = (manifest: Manifest): Manifest => ({
@@ -332,6 +333,25 @@ const PWAForm: React.FunctionComponent<Props> = ({
               }
             />
           </div>
+          {!settings.disablePrompt &&
+            <div className="pt4">
+              <Dropdown
+                disabled={submitting}
+                value={settings.promptOnCustomEvent}
+                label={intl.formatMessage(messages.pwaPrompt)}
+                options={INSTALL_PROMPT_OPTIONS.map(option => ({
+                  ...option,
+                  label: intl.formatMessage({ id: option.label }),
+                }))}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                  setSettings({
+                    ...settings,
+                    promptOnCustomEvent: e.target.value,
+                  })
+                }
+              />
+            </div>
+          }
         </>
       )}
       <div className="w-100 mt7 tr">
