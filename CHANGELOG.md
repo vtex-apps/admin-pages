@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Content edition bug due to the usage of wrong tree paths in sitewide blocks.
+
 ## [4.8.0] - 2019-08-27
 
 ### Added

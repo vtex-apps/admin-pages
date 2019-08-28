@@ -41,9 +41,9 @@ interface Props {
   queryData?: ListContentData
   refetch: ListContentQueryResult['refetch']
   saveContent: SaveContentMutationFn
+  serverTreePath: string
   showToast: ToastConsumerFunctions['showToast']
   template: string
-  treePath: string
 }
 
 interface State {
@@ -102,9 +102,12 @@ class ConfigurationList extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props)
 
-    const { iframeRuntime, intl, modal, queryData, treePath } = props
+    const { editor, iframeRuntime, intl, modal, queryData } = props
 
-    const extension = getExtension(treePath, iframeRuntime.extensions)
+    const extension = getExtension(
+      editor.editTreePath,
+      iframeRuntime.extensions
+    )
 
     this.component = extension.component
 
@@ -229,10 +232,10 @@ class ConfigurationList extends React.Component<Props, State> {
   private getNewActiveExtension = (
     queryResult: ApolloQueryResult<ListContentData>
   ) => {
-    const { iframeRuntime, treePath } = this.props
+    const { editor, iframeRuntime } = this.props
 
     const partialNewActiveExtension = getExtension(
-      treePath,
+      editor.editTreePath,
       iframeRuntime.extensions
     )
 
@@ -281,7 +284,7 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private handleContentBack = async () => {
-    const { formMeta, iframeRuntime, treePath } = this.props
+    const { editor, formMeta, iframeRuntime } = this.props
 
     this.handleConfigurationClose()
 
@@ -290,7 +293,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: this.activeExtension.content,
         isContent: true,
         runtime: iframeRuntime,
-        treePath,
+        treePath: editor.editTreePath,
       })
     }
   }
@@ -329,7 +332,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationDeletion = async (
     configuration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, intl, template, treePath } = this.props
+    const { editor, iframeRuntime, intl, serverTreePath, template } = this.props
 
     editor.setIsLoading(true)
 
@@ -341,7 +344,7 @@ class ConfigurationList extends React.Component<Props, State> {
           contentId: configuration.contentId,
           pageContext: iframeRuntime.route.pageContext,
           template,
-          treePath,
+          treePath: serverTreePath,
         },
       })
 
@@ -378,9 +381,9 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, iframeRuntime, intl, showToast, treePath } = this.props
+    const { editor, iframeRuntime, intl, showToast } = this.props
 
-    if (!treePath) {
+    if (!editor.editTreePath) {
       return
     }
 
@@ -393,8 +396,8 @@ class ConfigurationList extends React.Component<Props, State> {
 
     editor.setIsLoading(true)
 
-    await iframeRuntime.updateExtension(treePath, {
-      ...iframeRuntime.extensions[treePath],
+    await iframeRuntime.updateExtension(editor.editTreePath, {
+      ...iframeRuntime.extensions[editor.editTreePath],
       component: this.component,
       content: formData,
     })
@@ -440,8 +443,8 @@ class ConfigurationList extends React.Component<Props, State> {
       modal,
       iframeRuntime,
       saveContent,
+      serverTreePath,
       template,
-      treePath,
     } = this.props
 
     if (editor.getIsLoading() || !this.state.configuration) {
@@ -478,7 +481,7 @@ class ConfigurationList extends React.Component<Props, State> {
     }
 
     const blockId = path<string>(
-      ['extensions', treePath || '', 'blockId'],
+      ['extensions', editor.editTreePath || '', 'blockId'],
       iframeRuntime
     )
 
@@ -491,7 +494,7 @@ class ConfigurationList extends React.Component<Props, State> {
           configuration,
           lang: iframeRuntime.culture.locale,
           template,
-          treePath,
+          treePath: serverTreePath,
         },
       })
 
@@ -531,7 +534,7 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleFormChange: FormProps<{
     formData: object
   }>['onChange'] = event => {
-    const { formMeta, iframeRuntime, treePath } = this.props
+    const { editor, formMeta, iframeRuntime } = this.props
 
     if (
       this.state.formData &&
@@ -548,7 +551,7 @@ class ConfigurationList extends React.Component<Props, State> {
         data: event.formData,
         isContent: true,
         runtime: iframeRuntime,
-        treePath,
+        treePath: editor.editTreePath,
       })
     }
   }
@@ -582,17 +585,23 @@ class ConfigurationList extends React.Component<Props, State> {
   }
 
   private refetchConfigurations = async () => {
-    const { iframeRuntime, refetch, template, treePath } = this.props
+    const {
+      editor,
+      iframeRuntime,
+      refetch,
+      serverTreePath,
+      template,
+    } = this.props
 
-    if (!treePath) {
+    if (!editor.editTreePath) {
       return undefined
     }
 
     return await refetch({
-      blockId: iframeRuntime.extensions[treePath].blockId,
+      blockId: iframeRuntime.extensions[editor.editTreePath].blockId,
       pageContext: iframeRuntime.route.pageContext,
       template,
-      treePath,
+      treePath: serverTreePath,
     })
   }
 
