@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Image preview for schemas that use the `image-uploader` widget.
+
+### Changed
+
+- Array item editing flow.
+
 ## [4.9.0] - 2019-08-29
 
 ### Added
