@@ -187,6 +187,9 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "Retrato (Secundario)",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "Retrato",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "Orientación de la pantalla",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event": "Prompt \"Add to Home Screen\"",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart": "En el primer artículo agregado al carrito",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.default": "En la primera visita",
   "admin/pages.editor.store.settings.pwa.splash-screen": "Pantalla de carga (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "URL inicial",
   "admin/pages.editor.store.settings.pwa.theme_color": "Color del tema",
@@ -234,13 +237,11 @@
   "admin/pages.editor.styles.select.delete.toast.undo": "Deshacer",
   "admin/pages.editor.styles.select.save-fail": "Error al seleccionar estilo '{name}'.",
   "admin/pages.editor.styles.select.save-success": "Estilo '{name}' fue seleccionado.",
-
   "admin/pages.admin.rich-text-editor.add-image-label": "URL de la imagen",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "Link",
   "admin/pages.admin.rich-text-editor.add-button": "Añadir",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Elige imagen para upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Upload",
-
   "admin/pages.admin.content.general.section-title": "General",
   "admin/pages.admin.content.general.title.label": "Título",
   "admin/pages.admin.content.general.title.placeholder": "ex.: Quienes somos",
@@ -254,7 +255,6 @@
   "admin/pages.admin.content.not-supported.title": "Esta funcionalidad no está disponible",
   "admin/pages.admin.content.not-supported.description": "El tema instalado en su tienda no admite la creación de páginas de contenido. Si necesita crear páginas, elija otro tema que admita esta función, o si usa un tema personalizado, pídale al desarrollador que siga las instrucciones en el siguiente enlace.",
   "admin/pages.admin.content.not-supported.action": "Instrucciones",
-
   "admin/pages.editor.settings.language": "Lengua",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abjasio",

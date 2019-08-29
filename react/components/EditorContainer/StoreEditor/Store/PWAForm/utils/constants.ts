@@ -60,4 +60,16 @@ export const DISPLAY_OPTIONS: DropdownOption[] = [
   },
 ]
 
+
+export const INSTALL_PROMPT_OPTIONS: DropdownOption[] = [
+  {
+    label: 'admin/pages.editor.store.settings.pwa.prompt-custom-event.default',
+    value: 'default',
+  },
+  {
+    label: 'admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart',
+    value: 'addToCart',
+  },
+]
+
 export const TOAST_DURATION = 4000

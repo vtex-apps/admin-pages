@@ -85,4 +85,10 @@ export const messages = defineMessages({
     defaultMessage: 'App icon successfuly updated!',
     id: 'admin/pages.editor.store.settings.pwa.update-manifest-icon.success',
   },
+
+  // Install prompt
+  pwaPrompt: {
+    defaultMessage: 'Prompt "Add to Home Screen"',
+    id: 'admin/pages.editor.store.settings.pwa.prompt-custom-event'
+  }
 })

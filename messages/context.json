@@ -187,6 +187,9 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "admin/pages.editor.store.settings.pwa.orientation.portrait",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "admin/pages.editor.store.settings.pwa.screen-orientation",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event": "admin/pages.editor.store.settings.pwa.prompt-custom-event",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart": "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.default": "admin/pages.editor.store.settings.pwa.prompt-custom-event.default",
   "admin/pages.editor.store.settings.pwa.splash-screen": "admin/pages.editor.store.settings.pwa.splash-screen",
   "admin/pages.editor.store.settings.pwa.start_url": "admin/pages.editor.store.settings.pwa.start_url",
   "admin/pages.editor.store.settings.pwa.theme_color": "admin/pages.editor.store.settings.pwa.theme_color",
@@ -234,13 +237,11 @@
   "admin/pages.editor.styles.select.delete.toast.undo": "admin/pages.editor.styles.select.delete.toast.undo",
   "admin/pages.editor.styles.select.save-fail": "admin/pages.editor.styles.select.save-fail",
   "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success",
-
   "admin/pages.admin.rich-text-editor.add-image-label": "admin/pages.admin.rich-text-editor.add-image-label",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "admin/pages.admin.rich-text-editor.add-image-placeholder",
   "admin/pages.admin.rich-text-editor.add-button": "admin/pages.admin.rich-text-editor.add-image-btn",
   "admin/pages.admin.rich-text-editor.upload-image-label": "admin/pages.admin.rich-text-editor.upload-image-label",
   "admin/pages.admin.rich-text-editor.upload-button": "admin/pages.admin.rich-text-editor.upload-button",
-
   "admin/pages.admin.content.general.section-title": "admin/pages.admin.content.general.section-title",
   "admin/pages.admin.content.general.title.label": "admin/pages.admin.content.general.title.label",
   "admin/pages.admin.content.general.title.placeholder": "admin/pages.admin.content.general.title.placeholder",
@@ -254,7 +255,6 @@
   "admin/pages.admin.content.not-supported.title": "admin/pages.admin.content.not-supported.title",
   "admin/pages.admin.content.not-supported.description": "admin/pages.admin.content.not-supported.description",
   "admin/pages.admin.content.not-supported.action": "admin/pages.admin.content.not-supported.action",
-
   "admin/pages.editor.settings.language": "admin/pages.editor.settings.language",
   "admin/pages.editor.locale.aa": "admin/pages.editor.locale.aa",
   "admin/pages.editor.locale.ab": "admin/pages.editor.locale.ab",
