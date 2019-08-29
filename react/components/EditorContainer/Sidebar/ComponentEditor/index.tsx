@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo, useRef, useState } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
@@ -14,6 +14,7 @@ import { FormDataContainer } from '../typings'
 import styles from './ComponentEditor.css'
 import ConditionControls from './ConditionControls'
 import Form from './Form'
+import { useComponentFormStateStack } from './hooks'
 import { getSchemas } from './utils'
 
 interface CustomProps {
@@ -35,35 +36,6 @@ interface CustomProps {
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
-
-interface ComponentFormState {
-  onClose: () => void
-  onTitleChange?: () => void
-  title: string
-}
-
-function useComponentFormStateStack() {
-  const [componentFormState, setComponentFormState] = useState<
-    ComponentFormState | undefined
-  >()
-  const stack = useRef<ComponentFormState[]>([])
-
-  function popComponentFormState() {
-    stack.current = stack.current.slice(0, stack.current.length - 1)
-    setComponentFormState(stack.current[stack.current.length - 1])
-  }
-
-  function pushComponentFormState(state: ComponentFormState) {
-    stack.current.push(state)
-    setComponentFormState(state)
-  }
-
-  return {
-    componentFormState,
-    popComponentFormState,
-    pushComponentFormState,
-  }
-}
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
   condition,
