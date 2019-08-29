@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Array item editing's state stack logic.
+
 ## [4.10.0] - 2019-08-29
 
 ### Added

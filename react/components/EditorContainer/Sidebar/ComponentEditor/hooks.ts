@@ -8,9 +8,9 @@ export function useComponentFormStateStack() {
   const stack = useRef<ComponentFormState[]>([])
 
   function popComponentFormState() {
-    const newState = stack.current.pop()
+    stack.current.pop()
 
-    setComponentFormState(newState)
+    setComponentFormState(stack.current[stack.current.length - 1])
   }
 
   function pushComponentFormState(state: ComponentFormState) {
