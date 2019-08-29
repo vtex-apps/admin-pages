@@ -1,4 +1,4 @@
 export interface ActionMenuOption {
   label: string
-  onClick: () => void
+  onClick: (e: ActionMenuOption) => void
 }

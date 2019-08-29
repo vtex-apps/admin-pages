@@ -50,15 +50,15 @@ interface MessagesData {
 interface MessagesVariables {
   args: {
     from?: string
-    messages: Array<{
+    messages: {
       provider: string
-      messages: Array<{
+      messages: {
         id: string
         content?: string
         description?: string
         behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
-      }>
-    }>
+      }[]
+    }[]
     to: string
   }
 }

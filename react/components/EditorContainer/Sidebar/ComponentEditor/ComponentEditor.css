@@ -1,0 +1,9 @@
+.form {
+  transition: transform 150ms ease-in-out;
+  transform: translateX(0rem);
+}
+
+.form--leave {
+  transition: transform 150ms ease-in-out;
+  transform: translateX(-18rem);
+}
