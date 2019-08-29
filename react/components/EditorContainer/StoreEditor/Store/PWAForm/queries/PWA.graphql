@@ -23,7 +23,7 @@ query PWA {
     sizes
   }
   pwaSettings {
-    disablePrompt,
+    disablePrompt
     promptOnCustomEvent
   }
 
