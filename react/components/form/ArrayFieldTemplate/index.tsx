@@ -55,10 +55,7 @@ class ArrayFieldTemplate extends Component<
         )}
         <ArrayList
           getHelperDimensions={getHelperDimensions}
-          getContainer={() =>
-            document.getElementById('component-editor-container') ||
-            document.body
-          }
+          getContainer={this.getContainer}
           helperClass="accordion-item--dragged"
           items={items}
           lockAxis="y"
@@ -75,6 +72,12 @@ class ArrayFieldTemplate extends Component<
           {canAdd ? <AddButton onClick={this.handleAddItem} /> : null}
         </ArrayList>
       </Fragment>
+    )
+  }
+
+  private getContainer() {
+    return (
+      document.getElementById('component-editor-container') || document.body
     )
   }
 
