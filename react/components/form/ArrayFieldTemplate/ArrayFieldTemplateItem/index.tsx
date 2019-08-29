@@ -39,8 +39,6 @@ type Props = CustomProps &
   PropsFromItemTemplateProps &
   InjectedIntlProps
 
-type SchemaTuple = [string, ComponentSchema]
-
 const messages = defineMessages({
   defaultTitle: {
     defaultMessage: 'Item',
@@ -68,6 +66,9 @@ function getComponentSchema(schema: JSONSchema6): ComponentSchema | null {
   return null
 }
 
+const isImageUploader = (schema: ComponentSchema) =>
+  !!schema.widget && schema.widget['ui:widget'] === 'image-uploader'
+
 const ArrayFieldTemplateItem: React.FC<Props> = props => {
   const {
     children,
@@ -94,42 +95,27 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   const handleItemKeyDown = createKeydownFromClick(handleItemClick)
   const itemStopPropagation = createKeydownFromClick(stopPropagation)
 
-  const hasImageUploader = useMemo(() => {
-    return (
+  const hasImageUploader = useMemo(
+    () =>
       componentSchema &&
       componentSchema.items &&
       !Array.isArray(componentSchema.items) &&
       componentSchema.items.properties &&
-      Object.values(componentSchema.items.properties).some(
-        (propertySchema: ComponentSchema) => {
-          return (
-            propertySchema.widget &&
-            propertySchema.widget['ui:widget'] === 'image-uploader'
-          )
-        }
-      )
-    )
-  }, [componentSchema])
+      Object.values(componentSchema.items.properties).some(isImageUploader),
+    [componentSchema]
+  )
 
   const imagePreview = useMemo(() => {
-    const imagePropertyKey =
+    const properties =
       componentSchema &&
       componentSchema.items &&
       !Array.isArray(componentSchema.items) &&
-      componentSchema.items.properties &&
-      Object.entries(componentSchema.items.properties)
-        .reduce(
-          (acc, [property, propertySchema]: SchemaTuple) => {
-            if (
-              propertySchema.widget &&
-              propertySchema.widget['ui:widget'] === 'image-uploader'
-            ) {
-              acc.push(property)
-            }
-            return acc
-          },
-          [] as string[]
-        )
+      componentSchema.items.properties
+
+    const imagePropertyKey =
+      properties &&
+      Object.keys(properties)
+        .filter(property => isImageUploader(properties[property]))
         .sort((first, second) => {
           if (
             first.indexOf('mobile') !== -1 &&
