@@ -83,7 +83,7 @@ const Content = (props: Props) => {
     ? '*'
     : iframeRuntime.pages[iframeRuntime.page].blockId
 
-  const adaptedTreePath = isSitewide
+  const serverTreePath = isSitewide
     ? getSitewideTreePath(editTreePath)
     : editTreePath
 
@@ -95,7 +95,7 @@ const Content = (props: Props) => {
             blockId,
             pageContext: iframeRuntime.route.pageContext,
             template,
-            treePath: adaptedTreePath,
+            treePath: serverTreePath,
           }}
         >
           {({ data, loading, refetch }) => (
@@ -118,9 +118,9 @@ const Content = (props: Props) => {
                         queryData={data}
                         refetch={refetch}
                         saveContent={saveContent}
+                        serverTreePath={serverTreePath}
                         showToast={showToast}
                         template={template}
-                        treePath={adaptedTreePath}
                       />
                     )
                   }
