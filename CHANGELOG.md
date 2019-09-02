@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.10.3] - 2019-09-02
+
 ### Removed
 
 - Temporarily revert releases v4.10.0 and v4.10.1.
