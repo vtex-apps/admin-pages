@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.10.2] - 2019-09-02
+
 ### Added
 
 - Redirect from pages with `storefront` to `site-editor`.
