@@ -29,6 +29,14 @@
     "component": "InstitutionalPageForm",
     "path": "/admin/app/cms/content/*id"
   },
+  "admin.app.cms.site-editor-home": {
+    "component": "PageEditor",
+    "path": "/admin/app/cms/site-editor"
+  },
+  "admin.app.cms.site-editor": {
+    "component": "PageEditor",
+    "path": "/admin/app/cms/site-editor/*targetPath"
+  },
   "admin.app.cms.storefront-home": {
     "component": "PageEditor",
     "path": "/admin/app/cms/storefront"
