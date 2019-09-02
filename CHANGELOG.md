@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Rich text editor bug caused by wrong typings
+
 ## [4.10.3] - 2019-09-02
 
 ### Removed
