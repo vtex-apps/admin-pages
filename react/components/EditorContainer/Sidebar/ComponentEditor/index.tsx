@@ -1,4 +1,3 @@
-import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
@@ -11,10 +10,8 @@ import EditorHeader from '../EditorHeader'
 import { useFormMetaContext } from '../FormMetaContext'
 import { FormDataContainer } from '../typings'
 
-import styles from './ComponentEditor.css'
 import ConditionControls from './ConditionControls'
 import Form from './Form'
-import { useComponentFormStateStack } from './hooks'
 import { getSchemas } from './utils'
 
 interface CustomProps {
@@ -54,11 +51,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
-  const {
-    componentFormState,
-    popComponentFormState,
-    pushComponentFormState,
-  } = useComponentFormStateStack()
 
   const isContent = useMemo(() => editor.mode === 'content', [editor.mode])
 
@@ -89,37 +81,22 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   const shouldDisableSaveButton =
     isLoading || (!formMeta.getWasModified() && !isNew)
 
-  const onHeaderTitleChange = componentFormState
-    ? componentFormState.onTitleChange
-    : onTitleChange
-
   return (
     <Fragment>
-      <ContentContainer
-        id="component-editor-container"
-        containerClassName="h-100 overflow-y-auto overflow-x-hidden"
-      >
+      <ContentContainer containerClassName="h-100 overflow-y-auto overflow-x-hidden">
         <EditorHeader
-          isTitleEditable={onHeaderTitleChange && isContent}
-          onClose={componentFormState ? componentFormState.onClose : onClose}
-          onTitleChange={onHeaderTitleChange}
-          title={componentFormState ? componentFormState.title : title}
+          isTitleEditable={isContent}
+          onClose={onClose}
+          onTitleChange={onTitleChange}
+          title={title}
         />
 
-        <div
-          className={classnames(
-            'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5',
-            styles['form'],
-            { [styles['form--leave']]: componentFormState }
-          )}
-        >
+        <div className="relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5">
           <Form
             formContext={{
               addMessages: iframeRuntime.addMessages,
               isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
-              popComponentFormState,
-              pushComponentFormState,
             }}
             formData={data}
             onChange={onChange}
@@ -141,15 +118,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         )}
       </ContentContainer>
 
-      <div
-        className={classnames(
-          'pr4 pv4 flex-row-reverse w-100 bt bw1 b--light-silver',
-          {
-            dn: componentFormState,
-            flex: !componentFormState,
-          }
-        )}
-      >
+      <div className="pr4 pv4 flex flex-row-reverse w-100 bt bw1 b--light-silver">
         <Button
           disabled={shouldDisableSaveButton}
           onClick={onSave}

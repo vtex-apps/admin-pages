@@ -1,26 +1,24 @@
-import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo, useRef, useState } from 'react'
+import React, { Component, Fragment } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
 import {
   defineMessages,
   FormattedMessage,
+  InjectedIntl,
   InjectedIntlProps,
   injectIntl,
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
-import { Spinner } from 'vtex.styleguide'
+import { Button, Spinner } from 'vtex.styleguide'
 
-import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
-import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
-
+import ImageIcon from '../../../images/ImageIcon'
 import UploadFile from '../../../queries/UploadFile.graphql'
 
 import Dropzone from './Dropzone'
-import EmptyState from './EmptyState'
 import ErrorAlert from './ErrorAlert'
-import ImagePreview from './ImagePreview'
+
+import styles from './imageUploader.css'
 
 interface Props extends InjectedIntlProps {
   disabled?: boolean
@@ -41,14 +39,6 @@ interface MutationData {
 }
 
 const messages = defineMessages({
-  delete: {
-    defaultMessage: 'Delete',
-    id: 'admin/pages.admin.pages.form.field.array.item.delete',
-  },
-  edit: {
-    defaultMessage: 'Edit',
-    id: 'admin/pages.admin.pages.form.field.array.item.edit',
-  },
   fileSizeError: {
     defaultMessage:
       'File exceeds the size limit of 4MB. Please choose a smaller one.',
@@ -60,26 +50,127 @@ const messages = defineMessages({
   },
 })
 
-const ImageUploader: React.FC<Props> = props => {
-  const [state, setState] = useState<State>({ error: null, isLoading: false })
-  const dropZoneRef = useRef<HTMLDivElement>(null)
+class ImageUploader extends Component<Props, State> {
+  public static defaultProps = {
+    disabled: false,
+    value: '',
+  }
 
-  const {
-    disabled,
-    intl,
-    onChange,
-    schema: { title },
-    value,
-  } = props
-  const { error, isLoading } = state
+  public constructor(props: Props) {
+    super(props)
 
-  const handleImageDrop = async (acceptedFiles: File[]) => {
-    const { uploadFile } = props as {
+    this.state = {
+      error: null,
+      isLoading: false,
+    }
+  }
+
+  public render() {
+    const {
+      disabled,
+      schema: { title },
+      value,
+    } = this.props
+    const { error, isLoading } = this.state
+
+    const backgroundImageStyle = {
+      backgroundImage: `url("${value}")`,
+    }
+
+    if (value) {
+      return (
+        <Fragment>
+          <FormattedMessage id={title as string}>
+            {text => <span className="w-100 db mb3">{text}</span>}
+          </FormattedMessage>
+          <Dropzone
+            disabled={disabled || isLoading}
+            extraClasses={
+              !isLoading ? 'bg-light-gray pointer' : 'ba bw1 b--light-gray'
+            }
+            onClick={this.handleErrorReset}
+            onDrop={this.handleImageDrop}
+          >
+            {isLoading ? (
+              <div className="w-100 h-100 flex justify-center items-center">
+                <Spinner />
+              </div>
+            ) : (
+              <div
+                className="w-100 h-100 relative bg-center contain"
+                style={backgroundImageStyle}
+              >
+                <div
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
+                >
+                  <div className="flex justify-center mb3">
+                    <ImageIcon stroke="#fff" />
+                  </div>
+                  <span className="white">
+                    <FormattedMessage
+                      id="admin/pages.editor.image-uploader.change"
+                      defaultMessage="Change image"
+                    />
+                  </span>
+                </div>
+              </div>
+            )}
+          </Dropzone>
+          {error && <ErrorAlert message={error} />}
+        </Fragment>
+      )
+    }
+
+    return (
+      <Fragment>
+        <FormattedMessage id={title as string}>
+          {text => <span className="w-100 db mb3">{text}</span>}
+        </FormattedMessage>
+        <Dropzone
+          disabled={disabled || isLoading}
+          extraClasses={`ba bw1 b--dashed b--light-gray ${
+            !isLoading ? 'cursor' : ''
+          }`}
+          onClick={this.handleErrorReset}
+          onDrop={this.handleImageDrop}
+        >
+          <div className="h-100 flex flex-column justify-center items-center">
+            {isLoading ? (
+              <Spinner />
+            ) : (
+              <Fragment>
+                <div className="mb3">
+                  <ImageIcon />
+                </div>
+                <div className="mb5 f6 tc gray">
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.text"
+                    defaultMessage="Drag your image here"
+                  />
+                </div>
+                <Button size="small" variation="secondary">
+                  <FormattedMessage
+                    id="admin/pages.editor.image-uploader.empty.button"
+                    defaultMessage="Upload"
+                  />
+                </Button>
+              </Fragment>
+            )}
+          </div>
+        </Dropzone>
+        {error && <ErrorAlert message={error} />}
+      </Fragment>
+    )
+  }
+
+  private handleImageDrop = async (acceptedFiles: File[]) => {
+    const { intl, uploadFile } = this.props as {
+      intl: InjectedIntl
       uploadFile: MutationFunc<MutationData>
     }
 
     if (acceptedFiles && acceptedFiles[0]) {
-      setState(prevState => ({ ...prevState, isLoading: true }))
+      this.setState({ isLoading: true })
 
       try {
         let url = null
@@ -95,98 +186,32 @@ const ImageUploader: React.FC<Props> = props => {
           url = fileUrl
         }
 
-        if (onChange) {
+        if (this.props.onChange) {
           const path = url && new URL(url).pathname
-          onChange(path)
+          this.props.onChange(path)
         }
 
-        if (props.onFileDrop) {
-          props.onFileDrop(acceptedFiles[0])
+        if (this.props.onFileDrop) {
+          this.props.onFileDrop(acceptedFiles[0])
         }
 
-        setState(prevState => ({ ...prevState, isLoading: false }))
+        this.setState({ isLoading: false })
       } catch (e) {
-        setState({
+        this.setState({
           error: intl.formatMessage(messages.genericError),
           isLoading: false,
         })
       }
     } else {
-      setState(prevState => ({
-        ...prevState,
+      this.setState({
         error: intl.formatMessage(messages.fileSizeError),
-      }))
+      })
     }
   }
 
-  const handleErrorReset = () => {
-    setState(prevState => ({ ...prevState, error: null }))
+  private handleErrorReset = () => {
+    this.setState({ error: null })
   }
-
-  const options: ActionMenuOption[] = useMemo(
-    () => [
-      {
-        label: intl.formatMessage(messages.edit),
-        onClick: () => {
-          if (dropZoneRef.current) {
-            dropZoneRef.current.click()
-          }
-        },
-      },
-      {
-        label: intl.formatMessage(messages.delete),
-        onClick: () => {
-          if (onChange) {
-            onChange(null)
-          }
-        },
-      },
-    ],
-    [intl, onChange, dropZoneRef]
-  )
-
-  return (
-    <Fragment>
-      <FormattedMessage id={title as string}>
-        {text => <span className="w-100 db mb3">{text}</span>}
-      </FormattedMessage>
-      <Dropzone
-        disabled={disabled || isLoading}
-        extraClasses={classnames({
-          'ba b--dashed bw1 b--light-gray': !value || isLoading,
-          'bg-light-gray pointer': !!value,
-          'bg-white b--solid': isLoading,
-          cursor: !isLoading && !value,
-        })}
-        onClick={handleErrorReset}
-        onDrop={handleImageDrop}
-        ref={dropZoneRef}
-      >
-        {isLoading ? (
-          <div className="w-100 h-100 flex justify-center items-center">
-            <Spinner />
-          </div>
-        ) : value ? (
-          <ImagePreview imageUrl={value}>
-            <ActionMenu
-              variation="primary"
-              menuWidth={200}
-              options={options}
-              buttonSize="small"
-            />
-          </ImagePreview>
-        ) : (
-          <EmptyState />
-        )}
-      </Dropzone>
-      {error && <ErrorAlert message={error} />}
-    </Fragment>
-  )
-}
-
-ImageUploader.defaultProps = {
-  disabled: false,
-  value: '',
 }
 
 export default injectIntl(

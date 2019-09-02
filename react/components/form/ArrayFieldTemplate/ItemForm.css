@@ -1,8 +1,0 @@
-.item-form {
-  transition: transform 150ms ease-in-out;
-  transform: translateX(18rem);
-}
-
-.item-form--leave {
-  transform: translateX(36rem);
-}

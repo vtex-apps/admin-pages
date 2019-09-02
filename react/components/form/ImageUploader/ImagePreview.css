@@ -1,9 +1,0 @@
-.overlay {
-  background: rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  transition: opacity ease-in-out 100ms;
-}
-
-.overlay:hover {
-  opacity: 1;
-}

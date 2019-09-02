@@ -245,14 +245,26 @@
 .accordion-label {
   display: flex;
   position: relative;
+  justify-content: space-between;
   margin: 0 -24px 0;
-  padding: 12px 16px;
+  height: 57px;
+  padding: 19px 16.5px 14px 16px;
   cursor: pointer;
   user-select: none;
 }
 
-.accordion-item--dragged .accordion-label {
-  background-color: #fff;
+.accordion-content .accordion-label {
+  margin-left: 0;
+}
+
+.accordion-content .accordion-content {
+  padding-left: 14px;
+}
+
+.accordion-item--dragged .accordion-label,
+.accordion-label:hover {
+  background-color: #f2f4f5;
+  padding-left: 26px;
 }
 
 .accordion-item--handle-hidden .accordion-label {
@@ -302,17 +314,30 @@
   fill: #727273;
 }
 
-.accordion-icon-button:hover .editor-icon--stroke path {
+.accordion-icon-button:hover .editor-icon--stroke path,
+.accordion-icon-button:hover .editor-icon--stroke circle {
   stroke: #368df7;
 }
 
-.accordion-icon-button:hover .editor-icon--fill path {
+.accordion-icon-button:hover .editor-icon--fill path,
+.accordion-icon-button:hover .editor-icon--fill circle {
   fill: #368df7;
+}
+
+.accordion-handle {
+  display: none;
+  position: absolute;
+  left: 5px;
+  padding: 3px;
 }
 
 .accordion-item--dragged .accordion-handle,
 .accordion-label:hover .accordion-handle {
   display: block;
+}
+
+.accordion-item--dragged .accordion-content {
+  display: none;
 }
 
 .iframe-pointer-none {

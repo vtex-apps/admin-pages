@@ -10,7 +10,7 @@ interface Props {
   onMouseEnter: () => void
 }
 
-const DragHandle = SortableHandle(({ isExpandable, onMouseEnter }: Props) => (
+const DragHandle = SortableHandle<Props>(({ isExpandable, onMouseEnter }) => (
   <SideItem
     horizontalPaddingClassName={isExpandable ? 'pl3 pr2' : undefined}
     isPointer

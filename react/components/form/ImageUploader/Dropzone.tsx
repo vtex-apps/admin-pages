@@ -7,15 +7,17 @@ interface Props {
   extraClasses?: string
   onClick: React.MouseEventHandler<HTMLElement>
   onDrop: DropzoneOptions['onDrop']
-  ref?: React.RefObject<HTMLDivElement>
 }
 
 const MAX_SIZE = 4 * 1024 * 1024
 
-const Dropzone: React.FunctionComponent<Props> = React.forwardRef<
-  HTMLDivElement,
-  Props
->(({ disabled, children, extraClasses, onClick, onDrop }, ref) => (
+const Dropzone: React.FunctionComponent<Props> = ({
+  disabled,
+  children,
+  extraClasses,
+  onClick,
+  onDrop,
+}) => (
   <ReactDropzone
     accept="image/*"
     disabled={disabled}
@@ -27,16 +29,13 @@ const Dropzone: React.FunctionComponent<Props> = React.forwardRef<
       <div
         {...getRootProps({ onClick: e => onClick(e) })}
         className={`w-100 h4 br2 ${extraClasses}`}
-        ref={ref}
       >
         <input {...getInputProps()} />
         {children}
       </div>
     )}
   </ReactDropzone>
-))
-
-Dropzone.displayName = 'Dropzone'
+)
 
 Dropzone.defaultProps = {
   extraClasses: '',
