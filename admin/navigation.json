@@ -5,8 +5,8 @@
     "subSectionItems": [
       {
         "isNew": true,
-        "labelId": "admin/pages.admin-menu-button.storefront",
-        "path": "/admin/cms/storefront"
+        "labelId": "admin/pages.admin-menu-button.site-editor",
+        "path": "/admin/cms/site-editor"
       },
       {
         "isNew": true,
@@ -20,8 +20,8 @@
     "subSection": "onlinestore",
     "subSectionItems": [
       {
-        "labelId": "admin/pages.admin-menu-button.storefront-smb",
-        "path": "/admin/cms/storefront"
+        "labelId": "admin/pages.admin-menu-button.site-editor-smb",
+        "path": "/admin/cms/site-editor"
       },
       {
         "labelId": "admin/pages.admin-menu-button.pages",

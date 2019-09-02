@@ -342,7 +342,7 @@ class EditorProvider extends Component<Props, State> {
     const storePath = convertedUrl ? convertedUrl.pathname : url
     const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
 
-    window.top.location.assign(`/admin/cms/storefront${pathname}`)
+    window.top.location.assign(`/admin/cms/site-editor${pathname}`)
   }
 
   public render() {

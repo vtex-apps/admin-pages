@@ -348,7 +348,7 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      await this.updateIframeAndStorefront()
+      await this.updateIframeAndSiteEditor()
 
       editor.setIsLoading(false)
 
@@ -498,7 +498,7 @@ class ConfigurationList extends React.Component<Props, State> {
         },
       })
 
-      await this.updateIframeAndStorefront()
+      await this.updateIframeAndSiteEditor()
 
       this.props.formMeta.setWasModified(false, () => {
         this.handleConfigurationClose()
@@ -605,7 +605,7 @@ class ConfigurationList extends React.Component<Props, State> {
     })
   }
 
-  private updateIframeAndStorefront = async () => {
+  private updateIframeAndSiteEditor = async () => {
     const { editor, iframeRuntime } = this.props
 
     const newListContent = await this.refetchConfigurations()
