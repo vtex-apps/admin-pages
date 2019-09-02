@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Redirect from pages with `storefront` to `site-editor`.
+
+### Changed
+
+- Rename "Storefront" to "Site Editor".
+- Make CI scripts run in parallel.
+
 ## [4.10.1] - 2019-08-29
 
 ### Fixed
