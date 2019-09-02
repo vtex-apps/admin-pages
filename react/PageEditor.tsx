@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo } from 'react'
+import { withRuntimeContext } from 'vtex.render-runtime'
 
 import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
 import MessagesContext from './components/MessagesContext'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
-interface PageEditorProps {
+interface Props extends RenderContextProps {
+  page: string
   params: {
     targetPath: string
   }
@@ -13,12 +15,19 @@ interface PageEditorProps {
 
 let messages = {}
 
-type ComponentWithCustomMessage = React.FunctionComponent<PageEditorProps> & {
+type ComponentWithCustomMessage = React.FunctionComponent<Props> & {
   getCustomMessages: () => object
 }
 
-const PageEditor: ComponentWithCustomMessage = (props: PageEditorProps) => {
-  const { params } = props
+const PageEditor: ComponentWithCustomMessage = (props: Props) => {
+  const { page, params, runtime } = props
+
+  if (page.includes('storefront')) {
+    runtime.navigate({
+      page: page.replace('storefront', 'site-editor'),
+      params,
+    })
+  }
 
   const path = params && params.targetPath
 
@@ -50,4 +59,4 @@ const PageEditor: ComponentWithCustomMessage = (props: PageEditorProps) => {
 
 PageEditor.getCustomMessages = () => messages
 
-export default PageEditor
+export default withRuntimeContext(PageEditor)
