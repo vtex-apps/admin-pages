@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
-import { withRuntimeContext } from 'vtex.render-runtime'
+import { useRuntime } from 'vtex.render-runtime'
 
 import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
@@ -20,7 +20,9 @@ type ComponentWithCustomMessage = React.FunctionComponent<Props> & {
 }
 
 const PageEditor: ComponentWithCustomMessage = (props: Props) => {
-  const { page, params, runtime } = props
+  const { page, params } = props
+
+  const runtime = useRuntime()
 
   if (page.includes('storefront')) {
     runtime.navigate({
@@ -59,4 +61,4 @@ const PageEditor: ComponentWithCustomMessage = (props: Props) => {
 
 PageEditor.getCustomMessages = () => messages
 
-export default withRuntimeContext(PageEditor)
+export default PageEditor
