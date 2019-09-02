@@ -48,7 +48,7 @@ const BLOCK_TYPES = [
 
 interface BlockStyleControlsProps {
   editorState: EditorState
-  onToggle: (blockType: string) => void
+  onToggle: (blockType: string | null) => void
 }
 const BlockStyleControls = (props: BlockStyleControlsProps) => {
   const { editorState } = props
@@ -75,7 +75,7 @@ const BlockStyleControls = (props: BlockStyleControlsProps) => {
 
 interface InlineStyleControlsProps {
   editorState: EditorState
-  onToggle: (inlineStyle: string) => void
+  onToggle: (inlineStyle: string | null) => void
 }
 const InlineStyleControls = (props: InlineStyleControlsProps) => {
   const { editorState } = props
@@ -179,11 +179,13 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
     return setEditorState(state)
   }
 
-  const toggleBlockType = (blockType: string) => {
+  const toggleBlockType = (blockType: string | null) => {
+    if (!blockType) return
     handleChange(RichUtils.toggleBlockType(editorState, blockType))
   }
 
-  const toggleInlineStyle = (inlineStyle: string) => {
+  const toggleInlineStyle = (inlineStyle: string | null) => {
+    if (!inlineStyle) return
     handleChange(RichUtils.toggleInlineStyle(editorState, inlineStyle))
   }
 
