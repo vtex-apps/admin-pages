@@ -275,6 +275,8 @@ declare global {
     type?: string
     title?: string
     description?: string
+    enumNames?: string[]
+    widget?: Record<string, string>
     minItems?: number
     properties?: ComponentSchemaProperties
     isLayout?: boolean
