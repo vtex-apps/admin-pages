@@ -150,7 +150,8 @@ class ComponentsList extends Component<
     return (
       schema &&
       schema.title &&
-      !isDifferentPage(treePath, page, Object.keys(pages))
+      (!isDifferentPage(treePath, page, Object.keys(pages)) ||
+        /^store\/(header|footer)(\/.+)?$/.test(treePath))
     )
   }
 }
