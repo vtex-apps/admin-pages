@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- (Automatically) add `$schema` field to manifest.json.
+
+### Changed
+
+- (Automatically) update TypeScript.
+
+### Fixed
+
+- Bug in which sitewide components didn't show up in the component list.
+- General build errors.
+
 ## [2.7.1] - 2019-05-02
 
 ### Removed
