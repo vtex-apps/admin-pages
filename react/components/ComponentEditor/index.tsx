@@ -119,7 +119,7 @@ class ComponentEditor extends Component<
      */
     const getPropsFromSchema = (properties: any = {}, prevProps: any): object =>
       reduce(
-        (nextProps, key) =>
+        (nextProps, key: string) =>
           merge(nextProps, {
             [key]:
               properties[key].type === 'object'
@@ -268,7 +268,7 @@ class ComponentEditor extends Component<
 
       return {
         ...map(
-          value => value.widget,
+          (value: ComponentSchema) => value.widget,
           pickBy(property => has('widget', property), properties),
         ),
         ...(deepProperties &&

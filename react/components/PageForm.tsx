@@ -211,13 +211,11 @@ class PageForm extends Component<any, any> {
     } = this.state
 
     const templateIds = templates
-      ? map(
-          prop<any>('id'),
-          filter(
-            (currTemplate: any) => (context ? currTemplate.context === context : true),
-            templates,
-          ),
-        )
+      ? templates
+          .filter((currTemplate: { context: string }) =>
+            context ? currTemplate.context === context : true
+          )
+          .map(prop('id'))
       : []
 
     const isStore = ({ id }: Route) => id.startsWith('store')

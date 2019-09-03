@@ -10,7 +10,7 @@ interface Props {
   children: (mutations: OperationsObj) => React.ReactNode
 }
 
-interface OperationsObj {
+export interface OperationsObj {
   deleteRedirect: MutationFn
   saveRedirect: MutationFn
 }
