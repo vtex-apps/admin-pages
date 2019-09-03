@@ -3,17 +3,14 @@ import React from 'react'
 interface StyleBtnProps {
   label: string | JSX.Element
   active: boolean
-  onToggle: (style: string) => void
+  onToggle: (style: string | null) => void
   style: string | null
 }
 
-const StyleButton = ({ active, onToggle, style, label }: StyleBtnProps) => {
+const StyleButton = ({ active, onToggle, label, style }: StyleBtnProps) => {
   const handleToggle = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     e.preventDefault()
-
-    if (style) {
-      onToggle(style)
-    }
+    onToggle(style)
   }
 
   return (
