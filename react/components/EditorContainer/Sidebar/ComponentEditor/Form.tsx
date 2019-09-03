@@ -14,6 +14,7 @@ import Radio from '../../../form/Radio'
 import RichText from '../../../form/RichText'
 import TextArea from '../../../form/TextArea'
 import Toggle from '../../../form/Toggle'
+import ColorPicker from '../../../form/ColorPicker'
 import { FormDataContainer } from '../typings'
 
 export const widgets: Record<string, Widget> = {
@@ -24,6 +25,7 @@ export const widgets: Record<string, Widget> = {
   RichText,
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea,
+  ColorPickerWidget: ColorPicker,
   'image-uploader': (ImageUploader as unknown) as Widget,
 }
 
