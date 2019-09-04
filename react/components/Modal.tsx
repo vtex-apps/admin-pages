@@ -25,7 +25,7 @@ const Modal = ({
   textMessage,
 }: Props) => (
   <StyleguideModal centered isOpen={isOpen} onClose={onClose}>
-    <div>{textMessage}</div>
+    <p className="mt6">{textMessage}</p>
     <div className="mt6 flex justify-end">
       <div className="mr3">
         <Button onClick={onClickCancel} size="small" variation="tertiary">
