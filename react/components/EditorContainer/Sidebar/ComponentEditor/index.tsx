@@ -55,6 +55,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const {
+    currentDepth,
     componentFormState,
     popComponentFormState,
     pushComponentFormState,
@@ -118,6 +119,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
               addMessages: iframeRuntime.addMessages,
               isLayoutMode: editor.mode === 'layout',
               messages: iframeRuntime.messages,
+              currentDepth,
+              componentFormState,
               popComponentFormState,
               pushComponentFormState,
             }}

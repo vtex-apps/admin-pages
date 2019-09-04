@@ -7,3 +7,8 @@
   transition: transform 150ms ease-in-out;
   transform: translateX(-18rem);
 }
+
+.form--leave > :global(.rjsf) {
+  height: 0;
+  overflow: hidden;
+}

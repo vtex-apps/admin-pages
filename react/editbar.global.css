@@ -234,7 +234,6 @@
 }
 
 .accordion-item {
-  transition: height 300ms ease-in-out, opacity 150ms ease-in-out;
   background-color: white;
 }
 

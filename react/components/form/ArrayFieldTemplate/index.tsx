@@ -8,7 +8,6 @@ import {
   SortStart,
 } from 'react-sortable-hoc'
 import AddButton from './AddButton'
-
 import ArrayList from './ArrayList'
 
 interface Props extends InjectedIntlProps {
@@ -37,11 +36,19 @@ class ArrayFieldTemplate extends Component<
   Props & ArrayFieldTemplateProps,
   State
 > {
+  private stackDepth: number
+
   public constructor(props: Props & ArrayFieldTemplateProps) {
     super(props)
+
     this.state = {
       openItem: null,
     }
+
+    this.stackDepth =
+      (this.props.formContext.componentFormState &&
+        this.props.formContext.componentFormState.depth) ||
+      0
   }
 
   public render() {
@@ -54,6 +61,7 @@ class ArrayFieldTemplate extends Component<
           <h4 className="mb4 mt0">{intl.formatMessage({ id: title })}</h4>
         )}
         <ArrayList
+          formContext={this.props.formContext}
           getHelperDimensions={getHelperDimensions}
           getContainer={this.getContainer}
           helperClass="accordion-item--dragged"
@@ -65,6 +73,7 @@ class ArrayFieldTemplate extends Component<
           onSortEnd={this.handleSortEnd}
           onSortStart={this.handleSortStart}
           openItem={openItem}
+          stackDepth={this.stackDepth}
           schema={schema}
           sorting={sorting}
           useDragHandle
@@ -136,7 +145,6 @@ class ArrayFieldTemplate extends Component<
     const { onAddClick, items } = this.props
 
     onAddClick(e)
-
     this.setState({
       openItem: items.length,
     })

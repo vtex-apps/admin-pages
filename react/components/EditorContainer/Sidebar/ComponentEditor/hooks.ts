@@ -14,12 +14,14 @@ export function useComponentFormStateStack() {
   }
 
   function pushComponentFormState(state: ComponentFormState) {
-    stack.current.push(state)
+    const stateWithDepth = { ...state, depth: stack.current.length + 1 }
 
-    setComponentFormState(state)
+    stack.current.push(stateWithDepth)
+    setComponentFormState(stateWithDepth)
   }
 
   return {
+    currentDepth: stack.current.length,
     componentFormState,
     popComponentFormState,
     pushComponentFormState,
