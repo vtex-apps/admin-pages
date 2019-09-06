@@ -94,4 +94,4 @@ static getSchema = ({numberOfBanners}) => {
 
 ## Custom Content Pages
 
-See [docs](https://github.com/vtex-apps/admin-pages/blob/master/docs/CONTENT_PAGES.md)
+See [docs](https://github.com/vtex-apps/admin-pages/blob/master/docs/CONTENT_PAGE.md)
