@@ -7,12 +7,13 @@ import { Pagination } from 'vtex.styleguide'
 import {
   PAGINATION_START,
   PAGINATION_STEP,
-} from './components/Admin/redirects/consts'
-import List from './components/Admin/redirects/List'
-import { FetchMoreOptions } from './components/Admin/redirects/List/typings'
-import StylesContainer from './components/Admin/redirects/StylesContainer'
+} from './components/admin/redirects/consts'
+import List from './components/admin/redirects/List'
+import { FetchMoreOptions } from './components/admin/redirects/List/typings'
+import StylesContainer from './components/admin/redirects/StylesContainer'
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
+import { RedirectsQuery } from './components/admin/redirects/typings';
 
 type Props = ReactIntl.InjectedIntlProps
 
@@ -104,7 +105,10 @@ class RedirectList extends Component<Props, State> {
 
     if (nextPaginationTo > dataLength) {
       await fetchMore({
-        updateQuery: (prevData, { fetchMoreResult }) =>
+        updateQuery: (
+          prevData: RedirectsQuery,
+          { fetchMoreResult }: { fetchMoreResult?: RedirectsQuery }
+        ) =>
           fetchMoreResult
             ? {
               ...prevData,

@@ -3,11 +3,11 @@ import { compose, withApollo, WithApolloClient } from 'react-apollo'
 import { injectIntl } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'render'
 
-import { BASE_URL, NEW_REDIRECT_ID } from './components/Admin/redirects/consts'
-import Form from './components/Admin/redirects/Form'
-import Operations from './components/Admin/redirects/Form/Operations'
-import { RedirectQuery } from './components/Admin/redirects/Form/typings'
-import StylesContainer from './components/Admin/redirects/StylesContainer'
+import { BASE_URL, NEW_REDIRECT_ID } from './components/admin/redirects/consts'
+import Form from './components/admin/redirects/Form'
+import Operations, { OperationsObj } from './components/admin/redirects/Form/Operations'
+import { RedirectQuery } from './components/admin/redirects/Form/typings'
+import StylesContainer from './components/admin/redirects/StylesContainer'
 import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
@@ -100,7 +100,7 @@ class RedirectForm extends Component<Props, State> {
         </Helmet>
         <StylesContainer>
           <Operations>
-            {({ deleteRedirect, saveRedirect }) =>
+            {({ deleteRedirect, saveRedirect }: OperationsObj) =>
               isLoading ? (
                 <Loader />
               ) : (
