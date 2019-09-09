@@ -16,7 +16,7 @@ The editor supports two ways of defining an editable component, thought a static
 
 Add to your component an `schema` constant, a JSON object that with the following structure:
 
-```
+```javascript
 const schema = {
   type: 'object',
   title: 'The component title',
@@ -36,7 +36,7 @@ The property type can be: `String`, `Object` or `Number`, if `Object` it will ha
 
 Add to your component a function `getSchema`, that will have the logic to dynamically create the schema need to build your component structure. The Page Editor will call that function each time that the page form has a change to its state, which enables to add and remove fields from the schema, like the example below.
 
-```
+```javascript
 import { range, map, clone, indexBy, prop } from 'ramda'
 
 const bannerStructure = {
