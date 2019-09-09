@@ -7,11 +7,13 @@ import { useEditorContext } from '../../EditorContext'
 interface Props {
   children: React.ReactNode
   containerClassName?: string
+  id?: string
 }
 
 const ContentContainer: React.FunctionComponent<Props> = ({
   children,
   containerClassName,
+  id,
 }) => {
   const editor = useEditorContext()
 
@@ -25,7 +27,7 @@ const ContentContainer: React.FunctionComponent<Props> = ({
         </div>
       ) : null}
 
-      <div className={classnames('relative', containerClassName)}>
+      <div id={id} className={classnames('relative', containerClassName)}>
         {children}
       </div>
     </>

@@ -1,0 +1,57 @@
+.item-enter {
+  transform: translateX(36rem);
+}
+
+.item-enter-active {
+  transform: translateX(18rem);
+  transition: transform 150ms ease-in-out;
+}
+
+.item-enter-done {
+  transform: translateX(18rem);
+}
+
+.item-exit {
+  transform: translateX(18rem);
+}
+
+.item-exit-active {
+  transform: translateX(36rem);
+  transition: transform 150ms ease-in-out;
+}
+
+.item-exit-done {
+  transform: translateX(36rem);
+}
+
+.item-depth-enter {
+  transform: translateX(18rem);
+}
+
+.item-depth-enter-active {
+  transform: translateX(0rem);
+  transition: transform 150ms ease-in-out;
+}
+
+.item-depth-enter-done {
+  transform: translateX(0rem);
+}
+
+/* So the hidden item doesn't affect the height of the current form */
+.item-depth-enter-done > :global(.form-group) {
+  height: 0;
+  overflow: hidden;
+}
+
+.item-depth-exit {
+  transform: translateX(0rem);
+}
+
+.item-depth-exit-active {
+  transform: translateX(18rem);
+  transition: transform 150ms ease-in-out;
+}
+
+.item-depth-exit-done {
+  transform: translateX(18rem);
+}
