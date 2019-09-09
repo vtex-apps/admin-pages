@@ -252,7 +252,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
                 id: 'admin/pages.editor.store.settings.pwa.splash-screen',
               })}
               className="h5 shadow-1 mb3"
-              src={`../../${splash.src}?v=${Date.now()}`}
+              src={`../../../${splash.src}?v=${Date.now()}`}
             />
           </div>
         </div>

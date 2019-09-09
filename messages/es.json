@@ -190,7 +190,7 @@
   "admin/pages.editor.store.settings.pwa.prompt-custom-event": "Prompt \"Add to Home Screen\"",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart": "En el primer artículo agregado al carrito",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.default": "En la primera visita",
-  "admin/pages.editor.store.settings.pwa.splash-screen": "Pantalla de carga (iOS)",
+  "admin/pages.editor.store.settings.pwa.splash-screen": "Vista previa de la pantalla de carga (iOS)",
   "admin/pages.editor.store.settings.pwa.start_url": "URL inicial",
   "admin/pages.editor.store.settings.pwa.theme_color": "Color del tema",
   "admin/pages.editor.store.settings.pwa.update-manifest-icon.error": "Algo malo ocurrió al actualizar el ícono de la aplicación…",
