@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Changes from releases `v4.10.0` and `v4.10.1`.
+
+### Fixed
+
+- Editing nested arrays.
+
 ## [4.11.0] - 2019-09-09
+
+### Added
+
+- Docs builder.
 
 ## [4.10.5] - 2019-09-09
 
