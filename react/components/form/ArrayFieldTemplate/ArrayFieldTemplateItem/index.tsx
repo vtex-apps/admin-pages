@@ -188,7 +188,8 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
             'relative flex items-center',
             styles['preview-container'],
             {
-              mr3: showDragHandle,
+              [`${styles['multi-item']} mr3`]: showDragHandle,
+              [`${styles['single-item']}`]: !showDragHandle,
               [`${styles['preview-text-container']} ml3`]:
                 !hasImageUploader && !showDragHandle,
             }
