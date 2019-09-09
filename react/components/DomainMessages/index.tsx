@@ -1,9 +1,11 @@
+// This file is .tsx because otherwise the babel plugin for messages doesn't work.
 import ApolloClient from 'apollo-client'
 import { concat, keys, map, splitEvery } from 'ramda'
 
 import { InjectedIntl } from 'react-intl'
-import languagesQuery from '../queries/Languages.graphql'
-import messagesForDomainQuery from '../queries/MessagesForDomain.graphql'
+import languagesQuery from '../../queries/Languages.graphql'
+import messagesForDomainQuery from '../../queries/MessagesForDomain.graphql'
+import messages from './cultureMessages'
 
 const MAX_COMPONENTES_PER_QUERY = 100
 // TODO: Remove this when messages solve this case
@@ -95,6 +97,10 @@ export const editorMessagesFromRuntime = async ({
   return messagesToReactIntlFormat(messages)
 }
 
+function isValidLang(key: string): key is keyof typeof messages {
+  return Object.prototype.hasOwnProperty.call(messages, key)
+}
+
 export const getAvailableCultures = async ({
   client,
   intl,
@@ -115,7 +121,9 @@ export const getAvailableCultures = async ({
         if (!lang || !country) {
           return acc
         }
-        const i18nId = `admin/pages.editor.locale.${lang}`
+        const i18nId = isValidLang(lang)
+          ? messages[lang] && messages[lang].id
+          : `admin/pages.editor.locale.${lang}`
 
         return [
           ...acc,

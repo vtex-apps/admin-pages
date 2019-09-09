@@ -89,6 +89,14 @@ export const messages = defineMessages({
   // Install prompt
   pwaPrompt: {
     defaultMessage: 'Prompt "Add to Home Screen"',
-    id: 'admin/pages.editor.store.settings.pwa.prompt-custom-event'
-  }
+    id: 'admin/pages.editor.store.settings.pwa.prompt-custom-event',
+  },
+  addToCartPrompt: {
+    defaultMessage: 'On the first item added to cart',
+    id: 'admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart',
+  },
+  customEventDefault: {
+    defaultMessage: 'On the first visit',
+    id: 'admin/pages.editor.store.settings.pwa.prompt-custom-event.default',
+  },
 })
