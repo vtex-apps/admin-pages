@@ -249,6 +249,7 @@
   "admin/pages.admin.rich-text-editor.add-button": "Add",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Choose an image to upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Upload",
+  "admin/pages.admin.rich-text-editor.title-label": "Title",
 
   "admin/pages.admin.content.general.section-title": "General",
   "admin/pages.admin.content.general.title.label": "Title",

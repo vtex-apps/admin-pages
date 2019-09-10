@@ -243,11 +243,14 @@
   "admin/pages.editor.styles.select.delete.toast.undo": "admin/pages.editor.styles.select.delete.toast.undo",
   "admin/pages.editor.styles.select.save-fail": "admin/pages.editor.styles.select.save-fail",
   "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success",
+
   "admin/pages.admin.rich-text-editor.add-image-label": "admin/pages.admin.rich-text-editor.add-image-label",
   "admin/pages.admin.rich-text-editor.add-image-placeholder": "admin/pages.admin.rich-text-editor.add-image-placeholder",
   "admin/pages.admin.rich-text-editor.add-button": "admin/pages.admin.rich-text-editor.add-image-btn",
   "admin/pages.admin.rich-text-editor.upload-image-label": "admin/pages.admin.rich-text-editor.upload-image-label",
   "admin/pages.admin.rich-text-editor.upload-button": "admin/pages.admin.rich-text-editor.upload-button",
+  "admin/pages.admin.rich-text-editor.title-label": "admin/pages.admin.rich-text-editor.title-label",
+  
   "admin/pages.admin.content.general.section-title": "admin/pages.admin.content.general.section-title",
   "admin/pages.admin.content.general.title.label": "admin/pages.admin.content.general.title.label",
   "admin/pages.admin.content.general.title.placeholder": "admin/pages.admin.content.general.title.placeholder",

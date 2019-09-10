@@ -6,6 +6,7 @@ import {
   RichUtils,
 } from 'draft-js'
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import {
   IconBold,
@@ -36,12 +37,50 @@ const INLINE_STYLES = [
 ]
 
 const BLOCK_TYPES = [
-  { label: 'H1', style: 'header-one' },
-  { label: 'H2', style: 'header-two' },
-  { label: 'H3', style: 'header-three' },
-  { label: 'H4', style: 'header-four' },
-  { label: 'H5', style: 'header-five' },
-  { label: 'H6', style: 'header-six' },
+  {
+    label: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.title-label"
+        defaultMessage="Title"
+      >
+        {str => `${str} 1`}
+      </FormattedMessage>
+    ),
+    style: 'header-one',
+  },
+  {
+    label: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.title-label"
+        defaultMessage="Title"
+      >
+        {str => `${str} 2`}
+      </FormattedMessage>
+    ),
+    style: 'header-two',
+  },
+  {
+    label: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.title-label"
+        defaultMessage="Title"
+      >
+        {str => `${str} 3`}
+      </FormattedMessage>
+    ),
+    style: 'header-three',
+  },
+  {
+    label: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.title-label"
+        defaultMessage="Title"
+      >
+        {str => `${str} 4`}
+      </FormattedMessage>
+    ),
+    style: 'header-four',
+  },
   { label: <IconUnorderedList />, style: 'unordered-list-item' },
   { label: <IconOrderedList />, style: 'ordered-list-item' },
 ]
