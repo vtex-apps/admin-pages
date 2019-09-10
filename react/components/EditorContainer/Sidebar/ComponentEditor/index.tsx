@@ -111,7 +111,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
         <div
           className={classnames(
-            'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5 z-1',
+            'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5',
             styles['form'],
             { [styles['form--leave']]: isArrayFieldOpen }
           )}
