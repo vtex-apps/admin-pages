@@ -1,4 +1,0 @@
-.item-form-container {
-  /* 3.5rem is the magic number considering the height of the header (vertical padding, font size and line height) */
-  min-height: calc(100vh - 3.5rem);
-}

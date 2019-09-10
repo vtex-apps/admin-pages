@@ -94,6 +94,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
     ? componentFormState.onTitleChange
     : onTitleChange
 
+  const isArrayFieldOpen = Boolean(componentFormState)
+
   return (
     <Fragment>
       <ContentContainer
@@ -111,7 +113,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
           className={classnames(
             'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5 z-1',
             styles['form'],
-            { [styles['form--leave']]: componentFormState }
+            { [styles['form--leave']]: isArrayFieldOpen }
           )}
         >
           <Form
@@ -134,22 +136,26 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
           <div id="form__error-list-template___alert" />
         </div>
 
-        {isContent && !isDefault && condition && onConditionChange && (
-          <ConditionControls
-            condition={condition}
-            isSitewide={isSitewide}
-            onConditionChange={onConditionChange}
-            pageContext={iframeRuntime.route.pageContext}
-          />
-        )}
+        {isContent &&
+          !isDefault &&
+          condition &&
+          onConditionChange &&
+          !isArrayFieldOpen && (
+            <ConditionControls
+              condition={condition}
+              isSitewide={isSitewide}
+              onConditionChange={onConditionChange}
+              pageContext={iframeRuntime.route.pageContext}
+            />
+          )}
       </ContentContainer>
 
       <div
         className={classnames(
           'pr4 pv4 flex-row-reverse w-100 bt bw1 b--light-silver',
           {
-            dn: componentFormState,
-            flex: !componentFormState,
+            dn: isArrayFieldOpen,
+            flex: !isArrayFieldOpen,
           }
         )}
       >

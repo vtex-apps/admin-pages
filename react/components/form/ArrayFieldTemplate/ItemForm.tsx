@@ -4,7 +4,6 @@ import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { Button } from 'vtex.styleguide'
 
-import itemFormStyles from './ItemForm.css'
 import styles from './ItemTransitions.css'
 
 interface Props extends InjectedIntlProps {
@@ -42,7 +41,6 @@ const ItemForm: React.FC<Props> = ({
   >
     <div
       className={classnames(
-        itemFormStyles['item-form-container'],
         'accordion-item bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1'
       )}
     >
