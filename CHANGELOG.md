@@ -7,9 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Missing messages that weren't being detected by babel plugin.
+
 ### Changed
 
 - Always re-fetch content when opening a card.
+
+### Removed
+
+- `docs` from `.vtexignore`.
+- Unused messages.
 
 ## [4.11.1] - 2019-09-09
 
