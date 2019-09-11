@@ -7,7 +7,9 @@ import StyleButton from './StyleButton'
 import { useBlur } from './utils'
 
 interface Props {
-  onAdd: (link: string) => void
+  onAdd: (text: string, link: string) => void
+  currentSelection: string | null
+  getCurrentSelection: () => string | null
   intl: InjectedIntl
 }
 
@@ -18,16 +20,26 @@ const messages = defineMessages({
   },
 })
 
-const LinkInput = ({ onAdd, intl }: Props) => {
+const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
   const ref = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState(false)
   const [link, setLink] = React.useState()
+  const [text, setText] = React.useState()
 
   useBlur(ref, () => setIsOpen(false))
 
-  const handleAddImage = () => {
+  const handleAddLink = () => {
     setIsOpen(false)
-    return onAdd(link)
+    return onAdd(text, link)
+  }
+
+  const handleToggleDialog = () => {
+    if (isOpen) {
+      return setIsOpen(false)
+    }
+
+    setText(getCurrentSelection())
+    setIsOpen(true)
   }
 
   return (
@@ -38,13 +50,22 @@ const LinkInput = ({ onAdd, intl }: Props) => {
           defaultMessage: 'Insert link',
         })}
         active={isOpen}
-        onToggle={() => setIsOpen(!isOpen)}
+        onToggle={handleToggleDialog}
         style={null}
         label={<IconLink />}
       />
 
       {isOpen && (
-        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5">
+        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5 z-1">
+          <div className="mb4">
+            <Input
+              label={'Texto'}
+              value={text}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setText(e.target.value)
+              }
+            />
+          </div>
           <div className="mb4">
             <Input
               label={'URL'}
@@ -53,7 +74,7 @@ const LinkInput = ({ onAdd, intl }: Props) => {
               }
             />
           </div>
-          <Button onClick={handleAddImage} size="small">
+          <Button onClick={handleAddLink} size="small">
             {intl.formatMessage(messages.btn)}
           </Button>
         </div>

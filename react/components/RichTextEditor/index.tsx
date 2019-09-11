@@ -4,6 +4,8 @@ import {
   Editor,
   EditorState,
   RichUtils,
+  Modifier,
+  SelectionState,
 } from 'draft-js'
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
@@ -174,6 +176,17 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
       .getType()
   }
 
+  const getCurrentSelectionText = () => {
+    const selectionState = editorState.getSelection()
+    const anchorKey = selectionState.getAnchorKey()
+    const currentContent = editorState.getCurrentContent()
+    const currentContentBlock = currentContent.getBlockForKey(anchorKey)
+    const start = selectionState.getStartOffset()
+    const end = selectionState.getEndOffset()
+
+    return currentContentBlock.getText().slice(start, end)
+  }
+
   const handleAddImage = (imageUrl: string) => {
     const currentOffset = editorState
       .getCurrentContent()
@@ -203,8 +216,52 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
     )
   }
 
-  const handleAddLink = (linkUrl: string) => {
-    const currentContentState = editorState.getCurrentContent()
+  const handleAddLink = (linkText: string, linkUrl: string) => {
+    const selection = editorState.getSelection()
+    let currentContentState = editorState.getCurrentContent()
+
+    if (!getCurrentSelectionText()) {
+      currentContentState = Modifier.insertText(
+        currentContentState,
+        selection,
+        linkText
+      )
+
+      const newContentWithEntity = currentContentState.createEntity(
+        'LINK',
+        'MUTABLE',
+        { url: linkUrl }
+      )
+
+      const entityKey = newContentWithEntity.getLastCreatedEntityKey()
+      const anchorOffset = selection.getAnchorOffset()
+      const newSelection = new SelectionState({
+        anchorKey: selection.getAnchorKey(),
+        anchorOffset,
+        focusKey: selection.getAnchorKey(),
+        focusOffset: anchorOffset + linkText.length,
+      })
+
+      const newContentWithLink = Modifier.applyEntity(
+        newContentWithEntity,
+        newSelection,
+        entityKey
+      )
+
+      const withLinkText = EditorState.push(
+        editorState,
+        newContentWithLink,
+        'insert-characters'
+      )
+
+      return setEditorState(
+        EditorState.forceSelection(
+          withLinkText,
+          currentContentState.getSelectionAfter()
+        )
+      )
+    }
+
     const contentStateWithEntity = currentContentState.createEntity(
       'LINK',
       'IMMUTABLE',
@@ -256,7 +313,11 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
           editorState={editorState}
           onToggle={toggleBlockType}
         />
-        <LinkInput onAdd={handleAddLink} />
+        <LinkInput
+          onAdd={handleAddLink}
+          currentSelection={getCurrentSelectionText()}
+          getCurrentSelection={getCurrentSelectionText}
+        />
         <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>

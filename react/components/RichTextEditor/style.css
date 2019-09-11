@@ -13,8 +13,8 @@
   padding: 10px;
 }
 
-.RichEditor_editor div:not([data-block='true']) {
-  height: 100%;
+.RichEditor_editor div[data-contents='true'] {
+  min-height: 20em;
 }
 
 .RichEditor_editor .public-DraftEditorPlaceholder-root,
