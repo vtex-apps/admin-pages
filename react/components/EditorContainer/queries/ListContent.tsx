@@ -24,6 +24,7 @@ export type ListContentQueryResult = QueryResult<
 
 class ListContentQuery extends Query<ListContentData, ListContentVariables> {
   public static defaultProps = {
+    fetchPolicy: 'network-only',
     query: ListContent,
   }
 }
