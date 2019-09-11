@@ -161,6 +161,7 @@ declare module 'vtex.styleguide' {
   export const IconEdit: ComponentType<Record<string, unknown>>
   export const IconCaretDown: ComponentType<Record<string, unknown>>
   export const IconCaretUp: ComponentType<Record<string, unknown>>
+  export const IconCheck: ComponentType<Record<string, unknown>>
   export const IconClear: ComponentType<Record<string, unknown>>
   export const IconClose: ComponentType<Record<string, unknown>>
   export const IconItalic: ComponentType<Record<string, unknown>>

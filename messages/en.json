@@ -255,7 +255,7 @@
   "admin/pages.admin.rich-text-editor.heading.header-two": "Heading 2",
   "admin/pages.admin.rich-text-editor.heading.header-three": "Heading 3",
   "admin/pages.admin.rich-text-editor.heading.header-four": "Heading 4",
-  "admin/pages.admin.rich-text-editor.heading.unstyled": "Normal text",
+  "admin/pages.admin.rich-text-editor.heading.unstyled": "Regular text",
   "admin/pages.admin.rich-text-editor.bold.title": "Bold",
   "admin/pages.admin.rich-text-editor.italic.title": "Italic",
   "admin/pages.admin.rich-text-editor.underline.title": "Underline",

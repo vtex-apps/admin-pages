@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 
-import { IconCaretDown } from 'vtex.styleguide'
+import { IconCaretDown, IconCheck } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
 import { useBlur } from './utils'
@@ -54,6 +54,10 @@ const BLOCK_TYPES = [
   },
 ]
 
+const hasActiveStyle = (style: string) => {
+  return !!BLOCK_TYPES.find(block => block.style === style)
+}
+
 interface Props {
   onAdd: (link: string) => void
   activeStyle: string
@@ -90,7 +94,12 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
         label={
           <div className="flex flex-row justify-between items-center w-100">
             <FormattedMessage
-              id={`admin/pages.admin.rich-text-editor.heading.${activeStyle}`}
+              id={
+                hasActiveStyle(activeStyle)
+                  ? `admin/pages.admin.rich-text-editor.heading.${activeStyle}`
+                  : `admin/pages.admin.rich-text-editor.heading.unstyled`
+              }
+              defaultMessage="Regular text"
             />
             <IconCaretDown size={8} />
           </div>
@@ -102,7 +111,7 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
           {BLOCK_TYPES.map(({ label, style }, index: number) => (
             <div
               key={index}
-              className={`pointer pa5 f${index} ${
+              className={`flex justify-between items-center pointer pa5 f${index} ${
                 index > 0 ? 'b bt b--muted-4' : ''
               }`}
               role="presentation"
@@ -111,6 +120,7 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
               }
             >
               {label}
+              {style === activeStyle && <IconCheck />}
             </div>
           ))}
         </div>

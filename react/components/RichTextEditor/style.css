@@ -9,9 +9,8 @@
   border-top: 1px solid #ddd;
   cursor: text;
   font-size: 16px;
-  height: 20rem;
+  min-height: 20rem;
   padding: 10px;
-  overflow: auto;
 }
 
 .RichEditor_editor div:not([data-block='true']) {
