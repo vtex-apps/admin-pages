@@ -13,6 +13,7 @@ import {
 } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
+import { useBlur } from './utils'
 
 import SeparatorWithLine from '../admin/pages/SeparatorWithLine'
 
@@ -67,10 +68,13 @@ const messages = defineMessages({
 })
 
 const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
+  const ref = React.useRef(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [imageUrl, setImageUrl] = React.useState()
   const [error, setError] = React.useState<string | null>()
+
+  useBlur(ref, () => setIsOpen(false))
 
   const onDropImage = async (files: File[]) => {
     if (!uploadFile) {
@@ -111,7 +115,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <StyleButton
         title={intl.formatMessage(messages.addTitle)}
         active={isOpen}

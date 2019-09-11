@@ -4,6 +4,7 @@ import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 import { Button, IconLink, Input } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
+import { useBlur } from './utils'
 
 interface Props {
   onAdd: (link: string) => void
@@ -18,8 +19,11 @@ const messages = defineMessages({
 })
 
 const LinkInput = ({ onAdd, intl }: Props) => {
+  const ref = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState(false)
   const [link, setLink] = React.useState()
+
+  useBlur(ref, () => setIsOpen(false))
 
   const handleAddImage = () => {
     setIsOpen(false)
@@ -27,7 +31,7 @@ const LinkInput = ({ onAdd, intl }: Props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <StyleButton
         title={intl.formatMessage({
           id: 'admin/pages.admin.rich-text-editor.link.title',

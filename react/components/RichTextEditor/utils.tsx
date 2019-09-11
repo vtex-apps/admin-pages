@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
   ContentBlock,
   ContentState,
@@ -50,4 +51,21 @@ export function convertToMarkdown(editorState: EditorState) {
 export function convertToEditorState(markdownText: string) {
   const rawMarkdown = mdToDraftjs(markdownText)
   return convertFromRaw(rawMarkdown)
+}
+
+export function useBlur(
+  ref: React.MutableRefObject<null>,
+  callback: () => void
+) {
+  function handleClickOutside(event: MouseEvent) {
+    // @ts-ignore
+    if (ref && ref.current && !ref.current.contains(event.target)) {
+      callback()
+    }
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  })
 }

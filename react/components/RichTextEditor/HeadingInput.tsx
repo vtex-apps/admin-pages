@@ -4,6 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { IconCaretDown } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
+import { useBlur } from './utils'
 
 const BLOCK_TYPES = [
   {
@@ -59,7 +60,10 @@ interface Props {
 }
 
 const HeadingInput = ({ onAdd, activeStyle }: Props) => {
+  const ref = React.useRef(null)
   const [isOpen, setIsOpen] = React.useState(false)
+
+  useBlur(ref, () => setIsOpen(false))
 
   const handleClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
@@ -71,7 +75,7 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <StyleButton
         title={
           <FormattedMessage
