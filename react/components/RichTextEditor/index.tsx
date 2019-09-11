@@ -6,6 +6,7 @@ import {
   RichUtils,
 } from 'draft-js'
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import {
   IconBold,
@@ -32,14 +33,59 @@ import {
 } from './utils'
 
 const INLINE_STYLES = [
-  { label: <IconBold />, style: 'BOLD' },
-  { label: <IconItalic />, style: 'ITALIC' },
-  { label: <IconUnderline />, style: 'UNDERLINE' },
+  {
+    label: <IconBold />,
+    style: 'BOLD',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.bold.title"
+        defaultMessage="Bold"
+      />
+    ),
+  },
+  {
+    label: <IconItalic />,
+    style: 'ITALIC',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.italic.title"
+        defaultMessage="Italic"
+      />
+    ),
+  },
+  {
+    label: <IconUnderline />,
+    style: 'UNDERLINE',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.underline.title"
+        defaultMessage="Underline"
+      />
+    ),
+  },
 ]
 
 const BLOCK_TYPES = [
-  { label: <IconUnorderedList />, style: 'unordered-list-item' },
-  { label: <IconOrderedList />, style: 'ordered-list-item' },
+  {
+    label: <IconUnorderedList />,
+    style: 'unordered-list-item',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.unordered-list.title"
+        defaultMessage="Unordered list"
+      />
+    ),
+  },
+  {
+    label: <IconOrderedList />,
+    style: 'ordered-list-item',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.ordered-list.title"
+        defaultMessage="Ordered list"
+      />
+    ),
+  },
 ]
 
 interface BlockStyleControlsProps {
@@ -59,6 +105,7 @@ const BlockStyleControls = (props: BlockStyleControlsProps) => {
       {BLOCK_TYPES.map((type, i) => (
         <StyleButton
           key={i}
+          title={type.title}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
@@ -82,6 +129,7 @@ const InlineStyleControls = (props: InlineStyleControlsProps) => {
       {INLINE_STYLES.map((type, i) => (
         <StyleButton
           key={i}
+          title={type.title}
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}

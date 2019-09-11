@@ -73,6 +73,12 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
   return (
     <div className="relative">
       <StyleButton
+        title={
+          <FormattedMessage
+            id="admin/pages.admin.rich-text-editor.heading.title"
+            defaultMessage="Styles"
+          />
+        }
         className="justify-between w4"
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}

@@ -187,4 +187,5 @@ declare module 'vtex.styleguide' {
   export class ToastProvider extends Component<ToastProviderProps> {}
   export const ToastContext: React.ContextType<ToastConsumerFunctions>
   export const Toggle: ComponentType<Record<string, unknown>>
+  export const Tooltip: ComponentType<Record<string, unknown>>
 }

@@ -29,6 +29,10 @@ const LinkInput = ({ onAdd, intl }: Props) => {
   return (
     <div className="relative">
       <StyleButton
+        title={intl.formatMessage({
+          id: 'admin/pages.admin.rich-text-editor.link.title',
+          defaultMessage: 'Insert link',
+        })}
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={null}
