@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Preview width
+
+### Fixed
+
+- Visibility of filters when editing an array item.
+
 ## [4.11.2] - 2019-09-11
 
 ### Added
