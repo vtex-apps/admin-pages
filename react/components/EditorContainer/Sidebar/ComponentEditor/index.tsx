@@ -31,7 +31,6 @@ interface CustomProps {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onSave: () => void
-  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: ComponentSchema['title']
 }
 
@@ -49,7 +48,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   onConditionChange,
   onClose,
   onSave,
-  onTitleChange,
   title,
 }) => {
   const editor = useEditorContext()
@@ -90,10 +88,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   const shouldDisableSaveButton =
     isLoading || (!formMeta.getWasModified() && !isNew)
 
-  const onHeaderTitleChange = componentFormState
-    ? componentFormState.onTitleChange
-    : onTitleChange
-
   return (
     <Fragment>
       <ContentContainer
@@ -101,10 +95,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          isTitleEditable={onHeaderTitleChange && isContent}
           onClose={componentFormState ? componentFormState.onClose : onClose}
-          onTitleChange={onHeaderTitleChange}
-          title={componentFormState ? componentFormState.title : title}
+          title={componentSchema.title}
         />
 
         <div

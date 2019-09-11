@@ -21,7 +21,6 @@ interface Props {
   ) => void
   onFormChange: FormProps<FormDataContainer>['onChange']
   onSave: () => void
-  onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
@@ -37,7 +36,6 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onConditionChange,
   onFormChange,
   onSave,
-  onTitleChange,
 }) => (
   <ComponentEditor
     condition={condition}
@@ -51,7 +49,6 @@ const ContentEditor: React.FunctionComponent<Props> = ({
     onChange={onFormChange}
     onClose={onClose}
     onSave={onSave}
-    onTitleChange={onTitleChange}
     title={componentTitle}
   />
 )

@@ -1,21 +1,14 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { IconArrowBack } from 'vtex.styleguide'
 
-import EditableText from './EditableText'
-
 interface Props {
-  isTitleEditable?: boolean
   onClose: () => void
-  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: string
 }
 
 const EditorHeader: React.FC<Props> = ({
-  isTitleEditable = false,
   onClose,
-  onTitleChange,
   title,
 }) => {
   const handleKeyDown = useKeydownFromClick(onClose)
@@ -37,27 +30,9 @@ const EditorHeader: React.FC<Props> = ({
           </span>
 
           <div className="w-100 pl3 flex justify-between items-center">
-            {isTitleEditable ? (
-              <FormattedMessage
-                defaultMessage="Untitled content"
-                id="admin/pages.editor.configuration.defaultTitle"
-              >
-                {placeholder => (
-                  <EditableText
-                    baseClassName={titleBaseClassName}
-                    onChange={onTitleChange}
-                    placeholder={placeholder as string}
-                    value={title}
-                  >
-                    {title}
-                  </EditableText>
-                )}
-              </FormattedMessage>
-            ) : (
-              <h4 className={`ba b--transparent ${titleBaseClassName}`}>
-                {title}
-              </h4>
-            )}
+            <h4 className={`ba b--transparent ${titleBaseClassName}`}>
+              {title}
+            </h4>
           </div>
         </div>
       </div>

@@ -150,7 +150,6 @@
   "admin/pages.editor.configuration.condition.date.from": "Start:",
   "admin/pages.editor.configuration.condition.date.to": "End:",
   "admin/pages.editor.configuration.createdBy": "Created by {name}",
-  "admin/pages.editor.configuration.defaultTitle": "Untitled content",
   "admin/pages.editor.configuration.scope.page.context": "this page",
   "admin/pages.editor.configuration.scope.page.saved": "Saved on",
   "admin/pages.editor.configuration.scope.sitewide.context": "entire site",

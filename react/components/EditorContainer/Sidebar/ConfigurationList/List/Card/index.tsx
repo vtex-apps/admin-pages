@@ -27,10 +27,6 @@ function stopPropagation(e: Pick<Event, 'preventDefault' | 'stopPropagation'>) {
 }
 
 const messages = defineMessages({
-  defaultTitle: {
-    defaultMessage: 'Untitled content',
-    id: 'admin/pages.editor.configuration.defaultTitle',
-  },
   delete: {
     defaultMessage: 'Delete',
     id: 'admin/pages.editor.component-list.action-menu.delete',
@@ -74,11 +70,14 @@ const Card = ({
   onClick,
   onDelete,
 }: Props & ReactIntl.InjectedIntlProps) => {
-  const handleMainClick = React.useCallback(() => {
-    if (!isDisabled) {
-      onClick(configuration)
-    }
-  }, [configuration, isDisabled, onClick])
+  const handleMainClick = React.useCallback(
+    () => {
+      if (!isDisabled) {
+        onClick(configuration)
+      }
+    },
+    [configuration, isDisabled, onClick]
+  )
 
   const handleMainKeyDown = useKeydownFromClick(handleMainClick)
 
@@ -93,15 +92,19 @@ const Card = ({
     },
   ]
 
-  const appName = React.useMemo(() => {
-    if (!isDefaultContent) {
-      return null
-    }
+  const appName = React.useMemo(
+    () => {
+      if (!isDefaultContent) {
+        return null
+      }
 
-    const splitOrigin = configuration.origin && configuration.origin.split('@')
+      const splitOrigin =
+        configuration.origin && configuration.origin.split('@')
 
-    return splitOrigin && splitOrigin[0]
-  }, [configuration.origin, isDefaultContent])
+      return splitOrigin && splitOrigin[0]
+    },
+    [configuration.origin, isDefaultContent]
+  )
 
   const conditionPageContext = configuration.condition.pageContext
 
@@ -135,13 +138,6 @@ const Card = ({
       role="button"
       tabIndex={0}
     >
-      <div className="c-on-base">
-        {configuration.label ||
-          intl.formatMessage({
-            id: 'admin/pages.editor.configuration.defaultTitle',
-          })}
-      </div>
-
       <ConditionTags conditions={conditions} />
 
       <div className="mt5">
