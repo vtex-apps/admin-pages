@@ -1,5 +1,7 @@
 import * as React from 'react'
-import { InjectedIntl, injectIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
+
+import { IconCaretDown } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
 
@@ -7,44 +9,45 @@ const BLOCK_TYPES = [
   {
     label: (
       <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
+        id="admin/pages.admin.rich-text-editor.heading.unstyled"
         defaultMessage="Title"
-      >
-        {str => `${str} 1`}
-      </FormattedMessage>
+      />
+    ),
+    style: 'unstyled',
+  },
+  {
+    label: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.heading.header-one"
+        defaultMessage="Title"
+      />
     ),
     style: 'header-one',
   },
   {
     label: (
       <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
+        id="admin/pages.admin.rich-text-editor.heading.header-two"
         defaultMessage="Title"
-      >
-        {str => `${str} 2`}
-      </FormattedMessage>
+      />
     ),
     style: 'header-two',
   },
   {
     label: (
       <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
+        id="admin/pages.admin.rich-text-editor.heading.header-three"
         defaultMessage="Title"
-      >
-        {str => `${str} 3`}
-      </FormattedMessage>
+      />
     ),
     style: 'header-three',
   },
   {
     label: (
       <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
+        id="admin/pages.admin.rich-text-editor.heading.header-four"
         defaultMessage="Title"
-      >
-        {str => `${str} 4`}
-      </FormattedMessage>
+      />
     ),
     style: 'header-four',
   },
@@ -53,15 +56,7 @@ const BLOCK_TYPES = [
 interface Props {
   onAdd: (link: string) => void
   activeStyle: string
-  intl: InjectedIntl
 }
-
-// const messages = defineMessages({
-//   btn: {
-//     defaultMessage: 'Add',
-//     id: 'admin/pages.admin.rich-text-editor.title-label',
-//   },
-// })
 
 const HeadingInput = ({ onAdd, activeStyle }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false)
@@ -78,18 +73,28 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
   return (
     <div className="relative">
       <StyleButton
+        className="justify-between w4"
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={null}
-        label={activeStyle}
+        label={
+          <div className="flex flex-row justify-between items-center w-100">
+            <FormattedMessage
+              id={`admin/pages.admin.rich-text-editor.heading.${activeStyle}`}
+            />
+            <IconCaretDown size={8} />
+          </div>
+        }
       />
 
       {isOpen && (
-        <div className="flex flex-column absolute pa5 bg-white b--solid b--muted-4 bw1 br2 w5">
+        <div className="flex flex-column absolute bg-white b--solid b--muted-4 bw1 br2 w5">
           {BLOCK_TYPES.map(({ label, style }, index: number) => (
             <div
               key={index}
-              className={`f${index + 1} pointer pv3 b`}
+              className={`pointer pa5 f${index} ${
+                index > 0 ? 'b bt b--muted-4' : ''
+              }`}
               role="presentation"
               onMouseDown={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
                 handleClick(e, style)
@@ -104,4 +109,4 @@ const HeadingInput = ({ onAdd, activeStyle }: Props) => {
   )
 }
 
-export default React.memo(injectIntl(HeadingInput))
+export default React.memo(HeadingInput)

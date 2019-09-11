@@ -249,7 +249,11 @@
   "admin/pages.admin.rich-text-editor.add-button": "Adicionar",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Escolher imagem para upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Fazer upload",
-  "admin/pages.admin.rich-text-editor.title-label": "Título",
+  "admin/pages.admin.rich-text-editor.heading.header-one": "Título 1",
+  "admin/pages.admin.rich-text-editor.heading.header-two": "Título 2",
+  "admin/pages.admin.rich-text-editor.heading.header-three": "Título 3",
+  "admin/pages.admin.rich-text-editor.heading.header-four": "Título 4",
+  "admin/pages.admin.rich-text-editor.heading.unstyled": "Texto normal",
 
   "admin/pages.admin.content.general.section-title": "Geral",
   "admin/pages.admin.content.general.title.label": "Título",

@@ -249,7 +249,11 @@
   "admin/pages.admin.rich-text-editor.add-button": "admin/pages.admin.rich-text-editor.add-image-btn",
   "admin/pages.admin.rich-text-editor.upload-image-label": "admin/pages.admin.rich-text-editor.upload-image-label",
   "admin/pages.admin.rich-text-editor.upload-button": "admin/pages.admin.rich-text-editor.upload-button",
-  "admin/pages.admin.rich-text-editor.title-label": "admin/pages.admin.rich-text-editor.title-label",
+  "admin/pages.admin.rich-text-editor.heading.header-one": "admin/pages.admin.rich-text-editor.heading.header-one",
+  "admin/pages.admin.rich-text-editor.heading.header-two": "admin/pages.admin.rich-text-editor.heading.header-two",
+  "admin/pages.admin.rich-text-editor.heading.header-three": "admin/pages.admin.rich-text-editor.heading.header-three",
+  "admin/pages.admin.rich-text-editor.heading.header-four": "admin/pages.admin.rich-text-editor.heading.header-four",
+  "admin/pages.admin.rich-text-editor.heading.unstyled": "admin/pages.admin.rich-text-editor.heading.unstyled",
   
   "admin/pages.admin.content.general.section-title": "admin/pages.admin.content.general.section-title",
   "admin/pages.admin.content.general.title.label": "admin/pages.admin.content.general.title.label",
