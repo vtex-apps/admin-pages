@@ -6,7 +6,6 @@ import {
   RichUtils,
 } from 'draft-js'
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 
 import {
   IconBold,
@@ -21,6 +20,7 @@ import styles from './style.css'
 import ImageInput from './ImageInput'
 import Link from './Link'
 import LinkInput from './LinkInput'
+import HeadingInput from './HeadingInput'
 import StyleButton from './StyleButton'
 
 import {
@@ -28,6 +28,7 @@ import {
   convertToMarkdown,
   findLinkEntities,
   mediaBlockRenderer,
+  styleBlockRenderer,
 } from './utils'
 
 const INLINE_STYLES = [
@@ -37,50 +38,6 @@ const INLINE_STYLES = [
 ]
 
 const BLOCK_TYPES = [
-  {
-    label: (
-      <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
-        defaultMessage="Title"
-      >
-        {str => `${str} 1`}
-      </FormattedMessage>
-    ),
-    style: 'header-one',
-  },
-  {
-    label: (
-      <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
-        defaultMessage="Title"
-      >
-        {str => `${str} 2`}
-      </FormattedMessage>
-    ),
-    style: 'header-two',
-  },
-  {
-    label: (
-      <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
-        defaultMessage="Title"
-      >
-        {str => `${str} 3`}
-      </FormattedMessage>
-    ),
-    style: 'header-three',
-  },
-  {
-    label: (
-      <FormattedMessage
-        id="admin/pages.admin.rich-text-editor.title-label"
-        defaultMessage="Title"
-      >
-        {str => `${str} 4`}
-      </FormattedMessage>
-    ),
-    style: 'header-four',
-  },
   { label: <IconUnorderedList />, style: 'unordered-list-item' },
   { label: <IconOrderedList />, style: 'ordered-list-item' },
 ]
@@ -161,6 +118,14 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
     }
   }
 
+  const getContentBlockType = () => {
+    const selection = editorState.getSelection()
+    return editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType()
+  }
+
   const handleAddImage = (imageUrl: string) => {
     const currentOffset = editorState
       .getCurrentContent()
@@ -231,6 +196,10 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   return (
     <div className="bw1 br2 b--solid b--muted-4">
       <div className="pa4 flex flex-wrap-s">
+        <HeadingInput
+          onAdd={toggleBlockType}
+          activeStyle={getContentBlockType()}
+        />
         <InlineStyleControls
           editorState={editorState}
           onToggle={toggleInlineStyle}
@@ -247,6 +216,7 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
           editorState={editorState}
           onChange={state => handleChange(state)}
           blockRendererFn={mediaBlockRenderer}
+          blockStyleFn={styleBlockRenderer}
         />
       </div>
     </div>
