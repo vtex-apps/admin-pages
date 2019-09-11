@@ -20,6 +20,14 @@ export function mediaBlockRenderer(block: ContentBlock) {
   return null
 }
 
+export function styleBlockRenderer(block: ContentBlock) {
+  const blockType = block.getType()
+  if (blockType === 'left') return 'align-left'
+  if (blockType === 'center') return 'align-center'
+  if (blockType === 'right') return 'align-right'
+  return ''
+}
+
 export function findLinkEntities(
   contentBlock: ContentBlock,
   callback: (start: number, end: number) => void,
