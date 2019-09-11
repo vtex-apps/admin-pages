@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.11.2] - 2019-09-11
+
 ### Added
 
 - Missing messages that weren't being detected by babel plugin.
