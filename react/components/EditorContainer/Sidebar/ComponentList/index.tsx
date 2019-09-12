@@ -260,6 +260,9 @@ class ComponentList extends Component<Props, State> {
       const { treePath, isEditable } = component
 
       if (isEditable) {
+        // const editTreePath = 'store.home/carousel#home'
+        // const editTreePath = 'store.home/rich-text#link'
+        // debugger
         editor.editExtensionPoint(treePath)
         highlightHandler(null)
       }

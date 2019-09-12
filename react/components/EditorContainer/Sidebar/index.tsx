@@ -73,10 +73,12 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}
           />
-          <Content
-            highlightHandler={highlightHandler}
-            iframeRuntime={runtime}
-          />
+          {!isLoading && (
+            <Content
+              highlightHandler={highlightHandler}
+              iframeRuntime={runtime}
+            />
+          )}
         </div>
       </nav>
     </div>
