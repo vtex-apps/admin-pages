@@ -12,10 +12,9 @@ import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
 import { Spinner } from 'vtex.styleguide'
 
-import ActionMenu from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
-import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
-
 import UploadFile from '../../../queries/UploadFile.graphql'
+import ActionMenu from '../../ActionMenu'
+import { ActionMenuOption } from '../../ActionMenu/typings'
 
 import Dropzone from './Dropzone'
 import EmptyState from './EmptyState'

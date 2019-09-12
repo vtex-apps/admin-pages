@@ -5,8 +5,8 @@ interface Props {
   isActionDanger?: boolean
   isActionLoading: boolean
   isOpen: boolean
-  onClickAction: (event: Event) => void
-  onClickCancel: (event: Event) => void
+  onClickAction?: (event: Event) => void
+  onClickCancel?: (event: Event) => void
   onClose: (event: Event) => void
   textButtonAction: string
   textButtonCancel: string
@@ -28,10 +28,16 @@ const Modal = ({
     <p className="mt6">{textMessage}</p>
     <div className="mt6 flex justify-end">
       <div className="mr3">
-        <Button onClick={onClickCancel} size="small" variation="tertiary">
+        <Button
+          disabled={isActionLoading}
+          onClick={onClickCancel}
+          size="small"
+          variation="tertiary"
+        >
           {textButtonCancel}
         </Button>
       </div>
+
       <Button
         isLoading={isActionLoading}
         onClick={onClickAction}

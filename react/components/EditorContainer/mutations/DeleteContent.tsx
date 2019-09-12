@@ -7,7 +7,7 @@ interface DeleteContentData {
 
 interface DeleteContentVariables {
   pageContext: PageContext
-  contentId: string
+  contentId: string | null
   template: string
   treePath: string
 }

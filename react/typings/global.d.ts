@@ -1,5 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 
+import { State as EditorProviderState } from '../components/EditorProvider'
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 
 declare global {
@@ -139,6 +140,13 @@ declare global {
     runtime: RenderContext
   }
 
+  interface BlockData {
+    componentSchema?: ComponentSchema
+    configurations?: ExtensionConfiguration[]
+    contentSchema?: JSONSchema6
+    titleId?: string
+  }
+
   type ConditionType = 'scope' | 'device' | 'custom'
 
   interface Condition {
@@ -160,6 +168,7 @@ declare global {
   interface EditorContextType extends EditorConditionSection {
     allMatches: boolean
     availableCultures: LabelledLocale[]
+    blockData: EditorProviderState['blockData']
     editMode: boolean
     editTreePath: string | null
     getIsLoading: () => boolean
@@ -168,6 +177,7 @@ declare global {
     messages: RenderRuntime['messages']
     mode: EditorMode
     viewport: Viewport
+    setBlockData: (blockData: EditorProviderState['blockData']) => void
     setDevice: (device: ConfigurationDevice) => void
     setIsLoading: (isLoading: boolean) => void
     setMode: (mode: EditorMode) => void
@@ -241,10 +251,10 @@ declare global {
         verb: string
       }[]
     }
-    contentId: string
+    contentId: string | null
     contentJSON: string
+    label: string | null
     origin: string | null
-    label?: string
   }
 
   type RedirectTypes = 'permanent' | 'temporary'

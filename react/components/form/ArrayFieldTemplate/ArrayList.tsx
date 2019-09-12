@@ -3,9 +3,12 @@ import { CSSTransition } from 'react-transition-group'
 import React, { Fragment } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
-import { ActionMenuOption } from '../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
+
+import { ActionMenuOption } from '../../ActionMenu/typings'
+
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 import ItemForm from './ItemForm'
+
 import styles from './ItemTransitions.css'
 
 interface ArrayListProps {

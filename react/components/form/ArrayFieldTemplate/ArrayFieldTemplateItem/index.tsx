@@ -6,13 +6,15 @@ import React, { useCallback, useMemo } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
-import ActionMenu from '../../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/ActionMenu'
-import { ActionMenuOption } from '../../../EditorContainer/Sidebar/ComponentList/SortableList/SortableListItem/typings'
-import styles from './ArrayFieldTemplateItem.css'
+
+import ActionMenu from '../../../ActionMenu'
+import { ActionMenuOption } from '../../../ActionMenu/typings'
 
 import Handle from './Handle'
 import NoImagePlaceholder from './NoImagePlaceholder'
 import PreviewOverlay from './PreviewOverlay'
+
+import styles from './ArrayFieldTemplateItem.css'
 
 const stopPropagation = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
   e.stopPropagation()

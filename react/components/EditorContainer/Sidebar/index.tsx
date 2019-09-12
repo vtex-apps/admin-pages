@@ -1,10 +1,14 @@
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
+import DeleteContentMutation from '../mutations/DeleteContent'
+import SaveContentMutation from '../mutations/SaveContent'
 
-import Content from './Content'
+import BlockEditor from './BlockEditor'
+import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
@@ -39,11 +43,12 @@ const Sidebar: React.FunctionComponent<Props> = ({
   updateHighlightTitleByTreePath,
 }) => {
   const editor = useEditorContext()
+
   const {
     actionHandler: handleModalAction,
     cancelHandler: handleModalCancel,
     close: handleModalClose,
-    isOpen: isModalOpen,
+    getIsOpen: getIsModalOpen,
   } = useModalContext()
 
   const isLoading = editor.getIsLoading()
@@ -61,15 +66,10 @@ const Sidebar: React.FunctionComponent<Props> = ({
         id="admin-sidebar"
         className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
-        <div
-          className={`h-100 flex flex-column dark-gray ${
-            // TODO: Check if 'relative' could always be active
-            isLoading ? 'relative' : ''
-          }`}
-        >
+        <div className="h-100 flex flex-column dark-gray">
           <Modal
             isActionLoading={isLoading}
-            isOpen={isModalOpen}
+            isOpen={getIsModalOpen()}
             onClickAction={handleModalAction}
             onClickCancel={handleModalCancel}
             onClose={handleModalClose}
@@ -77,11 +77,33 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}
           />
-          <Content
-            highlightHandler={highlightHandler}
-            iframeRuntime={runtime}
-            updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
-          />
+
+          {editor.editTreePath === null ? (
+            <BlockSelector
+              highlightHandler={highlightHandler}
+              iframeRuntime={runtime}
+              updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
+            />
+          ) : (
+            <ToastConsumer>
+              {({ showToast }) => (
+                <SaveContentMutation>
+                  {saveContent => (
+                    <DeleteContentMutation>
+                      {deleteContent => (
+                        <BlockEditor
+                          deleteContent={deleteContent}
+                          iframeRuntime={runtime}
+                          saveContent={saveContent}
+                          showToast={showToast}
+                        />
+                      )}
+                    </DeleteContentMutation>
+                  )}
+                </SaveContentMutation>
+              )}
+            </ToastConsumer>
+          )}
         </div>
       </nav>
     </div>
