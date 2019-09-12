@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {
   ContentBlock,
   ContentState,
@@ -18,6 +19,14 @@ export function mediaBlockRenderer(block: ContentBlock) {
   }
 
   return null
+}
+
+export function styleBlockRenderer(block: ContentBlock) {
+  const blockType = block.getType()
+  if (blockType === 'left') return 'align-left'
+  if (blockType === 'center') return 'align-center'
+  if (blockType === 'right') return 'align-right'
+  return ''
 }
 
 export function findLinkEntities(
@@ -42,4 +51,20 @@ export function convertToMarkdown(editorState: EditorState) {
 export function convertToEditorState(markdownText: string) {
   const rawMarkdown = mdToDraftjs(markdownText)
   return convertFromRaw(rawMarkdown)
+}
+
+export function useClickOutside(
+  ref: React.RefObject<HTMLDivElement>,
+  callback: () => void
+) {
+  function handleClickOutside(event: MouseEvent) {
+    if (ref && ref.current && !ref.current.contains(event.target as Node)) {
+      callback()
+    }
+  }
+
+  React.useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  })
 }

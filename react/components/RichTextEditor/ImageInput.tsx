@@ -3,9 +3,17 @@ import { graphql, MutationFunc } from 'react-apollo'
 import { useDropzone } from 'react-dropzone'
 import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 
-import { Button, IconClose, IconImage, Input, Spinner } from 'vtex.styleguide'
+import {
+  Button,
+  IconClose,
+  IconImage,
+  Input,
+  Spinner,
+  IconCaretDown,
+} from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
+import { useClickOutside } from './utils'
 
 import SeparatorWithLine from '../admin/pages/SeparatorWithLine'
 
@@ -28,13 +36,17 @@ const messages = defineMessages({
     defaultMessage: 'Add',
     id: 'admin/pages.admin.rich-text-editor.add-button',
   },
+  addTitle: {
+    defaultMessage: 'Insert image',
+    id: 'admin/pages.admin.rich-text-editor.add-image.title',
+  },
   addLabel: {
     defaultMessage: 'Image URL',
-    id: 'admin/pages.admin.rich-text-editor.add-image-label',
+    id: 'admin/pages.admin.rich-text-editor.add-image.label',
   },
   addPlaceholder: {
     defaultMessage: 'URL',
-    id: 'admin/pages.admin.rich-text-editor.add-image-placeholder',
+    id: 'admin/pages.admin.rich-text-editor.add-image.placeholder',
   },
   fileSizeError: {
     defaultMessage:
@@ -56,10 +68,13 @@ const messages = defineMessages({
 })
 
 const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
+  const ref = React.useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [imageUrl, setImageUrl] = React.useState()
   const [error, setError] = React.useState<string | null>()
+
+  useClickOutside(ref, () => setIsOpen(false))
 
   const onDropImage = async (files: File[]) => {
     if (!uploadFile) {
@@ -100,12 +115,18 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
   }
 
   return (
-    <div className="relative">
+    <div className="relative" ref={ref}>
       <StyleButton
+        title={intl.formatMessage(messages.addTitle)}
         active={isOpen}
         onToggle={() => setIsOpen(!isOpen)}
         style={null}
-        label={<IconImage />}
+        label={
+          <div className="flex flex-row justify-between items-center w-100">
+            <IconImage />
+            <IconCaretDown size={8} />
+          </div>
+        }
       />
 
       {isOpen && (
@@ -127,7 +148,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
               />
             </div>
 
-            <Button onClick={handleAddImage} size="small">
+            <Button onClick={handleAddImage} size="small" disabled={!imageUrl}>
               {intl.formatMessage(messages.addBtn)}
             </Button>
 

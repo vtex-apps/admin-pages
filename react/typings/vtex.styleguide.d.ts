@@ -161,6 +161,7 @@ declare module 'vtex.styleguide' {
   export const IconEdit: ComponentType<Record<string, unknown>>
   export const IconCaretDown: ComponentType<Record<string, unknown>>
   export const IconCaretUp: ComponentType<Record<string, unknown>>
+  export const IconCheck: ComponentType<Record<string, unknown>>
   export const IconClear: ComponentType<Record<string, unknown>>
   export const IconClose: ComponentType<Record<string, unknown>>
   export const IconItalic: ComponentType<Record<string, unknown>>
@@ -187,4 +188,5 @@ declare module 'vtex.styleguide' {
   export class ToastProvider extends Component<ToastProviderProps> {}
   export const ToastContext: React.ContextType<ToastConsumerFunctions>
   export const Toggle: ComponentType<Record<string, unknown>>
+  export const Tooltip: ComponentType<Record<string, unknown>>
 }

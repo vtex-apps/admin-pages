@@ -2,9 +2,10 @@ import { RouteFormData } from 'pages'
 import * as React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
-import { Button, Input, Textarea } from 'vtex.styleguide'
+import { Button, Input, Textarea, IconEdit } from 'vtex.styleguide'
 
 import { RouteContentFromData } from './index'
+import { slugify } from './utils'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
@@ -69,10 +70,23 @@ const Form = ({
   onFieldValueChange,
   onSubmit,
 }: Props) => {
+  const pathRef = React.useRef<HTMLInputElement>(null)
+  const [hasDefinedPath, setHasDefinedPath] = React.useState(false)
+
+  const handlePathChange = (value: string | null) => {
+    if (!value) return
+    return onFieldValueChange('path', `/${slugify(value)}`)
+  }
+
   const handleEventValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target
+
+    if (name === 'title' && !hasDefinedPath) {
+      handlePathChange(value)
+    }
+
     return onFieldValueChange(name, value)
   }
 
@@ -95,15 +109,40 @@ const Form = ({
           />
           <FormFieldSeparator />
           <Input
+            ref={pathRef}
             name="path"
-            disabled={false}
+            disabled={!hasDefinedPath}
             label={intl.formatMessage(messages.fieldPath)}
             onChange={handleEventValue}
+            onBlur={() => {
+              const value = data.path
+
+              if (!value) {
+                if (hasDefinedPath) setHasDefinedPath(false)
+                return handlePathChange(data.title)
+              }
+
+              if (!hasDefinedPath) setHasDefinedPath(true)
+              return handlePathChange(data.path)
+            }}
             placeholder={intl.formatMessage(messages.pathHint)}
             required
             value={data.path || ''}
             errorMessage={
               errors.path && intl.formatMessage({ id: errors.path })
+            }
+            suffix={
+              <div
+                role="button"
+                tabIndex={0}
+                className="pointer"
+                onMouseDown={() => {
+                  setHasDefinedPath(true)
+                  pathRef.current && pathRef.current.focus()
+                }}
+              >
+                <IconEdit />
+              </div>
             }
           />
           <FormFieldSeparator />

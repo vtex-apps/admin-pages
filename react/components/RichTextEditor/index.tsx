@@ -4,8 +4,11 @@ import {
   Editor,
   EditorState,
   RichUtils,
+  Modifier,
+  SelectionState,
 } from 'draft-js'
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 
 import {
   IconBold,
@@ -20,6 +23,7 @@ import styles from './style.css'
 import ImageInput from './ImageInput'
 import Link from './Link'
 import LinkInput from './LinkInput'
+import HeadingInput from './HeadingInput'
 import StyleButton from './StyleButton'
 
 import {
@@ -27,23 +31,63 @@ import {
   convertToMarkdown,
   findLinkEntities,
   mediaBlockRenderer,
+  styleBlockRenderer,
 } from './utils'
 
 const INLINE_STYLES = [
-  { label: <IconBold />, style: 'BOLD' },
-  { label: <IconItalic />, style: 'ITALIC' },
-  { label: <IconUnderline />, style: 'UNDERLINE' },
+  {
+    label: <IconBold />,
+    style: 'BOLD',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.bold.title"
+        defaultMessage="Bold"
+      />
+    ),
+  },
+  {
+    label: <IconItalic />,
+    style: 'ITALIC',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.italic.title"
+        defaultMessage="Italic"
+      />
+    ),
+  },
+  {
+    label: <IconUnderline />,
+    style: 'UNDERLINE',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.underline.title"
+        defaultMessage="Underline"
+      />
+    ),
+  },
 ]
 
 const BLOCK_TYPES = [
-  { label: 'H1', style: 'header-one' },
-  { label: 'H2', style: 'header-two' },
-  { label: 'H3', style: 'header-three' },
-  { label: 'H4', style: 'header-four' },
-  { label: 'H5', style: 'header-five' },
-  { label: 'H6', style: 'header-six' },
-  { label: <IconUnorderedList />, style: 'unordered-list-item' },
-  { label: <IconOrderedList />, style: 'ordered-list-item' },
+  {
+    label: <IconUnorderedList />,
+    style: 'unordered-list-item',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.unordered-list.title"
+        defaultMessage="Unordered list"
+      />
+    ),
+  },
+  {
+    label: <IconOrderedList />,
+    style: 'ordered-list-item',
+    title: (
+      <FormattedMessage
+        id="admin/pages.admin.rich-text-editor.ordered-list.title"
+        defaultMessage="Ordered list"
+      />
+    ),
+  },
 ]
 
 interface BlockStyleControlsProps {
@@ -63,6 +107,7 @@ const BlockStyleControls = (props: BlockStyleControlsProps) => {
       {BLOCK_TYPES.map((type, i) => (
         <StyleButton
           key={i}
+          title={type.title}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
@@ -86,6 +131,7 @@ const InlineStyleControls = (props: InlineStyleControlsProps) => {
       {INLINE_STYLES.map((type, i) => (
         <StyleButton
           key={i}
+          title={type.title}
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}
@@ -122,6 +168,25 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
     }
   }
 
+  const getContentBlockType = () => {
+    const selection = editorState.getSelection()
+    return editorState
+      .getCurrentContent()
+      .getBlockForKey(selection.getStartKey())
+      .getType()
+  }
+
+  const getCurrentSelectionText = () => {
+    const selectionState = editorState.getSelection()
+    const anchorKey = selectionState.getAnchorKey()
+    const currentContent = editorState.getCurrentContent()
+    const currentContentBlock = currentContent.getBlockForKey(anchorKey)
+    const start = selectionState.getStartOffset()
+    const end = selectionState.getEndOffset()
+
+    return currentContentBlock.getText().slice(start, end)
+  }
+
   const handleAddImage = (imageUrl: string) => {
     const currentOffset = editorState
       .getCurrentContent()
@@ -151,8 +216,52 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
     )
   }
 
-  const handleAddLink = (linkUrl: string) => {
-    const currentContentState = editorState.getCurrentContent()
+  const handleAddLink = (linkText: string, linkUrl: string) => {
+    const selection = editorState.getSelection()
+    let currentContentState = editorState.getCurrentContent()
+
+    if (!getCurrentSelectionText()) {
+      currentContentState = Modifier.insertText(
+        currentContentState,
+        selection,
+        linkText
+      )
+
+      const newContentWithEntity = currentContentState.createEntity(
+        'LINK',
+        'MUTABLE',
+        { url: linkUrl }
+      )
+
+      const entityKey = newContentWithEntity.getLastCreatedEntityKey()
+      const anchorOffset = selection.getAnchorOffset()
+      const newSelection = new SelectionState({
+        anchorKey: selection.getAnchorKey(),
+        anchorOffset,
+        focusKey: selection.getAnchorKey(),
+        focusOffset: anchorOffset + linkText.length,
+      })
+
+      const newContentWithLink = Modifier.applyEntity(
+        newContentWithEntity,
+        newSelection,
+        entityKey
+      )
+
+      const withLinkText = EditorState.push(
+        editorState,
+        newContentWithLink,
+        'insert-characters'
+      )
+
+      return setEditorState(
+        EditorState.forceSelection(
+          withLinkText,
+          currentContentState.getSelectionAfter()
+        )
+      )
+    }
+
     const contentStateWithEntity = currentContentState.createEntity(
       'LINK',
       'IMMUTABLE',
@@ -192,6 +301,10 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
   return (
     <div className="bw1 br2 b--solid b--muted-4">
       <div className="pa4 flex flex-wrap-s">
+        <HeadingInput
+          onAdd={toggleBlockType}
+          activeStyle={getContentBlockType()}
+        />
         <InlineStyleControls
           editorState={editorState}
           onToggle={toggleInlineStyle}
@@ -200,7 +313,10 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
           editorState={editorState}
           onToggle={toggleBlockType}
         />
-        <LinkInput onAdd={handleAddLink} />
+        <LinkInput
+          onAdd={handleAddLink}
+          getCurrentSelection={getCurrentSelectionText}
+        />
         <ImageInput onAdd={handleAddImage} />
       </div>
       <div className={className}>
@@ -208,6 +324,7 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
           editorState={editorState}
           onChange={state => handleChange(state)}
           blockRendererFn={mediaBlockRenderer}
+          blockStyleFn={styleBlockRenderer}
         />
       </div>
     </div>
