@@ -9,7 +9,14 @@
 
 .preview-container {
   height: 100%;
+}
+
+.multi-item {
   width: calc(100% - 3rem);
+}
+
+.single-item {
+  width: calc(100% - 1rem);
 }
 
 .preview-text-container {
