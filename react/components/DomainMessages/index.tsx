@@ -64,17 +64,27 @@ const reduceP = async <T, K>(
   return acc
 }
 
+const naiveCache = new Map()
+
 export const editorMessagesFromRuntime = async ({
   client,
   domain,
   runtime,
 }: Props) => {
   const { components, renderMajor } = runtime
-  const componentNames = keys(components)
+  const componentNames = keys(components).sort()
+  const allComponentesNames = componentNames.join()
+
+  const cacheResult = naiveCache.get(allComponentesNames)
+  if (cacheResult) {
+    return naiveCache.has(allComponentesNames)
+  }
+
   const componentsBatch = splitEvery(MAX_COMPONENTES_PER_QUERY, componentNames)
   const responses = map(
     batch =>
       client.query<Data, Variables>({
+        fetchPolicy: 'network-only',
         query: messagesForDomainQuery,
         variables: {
           components: batch,
@@ -94,7 +104,10 @@ export const editorMessagesFromRuntime = async ({
     [] as Message[],
     responses
   )
-  return messagesToReactIntlFormat(messages)
+
+  const messagesInReactIntlFormat = messagesToReactIntlFormat(messages)
+  naiveCache.set(allComponentesNames, messagesInReactIntlFormat)
+  return messagesInReactIntlFormat
 }
 
 function isValidLang(key: string): key is keyof typeof messages {
