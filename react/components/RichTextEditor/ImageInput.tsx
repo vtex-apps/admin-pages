@@ -148,7 +148,7 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
               />
             </div>
 
-            <Button onClick={handleAddImage} size="small">
+            <Button onClick={handleAddImage} size="small" disabled={!imageUrl}>
               {intl.formatMessage(messages.addBtn)}
             </Button>
 

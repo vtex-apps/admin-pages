@@ -315,7 +315,6 @@ const RichTextEditor = ({ onChange, initialState = '' }: Props) => {
         />
         <LinkInput
           onAdd={handleAddLink}
-          currentSelection={getCurrentSelectionText()}
           getCurrentSelection={getCurrentSelectionText}
         />
         <ImageInput onAdd={handleAddImage} />

@@ -8,7 +8,6 @@ import { useBlur } from './utils'
 
 interface Props {
   onAdd: (text: string, link: string) => void
-  currentSelection: string | null
   getCurrentSelection: () => string | null
   intl: InjectedIntl
 }
@@ -22,6 +21,7 @@ const messages = defineMessages({
 
 const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
   const ref = React.useRef(null)
+
   const [isOpen, setIsOpen] = React.useState(false)
   const [link, setLink] = React.useState()
   const [text, setText] = React.useState()
@@ -74,7 +74,11 @@ const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
               }
             />
           </div>
-          <Button onClick={handleAddLink} size="small">
+          <Button
+            disabled={!text || !link}
+            onClick={handleAddLink}
+            size="small"
+          >
             {intl.formatMessage(messages.btn)}
           </Button>
         </div>
