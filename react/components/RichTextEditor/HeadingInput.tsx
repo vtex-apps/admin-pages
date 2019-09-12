@@ -4,7 +4,7 @@ import { FormattedMessage } from 'react-intl'
 import { IconCaretDown, IconCheck } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
-import { useBlur } from './utils'
+import { useClickOutside } from './utils'
 
 const BLOCK_TYPES = [
   {
@@ -64,10 +64,10 @@ interface Props {
 }
 
 const HeadingInput = ({ onAdd, activeStyle }: Props) => {
-  const ref = React.useRef<HTMLInputElement>(null)
+  const ref = React.useRef<HTMLDivElement>(null)
   const [isOpen, setIsOpen] = React.useState(false)
 
-  useBlur(ref, () => setIsOpen(false))
+  useClickOutside(ref, () => setIsOpen(false))
 
   const handleClick = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,

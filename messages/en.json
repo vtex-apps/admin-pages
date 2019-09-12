@@ -245,9 +245,10 @@
   "admin/pages.editor.styles.select.save-fail": "Failed to select style '{name}'.",
   "admin/pages.editor.styles.select.save-success": "Style '{name}' was selected.",
 
-  "admin/pages.admin.rich-text-editor.add-image.label": "Image's url",
+  "admin/pages.admin.rich-text-editor.add-image.label": "Image's URL",
   "admin/pages.admin.rich-text-editor.add-image.placeholder": "Link",
   "admin/pages.admin.rich-text-editor.add-image.title": "Insert image",
+  "admin/pages.admin.rich-text-editor.add-image.text-label": "Text",
   "admin/pages.admin.rich-text-editor.add-button": "Add",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Choose an image to upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Upload",

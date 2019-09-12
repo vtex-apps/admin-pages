@@ -25,11 +25,11 @@ const StyleButton = ({
   }
 
   return (
-    <Tooltip label={title || 'Label'} position="bottom">
+    <Tooltip label={title} position="bottom">
       <div
         className={`f6 pointer mr3 flex flex-row justify-center items-center outline-0 ph3 h2 b--muted-4 br2 ba ${
           active ? 'c-action-primary bg-muted-5' : ''
-        } ${className || ''}`}
+        } ${className}`}
         onMouseDown={handleToggle}
         role="button"
         tabIndex={0}
@@ -38,6 +38,11 @@ const StyleButton = ({
       </div>
     </Tooltip>
   )
+}
+
+StyleButton.defaultProps = {
+  title: '',
+  className: '',
 }
 
 export default StyleButton

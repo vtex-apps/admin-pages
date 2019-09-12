@@ -248,6 +248,7 @@
   "admin/pages.admin.rich-text-editor.add-image.label": "URL de la imagen",
   "admin/pages.admin.rich-text-editor.add-image.placeholder": "Link",
   "admin/pages.admin.rich-text-editor.add-image.title": "Insertar imagen",
+  "admin/pages.admin.rich-text-editor.add-image.text-label": "Texto",
   "admin/pages.admin.rich-text-editor.add-button": "Añadir",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Elige imagen para upload",
   "admin/pages.admin.rich-text-editor.upload-button": "Upload",

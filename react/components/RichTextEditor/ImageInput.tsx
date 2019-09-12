@@ -13,7 +13,7 @@ import {
 } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
-import { useBlur } from './utils'
+import { useClickOutside } from './utils'
 
 import SeparatorWithLine from '../admin/pages/SeparatorWithLine'
 
@@ -68,13 +68,13 @@ const messages = defineMessages({
 })
 
 const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
-  const ref = React.useRef<HTMLInputElement>(null)
+  const ref = React.useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [imageUrl, setImageUrl] = React.useState()
   const [error, setError] = React.useState<string | null>()
 
-  useBlur(ref, () => setIsOpen(false))
+  useClickOutside(ref, () => setIsOpen(false))
 
   const onDropImage = async (files: File[]) => {
     if (!uploadFile) {

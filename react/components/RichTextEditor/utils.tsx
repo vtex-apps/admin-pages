@@ -53,8 +53,8 @@ export function convertToEditorState(markdownText: string) {
   return convertFromRaw(rawMarkdown)
 }
 
-export function useBlur(
-  ref: React.RefObject<HTMLInputElement>,
+export function useClickOutside(
+  ref: React.RefObject<HTMLDivElement>,
   callback: () => void
 ) {
   function handleClickOutside(event: MouseEvent) {
