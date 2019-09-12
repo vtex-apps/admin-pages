@@ -70,7 +70,7 @@ export default class HighlightOverlay extends Component<Props, State> {
       highlightTreePath: props.highlightTreePath,
     }
 
-    const highlightableWindow = window as HighlightableWindow
+    const highlightableWindow = window
 
     if (canUseDOM) {
       highlightableWindow.__setHighlightTreePath = (newState: State) => {

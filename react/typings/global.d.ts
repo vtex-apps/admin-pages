@@ -263,10 +263,6 @@ declare global {
     contentWindow: ContentWindow | null
   }
 
-  interface HighlightableWindow extends Window {
-    __setHighlightTreePath: (HighlightOverlayState) => void
-  }
-
   interface ComponentSchemaProperties {
     [key: string]: ComponentSchema
   }
@@ -289,6 +285,7 @@ declare global {
       messages: Record<string, string>,
       shouldUpdateRuntime: boolean
     ) => Promise<void>
+    __setHighlightTreePath: (HighlightOverlayState) => void
   }
 
   interface AdminContext {
