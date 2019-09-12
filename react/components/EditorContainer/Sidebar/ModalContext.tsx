@@ -3,20 +3,11 @@ import React, { Component, createContext, useContext } from 'react'
 import { ModalContext as ModalContextT } from './typings'
 
 const defaultExternalState: ModalContextT = {
-  actionHandler: () => {
-    return
-  },
-  cancelHandler: () => {
-    return
-  },
   close: () => {
     return
   },
-  isOpen: false,
+  getIsOpen: () => false,
   open: () => {
-    return
-  },
-  setHandlers: () => {
     return
   },
 }
@@ -27,17 +18,20 @@ export const useModalContext = () => useContext(ModalContext)
 
 export const ModalConsumer = ModalContext.Consumer
 
-type State = ModalContextT
+interface State extends ModalContextT {
+  closeCallbackHandler?: () => void
+  isOpen: boolean
+}
 
 export class ModalProvider extends Component<{}, State> {
   public constructor(props: {}) {
     super(props)
 
     this.state = {
-      ...defaultExternalState,
       close: this.close,
+      getIsOpen: this.getIsOpen,
+      isOpen: false,
       open: this.open,
-      setHandlers: this.setHandlers,
     }
   }
 
@@ -57,26 +51,24 @@ export class ModalProvider extends Component<{}, State> {
       () => {
         if (this.state.closeCallbackHandler) {
           this.state.closeCallbackHandler()
-
-          this.setState({ closeCallbackHandler: undefined })
         }
+
+        this.setState({
+          actionHandler: undefined,
+          cancelHandler: undefined,
+          closeCallbackHandler: undefined,
+        })
       }
     )
   }
 
-  private open: State['open'] = () => {
-    this.setState({
-      isOpen: true,
-    })
-  }
+  private getIsOpen: State['getIsOpen'] = () => this.state.isOpen
 
-  private setHandlers: State['setHandlers'] = handlers => {
+  private open: State['open'] = handlers => {
     this.setState(prevState => ({
       ...prevState,
-      actionHandler: handlers.actionHandler || prevState.actionHandler,
-      cancelHandler: handlers.cancelHandler || prevState.cancelHandler,
-      closeCallbackHandler:
-        handlers.closeCallbackHandler || prevState.closeCallbackHandler,
+      ...handlers,
+      isOpen: true,
     }))
   }
 }

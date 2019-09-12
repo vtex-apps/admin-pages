@@ -21,10 +21,11 @@ type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
   MessagesContextProps & { client: ApolloClient<unknown> }
 
-interface State {
+export interface State {
   activeConditions: string[]
   allMatches: boolean
   availableCultures: LabelledLocale[]
+  blockData: BlockData
   editMode: boolean
   editTreePath: string | null
   iframeRuntime: RenderContext | null
@@ -74,6 +75,7 @@ class EditorProvider extends Component<Props, State> {
       activeConditions: [],
       allMatches: true,
       availableCultures: [],
+      blockData: {},
       editMode: false,
       editTreePath: null,
       iframeRuntime: null,
@@ -358,6 +360,10 @@ class EditorProvider extends Component<Props, State> {
     window.top.location.assign(`/admin/cms/site-editor${pathname}`)
   }
 
+  public handleSetBlockData = (blockData: State['blockData']) => {
+    this.setState({ blockData })
+  }
+
   public render() {
     const {
       children,
@@ -368,6 +374,7 @@ class EditorProvider extends Component<Props, State> {
       activeConditions,
       allMatches,
       availableCultures,
+      blockData,
       editMode,
       editTreePath,
       iframeRuntime,
@@ -383,6 +390,7 @@ class EditorProvider extends Component<Props, State> {
       addCondition: this.handleAddCondition,
       allMatches,
       availableCultures,
+      blockData,
       editExtensionPoint: this.editExtensionPoint,
       editMode,
       editTreePath,
@@ -392,6 +400,7 @@ class EditorProvider extends Component<Props, State> {
       mode,
       onChangeIframeUrl: this.handleChangeIframeUrl,
       removeCondition: this.handleRemoveCondition,
+      setBlockData: this.handleSetBlockData,
       setDevice: this.handleSetDevice,
       setIsLoading: this.handleSetIsLoading,
       setMode: this.handleSetMode,

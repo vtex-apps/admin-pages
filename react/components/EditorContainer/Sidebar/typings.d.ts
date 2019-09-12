@@ -1,19 +1,19 @@
+import { GetInitialEditingStateParams } from './BlockEditor/typings'
+
 export interface FormMetaContext {
   getWasModified: () => boolean
   setWasModified: (newValue: boolean, callback?: () => void) => void
 }
 
 export interface ModalContext {
-  actionHandler: () => void
-  cancelHandler: () => void
-  closeCallbackHandler?: () => void
+  actionHandler?: () => void
+  cancelHandler?: () => void
   close: () => void
-  isOpen: boolean
-  open: () => void
-  setHandlers: (handlers: {
+  getIsOpen: () => boolean
+  open: (handlers?: {
     actionHandler?: ModalContext['actionHandler']
     cancelHandler?: ModalContext['cancelHandler']
-    closeCallbackHandler?: ModalContext['closeCallbackHandler']
+    closeCallbackHandler?: () => void
   }) => void
 }
 
@@ -27,11 +27,11 @@ export interface ModifiedSidebarComponent extends SidebarComponent {
   modifiedTreePath: string
 }
 
-export interface ComponentEditorFormContext {
-  isLayoutMode: boolean
-}
-
 // eslint-disable-next-line @typescript-eslint/prefer-interface
 export type FormDataContainer = {
   formData: object
 }
+
+export type GetDefaultCondition = (
+  params: Pick<GetInitialEditingStateParams, 'iframeRuntime' | 'isSitewide'>
+) => ExtensionConfiguration['condition']
