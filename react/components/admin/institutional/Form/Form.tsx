@@ -83,8 +83,9 @@ const Form = ({
   ) => {
     const { name, value } = event.target
 
-    /** auto fill path based on title if path was not specified yet */
-    if (name === 'title' && !hasDefinedPath) handlePathChange(value)
+    if (name === 'title' && !hasDefinedPath) {
+      handlePathChange(value)
+    }
 
     return onFieldValueChange(name, value)
   }
