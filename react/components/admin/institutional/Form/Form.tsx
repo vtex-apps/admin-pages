@@ -5,6 +5,7 @@ import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Input, Textarea } from 'vtex.styleguide'
 
 import { RouteContentFromData } from './index'
+import { slugify } from './utils'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
@@ -69,10 +70,20 @@ const Form = ({
   onFieldValueChange,
   onSubmit,
 }: Props) => {
+  const [hasDefinedPath, setHasDefinedPath] = React.useState(false)
+
+  const handlePathChange = (value: string) => {
+    return onFieldValueChange('path', `/${slugify(value)}`)
+  }
+
   const handleEventValue = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target
+
+    /** auto fill path based on title if path was not specified yet */
+    if (name === 'title' && !hasDefinedPath) handlePathChange(value)
+
     return onFieldValueChange(name, value)
   }
 
@@ -98,7 +109,15 @@ const Form = ({
             name="path"
             disabled={false}
             label={intl.formatMessage(messages.fieldPath)}
-            onChange={handleEventValue}
+            onChange={(
+              event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+            ) => {
+              const { value } = event.target
+              if (hasDefinedPath && !value.length) setHasDefinedPath(false)
+              else if (!hasDefinedPath && value.length) setHasDefinedPath(true)
+              return handleEventValue(event)
+            }}
+            onBlur={() => handlePathChange(data.path)}
             placeholder={intl.formatMessage(messages.pathHint)}
             required
             value={data.path || ''}
