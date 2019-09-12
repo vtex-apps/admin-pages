@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 import { Query } from 'react-apollo'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
 
 import { PageHeader } from 'vtex.styleguide'
 
@@ -19,6 +19,13 @@ interface PageListProps {
   isLoading: boolean
   intl: InjectedIntl
 }
+
+const messages = defineMessages({
+  contentPages: {
+    defaultMessage: 'Content Pages',
+    id: 'admin/pages.admin-menu-button.content-pages',
+  },
+})
 
 const PageListWithQuery = () => {
   return (
@@ -59,12 +66,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({
   return (
     <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
       <div className="center mw8">
-        <PageHeader
-          title={intl.formatMessage({
-            defaultMessage: 'Institutional',
-            id: 'admin/pages.admin-menu-button.content-pages',
-          })}
-        />
+        <PageHeader title={intl.formatMessage(messages.contentPages)} />
         <div className="ph7">
           <List
             hasCreateButton
