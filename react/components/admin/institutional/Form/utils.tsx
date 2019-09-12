@@ -77,7 +77,7 @@ const validatePathUrl = (path: string) => {
     }
   if (slugify(path) !== path.slice(1))
     return {
-      path: 'admin/pages.admin.pages.form.templates.path.validation-error',
+      path: 'admin/pages.admin.pages.form.templates.path.invalid-format',
     }
 
   return {}

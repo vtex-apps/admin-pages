@@ -31,6 +31,7 @@
   "admin/pages.admin.pages.form.templates.field.default": "Default",
   "admin/pages.admin.pages.form.templates.field.required": "Required",
   "admin/pages.admin.pages.form.templates.path.validation-error": "URL should begin with '/'.",
+  "admin/pages.admin.pages.form.templates.path.invalid-format": "Invalid URL.",
   "admin/pages.admin.pages.form.templates.simple.conditions.add-button": "Add new condition",
   "admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder": "Select condition type",
   "admin/pages.admin.pages.form.templates.simple.conditions.date.equals": "is",

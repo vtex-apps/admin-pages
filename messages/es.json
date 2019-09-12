@@ -31,6 +31,7 @@
   "admin/pages.admin.pages.form.templates.field.default": "Estándar",
   "admin/pages.admin.pages.form.templates.field.required": "Necesario",
   "admin/pages.admin.pages.form.templates.path.validation-error": "La URL debe comenzar con '/'.",
+  "admin/pages.admin.pages.form.templates.path.invalid-format": "No és una URL válida.",
   "admin/pages.admin.pages.form.templates.simple.conditions.add-button": "Añadir nueva condición",
   "admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder": "Seleccione el tipo de condición",
   "admin/pages.admin.pages.form.templates.simple.conditions.date.equals": "es",
