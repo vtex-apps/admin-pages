@@ -20,7 +20,7 @@ const messages = defineMessages({
 })
 
 const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
-  const ref = React.useRef(null)
+  const ref = React.useRef<HTMLInputElement>(null)
 
   const [isOpen, setIsOpen] = React.useState(false)
   const [link, setLink] = React.useState()

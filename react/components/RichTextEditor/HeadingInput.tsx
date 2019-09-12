@@ -64,7 +64,7 @@ interface Props {
 }
 
 const HeadingInput = ({ onAdd, activeStyle }: Props) => {
-  const ref = React.useRef(null)
+  const ref = React.useRef<HTMLInputElement>(null)
   const [isOpen, setIsOpen] = React.useState(false)
 
   useBlur(ref, () => setIsOpen(false))

@@ -54,12 +54,11 @@ export function convertToEditorState(markdownText: string) {
 }
 
 export function useBlur(
-  ref: React.MutableRefObject<null>,
+  ref: React.RefObject<HTMLInputElement>,
   callback: () => void
 ) {
   function handleClickOutside(event: MouseEvent) {
-    // @ts-ignore
-    if (ref && ref.current && !ref.current.contains(event.target)) {
+    if (ref && ref.current && !ref.current.contains(event.target as Node)) {
       callback()
     }
   }

@@ -68,7 +68,7 @@ const messages = defineMessages({
 })
 
 const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
-  const ref = React.useRef(null)
+  const ref = React.useRef<HTMLInputElement>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
   const [imageUrl, setImageUrl] = React.useState()
