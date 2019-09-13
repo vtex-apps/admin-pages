@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Where `__setHighlightTreePath` was typed: deleted old interface and add it to `Window` interface.
+
+### Fixed
+
+- Issue when hovering over an element that wasn't in the DOM, `HighlightOverlay` made the iframe height grow indefinitely.
+
 ## [4.12.1] - 2019-09-12
 
 ## Changed

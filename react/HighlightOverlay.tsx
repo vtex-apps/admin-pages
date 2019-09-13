@@ -70,7 +70,7 @@ export default class HighlightOverlay extends Component<Props, State> {
       highlightTreePath: props.highlightTreePath,
     }
 
-    const highlightableWindow = window as HighlightableWindow
+    const highlightableWindow = window
 
     if (canUseDOM) {
       highlightableWindow.__setHighlightTreePath = (newState: State) => {
@@ -116,11 +116,11 @@ export default class HighlightOverlay extends Component<Props, State> {
       `[data-extension-point="${highlightTreePath}"]`
     )
 
-    const provider = document.querySelector('.render-provider')
+    const provider = document.querySelector<HTMLDivElement>('.render-provider')
 
     const iframeBody = document.querySelector('body')
 
-    if (!highlightTreePath || !elements || !provider) {
+    if (!highlightTreePath || elements.length === 0 || !provider) {
       return
     }
 
