@@ -5,7 +5,7 @@ import { Textarea } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-type Props = CustomWidgetProps & InjectedIntlProps
+type Props = CustomWidgetProps<HTMLTextAreaElement> & InjectedIntlProps
 
 const TextArea: React.FunctionComponent<Props> = ({
   disabled,
@@ -32,7 +32,7 @@ const TextArea: React.FunctionComponent<Props> = ({
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(event.target.value || '')
+      onChange(event.target.value || '', event.target)
     },
     [onChange]
   )

@@ -15,6 +15,8 @@ export const IOMESSAGE_FORMAT_TYPE = 'IOMessage'
 export const RICHTEXT_FORMAT_TYPE = 'RichText'
 export const IO_MESSAGE_FORMATS = [IOMESSAGE_FORMAT_TYPE, RICHTEXT_FORMAT_TYPE]
 
+const INVISIBLE_CHARACTER = '\u200b'
+
 const reduceProperties = (isContent: boolean) => (
   acc: ComponentSchemaProperties,
   [propertyName, property]: [string, ComponentSchema]
@@ -181,7 +183,7 @@ export const getIframeImplementation = (component: string | null) => {
   return iframeRenderComponents && iframeRenderComponents[component]
 }
 
-export const translateMessage = ({
+const translateMessage = ({
   dictionary,
   id,
 }: TranslateMessageParams): string => {
@@ -283,12 +285,24 @@ const keepTheBlanks = (
   )
 }
 
+export const appendInvisibleCharacter = (text: string) =>
+  text + INVISIBLE_CHARACTER
+
+const removeInvisibleCharacter = (text: string) => {
+  const lastIndex = text.length - 1
+
+  if (text[lastIndex] !== INVISIBLE_CHARACTER) {
+    return text
+  }
+
+  return text.slice(0, lastIndex)
+}
+
 export const getImplementation = (component: string) => {
   return global.__RENDER_8_COMPONENTS__[component]
 }
 
 export const getSchemaPropsOrContent = ({
-  i18nMapping,
   messages,
   schema,
   propsOrContent,
@@ -306,18 +320,21 @@ export const getSchemaPropsOrContent = ({
         return acc
       }
 
-      if (IO_MESSAGE_FORMATS.includes(format) && messages) {
-        const id =
-          i18nMapping && i18nMapping[value] !== undefined
-            ? i18nMapping[value]
-            : value
+      if (IO_MESSAGE_FORMATS.includes(format)) {
+        let adaptedValue
 
-        const ioMessage = translateMessage({
-          dictionary: messages,
-          id,
-        })
+        if (messages) {
+          adaptedValue = translateMessage({
+            dictionary: messages,
+            id: value,
+          })
+        } else {
+          // Removes the invisible character from i18n fields. For more
+          // information, please check the I18nInput widget.
+          adaptedValue = removeInvisibleCharacter(value)
+        }
 
-        return { ...acc, ...assocPath(dataPath, ioMessage, acc) }
+        return { ...acc, ...assocPath(dataPath, adaptedValue, acc) }
       }
 
       return { ...acc, ...assocPath(dataPath, value, acc) }

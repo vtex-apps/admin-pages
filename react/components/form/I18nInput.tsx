@@ -1,9 +1,6 @@
-import debounce from 'lodash/debounce'
 import React from 'react'
-import { generate as generateUuid } from 'short-uuid'
 
-import { translateMessage } from '../../utils/components'
-import { useFormMetaContext } from '../EditorContainer/Sidebar/FormMetaContext'
+import { appendInvisibleCharacter } from '../../utils/components'
 
 import BaseInput from './BaseInput'
 import TextArea from './TextArea'
@@ -13,82 +10,57 @@ interface Props extends CustomWidgetProps {
   isTextarea?: boolean
 }
 
-const I18nInput: React.FunctionComponent<Props> = props => {
-  const {
-    addToI18nMapping,
-    getI18nMapping,
-    getWasModified,
-    setWasModified,
-  } = useFormMetaContext()
+/*
+ * While there isn't currently an efficient way to update the inner Runtime's
+ * intl, this component uses the IOMessage's fallback behavior to modify i18n
+ * properties.
+ *
+ * Since the value actually represents an i18n key, typing in the name of an
+ * existing one would cause the block to render the corresponding intl string.
+ *
+ * In order to prevent that, this component adds an invisible character after
+ * the input value, so it will (probably) never match an i18n key. The
+ * invisible character is removed once the form is submitted, before being sent
+ * to the server.
+ */
 
-  const isValueI18nKey = React.useMemo(
-    () => typeof props.formContext.messages[props.value] !== 'undefined',
-    [props.formContext.messages, props.value]
-  )
+const I18nInput: React.FunctionComponent<Props> = ({
+  isTextarea,
+  onChange,
+  value,
+  ...commonProps
+}) => {
+  const [localValue, setLocalValue] = React.useState(value)
 
-  const i18nKey = React.useMemo(() => {
-    if (isValueI18nKey) {
-      return props.value
-    }
-
-    return 'store/' + generateUuid()
-  }, [isValueI18nKey, props.value])
-
-  const initialValue = React.useMemo(
-    () =>
-      isValueI18nKey
-        ? translateMessage({
-            dictionary: props.formContext.messages,
-            id: i18nKey,
-          })
-        : props.value,
-    [i18nKey, isValueI18nKey, props.formContext.messages, props.value]
-  )
-
-  const [value, setValue] = React.useState(initialValue)
-
-  const mappedI18nKey = React.useMemo(generateUuid, [])
-
-  const updateIframeValue = React.useMemo(
-    () =>
-      debounce((newValue: string) => {
-        const i18nMapping = getI18nMapping()
-
-        if (i18nMapping[i18nKey] === undefined) {
-          addToI18nMapping({ [i18nKey]: mappedI18nKey })
-
-          props.onChange(mappedI18nKey)
-        }
-
-        props.formContext.addMessages({
-          [mappedI18nKey]: newValue,
-        })
-      }, 200),
-    [addToI18nMapping, getI18nMapping, i18nKey, mappedI18nKey, props]
-  )
-
-  const handleChange = React.useCallback(
-    (newValue: string) => {
-      const wasModified = getWasModified()
-
-      updateIframeValue(newValue)
-
-      if (!wasModified) {
-        setWasModified(true)
+  const safeOnChange: CustomWidgetProps<
+    HTMLInputElement | HTMLTextAreaElement
+  >['onChange'] = React.useCallback(
+    (newValue, target) => {
+      if (typeof newValue !== 'string' || !target) {
+        return
       }
 
-      setValue(newValue)
+      let cursorPosition = target.selectionStart
+
+      // Appends an invisible character to the input value. For more
+      // information, please read the comment above this component.
+      onChange(appendInvisibleCharacter(newValue))
+
+      setLocalValue(newValue)
+
+      // Prevents the cursor from jumping around
+      target.selectionStart = cursorPosition
     },
-    [getWasModified, setWasModified, updateIframeValue]
+    [onChange]
   )
 
   const finalProps = {
-    ...props,
-    onChange: handleChange,
-    value,
+    ...commonProps,
+    onChange: safeOnChange,
+    value: localValue,
   }
 
-  if (props.isTextarea) {
+  if (isTextarea) {
     return <TextArea {...finalProps} />
   }
 
