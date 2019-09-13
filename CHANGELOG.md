@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.12.2] - 2019-09-13
+
 ### Changed
 
 - Where `__setHighlightTreePath` was typed: deleted old interface and add it to `Window` interface.
