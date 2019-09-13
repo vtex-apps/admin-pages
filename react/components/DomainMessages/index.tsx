@@ -64,7 +64,8 @@ const reduceP = async <T, K>(
   return acc
 }
 
-const naiveCache = new Map()
+let cachedResult: Record<string, string> = {}
+const fetchedKeys = new Set()
 
 export const editorMessagesFromRuntime = async ({
   client,
@@ -72,15 +73,25 @@ export const editorMessagesFromRuntime = async ({
   runtime,
 }: Props) => {
   const { components, renderMajor } = runtime
-  const componentNames = keys(components).sort()
-  const allComponentesNames = componentNames.join()
+  const allComponentNames = keys(components)
+  const componentNames = new Set<string>()
 
-  const cacheResult = naiveCache.get(allComponentesNames)
-  if (cacheResult) {
-    return naiveCache.has(allComponentesNames)
+  allComponentNames.forEach(componentName => {
+    if (!fetchedKeys.has(componentName)) {
+      componentNames.add(componentName)
+      fetchedKeys.add(componentName)
+    }
+  })
+
+  if (componentNames.size === 0) {
+    return cachedResult
   }
 
-  const componentsBatch = splitEvery(MAX_COMPONENTES_PER_QUERY, componentNames)
+  const componentsBatch = splitEvery(
+    MAX_COMPONENTES_PER_QUERY,
+    Array.from<string>(componentNames)
+  )
+
   const responses = map(
     batch =>
       client.query<Data, Variables>({
@@ -106,7 +117,8 @@ export const editorMessagesFromRuntime = async ({
   )
 
   const messagesInReactIntlFormat = messagesToReactIntlFormat(messages)
-  naiveCache.set(allComponentesNames, messagesInReactIntlFormat)
+  cachedResult = { ...cachedResult, ...messagesInReactIntlFormat }
+
   return messagesInReactIntlFormat
 }
 
