@@ -118,10 +118,9 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         >
           <Form
             formContext={{
-              isLayoutMode: editor.mode === 'layout',
-              messages: iframeRuntime.messages,
               currentDepth,
               componentFormState,
+              isLayoutMode: editor.mode === 'layout',
               popComponentFormState,
               pushComponentFormState,
             }}
