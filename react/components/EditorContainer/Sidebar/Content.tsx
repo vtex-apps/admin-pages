@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { Spinner, ToastConsumer } from 'vtex.styleguide'
+import { JSONSchema6 } from 'json-schema'
 import throttle from 'lodash/throttle'
 import { equals } from 'ramda'
-import { JSONSchema6 } from 'json-schema'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
 import {
@@ -17,13 +17,11 @@ import { useEditorContext } from '../../EditorContext'
 import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
-import ContentEditor from './ConfigurationList/ContentEditor'
-import { FormDataContainer } from './typings'
 
 import ComponentSelector from './ComponentSelector'
-// import ConfigurationList from './ConfigurationList'
+import ContentEditor from './ConfigurationList/ContentEditor'
 import { useFormMetaContext } from './FormMetaContext'
-import { useModalContext } from './ModalContext'
+import { FormDataContainer } from './typings'
 import { getComponents, getIsSitewide } from './utils'
 
 interface Props {
@@ -31,12 +29,12 @@ interface Props {
   iframeRuntime: RenderContext
 }
 
-type State = {
-  condition: ExtensionConfiguration['condition']
-  content: Extension['content']
-  contentSchema: JSONSchema6
-  formData: Extension['content']
-} | null
+interface State {
+  condition?: ExtensionConfiguration['condition']
+  content?: Extension['content']
+  contentSchema?: JSONSchema6
+  formData?: Extension['content']
+}
 
 const omitUndefined = (obj: Extension['content']) =>
   Object.entries(obj).reduce((acc, [currKey, currValue]) => {
@@ -58,7 +56,6 @@ const Content = (props: Props) => {
 
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
-  const modal = useModalContext()
 
   const [components, setComponents] = useState(() =>
     getInitialComponents({
@@ -72,56 +69,62 @@ const Content = (props: Props) => {
     200
   )
 
-  const [state, setState] = useState<State>(null)
+  const [state, setState] = useState<State>({})
 
-  const handleFormChange = useCallback(event => {
-    debugger
-    // if (
-    //   formData &&
-    //   !formMeta.getWasModified() &&
-    //   !equals(omitUndefined(formData), omitUndefined(event.formData))
-    // ) {
-    //   formMeta.setWasModified(true)
-    // }
+  const handleFormChange = useCallback(
+    event => {
+      if (
+        state &&
+        state.formData &&
+        !formMeta.getWasModified() &&
+        !equals(omitUndefined(state.formData), omitUndefined(event.formData))
+      ) {
+        formMeta.setWasModified(true)
+      }
 
-    // if (event.formData) {
-    //   setFormData({ formData: event.formData })
+      if (event.formData && state) {
+        setState({ ...state, formData: event.formData })
 
-    //   throttledUpdateExtensionFromForm({
-    //     data: event.formData,
-    //     isContent: true,
-    //     runtime: iframeRuntime,
-    //     treePath: editor.editTreePath,
-    //   })
-    // }
-  }, [])
-
-  const path = useRef('')
-
-  useEffect(
-    () => {
-      if (path.current !== iframeRuntime.route.path) {
-        setComponents(
-          getInitialComponents({
-            extensions: iframeRuntime.extensions,
-            page: iframeRuntime.page,
-          })
-        )
-        editor.setIsLoading(false)
-        path.current = iframeRuntime.route.path
+        throttledUpdateExtensionFromForm({
+          data: event.formData,
+          isContent: true,
+          runtime: iframeRuntime,
+          treePath: editor.editTreePath,
+        })
       }
     },
     [
-      editor,
-      iframeRuntime.extensions,
-      iframeRuntime.page,
-      iframeRuntime.route.path,
+      editor.editTreePath,
+      formMeta,
+      iframeRuntime,
+      state,
+      throttledUpdateExtensionFromForm,
     ]
   )
 
+  const path = useRef('')
+
+  useEffect(() => {
+    if (path.current !== iframeRuntime.route.path) {
+      setComponents(
+        getInitialComponents({
+          extensions: iframeRuntime.extensions,
+          page: iframeRuntime.page,
+        })
+      )
+      editor.setIsLoading(false)
+      path.current = iframeRuntime.route.path
+    }
+  }, [
+    editor,
+    iframeRuntime.extensions,
+    iframeRuntime.page,
+    iframeRuntime.route.path,
+  ])
+
   if (editor.editTreePath === null) {
-    if (state) {
-      setState(null)
+    if (JSON.stringify(state) !== '{}') {
+      setState({})
     }
 
     return (
@@ -162,7 +165,7 @@ const Content = (props: Props) => {
           }}
         >
           {({ data, loading, refetch }) => {
-            if (!state) {
+            if (!state.content || !state.contentSchema) {
               if (!loading) {
                 const extension = getExtension(
                   editTreePath,
@@ -176,13 +179,15 @@ const Content = (props: Props) => {
                   listContent && JSON.parse(listContent.schemaJSON)
 
                 const activeContent =
-                  listContent && listContent.content && listContent.content[0] || {} as ExtensionConfiguration
+                  listContent && listContent.content && listContent.content[0]
 
-                const content = ((activeContent.contentJSON &&
-                  JSON.parse(activeContent.contentJSON)) ||
-                  {}) as Extension['content']
+                const content =
+                  (activeContent &&
+                    activeContent.contentJSON &&
+                    JSON.parse(activeContent.contentJSON)) ||
+                  {}
 
-                const { condition } = activeContent
+                const condition = activeContent && activeContent.condition
 
                 const formData =
                   getSchemaPropsOrContentFromRuntime({
@@ -215,27 +220,25 @@ const Content = (props: Props) => {
                   <DeleteContentMutation>
                     {deleteContent => (
                       <ContentEditor
-                        componentTitle={'Teste'}
-                        condition={state.condition}
+                        componentTitle={''}
+                        condition={
+                          (state
+                            ? state.condition
+                            : {}) as ExtensionConfiguration['condition']
+                        }
                         contentSchema={state.contentSchema}
                         data={state.formData as FormDataContainer}
                         iframeRuntime={iframeRuntime}
-                        isDefault={true}
+                        isDefault
                         isNew={false}
                         isSitewide={isSitewide}
                         onClose={() => {
                           editor.editExtensionPoint(null)
                         }}
-                        onConditionChange={() => {
-                          debugger
-                        }}
+                        onConditionChange={() => {}}
                         onFormChange={handleFormChange}
-                        onTitleChange={() => {
-                          debugger
-                        }}
-                        onSave={() => {
-                          debugger
-                        }}
+                        onTitleChange={() => {}}
+                        onSave={() => {}}
                       />
                     )}
                   </DeleteContentMutation>
