@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { appendInvisibleCharacter } from '../../utils/components'
+import { appendInvisibleCharacter } from '../../../utils/components'
+import BaseInput from '../BaseInput'
+import TextArea from '../TextArea'
+import { CustomWidgetProps } from '../typings'
 
-import BaseInput from './BaseInput'
-import TextArea from './TextArea'
-import { CustomWidgetProps } from './typings'
+import { isValidData } from './utils'
 
 interface Props extends CustomWidgetProps {
   isTextarea?: boolean
@@ -32,13 +33,13 @@ const I18nInput: React.FunctionComponent<Props> = ({
 }) => {
   const [localValue, setLocalValue] = React.useState(value)
 
-  const safeOnChange: CustomWidgetProps<
-    HTMLInputElement | HTMLTextAreaElement
-  >['onChange'] = React.useCallback(
-    (newValue, target) => {
-      if (typeof newValue !== 'string' || !target) {
+  const safeOnChange: CustomWidgetProps['onChange'] = React.useCallback(
+    data => {
+      if (!isValidData(data)) {
         return
       }
+
+      const { target, value: newValue } = data
 
       let cursorPosition = target.selectionStart
 
@@ -56,6 +57,7 @@ const I18nInput: React.FunctionComponent<Props> = ({
 
   const finalProps = {
     ...commonProps,
+    isI18n: true,
     onChange: safeOnChange,
     value: localValue,
   }

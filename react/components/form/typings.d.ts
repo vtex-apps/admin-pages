@@ -1,11 +1,11 @@
 import { WidgetProps } from 'react-jsonschema-form'
 
-export interface CustomWidgetProps<T = unknown> extends WidgetProps {
+export interface CustomWidgetProps extends WidgetProps {
   formContext: {
     messages: RenderContext['messages']
     isLayout: boolean
   }
-  onChange: (value: unknown, target?: React.ChangeEvent<T>['target']) => void
+  onChange: (value: unknown) => void
   rawErrors?: string[]
   schema: WidgetProps['schema'] & {
     disabled?: boolean
