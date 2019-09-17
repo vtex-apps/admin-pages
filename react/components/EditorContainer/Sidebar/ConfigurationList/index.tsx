@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from 'apollo-client'
 import { JSONSchema6 } from 'json-schema'
 import throttle from 'lodash/throttle'
-import { clone, equals, isEmpty, path } from 'ramda'
+import { clone, equals, path } from 'ramda'
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
@@ -315,10 +315,6 @@ class ConfigurationList extends React.Component<Props, State> {
             modal.close()
           }
 
-          if (!isEmpty(formMeta.getI18nMapping())) {
-            formMeta.clearI18nMapping()
-          }
-
           editor.setIsLoading(false)
         }
       )
@@ -439,7 +435,6 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationSave = async () => {
     const {
       editor,
-      formMeta,
       modal,
       iframeRuntime,
       saveContent,
@@ -451,11 +446,7 @@ class ConfigurationList extends React.Component<Props, State> {
       return
     }
 
-    const i18nMapping = formMeta.getI18nMapping()
-
     const content = getSchemaPropsOrContent({
-      i18nMapping,
-      messages: iframeRuntime.messages,
       propsOrContent: this.state.formData,
       schema: this.componentSchema,
     })

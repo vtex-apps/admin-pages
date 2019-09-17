@@ -1,8 +1,6 @@
 import { JSONSchema6 } from 'json-schema'
 import { RenderComponent } from 'vtex.render-runtime'
 
-import { FormMetaContext } from '../../components/EditorContainer/Sidebar/typings'
-
 export type PropsOrContent = Extension['content'] | Extension['props']
 
 export interface GetComponentSchemaParams {
@@ -14,8 +12,6 @@ export interface GetComponentSchemaParams {
 }
 
 export interface GetSchemaPropsOrContentParams {
-  i18nMapping?: FormMetaContext['i18nMapping']
-  isContent?: boolean
   messages?: RenderContext['messages']
   schema?: JSONSchema6Definition
   propsOrContent?: Record<string, unknown>

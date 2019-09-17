@@ -5,7 +5,7 @@ import { Input } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-interface Props extends CustomWidgetProps, InjectedIntlProps {
+interface Props extends CustomWidgetProps<HTMLInputElement>, InjectedIntlProps {
   label: string
   max?: number
   min?: number
@@ -41,9 +41,8 @@ const BaseInput: React.FunctionComponent<Props> = props => {
 
   const currentError = rawErrors && rawErrors[0]
 
-  const onChange = ({
-    target: { value: inputValue },
-  }: React.ChangeEvent<HTMLInputElement>) => props.onChange(inputValue || '')
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    props.onChange(event.target.value || '', event.target)
 
   return (
     <Input
