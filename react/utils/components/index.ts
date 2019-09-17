@@ -16,6 +16,7 @@ export const RICHTEXT_FORMAT_TYPE = 'RichText'
 export const IO_MESSAGE_FORMATS = [IOMESSAGE_FORMAT_TYPE, RICHTEXT_FORMAT_TYPE]
 
 const INVISIBLE_CHARACTER = '\u200b'
+const INVISIBLE_CHARACTERS_REGEX = new RegExp(INVISIBLE_CHARACTER, 'g')
 
 const reduceProperties = (isContent: boolean) => (
   acc: ComponentSchemaProperties,
@@ -288,15 +289,8 @@ const keepTheBlanks = (
 export const appendInvisibleCharacter = (text: string) =>
   text + INVISIBLE_CHARACTER
 
-const removeInvisibleCharacter = (text: string) => {
-  const lastIndex = text.length - 1
-
-  if (text[lastIndex] !== INVISIBLE_CHARACTER) {
-    return text
-  }
-
-  return text.slice(0, lastIndex)
-}
+const removeInvisibleCharacters = (text: string) =>
+  text.replace(INVISIBLE_CHARACTERS_REGEX, '')
 
 export const getImplementation = (component: string) => {
   return global.__RENDER_8_COMPONENTS__[component]
@@ -329,9 +323,9 @@ export const getSchemaPropsOrContent = ({
             id: value,
           })
         } else {
-          // Removes the invisible character from i18n fields. For more
+          // Removes invisible characters from i18n fields. For more
           // information, please check the I18nInput widget.
-          adaptedValue = removeInvisibleCharacter(value)
+          adaptedValue = removeInvisibleCharacters(value)
         }
 
         return { ...acc, ...assocPath(dataPath, adaptedValue, acc) }
