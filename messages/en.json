@@ -1,4 +1,6 @@
 {
+  "admin/container.sidebar.online-store": "Online store",
+  
   "admin/pages.admin-menu-button.content-pages": "Content Pages",
   "admin/pages.admin-menu-button.pages": "Pages",
   "admin/pages.admin-menu-button.site-editor-smb": "Site Editor",

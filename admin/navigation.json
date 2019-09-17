@@ -18,6 +18,9 @@
   {
     "section": "gocommerce",
     "subSection": "onlinestore",
+    "titleId": "admin/container.sidebar.online-store",
+    "icon": "IconShoppingBasket",
+    "insertAfter": "settings",
     "subSectionItems": [
       {
         "labelId": "admin/pages.admin-menu-button.site-editor-smb",
