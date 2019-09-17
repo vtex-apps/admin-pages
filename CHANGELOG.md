@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.12.3] - 2019-09-17
+
 ### Changed
 
 - Replace the way i18n fields updates are handled with a (somewhat hacky) solution that doesn't use Runtime's `addMessages`.
