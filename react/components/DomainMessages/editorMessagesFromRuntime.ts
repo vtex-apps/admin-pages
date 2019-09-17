@@ -31,22 +31,24 @@ export const editorMessagesFromRuntime = async ({
 }: Props) => {
   const { components, renderMajor } = runtime
   const allComponentNames = keys(components)
-  const componentNames = new Set<string>()
 
-  allComponentNames.forEach(componentName => {
-    if (!fetchedKeys.has(componentName)) {
-      componentNames.add(componentName)
+  const componentNamesToFetch = allComponentNames.filter(componentName => {
+    const shouldFetchComponent = !fetchedKeys.has(componentName)
+
+    if (shouldFetchComponent) {
       fetchedKeys.add(componentName)
     }
+
+    return shouldFetchComponent
   })
 
-  if (componentNames.size === 0) {
+  if (componentNamesToFetch.length === 0) {
     return cachedResult
   }
 
   const componentsBatch = splitEvery(
     MAX_COMPONENTES_PER_QUERY,
-    Array.from<string>(componentNames)
+    componentNamesToFetch
   )
 
   const responses = map(
