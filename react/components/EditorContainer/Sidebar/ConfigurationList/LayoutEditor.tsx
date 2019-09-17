@@ -147,7 +147,7 @@ class LayoutEditor extends Component<Props> {
 
       editor.setIsLoading(false)
     } finally {
-      if (modal.isOpen) {
+      if (modal.getIsOpen()) {
         modal.close()
       }
     }

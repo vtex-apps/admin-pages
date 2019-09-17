@@ -8,7 +8,7 @@ export interface ModalContext {
   cancelHandler: () => void
   closeCallbackHandler?: () => void
   close: () => void
-  isOpen: boolean
+  getIsOpen: () => boolean
   open: () => void
   setHandlers: (handlers: {
     actionHandler?: ModalContext['actionHandler']

@@ -313,7 +313,7 @@ class ConfigurationList extends React.Component<Props, State> {
           newLabel: undefined,
         },
         async () => {
-          if (modal.isOpen) {
+          if (modal.getIsOpen()) {
             modal.close()
           }
 
@@ -500,7 +500,7 @@ class ConfigurationList extends React.Component<Props, State> {
     } catch (err) {
       editor.setIsLoading(false)
 
-      if (modal.isOpen) {
+      if (modal.getIsOpen()) {
         modal.close()
       }
 

@@ -12,7 +12,7 @@ const defaultExternalState: ModalContextT = {
   close: () => {
     return
   },
-  isOpen: false,
+  getIsOpen: () => false,
   open: () => {
     return
   },
@@ -27,7 +27,9 @@ export const useModalContext = () => useContext(ModalContext)
 
 export const ModalConsumer = ModalContext.Consumer
 
-type State = ModalContextT
+interface State extends ModalContextT {
+  isOpen: boolean
+}
 
 export class ModalProvider extends Component<{}, State> {
   public constructor(props: {}) {
@@ -36,6 +38,8 @@ export class ModalProvider extends Component<{}, State> {
     this.state = {
       ...defaultExternalState,
       close: this.close,
+      getIsOpen: this.getIsOpen,
+      isOpen: false,
       open: this.open,
       setHandlers: this.setHandlers,
     }
@@ -63,6 +67,8 @@ export class ModalProvider extends Component<{}, State> {
       }
     )
   }
+
+  private getIsOpen: State['getIsOpen'] = () => this.state.isOpen
 
   private open: State['open'] = () => {
     this.setState({

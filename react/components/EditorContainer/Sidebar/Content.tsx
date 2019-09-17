@@ -21,6 +21,7 @@ import ListContentQuery from '../queries/ListContent'
 import ComponentSelector from './ComponentSelector'
 import ContentEditor from './ConfigurationList/ContentEditor'
 import { useFormMetaContext } from './FormMetaContext'
+import { useModalContext } from './ModalContext'
 import { FormDataContainer } from './typings'
 import { getComponents, getIsSitewide } from './utils'
 
@@ -57,6 +58,10 @@ const Content = (props: Props) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
 
+  const modal = useModalContext()
+
+  const [state, setState] = useState<State>({})
+
   const [components, setComponents] = useState(() =>
     getInitialComponents({
       extensions: iframeRuntime.extensions,
@@ -68,8 +73,6 @@ const Content = (props: Props) => {
     data => updateExtensionFromForm(data),
     200
   )
-
-  const [state, setState] = useState<State>({})
 
   const handleFormChange = useCallback(
     event => {
@@ -101,6 +104,49 @@ const Content = (props: Props) => {
       throttledUpdateExtensionFromForm,
     ]
   )
+
+  const handleConfigurationDiscard = useCallback(() => {
+    if (state.content) {
+      updateExtensionFromForm({
+        data: state.content,
+        isContent: true,
+        runtime: iframeRuntime,
+        treePath: editor.editTreePath,
+      })
+    }
+
+    formMeta.setWasModified(false, () => {
+      handleFormClose()
+    })
+
+  }, [
+    editor.editTreePath,
+    formMeta,
+    iframeRuntime,
+    state.content,
+  ])
+
+  const handleFormClose = useCallback(() => {
+    if (formMeta.getWasModified()) {
+      modal.setHandlers({
+        // actionHandler: handleConfigurationSave,
+        cancelHandler: handleConfigurationDiscard,
+      })
+      modal.open()
+    } else {
+      setState({})
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+      editor.setIsLoading(false)
+      editor.editExtensionPoint(null)
+    }
+  }, [
+    editor.editTreePath,
+    formMeta,
+    iframeRuntime,
+    state,
+  ])
 
   const path = useRef('')
 
@@ -155,99 +201,97 @@ const Content = (props: Props) => {
 
   return (
     <ToastConsumer>
-      {({ showToast }) => (
-        <ListContentQuery
-          variables={{
-            blockId,
-            pageContext: iframeRuntime.route.pageContext,
-            template,
-            treePath: serverTreePath,
-          }}
-        >
-          {({ data, loading, refetch }) => {
-            if (!state.content || !state.contentSchema) {
-              if (!loading) {
-                const extension = getExtension(
-                  editTreePath,
-                  iframeRuntime.extensions
-                )
-
-                const listContent = data && data.listContentWithSchema
-
-                // TODO: get contentSchema from iframeRuntime so query is not needed
-                const contentSchema =
-                  listContent && JSON.parse(listContent.schemaJSON)
-
-                const activeContent =
-                  listContent && listContent.content && listContent.content[0]
-
-                const content =
-                  (activeContent &&
-                    activeContent.contentJSON &&
-                    JSON.parse(activeContent.contentJSON)) ||
-                  {}
-
-                const condition = activeContent && activeContent.condition
-
-                const formData =
-                  getSchemaPropsOrContentFromRuntime({
-                    component: getIframeImplementation(extension.component),
-                    contentSchema,
-                    isContent: true,
-                    messages: iframeRuntime.messages,
-                    propsOrContent: content,
-                    runtime: iframeRuntime,
-                  }) || {}
-
-                setState({
-                  condition,
-                  content,
-                  contentSchema,
-                  formData,
-                })
-              }
-
-              return (
-                <div className="mt9 flex justify-center">
-                  <Spinner />
-                </div>
-              )
-            }
-
-            return (
-              <SaveContentMutation>
-                {saveContent => (
-                  <DeleteContentMutation>
-                    {deleteContent => (
-                      <ContentEditor
-                        componentTitle={''}
-                        condition={
-                          (state
-                            ? state.condition
-                            : {}) as ExtensionConfiguration['condition']
-                        }
-                        contentSchema={state.contentSchema}
-                        data={state.formData as FormDataContainer}
-                        iframeRuntime={iframeRuntime}
-                        isDefault
-                        isNew={false}
-                        isSitewide={isSitewide}
-                        onClose={() => {
-                          editor.editExtensionPoint(null)
-                        }}
-                        onConditionChange={() => {}}
-                        onFormChange={handleFormChange}
-                        onTitleChange={() => {}}
-                        onSave={() => {}}
-                      />
-                    )}
-                  </DeleteContentMutation>
-                )}
-              </SaveContentMutation>
+    {() => (
+      <ListContentQuery
+      variables={{
+        blockId,
+          pageContext: iframeRuntime.route.pageContext,
+          template,
+          treePath: serverTreePath,
+      }}
+      >
+      {({ data, loading }) => {
+        if (!state.content || !state.contentSchema) {
+          if (!loading) {
+            const extension = getExtension(
+              editTreePath,
+              iframeRuntime.extensions
             )
-          }}
-        </ListContentQuery>
-      )}
+
+            const listContent = data && data.listContentWithSchema
+
+            // TODO: get contentSchema from iframeRuntime so query is not needed
+            const contentSchema =
+              listContent && JSON.parse(listContent.schemaJSON)
+
+            const activeContent =
+              listContent && listContent.content && listContent.content[0]
+
+            const content =
+              (activeContent &&
+                activeContent.contentJSON &&
+                JSON.parse(activeContent.contentJSON)) ||
+              {}
+
+            const condition = activeContent && activeContent.condition
+
+            const formData =
+              getSchemaPropsOrContentFromRuntime({
+                component: getIframeImplementation(extension.component),
+                contentSchema,
+                isContent: true,
+                messages: iframeRuntime.messages,
+                propsOrContent: content,
+                runtime: iframeRuntime,
+              }) || {}
+
+            setState({
+              condition,
+              content,
+              contentSchema,
+              formData,
+            })
+          }
+
+          return (
+            <div className="mt9 flex justify-center">
+            <Spinner />
+            </div>
+          )
+        }
+
+        return (
+          <SaveContentMutation>
+          {() => (
+            <DeleteContentMutation>
+            {() => (
+              <ContentEditor
+                componentTitle={''}
+                condition={
+                  (state
+                    ? state.condition
+                    : {}) as ExtensionConfiguration['condition']
+                }
+                contentSchema={state.contentSchema}
+                data={state.formData as FormDataContainer}
+                isDefault
+                iframeRuntime={iframeRuntime}
+                isNew={false}
+                isSitewide={isSitewide}
+                onClose={handleFormClose}
+                onConditionChange={() => {}}
+                onFormChange={handleFormChange}
+                onTitleChange={() => {}}
+                onSave={() => {}}
+              />
+            )}
+            </DeleteContentMutation>
+          )}
+          </SaveContentMutation>
+        )
+      }}
+      </ListContentQuery>
+    )}
     </ToastConsumer>
   )
 }
