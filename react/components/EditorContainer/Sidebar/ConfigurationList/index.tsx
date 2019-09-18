@@ -168,8 +168,6 @@ class ConfigurationList extends React.Component<Props, State> {
       )
     }
 
-    debugger
-
     return (
       <ContentEditor
         componentTitle={this.state.newLabel}
@@ -379,7 +377,6 @@ class ConfigurationList extends React.Component<Props, State> {
   private handleConfigurationOpen = async (
     newConfiguration: ExtensionConfiguration
   ) => {
-    debugger
     const { editor, iframeRuntime, intl, showToast } = this.props
 
     if (!editor.editTreePath) {

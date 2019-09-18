@@ -8,22 +8,47 @@ import { useEditorContext } from '../../EditorContext'
 import UpdateBlockMutation from '../mutations/UpdateBlock'
 
 import ComponentList from './ComponentList'
-import { SidebarComponent } from './typings'
+import { getInitialComponents } from './utils'
 
 interface Props {
-  components: SidebarComponent[]
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
-  updateSidebarComponents: (components: SidebarComponent[]) => void
 }
 
 const ComponentSelector: React.FunctionComponent<Props> = ({
-  components,
   highlightHandler,
   iframeRuntime,
-  updateSidebarComponents,
 }) => {
+  const [components, setComponents] = React.useState(() =>
+    getInitialComponents({
+      extensions: iframeRuntime.extensions,
+      page: iframeRuntime.page,
+    })
+  )
+
   const editor = useEditorContext()
+
+  const path = React.useRef('')
+
+  React.useEffect(() => {
+    if (path.current !== iframeRuntime.route.path) {
+      setComponents(
+        getInitialComponents({
+          extensions: iframeRuntime.extensions,
+          page: iframeRuntime.page,
+        })
+      )
+
+      editor.setIsLoading(false)
+
+      path.current = iframeRuntime.route.path
+    }
+  }, [
+    editor,
+    iframeRuntime.extensions,
+    iframeRuntime.page,
+    iframeRuntime.route.path,
+  ])
 
   const handleEditModeToggle = editor.toggleEditMode
 
@@ -48,6 +73,7 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
         <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
           <FormattedMessage id="admin/pages.editor.components.title" />
         </h3>
+
         <div
           className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn outline-0"
           onClick={handleEditModeToggle}
@@ -60,6 +86,7 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
           </span>
         </div>
       </div>
+
       <div className="bb bw1 b--light-silver" />
       <ToastConsumer>
         {({ showToast }) => (
@@ -73,7 +100,7 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
                 onMouseLeaveComponent={handleMouseLeave}
                 iframeRuntime={iframeRuntime}
                 showToast={showToast}
-                updateSidebarComponents={updateSidebarComponents}
+                updateSidebarComponents={setComponents}
                 updateBlock={updateBlock}
               />
             )}

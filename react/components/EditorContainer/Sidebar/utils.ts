@@ -1,14 +1,18 @@
 import throttle from 'lodash/throttle'
-import { ComponentsRegistry } from 'vtex.render-runtime'
 import { path, pathOr } from 'ramda'
+import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'
-import { isRootComponent } from './ComponentList/utils'
-import { SidebarComponent } from './typings'
-
 import {
+  getExtension,
+  getIframeImplementation,
   getIframeRenderComponents,
+  getSchemaPropsOrContentFromRuntime,
+  updateExtensionFromForm,
 } from '../../../utils/components'
+
+import { isRootComponent } from './ComponentList/utils'
+import { GetInitialFormState, SidebarComponent } from './typings'
 
 export const generateWarningMessage = (name: string) =>
   `[Site Editor] Component "${name}" exports schema but doesn't have a "title" property, because of that, it won't appear in the lateral list. If this is intended, ignore this message.`
@@ -18,6 +22,47 @@ const isSamePage = (page: string, treePath: string) => {
   const treePathHead = treePath && treePath.split('/')[0]
 
   return pageHead && treePathHead && treePathHead === pageHead
+}
+
+export const getInitialFormState: GetInitialFormState = ({
+  data,
+  editTreePath,
+  iframeRuntime,
+}) => {
+  const extension = getExtension(editTreePath, iframeRuntime.extensions)
+
+  const listContent = data && data.listContentWithSchema
+
+  // TODO: get contentSchema from iframeRuntime so query is not needed
+  const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
+
+  const activeContent =
+    listContent && listContent.content && listContent.content[0]
+
+  const content =
+    (activeContent &&
+      activeContent.contentJSON &&
+      JSON.parse(activeContent.contentJSON)) ||
+    {}
+
+  const condition = activeContent && activeContent.condition
+
+  const formData =
+    getSchemaPropsOrContentFromRuntime({
+      component: getIframeImplementation(extension.component),
+      contentSchema,
+      isContent: true,
+      messages: iframeRuntime.messages,
+      propsOrContent: content,
+      runtime: iframeRuntime,
+    }) || {}
+
+  return {
+    condition,
+    content,
+    contentSchema,
+    formData,
+  }
 }
 
 const getParentContainerBlocksGetter = (extensions: Extensions) => (
@@ -57,12 +102,6 @@ const getComponentSchemaGetter = (
   )
 }
 
-export const getInitialComponents = ({
-  extensions,
-  page,
-}: Pick<RenderContext, 'extensions' | 'page'>) =>
-  getComponents(extensions, getIframeRenderComponents(), page)
-
 export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
   return (
     schema.type === 'object' &&
@@ -73,11 +112,6 @@ export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
     )
   )
 }
-
-export const throttledUpdateExtensionFromForm = throttle(
-  data => updateExtensionFromForm(data),
-  200
-)
 
 const getComponents = (
   extensions: Extensions,
@@ -185,6 +219,12 @@ const getComponents = (
     .map<SidebarComponent>(treePath => sidebarComponentMap[treePath])
 }
 
+export const getInitialComponents = ({
+  extensions,
+  page,
+}: Pick<RenderContext, 'extensions' | 'page'>) =>
+  getComponents(extensions, getIframeRenderComponents(), page)
+
 export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
   const blockPath = getBlockPath(extensions, editTreePath)
 
@@ -202,3 +242,17 @@ export const getIsDefaultContent: (
 export const isUnidentifiedPageContext = (
   pageContext: RenderRuntime['route']['pageContext']
 ) => pageContext.type !== '*' && pageContext.id === '*'
+
+export const omitUndefined = (obj: Extension['content']) =>
+  Object.entries(obj).reduce((acc, [currKey, currValue]) => {
+    if (typeof currValue === 'undefined') {
+      return acc
+    }
+
+    return { ...acc, [currKey]: currValue }
+  }, {})
+
+export const throttledUpdateExtensionFromForm = throttle(
+  data => updateExtensionFromForm(data),
+  200
+)

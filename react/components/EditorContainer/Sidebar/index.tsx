@@ -4,6 +4,7 @@ import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 
+import ComponentSelector from './ComponentSelector'
 import Content from './Content'
 import { useModalContext } from './ModalContext'
 
@@ -39,7 +40,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     actionHandler: handleModalAction,
     cancelHandler: handleModalCancel,
     close: handleModalClose,
-    isOpen: isModalOpen,
+    getIsOpen: getIsModalOpen,
   } = useModalContext()
 
   const isLoading = editor.getIsLoading()
@@ -65,7 +66,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
         >
           <Modal
             isActionLoading={isLoading}
-            isOpen={isModalOpen}
+            isOpen={getIsModalOpen()}
             onClickAction={handleModalAction}
             onClickCancel={handleModalCancel}
             onClose={handleModalClose}
@@ -73,12 +74,15 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}
           />
-          {!isLoading && (
-            <Content
-              highlightHandler={highlightHandler}
-              iframeRuntime={runtime}
-            />
-          )}
+          {!isLoading &&
+            (editor.editTreePath === null ? (
+              <ComponentSelector
+                highlightHandler={highlightHandler}
+                iframeRuntime={runtime}
+              />
+            ) : (
+              <Content iframeRuntime={runtime} />
+            ))}
         </div>
       </nav>
     </div>
