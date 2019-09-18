@@ -55,7 +55,7 @@ interface State {
 
 const messages = defineMessages({
   deleteError: {
-    defaultMessage: 'Something went wrong.',
+    defaultMessage: 'Something went wrong. Please try again.',
     id: 'admin/pages.editor.components.content.delete.error',
   },
   deleteSuccess: {

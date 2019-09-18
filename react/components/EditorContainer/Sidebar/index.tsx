@@ -1,8 +1,11 @@
 import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
+import DeleteContentMutation from '../mutations/DeleteContent'
+import SaveContentMutation from '../mutations/SaveContent'
 
 import ComponentSelector from './ComponentSelector'
 import Content from './Content'
@@ -74,15 +77,31 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}
           />
-          {!isLoading &&
-            (editor.editTreePath === null ? (
-              <ComponentSelector
-                highlightHandler={highlightHandler}
-                iframeRuntime={runtime}
-              />
-            ) : (
-              <Content iframeRuntime={runtime} />
-            ))}
+          {editor.editTreePath === null ? (
+            <ComponentSelector
+              highlightHandler={highlightHandler}
+              iframeRuntime={runtime}
+            />
+          ) : (
+            <ToastConsumer>
+              {({ showToast }) => (
+                <SaveContentMutation>
+                  {saveContent => (
+                    <DeleteContentMutation>
+                      {deleteContent => (
+                        <Content
+                          deleteContent={deleteContent}
+                          iframeRuntime={runtime}
+                          saveContent={saveContent}
+                          showToast={showToast}
+                        />
+                      )}
+                    </DeleteContentMutation>
+                  )}
+                </SaveContentMutation>
+              )}
+            </ToastConsumer>
+          )}
         </div>
       </nav>
     </div>

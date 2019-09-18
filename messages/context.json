@@ -142,6 +142,8 @@
   "admin/pages.editor.components.content.delete.success": "admin/pages.editor.components.content.delete.success",
   "admin/pages.editor.components.content.reset.error": "admin/pages.editor.components.content.reset.error",
   "admin/pages.editor.components.content.reset.success": "admin/pages.editor.components.content.reset.success",
+  "admin/pages.editor.components.content.save.error": "admin/pages.editor.components.content.save.error",
+  "admin/pages.editor.components.content.save.success": "admin/pages.editor.components.content.save.success",
   "admin/pages.editor.components.modal.button.discard": "admin/pages.editor.components.modal.button.discard",
   "admin/pages.editor.components.modal.text": "admin/pages.editor.components.modal.text",
   "admin/pages.editor.components.no-image": "admin/pages.editor.components.no-image",

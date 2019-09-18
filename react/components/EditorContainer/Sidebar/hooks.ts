@@ -1,7 +1,11 @@
-import { equals } from 'ramda'
+import { equals, path } from 'ramda'
 import { useCallback } from 'react'
+import { defineMessages } from 'react-intl'
 
-import { updateExtensionFromForm } from '../../../utils/components'
+import {
+  updateExtensionFromForm,
+  getSchemaPropsOrContent,
+} from '../../../utils/components'
 import { useEditorContext } from '../../EditorContext'
 
 import { useFormMetaContext } from './FormMetaContext'
@@ -9,10 +13,26 @@ import { useModalContext } from './ModalContext'
 import { omitUndefined, throttledUpdateExtensionFromForm } from './utils'
 import { UseFormHandlers } from './typings'
 
+const messages = defineMessages({
+  saveError: {
+    defaultMessage: 'Something went wrong. Please try again.',
+    id: 'admin/pages.editor.components.content.save.error',
+  },
+  saveSuccess: {
+    defaultMessage: 'Content saved.',
+    id: 'admin/pages.editor.components.content.save.success',
+  },
+})
+
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
+  intl,
+  saveMutation,
+  serverTreePath,
   setState,
+  showToast,
   state,
+  template,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
@@ -42,11 +62,95 @@ export const useFormHandlers: UseFormHandlers = ({
     [editor.editTreePath, formMeta, iframeRuntime, setState, state]
   )
 
+  const handleFormSave = useCallback(async () => {
+    if (editor.getIsLoading()) {
+      return
+    }
+
+    const content = getSchemaPropsOrContent({
+      propsOrContent: state.formData,
+      schema: state.componentSchema,
+    })
+
+    // TODO
+    // const label =
+    //   this.state.newLabel !== undefined
+    //     ? this.state.newLabel
+    //     : this.state.configuration.label
+
+    const configuration = {
+      condition: state.condition,
+      contentId: state.contentId,
+      contentJSON: JSON.stringify(content),
+      label: state.label,
+      origin: state.origin || null,
+    }
+
+    const blockId = path<string>(
+      ['extensions', editor.editTreePath || '', 'blockId'],
+      iframeRuntime
+    )
+
+    let error: Error | undefined
+
+    try {
+      editor.setIsLoading(true)
+
+      await saveMutation({
+        variables: {
+          blockId,
+          configuration,
+          lang: iframeRuntime.culture.locale,
+          template,
+          treePath: serverTreePath,
+        },
+      })
+
+      formMeta.setWasModified(false)
+    } catch (err) {
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+
+      console.error(err)
+
+      error = err
+    } finally {
+      editor.setIsLoading(false)
+
+      showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage(
+          error ? messages.saveError : messages.saveSuccess
+        ),
+      })
+    }
+  }, [
+    editor,
+    formMeta,
+    iframeRuntime,
+    intl,
+    modal,
+    saveMutation,
+    serverTreePath,
+    showToast,
+    state.componentSchema,
+    state.condition,
+    state.contentId,
+    state.formData,
+    state.label,
+    state.origin,
+    template,
+  ])
+
   const handleFormClose = useCallback(() => {
     if (formMeta.getWasModified()) {
       modal.setHandlers({
-        // TODO
-        // actionHandler: handleFormSave,
+        actionHandler: async () => {
+          await handleFormSave()
+
+          handleFormClose()
+        },
         cancelHandler: () => {
           if (state.content) {
             updateExtensionFromForm({
@@ -73,10 +177,11 @@ export const useFormHandlers: UseFormHandlers = ({
 
       editor.editExtensionPoint(null)
     }
-  }, [editor, formMeta, iframeRuntime, modal, state.content])
+  }, [editor, formMeta, handleFormSave, iframeRuntime, modal, state.content])
 
   return {
     handleFormChange,
     handleFormClose,
+    handleFormSave,
   }
 }

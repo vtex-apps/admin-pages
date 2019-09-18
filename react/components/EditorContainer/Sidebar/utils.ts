@@ -4,6 +4,7 @@ import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'
 import {
+  getComponentSchema,
   getExtension,
   getIframeImplementation,
   getIframeRenderComponents,
@@ -33,11 +34,23 @@ export const getInitialFormState: GetInitialFormState = ({
 
   const listContent = data && data.listContentWithSchema
 
+  const componentImplementation = getIframeImplementation(extension.component)
+
   // TODO: get contentSchema from iframeRuntime so query is not needed
   const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
 
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema: contentSchema,
+    isContent: true,
+    propsOrContent: extension.content,
+    runtime: iframeRuntime,
+  })
+
   const activeContent =
     listContent && listContent.content && listContent.content[0]
+
+  const contentId = activeContent && activeContent.contentId
 
   const content =
     (activeContent &&
@@ -49,7 +62,7 @@ export const getInitialFormState: GetInitialFormState = ({
 
   const formData =
     getSchemaPropsOrContentFromRuntime({
-      component: getIframeImplementation(extension.component),
+      component: componentImplementation,
       contentSchema,
       isContent: true,
       messages: iframeRuntime.messages,
@@ -58,7 +71,9 @@ export const getInitialFormState: GetInitialFormState = ({
     }) || {}
 
   return {
+    componentSchema,
     condition,
+    contentId,
     content,
     contentSchema,
     formData,
