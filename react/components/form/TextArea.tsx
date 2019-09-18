@@ -5,12 +5,15 @@ import { Textarea } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-type Props = CustomWidgetProps<HTMLTextAreaElement> & InjectedIntlProps
+interface Props extends CustomWidgetProps, InjectedIntlProps {
+  isI18n?: boolean
+}
 
 const TextArea: React.FunctionComponent<Props> = ({
   disabled,
   id,
   intl,
+  isI18n,
   label,
   onBlur,
   onChange,
@@ -31,10 +34,14 @@ const TextArea: React.FunctionComponent<Props> = ({
   )
 
   const handleChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-      onChange(event.target.value || '', event.target)
+    ({ target }: React.ChangeEvent<HTMLTextAreaElement>) => {
+      if (isI18n) {
+        onChange({ target, value: target.value || '' })
+      } else {
+        onChange(target.value)
+      }
     },
-    [onChange]
+    [isI18n, onChange]
   )
 
   const handleFocus = React.useCallback(

@@ -522,9 +522,9 @@ class ConfigurationList extends React.Component<Props, State> {
     }
   }
 
-  private handleFormChange: FormProps<{
-    formData: object
-  }>['onChange'] = event => {
+  private handleFormChange: FormProps<
+    FormDataContainer
+  >['onChange'] = event => {
     const { editor, formMeta, iframeRuntime } = this.props
 
     if (

@@ -5,7 +5,8 @@ import { Input } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-interface Props extends CustomWidgetProps<HTMLInputElement>, InjectedIntlProps {
+interface Props extends CustomWidgetProps, InjectedIntlProps {
+  isI18n?: boolean
   label: string
   max?: number
   min?: number
@@ -21,10 +22,12 @@ const BaseInput: React.FunctionComponent<Props> = props => {
     disabled,
     id,
     intl,
+    isI18n,
     label,
     max,
     min,
     onBlur,
+    onChange,
     onFocus,
     options,
     placeholder,
@@ -41,9 +44,16 @@ const BaseInput: React.FunctionComponent<Props> = props => {
 
   const currentError = rawErrors && rawErrors[0]
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-    props.onChange(event.target.value || '', event.target)
-
+  const handleChange = React.useCallback(
+    ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+      if (isI18n) {
+        onChange({ target, value: target.value || '' })
+      } else {
+        onChange(target.value)
+      }
+    },
+    [isI18n, onChange]
+  )
   return (
     <Input
       disabled={disabled || schema.disabled}
@@ -62,7 +72,7 @@ const BaseInput: React.FunctionComponent<Props> = props => {
         ((event: React.ChangeEvent<HTMLInputElement>) =>
           onBlur(id, event.target.value))
       }
-      onChange={onChange}
+      onChange={handleChange}
       onFocus={
         onFocus &&
         ((event: React.ChangeEvent<HTMLInputElement>) =>
