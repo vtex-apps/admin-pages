@@ -1,9 +1,14 @@
-import { path, pathOr } from 'ramda'
+import throttle from 'lodash/throttle'
 import { ComponentsRegistry } from 'vtex.render-runtime'
+import { path, pathOr } from 'ramda'
 
 import { getBlockPath } from '../../../utils/blocks'
 import { isRootComponent } from './ComponentList/utils'
 import { SidebarComponent } from './typings'
+
+import {
+  getIframeRenderComponents,
+} from '../../../utils/components'
 
 export const generateWarningMessage = (name: string) =>
   `[Site Editor] Component "${name}" exports schema but doesn't have a "title" property, because of that, it won't appear in the lateral list. If this is intended, ignore this message.`
@@ -52,6 +57,12 @@ const getComponentSchemaGetter = (
   )
 }
 
+export const getInitialComponents = ({
+  extensions,
+  page,
+}: Pick<RenderContext, 'extensions' | 'page'>) =>
+  getComponents(extensions, getIframeRenderComponents(), page)
+
 export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
   return (
     schema.type === 'object' &&
@@ -63,11 +74,16 @@ export const hasContentPropsInSchema = (schema: ComponentSchema): boolean => {
   )
 }
 
-export function getComponents(
+export const throttledUpdateExtensionFromForm = throttle(
+  data => updateExtensionFromForm(data),
+  200
+)
+
+const getComponents = (
   extensions: Extensions,
   components: ComponentsRegistry | null,
   page: string
-) {
+) => {
   const getParentContainerProps = getParentContainerBlocksGetter(extensions)
 
   const getComponentName = getComponentNameGetterFromExtensions(extensions)
