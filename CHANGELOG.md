@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.12.4] - 2019-09-18
+
 ### Fixed
 
 - Widgets' `onChange` and, consequently, v4.12.3's i18n solution.
