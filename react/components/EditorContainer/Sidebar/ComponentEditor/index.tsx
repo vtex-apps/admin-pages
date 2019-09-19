@@ -108,7 +108,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          onOpenList={isRootLevel ?  onOpenList : undefined}
+          onOpenList={isRootLevel ? onOpenList : undefined}
           onClose={componentFormState ? componentFormState.onClose : onClose}
           title={componentFormState ? componentFormState.title : title}
         />

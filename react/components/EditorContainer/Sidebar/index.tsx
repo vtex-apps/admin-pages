@@ -61,12 +61,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
         id="admin-sidebar"
         className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
-        <div
-          className={`h-100 flex flex-column dark-gray ${
-            // TODO: Check if 'relative' could always be active
-            isLoading ? 'relative' : ''
-          }`}
-        >
+        <div className={'h-100 flex flex-column dark-gray'}>
           <Modal
             isActionLoading={isLoading}
             isOpen={getIsModalOpen()}
