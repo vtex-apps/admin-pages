@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo } from 'react'
+import React, { useCallback, Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
@@ -49,8 +49,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   isSitewide = false,
   label,
   onChange,
-  onConditionChange,
   onClose,
+  onConditionChange,
   onLabelChange,
   onSave,
   title,
@@ -95,6 +95,12 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   const isArrayFieldOpen = Boolean(componentFormState)
 
+  const isRootLevel = componentFormState === undefined
+
+  const onOpenList = useCallback(() => {
+    console.log('🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑')
+  }, [])
+
   return (
     <Fragment>
       <ContentContainer
@@ -102,6 +108,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
+          onOpenList={isRootLevel ?  onOpenList : undefined}
           onClose={componentFormState ? componentFormState.onClose : onClose}
           title={componentFormState ? componentFormState.title : title}
         />

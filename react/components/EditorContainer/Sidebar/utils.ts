@@ -47,8 +47,9 @@ export const getInitialFormState: GetInitialFormState = ({
     runtime: iframeRuntime,
   })
 
-  const activeContent =
-    listContent && listContent.content && listContent.content[0]
+  const configurations = listContent && listContent.content
+
+  const activeContent = configurations && configurations[0]
 
   const contentId = (activeContent && activeContent.contentId) || null
 
@@ -75,6 +76,7 @@ export const getInitialFormState: GetInitialFormState = ({
   return {
     componentSchema,
     condition,
+    configurations,
     contentId,
     content,
     contentSchema,

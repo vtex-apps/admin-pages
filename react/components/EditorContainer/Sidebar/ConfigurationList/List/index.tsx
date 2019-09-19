@@ -9,7 +9,6 @@ import CreateButton from './CreateButton'
 
 interface Props {
   configurations: ExtensionConfiguration[]
-  isDisabledChecker: (configuration: ExtensionConfiguration) => boolean
   isSitewide: boolean
   onClose: () => void
   onDelete: (configuration: ExtensionConfiguration) => void
@@ -20,7 +19,6 @@ interface Props {
 
 const List: React.FunctionComponent<Props> = ({
   configurations,
-  isDisabledChecker,
   isSitewide,
   onClose,
   onCreate,
@@ -41,7 +39,7 @@ const List: React.FunctionComponent<Props> = ({
             onDelete={() => {
               onDelete(configuration)
             }}
-            isDisabled={isDisabledChecker(configuration)}
+            isDisabled={false}
             isDefaultContent={getIsDefaultContent(configuration)}
             isSitewide={isSitewide}
             key={index}

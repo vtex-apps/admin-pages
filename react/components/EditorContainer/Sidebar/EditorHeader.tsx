@@ -5,12 +5,16 @@ import { IconArrowBack } from 'vtex.styleguide'
 interface Props {
   isTitleEditable?: boolean
   onClose: () => void
+  onOpenList?: () => void
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: string
 }
 
-const EditorHeader: React.FC<Props> = ({ onClose, title }) => {
-  const handleKeyDown = useKeydownFromClick(onClose)
+const noop = () => { return }
+
+const EditorHeader: React.FC<Props> = ({ onClose, onOpenList, title }) => {
+  const handleCloseKeyDown = useKeydownFromClick(onClose)
+  const handleOpenListKeyDown = useKeydownFromClick(onOpenList || noop)
 
   const titleBaseClassName = 'w-100 ma0 lh-copy f5 fw5 near-black'
 
@@ -21,18 +25,30 @@ const EditorHeader: React.FC<Props> = ({ onClose, title }) => {
           <span
             className="pointer outline-0"
             onClick={onClose}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleCloseKeyDown}
             role="button"
             tabIndex={0}
           >
             <IconArrowBack color="#727273" size={12} />
           </span>
 
-          <div className="w-100 pl3 flex justify-between items-center">
+          <div className="w-100 pl3 flex flex-grow-1 justify-between items-center">
             <h4 className={`ba b--transparent ${titleBaseClassName}`}>
               {title}
             </h4>
           </div>
+
+          {onOpenList && (
+            <span
+              className="pointer outline-0"
+              onClick={onOpenList}
+              onKeyDown={handleOpenListKeyDown}
+              role="button"
+              tabIndex={0}
+            >
+              <IconArrowBack color="#727273" size={12} />
+            </span>
+          )}
         </div>
       </div>
     </div>
