@@ -50,7 +50,7 @@ export const getInitialFormState: GetInitialFormState = ({
   const activeContent =
     listContent && listContent.content && listContent.content[0]
 
-  const contentId = activeContent && activeContent.contentId
+  const contentId = (activeContent && activeContent.contentId) || null
 
   const content =
     (activeContent &&
@@ -70,6 +70,8 @@ export const getInitialFormState: GetInitialFormState = ({
       runtime: iframeRuntime,
     }) || {}
 
+  const label = activeContent && activeContent.label
+
   return {
     componentSchema,
     condition,
@@ -77,6 +79,7 @@ export const getInitialFormState: GetInitialFormState = ({
     content,
     contentSchema,
     formData,
+    label,
   }
 }
 

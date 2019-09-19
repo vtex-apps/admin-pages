@@ -241,10 +241,10 @@ declare global {
         verb: string
       }[]
     }
-    contentId: string
+    contentId: string | null
     contentJSON: string
+    label: string | null
     origin: string | null
-    label?: string
   }
 
   type RedirectTypes = 'permanent' | 'temporary'

@@ -3,7 +3,7 @@ import { FormattedMessage } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 
 import { LabelledLocale } from '../../DomainMessages'
-import EditableText from '../Sidebar/EditorHeader/EditableText'
+import EditableText from '../EditableText'
 
 import ModeButton from './components/ModeButton'
 

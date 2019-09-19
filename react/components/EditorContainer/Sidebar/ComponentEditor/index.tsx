@@ -6,6 +6,7 @@ import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
+import EditableText from '../../EditableText'
 import ContentContainer from '../ContentContainer'
 import EditorHeader from '../EditorHeader'
 import { useFormMetaContext } from '../FormMetaContext'
@@ -25,14 +26,15 @@ interface CustomProps {
   isDefault?: boolean
   isNew?: boolean
   isSitewide?: boolean
+  label?: string | null
   onChange: FormProps<FormDataContainer>['onChange']
   onClose: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
+  onLabelChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSave: () => void
-  onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
-  title?: ComponentSchema['title']
+  title: ComponentSchema['title']
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
@@ -45,11 +47,12 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   isDefault,
   isNew,
   isSitewide = false,
+  label,
   onChange,
   onConditionChange,
   onClose,
+  onLabelChange,
   onSave,
-  onTitleChange,
   title,
 }) => {
   const editor = useEditorContext()
@@ -90,10 +93,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   const shouldDisableSaveButton =
     isLoading || (!formMeta.getWasModified() && !isNew)
 
-  const onHeaderTitleChange = componentFormState
-    ? componentFormState.onTitleChange
-    : onTitleChange
-
   const isArrayFieldOpen = Boolean(componentFormState)
 
   return (
@@ -103,9 +102,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          isTitleEditable={onHeaderTitleChange && isContent}
           onClose={componentFormState ? componentFormState.onClose : onClose}
-          onTitleChange={onHeaderTitleChange}
           title={componentFormState ? componentFormState.title : title}
         />
 
@@ -116,6 +113,20 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             { [styles['form--leave']]: isArrayFieldOpen }
           )}
         >
+          <FormattedMessage
+            defaultMessage="Untitled content"
+            id="admin/pages.editor.configuration.defaultTitle"
+          >
+            {placeholder => (
+              <EditableText
+                baseClassName="lh-copy f6 fw5 near-black"
+                onChange={onLabelChange}
+                placeholder={placeholder as string}
+                value={label || ''}
+              />
+            )}
+          </FormattedMessage>
+
           <Form
             formContext={{
               currentDepth,

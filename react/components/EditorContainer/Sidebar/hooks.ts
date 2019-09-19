@@ -82,7 +82,7 @@ export const useFormHandlers: UseFormHandlers = ({
       condition: state.condition,
       contentId: state.contentId,
       contentJSON: JSON.stringify(content),
-      label: state.label,
+      label: state.label || null,
       origin: state.origin || null,
     }
 
@@ -179,9 +179,21 @@ export const useFormHandlers: UseFormHandlers = ({
     }
   }, [editor, formMeta, handleFormSave, iframeRuntime, modal, state.content])
 
+  const handleLabelChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setState({ label: event.target.value })
+
+      if (!formMeta.getWasModified()) {
+        formMeta.setWasModified(true)
+      }
+    },
+    [formMeta, setState]
+  )
+
   return {
     handleFormChange,
     handleFormClose,
     handleFormSave,
+    handleLabelChange,
   }
 }

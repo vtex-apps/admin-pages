@@ -60,7 +60,7 @@ interface UseFormHandlersParams {
   intl: InjectedIntl
   saveMutation: MutationFn<SaveContentData, SaveContentVariables>
   serverTreePath: string
-  setState: React.Dispatch<SetStateAction<FormState>>
+  setState: React.Dispatch<FormState>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState
   template: string
@@ -72,4 +72,5 @@ export type UseFormHandlers = (
   handleFormChange: FormProps<FormDataContainer>['onChange']
   handleFormClose: () => void
   handleFormSave: () => void
+  handleLabelChange: React.ChangeEventHandler<HTMLInputElement>
 }

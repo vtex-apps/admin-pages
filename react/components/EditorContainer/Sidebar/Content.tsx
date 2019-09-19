@@ -13,6 +13,7 @@ import ComponentEditor from './ComponentEditor'
 import { useFormHandlers } from './hooks'
 import { FormDataContainer } from './typings'
 import { getInitialFormState, getIsSitewide } from './utils'
+import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
   deleteContent: DeleteContentMutationFn
@@ -63,18 +64,21 @@ const Content = ({
     ? getSitewideTreePath(editTreePath)
     : editTreePath
 
-  const { handleFormChange, handleFormClose, handleFormSave } = useFormHandlers(
-    {
-      iframeRuntime,
-      intl,
-      saveMutation: saveContent,
-      serverTreePath,
-      setState,
-      showToast,
-      state,
-      template,
-    }
-  )
+  const {
+    handleFormChange,
+    handleFormClose,
+    handleFormSave,
+    handleLabelChange,
+  } = useFormHandlers({
+    iframeRuntime,
+    intl,
+    saveMutation: saveContent,
+    serverTreePath,
+    setState,
+    showToast,
+    state,
+    template,
+  })
 
   return (
     <ListContentQuery
@@ -104,6 +108,11 @@ const Content = ({
           )
         }
 
+        const componentTitleId =
+          (state.componentSchema && state.componentSchema.title) || ''
+
+        const componentTitle = formatIOMessage({ id: componentTitleId, intl })
+
         return (
           <ComponentEditor
             condition={
@@ -115,14 +124,14 @@ const Content = ({
             data={state.formData as FormDataContainer}
             iframeRuntime={iframeRuntime}
             isDefault
-            isNew={false}
             isSitewide={isSitewide}
+            label={state.label}
             onChange={handleFormChange}
             onClose={handleFormClose}
             onConditionChange={() => {}}
+            onLabelChange={handleLabelChange}
             onSave={handleFormSave}
-            onTitleChange={() => {}}
-            title={''}
+            title={componentTitle}
           />
         )
       }}
