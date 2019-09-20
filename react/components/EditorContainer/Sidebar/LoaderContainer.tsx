@@ -10,7 +10,7 @@ interface Props {
   id?: string
 }
 
-const ContentContainer: React.FunctionComponent<Props> = ({
+const LoaderContainer: React.FunctionComponent<Props> = ({
   children,
   containerClassName,
   id,
@@ -34,4 +34,4 @@ const ContentContainer: React.FunctionComponent<Props> = ({
   )
 }
 
-export default React.memo(ContentContainer)
+export default React.memo(LoaderContainer)

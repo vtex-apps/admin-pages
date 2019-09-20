@@ -1,26 +1,25 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React, { Fragment } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { ToastConsumer } from 'vtex.styleguide'
 
-import SelectionIcon from '../../../images/SelectionIcon'
-import { useEditorContext } from '../../EditorContext'
-import UpdateBlockMutation from '../mutations/UpdateBlock'
+import SelectionIcon from '../../../../images/SelectionIcon'
+import { useEditorContext } from '../../../EditorContext'
 
-import ComponentList from './ComponentList'
-import { getInitialComponents } from './utils'
+import { getNormalizedBlocks } from './utils'
+
+import BlockList from './BlockList'
 
 interface Props {
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
 }
 
-const ComponentSelector: React.FunctionComponent<Props> = ({
+const BlockSelector: React.FunctionComponent<Props> = ({
   highlightHandler,
   iframeRuntime,
 }) => {
-  const [components, setComponents] = React.useState(() =>
-    getInitialComponents({
+  const [blocks, setBlocks] = React.useState(() =>
+    getNormalizedBlocks({
       extensions: iframeRuntime.extensions,
       page: iframeRuntime.page,
     })
@@ -32,8 +31,8 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
 
   React.useEffect(() => {
     if (path.current !== iframeRuntime.route.path) {
-      setComponents(
-        getInitialComponents({
+      setBlocks(
+        getNormalizedBlocks({
           extensions: iframeRuntime.extensions,
           page: iframeRuntime.page,
         })
@@ -88,27 +87,16 @@ const ComponentSelector: React.FunctionComponent<Props> = ({
       </div>
 
       <div className="bb bw1 b--light-silver" />
-      <ToastConsumer>
-        {({ showToast }) => (
-          <UpdateBlockMutation>
-            {updateBlock => (
-              <ComponentList
-                components={components}
-                editor={editor}
-                highlightHandler={highlightHandler}
-                onMouseEnterComponent={handleMouseEnter}
-                onMouseLeaveComponent={handleMouseLeave}
-                iframeRuntime={iframeRuntime}
-                showToast={showToast}
-                updateSidebarComponents={setComponents}
-                updateBlock={updateBlock}
-              />
-            )}
-          </UpdateBlockMutation>
-        )}
-      </ToastConsumer>
+
+      <BlockList
+        blocks={blocks}
+        highlightHandler={highlightHandler}
+        onMouseEnterBlock={handleMouseEnter}
+        onMouseLeaveBlock={handleMouseLeave}
+        iframeRuntime={iframeRuntime}
+      />
     </Fragment>
   )
 }
 
-export default React.memo(ComponentSelector)
+export default React.memo(BlockSelector)

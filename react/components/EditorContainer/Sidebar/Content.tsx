@@ -1,5 +1,5 @@
 import { JSONSchema6 } from 'json-schema'
-import React, { useState } from 'react'
+import React from 'react'
 import { injectIntl, InjectedIntlProps } from 'react-intl'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -8,7 +8,6 @@ import { useEditorContext } from '../../EditorContext'
 import { DeleteContentMutationFn } from '../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
-import List from './ConfigurationList/List'
 
 import ComponentEditor from './ComponentEditor'
 import { useFormHandlers } from './hooks'
@@ -116,38 +115,26 @@ const Content = ({
         const componentTitle = formatIOMessage({ id: componentTitleId, intl })
 
         return (
-          // { isShowingContentList ? (
-          //   <List
-          //     configurations={state.configurations}
-          //     isSitewide={isSitewide}
-          //     onClose={handleFormClose}
-          //     onDelete={() => {}}
-          //     onCreate={() => {}}
-          //     onSelect={() => {}}
-          //     title={componentTitle}
-          //   />
-          // ) : (
-            <ComponentEditor
-              condition={
-                (state
-                  ? state.condition
-                  : {}) as ExtensionConfiguration['condition']
-              }
-              contentSchema={state.contentSchema}
-              data={state.formData as FormDataContainer}
-              iframeRuntime={iframeRuntime}
-              isDefault
-              isSitewide={isSitewide}
-              label={state.label}
-              onChange={handleFormChange}
-              onClose={handleFormClose}
-              onConditionChange={() => {}}
-              onLabelChange={handleLabelChange}
-              onSave={handleFormSave}
-              title={componentTitle}
-            />
-          )
-        // )
+          <ComponentEditor
+            condition={
+              (state
+                ? state.condition
+                : {}) as ExtensionConfiguration['condition']
+            }
+            contentSchema={state.contentSchema}
+            data={state.formData as FormDataContainer}
+            iframeRuntime={iframeRuntime}
+            isDefault
+            isSitewide={isSitewide}
+            label={state.label}
+            onChange={handleFormChange}
+            onClose={handleFormClose}
+            onConditionChange={() => {}}
+            onLabelChange={handleLabelChange}
+            onSave={handleFormSave}
+            title={componentTitle}
+          />
+        )
       }}
     </ListContentQuery>
   )

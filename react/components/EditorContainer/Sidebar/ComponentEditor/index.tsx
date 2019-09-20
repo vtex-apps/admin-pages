@@ -10,6 +10,7 @@ import EditableText from '../../EditableText'
 import ContentContainer from '../ContentContainer'
 import EditorHeader from '../EditorHeader'
 import { useFormMetaContext } from '../FormMetaContext'
+import LoaderContainer from '../LoaderContainer'
 import { FormDataContainer } from '../typings'
 
 import styles from './ComponentEditor.css'
@@ -103,7 +104,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   return (
     <Fragment>
-      <ContentContainer
+      <LoaderContainer
         id="component-editor-container"
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
@@ -164,7 +165,7 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
               pageContext={iframeRuntime.route.pageContext}
             />
           )}
-      </ContentContainer>
+      </LoaderContainer>
 
       <div
         className={classnames(

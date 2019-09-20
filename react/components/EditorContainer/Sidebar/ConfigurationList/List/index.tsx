@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 
-import ContentContainer from '../../ContentContainer'
-import EditorHeader from '../../EditorHeader'
 import { getIsDefaultContent } from '../../utils'
+import EditorHeader from '../../EditorHeader'
+import LoaderContainer from '../../LoaderContainer'
 
 import Card from './Card'
 import CreateButton from './CreateButton'
@@ -29,7 +29,7 @@ const List: React.FunctionComponent<Props> = ({
   <Fragment>
     <EditorHeader onClose={onClose} title={title} />
 
-    <ContentContainer>
+    <LoaderContainer>
       <CreateButton onClick={onCreate} />
 
       {configurations.map(
@@ -47,7 +47,7 @@ const List: React.FunctionComponent<Props> = ({
           />
         )
       )}
-    </ContentContainer>
+    </LoaderContainer>
   </Fragment>
 )
 

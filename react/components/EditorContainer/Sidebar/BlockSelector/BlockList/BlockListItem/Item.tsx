@@ -5,10 +5,8 @@ import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
-  hasSubItems?: boolean
+  hasSubitems?: boolean
   isEditable: boolean
-  isSortable?: boolean
-  isChild?: boolean
   onEdit: () => void
   onMouseEnter: (event: React.MouseEvent<HTMLDivElement>) => void
   onMouseLeave: (event: React.MouseEvent<HTMLDivElement>) => void
@@ -24,11 +22,9 @@ const messages = defineMessages({
 })
 
 const Item: React.FunctionComponent<Props> = ({
-  hasSubItems,
+  hasSubitems,
   intl,
   isEditable,
-  isSortable,
-  isChild,
   onEdit,
   onMouseEnter,
   onMouseLeave,
@@ -37,12 +33,7 @@ const Item: React.FunctionComponent<Props> = ({
 }) => {
   const handleKeyDown = useKeydownFromClick(onEdit)
 
-  let leftPaddingClassName = 'pl8'
-  if ((isSortable && !hasSubItems) || isChild) {
-    leftPaddingClassName = 'pl5'
-  } else if (isSortable || hasSubItems) {
-    leftPaddingClassName = 'pl2'
-  }
+  const leftPaddingClassName = hasSubitems ? 'pl2' : 'pl8'
 
   return (
     <div
@@ -62,12 +53,12 @@ const Item: React.FunctionComponent<Props> = ({
       role="treeitem"
       style={{
         ...{ animationDuration: '0.2s' },
-        ...(!hasSubItems || isSortable ? { marginLeft: 1 } : null),
+        ...(!hasSubitems ? { marginLeft: 1 } : null),
         ...{ cursor: isEditable ? 'pointer' : 'default' },
       }}
       tabIndex={0}
     >
-      <span className={`f6 fw4 track-1 ${isChild ? 'pl7' : 'pl2'}`}>
+      <span className="f6 fw4 track-1 pl2">
         {typeof title === 'string' ? (
           formatIOMessage({ id: title, intl })
         ) : (

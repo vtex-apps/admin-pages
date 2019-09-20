@@ -7,7 +7,7 @@ import Modal from '../../Modal'
 import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 
-import ComponentSelector from './ComponentSelector'
+import BlockSelector from './BlockSelector'
 import Content from './Content'
 import { useModalContext } from './ModalContext'
 
@@ -39,6 +39,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   visible,
 }) => {
   const editor = useEditorContext()
+
   const {
     actionHandler: handleModalAction,
     cancelHandler: handleModalCancel,
@@ -61,7 +62,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
         id="admin-sidebar"
         className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
-        <div className={'h-100 flex flex-column dark-gray'}>
+        <div className="h-100 flex flex-column dark-gray">
           <Modal
             isActionLoading={isLoading}
             isOpen={getIsModalOpen()}
@@ -72,8 +73,9 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonCancel={intl.formatMessage(messages.discard)}
             textMessage={intl.formatMessage(messages.unsaved)}
           />
+
           {editor.editTreePath === null ? (
-            <ComponentSelector
+            <BlockSelector
               highlightHandler={highlightHandler}
               iframeRuntime={runtime}
             />
