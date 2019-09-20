@@ -160,6 +160,7 @@
   "admin/pages.editor.container.dev-mode-warning.text": "Usted está en el modo de desarrollo. Los cambios en el contenido no podrán ir a la tienda en producción.",
   "admin/pages.editor.container.editpath.label": "URL de la página:",
   "admin/pages.editor.container.master-workspace-warning.text": "Usted está editando la tienda en producción. Los cambios en el contenido tendrán un efecto inmediato.",
+  "admin/pages.editor.iframe.confirm-prompt": "Estás seguro que quieres irte?",
   "admin/pages.editor.image-uploader.empty.button": "Hacer upload",
   "admin/pages.editor.image-uploader.empty.subtext-1": "o",
   "admin/pages.editor.image-uploader.empty.subtext-2": "arrastrar",

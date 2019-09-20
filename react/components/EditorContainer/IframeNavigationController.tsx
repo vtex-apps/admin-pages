@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
 import { useEditorContext } from '../EditorContext'
 import { useFormMetaContext } from './Sidebar/FormMetaContext'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   iframeRuntime: RenderContext | null
 }
 
@@ -12,8 +13,16 @@ const maybeCall = (fn: (() => void) | void) => {
   }
 }
 
+const messages = defineMessages({
+  confirm: {
+    defaultMessage: 'Are you sure you want to leave?',
+    id: 'admin/pages.editor.iframe.confirm-prompt',
+  },
+})
+
 const IframeNavigationController: React.FunctionComponent<Props> = ({
   iframeRuntime,
+  intl,
 }) => {
   const { getWasModified, setWasModified } = useFormMetaContext()
   const { editExtensionPoint } = useEditorContext()
@@ -25,7 +34,9 @@ const IframeNavigationController: React.FunctionComponent<Props> = ({
     let unlisten: (() => void) | void
 
     if (wasModified && iframeRuntime && iframeRuntime.history) {
-      unblock = iframeRuntime.history.block('Are you sure you want to leave?')
+      unblock = iframeRuntime.history.block(
+        intl.formatMessage(messages.confirm)
+      )
       unlisten = iframeRuntime.history.listen((_, action) => {
         const hasNavigated = ['PUSH', 'REPLACE', 'POP'].includes(action)
         if (hasNavigated) {
@@ -41,9 +52,9 @@ const IframeNavigationController: React.FunctionComponent<Props> = ({
       unblock = maybeCall(unblock)
       unlisten = maybeCall(unlisten)
     }
-  }, [editExtensionPoint, iframeRuntime, setWasModified, wasModified])
+  }, [editExtensionPoint, iframeRuntime, setWasModified, wasModified, intl])
 
-  return <></>
+  return null
 }
 
-export default IframeNavigationController
+export default injectIntl(IframeNavigationController)

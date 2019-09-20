@@ -106,6 +106,7 @@ class EditorProvider extends Component<Props, State> {
         }
 
         const newMessages = {
+          ...this.state.messages,
           ...messages,
           ...formattedEditorMessages,
         }
