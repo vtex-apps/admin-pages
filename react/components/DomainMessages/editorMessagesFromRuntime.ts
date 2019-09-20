@@ -4,7 +4,7 @@ import { Data, Message, Props, Variables } from './typings'
 
 import messagesForDomainQuery from '../../queries/MessagesForDomain.graphql'
 
-const MAX_COMPONENTES_PER_QUERY = 100
+const MAX_COMPONENTS_PER_QUERY = 100
 
 const messagesToReactIntlFormat = (messages: Message[]) =>
   messages.reduce((acc, { key, message }) => ({ ...acc, [key]: message }), {})
@@ -47,7 +47,7 @@ export const editorMessagesFromRuntime = async ({
   }
 
   const componentsBatch = splitEvery(
-    MAX_COMPONENTES_PER_QUERY,
+    MAX_COMPONENTS_PER_QUERY,
     componentNamesToFetch
   )
 
