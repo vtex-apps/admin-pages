@@ -11,14 +11,12 @@
   "lint-staged": {
     "**/*.+(json|css|md|graphql)": [
       "npm run lint:locales",
-      "prettier --write",
-      "git add"
+      "prettier -l"
     ],
     "**/*.+(ts|tsx)": [
       "eslint -c .eslintrc",
       "npm run lint:locales",
-      "prettier --write",
-      "git add"
+      "prettier -l"
     ]
   },
   "intl-equalizer": {
