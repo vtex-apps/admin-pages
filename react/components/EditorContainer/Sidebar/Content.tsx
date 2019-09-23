@@ -9,7 +9,7 @@ import { DeleteContentMutationFn } from '../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
 
-import ComponentEditor from './ComponentEditor'
+import BlockConfigurationEditor from './BlockConfigurationEditor'
 import { useFormHandlers } from './hooks'
 import { FormDataContainer } from './typings'
 import { getInitialFormState, getIsSitewide } from './utils'
@@ -115,7 +115,7 @@ const Content = ({
         const componentTitle = formatIOMessage({ id: componentTitleId, intl })
 
         return (
-          <ComponentEditor
+          <BlockConfigurationEditor
             condition={
               (state
                 ? state.condition

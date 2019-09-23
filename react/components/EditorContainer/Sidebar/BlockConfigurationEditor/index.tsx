@@ -5,18 +5,18 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
 
-import { useEditorContext } from '../../../EditorContext'
-import EditableText from '../../EditableText'
 import ContentContainer from '../ContentContainer'
+import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
+import EditableText from '../../EditableText'
 import { useFormMetaContext } from '../FormMetaContext'
 import LoaderContainer from '../LoaderContainer'
 import { FormDataContainer } from '../typings'
 
-import styles from './ComponentEditor.css'
 import ConditionControls from './ConditionControls'
 import Form from './Form'
 import { useComponentFormStateStack } from './hooks'
+import styles from './styles.css'
 import { getSchemas } from './utils'
 
 interface CustomProps {
@@ -40,7 +40,7 @@ interface CustomProps {
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
 
-const ComponentEditor: React.FunctionComponent<Props> = ({
+const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   condition,
   contentSchema,
   data,
@@ -98,9 +98,8 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
 
   const isRootLevel = componentFormState === undefined
 
-  const onOpenList = useCallback(() => {
-    console.log('🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑🦑')
-  }, [])
+  // TODO
+  const onOpenList = useCallback(() => {}, [])
 
   return (
     <Fragment>
@@ -139,7 +138,6 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
             formContext={{
               currentDepth,
               componentFormState,
-              isLayoutMode: editor.mode === 'layout',
               popComponentFormState,
               pushComponentFormState,
             }}
@@ -206,4 +204,4 @@ const ComponentEditor: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(ComponentEditor)
+export default injectIntl(BlockConfigurationEditor)

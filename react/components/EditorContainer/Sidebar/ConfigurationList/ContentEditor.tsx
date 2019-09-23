@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { FormProps } from 'react-jsonschema-form'
 
-import ComponentEditor from '../ComponentEditor'
+import BlockConfigurationEditor from '../BlockConfigurationEditor'
 import { FormDataContainer } from '../typings'
 
 interface Props {
@@ -21,7 +21,6 @@ interface Props {
   ) => void
   onFormChange: FormProps<FormDataContainer>['onChange']
   onSave: () => void
-  onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const ContentEditor: React.FunctionComponent<Props> = ({
@@ -37,9 +36,8 @@ const ContentEditor: React.FunctionComponent<Props> = ({
   onConditionChange,
   onFormChange,
   onSave,
-  onTitleChange,
 }) => (
-  <ComponentEditor
+  <BlockConfigurationEditor
     condition={condition}
     contentSchema={contentSchema}
     data={data}
@@ -51,7 +49,6 @@ const ContentEditor: React.FunctionComponent<Props> = ({
     onChange={onFormChange}
     onClose={onClose}
     onSave={onSave}
-    onTitleChange={onTitleChange}
     title={componentTitle}
   />
 )
