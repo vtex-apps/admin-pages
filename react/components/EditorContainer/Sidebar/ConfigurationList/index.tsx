@@ -102,7 +102,7 @@ class ConfigurationList extends React.Component<Props, State> {
   public constructor(props: Props) {
     super(props)
 
-    const { editor, iframeRuntime, intl, modal, queryData } = props
+    const { editor, iframeRuntime, intl, queryData } = props
 
     const extension = getExtension(
       editor.editTreePath,
@@ -133,11 +133,6 @@ class ConfigurationList extends React.Component<Props, State> {
           intl,
         })
       : ''
-
-    modal.setHandlers({
-      actionHandler: this.handleConfigurationSave,
-      cancelHandler: this.handleConfigurationDiscard,
-    })
 
     this.state = {
       condition: this.getDefaultCondition(),
@@ -302,7 +297,10 @@ class ConfigurationList extends React.Component<Props, State> {
     const { editor, formMeta, modal } = this.props
 
     if (formMeta.getWasModified()) {
-      modal.open()
+      modal.open({
+        actionHandler: this.handleConfigurationSave,
+        cancelHandler: this.handleConfigurationDiscard,
+      })
     } else {
       this.setState(
         {

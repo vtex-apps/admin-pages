@@ -145,7 +145,7 @@ export const useFormHandlers: UseFormHandlers = ({
 
   const handleFormClose = useCallback(() => {
     if (formMeta.getWasModified()) {
-      modal.setHandlers({
+      modal.open({
         actionHandler: async () => {
           await handleFormSave()
 
@@ -166,8 +166,6 @@ export const useFormHandlers: UseFormHandlers = ({
           })
         },
       })
-
-      modal.open()
     } else {
       if (modal.getIsOpen()) {
         modal.close()

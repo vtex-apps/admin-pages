@@ -13,16 +13,14 @@ export interface FormMetaContext {
 }
 
 export interface ModalContext {
-  actionHandler: () => void
-  cancelHandler: () => void
-  closeCallbackHandler?: () => void
+  actionHandler?: () => void
+  cancelHandler?: () => void
   close: () => void
   getIsOpen: () => boolean
-  open: () => void
-  setHandlers: (handlers: {
+  open: (handlers?: {
     actionHandler?: ModalContext['actionHandler']
     cancelHandler?: ModalContext['cancelHandler']
-    closeCallbackHandler?: ModalContext['closeCallbackHandler']
+    closeCallbackHandler?: () => void
   }) => void
 }
 
