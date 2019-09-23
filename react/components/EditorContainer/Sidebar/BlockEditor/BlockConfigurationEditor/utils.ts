@@ -7,7 +7,7 @@ import {
   getComponentSchema,
   getExtension,
   getIframeImplementation,
-} from '../../../../utils/components'
+} from '../../../../../utils/components'
 
 import { GetSchemasArgs } from './typings'
 

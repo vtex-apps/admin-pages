@@ -2,7 +2,7 @@ import classnames from 'classnames'
 import React from 'react'
 import { Spinner } from 'vtex.styleguide'
 
-import { useEditorContext } from '../../EditorContext'
+import { useEditorContext } from '../../../EditorContext'
 
 interface Props {
   children: React.ReactNode

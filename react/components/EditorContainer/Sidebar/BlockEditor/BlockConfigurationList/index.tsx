@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react'
 import { injectIntl } from 'react-intl'
+import { formatIOMessage } from 'vtex.native-types'
 
+import { useEditorContext } from '../../../../EditorContext'
 import EditorHeader from '../EditorHeader'
 import LoaderContainer from '../LoaderContainer'
 import { getIsDefaultContent } from '../utils'
@@ -42,7 +44,6 @@ interface Props extends UseListHandlersParams {
 }
 
 const BlockConfigurationList: React.FC<Props> = ({
-  componentTitle,
   configurations,
   deleteContent,
   iframeRuntime,
@@ -52,6 +53,17 @@ const BlockConfigurationList: React.FC<Props> = ({
   showToast,
   template,
 }) => {
+  const editor = useEditorContext()
+
+  const componentTitle = React.useMemo(
+    () =>
+      formatIOMessage({
+        id: editor.blockData.titleId || '',
+        intl,
+      }),
+    [editor.blockData.titleId, intl]
+  )
+
   const {
     handleConfigurationCreation,
     handleConfigurationDeletion,

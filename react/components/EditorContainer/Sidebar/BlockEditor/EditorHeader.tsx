@@ -10,7 +10,9 @@ interface Props {
   title?: string
 }
 
-const noop = () => { return }
+const noop = () => {
+  return
+}
 
 const EditorHeader: React.FC<Props> = ({ onClose, onOpenList, title }) => {
   const handleCloseKeyDown = useKeydownFromClick(onClose)

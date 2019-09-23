@@ -5,13 +5,13 @@ import { defineMessages } from 'react-intl'
 import {
   updateExtensionFromForm,
   getSchemaPropsOrContent,
-} from '../../../utils/components'
-import { useEditorContext } from '../../EditorContext'
+} from '../../../../utils/components'
+import { useEditorContext } from '../../../EditorContext'
+import { useFormMetaContext } from '../FormMetaContext'
+import { useModalContext } from '../ModalContext'
 
-import { useFormMetaContext } from './FormMetaContext'
-import { useModalContext } from './ModalContext'
-import { omitUndefined, throttledUpdateExtensionFromForm } from './utils'
 import { UseFormHandlers } from './typings'
+import { omitUndefined, throttledUpdateExtensionFromForm } from './utils'
 
 const messages = defineMessages({
   saveError: {
