@@ -100,6 +100,7 @@ const BlockEditor = ({
               data,
               editTreePath,
               iframeRuntime,
+              isSitewide,
             })
 
             setState(formState)

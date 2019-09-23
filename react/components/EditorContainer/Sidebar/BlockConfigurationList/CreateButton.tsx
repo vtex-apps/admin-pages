@@ -2,7 +2,7 @@ import React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { ButtonWithIcon } from 'vtex.styleguide'
 
-import AddIcon from '../../../../icons/AddIcon'
+import AddIcon from '../../../icons/AddIcon'
 
 interface Props {
   onClick: (event: Event) => void

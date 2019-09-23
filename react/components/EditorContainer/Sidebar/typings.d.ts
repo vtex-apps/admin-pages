@@ -39,10 +39,19 @@ export type FormDataContainer = {
   formData: object
 }
 
+export type GetDefaultCondition = (
+  params: Pick<GetInitialEditingStateParams, 'iframeRuntime' | 'isSitewide'>
+) => ExtensionConfiguration['condition']
+
+export type GetDefaultConfiguration = (
+  params: Parameters<GetDefaultCondition>[0]
+) => ExtensionConfiguration
+
 interface GetInitialEditingStateParams {
   data?: ListContentData
   editTreePath: EditorContextType['editTreePath']
   iframeRuntime: RenderContext
+  isSitewide: boolean
 }
 
 export type GetInitialEditingState = (

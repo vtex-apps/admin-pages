@@ -9,12 +9,48 @@ import {
   updateExtensionFromForm,
 } from '../../../utils/components'
 
-import { GetInitialEditingState } from './typings'
+import { NEW_CONFIGURATION_ID } from './consts'
+import {
+  GetDefaultCondition,
+  GetDefaultConfiguration,
+  GetInitialEditingState,
+} from './typings'
+
+export const isUnidentifiedPageContext = (
+  pageContext: RenderRuntime['route']['pageContext']
+) => pageContext.type !== '*' && pageContext.id === '*'
+
+const getDefaultCondition: GetDefaultCondition = ({
+  iframeRuntime,
+  isSitewide,
+}) => {
+  const iframePageContext = iframeRuntime.route.pageContext
+
+  const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
+    ? {
+        id: '*',
+        type: '*',
+      }
+    : {
+        id: isUnidentifiedPageContext(iframePageContext)
+          ? '*'
+          : iframePageContext.id,
+        type: iframePageContext.type,
+      }
+
+  return {
+    allMatches: true,
+    id: '',
+    pageContext,
+    statements: [],
+  }
+}
 
 export const getInitialEditingState: GetInitialEditingState = ({
   data,
   editTreePath,
   iframeRuntime,
+  isSitewide,
 }) => {
   const extension = getExtension(editTreePath, iframeRuntime.extensions)
 
@@ -37,7 +73,7 @@ export const getInitialEditingState: GetInitialEditingState = ({
 
   const activeContent = configurations && configurations[0]
 
-  const contentId = (activeContent && activeContent.contentId) || null
+  const contentId = (activeContent && activeContent.contentId) || ''
 
   const content =
     (activeContent &&
@@ -45,7 +81,9 @@ export const getInitialEditingState: GetInitialEditingState = ({
       JSON.parse(activeContent.contentJSON)) ||
     {}
 
-  const condition = activeContent && activeContent.condition
+  const condition = activeContent
+    ? activeContent.condition
+    : getDefaultCondition({ iframeRuntime, isSitewide })
 
   const formData =
     getSchemaPropsOrContentFromRuntime({
@@ -76,6 +114,17 @@ export const getInitialEditingState: GetInitialEditingState = ({
   }
 }
 
+export const getDefaultConfiguration: GetDefaultConfiguration = ({
+  iframeRuntime,
+  isSitewide,
+}) => ({
+  condition: getDefaultCondition({ iframeRuntime, isSitewide }),
+  contentId: NEW_CONFIGURATION_ID,
+  contentJSON: '{}',
+  label: null,
+  origin: null,
+})
+
 export const getIsDefaultContent: (
   configuration: Pick<ExtensionConfiguration, 'origin'>
 ) => boolean = configuration => configuration.origin !== null
@@ -89,10 +138,6 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
     false
   )
 }
-
-export const isUnidentifiedPageContext = (
-  pageContext: RenderRuntime['route']['pageContext']
-) => pageContext.type !== '*' && pageContext.id === '*'
 
 export const omitUndefined = (obj: Extension['content']) =>
   Object.entries(obj).reduce((acc, [currKey, currValue]) => {

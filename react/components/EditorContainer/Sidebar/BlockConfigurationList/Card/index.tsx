@@ -2,10 +2,10 @@ import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
-import EarthIcon from '../../../../../icons/EarthIcon'
-import PageIcon from '../../../../../icons/PageIcon'
-import TemplateIcon from '../../../../../icons/TemplateIcon'
-import ActionMenu from '../../../ComponentList/SortableList/SortableListItem/ActionMenu'
+import ActionMenu from '../../../../ActionMenu'
+import EarthIcon from '../../../../icons/EarthIcon'
+import PageIcon from '../../../../icons/PageIcon'
+import TemplateIcon from '../../../../icons/TemplateIcon'
 
 import ConditionTags from './ConditionTags'
 import { getGenericContext } from './utils'
@@ -18,7 +18,7 @@ interface Props {
   isSitewide: boolean
   isDefaultContent?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
-  onDelete: () => void
+  onDelete: (configuration: ExtensionConfiguration) => void
 }
 
 function stopPropagation(e: Pick<Event, 'preventDefault' | 'stopPropagation'>) {

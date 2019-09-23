@@ -38,6 +38,22 @@ export const useFormHandlers: UseFormHandlers = ({
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
+  const handleConditionChange = useCallback(
+    (changes: Partial<typeof state['condition']>) => {
+      setState({
+        condition: {
+          ...(state.condition as ExtensionConfiguration['condition']),
+          ...changes,
+        },
+      })
+
+      if (!formMeta.getWasModified()) {
+        formMeta.setWasModified(true)
+      }
+    },
+    [formMeta, setState, state]
+  )
+
   const handleFormChange = useCallback(
     event => {
       if (
@@ -71,12 +87,6 @@ export const useFormHandlers: UseFormHandlers = ({
       propsOrContent: state.formData,
       schema: editor.blockData.componentSchema,
     })
-
-    // TODO
-    // const label =
-    //   this.state.newLabel !== undefined
-    //     ? this.state.newLabel
-    //     : this.state.configuration.label
 
     const configuration = {
       condition: state.condition,
@@ -188,6 +198,7 @@ export const useFormHandlers: UseFormHandlers = ({
   )
 
   return {
+    handleConditionChange,
     handleFormChange,
     handleFormClose,
     handleFormSave,
