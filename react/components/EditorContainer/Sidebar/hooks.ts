@@ -69,7 +69,7 @@ export const useFormHandlers: UseFormHandlers = ({
 
     const content = getSchemaPropsOrContent({
       propsOrContent: state.formData,
-      schema: state.componentSchema,
+      schema: editor.blockData.componentSchema,
     })
 
     // TODO
@@ -134,7 +134,6 @@ export const useFormHandlers: UseFormHandlers = ({
     saveMutation,
     serverTreePath,
     showToast,
-    state.componentSchema,
     state.condition,
     state.contentId,
     state.formData,

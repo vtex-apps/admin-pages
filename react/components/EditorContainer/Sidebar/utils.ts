@@ -9,9 +9,9 @@ import {
   updateExtensionFromForm,
 } from '../../../utils/components'
 
-import { GetInitialFormState } from './typings'
+import { GetInitialEditingState } from './typings'
 
-export const getInitialFormState: GetInitialFormState = ({
+export const getInitialEditingState: GetInitialEditingState = ({
   data,
   editTreePath,
   iframeRuntime,
@@ -60,14 +60,19 @@ export const getInitialFormState: GetInitialFormState = ({
   const label = activeContent && activeContent.label
 
   return {
-    componentSchema,
-    condition,
-    configurations,
-    contentId,
-    content,
-    contentSchema,
-    formData,
-    label,
+    blockData: {
+      componentSchema,
+      configurations,
+      contentSchema,
+      titleId: componentSchema.title,
+    },
+    formState: {
+      condition,
+      contentId,
+      content,
+      formData,
+      label,
+    },
   }
 }
 

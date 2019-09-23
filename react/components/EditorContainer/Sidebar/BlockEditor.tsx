@@ -1,4 +1,3 @@
-import { JSONSchema6 } from 'json-schema'
 import React from 'react'
 import { injectIntl, InjectedIntlProps } from 'react-intl'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
@@ -12,7 +11,7 @@ import ListContentQuery from '../queries/ListContent'
 import BlockConfigurationEditor from './BlockConfigurationEditor'
 import { useFormHandlers } from './hooks'
 import { FormDataContainer } from './typings'
-import { getInitialFormState, getIsSitewide } from './utils'
+import { getInitialEditingState, getIsSitewide } from './utils'
 import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
@@ -24,14 +23,11 @@ interface Props extends InjectedIntlProps {
 
 export interface State
   extends Partial<Omit<ExtensionConfiguration, 'contentJSON'>> {
-  componentSchema?: ComponentSchema
-  configurations?: ExtensionConfiguration[]
   content?: Extension['content']
-  contentSchema?: JSONSchema6
   formData?: Extension['content']
 }
 
-const Content = ({
+const BlockEditor = ({
   // TODO
   // deleteContent,
   iframeRuntime,
@@ -48,6 +44,13 @@ const Content = ({
   )
 
   const editor = useEditorContext()
+
+  const isDataLoading = React.useMemo(
+    () =>
+      JSON.stringify(state) === '{}' ||
+      JSON.stringify(editor.blockData) === '{}',
+    [editor.blockData, state]
+  )
 
   const editTreePath = editor.editTreePath || ''
 
@@ -90,16 +93,18 @@ const Content = ({
         treePath: serverTreePath,
       }}
     >
-      {({ data, loading }) => {
-        if (JSON.stringify(state) === '{}') {
-          if (!loading) {
-            setState(
-              getInitialFormState({
-                data,
-                editTreePath,
-                iframeRuntime,
-              })
-            )
+      {({ data, loading: isQueryLoading }) => {
+        if (isDataLoading) {
+          if (!isQueryLoading) {
+            const { blockData, formState } = getInitialEditingState({
+              data,
+              editTreePath,
+              iframeRuntime,
+            })
+
+            setState(formState)
+
+            editor.setBlockData(blockData)
           }
 
           return (
@@ -109,10 +114,10 @@ const Content = ({
           )
         }
 
-        const componentTitleId =
-          (state.componentSchema && state.componentSchema.title) || ''
-
-        const componentTitle = formatIOMessage({ id: componentTitleId, intl })
+        const componentTitle = formatIOMessage({
+          id: editor.blockData.titleId || '',
+          intl,
+        })
 
         return (
           <BlockConfigurationEditor
@@ -121,7 +126,7 @@ const Content = ({
                 ? state.condition
                 : {}) as ExtensionConfiguration['condition']
             }
-            contentSchema={state.contentSchema}
+            contentSchema={editor.blockData.contentSchema}
             data={state.formData as FormDataContainer}
             iframeRuntime={iframeRuntime}
             isDefault
@@ -129,6 +134,7 @@ const Content = ({
             label={state.label}
             onChange={handleFormChange}
             onClose={handleFormClose}
+            // TODO
             onConditionChange={() => {}}
             onLabelChange={handleLabelChange}
             onSave={handleFormSave}
@@ -140,4 +146,4 @@ const Content = ({
   )
 }
 
-export default injectIntl(Content)
+export default injectIntl(BlockEditor)

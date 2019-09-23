@@ -5,7 +5,6 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
 
-import ContentContainer from '../ContentContainer'
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
 import EditableText from '../../EditableText'

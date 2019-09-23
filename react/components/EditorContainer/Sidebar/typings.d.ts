@@ -5,7 +5,7 @@ import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { ListContentData } from '../queries/ListContent'
 
-import { State as FormState } from './Content'
+import { State as FormState } from './BlockEditor'
 
 export interface FormMetaContext {
   getWasModified: () => boolean
@@ -39,15 +39,18 @@ export type FormDataContainer = {
   formData: object
 }
 
-interface GetInitialFormStateParams {
+interface GetInitialEditingStateParams {
   data?: ListContentData
   editTreePath: EditorContextType['editTreePath']
   iframeRuntime: RenderContext
 }
 
-export type GetInitialFormState = (
-  params: GetInitialFormStateParams
-) => FormState
+export type GetInitialEditingState = (
+  params: GetInitialEditingStateParams
+) => {
+  blockData: BlockData
+  formState: FormState
+}
 
 interface UseFormHandlersParams {
   iframeRuntime: RenderContext

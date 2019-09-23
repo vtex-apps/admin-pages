@@ -7,8 +7,8 @@ import Modal from '../../Modal'
 import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 
+import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
-import Content from './Content'
 import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
@@ -86,7 +86,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
                   {saveContent => (
                     <DeleteContentMutation>
                       {deleteContent => (
-                        <Content
+                        <BlockEditor
                           deleteContent={deleteContent}
                           iframeRuntime={runtime}
                           saveContent={saveContent}
