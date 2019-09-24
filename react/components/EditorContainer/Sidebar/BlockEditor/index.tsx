@@ -59,6 +59,15 @@ const BlockEditor = ({
     ? iframeRuntime.extensions[editTreePath].blockId
     : ''
 
+  const componentTitle = React.useMemo(
+    () =>
+      formatIOMessage({
+        id: editor.blockData.titleId || '',
+        intl,
+      }),
+    [editor.blockData.titleId, intl]
+  )
+
   const isSitewide = getIsSitewide(iframeRuntime.extensions, editTreePath)
 
   const template = isSitewide
@@ -70,6 +79,7 @@ const BlockEditor = ({
     : editTreePath
 
   const {
+    handleActiveConfigurationOpen,
     handleConditionChange,
     handleFormChange,
     handleFormClose,
@@ -118,46 +128,43 @@ const BlockEditor = ({
           )
         }
 
-        const componentTitle = formatIOMessage({
-          id: editor.blockData.titleId || '',
-          intl,
-        })
+        const editorCommonProps = {
+          condition: (state
+            ? state.condition
+            : {}) as ExtensionConfiguration['condition'],
+          contentSchema: editor.blockData.contentSchema,
+          data: state.formData as FormDataContainer,
+          iframeRuntime: iframeRuntime,
+          isSitewide: isSitewide,
+          label: state.label,
+          onChange: handleFormChange,
+          onClose: handleFormClose,
+          onConditionChange: handleConditionChange,
+          onLabelChange: handleLabelChange,
+          onListOpen: handleListOpen,
+          onSave: handleFormSave,
+          title: componentTitle,
+        }
 
-        if (state.mode === 'list') {
-          return (
+        const componentByMode = {
+          editingActive: (
+            <BlockConfigurationEditor isActive {...editorCommonProps} />
+          ),
+          editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
+          list: (
             <BlockConfigurationList
               deleteContent={deleteContent}
               iframeRuntime={iframeRuntime}
               isSitewide={isSitewide}
+              onBack={handleActiveConfigurationOpen}
               serverTreePath={serverTreePath}
               showToast={showToast}
               template={template}
             />
-          )
+          ),
         }
 
-        return (
-          <BlockConfigurationEditor
-            condition={
-              (state
-                ? state.condition
-                : {}) as ExtensionConfiguration['condition']
-            }
-            contentSchema={editor.blockData.contentSchema}
-            data={state.formData as FormDataContainer}
-            iframeRuntime={iframeRuntime}
-            isDefault
-            isSitewide={isSitewide}
-            label={state.label}
-            onChange={handleFormChange}
-            onClose={handleFormClose}
-            onConditionChange={handleConditionChange}
-            onLabelChange={handleLabelChange}
-            onListOpen={handleListOpen}
-            onSave={handleFormSave}
-            title={componentTitle}
-          />
-        )
+        return componentByMode[state.mode]
       }}
     </ListContentQuery>
   )

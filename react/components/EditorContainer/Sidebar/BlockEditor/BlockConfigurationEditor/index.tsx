@@ -23,7 +23,7 @@ interface CustomProps {
   contentSchema?: JSONSchema6
   data: FormDataContainer
   iframeRuntime: RenderContext
-  isDefault?: boolean
+  isActive?: boolean
   isNew?: boolean
   isSitewide?: boolean
   label?: string | null
@@ -45,7 +45,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   contentSchema,
   data,
   iframeRuntime,
-  isDefault,
+  isActive,
   isNew,
   isSitewide = false,
   label,
@@ -150,7 +150,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         </div>
 
         {isContent &&
-          !isDefault &&
+          !isActive &&
           condition &&
           onConditionChange &&
           !isArrayFieldOpen && (
