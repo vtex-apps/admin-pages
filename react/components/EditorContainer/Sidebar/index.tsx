@@ -13,7 +13,7 @@ import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
-  runtime: RenderContext
+  iframeRuntime: RenderContext
   visible: boolean
   updateHighlightTitleByTreePath: (
     titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
@@ -37,8 +37,8 @@ const messages = defineMessages({
 
 const Sidebar: React.FunctionComponent<Props> = ({
   highlightHandler,
+  iframeRuntime,
   intl,
-  runtime,
   visible,
   updateHighlightTitleByTreePath,
 }) => {
@@ -81,7 +81,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
           {editor.editTreePath === null ? (
             <BlockSelector
               highlightHandler={highlightHandler}
-              iframeRuntime={runtime}
+              iframeRuntime={iframeRuntime}
               updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
             />
           ) : (
@@ -93,7 +93,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
                       {deleteContent => (
                         <BlockEditor
                           deleteContent={deleteContent}
-                          iframeRuntime={runtime}
+                          iframeRuntime={iframeRuntime}
                           saveContent={saveContent}
                           showToast={showToast}
                         />

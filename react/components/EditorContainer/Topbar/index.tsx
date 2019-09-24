@@ -12,25 +12,25 @@ const modes: StoreEditMode[] = ['settings', 'theme']
 interface Props {
   availableCultures: LabelledLocale[]
   changeMode: (mode?: StoreEditMode) => void
+  iframeRuntime: RenderContext
   mode?: StoreEditMode
   urlPath: string
   onChangeUrlPath: (url: string) => void
   visible: boolean
-  runtime: RenderContext
 }
 
 const Topbar: React.FunctionComponent<Props> = ({
   availableCultures,
   changeMode,
+  iframeRuntime,
   mode,
   onChangeUrlPath,
   urlPath,
   visible,
-  runtime,
 }) => {
   const [urlInputDisabled, setUrlInputDisabled] = useState(false)
   const [url, setUrl] = useState(urlPath)
-  const [locale, setLocale] = useState(runtime.culture.locale)
+  const [locale, setLocale] = useState(iframeRuntime.culture.locale)
 
   useEffect(() => {
     setUrl(urlPath)
@@ -95,7 +95,7 @@ const Topbar: React.FunctionComponent<Props> = ({
                 options={availableCultures}
                 value={locale}
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  const { emitter } = runtime
+                  const { emitter } = iframeRuntime
                   setLocale(e.target.value)
                   emitter.emit('localesChanged', e.target.value)
                 }}
