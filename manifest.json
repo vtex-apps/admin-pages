@@ -16,7 +16,7 @@
     "vtex.file-manager-graphql": "0.x",
     "vtex.native-types": "0.x",
     "vtex.pages-graphql": "2.x",
-    "vtex.pwa-graphql": "1.x",
+    "vtex.pwa": "1.x",
     "vtex.store": "2.x",
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x",
