@@ -21,7 +21,9 @@ export type UseListHandlers = (
   params: UseListHandlersParams
 ) => {
   handleConfigurationCreation: () => void
-  handleConfigurationDeletion: () => void
-  handleConfigurationOpen: () => void
+  handleConfigurationDeletion: (
+    configuration: ExtensionConfiguration
+  ) => Promise<void>
+  handleConfigurationOpen: (configuration: ExtensionConfiguration) => void
   handleQuit: () => void
 }

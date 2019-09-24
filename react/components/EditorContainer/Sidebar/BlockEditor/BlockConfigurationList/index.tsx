@@ -38,13 +38,7 @@ import { UseListHandlersParams } from './typings'
 //   },
 // })
 
-interface Props extends UseListHandlersParams {
-  componentTitle: string
-  configurations: ExtensionConfiguration[]
-}
-
-const BlockConfigurationList: React.FC<Props> = ({
-  configurations,
+const BlockConfigurationList: React.FC<UseListHandlersParams> = ({
   deleteContent,
   iframeRuntime,
   intl,
@@ -78,6 +72,12 @@ const BlockConfigurationList: React.FC<Props> = ({
     showToast,
     template,
   })
+
+  const { configurations } = editor.blockData
+
+  if (!configurations) {
+    return null
+  }
 
   return (
     <Fragment>

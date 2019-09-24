@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { useCallback, Fragment, useMemo } from 'react'
+import React, { Fragment, useMemo } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button } from 'vtex.styleguide'
@@ -33,6 +33,7 @@ interface CustomProps {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onLabelChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onListOpen?: () => void
   onSave: () => void
   title: ComponentSchema['title']
 }
@@ -52,6 +53,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   onClose,
   onConditionChange,
   onLabelChange,
+  onListOpen,
   onSave,
   title,
 }) => {
@@ -97,9 +99,6 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
 
   const isRootLevel = componentFormState === undefined
 
-  // TODO
-  const onOpenList = useCallback(() => {}, [])
-
   return (
     <Fragment>
       <LoaderContainer
@@ -107,7 +106,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          onOpenList={isRootLevel ? onOpenList : undefined}
+          onOpenList={isRootLevel ? onListOpen : undefined}
           onClose={componentFormState ? componentFormState.onClose : onClose}
           title={componentFormState ? componentFormState.title : title}
         />

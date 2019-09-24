@@ -1,5 +1,6 @@
 import React from 'react'
 import { injectIntl, InjectedIntlProps } from 'react-intl'
+import { formatIOMessage } from 'vtex.native-types'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../../utils/blocks'
@@ -10,9 +11,10 @@ import ListContentQuery from '../../queries/ListContent'
 import { FormDataContainer } from '../typings'
 
 import BlockConfigurationEditor from './BlockConfigurationEditor'
+import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
+import { EditingState } from './typings'
 import { getInitialEditingState, getIsSitewide } from './utils'
-import { formatIOMessage } from 'vtex.native-types'
 
 interface Props extends InjectedIntlProps {
   deleteContent: DeleteContentMutationFn
@@ -21,26 +23,25 @@ interface Props extends InjectedIntlProps {
   showToast: ToastConsumerFunctions['showToast']
 }
 
-export interface State
-  extends Partial<Omit<ExtensionConfiguration, 'contentJSON'>> {
-  content?: Extension['content']
-  formData?: Extension['content']
+interface State extends EditingState {
+  mode: 'editingActive' | 'editingInactive' | 'list'
 }
 
 const BlockEditor = ({
-  // TODO
-  // deleteContent,
+  deleteContent,
   iframeRuntime,
   intl,
   saveContent,
   showToast,
 }: Props) => {
-  const [state, setState] = React.useReducer<React.Reducer<State, State>>(
+  const [state, setState] = React.useReducer<
+    React.Reducer<State, Partial<State>>
+  >(
     (prevState, nextState) => ({
       ...prevState,
       ...nextState,
     }),
-    {}
+    { mode: 'editingActive' }
   )
 
   const editor = useEditorContext()
@@ -69,10 +70,12 @@ const BlockEditor = ({
     : editTreePath
 
   const {
+    handleConditionChange,
     handleFormChange,
     handleFormClose,
     handleFormSave,
     handleLabelChange,
+    handleListOpen,
   } = useFormHandlers({
     iframeRuntime,
     intl,
@@ -120,6 +123,19 @@ const BlockEditor = ({
           intl,
         })
 
+        if (state.mode === 'list') {
+          return (
+            <BlockConfigurationList
+              deleteContent={deleteContent}
+              iframeRuntime={iframeRuntime}
+              isSitewide={isSitewide}
+              serverTreePath={serverTreePath}
+              showToast={showToast}
+              template={template}
+            />
+          )
+        }
+
         return (
           <BlockConfigurationEditor
             condition={
@@ -135,9 +151,9 @@ const BlockEditor = ({
             label={state.label}
             onChange={handleFormChange}
             onClose={handleFormClose}
-            // TODO
-            onConditionChange={() => {}}
+            onConditionChange={handleConditionChange}
             onLabelChange={handleLabelChange}
+            onListOpen={handleListOpen}
             onSave={handleFormSave}
             title={componentTitle}
           />

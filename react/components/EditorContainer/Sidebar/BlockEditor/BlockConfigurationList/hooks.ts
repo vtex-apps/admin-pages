@@ -19,42 +19,48 @@ export const useListHandlers: UseListHandlers = ({
 
   // TODO
   const handleConfigurationOpen = useCallback(
-    async (configuration: ExtensionConfiguration) => {
-      // TODO: set formData
-      //
-      // const baseContent =
-      //   newConfiguration.contentId !== NEW_CONFIGURATION_ID
-      //     ? (JSON.parse(newConfiguration.contentJSON) as Extension['content'])
-      //     : {}
-      //
-      // const formData = getFormData(baseContent)
-      //
-      // await iframeRuntime.updateExtension(editor.editTreePath, {
-      //   ...iframeRuntime.extensions[editor.editTreePath],
-      //   content: formData,
-      // })
-      //
-      // if (isUnidentifiedPageContext(pageContext)) {
-      //   showToast({
-      //     horizontalPosition: 'right',
-      //     message: intl.formatMessage(
-      //       {
-      //         id: messages.pageContextError.id,
-      //       },
-      //       {
-      //         entity: intl.formatMessage({
-      //           id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
-      //         }),
-      //         template: intl.formatMessage({
-      //           id: 'admin/pages.editor.components.condition.scope.template',
-      //         }),
-      //       }
-      //     ),
-      //   })
-      // }
+    (configuration: ExtensionConfiguration) => {
+      return
     },
     []
   )
+  // = useCallback(
+  //   async (configuration: ExtensionConfiguration) => {
+  //     TODO: set formData
+
+  //     const baseContent =
+  //       newConfiguration.contentId !== NEW_CONFIGURATION_ID
+  //         ? (JSON.parse(newConfiguration.contentJSON) as Extension['content'])
+  //         : {}
+
+  //     const formData = getFormData(baseContent)
+
+  //     await iframeRuntime.updateExtension(editor.editTreePath, {
+  //       ...iframeRuntime.extensions[editor.editTreePath],
+  //       content: formData,
+  //     })
+
+  //     if (isUnidentifiedPageContext(pageContext)) {
+  //       showToast({
+  //         horizontalPosition: 'right',
+  //         message: intl.formatMessage(
+  //           {
+  //             id: messages.pageContextError.id,
+  //           },
+  //           {
+  //             entity: intl.formatMessage({
+  //               id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
+  //             }),
+  //             template: intl.formatMessage({
+  //               id: 'admin/pages.editor.components.condition.scope.template',
+  //             }),
+  //           }
+  //         ),
+  //       })
+  //     }
+  //   },
+  //   []
+  // )
 
   const handleConfigurationCreation = useCallback(() => {
     handleConfigurationOpen(

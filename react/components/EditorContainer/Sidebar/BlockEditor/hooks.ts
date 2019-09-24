@@ -197,11 +197,16 @@ export const useFormHandlers: UseFormHandlers = ({
     [formMeta, setState]
   )
 
+  const handleListOpen = useCallback(() => {
+    setState({ mode: 'list' })
+  }, [setState])
+
   return {
     handleConditionChange,
     handleFormChange,
     handleFormClose,
     handleFormSave,
     handleLabelChange,
+    handleListOpen,
   }
 }
