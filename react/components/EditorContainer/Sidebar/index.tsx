@@ -13,7 +13,7 @@ import { useModalContext } from './ModalContext'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
-  runtime: RenderContext
+  iframeRuntime: RenderContext
   visible: boolean
 }
 
@@ -34,8 +34,8 @@ const messages = defineMessages({
 
 const Sidebar: React.FunctionComponent<Props> = ({
   highlightHandler,
+  iframeRuntime,
   intl,
-  runtime,
   visible,
 }) => {
   const editor = useEditorContext()
@@ -77,7 +77,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
           {editor.editTreePath === null ? (
             <BlockSelector
               highlightHandler={highlightHandler}
-              iframeRuntime={runtime}
+              iframeRuntime={iframeRuntime}
             />
           ) : (
             <ToastConsumer>
@@ -88,7 +88,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
                       {deleteContent => (
                         <BlockEditor
                           deleteContent={deleteContent}
-                          iframeRuntime={runtime}
+                          iframeRuntime={iframeRuntime}
                           saveContent={saveContent}
                           showToast={showToast}
                         />

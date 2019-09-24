@@ -53,8 +53,8 @@ const getContainerProps = (layout: Viewport) => {
 interface Props {
   availableCultures: LabelledLocale[]
   editor: EditorContextType
+  iframeRuntime: RenderContext | null
   onShowAdminControlsToggle: () => void
-  runtime: RenderContext | null
   viewports: Viewport[]
   visible: boolean
 }
@@ -63,8 +63,8 @@ const EditorContainer: React.FC<Props> = ({
   availableCultures,
   children,
   editor,
+  iframeRuntime,
   onShowAdminControlsToggle,
-  runtime,
   viewports,
   visible,
 }) => {
@@ -101,8 +101,9 @@ const EditorContainer: React.FC<Props> = ({
   }, [editMode, highlightExtensionPoint])
 
   const containerProps = useMemo(() => getContainerProps(viewport), [viewport])
-  const isDevelopment = runtime && runtime.production === false
-  const isMasterWorkspace = runtime && runtime.workspace === 'master'
+  const isDevelopment = iframeRuntime && iframeRuntime.production === false
+  const isMasterWorkspace =
+    iframeRuntime && iframeRuntime.workspace === 'master'
   const hasAlert = isMasterWorkspace || isDevelopment
 
   const urlPath = iframeWindow ? iframeWindow.location.pathname : ''
@@ -110,25 +111,25 @@ const EditorContainer: React.FC<Props> = ({
   return (
     <FormMetaProvider>
       <ModalProvider>
-        <IframeNavigationController iframeRuntime={runtime} />
+        <IframeNavigationController iframeRuntime={iframeRuntime} />
         <div className="w-100 h-100 min-vh-100 flex flex-row-reverse flex-wrap-l bg-base bb bw1 b--muted-5">
-          {!storeEditMode && runtime && (
+          {!storeEditMode && iframeRuntime && (
             <Sidebar
               highlightHandler={highlightExtensionPoint}
-              runtime={runtime}
+              iframeRuntime={iframeRuntime}
               visible={visible}
             />
           )}
           <div className="flex-grow-1 db-ns dn">
-            {runtime && (
+            {iframeRuntime && (
               <Topbar
                 availableCultures={availableCultures}
                 changeMode={setStoreEditMode}
+                iframeRuntime={iframeRuntime}
                 mode={storeEditMode}
                 onChangeUrlPath={onChangeIframeUrl}
                 urlPath={urlPath}
                 visible={visible}
-                runtime={runtime}
               />
             )}
             {isDevelopment && (
@@ -153,12 +154,12 @@ const EditorContainer: React.FC<Props> = ({
             )}
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
-                visible && runtime
+                visible && iframeRuntime
                   ? `calc--height-relative${hasAlert ? '--dev' : ''}`
                   : 'top-0 w-100 h-100'
               }`}
             >
-              {runtime && storeEditMode && (
+              {iframeRuntime && storeEditMode && (
                 <StoreEditor
                   editor={editor}
                   mode={storeEditMode}
