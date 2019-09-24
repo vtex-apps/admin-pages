@@ -38,6 +38,10 @@ export const useFormHandlers: UseFormHandlers = ({
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
+  const handleActiveConfigurationOpen = useCallback(() => {
+    setState({ mode: 'editingActive' })
+  }, [setState])
+
   const handleConditionChange = useCallback(
     (changes: Partial<typeof state['condition']>) => {
       setState({
@@ -181,10 +185,20 @@ export const useFormHandlers: UseFormHandlers = ({
       }
 
       editor.setIsLoading(false)
-
-      editor.editExtensionPoint(null)
     }
   }, [editor, formMeta, handleFormSave, iframeRuntime, modal, state.content])
+
+  const handleActiveConfigurationClose = () => {
+    handleFormClose()
+
+    editor.editExtensionPoint(null)
+  }
+
+  const handleInactiveConfigurationClose = () => {
+    handleFormClose()
+
+    setState({ mode: 'list' })
+  }
 
   const handleLabelChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -202,10 +216,13 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [setState])
 
   return {
+    handleActiveConfigurationClose,
+    handleActiveConfigurationOpen,
     handleConditionChange,
     handleFormChange,
     handleFormClose,
     handleFormSave,
+    handleInactiveConfigurationClose,
     handleLabelChange,
     handleListOpen,
   }

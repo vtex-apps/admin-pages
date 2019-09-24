@@ -41,10 +41,11 @@ interface UseFormHandlersParams {
 export type UseFormHandlers = (
   params: UseFormHandlersParams
 ) => {
+  handleActiveConfigurationOpen: () => void
   handleConditionChange: (changes: Partial<FormState['condition']>) => void
   handleFormChange: FormProps<FormDataContainer>['onChange']
   handleFormClose: () => void
-  handleFormSave: () => void
+  handleFormSave: () => Promise<void>
   handleLabelChange: React.ChangeEventHandler<HTMLInputElement>
   handleListOpen: () => void
 }

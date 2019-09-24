@@ -12,6 +12,7 @@ export interface UseListHandlersParams {
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   isSitewide: boolean
+  onBack: () => void
   serverTreePath: string
   showToast: ToastConsumerFunctions['showToast']
   template: string

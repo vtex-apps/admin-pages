@@ -11,6 +11,7 @@ export const useListHandlers: UseListHandlers = ({
   iframeRuntime,
   intl,
   isSitewide,
+  onBack,
   serverTreePath,
   showToast,
   template,
@@ -126,9 +127,9 @@ export const useListHandlers: UseListHandlers = ({
         event.stopPropagation()
       }
 
-      editor.editExtensionPoint(null)
+      onBack()
     },
-    [editor]
+    [onBack]
   )
 
   return {
