@@ -1,10 +1,9 @@
 {
-  "admin/container.sidebar.online-store": "Visual",
-  
   "admin/pages.admin-menu-button.content-pages": "Institucional",
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.site-editor-smb": "Editor de layout",
   "admin/pages.admin-menu-button.site-editor": "Site Editor",
+  
   "admin/pages.admin.loading": "Carregando",
   "admin/pages.admin.pages.form.button.cancel": "Cancelar",
   "admin/pages.admin.pages.form.button.delete": "Deletar",

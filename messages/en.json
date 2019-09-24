@@ -1,10 +1,9 @@
 {
-  "admin/container.sidebar.online-store": "Online store",
-  
   "admin/pages.admin-menu-button.content-pages": "Content Pages",
   "admin/pages.admin-menu-button.pages": "Pages",
   "admin/pages.admin-menu-button.site-editor-smb": "Site Editor",
   "admin/pages.admin-menu-button.site-editor": "Site Editor",
+  
   "admin/pages.admin.loading": "Loading",
   "admin/pages.admin.pages.form.button.cancel": "Cancel",
   "admin/pages.admin.pages.form.button.delete": "Delete",
