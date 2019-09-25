@@ -5,18 +5,18 @@ import { IconArrowBack } from 'vtex.styleguide'
 interface Props {
   isTitleEditable?: boolean
   onClose: () => void
-  onOpenList?: () => void
+  onListOpen?: () => void
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: string
 }
 
-const noop = () => {
+const noOp = () => {
   return
 }
 
-const EditorHeader: React.FC<Props> = ({ onClose, onOpenList, title }) => {
+const EditorHeader: React.FC<Props> = ({ onClose, onListOpen, title }) => {
   const handleCloseKeyDown = useKeydownFromClick(onClose)
-  const handleOpenListKeyDown = useKeydownFromClick(onOpenList || noop)
+  const handleOpenListKeyDown = useKeydownFromClick(onListOpen || noOp)
 
   const titleBaseClassName = 'w-100 ma0 lh-copy f5 fw5 near-black'
 
@@ -40,10 +40,10 @@ const EditorHeader: React.FC<Props> = ({ onClose, onOpenList, title }) => {
             </h4>
           </div>
 
-          {onOpenList && (
+          {onListOpen && (
             <span
               className="pointer outline-0"
-              onClick={onOpenList}
+              onClick={onListOpen}
               onKeyDown={handleOpenListKeyDown}
               role="button"
               tabIndex={0}
