@@ -1,7 +1,7 @@
 import { Mutation, MutationFn, MutationResult } from 'react-apollo'
 import DeleteContent from '../graphql/DeleteContent.graphql'
 
-interface DeleteContentData {
+export interface DeleteContentData {
   deleteContent: string
 }
 

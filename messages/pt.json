@@ -133,7 +133,7 @@
   "admin/pages.editor.components.condition.toast.error.page-context": "Não foi possível identificar {entity}. A configuração será definida para \"{template}\".",
   "admin/pages.editor.components.content.delete.error": "Algo deu errado. Por favor, tente novamente.",
   "admin/pages.editor.components.content.delete.success": "Conteúdo deletado.",
-  "admin/pages.editor.components.content.reset.error": "Erro ao restaurar conteúdo.",
+  "admin/pages.editor.components.content.reset.error": "Algo deu errado. Por favor, tente novamente.",
   "admin/pages.editor.components.content.reset.success": "Conteúdo restaurado.",
   "admin/pages.editor.components.content.save.error": "Algo deu errado. Por favor, tente novamente.",
   "admin/pages.editor.components.content.save.success": "Content saved.",

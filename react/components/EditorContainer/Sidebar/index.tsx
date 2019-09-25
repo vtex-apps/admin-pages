@@ -5,7 +5,6 @@ import { ToastConsumer } from 'vtex.styleguide'
 import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
-import DeleteContentMutation from '../mutations/DeleteContent'
 import SaveContentMutation from '../mutations/SaveContent'
 
 import BlockEditor from './BlockEditor'
@@ -101,29 +100,24 @@ const Sidebar: React.FunctionComponent<Props> = ({
               {({ showToast }) => (
                 <SaveContentMutation>
                   {saveContent => (
-                    <DeleteContentMutation>
-                      {deleteContent => (
-                        <ListContentQuery
-                          variables={{
-                            blockId,
-                            pageContext: iframeRuntime.route.pageContext,
-                            template,
-                            treePath: serverTreePath,
-                          }}
-                        >
-                          {query => (
-                            <BlockEditor
-                              deleteContent={deleteContent}
-                              iframeRuntime={iframeRuntime}
-                              isSitewide={isSitewide}
-                              query={query}
-                              saveContent={saveContent}
-                              showToast={showToast}
-                            />
-                          )}
-                        </ListContentQuery>
+                    <ListContentQuery
+                      variables={{
+                        blockId,
+                        pageContext: iframeRuntime.route.pageContext,
+                        template,
+                        treePath: serverTreePath,
+                      }}
+                    >
+                      {query => (
+                        <BlockEditor
+                          iframeRuntime={iframeRuntime}
+                          isSitewide={isSitewide}
+                          query={query}
+                          saveContent={saveContent}
+                          showToast={showToast}
+                        />
                       )}
-                    </DeleteContentMutation>
+                    </ListContentQuery>
                   )}
                 </SaveContentMutation>
               )}

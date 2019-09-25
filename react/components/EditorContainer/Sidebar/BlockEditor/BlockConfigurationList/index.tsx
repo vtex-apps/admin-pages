@@ -14,26 +14,10 @@ import { UseListHandlersParams } from './typings'
 // TODO
 //
 // const messages = defineMessages({
-//   deleteError: {
-//     defaultMessage: 'Something went wrong. Please try again.',
-//     id: 'admin/pages.editor.components.content.delete.error',
-//   },
-//   deleteSuccess: {
-//     defaultMessage: 'Content deleted.',
-//     id: 'admin/pages.editor.components.content.delete.success',
-//   },
 //   pageContextError: {
 //     defaultMessage:
 //       'Could not identify {entity}. The configuration will be set to "{template}".',
 //     id: 'admin/pages.editor.components.condition.toast.error.page-context',
-//   },
-//   resetError: {
-//     defaultMessage: 'Error resetting content.',
-//     id: 'admin/pages.editor.components.content.reset.error',
-//   },
-//   resetSuccess: {
-//     defaultMessage: 'Content reset.',
-//     id: 'admin/pages.editor.components.content.reset.success',
 //   },
 // })
 
@@ -88,7 +72,7 @@ const BlockConfigurationList: React.FC<Props> = ({
               key={index}
               // TODO: choose between active/inactive based on ?
               onClick={() => {}}
-              onDelete={handleConfigurationDeletion}
+              onDelete={handleConfigurationDelete}
             />
           )
         )}
