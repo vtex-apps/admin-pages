@@ -4,43 +4,17 @@ import { useEditorContext } from '../../../../EditorContext'
 import { getIsDefaultContent } from '../utils'
 
 import { UseListHandlers } from './typings'
-import { getDefaultConfiguration } from './utils'
 
 export const useListHandlers: UseListHandlers = ({
   deleteContent,
   iframeRuntime,
   intl,
-  isSitewide,
   onBack,
-  serverTreePath,
   showToast,
-  template,
 }) => {
   const editor = useEditorContext()
 
   // TODO
-  const handleConfigurationOpen = useCallback(
-    (configuration: ExtensionConfiguration) => {
-      return
-    },
-    []
-  )
-  // = useCallback(
-  //   async (configuration: ExtensionConfiguration) => {
-  //     TODO: set formData
-
-  //     const baseContent =
-  //       newConfiguration.contentId !== NEW_CONFIGURATION_ID
-  //         ? (JSON.parse(newConfiguration.contentJSON) as Extension['content'])
-  //         : {}
-
-  //     const formData = getFormData(baseContent)
-
-  //     await iframeRuntime.updateExtension(editor.editTreePath, {
-  //       ...iframeRuntime.extensions[editor.editTreePath],
-  //       content: formData,
-  //     })
-
   //     if (isUnidentifiedPageContext(pageContext)) {
   //       showToast({
   //         horizontalPosition: 'right',
@@ -59,15 +33,6 @@ export const useListHandlers: UseListHandlers = ({
   //         ),
   //       })
   //     }
-  //   },
-  //   []
-  // )
-
-  const handleConfigurationCreation = useCallback(() => {
-    handleConfigurationOpen(
-      getDefaultConfiguration({ iframeRuntime, isSitewide })
-    )
-  }, [handleConfigurationOpen, iframeRuntime, isSitewide])
 
   // TODO
   const handleConfigurationDeletion = useCallback(
@@ -81,8 +46,8 @@ export const useListHandlers: UseListHandlers = ({
           variables: {
             contentId: configuration.contentId,
             pageContext: iframeRuntime.route.pageContext,
-            template,
-            treePath: serverTreePath,
+            template: editor.blockData.template,
+            treePath: editor.blockData.serverTreePath,
           },
         })
 
@@ -110,15 +75,7 @@ export const useListHandlers: UseListHandlers = ({
         console.error(e)
       }
     },
-    [
-      deleteContent,
-      editor,
-      iframeRuntime.route.pageContext,
-      intl,
-      serverTreePath,
-      showToast,
-      template,
-    ]
+    [deleteContent, editor, iframeRuntime.route.pageContext, intl, showToast]
   )
 
   const handleQuit = useCallback(
@@ -133,9 +90,7 @@ export const useListHandlers: UseListHandlers = ({
   )
 
   return {
-    handleConfigurationCreation,
     handleConfigurationDeletion,
-    handleConfigurationOpen,
     handleQuit,
   }
 }

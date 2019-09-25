@@ -3,6 +3,7 @@ import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 
 import ActionMenu from '../../../../../ActionMenu'
+import { useEditorContext } from '../../../../../EditorContext'
 import EarthIcon from '../../../../../icons/EarthIcon'
 import PageIcon from '../../../../../icons/PageIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
@@ -15,7 +16,6 @@ import './styles.css'
 interface Props {
   configuration: ExtensionConfiguration
   isDisabled?: boolean
-  isSitewide: boolean
   isDefaultContent?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onDelete: (configuration: ExtensionConfiguration) => void
@@ -70,10 +70,11 @@ const Card = ({
   isDefaultContent = false,
   isDisabled = false,
   intl,
-  isSitewide,
   onClick,
   onDelete,
 }: Props & ReactIntl.InjectedIntlProps) => {
+  const editor = useEditorContext()
+
   const handleMainClick = React.useCallback(() => {
     if (!isDisabled) {
       onClick(configuration)
@@ -89,7 +90,7 @@ const Card = ({
       label: intl.formatMessage(
         isDefaultContent ? messages.reset : messages.delete
       ),
-      onClick: () => onDelete(),
+      onClick: () => onDelete(configuration),
     },
   ]
 
@@ -111,9 +112,9 @@ const Card = ({
     () =>
       getGenericContext({
         context: conditionPageContext,
-        isSitewide,
+        isSitewide: editor.blockData.isSitewide || false,
       }),
-    [conditionPageContext, isSitewide]
+    [conditionPageContext, editor.blockData.isSitewide]
   )
 
   const iconByScope: Record<typeof scope, JSX.Element> = React.useMemo(

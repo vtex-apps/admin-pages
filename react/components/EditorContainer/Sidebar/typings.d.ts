@@ -1,5 +1,3 @@
-import { GetInitialEditingStateParams } from './BlockEditor/typings'
-
 export interface FormMetaContext {
   getWasModified: () => boolean
   setWasModified: (newValue: boolean, callback?: () => void) => void
@@ -32,6 +30,12 @@ export type FormDataContainer = {
   formData: object
 }
 
-export type GetDefaultCondition = (
-  params: Pick<GetInitialEditingStateParams, 'iframeRuntime' | 'isSitewide'>
-) => ExtensionConfiguration['condition']
+export interface GetDefaultConditionParams {
+  iframeRuntime: RenderContext
+  isSitewide: boolean
+}
+
+export type GetDefaultCondition = ({
+  iframeRuntime,
+  isSitewide,
+}) => ExtensionConfiguration['condition']

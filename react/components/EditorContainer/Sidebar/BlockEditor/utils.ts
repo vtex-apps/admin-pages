@@ -1,4 +1,5 @@
 import throttle from 'lodash/throttle'
+import { formatIOMessage } from 'vtex.native-types'
 
 import { getBlockPath } from '../../../../utils/blocks'
 import {
@@ -10,15 +11,59 @@ import {
 } from '../../../../utils/components'
 import { getDefaultCondition } from '../utils'
 
-import { GetInitialEditingState } from './typings'
+import { NEW_CONFIGURATION_ID } from './consts'
+import {
+  GetDefaultConfiguration,
+  GetFormData,
+  GetInitialEditingState,
+} from './typings'
+
+export const getDefaultConfiguration: GetDefaultConfiguration = ({
+  iframeRuntime,
+  isSitewide,
+}) => ({
+  condition: getDefaultCondition({ iframeRuntime, isSitewide }),
+  contentId: NEW_CONFIGURATION_ID,
+  contentJSON: '{}',
+  label: null,
+  origin: null,
+})
+
+export const getFormData: GetFormData = ({
+  componentImplementation,
+  content,
+  contentSchema,
+  iframeRuntime,
+}) =>
+  getSchemaPropsOrContentFromRuntime({
+    component: componentImplementation,
+    contentSchema: contentSchema,
+    isContent: true,
+    messages: iframeRuntime.messages,
+    propsOrContent: content,
+    runtime: iframeRuntime,
+  }) || {}
+
+export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
+  const blockPath = getBlockPath(extensions, editTreePath)
+
+  return (
+    (blockPath.length > 0 &&
+      ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
+    false
+  )
+}
 
 export const getInitialEditingState: GetInitialEditingState = ({
   data,
   editTreePath,
   iframeRuntime,
+  intl,
   isSitewide,
 }) => {
-  const extension = getExtension(editTreePath, iframeRuntime.extensions)
+  const treePath = editTreePath || ''
+
+  const extension = getExtension(treePath, iframeRuntime.extensions)
 
   const listContent = data && data.listContentWithSchema
 
@@ -34,6 +79,8 @@ export const getInitialEditingState: GetInitialEditingState = ({
     propsOrContent: extension.content,
     runtime: iframeRuntime,
   })
+
+  const title = formatIOMessage({ id: componentSchema.title || '', intl })
 
   const configurations = listContent && listContent.content
 
@@ -51,25 +98,16 @@ export const getInitialEditingState: GetInitialEditingState = ({
     ? activeContent.condition
     : getDefaultCondition({ iframeRuntime, isSitewide })
 
-  const formData =
-    getSchemaPropsOrContentFromRuntime({
-      component: componentImplementation,
-      contentSchema,
-      isContent: true,
-      messages: iframeRuntime.messages,
-      propsOrContent: content,
-      runtime: iframeRuntime,
-    }) || {}
+  const formData = getFormData({
+    componentImplementation,
+    content,
+    contentSchema,
+    iframeRuntime,
+  })
 
   const label = activeContent && activeContent.label
 
   return {
-    blockData: {
-      componentSchema,
-      configurations,
-      contentSchema,
-      titleId: componentSchema.title,
-    },
     formState: {
       condition,
       contentId,
@@ -77,22 +115,19 @@ export const getInitialEditingState: GetInitialEditingState = ({
       formData,
       label,
     },
+    partialBlockData: {
+      componentImplementation,
+      componentSchema,
+      configurations,
+      contentSchema,
+      title,
+    },
   }
 }
 
 export const getIsDefaultContent: (
   configuration: Pick<ExtensionConfiguration, 'origin'>
 ) => boolean = configuration => configuration.origin !== null
-
-export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
-  const blockPath = getBlockPath(extensions, editTreePath)
-
-  return (
-    (blockPath.length > 0 &&
-      ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
-    false
-  )
-}
 
 export const omitUndefined = (obj: Extension['content']) =>
   Object.entries(obj).reduce((acc, [currKey, currValue]) => {

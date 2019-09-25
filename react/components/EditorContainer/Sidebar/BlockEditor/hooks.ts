@@ -10,8 +10,14 @@ import { useEditorContext } from '../../../EditorContext'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
 
+import { NEW_CONFIGURATION_ID } from './consts'
 import { UseFormHandlers } from './typings'
-import { omitUndefined, throttledUpdateExtensionFromForm } from './utils'
+import {
+  getDefaultConfiguration,
+  getFormData,
+  omitUndefined,
+  throttledUpdateExtensionFromForm,
+} from './utils'
 
 const messages = defineMessages({
   saveError: {
@@ -27,18 +33,18 @@ const messages = defineMessages({
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
   intl,
+  query,
   saveMutation,
-  serverTreePath,
   setState,
   showToast,
   state,
-  template,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
   const handleActiveConfigurationOpen = useCallback(() => {
+    // TODO: maybe refetch
     setState({ mode: 'editingActive' })
   }, [setState])
 
@@ -115,8 +121,8 @@ export const useFormHandlers: UseFormHandlers = ({
           blockId,
           configuration,
           lang: iframeRuntime.culture.locale,
-          template,
-          treePath: serverTreePath,
+          template: editor.blockData.template,
+          treePath: editor.blockData.serverTreePath,
         },
       })
 
@@ -146,14 +152,12 @@ export const useFormHandlers: UseFormHandlers = ({
     intl,
     modal,
     saveMutation,
-    serverTreePath,
     showToast,
     state.condition,
     state.contentId,
     state.formData,
     state.label,
     state.origin,
-    template,
   ])
 
   const handleFormClose = useCallback(() => {
@@ -185,20 +189,75 @@ export const useFormHandlers: UseFormHandlers = ({
       }
 
       editor.setIsLoading(false)
+
+      if (state.mode === 'editingActive') {
+        editor.editExtensionPoint(null)
+      } else if (state.mode === 'editingInactive') {
+        // refetch
+
+        // ?
+        setState({ mode: 'list' })
+      }
     }
-  }, [editor, formMeta, handleFormSave, iframeRuntime, modal, state.content])
+  }, [
+    editor,
+    formMeta,
+    handleFormSave,
+    iframeRuntime,
+    modal,
+    setState,
+    state.content,
+    state.mode,
+  ])
 
-  const handleActiveConfigurationClose = () => {
-    handleFormClose()
+  const handleInactiveConfigurationOpen = useCallback(
+    async (configuration: ExtensionConfiguration) => {
+      if (!editor.editTreePath) {
+        return
+      }
 
-    editor.editExtensionPoint(null)
-  }
+      const baseContent =
+        configuration.contentId !== NEW_CONFIGURATION_ID
+          ? (JSON.parse(configuration.contentJSON) as Extension['content'])
+          : {}
 
-  const handleInactiveConfigurationClose = () => {
-    handleFormClose()
+      const formData = getFormData({
+        componentImplementation: editor.blockData.componentImplementation,
+        content: baseContent,
+        contentSchema: editor.blockData.contentSchema,
+        iframeRuntime,
+      })
 
-    setState({ mode: 'list' })
-  }
+      await iframeRuntime.updateExtension(editor.editTreePath, {
+        ...iframeRuntime.extensions[editor.editTreePath],
+        content: formData,
+      })
+
+      setState({ formData, mode: 'editingInactive' })
+    },
+    [
+      editor.blockData.componentImplementation,
+      editor.blockData.contentSchema,
+      editor.editTreePath,
+      iframeRuntime,
+      setState,
+    ]
+  )
+
+  const handleConfigurationCreate = useCallback(
+    () =>
+      handleInactiveConfigurationOpen(
+        getDefaultConfiguration({
+          iframeRuntime,
+          isSitewide: editor.blockData.isSitewide || false,
+        })
+      ),
+    [
+      editor.blockData.isSitewide,
+      handleInactiveConfigurationOpen,
+      iframeRuntime,
+    ]
+  )
 
   const handleLabelChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,13 +275,13 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [setState])
 
   return {
-    handleActiveConfigurationClose,
     handleActiveConfigurationOpen,
     handleConditionChange,
+    handleConfigurationCreate,
     handleFormChange,
     handleFormClose,
     handleFormSave,
-    handleInactiveConfigurationClose,
+    handleInactiveConfigurationOpen,
     handleLabelChange,
     handleListOpen,
   }

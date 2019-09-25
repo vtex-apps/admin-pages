@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react'
 import { injectIntl } from 'react-intl'
-import { formatIOMessage } from 'vtex.native-types'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditorHeader from '../EditorHeader'
@@ -38,41 +37,32 @@ import { UseListHandlersParams } from './typings'
 //   },
 // })
 
-const BlockConfigurationList: React.FC<UseListHandlersParams> = ({
+interface Props extends UseListHandlersParams {
+  onActiveConfigurationOpen: (configuration: ExtensionConfiguration) => void
+  onConfigurationCreate: () => void
+  onInactiveConfigurationOpen: (
+    configuration: ExtensionConfiguration
+  ) => Promise<void>
+}
+
+const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
   iframeRuntime,
   intl,
-  isSitewide,
+  onActiveConfigurationOpen,
   onBack,
-  serverTreePath,
+  onConfigurationCreate,
+  onInactiveConfigurationOpen,
   showToast,
-  template,
 }) => {
   const editor = useEditorContext()
 
-  const componentTitle = React.useMemo(
-    () =>
-      formatIOMessage({
-        id: editor.blockData.titleId || '',
-        intl,
-      }),
-    [editor.blockData.titleId, intl]
-  )
-
-  const {
-    handleConfigurationCreation,
-    handleConfigurationDeletion,
-    handleConfigurationOpen,
-    handleQuit,
-  } = useListHandlers({
+  const { handleConfigurationDeletion, handleQuit } = useListHandlers({
     deleteContent,
     iframeRuntime,
     intl,
-    isSitewide,
     onBack,
-    serverTreePath,
     showToast,
-    template,
   })
 
   const { configurations } = editor.blockData
@@ -83,10 +73,10 @@ const BlockConfigurationList: React.FC<UseListHandlersParams> = ({
 
   return (
     <Fragment>
-      <EditorHeader onClose={handleQuit} title={componentTitle} />
+      <EditorHeader onClose={handleQuit} title={editor.blockData.title} />
 
       <LoaderContainer>
-        <CreateButton onClick={handleConfigurationCreation} />
+        <CreateButton onClick={onConfigurationCreate} />
 
         {configurations.map(
           (configuration: ExtensionConfiguration, index: number) => (
@@ -95,9 +85,9 @@ const BlockConfigurationList: React.FC<UseListHandlersParams> = ({
               isDefaultContent={getIsDefaultContent(configuration)}
               // TODO
               isDisabled={false}
-              isSitewide={isSitewide}
               key={index}
-              onClick={handleConfigurationOpen}
+              // TODO: choose between active/inactive based on ?
+              onClick={() => {}}
               onDelete={handleConfigurationDeletion}
             />
           )
