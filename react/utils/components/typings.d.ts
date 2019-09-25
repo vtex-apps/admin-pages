@@ -4,7 +4,7 @@ import { RenderComponent } from 'vtex.render-runtime'
 export type PropsOrContent = Extension['content'] | Extension['props']
 
 export interface GetComponentSchemaParams {
-  component: RenderComponent<unknown, unknown> | null
+  component: RenderComponent | null
   contentSchema?: JSONSchema6
   propsOrContent: PropsOrContent
   runtime: RenderContext
@@ -18,7 +18,7 @@ export interface GetSchemaPropsOrContentParams {
 }
 
 export interface GetSchemaPropsOrContentFromRuntimeParams {
-  component: RenderComponent<unknown, unknown> | null
+  component: RenderComponent | null
   contentSchema?: JSONSchema6
   isContent?: boolean
   messages?: RenderContext['messages']

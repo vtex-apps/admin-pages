@@ -1,24 +1,24 @@
 import React from 'react'
 import { injectIntl, InjectedIntlProps } from 'react-intl'
-import { formatIOMessage } from 'vtex.native-types'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
-import { getSitewideTreePath } from '../../../../utils/blocks'
 import { useEditorContext } from '../../../EditorContext'
 import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../../mutations/SaveContent'
-import ListContentQuery from '../../queries/ListContent'
+import { ListContentQueryResult } from '../../queries/ListContent'
 import { FormDataContainer } from '../typings'
 
 import BlockConfigurationEditor from './BlockConfigurationEditor'
 import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
 import { EditingState } from './typings'
-import { getInitialEditingState, getIsSitewide } from './utils'
+import { getInitialEditingState } from './utils'
 
 interface Props extends InjectedIntlProps {
   deleteContent: DeleteContentMutationFn
   iframeRuntime: RenderContext
+  isSitewide: boolean
+  query: ListContentQueryResult
   saveContent: SaveContentMutationFn
   showToast: ToastConsumerFunctions['showToast']
 }
@@ -31,6 +31,8 @@ const BlockEditor = ({
   deleteContent,
   iframeRuntime,
   intl,
+  isSitewide,
+  query,
   saveContent,
   showToast,
 }: Props) => {
@@ -46,128 +48,111 @@ const BlockEditor = ({
 
   const editor = useEditorContext()
 
-  const isDataLoading = React.useMemo(
-    () =>
-      JSON.stringify(state) === '{}' ||
-      JSON.stringify(editor.blockData) === '{}',
+  const isDataReady = React.useMemo(
+    () => state.formData && JSON.stringify(editor.blockData) !== '{}',
     [editor.blockData, state]
   )
-
-  const editTreePath = editor.editTreePath || ''
-
-  const blockId = iframeRuntime.extensions[editTreePath]
-    ? iframeRuntime.extensions[editTreePath].blockId
-    : ''
-
-  const componentTitle = React.useMemo(
-    () =>
-      formatIOMessage({
-        id: editor.blockData.titleId || '',
-        intl,
-      }),
-    [editor.blockData.titleId, intl]
-  )
-
-  const isSitewide = getIsSitewide(iframeRuntime.extensions, editTreePath)
-
-  const template = isSitewide
-    ? '*'
-    : iframeRuntime.pages[iframeRuntime.page].blockId
-
-  const serverTreePath = isSitewide
-    ? getSitewideTreePath(editTreePath)
-    : editTreePath
 
   const {
     handleActiveConfigurationOpen,
     handleConditionChange,
+    handleConfigurationCreate,
     handleFormChange,
     handleFormClose,
     handleFormSave,
+    handleInactiveConfigurationOpen,
     handleLabelChange,
     handleListOpen,
   } = useFormHandlers({
     iframeRuntime,
     intl,
+    query,
     saveMutation: saveContent,
-    serverTreePath,
     setState,
     showToast,
     state,
-    template,
   })
 
-  return (
-    <ListContentQuery
-      variables={{
-        blockId,
-        pageContext: iframeRuntime.route.pageContext,
-        template,
-        treePath: serverTreePath,
-      }}
-    >
-      {({ data, loading: isQueryLoading }) => {
-        if (isDataLoading) {
-          if (!isQueryLoading) {
-            const { blockData, formState } = getInitialEditingState({
-              data,
-              editTreePath,
-              iframeRuntime,
-              isSitewide,
-            })
+  if (query.loading) {
+    if (isDataReady) {
+      setState({ formData: undefined })
+    }
 
-            setState(formState)
+    return (
+      <div className="mt9 flex justify-center">
+        <Spinner />
+      </div>
+    )
+  }
 
-            editor.setBlockData(blockData)
-          }
+  if (!isDataReady) {
+    const { formState, partialBlockData } = getInitialEditingState({
+      data: query.data,
+      editTreePath: editor.editTreePath,
+      iframeRuntime,
+      intl,
+      isSitewide,
+    })
 
-          return (
-            <div className="mt9 flex justify-center">
-              <Spinner />
-            </div>
-          )
-        }
+    if (!state.formData) {
+      setState(formState)
+    }
 
-        const editorCommonProps = {
-          condition: (state
-            ? state.condition
-            : {}) as ExtensionConfiguration['condition'],
-          contentSchema: editor.blockData.contentSchema,
-          data: state.formData as FormDataContainer,
-          iframeRuntime: iframeRuntime,
-          isSitewide: isSitewide,
-          label: state.label,
-          onChange: handleFormChange,
-          onClose: handleFormClose,
-          onConditionChange: handleConditionChange,
-          onLabelChange: handleLabelChange,
-          onListOpen: handleListOpen,
-          onSave: handleFormSave,
-          title: componentTitle,
-        }
+    const { blockId: id, template, treePath: serverTreePath } = query.variables
 
-        const componentByMode = {
-          editingActive: (
-            <BlockConfigurationEditor isActive {...editorCommonProps} />
-          ),
-          editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
-          list: (
-            <BlockConfigurationList
-              deleteContent={deleteContent}
-              iframeRuntime={iframeRuntime}
-              isSitewide={isSitewide}
-              onBack={handleActiveConfigurationOpen}
-              serverTreePath={serverTreePath}
-              showToast={showToast}
-              template={template}
-            />
-          ),
-        }
+    const blockData: BlockData = {
+      ...partialBlockData,
+      id,
+      serverTreePath,
+      template,
+    }
 
-        return componentByMode[state.mode]
-      }}
-    </ListContentQuery>
-  )
+    if (JSON.stringify(editor.blockData) === '{}') {
+      editor.setBlockData(blockData)
+    }
+
+    return (
+      <div className="mt9 flex justify-center">
+        <Spinner />
+      </div>
+    )
+  }
+
+  const editorCommonProps = {
+    condition: (state
+      ? state.condition
+      : {}) as ExtensionConfiguration['condition'],
+    contentSchema: editor.blockData.contentSchema,
+    data: state.formData as FormDataContainer,
+    iframeRuntime: iframeRuntime,
+    isSitewide: editor.blockData.isSitewide,
+    label: state.label,
+    onChange: handleFormChange,
+    onClose: handleFormClose,
+    onConditionChange: handleConditionChange,
+    onLabelChange: handleLabelChange,
+    onListOpen: handleListOpen,
+    onSave: handleFormSave,
+    title: editor.blockData.title,
+  }
+
+  const componentByMode = {
+    editingActive: <BlockConfigurationEditor isActive {...editorCommonProps} />,
+    editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
+    list: (
+      <BlockConfigurationList
+        deleteContent={deleteContent}
+        iframeRuntime={iframeRuntime}
+        onActiveConfigurationOpen={handleActiveConfigurationOpen}
+        onBack={handleActiveConfigurationOpen}
+        onConfigurationCreate={handleConfigurationCreate}
+        onInactiveConfigurationOpen={handleInactiveConfigurationOpen}
+        showToast={showToast}
+      />
+    ),
+  }
+
+  return componentByMode[state.mode]
 }
 
 export default injectIntl(BlockEditor)
