@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+- Suggest a path based on the page title when creating a new page.
+
 ## [4.12.5] - 2019-09-20
 
 ### Added
