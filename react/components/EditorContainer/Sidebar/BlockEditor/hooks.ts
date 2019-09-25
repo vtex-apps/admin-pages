@@ -7,6 +7,7 @@ import {
   getSchemaPropsOrContent,
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
+import ListContent from '../../graphql/ListContent.graphql'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
 
@@ -116,7 +117,25 @@ export const useFormHandlers: UseFormHandlers = ({
     try {
       editor.setIsLoading(true)
 
+      const { id, template, serverTreePath } = editor.blockData
+
+      const refetchQueries =
+        id && serverTreePath && template
+          ? [
+              {
+                query: ListContent,
+                variables: {
+                  blockId: id,
+                  pageContext: iframeRuntime.route.pageContext,
+                  template: template,
+                  treePath: serverTreePath,
+                },
+              },
+            ]
+          : undefined
+
       await saveMutation({
+        refetchQueries,
         variables: {
           blockId,
           configuration,
@@ -193,9 +212,6 @@ export const useFormHandlers: UseFormHandlers = ({
       if (state.mode === 'editingActive') {
         editor.editExtensionPoint(null)
       } else if (state.mode === 'editingInactive') {
-        // refetch
-
-        // ?
         setState({ mode: 'list' })
       }
     }
