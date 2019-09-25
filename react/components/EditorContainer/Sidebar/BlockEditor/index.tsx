@@ -3,7 +3,7 @@ import { injectIntl, InjectedIntlProps } from 'react-intl'
 import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
-import { DeleteContentMutationFn } from '../../mutations/DeleteContent'
+import DeleteContentMutation from '../../mutations/DeleteContent'
 import { SaveContentMutationFn } from '../../mutations/SaveContent'
 import { ListContentQueryResult } from '../../queries/ListContent'
 import { FormDataContainer } from '../typings'
@@ -15,7 +15,6 @@ import { EditingState } from './typings'
 import { getInitialEditingState } from './utils'
 
 interface Props extends InjectedIntlProps {
-  deleteContent: DeleteContentMutationFn
   iframeRuntime: RenderContext
   isSitewide: boolean
   query: ListContentQueryResult
@@ -28,7 +27,6 @@ interface State extends EditingState {
 }
 
 const BlockEditor = ({
-  deleteContent,
   iframeRuntime,
   intl,
   isSitewide,
@@ -135,7 +133,7 @@ const BlockEditor = ({
     title: editor.blockData.title,
   }
 
-  const componentByMode = {
+  const componentByMode: Record<State['mode'], React.ReactElement> = {
     editingActive: (
       <BlockConfigurationEditor
         {...editorCommonProps}
@@ -145,15 +143,19 @@ const BlockEditor = ({
     ),
     editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
     list: (
-      <BlockConfigurationList
-        deleteContent={deleteContent}
-        iframeRuntime={iframeRuntime}
-        onActiveConfigurationOpen={handleActiveConfigurationOpen}
-        onBack={handleActiveConfigurationOpen}
-        onConfigurationCreate={handleConfigurationCreate}
-        onInactiveConfigurationOpen={handleInactiveConfigurationOpen}
-        showToast={showToast}
-      />
+      <DeleteContentMutation>
+        {deleteContent => (
+          <BlockConfigurationList
+            deleteContent={deleteContent}
+            iframeRuntime={iframeRuntime}
+            onActiveConfigurationOpen={handleActiveConfigurationOpen}
+            onBack={handleActiveConfigurationOpen}
+            onConfigurationCreate={handleConfigurationCreate}
+            onInactiveConfigurationOpen={handleInactiveConfigurationOpen}
+            showToast={showToast}
+          />
+        )}
+      </DeleteContentMutation>
     ),
   }
 
