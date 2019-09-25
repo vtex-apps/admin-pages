@@ -106,8 +106,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          onOpenList={isRootLevel ? onListOpen : undefined}
           onClose={componentFormState ? componentFormState.onClose : onClose}
+          onListOpen={onListOpen && isRootLevel ? onListOpen : undefined}
           title={componentFormState ? componentFormState.title : title}
         />
 

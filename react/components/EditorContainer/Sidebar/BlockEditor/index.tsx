@@ -131,13 +131,18 @@ const BlockEditor = ({
     onClose: handleFormClose,
     onConditionChange: handleConditionChange,
     onLabelChange: handleLabelChange,
-    onListOpen: handleListOpen,
     onSave: handleFormSave,
     title: editor.blockData.title,
   }
 
   const componentByMode = {
-    editingActive: <BlockConfigurationEditor isActive {...editorCommonProps} />,
+    editingActive: (
+      <BlockConfigurationEditor
+        {...editorCommonProps}
+        isActive
+        onListOpen={handleListOpen}
+      />
+    ),
     editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
     list: (
       <BlockConfigurationList
