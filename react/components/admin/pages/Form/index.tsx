@@ -50,6 +50,7 @@ export interface State {
   isLoading: boolean
   isInfoEditable: boolean
   formErrors: FormErrors
+  isNew: boolean
 }
 
 const messages = defineMessages({
@@ -78,15 +79,13 @@ class FormContainer extends Component<Props, State> {
     const { declarer } = props.initialData || { declarer: null }
     const isNew = isNewRoute(props.initialData)
 
-    const isDeletable = !declarer && !isNew
-    const isInfoEditable = !declarer || isNew
-
     this.state = {
       data: props.initialData,
       formErrors: {},
-      isDeletable,
-      isInfoEditable,
+      isDeletable: !declarer && !isNew,
+      isInfoEditable: !declarer || isNew,
       isLoading: false,
+      isNew,
     }
   }
 
@@ -182,7 +181,8 @@ class FormContainer extends Component<Props, State> {
     const newDetailValue = e.target.value
     const newDataPayload = {
       [detailName]: newDetailValue,
-      ...(detailName === 'title' && { path: `/${slugify(newDetailValue)}` }),
+      ...(detailName === 'title' &&
+        this.state.isNew && { path: `/${slugify(newDetailValue)}` }),
     }
 
     this.setState(prevState => ({
