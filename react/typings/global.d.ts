@@ -141,10 +141,15 @@ declare global {
   }
 
   interface BlockData {
+    componentImplementation?: RenderComponent | null
     componentSchema?: ComponentSchema
     configurations?: ExtensionConfiguration[]
     contentSchema?: JSONSchema6
-    titleId?: string
+    id?: string
+    isSitewide?: boolean
+    serverTreePath?: string
+    template?: string
+    title?: string
   }
 
   type ConditionType = 'scope' | 'device' | 'custom'

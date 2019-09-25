@@ -34,7 +34,6 @@ export interface State {
   messages: RenderRuntime['messages']
   mode: EditorMode
   showAdminControls: boolean
-  template?: string
   viewport: Viewport
 }
 
@@ -84,7 +83,6 @@ class EditorProvider extends Component<Props, State> {
       messages: {},
       mode: 'content',
       showAdminControls: true,
-      template: undefined,
       viewport: 'desktop',
     }
 
@@ -290,7 +288,6 @@ class EditorProvider extends Component<Props, State> {
         this.props.runtime.updateRuntime({
           conditions: this.state.activeConditions,
           device: this.props.runtime.device,
-          template: this.state.template,
         })
       }
     )
@@ -305,7 +302,6 @@ class EditorProvider extends Component<Props, State> {
       this.props.runtime.updateRuntime({
         conditions: this.state.activeConditions,
         device: this.props.runtime.device,
-        template: this.state.template,
       })
     })
   }
@@ -327,7 +323,6 @@ class EditorProvider extends Component<Props, State> {
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
-      template: this.state.template,
     })
   }
 

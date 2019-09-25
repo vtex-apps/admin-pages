@@ -2,6 +2,7 @@ import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { ToastConsumer } from 'vtex.styleguide'
 
+import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 import DeleteContentMutation from '../mutations/DeleteContent'
@@ -10,6 +11,8 @@ import SaveContentMutation from '../mutations/SaveContent'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
+import ListContentQuery from '../queries/ListContent'
+import { getIsSitewide } from './BlockEditor/utils'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
@@ -53,6 +56,20 @@ const Sidebar: React.FunctionComponent<Props> = ({
 
   const isLoading = editor.getIsLoading()
 
+  const treePath = editor.editTreePath || ''
+
+  const isSitewide = getIsSitewide(iframeRuntime.extensions, treePath)
+
+  const blockId =
+    iframeRuntime.extensions[treePath] &&
+    iframeRuntime.extensions[treePath].blockId
+
+  const template = isSitewide
+    ? '*'
+    : iframeRuntime.pages[iframeRuntime.page].blockId
+
+  const serverTreePath = isSitewide ? getSitewideTreePath(treePath) : treePath
+
   return (
     <div
       id="sidebar-vtex-editor"
@@ -91,12 +108,25 @@ const Sidebar: React.FunctionComponent<Props> = ({
                   {saveContent => (
                     <DeleteContentMutation>
                       {deleteContent => (
-                        <BlockEditor
-                          deleteContent={deleteContent}
-                          iframeRuntime={iframeRuntime}
-                          saveContent={saveContent}
-                          showToast={showToast}
-                        />
+                        <ListContentQuery
+                          variables={{
+                            blockId,
+                            pageContext: iframeRuntime.route.pageContext,
+                            template,
+                            treePath: serverTreePath,
+                          }}
+                        >
+                          {query => (
+                            <BlockEditor
+                              deleteContent={deleteContent}
+                              iframeRuntime={iframeRuntime}
+                              isSitewide={isSitewide}
+                              query={query}
+                              saveContent={saveContent}
+                              showToast={showToast}
+                            />
+                          )}
+                        </ListContentQuery>
                       )}
                     </DeleteContentMutation>
                   )}

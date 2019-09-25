@@ -1,3 +1,5 @@
+import { getBlockPath } from '../../../utils/blocks'
+
 import { GetDefaultCondition } from './typings'
 
 export const isUnidentifiedPageContext = (
@@ -28,4 +30,17 @@ export const getDefaultCondition: GetDefaultCondition = ({
     pageContext,
     statements: [],
   }
+}
+
+export const getIsSitewide = (
+  extensions: Extensions,
+  editTreePath: EditorContextType['editTreePath']
+) => {
+  const blockPath = getBlockPath(extensions, editTreePath)
+
+  return (
+    (blockPath.length > 0 &&
+      ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
+    false
+  )
 }
