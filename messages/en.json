@@ -133,7 +133,7 @@
   "admin/pages.editor.components.condition.toast.error.page-context": "Could not identify {entity}. The configuration will be set to \"{template}\".",
   "admin/pages.editor.components.content.delete.error": "Something went wrong. Please try again.",
   "admin/pages.editor.components.content.delete.success": "Content deleted.",
-  "admin/pages.editor.components.content.reset.error": "Error resetting content.",
+  "admin/pages.editor.components.content.reset.error": "Something went wrong. Please try again.",
   "admin/pages.editor.components.content.reset.success": "Content reset.",
   "admin/pages.editor.components.content.save.error": "Something went wrong. Please try again.",
   "admin/pages.editor.components.content.save.success": "Content saved.",

@@ -355,8 +355,11 @@ class EditorProvider extends Component<Props, State> {
     window.top.location.assign(`/admin/cms/site-editor${pathname}`)
   }
 
-  public handleSetBlockData = (blockData: State['blockData']) => {
-    this.setState({ blockData })
+  public handleSetBlockData = (newBlockData: State['blockData']) => {
+    this.setState(prevState => ({
+      ...prevState,
+      blockData: { ...prevState.blockData, ...newBlockData },
+    }))
   }
 
   public render() {

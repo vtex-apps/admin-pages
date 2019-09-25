@@ -84,6 +84,7 @@ export const getInitialEditingState: GetInitialEditingState = ({
 
   const configurations = listContent && listContent.content
 
+  // TODO: this is not always true
   const activeContent = configurations && configurations[0]
 
   const contentId = (activeContent && activeContent.contentId) || ''
