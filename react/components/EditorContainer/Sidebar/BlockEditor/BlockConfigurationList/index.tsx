@@ -41,7 +41,7 @@ const BlockConfigurationList: React.FC<Props> = ({
 }) => {
   const editor = useEditorContext()
 
-  const { handleConfigurationDeletion, handleQuit } = useListHandlers({
+  const { handleConfigurationDelete, handleQuit } = useListHandlers({
     deleteContent,
     iframeRuntime,
     intl,
