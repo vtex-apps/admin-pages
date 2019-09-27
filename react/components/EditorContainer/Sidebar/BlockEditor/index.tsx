@@ -100,6 +100,7 @@ const BlockEditor = ({
 
     const blockData: BlockData = {
       ...partialBlockData,
+      activeContentId: formState.contentId,
       id,
       serverTreePath,
       template,
