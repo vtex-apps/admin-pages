@@ -64,7 +64,8 @@ const BlockConfigurationList: React.FC<Props> = ({
 
         {configurations.map(
           (configuration: ExtensionConfiguration, index: number) => {
-            const isActiveConfiguration = editor.blockData.activeContentId === configuration.contentId
+            const isActiveConfiguration =
+              editor.blockData.activeContentId === configuration.contentId
             return (
               <Card
                 configuration={configuration}
@@ -74,7 +75,11 @@ const BlockConfigurationList: React.FC<Props> = ({
                 isDisabled={false}
                 key={index}
                 // TODO: choose between active/inactive based on ?
-                onClick={isActiveConfiguration ? onActiveConfigurationOpen : onInactiveConfigurationOpen}
+                onClick={
+                  isActiveConfiguration
+                    ? onActiveConfigurationOpen
+                    : onInactiveConfigurationOpen
+                }
                 onDelete={handleConfigurationDelete}
               />
             )
