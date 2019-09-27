@@ -141,6 +141,7 @@ declare global {
   }
 
   interface BlockData {
+    activeContentId?: string | null
     componentImplementation?: RenderComponent | null
     componentSchema?: ComponentSchema
     configurations?: ExtensionConfiguration[]
