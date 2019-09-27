@@ -15,8 +15,9 @@ import './styles.css'
 
 interface Props {
   configuration: ExtensionConfiguration
-  isDisabled?: boolean
+  isActive?: boolean
   isDefaultContent?: boolean
+  isDisabled?: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onDelete: (configuration: ExtensionConfiguration) => void
 }
@@ -67,6 +68,7 @@ const messages = defineMessages({
 
 const Card = ({
   configuration,
+  isActive = false,
   isDefaultContent = false,
   isDisabled = false,
   intl,
@@ -128,7 +130,9 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 ba br2 b--action-secondary bg-action-secondary hover-bg-action-secondary outline-0 ${
+      className={`relative mh5 mt5 pa5 ba br2 ${
+          isActive ? 'b--action-primary' : 'b--action-secondary'
+        } bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
       onClick={handleMainClick}
