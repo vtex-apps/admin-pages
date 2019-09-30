@@ -1,25 +1,19 @@
 import React from 'react'
-import { injectIntl, InjectedIntlProps } from 'react-intl'
-import { Spinner, ToastConsumerFunctions } from 'vtex.styleguide'
+import { injectIntl } from 'react-intl'
+import { Spinner } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
-import { SaveContentMutationFn } from '../../mutations/SaveContent'
-import { ListContentQueryResult } from '../../queries/ListContent'
 import { FormDataContainer } from '../typings'
 
 import BlockConfigurationEditor from './BlockConfigurationEditor'
 import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
-import { EditingState } from './typings'
+import { EditingState, UseFormHandlersParams } from './typings'
 import { getInitialEditingState } from './utils'
 
-interface Props extends InjectedIntlProps {
-  iframeRuntime: RenderContext
+interface Props extends Omit<UseFormHandlersParams, 'setState' | 'state'> {
   isSitewide: boolean
-  query: ListContentQueryResult
-  saveContent: SaveContentMutationFn
-  showToast: ToastConsumerFunctions['showToast']
 }
 
 interface State extends EditingState {
@@ -65,7 +59,7 @@ const BlockEditor = ({
     iframeRuntime,
     intl,
     query,
-    saveMutation: saveContent,
+    saveContent,
     setState,
     showToast,
     state,
