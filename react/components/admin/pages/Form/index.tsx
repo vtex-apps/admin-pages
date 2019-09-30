@@ -28,6 +28,8 @@ import { FormErrors } from './typings'
 
 import { OperationsResults } from './Operations'
 
+import { slugify } from '../../utils'
+
 interface ComponentProps {
   isCustomPage: boolean
   initialData: RouteFormData
@@ -70,21 +72,19 @@ const messages = defineMessages({
 })
 
 class FormContainer extends Component<Props, State> {
+  private isNew: boolean
+
   public constructor(props: Props) {
     super(props)
 
     const { declarer } = props.initialData || { declarer: null }
 
-    const isNew = isNewRoute(props.initialData)
-
-    const isDeletable = !declarer && !isNew
-    const isInfoEditable = !declarer || isNew
-
+    this.isNew = isNewRoute(props.initialData)
     this.state = {
       data: props.initialData,
       formErrors: {},
-      isDeletable,
-      isInfoEditable,
+      isDeletable: !declarer && !this.isNew,
+      isInfoEditable: !declarer || this.isNew,
       isLoading: false,
     }
   }
@@ -179,12 +179,17 @@ class FormContainer extends Component<Props, State> {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const newDetailValue = e.target.value
+    const newDataPayload = {
+      [detailName]: newDetailValue,
+      ...(detailName === 'title' &&
+        this.isNew && { path: `/${slugify(newDetailValue)}` }),
+    }
 
     this.setState(prevState => ({
       ...prevState,
       data: {
         ...prevState.data,
-        [detailName]: newDetailValue,
+        ...newDataPayload,
       },
       formErrors: {},
     }))

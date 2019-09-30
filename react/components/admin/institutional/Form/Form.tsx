@@ -5,11 +5,11 @@ import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { Button, Input, Textarea, IconEdit } from 'vtex.styleguide'
 
 import { RouteContentFromData } from './index'
-import { slugify } from './utils'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
+import { slugify } from '../../utils'
 
 import RichTextEditor from '../../../RichTextEditor/index'
 import SeoPreview from '../../../SeoPreview'
