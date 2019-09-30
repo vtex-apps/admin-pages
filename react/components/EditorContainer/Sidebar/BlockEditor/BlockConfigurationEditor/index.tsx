@@ -1,14 +1,15 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button } from 'vtex.styleguide'
+import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditableText from '../../../EditableText'
 import { useFormMetaContext } from '../../FormMetaContext'
 import { FormDataContainer } from '../../typings'
+import { isUnidentifiedPageContext } from '../../utils'
 import EditorHeader from '../EditorHeader'
 import LoaderContainer from '../LoaderContainer'
 
@@ -35,16 +36,26 @@ interface CustomProps {
   onLabelChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   onListOpen?: () => void
   onSave: () => void
+  showToast: ToastConsumerFunctions['showToast']
   title: ComponentSchema['title']
 }
 
 type Props = CustomProps & ReactIntl.InjectedIntlProps
+
+const messages = defineMessages({
+  pageContextError: {
+    defaultMessage:
+      'Could not identify {entity}. The configuration will be set to "{template}".',
+    id: 'admin/pages.editor.components.condition.toast.error.page-context',
+  },
+})
 
 const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   condition,
   contentSchema,
   data,
   iframeRuntime,
+  intl,
   isActive,
   isNew,
   isSitewide = false,
@@ -55,8 +66,33 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   onLabelChange,
   onListOpen,
   onSave,
+  showToast,
   title,
 }) => {
+  React.useEffect(() => {
+    const { pageContext } = iframeRuntime.route
+
+    if (isUnidentifiedPageContext(pageContext)) {
+      showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage(
+          {
+            id: messages.pageContextError.id,
+          },
+          {
+            entity: intl.formatMessage({
+              id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
+            }),
+            template: intl.formatMessage({
+              id: 'admin/pages.editor.components.condition.scope.template',
+            }),
+          }
+        ),
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const {

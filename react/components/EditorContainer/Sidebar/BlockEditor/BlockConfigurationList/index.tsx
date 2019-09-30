@@ -11,16 +11,6 @@ import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
 
-// TODO
-//
-// const messages = defineMessages({
-//   pageContextError: {
-//     defaultMessage:
-//       'Could not identify {entity}. The configuration will be set to "{template}".',
-//     id: 'admin/pages.editor.components.condition.toast.error.page-context',
-//   },
-// })
-
 interface Props extends UseListHandlersParams {
   onActiveConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onConfigurationCreate: () => void
