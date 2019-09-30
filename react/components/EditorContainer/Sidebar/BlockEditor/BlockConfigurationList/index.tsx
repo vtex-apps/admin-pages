@@ -61,30 +61,25 @@ const BlockConfigurationList: React.FC<Props> = ({
 
       <LoaderContainer>
         <CreateButton onClick={onConfigurationCreate} />
+        {configurations.map((configuration: ExtensionConfiguration, index) => {
+          const isActiveConfiguration =
+            editor.blockData.activeContentId === configuration.contentId
 
-        {configurations.map(
-          (configuration: ExtensionConfiguration, index: number) => {
-            const isActiveConfiguration =
-              editor.blockData.activeContentId === configuration.contentId
-            return (
-              <Card
-                configuration={configuration}
-                isDefaultContent={getIsDefaultContent(configuration)}
-                isActive={isActiveConfiguration}
-                // TODO
-                isDisabled={false}
-                key={index}
-                // TODO: choose between active/inactive based on ?
-                onClick={
-                  isActiveConfiguration
-                    ? onActiveConfigurationOpen
-                    : onInactiveConfigurationOpen
-                }
-                onDelete={handleConfigurationDelete}
-              />
-            )
-          }
-        )}
+          return (
+            <Card
+              configuration={configuration}
+              isActive={isActiveConfiguration}
+              isDefaultContent={getIsDefaultContent(configuration)}
+              key={configuration.contentId || index}
+              onClick={
+                isActiveConfiguration
+                  ? onActiveConfigurationOpen
+                  : onInactiveConfigurationOpen
+              }
+              onDelete={handleConfigurationDelete}
+            />
+          )
+        })}
       </LoaderContainer>
     </Fragment>
   )
