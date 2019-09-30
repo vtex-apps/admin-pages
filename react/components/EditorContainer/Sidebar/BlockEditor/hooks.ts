@@ -35,7 +35,7 @@ export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
   intl,
   query,
-  saveMutation,
+  saveContent,
   setState,
   showToast,
   state,
@@ -134,7 +134,7 @@ export const useFormHandlers: UseFormHandlers = ({
             ]
           : undefined
 
-      await saveMutation({
+      await saveContent({
         refetchQueries,
         variables: {
           blockId,
@@ -170,7 +170,7 @@ export const useFormHandlers: UseFormHandlers = ({
     iframeRuntime,
     intl,
     modal,
-    saveMutation,
+    saveContent,
     showToast,
     state.condition,
     state.contentId,

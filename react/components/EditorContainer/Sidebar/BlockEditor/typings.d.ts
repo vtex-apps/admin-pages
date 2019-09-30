@@ -45,11 +45,11 @@ export type GetInitialEditingState = (
   >
 }
 
-interface UseFormHandlersParams {
+export interface UseFormHandlersParams {
   iframeRuntime: RenderContext
   intl: InjectedIntl
   query: ListContentQueryResult
-  saveMutation: MutationFn<SaveContentData, SaveContentVariables>
+  saveContent: MutationFn<SaveContentData, SaveContentVariables>
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState
