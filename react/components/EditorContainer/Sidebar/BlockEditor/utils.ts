@@ -69,7 +69,6 @@ export const getInitialEditingState: GetInitialEditingState = ({
 
   const componentImplementation = getIframeImplementation(extension.component)
 
-  // TODO: get contentSchema from iframeRuntime so query is not needed
   const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
 
   const componentSchema = getComponentSchema({

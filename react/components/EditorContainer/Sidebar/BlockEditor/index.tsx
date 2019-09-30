@@ -4,6 +4,7 @@ import { Spinner } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
+import { ListContentQueryResult } from '../../queries/ListContent'
 import { FormDataContainer } from '../typings'
 
 import BlockConfigurationEditor from './BlockConfigurationEditor'
@@ -14,6 +15,7 @@ import { getInitialEditingState } from './utils'
 
 interface Props extends Omit<UseFormHandlersParams, 'setState' | 'state'> {
   isSitewide: boolean
+  query: ListContentQueryResult
 }
 
 interface State extends EditingState {
@@ -58,7 +60,6 @@ const BlockEditor = ({
   } = useFormHandlers({
     iframeRuntime,
     intl,
-    query,
     saveContent,
     setState,
     showToast,
