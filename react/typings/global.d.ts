@@ -29,6 +29,7 @@ declare global {
     composition?: 'blocks' | 'children'
     configurationsIds?: string[]
     content: Record<string, unknown>
+    contentId?: string
     contentMapId?: string
     hasContentSchema: boolean
     implementationIndex?: number
@@ -112,6 +113,7 @@ declare global {
     account: RenderRuntime['account']
     addMessages: (newMessages: RenderContext['messages']) => Promise<void>
     components: RenderRuntime['components']
+    contentMap: RenderRuntime['contentMap']
     culture: RenderRuntime['culture']
     device: ConfigurationDevice
     emitter: RenderRuntime['emitter']
@@ -196,6 +198,7 @@ declare global {
     account: string
     accountId: string
     appsEtag: string
+    contentMap?: Record<string, Record<string, unknown>>
     customRouting?: boolean
     emitter: EventEmitter
     workspace: string
