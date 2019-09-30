@@ -34,7 +34,6 @@ const messages = defineMessages({
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
   intl,
-  query,
   saveContent,
   setState,
   showToast,
@@ -45,7 +44,6 @@ export const useFormHandlers: UseFormHandlers = ({
   const modal = useModalContext()
 
   const handleActiveConfigurationOpen = useCallback(() => {
-    // TODO: maybe refetch
     setState({ mode: 'editingActive' })
   }, [setState])
 
