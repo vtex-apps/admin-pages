@@ -126,6 +126,7 @@ const BlockEditor = ({
     onConditionChange: handleConditionChange,
     onLabelChange: handleLabelChange,
     onSave: handleFormSave,
+    showToast,
     title: editor.blockData.title,
   }
 
