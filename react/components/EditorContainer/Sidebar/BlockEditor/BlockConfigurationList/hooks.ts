@@ -35,26 +35,6 @@ export const useListHandlers: UseListHandlers = ({
 }) => {
   const editor = useEditorContext()
 
-  // TODO
-  //     if (isUnidentifiedPageContext(pageContext)) {
-  //       showToast({
-  //         horizontalPosition: 'right',
-  //         message: intl.formatMessage(
-  //           {
-  //             id: messages.pageContextError.id,
-  //           },
-  //           {
-  //             entity: intl.formatMessage({
-  //               id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
-  //             }),
-  //             template: intl.formatMessage({
-  //               id: 'admin/pages.editor.components.condition.scope.template',
-  //             }),
-  //           }
-  //         ),
-  //       })
-  //     }
-
   const handleConfigurationDelete = useCallback(
     async (configuration: ExtensionConfiguration) => {
       editor.setIsLoading(true)
