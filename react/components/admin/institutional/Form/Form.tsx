@@ -9,10 +9,10 @@ import { RouteContentFromData } from './index'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
+import { slugify } from '../../utils'
 
 import RichTextEditor from '../../../RichTextEditor/index'
 import SeoPreview from '../../../SeoPreview'
-import { slugify } from '../../../helpers'
 
 interface CustomProps {
   data: RouteFormData & RouteContentFromData

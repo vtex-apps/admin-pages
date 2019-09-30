@@ -1,7 +1,7 @@
 import { RouteFormData } from 'pages'
 import { State } from './index'
 
-import { slugify } from '../../../helpers'
+import { slugify } from '../../utils'
 
 const requiredMessage = 'admin/pages.admin.pages.form.templates.field.required'
 
