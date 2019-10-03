@@ -11,14 +11,13 @@ import BlockConfigurationEditor from './BlockConfigurationEditor'
 import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
 import { EditingState, UseFormHandlersParams } from './typings'
-import { getInitialEditingState } from './utils'
 
 interface Props extends Omit<UseFormHandlersParams, 'setState' | 'state'> {
   isSitewide: boolean
   query: ListContentQueryResult
 }
 
-interface State extends EditingState {
+export interface State extends EditingState {
   mode: 'editingActive' | 'editingInactive' | 'list'
 }
 
@@ -55,11 +54,14 @@ const BlockEditor = ({
     handleFormClose,
     handleFormSave,
     handleInactiveConfigurationOpen,
+    handleInitialStateSet,
     handleLabelChange,
     handleListOpen,
   } = useFormHandlers({
     iframeRuntime,
     intl,
+    isSitewide,
+    query,
     saveContent,
     setState,
     showToast,
@@ -67,10 +69,6 @@ const BlockEditor = ({
   })
 
   if (query.loading) {
-    if (isDataReady) {
-      setState({ formData: undefined })
-    }
-
     return (
       <div className="mt9 flex justify-center">
         <Spinner />
@@ -79,31 +77,7 @@ const BlockEditor = ({
   }
 
   if (!isDataReady) {
-    const { formState, partialBlockData } = getInitialEditingState({
-      data: query.data,
-      editTreePath: editor.editTreePath,
-      iframeRuntime,
-      intl,
-      isSitewide,
-    })
-
-    if (!state.formData) {
-      setState(formState)
-    }
-
-    const { blockId: id, template, treePath: serverTreePath } = query.variables
-
-    const blockData: BlockData = {
-      ...partialBlockData,
-      activeContentId: formState.contentId,
-      id,
-      serverTreePath,
-      template,
-    }
-
-    if (JSON.stringify(editor.blockData) === '{}') {
-      editor.setBlockData(blockData)
-    }
+    handleInitialStateSet()
 
     return (
       <div className="mt9 flex justify-center">

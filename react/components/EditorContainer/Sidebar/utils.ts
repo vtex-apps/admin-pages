@@ -1,6 +1,7 @@
 import { getBlockPath } from '../../../utils/blocks'
 
-import { GetDefaultCondition } from './typings'
+import { getInitialEditingState } from './BlockEditor/utils'
+import { GetDefaultCondition, UpdateEditorBlockData } from './typings'
 
 export const isUnidentifiedPageContext = (
   pageContext: RenderRuntime['route']['pageContext']
@@ -43,4 +44,34 @@ export const getIsSitewide = (
       ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
     false
   )
+}
+
+export const updateEditorBlockData: UpdateEditorBlockData = ({
+  data,
+  editor,
+  id,
+  iframeRuntime,
+  intl,
+  isSitewide,
+  serverTreePath,
+  template,
+}) => {
+  const {
+    formState: { contentId: activeContentId },
+    partialBlockData,
+  } = getInitialEditingState({
+    data,
+    editTreePath: editor.editTreePath,
+    iframeRuntime,
+    intl,
+    isSitewide,
+  })
+
+  editor.setBlockData({
+    ...partialBlockData,
+    activeContentId,
+    id,
+    serverTreePath,
+    template,
+  })
 }

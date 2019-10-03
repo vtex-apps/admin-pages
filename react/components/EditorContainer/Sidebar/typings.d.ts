@@ -1,3 +1,5 @@
+import { GetInitialEditingStateParams } from './BlockEditor/typings'
+
 export interface FormMetaContext {
   getWasModified: () => boolean
   setWasModified: (newValue: boolean, callback?: () => void) => void
@@ -39,3 +41,10 @@ export type GetDefaultCondition = ({
   iframeRuntime,
   isSitewide,
 }) => ExtensionConfiguration['condition']
+
+export type UpdateEditorBlockData = (
+  params: Omit<GetInitialEditingStateParams, 'editTreePath'> &
+    Pick<BlockData, 'id' | 'serverTreePath' | 'template'> & {
+      editor: EditorContextType
+    }
+) => void
