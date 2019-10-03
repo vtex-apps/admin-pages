@@ -1,5 +1,4 @@
 import debounce from 'lodash/debounce'
-import PropTypes from 'prop-types'
 import React, { Component, CSSProperties } from 'react'
 import { canUseDOM } from 'vtex.render-runtime'
 
@@ -19,6 +18,7 @@ export interface State {
   editMode: boolean
   highlightHandler: (treePath: string | null) => void
   highlightTreePath: string | null
+  title?: string
 }
 
 function isElementInViewport(el: Element) {
@@ -33,14 +33,7 @@ function isElementInViewport(el: Element) {
   )
 }
 
-export default class HighlightOverlay extends Component<Props, State> {
-  public static propTypes = {
-    editExtensionPoint: PropTypes.func,
-    editMode: PropTypes.bool,
-    highlighHandler: PropTypes.func,
-    highlightTreePath: PropTypes.string,
-  }
-
+export class HighlightOverlay extends Component<Props, State> {
   public highlightRemovalTimeout: ReturnType<Window['setTimeout']> | null
 
   private INITIAL_HIGHLIGHT_RECT = {
@@ -219,13 +212,12 @@ export default class HighlightOverlay extends Component<Props, State> {
       highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',
-      height,
+      height: height > 28 ? height : 28,
       left,
       pointerEvents: 'none',
       top,
-      transition:
-        'opacity 100ms ease-out, top 0.3s, left 0.3s, width 0.3s, height 0.3s',
-      width,
+      transition: 'opacity 100ms ease-out',
+      width: width > 98 ? width : 98,
       zIndex: 999,
     }
 
@@ -233,10 +225,22 @@ export default class HighlightOverlay extends Component<Props, State> {
       <div
         id="editor-provider-overlay"
         style={highlightStyle}
-        className={`absolute bg-light-blue br2 b--blue b--dashed ba ${
-          highlight ? 'o-50' : 'o-0'
+        className={`absolute b--action-primary bw2 ba ${
+          highlight ? 'o-100' : 'o-0'
         }`}
-      />
+      >
+        {highlightTreePath != null && (
+          <p
+            className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 pb2 pt1 truncate tc"
+            style={{ width: 90, height: 20 }}
+            title={highlightTreePath}
+          >
+            {highlightTreePath}
+          </p>
+        )}
+      </div>
     )
   }
 }
+
+export default HighlightOverlay
