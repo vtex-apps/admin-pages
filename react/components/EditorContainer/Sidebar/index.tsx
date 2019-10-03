@@ -6,12 +6,13 @@ import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 import SaveContentMutation from '../mutations/SaveContent'
+import ListContentQuery from '../queries/ListContent'
 
 import BlockEditor from './BlockEditor'
+import { getIsSitewide } from './BlockEditor/utils'
 import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
-import ListContentQuery from '../queries/ListContent'
-import { getIsSitewide } from './BlockEditor/utils'
+import { updateEditorBlockData } from './utils'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
@@ -78,7 +79,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
         id="admin-sidebar"
         className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
       >
-        <div className="h-100 flex flex-column dark-gray">
+        <div className="relative h-100 flex flex-column dark-gray">
           <Modal
             isActionLoading={isLoading}
             isOpen={getIsModalOpen()}
@@ -101,6 +102,18 @@ const Sidebar: React.FunctionComponent<Props> = ({
                 <SaveContentMutation>
                   {saveContent => (
                     <ListContentQuery
+                      onCompleted={data => {
+                        updateEditorBlockData({
+                          data,
+                          editor,
+                          id: blockId,
+                          iframeRuntime,
+                          intl,
+                          isSitewide,
+                          serverTreePath,
+                          template,
+                        })
+                      }}
                       variables={{
                         blockId,
                         pageContext: iframeRuntime.route.pageContext,
