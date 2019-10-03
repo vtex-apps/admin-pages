@@ -1,4 +1,6 @@
 import { path, pathOr } from 'ramda'
+import { InjectedIntl } from 'react-intl'
+import { formatIOMessage } from 'vtex.native-types'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockPath } from '../../../utils/blocks'
@@ -177,6 +179,20 @@ export const getIsSitewide = (extensions: Extensions, editTreePath: string) => {
       ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
     false
   )
+}
+
+export const getTitleByTreePathMap = (
+  components: SidebarComponent[],
+  intl: InjectedIntl
+) => {
+  return components.reduce<
+    Record<string, { title?: string; isEditable: boolean }>
+  >((acc, { isEditable, name, treePath }) => {
+    const title = formatIOMessage({ id: name, intl })
+    acc[treePath] = { title, isEditable }
+
+    return acc
+  }, {})
 }
 
 export const getIsDefaultContent: (

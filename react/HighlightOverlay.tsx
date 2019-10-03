@@ -18,7 +18,7 @@ export interface State {
   editMode: boolean
   highlightHandler: (treePath: string | null) => void
   highlightTreePath: string | null
-  title?: string
+  sidebarBlocksMap: Record<string, { title?: string; isEditable: boolean }>
 }
 
 function isElementInViewport(el: Element) {
@@ -29,6 +29,15 @@ function isElementInViewport(el: Element) {
     rect.left >= 0 &&
     rect.bottom <=
       (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+  )
+}
+
+function isElementInHorizontalAxis(el: Element) {
+  const rect = el.getBoundingClientRect()
+
+  return (
+    rect.left >= 0 &&
     rect.right <= (window.innerWidth || document.documentElement.clientWidth)
   )
 }
@@ -61,13 +70,25 @@ export class HighlightOverlay extends Component<Props, State> {
       editMode: props.editMode,
       highlightHandler: props.highlightHandler,
       highlightTreePath: props.highlightTreePath,
+      sidebarBlocksMap: {},
     }
 
     const highlightableWindow = window
 
     if (canUseDOM) {
-      highlightableWindow.__setHighlightTreePath = (newState: State) => {
-        this.setState(newState)
+      highlightableWindow.__setHighlightTreePath = (
+        newState: Partial<State>
+      ) => {
+        this.setState(prevState => {
+          return {
+            ...prevState,
+            ...newState,
+            sidebarBlocksMap: {
+              ...prevState.sidebarBlocksMap,
+              ...newState.sidebarBlocksMap,
+            },
+          }
+        })
       }
     }
 
@@ -113,7 +134,29 @@ export class HighlightOverlay extends Component<Props, State> {
 
     const iframeBody = document.querySelector('body')
 
-    if (!highlightTreePath || elements.length === 0 || !provider) {
+    const elementsArray: Element[] = Array.prototype.slice.call(elements)
+
+    const visibleElement = elementsArray.find(currElement => {
+      const currRect = currElement.getBoundingClientRect()
+
+      return (
+        currRect.width > 0 &&
+        currRect.height > 0 &&
+        isElementInHorizontalAxis(currElement)
+      )
+    })
+
+    const isEditable =
+      this.state.sidebarBlocksMap[highlightTreePath] &&
+      this.state.sidebarBlocksMap[highlightTreePath].isEditable
+
+    if (
+      !highlightTreePath ||
+      elements.length === 0 ||
+      !visibleElement ||
+      !isEditable ||
+      !provider
+    ) {
       return
     }
 
@@ -135,20 +178,12 @@ export class HighlightOverlay extends Component<Props, State> {
 
     const providerRect = provider.getBoundingClientRect() as DOMRect
 
-    const elementsArray: Element[] = Array.prototype.slice.call(elements)
-
-    const element = elementsArray.find(currElement => {
-      const currRect = currElement.getBoundingClientRect()
-
-      return currRect.width > 0 && currRect.height > 0
-    })
-
-    const rect = element
-      ? (element.getBoundingClientRect() as DOMRect)
+    const rect = visibleElement
+      ? (visibleElement.getBoundingClientRect() as DOMRect)
       : this.INITIAL_HIGHLIGHT_RECT
 
-    if (element && !this.state.editMode) {
-      this.debouncedScrollTo(element)
+    if (visibleElement && !this.state.editMode) {
+      this.debouncedScrollTo(visibleElement)
     }
 
     // Add offset from render provider main div
@@ -158,6 +193,7 @@ export class HighlightOverlay extends Component<Props, State> {
       (paddingFromIframeBody.left + paddingFromIframeBody.right) / 2
 
     DEFAULT_HIGHLIGHT_RECT = rect
+
     return rect
   }
 
@@ -171,7 +207,14 @@ export class HighlightOverlay extends Component<Props, State> {
     }
 
     const treePath = e.currentTarget.getAttribute('data-extension-point')
-    this.state.highlightHandler(treePath)
+    const isEditable =
+      treePath &&
+      this.state.sidebarBlocksMap[treePath] &&
+      this.state.sidebarBlocksMap[treePath].isEditable
+
+    if (isEditable) {
+      this.state.highlightHandler(treePath)
+    }
 
     clearTimeout(this.highlightRemovalTimeout)
     e.stopPropagation()
@@ -205,7 +248,7 @@ export class HighlightOverlay extends Component<Props, State> {
   }
 
   public render() {
-    const { highlightTreePath } = this.state
+    const { highlightTreePath, sidebarBlocksMap } = this.state
     const highlight =
       highlightTreePath && this.getHighlightRect(highlightTreePath)
     const { x: left, y: top, width, height } =
@@ -221,6 +264,11 @@ export class HighlightOverlay extends Component<Props, State> {
       zIndex: 999,
     }
 
+    const title =
+      highlightTreePath &&
+      sidebarBlocksMap[highlightTreePath] &&
+      sidebarBlocksMap[highlightTreePath].title
+
     return (
       <div
         id="editor-provider-overlay"
@@ -229,13 +277,13 @@ export class HighlightOverlay extends Component<Props, State> {
           highlight ? 'o-100' : 'o-0'
         }`}
       >
-        {highlightTreePath != null && (
+        {title && (
           <p
             className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 pb2 pt1 truncate tc"
             style={{ width: 90, height: 20 }}
-            title={highlightTreePath}
+            title={title}
           >
-            {highlightTreePath}
+            {title}
           </p>
         )}
       </div>
