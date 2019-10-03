@@ -9,9 +9,9 @@ import {
   getSchemaPropsOrContentFromRuntime,
   updateExtensionFromForm,
 } from '../../../../utils/components'
+import { NEW_CONFIGURATION_ID } from '../consts'
 import { getDefaultCondition } from '../utils'
 
-import { NEW_CONFIGURATION_ID } from './consts'
 import {
   GetDefaultConfiguration,
   GetFormData,

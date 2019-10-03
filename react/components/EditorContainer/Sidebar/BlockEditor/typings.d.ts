@@ -48,6 +48,8 @@ export type GetInitialEditingState = (
 export interface UseFormHandlersParams {
   iframeRuntime: RenderContext
   intl: InjectedIntl
+  isSitewide: boolean
+  query: ListContentQueryResult
   saveContent: MutationFn<SaveContentData, SaveContentVariables>
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
@@ -68,6 +70,7 @@ export type UseFormHandlers = (
   handleInactiveConfigurationOpen: (
     configuration: ExtensionConfiguration
   ) => Promise<void>
+  handleInitialStateSet: () => void
   handleLabelChange: React.ChangeEventHandler<HTMLInputElement>
   handleListOpen: () => void
 }

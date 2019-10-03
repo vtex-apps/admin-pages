@@ -8,14 +8,15 @@ import {
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import ListContent from '../../graphql/ListContent.graphql'
+import { NEW_CONFIGURATION_ID } from '../consts'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
 
-import { NEW_CONFIGURATION_ID } from './consts'
 import { UseFormHandlers } from './typings'
 import {
   getDefaultConfiguration,
   getFormData,
+  getInitialEditingState,
   omitUndefined,
   throttledUpdateExtensionFromForm,
 } from './utils'
@@ -34,6 +35,8 @@ const messages = defineMessages({
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
   intl,
+  isSitewide,
+  query,
   saveContent,
   setState,
   showToast,
@@ -97,9 +100,12 @@ export const useFormHandlers: UseFormHandlers = ({
       schema: editor.blockData.componentSchema,
     })
 
+    const contentId =
+      state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
+
     const configuration = {
       condition: state.condition,
-      contentId: state.contentId,
+      contentId,
       contentJSON: JSON.stringify(content),
       label: state.label || null,
       origin: state.origin || null,
@@ -210,7 +216,7 @@ export const useFormHandlers: UseFormHandlers = ({
       if (state.mode === 'editingActive') {
         editor.editExtensionPoint(null)
       } else if (state.mode === 'editingInactive') {
-        setState({ mode: 'list' })
+        setState({ formData: undefined, mode: 'list' })
       }
     }
   }, [
@@ -247,7 +253,14 @@ export const useFormHandlers: UseFormHandlers = ({
         content: formData,
       })
 
-      setState({ formData, mode: 'editingInactive' })
+      setState({
+        condition: configuration.condition,
+        content: baseContent,
+        contentId: configuration.contentId,
+        formData,
+        label: configuration.label,
+        mode: 'editingInactive',
+      })
     },
     [
       editor.blockData.componentImplementation,
@@ -257,6 +270,34 @@ export const useFormHandlers: UseFormHandlers = ({
       setState,
     ]
   )
+
+  const handleInitialStateSet = () => {
+    const { formState, partialBlockData } = getInitialEditingState({
+      data: query.data,
+      editTreePath: editor.editTreePath,
+      iframeRuntime,
+      intl,
+      isSitewide,
+    })
+
+    if (!state.formData) {
+      setState(formState)
+    }
+
+    const { blockId: id, template, treePath: serverTreePath } = query.variables
+
+    const blockData: BlockData = {
+      ...partialBlockData,
+      activeContentId: formState.contentId,
+      id,
+      serverTreePath,
+      template,
+    }
+
+    if (JSON.stringify(editor.blockData) === '{}') {
+      editor.setBlockData(blockData)
+    }
+  }
 
   const handleConfigurationCreate = useCallback(
     () =>
@@ -296,6 +337,7 @@ export const useFormHandlers: UseFormHandlers = ({
     handleFormClose,
     handleFormSave,
     handleInactiveConfigurationOpen,
+    handleInitialStateSet,
     handleLabelChange,
     handleListOpen,
   }
