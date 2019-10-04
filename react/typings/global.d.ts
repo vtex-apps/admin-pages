@@ -29,7 +29,7 @@ declare global {
     composition?: 'blocks' | 'children'
     configurationsIds?: string[]
     content: Record<string, unknown>
-    contentId?: string
+    contentIds: string[]
     contentMapId?: string
     hasContentSchema: boolean
     implementationIndex?: number

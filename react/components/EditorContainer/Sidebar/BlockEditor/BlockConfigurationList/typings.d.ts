@@ -1,17 +1,10 @@
 import { MutationUpdaterFn } from 'react-apollo'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
-import { GetSchemaPropsOrContentFromRuntimeParams } from '../../../../../utils/components/typings'
 import {
   DeleteContentData,
   DeleteContentMutationFn,
 } from '../../../mutations/DeleteContent'
-interface GetFormDataParams {
-  componentImplementation: GetSchemaPropsOrContentFromRuntimeParams['component']
-  content: GetSchemaPropsOrContentFromRuntimeParams['propsOrContent']
-  contentSchema: GetSchemaPropsOrContentFromRuntimeParams['contentSchema']
-  iframeRuntime: GetSchemaPropsOrContentFromRuntimeParams['runtime']
-}
 
 interface GetDeleteStoreUpdaterParams
   extends Pick<BlockData, 'serverTreePath' | 'template'> {

@@ -3,10 +3,7 @@ import { InjectedIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
-import {
-  ListContentData,
-  ListContentQueryResult,
-} from '../../queries/ListContent'
+import { ListContentQueryResult } from '../../queries/ListContent'
 import { GetDefaultConditionParams } from '../typings'
 
 import { State as FormState } from './index'
@@ -17,33 +14,28 @@ export interface EditingState
   formData?: Extension['content']
 }
 
+export interface GetDefaultConditionParams {
+  iframeRuntime: RenderContext
+  isSitewide: boolean
+}
+
+export type GetDefaultCondition = ({
+  iframeRuntime,
+  isSitewide,
+}) => ExtensionConfiguration['condition']
+
 export type GetDefaultConfiguration = (
   params: GetDefaultConditionParams
 ) => ExtensionConfiguration
 
+interface GetFormDataParams {
+  componentImplementation: GetSchemaPropsOrContentFromRuntimeParams['component']
+  content: GetSchemaPropsOrContentFromRuntimeParams['propsOrContent']
+  contentSchema: GetSchemaPropsOrContentFromRuntimeParams['contentSchema']
+  iframeRuntime: GetSchemaPropsOrContentFromRuntimeParams['runtime']
+}
+
 export type GetFormData = (params: GetFormDataParams) => Extension['content']
-
-interface GetInitialEditingStateParams {
-  data?: ListContentData
-  editTreePath: EditorContextType['editTreePath']
-  iframeRuntime: RenderContext
-  intl: InjectedIntl
-  isSitewide: boolean
-}
-
-export type GetInitialEditingState = (
-  params: GetInitialEditingStateParams
-) => {
-  formState: EditingState
-  partialBlockData: Pick<
-    BlockData,
-    | 'componentImplementation'
-    | 'componentSchema'
-    | 'configurations'
-    | 'contentSchema'
-    | 'title'
-  >
-}
 
 export interface UseFormHandlersParams {
   iframeRuntime: RenderContext

@@ -9,10 +9,9 @@ import SaveContentMutation from '../mutations/SaveContent'
 import ListContentQuery from '../queries/ListContent'
 
 import BlockEditor from './BlockEditor'
-import { getIsSitewide } from './BlockEditor/utils'
 import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
-import { updateEditorBlockData } from './utils'
+import { getIsSitewide, updateEditorBlockData } from './utils'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void

@@ -5,6 +5,8 @@ import { defineMessages } from 'react-intl'
 import {
   updateExtensionFromForm,
   getSchemaPropsOrContent,
+  getIframeImplementation,
+  getExtension,
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import ListContent from '../../graphql/ListContent.graphql'
@@ -14,9 +16,9 @@ import { useModalContext } from '../ModalContext'
 
 import { UseFormHandlers } from './typings'
 import {
+  getDefaultCondition,
   getDefaultConfiguration,
   getFormData,
-  getInitialEditingState,
   omitUndefined,
   throttledUpdateExtensionFromForm,
 } from './utils'
@@ -272,31 +274,53 @@ export const useFormHandlers: UseFormHandlers = ({
   )
 
   const handleInitialStateSet = () => {
-    const { formState, partialBlockData } = getInitialEditingState({
-      data: query.data,
-      editTreePath: editor.editTreePath,
+    const treePath = editor.editTreePath || ''
+
+    const extension = getExtension(treePath, iframeRuntime.extensions)
+
+    const listContent = query.data && query.data.listContentWithSchema
+
+    const componentImplementation = getIframeImplementation(extension.component)
+
+    const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
+
+    const configurations = listContent && listContent.content
+
+    const activeContentId =
+      extension.contentIds[extension.contentIds.length - 1]
+
+    const activeContent =
+      configurations &&
+      configurations.find(
+        configuration => configuration.contentId === activeContentId
+      )
+
+    const content =
+      (activeContent &&
+        activeContent.contentJSON &&
+        JSON.parse(activeContent.contentJSON)) ||
+      {}
+
+    const condition = activeContent
+      ? activeContent.condition
+      : getDefaultCondition({ iframeRuntime, isSitewide })
+
+    const label = activeContent && activeContent.label
+
+    const formData = getFormData({
+      componentImplementation,
+      content,
+      contentSchema,
       iframeRuntime,
-      intl,
-      isSitewide,
     })
 
-    if (!state.formData) {
-      setState(formState)
-    }
-
-    const { blockId: id, template, treePath: serverTreePath } = query.variables
-
-    const blockData: BlockData = {
-      ...partialBlockData,
-      activeContentId: formState.contentId,
-      id,
-      serverTreePath,
-      template,
-    }
-
-    if (JSON.stringify(editor.blockData) === '{}') {
-      editor.setBlockData(blockData)
-    }
+    setState({
+      condition,
+      contentId: activeContentId,
+      content,
+      formData,
+      label,
+    })
   }
 
   const handleConfigurationCreate = useCallback(
