@@ -1,5 +1,7 @@
 import debounce from 'lodash/debounce'
 import React, { Component, CSSProperties } from 'react'
+import ReactDOM from 'react-dom'
+import observeResize from 'simple-element-resize-detector'
 import { canUseDOM } from 'vtex.render-runtime'
 
 let DEFAULT_HIGHLIGHT_RECT = { x: 0, y: 0, width: 0, height: 0 }
@@ -16,6 +18,7 @@ interface Props {
 export interface State {
   editExtensionPoint: (treePath: string | null) => void
   editMode: boolean
+  openBlockTreePath: string | null
   highlightHandler: (treePath: string | null) => void
   highlightTreePath: string | null
   sidebarBlocksMap: Record<string, { title?: string; isEditable: boolean }>
@@ -44,6 +47,9 @@ function isElementInHorizontalAxis(el: Element) {
 
 export class HighlightOverlay extends Component<Props, State> {
   public highlightRemovalTimeout: ReturnType<Window['setTimeout']> | null
+  private portalContainer: HTMLDivElement
+  private portalRoot: HTMLDivElement | null
+  private resizeDetector?: HTMLIFrameElement
 
   private INITIAL_HIGHLIGHT_RECT = {
     height: 0,
@@ -70,8 +76,13 @@ export class HighlightOverlay extends Component<Props, State> {
       editMode: props.editMode,
       highlightHandler: props.highlightHandler,
       highlightTreePath: props.highlightTreePath,
+      openBlockTreePath: null,
       sidebarBlocksMap: {},
     }
+
+    this.portalContainer = document.createElement<'div'>('div')
+    this.portalContainer.setAttribute('class', 'absolute z-max')
+    this.portalRoot = document.querySelector<HTMLDivElement>('.render-provider')
 
     const highlightableWindow = window
 
@@ -95,8 +106,46 @@ export class HighlightOverlay extends Component<Props, State> {
     this.highlightRemovalTimeout = null
   }
 
+  private mountPortalRoot() {
+    if (this.portalRoot) {
+      const rootComputedStyle = window.getComputedStyle(this.portalRoot)
+      this.portalContainer.setAttribute(
+        'style',
+        `width: ${rootComputedStyle.width}; height: ${rootComputedStyle.height}; pointer-events: none;`
+      )
+      this.portalRoot.prepend(this.portalContainer)
+      this.resizeDetector = observeResize(this.portalRoot, () => {
+        if (this.portalRoot) {
+          const rootComputedStyle = window.getComputedStyle(this.portalRoot)
+          this.portalContainer.setAttribute(
+            'style',
+            `width: ${rootComputedStyle.width}; height: ${rootComputedStyle.height}; pointer-events: none;`
+          )
+        }
+      })
+    }
+  }
+
+  private unmountPortalRoot() {
+    if (this.resizeDetector && this.resizeDetector.parentNode) {
+      this.resizeDetector.parentNode.removeChild(this.resizeDetector)
+    }
+    if (this.portalRoot) {
+      this.portalRoot.removeChild(this.portalContainer)
+    }
+  }
+
+  public componentDidMount() {
+    this.mountPortalRoot()
+  }
+
+  public componentWillUnmount() {
+    this.unmountPortalRoot()
+  }
+
   public componentDidUpdate() {
     this.updateExtensionPointDOMElements(this.state.editMode)
+
     if (this.state.highlightTreePath === null) {
       this.debouncedScrollTo.cancel()
     }
@@ -248,7 +297,11 @@ export class HighlightOverlay extends Component<Props, State> {
   }
 
   public render() {
-    const { highlightTreePath, sidebarBlocksMap } = this.state
+    const {
+      highlightTreePath,
+      openBlockTreePath,
+      sidebarBlocksMap,
+    } = this.state
     const highlight =
       highlightTreePath && this.getHighlightRect(highlightTreePath)
     const { x: left, y: top, width, height } =
@@ -264,29 +317,51 @@ export class HighlightOverlay extends Component<Props, State> {
       zIndex: 999,
     }
 
+    const titleTreePath = highlightTreePath || openBlockTreePath
     const title =
-      highlightTreePath &&
-      sidebarBlocksMap[highlightTreePath] &&
-      sidebarBlocksMap[highlightTreePath].title
+      titleTreePath &&
+      sidebarBlocksMap[titleTreePath] &&
+      sidebarBlocksMap[titleTreePath].title
+
+    const startX = `${highlightStyle.left}px`
+    const endX = `${Number(highlightStyle.left) +
+      Number(highlightStyle.width)}px`
+
+    const startY = `${highlightStyle.top}px`
+    const endY = `${Number(highlightStyle.top) +
+      Number(highlightStyle.height)}px`
 
     return (
-      <div
-        id="editor-provider-overlay"
-        style={highlightStyle}
-        className={`absolute b--action-primary bw2 ba ${
-          highlight ? 'o-100' : 'o-0'
-        }`}
-      >
-        {title && (
-          <p
-            className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 pb2 pt1 truncate tc"
-            style={{ width: 90, height: 20 }}
-            title={title}
-          >
-            {title}
-          </p>
-        )}
-      </div>
+      <>
+        <div
+          id="editor-provider-overlay"
+          style={highlightStyle}
+          className={`absolute b--action-primary bw2 ba ${
+            highlight || openBlockTreePath ? 'o-100' : 'o-0'
+          }`}
+        >
+          {title && (
+            <p
+              className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 pb2 pt1 truncate tc"
+              style={{ width: 90, height: 20 }}
+              title={title}
+            >
+              {title}
+            </p>
+          )}
+        </div>
+        {openBlockTreePath &&
+          this.portalContainer &&
+          ReactDOM.createPortal(
+            <div
+              className="absolute bg-base h-100 w-100 o-40"
+              style={{
+                clipPath: `polygon(0% 0%, 0% 100%, ${startX} 100%, ${startX} ${startY}, ${endX} ${startY}, ${endX} ${endY}, ${startX} ${endY}, ${startX} 100%, 100% 100%, 100% 0%)`,
+              }}
+            />,
+            this.portalContainer
+          )}
+      </>
     )
   }
 }

@@ -7036,6 +7036,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
+simple-element-resize-detector@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/simple-element-resize-detector/-/simple-element-resize-detector-1.3.0.tgz#b21bc1fd7f1d2e071a92d20a713f2968ac7d6b03"
+  integrity sha512-cCFTDpFMgz/OikrV9R++wOQgLbFwqrneci8FmAOH79xrfn1sQVZg9LJV2RvproMgdN2LnfZXZPrM+Z12GXN7jA==
+
 sisteransi@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/sisteransi/-/sisteransi-1.0.2.tgz#ec57d64b6f25c4f26c0e2c7dd23f2d7f12f7e418"
