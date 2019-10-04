@@ -56,8 +56,8 @@ export type UseFormHandlers = (
   handleConfigurationCreate: () => ReturnType<
     ReturnType<UseFormHandlers>['handleInactiveConfigurationOpen']
   >
+  handleFormBack: () => void
   handleFormChange: FormProps<FormDataContainer>['onChange']
-  handleFormClose: () => void
   handleFormSave: () => Promise<void>
   handleInactiveConfigurationOpen: (
     configuration: ExtensionConfiguration

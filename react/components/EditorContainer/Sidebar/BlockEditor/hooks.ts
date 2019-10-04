@@ -92,6 +92,14 @@ export const useFormHandlers: UseFormHandlers = ({
     [editor.editTreePath, formMeta, iframeRuntime, setState, state]
   )
 
+  const handleFormClose = useCallback(() => {
+    if (state.mode === 'editingActive') {
+      editor.editExtensionPoint(null)
+    } else if (state.mode === 'editingInactive') {
+      setState({ formData: undefined, mode: 'list' })
+    }
+  }, [editor, setState, state.mode])
+
   const handleFormSave = useCallback(async () => {
     if (editor.getIsLoading()) {
       return
@@ -152,6 +160,8 @@ export const useFormHandlers: UseFormHandlers = ({
       })
 
       formMeta.setWasModified(false)
+
+      handleFormClose()
     } catch (err) {
       if (modal.getIsOpen()) {
         modal.close()
@@ -173,6 +183,7 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [
     editor,
     formMeta,
+    handleFormClose,
     iframeRuntime,
     intl,
     modal,
@@ -185,13 +196,11 @@ export const useFormHandlers: UseFormHandlers = ({
     state.origin,
   ])
 
-  const handleFormClose = useCallback(() => {
+  const handleFormBack = useCallback(() => {
     if (formMeta.getWasModified()) {
       modal.open({
         actionHandler: async () => {
           await handleFormSave()
-
-          handleFormClose()
         },
         cancelHandler: () => {
           if (state.content) {
@@ -204,7 +213,7 @@ export const useFormHandlers: UseFormHandlers = ({
           }
 
           formMeta.setWasModified(false, () => {
-            handleFormClose()
+            handleFormBack()
           })
         },
       })
@@ -215,21 +224,16 @@ export const useFormHandlers: UseFormHandlers = ({
 
       editor.setIsLoading(false)
 
-      if (state.mode === 'editingActive') {
-        editor.editExtensionPoint(null)
-      } else if (state.mode === 'editingInactive') {
-        setState({ formData: undefined, mode: 'list' })
-      }
+      handleFormClose()
     }
   }, [
     editor,
     formMeta,
+    handleFormClose,
     handleFormSave,
     iframeRuntime,
     modal,
-    setState,
     state.content,
-    state.mode,
   ])
 
   const handleInactiveConfigurationOpen = useCallback(
@@ -357,8 +361,8 @@ export const useFormHandlers: UseFormHandlers = ({
     handleActiveConfigurationOpen,
     handleConditionChange,
     handleConfigurationCreate,
+    handleFormBack,
     handleFormChange,
-    handleFormClose,
     handleFormSave,
     handleInactiveConfigurationOpen,
     handleInitialStateSet,
