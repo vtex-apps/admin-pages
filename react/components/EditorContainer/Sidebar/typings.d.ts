@@ -1,4 +1,4 @@
-import { GetInitialEditingStateParams } from './BlockEditor/typings'
+import { ListContentData } from '../queries/ListContent'
 
 export interface FormMetaContext {
   getWasModified: () => boolean
@@ -32,19 +32,12 @@ export type FormDataContainer = {
   formData: object
 }
 
-export interface GetDefaultConditionParams {
-  iframeRuntime: RenderContext
-  isSitewide: boolean
-}
-
-export type GetDefaultCondition = ({
-  iframeRuntime,
-  isSitewide,
-}) => ExtensionConfiguration['condition']
-
 export type UpdateEditorBlockData = (
-  params: Omit<GetInitialEditingStateParams, 'editTreePath'> &
-    Pick<BlockData, 'id' | 'serverTreePath' | 'template'> & {
-      editor: EditorContextType
-    }
+  params: Pick<BlockData, 'id' | 'serverTreePath' | 'template'> & {
+    data?: ListContentData
+    editor: EditorContextType
+    iframeRuntime: RenderContext
+    intl: InjectedIntl
+    isSitewide: boolean
+  }
 ) => void

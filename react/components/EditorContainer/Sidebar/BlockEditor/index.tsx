@@ -41,11 +41,6 @@ const BlockEditor = ({
 
   const editor = useEditorContext()
 
-  const isDataReady = React.useMemo(
-    () => state.formData && JSON.stringify(editor.blockData) !== '{}',
-    [editor.blockData, state]
-  )
-
   const {
     handleActiveConfigurationOpen,
     handleConditionChange,
@@ -68,16 +63,10 @@ const BlockEditor = ({
     state,
   })
 
-  if (query.loading) {
-    return (
-      <div className="mt9 flex justify-center">
-        <Spinner />
-      </div>
-    )
-  }
-
-  if (!isDataReady) {
-    handleInitialStateSet()
+  if (query.loading || !state.formData) {
+    if (!query.loading && JSON.stringify(editor.blockData) !== '{}') {
+      handleInitialStateSet()
+    }
 
     return (
       <div className="mt9 flex justify-center">

@@ -1,37 +1,17 @@
-import { getBlockPath } from '../../../utils/blocks'
+import { formatIOMessage } from 'vtex.native-types'
 
-import { getInitialEditingState } from './BlockEditor/utils'
-import { GetDefaultCondition, UpdateEditorBlockData } from './typings'
+import { getBlockPath } from '../../../utils/blocks'
+import {
+  getComponentSchema,
+  getExtension,
+  getIframeImplementation,
+} from '../../../utils/components'
+
+import { UpdateEditorBlockData } from './typings'
 
 export const isUnidentifiedPageContext = (
   pageContext: RenderRuntime['route']['pageContext']
 ) => pageContext.type !== '*' && pageContext.id === '*'
-
-export const getDefaultCondition: GetDefaultCondition = ({
-  iframeRuntime,
-  isSitewide,
-}) => {
-  const iframePageContext = iframeRuntime.route.pageContext
-
-  const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
-    ? {
-        id: '*',
-        type: '*',
-      }
-    : {
-        id: isUnidentifiedPageContext(iframePageContext)
-          ? '*'
-          : iframePageContext.id,
-        type: iframePageContext.type,
-      }
-
-  return {
-    allMatches: true,
-    id: '',
-    pageContext,
-    statements: [],
-  }
-}
 
 export const getIsSitewide = (
   extensions: Extensions,
@@ -52,26 +32,44 @@ export const updateEditorBlockData: UpdateEditorBlockData = ({
   id,
   iframeRuntime,
   intl,
-  isSitewide,
   serverTreePath,
   template,
 }) => {
-  const {
-    formState: { contentId: activeContentId },
-    partialBlockData,
-  } = getInitialEditingState({
-    data,
-    editTreePath: editor.editTreePath,
-    iframeRuntime,
-    intl,
-    isSitewide,
+  const treePath = editor.editTreePath || ''
+
+  const extension = getExtension(treePath, iframeRuntime.extensions)
+
+  const listContent = data && data.listContentWithSchema
+
+  const componentImplementation = getIframeImplementation(extension.component)
+
+  const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
+
+  const componentSchema = getComponentSchema({
+    component: componentImplementation,
+    contentSchema: contentSchema,
+    isContent: true,
+    propsOrContent: extension.content,
+    runtime: iframeRuntime,
   })
 
-  editor.setBlockData({
-    ...partialBlockData,
+  const title = formatIOMessage({ id: componentSchema.title || '', intl })
+
+  const configurations = listContent && listContent.content
+
+  const activeContentId = extension.contentIds[extension.contentIds.length - 1]
+
+  const blockData = {
     activeContentId,
+    componentImplementation,
+    componentSchema,
+    configurations,
+    contentSchema,
     id,
     serverTreePath,
     template,
-  })
+    title,
+  }
+
+  editor.setBlockData(blockData)
 }
