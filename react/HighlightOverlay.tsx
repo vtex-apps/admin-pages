@@ -50,6 +50,7 @@ export class HighlightOverlay extends Component<Props, State> {
   private portalContainer: HTMLDivElement
   private portalRoot: HTMLDivElement | null
   private resizeDetector?: HTMLIFrameElement
+  private hasValidElement = false
 
   private INITIAL_HIGHLIGHT_RECT = {
     height: 0,
@@ -81,7 +82,7 @@ export class HighlightOverlay extends Component<Props, State> {
     }
 
     this.portalContainer = document.createElement<'div'>('div')
-    this.portalContainer.setAttribute('class', 'absolute z-max')
+    this.portalContainer.setAttribute('class', 'absolute z-9999')
     this.portalRoot = document.querySelector<HTMLDivElement>('.render-provider')
 
     const highlightableWindow = window
@@ -199,13 +200,15 @@ export class HighlightOverlay extends Component<Props, State> {
       this.state.sidebarBlocksMap[highlightTreePath] &&
       this.state.sidebarBlocksMap[highlightTreePath].isEditable
 
-    if (
+    this.hasValidElement = !(
       !highlightTreePath ||
       elements.length === 0 ||
       !visibleElement ||
       !isEditable ||
       !provider
-    ) {
+    )
+
+    if (!this.hasValidElement) {
       return
     }
 
@@ -225,7 +228,8 @@ export class HighlightOverlay extends Component<Props, State> {
           right: 0,
         }
 
-    const providerRect = provider.getBoundingClientRect() as DOMRect
+    const providerRect = (provider &&
+      (provider.getBoundingClientRect() as DOMRect)) || { x: 0, y: 0 }
 
     const rect = visibleElement
       ? (visibleElement.getBoundingClientRect() as DOMRect)
@@ -308,13 +312,13 @@ export class HighlightOverlay extends Component<Props, State> {
       highlight || DEFAULT_HIGHLIGHT_RECT
     const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',
-      height: height > 28 ? height : 28,
+      height,
       left,
       pointerEvents: 'none',
       top,
       transition: 'opacity 100ms ease-out',
-      width: width > 98 ? width : 98,
-      zIndex: 999,
+      width,
+      zIndex: 9999,
     }
 
     const titleTreePath = highlightTreePath || openBlockTreePath
@@ -331,26 +335,40 @@ export class HighlightOverlay extends Component<Props, State> {
     const endY = `${Number(highlightStyle.top) +
       Number(highlightStyle.height)}px`
 
+    const isBlockWidthSmaller = width < 98 * 1.25
+    const isBlockHeightSmaller = height < 26
+
     return (
       <>
         <div
           id="editor-provider-overlay"
           style={highlightStyle}
           className={`absolute b--action-primary bw2 ba ${
-            highlight || openBlockTreePath ? 'o-100' : 'o-0'
+            this.hasValidElement && (highlight || openBlockTreePath)
+              ? 'o-100'
+              : 'o-0'
           }`}
         >
           {title && (
             <p
-              className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 pb2 pt1 truncate tc"
-              style={{ width: 90, height: 20 }}
+              className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
+              style={{
+                width: 90,
+                height: 20,
+                transform: `${
+                  isBlockHeightSmaller || isBlockWidthSmaller
+                    ? 'translate(4px, -24px)'
+                    : ''
+                }`,
+              }}
               title={title}
             >
               {title}
             </p>
           )}
         </div>
-        {openBlockTreePath &&
+        {this.hasValidElement &&
+          openBlockTreePath &&
           this.portalContainer &&
           ReactDOM.createPortal(
             <div
