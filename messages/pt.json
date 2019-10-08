@@ -276,7 +276,7 @@
   "admin/pages.admin.content.not-supported.title": "Funcionalidade não suportada",
   "admin/pages.admin.content.not-supported.description": "O tema instalado na sua loja não suporta a criação de páginas institucionais. Caso necessite criar páginas, escolha algum outro tema que suporte essa funcionalidade ou, caso utilize algum tema personalizado, solicite ao desenvolvedor que siga as instruções indicadas no link abaixo.",
   "admin/pages.admin.content.not-supported.action": "Ver instruções",
-  "admin/pages.editor.settings.language": "Língua",
+  "admin/pages.editor.settings.language": "Idioma",
   "admin/pages.editor.locale.aa": "Afar",
   "admin/pages.editor.locale.ab": "Abcázio",
   "admin/pages.editor.locale.ae": "Avéstico",

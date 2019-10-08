@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Locale switcher's spanish and portuguese strings.
+
 ## [4.12.6] - 2019-09-30
 
 ### Added
