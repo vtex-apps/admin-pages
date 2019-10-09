@@ -45,6 +45,8 @@ function isElementInHorizontalAxis(el: Element) {
   )
 }
 
+const BLUE = '#134CD8'
+
 export class HighlightOverlay extends Component<Props, State> {
   public highlightRemovalTimeout: ReturnType<Window['setTimeout']> | null
   private portalContainer: HTMLDivElement
@@ -308,16 +310,28 @@ export class HighlightOverlay extends Component<Props, State> {
     } = this.state
     const highlight =
       highlightTreePath && this.getHighlightRect(highlightTreePath)
+
     const { x: left, y: top, width, height } =
       highlight || DEFAULT_HIGHLIGHT_RECT
+
+    const isBlockWidthSmaller = width < 98 * 1.25
+    const isBlockHeightSmaller = height < 26
+
     const highlightStyle: CSSProperties = {
       animationDuration: '0.6s',
-      height,
-      left,
+      borderColor: BLUE,
+      height: !isBlockHeightSmaller && top - 4 < 0 ? height : height + 8,
+      left:
+        !isBlockWidthSmaller && width >= document.body.scrollWidth
+          ? left
+          : left - 4,
       pointerEvents: 'none',
-      top,
+      top: !isBlockHeightSmaller && top - 4 < 0 ? top : top - 4,
       transition: 'opacity 100ms ease-out',
-      width,
+      width:
+        !isBlockWidthSmaller && width >= document.body.scrollWidth
+          ? document.body.scrollWidth
+          : width + 8,
       zIndex: 9999,
     }
 
@@ -335,15 +349,12 @@ export class HighlightOverlay extends Component<Props, State> {
     const endY = `${Number(highlightStyle.top) +
       Number(highlightStyle.height)}px`
 
-    const isBlockWidthSmaller = width < 98 * 1.25
-    const isBlockHeightSmaller = height < 26
-
     return (
       <>
         <div
           id="editor-provider-overlay"
           style={highlightStyle}
-          className={`absolute b--action-primary bw2 ba ${
+          className={`absolute bw2 ba ${
             this.hasValidElement && (highlight || openBlockTreePath)
               ? 'o-100'
               : 'o-0'
@@ -351,8 +362,9 @@ export class HighlightOverlay extends Component<Props, State> {
         >
           {title && (
             <p
-              className="absolute bg-action-primary c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
+              className="absolute c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
               style={{
+                backgroundColor: BLUE,
                 width: 90,
                 height: 20,
                 transform: `${
