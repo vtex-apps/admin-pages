@@ -1,3 +1,6 @@
+import { InjectedIntl } from 'react-intl'
+import { ToastConsumerFunctions } from 'vtex.styleguide'
+
 import { GetSchemaPropsOrContentFromRuntimeParams } from '../../../utils/components/typings'
 import { ListContentData } from '../queries/ListContent'
 
@@ -72,3 +75,14 @@ export type UpdateEditorBlockData = (
     isSitewide: boolean
   }
 ) => void
+
+interface UseInitialEditingStateParams {
+  client: ApolloClient
+  iframeRuntime: RenderContext
+  intl: InjectedIntl
+  showToast: ToastConsumerFunctions['showToast']
+}
+
+export type UseInitialEditingState = (
+  params: UseInitialEditingStateParams
+) => EditingState | undefined

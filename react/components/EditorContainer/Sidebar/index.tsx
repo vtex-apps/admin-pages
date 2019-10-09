@@ -4,24 +4,16 @@ import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
-import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
-import ListContent from '../graphql/ListContent.graphql'
 import SaveContentMutation from '../mutations/SaveContent'
-import { ListContentData, ListContentVariables } from '../queries/ListContent'
 
 import AbsoluteLoader from './AbsoluteLoader'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
+import useInitialEditingState from './hooks'
 import { useModalContext } from './ModalContext'
 import styles from './styles.css'
-import { EditingState } from './typings'
-import {
-  getInitialEditingState,
-  getIsSitewide,
-  updateEditorBlockData,
-} from './utils'
 
 interface CustomProps {
   highlightHandler: (treePath: string | null) => void
@@ -56,98 +48,12 @@ const Sidebar: React.FunctionComponent<Props> = ({
   showToast,
   visible,
 }) => {
-  const [initialEditingState, setInitialEditingState] = React.useState<
-    EditingState
-  >()
-
-  const editor = useEditorContext()
-
-  const isEditing = editor.editTreePath !== null
-
-  const treePath = editor.editTreePath || ''
-
-  const isSitewide = getIsSitewide(iframeRuntime.extensions, treePath)
-
-  const blockId =
-    iframeRuntime.extensions[treePath] &&
-    iframeRuntime.extensions[treePath].blockId
-
-  const template = isSitewide
-    ? '*'
-    : iframeRuntime.pages[iframeRuntime.page].blockId
-
-  const serverTreePath = isSitewide ? getSitewideTreePath(treePath) : treePath
-
-  const fetchAndSetData = React.useCallback(async () => {
-    try {
-      const { data } = await client.query<
-        ListContentData,
-        ListContentVariables
-      >({
-        fetchPolicy: 'network-only',
-        query: ListContent,
-        variables: {
-          blockId,
-          pageContext: iframeRuntime.route.pageContext,
-          template,
-          treePath: serverTreePath,
-        },
-      })
-
-      setInitialEditingState(
-        getInitialEditingState({
-          data,
-          editor,
-          iframeRuntime,
-        })
-      )
-
-      updateEditorBlockData({
-        data,
-        editor,
-        id: blockId,
-        iframeRuntime,
-        intl,
-        isSitewide,
-        serverTreePath,
-        template,
-      })
-    } catch (e) {
-      showToast({
-        horizontalPosition: 'right',
-        message: intl.formatMessage({
-          defaultMessage: 'Something went wrong. Please try again.',
-          id: 'admin/pages.editor.components.open.error',
-        }),
-      })
-
-      editor.editExtensionPoint(null)
-    } finally {
-      editor.setIsLoading(false)
-    }
-  }, [
-    blockId,
+  const initialEditingState = useInitialEditingState({
     client,
-    editor,
     iframeRuntime,
     intl,
-    isSitewide,
-    serverTreePath,
     showToast,
-    template,
-  ])
-
-  React.useEffect(() => {
-    if (isEditing && !initialEditingState) {
-      fetchAndSetData()
-    }
-  }, [isEditing, fetchAndSetData, initialEditingState])
-
-  React.useEffect(() => {
-    if (!isEditing && initialEditingState) {
-      setInitialEditingState(undefined)
-    }
-  }, [isEditing, initialEditingState])
+  })
 
   const {
     actionHandler: handleModalAction,
@@ -155,6 +61,8 @@ const Sidebar: React.FunctionComponent<Props> = ({
     close: handleModalClose,
     getIsOpen: getIsModalOpen,
   } = useModalContext()
+
+  const editor = useEditorContext()
 
   return (
     <div
