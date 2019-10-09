@@ -11,7 +11,12 @@ import ListContentQuery from '../queries/ListContent'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
-import { getIsSitewide, updateEditorBlockData } from './utils'
+import { EditingState } from './typings'
+import {
+  getInitialEditingState,
+  getIsSitewide,
+  updateEditorBlockData,
+} from './utils'
 
 interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
@@ -40,7 +45,17 @@ const Sidebar: React.FunctionComponent<Props> = ({
   intl,
   visible,
 }) => {
+  const [initialEditingState, setInitialEditingState] = React.useState<
+    EditingState
+  >()
+
   const editor = useEditorContext()
+
+  React.useEffect(() => {
+    if (editor.editTreePath === null && initialEditingState) {
+      setInitialEditingState(undefined)
+    }
+  }, [editor.editTreePath, initialEditingState])
 
   const {
     actionHandler: handleModalAction,
@@ -48,8 +63,6 @@ const Sidebar: React.FunctionComponent<Props> = ({
     close: handleModalClose,
     getIsOpen: getIsModalOpen,
   } = useModalContext()
-
-  const isLoading = editor.getIsLoading()
 
   const treePath = editor.editTreePath || ''
 
@@ -80,7 +93,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div className="relative h-100 flex flex-column dark-gray">
           <Modal
-            isActionLoading={isLoading}
+            isActionLoading={editor.getIsLoading()}
             isOpen={getIsModalOpen()}
             onClickAction={handleModalAction}
             onClickCancel={handleModalCancel}
@@ -102,6 +115,14 @@ const Sidebar: React.FunctionComponent<Props> = ({
                   {saveContent => (
                     <ListContentQuery
                       onCompleted={data => {
+                          setInitialEditingState(
+                            getInitialEditingState({
+                              data,
+                              editor,
+                              iframeRuntime,
+                            })
+                          )
+
                         updateEditorBlockData({
                           data,
                           editor,
@@ -112,6 +133,8 @@ const Sidebar: React.FunctionComponent<Props> = ({
                           serverTreePath,
                           template,
                         })
+
+                          editor.setIsLoading(false)
                       }}
                       variables={{
                         blockId,
@@ -120,11 +143,10 @@ const Sidebar: React.FunctionComponent<Props> = ({
                         treePath: serverTreePath,
                       }}
                     >
-                      {query => (
+                        {() => (
                         <BlockEditor
                           iframeRuntime={iframeRuntime}
-                          isSitewide={isSitewide}
-                          query={query}
+                                initialEditingState={initialEditingState}
                           saveContent={saveContent}
                           showToast={showToast}
                         />
