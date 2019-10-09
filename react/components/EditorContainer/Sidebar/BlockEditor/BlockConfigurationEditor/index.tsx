@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
@@ -11,7 +11,6 @@ import { useFormMetaContext } from '../../FormMetaContext'
 import { FormDataContainer } from '../../typings'
 import { isUnidentifiedPageContext } from '../../utils'
 import EditorHeader from '../EditorHeader'
-import LoaderContainer from '../LoaderContainer'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
@@ -136,10 +135,10 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   const isRootLevel = componentFormState === undefined
 
   return (
-    <Fragment>
-      <LoaderContainer
+    <div className="w-100 h-100 absolute flex flex-column">
+      <div
+        className="flex-grow-1 overflow-y-auto overflow-x-hidden"
         id="component-editor-container"
-        containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
           onClose={componentFormState ? componentFormState.onClose : onClose}
@@ -197,7 +196,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               pageContext={iframeRuntime.route.pageContext}
             />
           )}
-      </LoaderContainer>
+      </div>
 
       <div
         className={classnames(
@@ -234,7 +233,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           </Button>
         </div>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

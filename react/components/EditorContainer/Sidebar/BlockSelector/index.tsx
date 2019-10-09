@@ -1,5 +1,5 @@
 import { useKeydownFromClick } from 'keydown-from-click'
-import React, { Fragment } from 'react'
+import React from 'react'
 import { FormattedMessage } from 'react-intl'
 
 import SelectionIcon from '../../../../images/SelectionIcon'
@@ -67,7 +67,7 @@ const BlockSelector: React.FunctionComponent<Props> = ({
   }, [highlightHandler])
 
   return (
-    <Fragment>
+    <div className="w-100 absolute">
       <div className="flex justify-between items-center flex-shrink-0 h-3em">
         <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
           <FormattedMessage id="admin/pages.editor.components.title" />
@@ -95,7 +95,7 @@ const BlockSelector: React.FunctionComponent<Props> = ({
         onMouseLeaveBlock={handleMouseLeave}
         iframeRuntime={iframeRuntime}
       />
-    </Fragment>
+    </div>
   )
 }
 

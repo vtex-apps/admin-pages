@@ -1,16 +1,21 @@
 import React from 'react'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
-import { ToastConsumer } from 'vtex.styleguide'
+import { CSSTransition } from 'react-transition-group'
+import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
+import ListContent from '../graphql/ListContent.graphql'
 import SaveContentMutation from '../mutations/SaveContent'
-import ListContentQuery from '../queries/ListContent'
+import { ListContentData, ListContentVariables } from '../queries/ListContent'
 
+import AbsoluteLoader from './AbsoluteLoader'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
 import { useModalContext } from './ModalContext'
+import styles from './styles.css'
 import { EditingState } from './typings'
 import {
   getInitialEditingState,
@@ -18,11 +23,15 @@ import {
   updateEditorBlockData,
 } from './utils'
 
-interface Props extends InjectedIntlProps {
+interface CustomProps {
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContext
   visible: boolean
 }
+
+type Props = WithApolloClient<
+  CustomProps & InjectedIntlProps & Pick<ToastConsumerFunctions, 'showToast'>
+>
 
 const messages = defineMessages({
   discard: {
@@ -40,9 +49,11 @@ const messages = defineMessages({
 })
 
 const Sidebar: React.FunctionComponent<Props> = ({
+  client,
   highlightHandler,
   iframeRuntime,
   intl,
+  showToast,
   visible,
 }) => {
   const [initialEditingState, setInitialEditingState] = React.useState<
@@ -51,18 +62,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
 
   const editor = useEditorContext()
 
-  React.useEffect(() => {
-    if (editor.editTreePath === null && initialEditingState) {
-      setInitialEditingState(undefined)
-    }
-  }, [editor.editTreePath, initialEditingState])
-
-  const {
-    actionHandler: handleModalAction,
-    cancelHandler: handleModalCancel,
-    close: handleModalClose,
-    getIsOpen: getIsModalOpen,
-  } = useModalContext()
+  const isEditing = editor.editTreePath !== null
 
   const treePath = editor.editTreePath || ''
 
@@ -77,6 +77,84 @@ const Sidebar: React.FunctionComponent<Props> = ({
     : iframeRuntime.pages[iframeRuntime.page].blockId
 
   const serverTreePath = isSitewide ? getSitewideTreePath(treePath) : treePath
+
+  const fetchAndSetData = React.useCallback(async () => {
+    try {
+      const { data } = await client.query<
+        ListContentData,
+        ListContentVariables
+      >({
+        fetchPolicy: 'network-only',
+        query: ListContent,
+        variables: {
+          blockId,
+          pageContext: iframeRuntime.route.pageContext,
+          template,
+          treePath: serverTreePath,
+        },
+      })
+
+      setInitialEditingState(
+        getInitialEditingState({
+          data,
+          editor,
+          iframeRuntime,
+        })
+      )
+
+      updateEditorBlockData({
+        data,
+        editor,
+        id: blockId,
+        iframeRuntime,
+        intl,
+        isSitewide,
+        serverTreePath,
+        template,
+      })
+    } catch (e) {
+      showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage({
+          defaultMessage: 'Something went wrong. Please try again.',
+          id: 'admin/pages.editor.components.open.error',
+        }),
+      })
+
+      editor.editExtensionPoint(null)
+    } finally {
+      editor.setIsLoading(false)
+    }
+  }, [
+    blockId,
+    client,
+    editor,
+    iframeRuntime,
+    intl,
+    isSitewide,
+    serverTreePath,
+    showToast,
+    template,
+  ])
+
+  React.useEffect(() => {
+    if (isEditing && !initialEditingState) {
+      fetchAndSetData()
+    }
+  }, [isEditing, fetchAndSetData, initialEditingState])
+
+  React.useEffect(() => {
+    if (!isEditing && initialEditingState) {
+      setInitialEditingState(undefined)
+    }
+  }, [isEditing, initialEditingState])
+
+  const {
+    actionHandler: handleModalAction,
+    cancelHandler: handleModalCancel,
+    close: handleModalClose,
+    getIsOpen: getIsModalOpen,
+  } = useModalContext()
 
   return (
     <div
@@ -103,64 +181,65 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textMessage={intl.formatMessage(messages.unsaved)}
           />
 
-          {editor.editTreePath === null ? (
-            <BlockSelector
-              highlightHandler={highlightHandler}
-              iframeRuntime={iframeRuntime}
+          <div className="flex">
+            <AbsoluteLoader
+              containerClassName={`w-100 h-100 absolute top-0 ${
+                !editor.getIsLoading() ? 'dn' : ''
+              }`}
             />
-          ) : (
-            <ToastConsumer>
-              {({ showToast }) => (
-                <SaveContentMutation>
-                  {saveContent => (
-                    <ListContentQuery
-                      onCompleted={data => {
-                          setInitialEditingState(
-                            getInitialEditingState({
-                              data,
-                              editor,
-                              iframeRuntime,
-                            })
-                          )
 
-                        updateEditorBlockData({
-                          data,
-                          editor,
-                          id: blockId,
-                          iframeRuntime,
-                          intl,
-                          isSitewide,
-                          serverTreePath,
-                          template,
-                        })
+            <CSSTransition
+              classNames={{
+                enter: styles['transition-selector-enter'],
+                enterActive: styles['transition-selector-enter-active'],
+                enterDone: styles['transition-selector-enter-done'],
+                exit: styles['transition-selector-exit'],
+                exitActive: styles['transition-selector-exit-active'],
+                exitDone: styles['transition-selector-exit-done'],
+              }}
+              in={!!initialEditingState}
+              timeout={250}
+            >
+              <BlockSelector
+                highlightHandler={highlightHandler}
+                iframeRuntime={iframeRuntime}
+              />
+            </CSSTransition>
 
-                          editor.setIsLoading(false)
-                      }}
-                      variables={{
-                        blockId,
-                        pageContext: iframeRuntime.route.pageContext,
-                        template,
-                        treePath: serverTreePath,
-                      }}
-                    >
-                        {() => (
-                        <BlockEditor
-                          iframeRuntime={iframeRuntime}
-                                initialEditingState={initialEditingState}
-                          saveContent={saveContent}
-                          showToast={showToast}
-                        />
-                      )}
-                    </ListContentQuery>
-                  )}
-                </SaveContentMutation>
-              )}
-            </ToastConsumer>
-          )}
+            <CSSTransition
+              appear
+              classNames={{
+                appear: styles['transition-editor-enter'],
+                appearActive: styles['transition-editor-enter-active'],
+                appearDone: styles['transition-editor-enter-done'],
+                enter: styles['transition-editor-enter'],
+                enterActive: styles['transition-editor-enter-active'],
+                enterDone: styles['transition-editor-enter-done'],
+                exit: styles['transition-editor-exit'],
+                exitActive: styles['transition-editor-exit-active'],
+                exitDone: styles['transition-editor-exit-done'],
+              }}
+              mountOnEnter
+              in={!!initialEditingState}
+              timeout={250}
+              unmountOnExit
+            >
+              <SaveContentMutation>
+                {saveContent => (
+                  <BlockEditor
+                    iframeRuntime={iframeRuntime}
+                    initialEditingState={initialEditingState}
+                    saveContent={saveContent}
+                    showToast={showToast}
+                  />
+                )}
+              </SaveContentMutation>
+            </CSSTransition>
+          </div>
         </div>
       </nav>
     </div>
   )
 }
 
-export default injectIntl(Sidebar)
+export default injectIntl(withApollo(Sidebar))

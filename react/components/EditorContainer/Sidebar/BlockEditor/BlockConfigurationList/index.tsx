@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { injectIntl } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditorHeader from '../EditorHeader'
-import LoaderContainer from '../LoaderContainer'
 import { getIsDefaultContent } from '../utils'
 
 import Card from './Card'
@@ -46,32 +45,30 @@ const BlockConfigurationList: React.FC<Props> = ({
   }
 
   return (
-    <Fragment>
+    <div className="w-100 flex flex-column">
       <EditorHeader onClose={handleQuit} title={editor.blockData.title} />
 
-      <LoaderContainer>
-        <CreateButton onClick={onConfigurationCreate} />
-        {configurations.map((configuration: ExtensionConfiguration, index) => {
-          const isActiveConfiguration =
-            editor.blockData.activeContentId === configuration.contentId
+      <CreateButton onClick={onConfigurationCreate} />
+      {configurations.map((configuration: ExtensionConfiguration, index) => {
+        const isActiveConfiguration =
+          editor.blockData.activeContentId === configuration.contentId
 
-          return (
-            <Card
-              configuration={configuration}
-              isActive={isActiveConfiguration}
-              isDefaultContent={getIsDefaultContent(configuration)}
-              key={configuration.contentId || index}
-              onClick={
-                isActiveConfiguration
-                  ? onActiveConfigurationOpen
-                  : onInactiveConfigurationOpen
-              }
-              onDelete={handleConfigurationDelete}
-            />
-          )
-        })}
-      </LoaderContainer>
-    </Fragment>
+        return (
+          <Card
+            configuration={configuration}
+            isActive={isActiveConfiguration}
+            isDefaultContent={getIsDefaultContent(configuration)}
+            key={configuration.contentId || index}
+            onClick={
+              isActiveConfiguration
+                ? onActiveConfigurationOpen
+                : onInactiveConfigurationOpen
+            }
+            onDelete={handleConfigurationDelete}
+          />
+        )
+      })}
+    </div>
   )
 }
 

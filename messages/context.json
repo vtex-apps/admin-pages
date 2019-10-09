@@ -140,6 +140,7 @@
   "admin/pages.editor.components.modal.button.discard": "admin/pages.editor.components.modal.button.discard",
   "admin/pages.editor.components.modal.text": "admin/pages.editor.components.modal.text",
   "admin/pages.editor.components.no-image": "admin/pages.editor.components.no-image",
+  "admin/pages.editor.components.open.error": "admin/pages.editor.components.open.error",
   "admin/pages.editor.components.title": "admin/pages.editor.components.title",
   "admin/pages.editor.configuration.button.create": "admin/pages.editor.configuration.button.create",
   "admin/pages.editor.configuration.condition.date.from": "admin/pages.editor.configuration.condition.date.from",
