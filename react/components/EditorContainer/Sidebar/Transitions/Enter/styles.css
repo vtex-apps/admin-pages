@@ -1,0 +1,25 @@
+.transition-editor-enter-left {
+  transform: translateX(-18em);
+}
+
+.transition-editor-enter-left-active {
+  transition: transform 250ms ease-in-out;
+  transform: translateX(0);
+}
+
+.transition-editor-enter-left-done {
+  transform: translateX(0);
+}
+
+.transition-editor-enter-right {
+  transform: translateX(18em);
+}
+
+.transition-editor-enter-right-active {
+  transition: transform 250ms ease-in-out;
+  transform: translateX(0);
+}
+
+.transition-editor-enter-right-done {
+  transform: translateX(0);
+}

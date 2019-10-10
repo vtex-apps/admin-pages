@@ -11,9 +11,11 @@ import SaveContentMutation from '../mutations/SaveContent'
 import AbsoluteLoader from './AbsoluteLoader'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
+import { ANIMATION_TIMEOUT } from './consts'
 import useInitialEditingState from './hooks'
 import { useModalContext } from './ModalContext'
 import styles from './styles.css'
+import Transitions from './Transitions'
 
 interface CustomProps {
   highlightHandler: (treePath: string | null) => void
@@ -106,7 +108,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
                 exitDone: styles['transition-selector-exit-done'],
               }}
               in={!!initialEditingState}
-              timeout={250}
+              timeout={ANIMATION_TIMEOUT}
             >
               <BlockSelector
                 highlightHandler={highlightHandler}
@@ -114,35 +116,20 @@ const Sidebar: React.FunctionComponent<Props> = ({
               />
             </CSSTransition>
 
-            <CSSTransition
-              appear
-              classNames={{
-                appear: styles['transition-editor-enter'],
-                appearActive: styles['transition-editor-enter-active'],
-                appearDone: styles['transition-editor-enter-done'],
-                enter: styles['transition-editor-enter'],
-                enterActive: styles['transition-editor-enter-active'],
-                enterDone: styles['transition-editor-enter-done'],
-                exit: styles['transition-editor-exit'],
-                exitActive: styles['transition-editor-exit-active'],
-                exitDone: styles['transition-editor-exit-done'],
-              }}
-              mountOnEnter
-              in={!!initialEditingState}
-              timeout={250}
-              unmountOnExit
-            >
-              <SaveContentMutation>
-                {saveContent => (
-                  <BlockEditor
-                    iframeRuntime={iframeRuntime}
-                    initialEditingState={initialEditingState}
-                    saveContent={saveContent}
-                    showToast={showToast}
-                  />
-                )}
-              </SaveContentMutation>
-            </CSSTransition>
+            <Transitions.Exit condition={!initialEditingState} to="right">
+              <Transitions.Enter condition={!!initialEditingState} from="right">
+                <SaveContentMutation>
+                  {saveContent => (
+                    <BlockEditor
+                      iframeRuntime={iframeRuntime}
+                      initialEditingState={initialEditingState}
+                      saveContent={saveContent}
+                      showToast={showToast}
+                    />
+                  )}
+                </SaveContentMutation>
+              </Transitions.Enter>
+            </Transitions.Exit>
           </div>
         </div>
       </nav>
