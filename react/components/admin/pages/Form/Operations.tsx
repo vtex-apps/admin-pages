@@ -1,5 +1,5 @@
 import React from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { Mutation, MutationFunction, Query, QueryResult } from 'react-apollo'
 
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
@@ -20,12 +20,12 @@ interface TemplateVariables {
 
 interface Props {
   interfaceId: string
-  children: (mutations: OperationsResults) => React.ReactNode
+  children: (mutations: OperationsResults) => JSX.Element | null
 }
 
 export interface OperationsResults {
-  deleteRoute: MutationFn<DeleteMutationResult['data'], DeleteRouteVariables>
-  saveRoute: MutationFn<SaveMutationResult['data'], SaveRouteVariables>
+  deleteRoute: MutationFunction<DeleteMutationResult['data'], DeleteRouteVariables>
+  saveRoute: MutationFunction<SaveMutationResult['data'], SaveRouteVariables>
   templatesResults: QueryResult<
     TemplateMutationResult['data'],
     TemplateVariables

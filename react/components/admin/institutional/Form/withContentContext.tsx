@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda'
 import * as React from 'react'
-import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
+import { Mutation, MutationFunction, Query, QueryResult } from 'react-apollo'
 
 import Loader from './Loader'
 import UnallowedWarning from './UnallowedWarning'
@@ -64,9 +64,9 @@ interface MessagesVariables {
 }
 
 export interface OperationsResults {
-  deleteRoute: MutationFn<unknown, DeleteRouteVariables>
-  saveRoute: MutationFn<unknown, SaveRouteVariables>
-  saveContent: MutationFn<unknown, unknown>
+  deleteRoute: MutationFunction<unknown, DeleteRouteVariables>
+  saveRoute: MutationFunction<unknown, SaveRouteVariables>
+  saveContent: MutationFunction<unknown, unknown>
   templatesResults: QueryResult<unknown, TemplateVariables>
 }
 
@@ -78,9 +78,9 @@ export interface ContentContextProps {
     id: string
     text: string
   }
-  deleteRoute: MutationFn<unknown, DeleteRouteVariables>
-  saveRoute: MutationFn<unknown, SaveRouteVariables>
-  saveContent: MutationFn<unknown, unknown>
+  deleteRoute: MutationFunction<unknown, DeleteRouteVariables>
+  saveRoute: MutationFunction<unknown, SaveRouteVariables>
+  saveContent: MutationFunction<unknown, unknown>
 }
 
 interface Params {

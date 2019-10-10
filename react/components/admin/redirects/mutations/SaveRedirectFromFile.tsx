@@ -1,5 +1,6 @@
-import { Mutation, MutationFn, MutationResult } from 'react-apollo'
+import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
 import SaveRedirectFromFile from '../graphql/SaveRedirectFromFile.graphql'
+import { Component } from 'react'
 
 interface SaveRedirectFromFileData {
   saveRedirectFromFile: boolean
@@ -12,7 +13,7 @@ interface SaveRedirectFromFileVariables {
   uploadActionType: UploadActionType
 }
 
-type SaveRedirectFromFileMutationFn = MutationFn<
+type SaveRedirectFromFileMutationFn = MutationFunction<
   SaveRedirectFromFileData,
   SaveRedirectFromFileVariables
 >
@@ -22,12 +23,17 @@ export interface MutationRenderProps
   saveRedirectFromFile: SaveRedirectFromFileMutationFn
 }
 
-class SaveRedirectFromFileMutation extends Mutation<
-  SaveRedirectFromFileData,
-  SaveRedirectFromFileVariables
-> {
+class SaveRedirectFromFileMutation extends Component<MutationComponentOptions<SaveRedirectFromFileData, SaveRedirectFromFileVariables>> {
   public static defaultProps = {
     mutation: SaveRedirectFromFile,
+  }
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<SaveRedirectFromFileData, SaveRedirectFromFileVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
   }
 }
 

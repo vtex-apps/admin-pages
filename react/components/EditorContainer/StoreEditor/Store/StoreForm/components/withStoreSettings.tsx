@@ -1,5 +1,5 @@
-import React from 'react'
-import { Query } from 'react-apollo'
+import React, { Component } from 'react'
+import { Query, QueryComponentOptions } from 'react-apollo'
 import { defineMessages } from 'react-intl'
 
 import { handleCornerCases } from '../../utils/utils'
@@ -22,10 +22,16 @@ interface InstalledAppVariables {
   slug: string
 }
 
-class InstalledAppQuery extends Query<
-  InstalledAppData,
-  InstalledAppVariables
-> {}
+class InstalledAppQuery extends Component<QueryComponentOptions<InstalledAppData, InstalledAppVariables>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Query<InstalledAppData, InstalledAppVariables> {...rest}>
+        {(result) => children(result)}
+      </Query>
+    )
+  }
+}
 
 export interface AvailableApp {
   id: string
@@ -45,16 +51,22 @@ interface AvailableAppVariables {
   id: string
 }
 
-class AvailableAppQuery extends Query<
-  AvailableAppData,
-  AvailableAppVariables
-> {}
+class AvailableAppQuery extends Component<QueryComponentOptions<AvailableAppData, AvailableAppVariables>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Query<AvailableAppData, AvailableAppVariables> {...rest}>
+        {(result) => children(result)}
+      </Query>
+    )
+  }
+}
 
 export interface FormProps {
   store: AvailableApp &
-    InstalledApp & {
-      settings: string
-    }
+  InstalledApp & {
+    settings: string
+  }
 }
 
 defineMessages({

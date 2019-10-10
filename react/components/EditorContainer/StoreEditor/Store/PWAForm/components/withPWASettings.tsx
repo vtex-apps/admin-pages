@@ -1,6 +1,6 @@
 import { pathOr } from 'ramda'
-import React from 'react'
-import { Query, QueryResult } from 'react-apollo'
+import React, { Component } from 'react'
+import { Query, QueryResult, QueryComponentOptions } from 'react-apollo'
 import { defineMessages } from 'react-intl'
 
 import { handleCornerCases } from '../../utils/utils'
@@ -44,7 +44,16 @@ interface PWAData {
 
 export type PWASettingsProps = PWAData & Pick<QueryResult<PWAData>, 'refetch'>
 
-class PWAQuery extends Query<PWAData, {}> {}
+class PWAQuery extends Component<QueryComponentOptions<PWAData, {}>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Query<PWAData, {}> {...rest}>
+        {(result) => children(result)}
+      </Query>
+    )
+  }
+}
 
 defineMessages({
   description: {

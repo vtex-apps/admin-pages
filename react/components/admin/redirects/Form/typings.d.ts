@@ -1,5 +1,6 @@
-import { MutationFn, MutationUpdaterFn } from 'react-apollo'
+import { MutationFunction } from 'react-apollo'
 import { RedirectsQuery } from '../typings'
+import { MutationUpdaterFn } from 'apollo-client'
 
 export interface MutationResult {
   data?: {
@@ -32,16 +33,16 @@ interface Mutations {
 
 export type StoreUpdaterGetter = (
   operation: 'delete' | 'save'
-) => MutationUpdaterFn<Mutations>
+) => MutationUpdaterFn<any>
 
 export type RedirectData = Redirect | undefined
 
-export type DeleteRedirectMutationFn = MutationFn<
+export type DeleteRedirectMutationFn = MutationFunction<
   RedirectData,
   DeleteRedirectVariables
 >
 
-export type SaveRedirectMutationFn = MutationFn<
+export type SaveRedirectMutationFn = MutationFunction<
   RedirectData,
   SaveRedirectVariables
 >

@@ -1,5 +1,6 @@
-import { Mutation, MutationFn, MutationResult } from 'react-apollo'
+import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
 import DeleteContent from '../graphql/DeleteContent.graphql'
+import { Component } from 'react'
 
 interface DeleteContentData {
   deleteContent: string
@@ -12,7 +13,7 @@ interface DeleteContentVariables {
   treePath: string
 }
 
-export type DeleteContentMutationFn = MutationFn<
+export type DeleteContentMutationFn = MutationFunction<
   DeleteContentData,
   DeleteContentVariables
 >
@@ -21,12 +22,17 @@ export interface MutationRenderProps extends MutationResult<DeleteContentData> {
   deleteContent: DeleteContentMutationFn
 }
 
-class DeleteContentMutation extends Mutation<
-  DeleteContentData,
-  DeleteContentVariables
-> {
+class DeleteContentMutation extends Component<MutationComponentOptions<DeleteContentData, DeleteContentVariables>> {
   public static defaultProps = {
     mutation: DeleteContent,
+  }
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<DeleteContentData, DeleteContentVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
   }
 }
 

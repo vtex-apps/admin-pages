@@ -1,9 +1,10 @@
 import { DataProxy } from 'apollo-cache'
-import { Mutation, MutationFn, QueryResult } from 'react-apollo'
+import { Mutation, MutationFunction, QueryResult, MutationComponentOptions } from 'react-apollo'
 
 import ListFonts from '../graphql/ListFonts.graphql'
 import SaveFontFamilyMutation from '../graphql/SaveFontFamily.graphql'
 import { FontFamily, ListFontsData } from '../queries/ListFontsQuery'
+import { Component } from 'react'
 
 interface FontFamilyVariables {
   font: FontFamilyInput
@@ -35,7 +36,7 @@ export interface FontFamilyData {
 
 type SaveFontFamilyResult = QueryResult<FontFamilyData>
 
-export type SaveFontFamilyFn = MutationFn<FontFamilyData, FontFamilyVariables>
+export type SaveFontFamilyFn = MutationFunction<FontFamilyData, FontFamilyVariables>
 
 const updateFontsAfterSave = (
   cache: DataProxy,
@@ -64,10 +65,18 @@ const updateFontsAfterSave = (
   })
 }
 
-class SaveFontFamily extends Mutation<FontFamilyData, FontFamilyVariables> {
+class SaveFontFamily extends Component<MutationComponentOptions<FontFamilyData, FontFamilyVariables>> {
   public static defaultProps = {
     mutation: SaveFontFamilyMutation,
     update: updateFontsAfterSave,
+  }
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<FontFamilyData, FontFamilyVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
   }
 }
 

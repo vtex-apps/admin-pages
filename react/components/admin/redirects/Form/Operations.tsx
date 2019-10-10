@@ -14,7 +14,7 @@ import {
 import { getStoreUpdater } from './utils'
 
 interface Props {
-  children: (mutations: OperationsObj) => React.ReactNode
+  children: (mutations: OperationsObj) => JSX.Element | null
 }
 
 interface OperationsObj {

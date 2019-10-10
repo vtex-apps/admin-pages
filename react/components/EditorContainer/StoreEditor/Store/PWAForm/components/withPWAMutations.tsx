@@ -1,5 +1,5 @@
-import React from 'react'
-import { Mutation, MutationFn, MutationResult } from 'react-apollo'
+import React, { Component } from 'react'
+import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
 
 import UpdateManifest from '../mutations/UpdateManifest.graphql'
 import UpdateManifestIcon from '../mutations/UpdateManifestIcon.graphql'
@@ -23,39 +23,57 @@ interface UpdateManifestVariables {
   manifest: ManifestMutationData
 }
 
-class UpdateManifestMutation extends Mutation<
-  UpdateManifestData,
-  UpdateManifestVariables
-> {}
+class UpdateManifestMutation extends Component<MutationComponentOptions<UpdateManifestData, UpdateManifestVariables>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<UpdateManifestData, UpdateManifestVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
+  }
+}
 
 interface UpdateManifestIconVariables {
   icon: File
   iOS: boolean
 }
 
-class UpdateManifestIconMutation extends Mutation<
-  UpdateManifestData,
-  UpdateManifestIconVariables
-> {}
+class UpdateManifestIconMutation extends Component<MutationComponentOptions<UpdateManifestData, UpdateManifestIconVariables>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<UpdateManifestData, UpdateManifestIconVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
+  }
+}
 
 interface UpdatePWASettingsData {
   settings: PWASettings
 }
 
-class UpdatePWASettingsMutation extends Mutation<
-  PWASettings,
-  UpdatePWASettingsData
-> {}
+class UpdatePWASettingsMutation extends Component<MutationComponentOptions<PWASettings, UpdatePWASettingsData>> {
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<PWASettings, UpdatePWASettingsData> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
+  }
+}
 
 export interface PWAMutationProps {
   updateManifest: {
-    mutate: MutationFn<UpdateManifestData, UpdateManifestVariables>
+    mutate: MutationFunction<UpdateManifestData, UpdateManifestVariables>
   } & MutationResult<UpdateManifestData>
   updateManifestIcon: {
-    mutate: MutationFn<UpdateManifestData, UpdateManifestIconVariables>
+    mutate: MutationFunction<UpdateManifestData, UpdateManifestIconVariables>
   } & MutationResult<UpdateManifestData>
   updatePWASettings: {
-    mutate: MutationFn<PWASettings, UpdatePWASettingsData>
+    mutate: MutationFunction<PWASettings, UpdatePWASettingsData>
   } & MutationResult<PWASettings>
 }
 

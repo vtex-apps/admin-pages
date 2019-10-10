@@ -1,5 +1,6 @@
-import { Mutation, MutationFn, MutationResult } from 'react-apollo'
+import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
 import UpdateBlock from '../graphql/UpdateBlock.graphql'
+import { Component } from 'react'
 
 interface UpdateBlockData {
   updateBlock: boolean
@@ -28,7 +29,7 @@ interface BlockPathItem {
   id: string
 }
 
-export type UpdateBlockMutationFn = MutationFn<
+export type UpdateBlockMutationFn = MutationFunction<
   UpdateBlockData,
   UpdateBlockVariables
 >
@@ -37,12 +38,17 @@ export interface MutationRenderProps extends MutationResult<UpdateBlockData> {
   updateBlock: UpdateBlockMutationFn
 }
 
-class UpdateBlockMutation extends Mutation<
-  UpdateBlockData,
-  UpdateBlockVariables
-> {
+class UpdateBlockMutation extends Component<MutationComponentOptions<UpdateBlockData, UpdateBlockVariables>> {
   public static defaultProps = {
     mutation: UpdateBlock,
+  }
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<UpdateBlockData, UpdateBlockVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
   }
 }
 

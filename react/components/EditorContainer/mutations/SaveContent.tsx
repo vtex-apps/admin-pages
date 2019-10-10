@@ -1,5 +1,6 @@
-import { Mutation, MutationFn, MutationResult } from 'react-apollo'
+import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
 import SaveContent from '../graphql/SaveContent.graphql'
+import { Component } from 'react'
 
 interface SaveContentData {
   saveContent: Pick<ExtensionConfiguration, 'contentId'>
@@ -15,7 +16,7 @@ interface SaveContentVariables {
   treePath: string
 }
 
-export type SaveContentMutationFn = MutationFn<
+export type SaveContentMutationFn = MutationFunction<
   SaveContentData,
   SaveContentVariables
 >
@@ -24,12 +25,17 @@ export interface MutationRenderProps extends MutationResult<SaveContentData> {
   SaveContent: SaveContentMutationFn
 }
 
-class SaveContentMutation extends Mutation<
-  SaveContentData,
-  SaveContentVariables
-> {
+class SaveContentMutation extends Component<MutationComponentOptions<SaveContentData, SaveContentVariables>> {
   public static defaultProps = {
     mutation: SaveContent,
+  }
+  render() {
+    const { children, ...rest } = this.props
+    return (
+      <Mutation<SaveContentData, SaveContentVariables> {...rest}>
+        {(mutationFn, result) => children(mutationFn, result)}
+      </Mutation>
+    )
   }
 }
 

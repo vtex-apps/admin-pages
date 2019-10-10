@@ -43,7 +43,7 @@ declare module 'vtex.styleguide' {
     toastState: unknown
   }
   interface ToastConsumerProps {
-    children: (mutations: ToastConsumerFunctions) => React.ReactNode
+    children: (mutations: ToastConsumerFunctions) => JSX.Element | null
   }
 
   interface ConditionsStatement {
