@@ -3,6 +3,11 @@ import { RenderComponent } from 'vtex.render-runtime'
 
 export type PropsOrContent = Extension['content'] | Extension['props']
 
+export interface GetActiveContentIdParams {
+  extensions: RenderContext['extensions']
+  treePath: EditorContextType['editTreePath']
+}
+
 export interface GetComponentSchemaParams {
   component: RenderComponent | null
   contentSchema?: JSONSchema6

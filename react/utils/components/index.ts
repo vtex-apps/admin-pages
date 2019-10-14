@@ -3,6 +3,7 @@ import Ajv from 'vtex.ajv'
 import { global, Window } from 'vtex.render-runtime'
 
 import {
+  GetActiveContentIdParams,
   GetComponentSchemaParams,
   GetSchemaPropsOrContentFromRuntimeParams,
   GetSchemaPropsOrContentParams,
@@ -366,4 +367,13 @@ export const getSchemaPropsOrContentFromRuntime = ({
     propsOrContent,
     schema: componentSchema,
   })
+}
+
+export const getActiveContentId = ({
+  extensions,
+  treePath,
+}: GetActiveContentIdParams) => {
+  const extension = getExtension(treePath, extensions)
+
+  return extension.contentIds[extension.contentIds.length - 1]
 }

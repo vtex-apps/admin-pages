@@ -3,7 +3,7 @@ import { InjectedIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
-import { GetDefaultConditionParams, EditingState } from '../typings'
+import { GetDefaultConditionParams } from '../typings'
 
 import { State as FormState } from './index'
 
@@ -18,7 +18,6 @@ export interface GetDefaultConditionParams {
 
 export interface UseFormHandlersParams {
   iframeRuntime: RenderContext
-  initialEditingState?: EditingState
   intl: InjectedIntl
   saveContent: MutationFn<SaveContentData, SaveContentVariables>
   setState: React.Dispatch<Partial<FormState>>
