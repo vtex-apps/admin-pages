@@ -27,8 +27,8 @@ interface CustomProps {
   isNew?: boolean
   isSitewide?: boolean
   label?: string | null
-  onChange: FormProps<FormDataContainer>['onChange']
   onBack: () => void
+  onChange: FormProps<FormDataContainer>['onChange']
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
@@ -60,8 +60,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   isNew,
   isSitewide = false,
   label,
-  onChange,
   onBack,
+  onChange,
   onConditionChange,
   onLabelChange,
   onListOpen,

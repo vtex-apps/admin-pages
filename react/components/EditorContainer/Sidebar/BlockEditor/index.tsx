@@ -1,8 +1,10 @@
 import React from 'react'
 import { injectIntl } from 'react-intl'
+import { CSSTransition } from 'react-transition-group'
 
 import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
+import { ANIMATION_TIMEOUT } from '../consts'
 import Transitions from '../Transitions'
 import { EditingState, FormDataContainer } from '../typings'
 
@@ -81,9 +83,11 @@ const BlockEditor = ({
 
   return (
     <>
-      <Transitions.Enter
-        condition={isFirstState || stateTransitions.listToEditing}
-        from="left"
+      <CSSTransition
+        in={isFirstState || stateTransitions.listToEditing}
+        mountOnEnter
+        timeout={ANIMATION_TIMEOUT}
+        unmountOnExit
       >
         <BlockConfigurationEditor
           condition={
@@ -110,7 +114,7 @@ const BlockEditor = ({
           showToast={showToast}
           title={editor.blockData.title}
         />
-      </Transitions.Enter>
+      </CSSTransition>
 
       <Transitions.Exit condition={stateTransitions.listToEditing} to="right">
         <Transitions.Enter
