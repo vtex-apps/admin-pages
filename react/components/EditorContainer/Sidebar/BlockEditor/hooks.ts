@@ -83,9 +83,13 @@ export const useFormHandlers: UseFormHandlers = ({
     [editor.editTreePath, formMeta, iframeRuntime, setState, state]
   )
 
-  const handleFormClose = useCallback(() => {
+  const handleFormClose = useCallback(async () => {
+    await iframeRuntime.updateRuntime()
+
     editor.editExtensionPoint(null)
-  }, [editor])
+
+    editor.setIsLoading(false)
+  }, [editor, iframeRuntime])
 
   const handleFormSave = useCallback(async () => {
     if (editor.getIsLoading()) {
@@ -139,9 +143,9 @@ export const useFormHandlers: UseFormHandlers = ({
       console.error(err)
 
       error = err
-    } finally {
-      editor.setIsLoading(false)
 
+      editor.setIsLoading(false)
+    } finally {
       showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage(
@@ -190,8 +194,6 @@ export const useFormHandlers: UseFormHandlers = ({
       if (modal.getIsOpen()) {
         modal.close()
       }
-
-      editor.setIsLoading(false)
 
       handleFormClose()
     }
