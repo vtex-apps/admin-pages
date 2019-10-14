@@ -3,7 +3,7 @@
 }
 
 .transition-editor-enter-left-active {
-  transition: transform 250ms ease-in-out;
+  transition: transform 300ms ease-in;
   transform: translateX(0);
 }
 
@@ -16,7 +16,7 @@
 }
 
 .transition-editor-enter-right-active {
-  transition: transform 250ms ease-in-out;
+  transition: transform 300ms ease-in;
   transform: translateX(0);
 }
 

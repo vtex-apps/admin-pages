@@ -43,7 +43,10 @@ const BlockConfigurationList: React.FC<Props> = ({
   }
 
   return (
-    <div className="w-100 h-100 absolute bg-white">
+    <div
+      className="w-100 h-100 absolute bg-white"
+      style={{ boxShadow: '-3px 0px 23px 0px rgba(0,0,0,0.14)' }}
+    >
       <EditorHeader
         onListClose={onListClose}
         onListOpen={onListOpen}
