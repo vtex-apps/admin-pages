@@ -113,6 +113,7 @@
   "admin/pages.editor.component-list.action-menu.delete": "Delete",
   "admin/pages.editor.component-list.action-menu.reset": "Reset",
   "admin/pages.editor.component-list.untitled": "Untitled Block",
+  "admin/pages.editor.component-list.contentCards": "Content cards",
   "admin/pages.editor.components.arrayTemplate.button.add": "Add",
   "admin/pages.editor.components.button.cancel": "Cancel",
   "admin/pages.editor.components.button.save": "Save",
