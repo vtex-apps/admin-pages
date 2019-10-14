@@ -3,8 +3,9 @@ import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
 
 import {
-  updateExtensionFromForm,
+  getActiveContentId,
   getSchemaPropsOrContent,
+  updateExtensionFromForm,
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import { NEW_CONFIGURATION_ID } from '../consts'
@@ -32,7 +33,6 @@ const messages = defineMessages({
 
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
-  initialEditingState,
   intl,
   saveContent,
   setState,
@@ -238,8 +238,10 @@ export const useFormHandlers: UseFormHandlers = ({
           content: formData,
         })
 
-        const activeContentId =
-          initialEditingState && initialEditingState.contentId
+        const activeContentId = getActiveContentId({
+          extensions: iframeRuntime.extensions,
+          treePath: editor.editTreePath,
+        })
 
         const newMode =
           configuration.contentId && configuration.contentId === activeContentId
@@ -261,7 +263,6 @@ export const useFormHandlers: UseFormHandlers = ({
       editor.blockData.contentSchema,
       editor.editTreePath,
       iframeRuntime,
-      initialEditingState,
       setState,
       state.contentId,
       state.prevMode,

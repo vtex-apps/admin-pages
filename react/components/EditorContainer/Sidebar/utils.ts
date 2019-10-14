@@ -2,6 +2,7 @@ import { formatIOMessage } from 'vtex.native-types'
 
 import { getBlockPath } from '../../../utils/blocks'
 import {
+  getActiveContentId,
   getComponentSchema,
   getExtension,
   getIframeImplementation,
@@ -82,15 +83,18 @@ export const getInitialEditingState: GetInitialEditingState = ({
 
   const extension = getExtension(treePath, iframeRuntime.extensions)
 
-  const listContent = data && data.listContentWithSchema
-
   const componentImplementation = getIframeImplementation(extension.component)
+
+  const listContent = data && data.listContentWithSchema
 
   const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
 
   const configurations = listContent && listContent.content
 
-  const activeContentId = extension.contentIds[extension.contentIds.length - 1]
+  const activeContentId = getActiveContentId({
+    extensions: iframeRuntime.extensions,
+    treePath: editor.editTreePath,
+  })
 
   const activeContent =
     configurations &&
@@ -160,10 +164,7 @@ export const updateEditorBlockData: UpdateEditorBlockData = ({
 
   const configurations = listContent && listContent.content
 
-  const activeContentId = extension.contentIds[extension.contentIds.length - 1]
-
   const blockData = {
-    activeContentId,
     componentImplementation,
     componentSchema,
     configurations,

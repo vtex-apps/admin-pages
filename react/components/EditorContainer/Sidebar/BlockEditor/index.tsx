@@ -13,7 +13,9 @@ import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
 import { UseFormHandlersParams } from './typings'
 
-type Props = Omit<UseFormHandlersParams, 'setState' | 'state'>
+type Props = Omit<UseFormHandlersParams, 'setState' | 'state'> & {
+  initialEditingState?: EditingState
+}
 
 export interface State extends EditingState {
   mode: 'editingActive' | 'editingInactive' | 'list'
@@ -73,7 +75,6 @@ const BlockEditor = ({
     handleListOpen,
   } = useFormHandlers({
     iframeRuntime,
-    initialEditingState,
     intl,
     saveContent,
     setState,

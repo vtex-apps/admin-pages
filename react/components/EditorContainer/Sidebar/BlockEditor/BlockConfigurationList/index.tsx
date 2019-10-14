@@ -9,6 +9,7 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
+import { getActiveContentId } from '../../../../../utils/components'
 
 interface Props extends UseListHandlersParams {
   onConfigurationCreate: () => void
@@ -38,6 +39,15 @@ const BlockConfigurationList: React.FC<Props> = ({
 
   const { configurations } = editor.blockData
 
+  const activeContentId = React.useMemo(
+    () =>
+      getActiveContentId({
+        extensions: iframeRuntime.extensions,
+        treePath: editor.editTreePath,
+      }),
+    [editor.editTreePath, iframeRuntime.extensions]
+  )
+
   if (!configurations) {
     return null
   }
@@ -54,9 +64,10 @@ const BlockConfigurationList: React.FC<Props> = ({
       />
 
       <CreateButton onClick={onConfigurationCreate} />
+
       {configurations.map((configuration: ExtensionConfiguration, index) => {
         const isActiveConfiguration =
-          editor.blockData.activeContentId === configuration.contentId
+          configuration.contentId === activeContentId
 
         return (
           <Card
