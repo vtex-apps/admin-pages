@@ -1,6 +1,6 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
-import React, { Fragment, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
@@ -11,7 +11,6 @@ import { useFormMetaContext } from '../../FormMetaContext'
 import { FormDataContainer } from '../../typings'
 import { isUnidentifiedPageContext } from '../../utils'
 import EditorHeader from '../EditorHeader'
-import LoaderContainer from '../LoaderContainer'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
@@ -28,12 +27,13 @@ interface CustomProps {
   isNew?: boolean
   isSitewide?: boolean
   label?: string | null
+  onBack: () => void
   onChange: FormProps<FormDataContainer>['onChange']
-  onClose: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onLabelChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onListClose?: () => void
   onListOpen?: () => void
   onSave: () => void
   showToast: ToastConsumerFunctions['showToast']
@@ -60,8 +60,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   isNew,
   isSitewide = false,
   label,
+  onBack,
   onChange,
-  onClose,
   onConditionChange,
   onLabelChange,
   onListOpen,
@@ -136,13 +136,13 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   const isRootLevel = componentFormState === undefined
 
   return (
-    <Fragment>
-      <LoaderContainer
+    <div className="w-100 h-100 absolute flex flex-column">
+      <div
+        className="flex-grow-1 overflow-y-auto overflow-x-hidden"
         id="component-editor-container"
-        containerClassName="h-100 overflow-y-auto overflow-x-hidden"
       >
         <EditorHeader
-          onClose={componentFormState ? componentFormState.onClose : onClose}
+          onBack={componentFormState ? componentFormState.onClose : onBack}
           onListOpen={onListOpen && isRootLevel ? onListOpen : undefined}
           title={componentFormState ? componentFormState.title : title}
         />
@@ -197,7 +197,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               pageContext={iframeRuntime.route.pageContext}
             />
           )}
-      </LoaderContainer>
+      </div>
 
       <div
         className={classnames(
@@ -223,7 +223,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         <div className="mr5">
           <Button
             disabled={isLoading}
-            onClick={onClose}
+            onClick={onBack}
             size="small"
             variation="tertiary"
           >
@@ -234,7 +234,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           </Button>
         </div>
       </div>
-    </Fragment>
+    </div>
   )
 }
 

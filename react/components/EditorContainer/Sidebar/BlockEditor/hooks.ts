@@ -5,20 +5,17 @@ import { defineMessages } from 'react-intl'
 import {
   updateExtensionFromForm,
   getSchemaPropsOrContent,
-  getIframeImplementation,
-  getExtension,
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 import ListContent from '../../graphql/ListContent.graphql'
 import { NEW_CONFIGURATION_ID } from '../consts'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
+import { getFormData } from '../utils'
 
 import { UseFormHandlers } from './typings'
 import {
-  getDefaultCondition,
   getDefaultConfiguration,
-  getFormData,
   omitUndefined,
   throttledUpdateExtensionFromForm,
 } from './utils'
@@ -36,9 +33,8 @@ const messages = defineMessages({
 
 export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
+  initialEditingState,
   intl,
-  isSitewide,
-  query,
   saveContent,
   setState,
   showToast,
@@ -47,10 +43,6 @@ export const useFormHandlers: UseFormHandlers = ({
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
-
-  const handleActiveConfigurationOpen = useCallback(() => {
-    setState({ mode: 'editingActive' })
-  }, [setState])
 
   const handleConditionChange = useCallback(
     (changes: Partial<typeof state['condition']>) => {
@@ -93,12 +85,8 @@ export const useFormHandlers: UseFormHandlers = ({
   )
 
   const handleFormClose = useCallback(() => {
-    if (state.mode === 'editingActive') {
-      editor.editExtensionPoint(null)
-    } else if (state.mode === 'editingInactive') {
-      setState({ formData: undefined, mode: 'list' })
-    }
-  }, [editor, setState, state.mode])
+    editor.editExtensionPoint(null)
+  }, [editor])
 
   const handleFormSave = useCallback(async () => {
     if (editor.getIsLoading()) {
@@ -236,110 +224,76 @@ export const useFormHandlers: UseFormHandlers = ({
     state.content,
   ])
 
-  const handleInactiveConfigurationOpen = useCallback(
+  const handleConfigurationOpen = useCallback(
     async (configuration: ExtensionConfiguration) => {
       if (!editor.editTreePath) {
         return
       }
 
-      const baseContent =
-        configuration.contentId !== NEW_CONFIGURATION_ID
-          ? (JSON.parse(configuration.contentJSON) as Extension['content'])
-          : {}
+      if (
+        configuration.contentId &&
+        state.contentId === configuration.contentId
+      ) {
+        setState({
+          mode: state.prevMode,
+        })
+      } else {
+        const baseContent =
+          configuration.contentId !== NEW_CONFIGURATION_ID
+            ? (JSON.parse(configuration.contentJSON) as Extension['content'])
+            : {}
 
-      const formData = getFormData({
-        componentImplementation: editor.blockData.componentImplementation,
-        content: baseContent,
-        contentSchema: editor.blockData.contentSchema,
-        iframeRuntime,
-      })
+        const formData = getFormData({
+          componentImplementation: editor.blockData.componentImplementation,
+          content: baseContent,
+          contentSchema: editor.blockData.contentSchema,
+          iframeRuntime,
+        })
 
-      await iframeRuntime.updateExtension(editor.editTreePath, {
-        ...iframeRuntime.extensions[editor.editTreePath],
-        content: formData,
-      })
+        await iframeRuntime.updateExtension(editor.editTreePath, {
+          ...iframeRuntime.extensions[editor.editTreePath],
+          content: formData,
+        })
 
-      setState({
-        condition: configuration.condition,
-        content: baseContent,
-        contentId: configuration.contentId,
-        formData,
-        label: configuration.label,
-        mode: 'editingInactive',
-      })
+        const activeContentId =
+          initialEditingState && initialEditingState.contentId
+
+        const newMode =
+          configuration.contentId && configuration.contentId === activeContentId
+            ? 'editingActive'
+            : 'editingInactive'
+
+        setState({
+          condition: configuration.condition,
+          content: baseContent,
+          contentId: configuration.contentId,
+          formData,
+          label: configuration.label,
+          mode: newMode,
+        })
+      }
     },
     [
       editor.blockData.componentImplementation,
       editor.blockData.contentSchema,
       editor.editTreePath,
       iframeRuntime,
+      initialEditingState,
       setState,
+      state.contentId,
+      state.prevMode,
     ]
   )
 
-  const handleInitialStateSet = () => {
-    const treePath = editor.editTreePath || ''
-
-    const extension = getExtension(treePath, iframeRuntime.extensions)
-
-    const listContent = query.data && query.data.listContentWithSchema
-
-    const componentImplementation = getIframeImplementation(extension.component)
-
-    const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
-
-    const configurations = listContent && listContent.content
-
-    const activeContentId =
-      extension.contentIds[extension.contentIds.length - 1]
-
-    const activeContent =
-      configurations &&
-      configurations.find(
-        configuration => configuration.contentId === activeContentId
-      )
-
-    const content =
-      (activeContent &&
-        activeContent.contentJSON &&
-        JSON.parse(activeContent.contentJSON)) ||
-      {}
-
-    const condition = activeContent
-      ? activeContent.condition
-      : getDefaultCondition({ iframeRuntime, isSitewide })
-
-    const label = activeContent && activeContent.label
-
-    const formData = getFormData({
-      componentImplementation,
-      content,
-      contentSchema,
-      iframeRuntime,
-    })
-
-    setState({
-      condition,
-      contentId: activeContentId,
-      content,
-      formData,
-      label,
-    })
-  }
-
   const handleConfigurationCreate = useCallback(
     () =>
-      handleInactiveConfigurationOpen(
+      handleConfigurationOpen(
         getDefaultConfiguration({
           iframeRuntime,
           isSitewide: editor.blockData.isSitewide || false,
         })
       ),
-    [
-      editor.blockData.isSitewide,
-      handleInactiveConfigurationOpen,
-      iframeRuntime,
-    ]
+    [editor.blockData.isSitewide, handleConfigurationOpen, iframeRuntime]
   )
 
   const handleLabelChange = useCallback(
@@ -353,20 +307,23 @@ export const useFormHandlers: UseFormHandlers = ({
     [formMeta, setState]
   )
 
+  const handleListClose = useCallback(() => {
+    setState({ mode: state.prevMode })
+  }, [setState, state.prevMode])
+
   const handleListOpen = useCallback(() => {
     setState({ mode: 'list' })
   }, [setState])
 
   return {
-    handleActiveConfigurationOpen,
     handleConditionChange,
     handleConfigurationCreate,
+    handleConfigurationOpen,
     handleFormBack,
     handleFormChange,
     handleFormSave,
-    handleInactiveConfigurationOpen,
-    handleInitialStateSet,
     handleLabelChange,
+    handleListClose,
     handleListOpen,
   }
 }

@@ -30,7 +30,6 @@ export const useListHandlers: UseListHandlers = ({
   deleteContent,
   iframeRuntime,
   intl,
-  onBack,
   showToast,
 }) => {
   const editor = useEditorContext()
@@ -86,19 +85,7 @@ export const useListHandlers: UseListHandlers = ({
     [deleteContent, editor, iframeRuntime, intl, showToast]
   )
 
-  const handleQuit = useCallback(
-    (event?: Event) => {
-      if (event) {
-        event.stopPropagation()
-      }
-
-      onBack()
-    },
-    [onBack]
-  )
-
   return {
     handleConfigurationDelete,
-    handleQuit,
   }
 }

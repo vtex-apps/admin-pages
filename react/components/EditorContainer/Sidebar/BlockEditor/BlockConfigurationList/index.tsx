@@ -1,9 +1,8 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { injectIntl } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditorHeader from '../EditorHeader'
-import LoaderContainer from '../LoaderContainer'
 import { getIsDefaultContent } from '../utils'
 
 import Card from './Card'
@@ -12,30 +11,28 @@ import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
 
 interface Props extends UseListHandlersParams {
-  onActiveConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onConfigurationCreate: () => void
-  onInactiveConfigurationOpen: (
-    configuration: ExtensionConfiguration
-  ) => Promise<void>
+  onConfigurationOpen: (configuration: ExtensionConfiguration) => void
+  onListClose?: () => void
+  onListOpen?: () => void
 }
 
 const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
   iframeRuntime,
   intl,
-  onActiveConfigurationOpen,
-  onBack,
   onConfigurationCreate,
-  onInactiveConfigurationOpen,
+  onConfigurationOpen,
+  onListClose,
+  onListOpen,
   showToast,
 }) => {
   const editor = useEditorContext()
 
-  const { handleConfigurationDelete, handleQuit } = useListHandlers({
+  const { handleConfigurationDelete } = useListHandlers({
     deleteContent,
     iframeRuntime,
     intl,
-    onBack,
     showToast,
   })
 
@@ -46,32 +43,33 @@ const BlockConfigurationList: React.FC<Props> = ({
   }
 
   return (
-    <Fragment>
-      <EditorHeader onClose={handleQuit} title={editor.blockData.title} />
+    <div
+      className="w-100 h-100 absolute bg-white"
+      style={{ boxShadow: '-3px 0px 23px 0px rgba(0,0,0,0.14)' }}
+    >
+      <EditorHeader
+        onListClose={onListClose}
+        onListOpen={onListOpen}
+        title={editor.blockData.title}
+      />
 
-      <LoaderContainer>
-        <CreateButton onClick={onConfigurationCreate} />
-        {configurations.map((configuration: ExtensionConfiguration, index) => {
-          const isActiveConfiguration =
-            editor.blockData.activeContentId === configuration.contentId
+      <CreateButton onClick={onConfigurationCreate} />
+      {configurations.map((configuration: ExtensionConfiguration, index) => {
+        const isActiveConfiguration =
+          editor.blockData.activeContentId === configuration.contentId
 
-          return (
-            <Card
-              configuration={configuration}
-              isActive={isActiveConfiguration}
-              isDefaultContent={getIsDefaultContent(configuration)}
-              key={configuration.contentId || index}
-              onClick={
-                isActiveConfiguration
-                  ? onActiveConfigurationOpen
-                  : onInactiveConfigurationOpen
-              }
-              onDelete={handleConfigurationDelete}
-            />
-          )
-        })}
-      </LoaderContainer>
-    </Fragment>
+        return (
+          <Card
+            configuration={configuration}
+            isActive={isActiveConfiguration}
+            isDefaultContent={getIsDefaultContent(configuration)}
+            key={configuration.contentId || index}
+            onClick={onConfigurationOpen}
+            onDelete={handleConfigurationDelete}
+          />
+        )
+      })}
+    </div>
   )
 }
 

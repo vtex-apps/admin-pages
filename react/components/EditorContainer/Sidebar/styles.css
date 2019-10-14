@@ -1,0 +1,51 @@
+.transition-editor-enter {
+  transform: translateX(18em);
+}
+
+.transition-editor-enter-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(0);
+}
+
+.transition-editor-enter-done {
+  transform: translateX(0);
+}
+
+.transition-editor-exit {
+  transform: translateX(0);
+}
+
+.transition-editor-exit-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(18em);
+}
+
+.transition-editor-exit-done {
+  transform: translateX(18em);
+}
+
+.transition-selector-enter {
+  transform: translateX(0);
+}
+
+.transition-selector-enter-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(-18em);
+}
+
+.transition-selector-enter-done {
+  transform: translateX(-18em);
+}
+
+.transition-selector-exit {
+  transform: translateX(-18em);
+}
+
+.transition-selector-exit-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(0);
+}
+
+.transition-selector-exit-done {
+  transform: translateX(0);
+}

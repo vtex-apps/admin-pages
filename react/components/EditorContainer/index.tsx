@@ -3,9 +3,9 @@ import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Draggable from 'react-draggable'
 import { FormattedMessage } from 'react-intl'
-import { Alert } from 'vtex.styleguide'
+import { Alert, ToastConsumer } from 'vtex.styleguide'
 
-import { State as HighlightOverlayState } from '../../HighlightOverlay'
+import { State as HighlightOverlayState } from '../HighlightOverlay/typings'
 
 import DeviceSwitcher from './DeviceSwitcher'
 import Sidebar from './Sidebar'
@@ -130,13 +130,21 @@ const EditorContainer: React.FC<Props> = ({
         <IframeNavigationController iframeRuntime={iframeRuntime} />
         <div className="w-100 h-100 min-vh-100 flex flex-row-reverse flex-wrap-l bg-base bb bw1 b--muted-5">
           {!storeEditMode && iframeRuntime && (
-            <Sidebar
-              highlightHandler={highlightExtensionPoint}
-              iframeRuntime={iframeRuntime}
-              visible={visible}
-              updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
-            />
+            <ToastConsumer>
+              {({ showToast }) => (
+                <Sidebar
+                  highlightHandler={highlightExtensionPoint}
+                  iframeRuntime={iframeRuntime}
+                  showToast={showToast}
+                  updateHighlightTitleByTreePath={
+                    updateHighlightTitleByTreePath
+                  }
+                  visible={visible}
+                />
+              )}
+            </ToastConsumer>
           )}
+
           <div className="flex-grow-1 db-ns dn">
             {iframeRuntime && (
               <Topbar
