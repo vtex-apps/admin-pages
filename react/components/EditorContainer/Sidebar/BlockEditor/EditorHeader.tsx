@@ -41,7 +41,7 @@ const EditorHeader: React.FC<Props> = ({
               role="button"
               tabIndex={0}
             >
-              <IconArrowBack color="#727273" size={12} />
+              <IconArrowBack color="#727273" />
             </span>
           )}
 
@@ -59,7 +59,7 @@ const EditorHeader: React.FC<Props> = ({
               role="button"
               tabIndex={0}
             >
-              <IconClose color="#727273" size={12} />
+              <IconClose color="#727273" />
             </span>
           )}
 
