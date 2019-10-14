@@ -2,6 +2,8 @@ import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { IconArrowBack, IconClose } from 'vtex.styleguide'
 
+import ContentLibraryIcon from '../../../icons/ContentLibraryIcon'
+
 interface Props {
   isTitleEditable?: boolean
   onBack?: () => void
@@ -69,7 +71,7 @@ const EditorHeader: React.FC<Props> = ({
               role="button"
               tabIndex={0}
             >
-              <IconArrowBack color="#727273" size={12} />
+              <ContentLibraryIcon />
             </span>
           )}
         </div>
