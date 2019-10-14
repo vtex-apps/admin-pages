@@ -7,7 +7,6 @@ import {
   getSchemaPropsOrContent,
 } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
-import ListContent from '../../graphql/ListContent.graphql'
 import { NEW_CONFIGURATION_ID } from '../consts'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
@@ -119,25 +118,7 @@ export const useFormHandlers: UseFormHandlers = ({
     try {
       editor.setIsLoading(true)
 
-      const { id, template, serverTreePath } = editor.blockData
-
-      const refetchQueries =
-        id && serverTreePath && template
-          ? [
-              {
-                query: ListContent,
-                variables: {
-                  blockId: id,
-                  pageContext: iframeRuntime.route.pageContext,
-                  template: template,
-                  treePath: serverTreePath,
-                },
-              },
-            ]
-          : undefined
-
       await saveContent({
-        refetchQueries,
         variables: {
           blockId,
           configuration,
