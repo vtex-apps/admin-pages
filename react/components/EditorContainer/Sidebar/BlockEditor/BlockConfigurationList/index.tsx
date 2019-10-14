@@ -11,30 +11,28 @@ import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
 
 interface Props extends UseListHandlersParams {
-  onActiveConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onConfigurationCreate: () => void
-  onInactiveConfigurationOpen: (
-    configuration: ExtensionConfiguration
-  ) => Promise<void>
+  onConfigurationOpen: (configuration: ExtensionConfiguration) => void
+  onListClose?: () => void
+  onListOpen?: () => void
 }
 
 const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
   iframeRuntime,
   intl,
-  onActiveConfigurationOpen,
-  onBack,
   onConfigurationCreate,
-  onInactiveConfigurationOpen,
+  onConfigurationOpen,
+  onListClose,
+  onListOpen,
   showToast,
 }) => {
   const editor = useEditorContext()
 
-  const { handleConfigurationDelete, handleQuit } = useListHandlers({
+  const { handleConfigurationDelete } = useListHandlers({
     deleteContent,
     iframeRuntime,
     intl,
-    onBack,
     showToast,
   })
 
@@ -45,8 +43,12 @@ const BlockConfigurationList: React.FC<Props> = ({
   }
 
   return (
-    <div className="w-100 flex flex-column">
-      <EditorHeader onClose={handleQuit} title={editor.blockData.title} />
+    <div className="w-100 h-100 absolute bg-white">
+      <EditorHeader
+        onListClose={onListClose}
+        onListOpen={onListOpen}
+        title={editor.blockData.title}
+      />
 
       <CreateButton onClick={onConfigurationCreate} />
       {configurations.map((configuration: ExtensionConfiguration, index) => {
@@ -59,11 +61,7 @@ const BlockConfigurationList: React.FC<Props> = ({
             isActive={isActiveConfiguration}
             isDefaultContent={getIsDefaultContent(configuration)}
             key={configuration.contentId || index}
-            onClick={
-              isActiveConfiguration
-                ? onActiveConfigurationOpen
-                : onInactiveConfigurationOpen
-            }
+            onClick={onConfigurationOpen}
             onDelete={handleConfigurationDelete}
           />
         )

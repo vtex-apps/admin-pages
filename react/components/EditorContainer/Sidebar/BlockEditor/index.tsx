@@ -11,9 +11,7 @@ import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
 import { UseFormHandlersParams } from './typings'
 
-type Props = Omit<UseFormHandlersParams, 'setState' | 'state'> & {
-  initialEditingState?: EditingState
-}
+type Props = Omit<UseFormHandlersParams, 'setState' | 'state'>
 
 export interface State extends EditingState {
   mode: 'editingActive' | 'editingInactive' | 'list'
@@ -41,14 +39,20 @@ const BlockEditor = ({
     { ...initialEditingState, mode: 'editingActive' }
   )
 
+  const isFirstState = !state.prevMode
+
   const stateTransitions = React.useMemo(
     () => ({
-      activeToList: state.prevMode === 'editingActive' && state.mode === 'list',
-      inactiveToList:
-        state.prevMode === 'editingInactive' && state.mode === 'list',
-      listToActive: state.prevMode === 'list' && state.mode === 'editingActive',
-      listToInactive:
-        state.prevMode === 'list' && state.mode === 'editingInactive',
+      editingActiveToList:
+        state.prevMode === 'editingActive' && state.mode === 'list',
+      editingToList:
+        state.prevMode &&
+        state.prevMode.startsWith('editing') &&
+        state.mode === 'list',
+      listToEditingActive:
+        state.prevMode === 'list' && state.mode === 'editingActive',
+      listToEditing:
+        state.prevMode === 'list' && state.mode.startsWith('editing'),
     }),
     [state.mode, state.prevMode]
   )
@@ -56,17 +60,18 @@ const BlockEditor = ({
   const editor = useEditorContext()
 
   const {
-    handleActiveConfigurationOpen,
     handleConditionChange,
     handleConfigurationCreate,
+    handleConfigurationOpen,
     handleFormBack,
     handleFormChange,
     handleFormSave,
-    handleInactiveConfigurationOpen,
     handleLabelChange,
+    handleListClose,
     handleListOpen,
   } = useFormHandlers({
     iframeRuntime,
+    initialEditingState,
     intl,
     saveContent,
     setState,
@@ -74,83 +79,56 @@ const BlockEditor = ({
     state,
   })
 
-  const editorCommonProps = {
-    condition: (state
-      ? state.condition
-      : {}) as ExtensionConfiguration['condition'],
-    contentSchema: editor.blockData.contentSchema,
-    data: state.formData as FormDataContainer,
-    iframeRuntime: iframeRuntime,
-    isSitewide: editor.blockData.isSitewide,
-    label: state.label,
-    onChange: handleFormChange,
-    onClose: handleFormBack,
-    onConditionChange: handleConditionChange,
-    onLabelChange: handleLabelChange,
-    onSave: handleFormSave,
-    showToast,
-    title: editor.blockData.title,
-  }
-
-  const componentByMode: Record<State['mode'], React.ReactElement> = {
-    editingActive: (
-      <BlockConfigurationEditor
-        {...editorCommonProps}
-        isActive
-        onListOpen={handleListOpen}
-      />
-    ),
-    editingInactive: <BlockConfigurationEditor {...editorCommonProps} />,
-    list: (
-      <DeleteContentMutation>
-        {deleteContent => (
-          <BlockConfigurationList
-            deleteContent={deleteContent}
-            iframeRuntime={iframeRuntime}
-            onActiveConfigurationOpen={handleActiveConfigurationOpen}
-            onBack={handleActiveConfigurationOpen}
-            onConfigurationCreate={handleConfigurationCreate}
-            onInactiveConfigurationOpen={handleInactiveConfigurationOpen}
-            showToast={showToast}
-          />
-        )}
-      </DeleteContentMutation>
-    ),
-  }
-
   return (
     <>
-      <Transitions.Exit condition={stateTransitions.activeToList} to="left">
-        <Transitions.Enter
-          condition={!state.prevMode || stateTransitions.listToActive}
-          from="left"
-        >
-          {componentByMode['editingActive']}
-        </Transitions.Enter>
-      </Transitions.Exit>
+      <Transitions.Enter
+        condition={isFirstState || stateTransitions.listToEditing}
+        from="left"
+      >
+        <BlockConfigurationEditor
+          condition={
+            (state
+              ? state.condition
+              : {}) as ExtensionConfiguration['condition']
+          }
+          contentSchema={editor.blockData.contentSchema}
+          data={state.formData as FormDataContainer}
+          iframeRuntime={iframeRuntime}
+          isActive={
+            isFirstState ||
+            stateTransitions.editingActiveToList ||
+            stateTransitions.listToEditingActive
+          }
+          isSitewide={editor.blockData.isSitewide}
+          label={state.label}
+          onBack={handleFormBack}
+          onChange={handleFormChange}
+          onConditionChange={handleConditionChange}
+          onLabelChange={handleLabelChange}
+          onListOpen={handleListOpen}
+          onSave={handleFormSave}
+          showToast={showToast}
+          title={editor.blockData.title}
+        />
+      </Transitions.Enter>
 
-      <Transitions.Exit condition={stateTransitions.inactiveToList} to="right">
+      <Transitions.Exit condition={stateTransitions.listToEditing} to="right">
         <Transitions.Enter
-          condition={stateTransitions.listToInactive}
+          condition={stateTransitions.editingToList}
           from="right"
         >
-          {componentByMode['editingInactive']}
-        </Transitions.Enter>
-      </Transitions.Exit>
-
-      <Transitions.Exit
-        condition={
-          stateTransitions.listToActive || stateTransitions.listToInactive
-        }
-        to={stateTransitions.listToActive ? 'right' : 'left'}
-      >
-        <Transitions.Enter
-          condition={
-            stateTransitions.activeToList || stateTransitions.inactiveToList
-          }
-          from={stateTransitions.activeToList ? 'right' : 'left'}
-        >
-          {componentByMode['list']}
+          <DeleteContentMutation>
+            {deleteContent => (
+              <BlockConfigurationList
+                deleteContent={deleteContent}
+                iframeRuntime={iframeRuntime}
+                onConfigurationCreate={handleConfigurationCreate}
+                onConfigurationOpen={handleConfigurationOpen}
+                onListClose={handleListClose}
+                showToast={showToast}
+              />
+            )}
+          </DeleteContentMutation>
         </Transitions.Enter>
       </Transitions.Exit>
     </>

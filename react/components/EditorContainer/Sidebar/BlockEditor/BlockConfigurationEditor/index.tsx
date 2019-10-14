@@ -28,11 +28,12 @@ interface CustomProps {
   isSitewide?: boolean
   label?: string | null
   onChange: FormProps<FormDataContainer>['onChange']
-  onClose: () => void
+  onBack: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   onLabelChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onListClose?: () => void
   onListOpen?: () => void
   onSave: () => void
   showToast: ToastConsumerFunctions['showToast']
@@ -60,7 +61,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   isSitewide = false,
   label,
   onChange,
-  onClose,
+  onBack,
   onConditionChange,
   onLabelChange,
   onListOpen,
@@ -141,7 +142,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         id="component-editor-container"
       >
         <EditorHeader
-          onClose={componentFormState ? componentFormState.onClose : onClose}
+          onBack={componentFormState ? componentFormState.onClose : onBack}
           onListOpen={onListOpen && isRootLevel ? onListOpen : undefined}
           title={componentFormState ? componentFormState.title : title}
         />
@@ -222,7 +223,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         <div className="mr5">
           <Button
             disabled={isLoading}
-            onClick={onClose}
+            onClick={onBack}
             size="small"
             variation="tertiary"
           >

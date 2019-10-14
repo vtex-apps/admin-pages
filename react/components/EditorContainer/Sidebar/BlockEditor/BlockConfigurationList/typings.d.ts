@@ -21,7 +21,6 @@ export interface UseListHandlersParams {
   deleteContent: DeleteContentMutationFn
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
-  onBack: () => void
   showToast: ToastConsumerFunctions['showToast']
 }
 
@@ -31,5 +30,4 @@ export type UseListHandlers = (
   handleConfigurationDelete: (
     configuration: ExtensionConfiguration
   ) => Promise<void>
-  handleQuit: () => void
 }
