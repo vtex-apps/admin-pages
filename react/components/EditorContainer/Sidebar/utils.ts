@@ -5,9 +5,15 @@ import {
   getComponentSchema,
   getExtension,
   getIframeImplementation,
+  getSchemaPropsOrContentFromRuntime,
 } from '../../../utils/components'
 
-import { UpdateEditorBlockData } from './typings'
+import {
+  GetDefaultCondition,
+  GetFormData,
+  GetInitialEditingState,
+  UpdateEditorBlockData,
+} from './typings'
 
 export const isUnidentifiedPageContext = (
   pageContext: RenderRuntime['route']['pageContext']
@@ -24,6 +30,103 @@ export const getIsSitewide = (
       ['AFTER', 'AROUND', 'BEFORE'].includes(blockPath[1].role)) ||
     false
   )
+}
+
+export const getDefaultCondition: GetDefaultCondition = ({
+  iframeRuntime,
+  isSitewide,
+}) => {
+  const iframePageContext = iframeRuntime.route.pageContext
+
+  const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
+    ? {
+        id: '*',
+        type: '*',
+      }
+    : {
+        id: isUnidentifiedPageContext(iframePageContext)
+          ? '*'
+          : iframePageContext.id,
+        type: iframePageContext.type,
+      }
+
+  return {
+    allMatches: true,
+    id: '',
+    pageContext,
+    statements: [],
+  }
+}
+
+export const getFormData: GetFormData = ({
+  componentImplementation,
+  content,
+  contentSchema,
+  iframeRuntime,
+}) =>
+  getSchemaPropsOrContentFromRuntime({
+    component: componentImplementation,
+    contentSchema,
+    isContent: true,
+    messages: iframeRuntime.messages,
+    propsOrContent: content,
+    runtime: iframeRuntime,
+  }) || {}
+
+export const getInitialEditingState: GetInitialEditingState = ({
+  data,
+  editor,
+  iframeRuntime,
+}) => {
+  const treePath = editor.editTreePath || ''
+
+  const extension = getExtension(treePath, iframeRuntime.extensions)
+
+  const listContent = data && data.listContentWithSchema
+
+  const componentImplementation = getIframeImplementation(extension.component)
+
+  const contentSchema = listContent && JSON.parse(listContent.schemaJSON)
+
+  const configurations = listContent && listContent.content
+
+  const activeContentId = extension.contentIds[extension.contentIds.length - 1]
+
+  const activeContent =
+    configurations &&
+    configurations.find(
+      configuration => configuration.contentId === activeContentId
+    )
+
+  const content =
+    (activeContent &&
+      activeContent.contentJSON &&
+      JSON.parse(activeContent.contentJSON)) ||
+    {}
+
+  const condition = activeContent
+    ? activeContent.condition
+    : getDefaultCondition({
+        iframeRuntime,
+        isSitewide: editor.blockData.isSitewide,
+      })
+
+  const label = activeContent && activeContent.label
+
+  const formData = getFormData({
+    componentImplementation,
+    content,
+    contentSchema,
+    iframeRuntime,
+  })
+
+  return {
+    condition,
+    contentId: activeContentId,
+    content,
+    formData,
+    label,
+  }
 }
 
 export const updateEditorBlockData: UpdateEditorBlockData = ({

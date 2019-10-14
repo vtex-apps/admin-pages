@@ -2,18 +2,15 @@ import classnames from 'classnames'
 import React from 'react'
 import { Spinner } from 'vtex.styleguide'
 
-import { useEditorContext } from '../../../EditorContext'
+import { useEditorContext } from '../../EditorContext'
 
 interface Props {
-  children: React.ReactNode
   containerClassName?: string
-  id?: string
 }
 
-const LoaderContainer: React.FunctionComponent<Props> = ({
+const AbsoluteLoader: React.FunctionComponent<Props> = ({
   children,
   containerClassName,
-  id,
 }) => {
   const editor = useEditorContext()
 
@@ -27,11 +24,11 @@ const LoaderContainer: React.FunctionComponent<Props> = ({
         </div>
       ) : null}
 
-      <div id={id} className={classnames('relative', containerClassName)}>
+      <div className={classnames('relative', containerClassName)}>
         {children}
       </div>
     </>
   )
 }
 
-export default React.memo(LoaderContainer)
+export default React.memo(AbsoluteLoader)

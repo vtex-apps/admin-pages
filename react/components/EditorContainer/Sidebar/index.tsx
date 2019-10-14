@@ -1,19 +1,23 @@
 import React from 'react'
+import { withApollo, WithApolloClient } from 'react-apollo'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
-import { ToastConsumer } from 'vtex.styleguide'
+import { CSSTransition } from 'react-transition-group'
+import { ToastConsumerFunctions } from 'vtex.styleguide'
 
-import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 import SaveContentMutation from '../mutations/SaveContent'
-import ListContentQuery from '../queries/ListContent'
 
+import AbsoluteLoader from './AbsoluteLoader'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
+import { ANIMATION_TIMEOUT } from './consts'
+import useInitialEditingState from './hooks'
 import { useModalContext } from './ModalContext'
-import { getIsSitewide, updateEditorBlockData } from './utils'
+import styles from './styles.css'
+import Transitions from './Transitions'
 
-interface Props extends InjectedIntlProps {
+interface CustomProps {
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContext
   visible: boolean
@@ -21,6 +25,10 @@ interface Props extends InjectedIntlProps {
     titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
   ) => void
 }
+
+type Props = WithApolloClient<
+  CustomProps & InjectedIntlProps & Pick<ToastConsumerFunctions, 'showToast'>
+>
 
 const messages = defineMessages({
   discard: {
@@ -38,13 +46,20 @@ const messages = defineMessages({
 })
 
 const Sidebar: React.FunctionComponent<Props> = ({
+  client,
   highlightHandler,
   iframeRuntime,
   intl,
+  showToast,
   visible,
   updateHighlightTitleByTreePath,
 }) => {
-  const editor = useEditorContext()
+  const initialEditingState = useInitialEditingState({
+    client,
+    iframeRuntime,
+    intl,
+    showToast,
+  })
 
   const {
     actionHandler: handleModalAction,
@@ -53,21 +68,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     getIsOpen: getIsModalOpen,
   } = useModalContext()
 
-  const isLoading = editor.getIsLoading()
-
-  const treePath = editor.editTreePath || ''
-
-  const isSitewide = getIsSitewide(iframeRuntime.extensions, treePath)
-
-  const blockId =
-    iframeRuntime.extensions[treePath] &&
-    iframeRuntime.extensions[treePath].blockId
-
-  const template = isSitewide
-    ? '*'
-    : iframeRuntime.pages[iframeRuntime.page].blockId
-
-  const serverTreePath = isSitewide ? getSitewideTreePath(treePath) : treePath
+  const editor = useEditorContext()
 
   return (
     <div
@@ -84,7 +85,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div className="relative h-100 flex flex-column dark-gray">
           <Modal
-            isActionLoading={isLoading}
+            isActionLoading={editor.getIsLoading()}
             isOpen={getIsModalOpen()}
             onClickAction={handleModalAction}
             onClickCancel={handleModalCancel}
@@ -94,56 +95,51 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textMessage={intl.formatMessage(messages.unsaved)}
           />
 
-          {editor.editTreePath === null ? (
-            <BlockSelector
-              highlightHandler={highlightHandler}
-              iframeRuntime={iframeRuntime}
-              updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
+          <div className="flex">
+            <AbsoluteLoader
+              containerClassName={`w-100 h-100 absolute top-0 ${
+                !editor.getIsLoading() ? 'dn' : ''
+              }`}
             />
-          ) : (
-            <ToastConsumer>
-              {({ showToast }) => (
+
+            <CSSTransition
+              classNames={{
+                enter: styles['transition-selector-enter'],
+                enterActive: styles['transition-selector-enter-active'],
+                enterDone: styles['transition-selector-enter-done'],
+                exit: styles['transition-selector-exit'],
+                exitActive: styles['transition-selector-exit-active'],
+                exitDone: styles['transition-selector-exit-done'],
+              }}
+              in={!!initialEditingState}
+              timeout={ANIMATION_TIMEOUT}
+            >
+              <BlockSelector
+                highlightHandler={highlightHandler}
+                iframeRuntime={iframeRuntime}
+                updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
+              />
+            </CSSTransition>
+
+            <Transitions.Exit condition={!initialEditingState} to="right">
+              <Transitions.Enter condition={!!initialEditingState} from="right">
                 <SaveContentMutation>
                   {saveContent => (
-                    <ListContentQuery
-                      onCompleted={data => {
-                        updateEditorBlockData({
-                          data,
-                          editor,
-                          id: blockId,
-                          iframeRuntime,
-                          intl,
-                          isSitewide,
-                          serverTreePath,
-                          template,
-                        })
-                      }}
-                      variables={{
-                        blockId,
-                        pageContext: iframeRuntime.route.pageContext,
-                        template,
-                        treePath: serverTreePath,
-                      }}
-                    >
-                      {query => (
-                        <BlockEditor
-                          iframeRuntime={iframeRuntime}
-                          isSitewide={isSitewide}
-                          query={query}
-                          saveContent={saveContent}
-                          showToast={showToast}
-                        />
-                      )}
-                    </ListContentQuery>
+                    <BlockEditor
+                      iframeRuntime={iframeRuntime}
+                      initialEditingState={initialEditingState}
+                      saveContent={saveContent}
+                      showToast={showToast}
+                    />
                   )}
                 </SaveContentMutation>
-              )}
-            </ToastConsumer>
-          )}
+              </Transitions.Enter>
+            </Transitions.Exit>
+          </div>
         </div>
       </nav>
     </div>
   )
 }
 
-export default injectIntl(Sidebar)
+export default injectIntl(withApollo(Sidebar))

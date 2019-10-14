@@ -1,43 +1,10 @@
 import throttle from 'lodash/throttle'
 
-import {
-  getSchemaPropsOrContentFromRuntime,
-  updateExtensionFromForm,
-} from '../../../../utils/components'
+import { updateExtensionFromForm } from '../../../../utils/components'
 import { NEW_CONFIGURATION_ID } from '../consts'
-import { isUnidentifiedPageContext } from '../utils'
+import { getDefaultCondition } from '../utils'
 
-import {
-  GetDefaultCondition,
-  GetDefaultConfiguration,
-  GetFormData,
-} from './typings'
-
-export const getDefaultCondition: GetDefaultCondition = ({
-  iframeRuntime,
-  isSitewide,
-}) => {
-  const iframePageContext = iframeRuntime.route.pageContext
-
-  const pageContext: ExtensionConfiguration['condition']['pageContext'] = isSitewide
-    ? {
-        id: '*',
-        type: '*',
-      }
-    : {
-        id: isUnidentifiedPageContext(iframePageContext)
-          ? '*'
-          : iframePageContext.id,
-        type: iframePageContext.type,
-      }
-
-  return {
-    allMatches: true,
-    id: '',
-    pageContext,
-    statements: [],
-  }
-}
+import { GetDefaultConfiguration } from './typings'
 
 export const getDefaultConfiguration: GetDefaultConfiguration = ({
   iframeRuntime,
@@ -49,21 +16,6 @@ export const getDefaultConfiguration: GetDefaultConfiguration = ({
   label: null,
   origin: null,
 })
-
-export const getFormData: GetFormData = ({
-  componentImplementation,
-  content,
-  contentSchema,
-  iframeRuntime,
-}) =>
-  getSchemaPropsOrContentFromRuntime({
-    component: componentImplementation,
-    contentSchema,
-    isContent: true,
-    messages: iframeRuntime.messages,
-    propsOrContent: content,
-    runtime: iframeRuntime,
-  }) || {}
 
 export const getIsDefaultContent: (
   configuration: Pick<ExtensionConfiguration, 'origin'>

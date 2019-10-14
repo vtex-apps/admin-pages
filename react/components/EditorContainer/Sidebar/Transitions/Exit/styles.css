@@ -1,0 +1,25 @@
+.transition-editor-exit-left {
+  transform: translateX(0);
+}
+
+.transition-editor-exit-left-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(-18em);
+}
+
+.transition-editor-exit-left-done {
+  transform: translateX(-18em);
+}
+
+.transition-editor-exit-right {
+  transform: translateX(0);
+}
+
+.transition-editor-exit-right-active {
+  transition: transform 300ms ease-in;
+  transform: translateX(18em);
+}
+
+.transition-editor-exit-right-done {
+  transform: translateX(18em);
+}

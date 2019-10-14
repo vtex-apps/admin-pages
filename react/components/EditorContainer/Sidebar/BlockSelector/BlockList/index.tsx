@@ -31,6 +31,8 @@ const BlockList: React.FC<Props> = ({
       if (block.isEditable) {
         editor.editExtensionPoint(block.treePath)
 
+        editor.setIsLoading(true)
+
         highlightHandler(null)
       }
     },
