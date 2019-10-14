@@ -1,5 +1,5 @@
 import React from 'react'
-import { injectIntl } from 'react-intl'
+import { defineMessages, injectIntl } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditorHeader from '../EditorHeader'
@@ -17,6 +17,13 @@ interface Props extends UseListHandlersParams {
   onListClose?: () => void
   onListOpen?: () => void
 }
+
+const messages = defineMessages({
+  contentCards: {
+    defaultMessage: 'Content cards',
+    id: 'admin/pages.editor.component-list.contentCards',
+  },
+})
 
 const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
@@ -60,7 +67,7 @@ const BlockConfigurationList: React.FC<Props> = ({
       <EditorHeader
         onListClose={onListClose}
         onListOpen={onListOpen}
-        title={editor.blockData.title}
+        title={intl.formatMessage(messages.contentCards)}
       />
 
       <CreateButton onClick={onConfigurationCreate} />
