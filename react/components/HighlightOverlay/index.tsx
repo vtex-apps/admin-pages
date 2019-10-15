@@ -5,7 +5,7 @@ import useAutoScroll from './hooks/useAutoScroll'
 import useHighlightOnHover from './hooks/useHighlightOnHover'
 import usePortal from './hooks/usePortal'
 import useStyles from './hooks/useStyles'
-import useElementInfo from './hooks/useElementInfo'
+import useHighlightedElementInfo from './hooks/useHighlightedElementInfo'
 import { State } from './typings'
 
 interface Props {
@@ -59,8 +59,10 @@ const HighlightOverlay: React.FC<Props> = props => {
 
   const titleTreePath = highlightTreePath || openBlockTreePath
 
-  const { visibleElement, hasValidElement } =
-    useElementInfo(titleTreePath, sidebarBlocksMap) || {}
+  const { visibleElement, hasValidElement } = useHighlightedElementInfo(
+    titleTreePath,
+    sidebarBlocksMap
+  ) || { visibleElement: undefined, hasValidElement: false }
 
   useAutoScroll({ editMode, highlightTreePath, visibleElement })
 

@@ -47,11 +47,15 @@ function getElementInfo(
   return { visibleElement, hasValidElement }
 }
 
-export default function useElementInfo(
+export default function useHighlightedElementInfo(
   highlightTreePath: State['highlightTreePath'],
   sidebarBlocksMap: State['sidebarBlocksMap']
 ) {
   return useMemo<Partial<ReturnType<typeof getElementInfo>>>(() => {
-    return getElementInfo(highlightTreePath, sidebarBlocksMap) || {}
+    return (
+      (highlightTreePath &&
+        getElementInfo(highlightTreePath, sidebarBlocksMap)) ||
+      {}
+    )
   }, [highlightTreePath, sidebarBlocksMap])
 }
