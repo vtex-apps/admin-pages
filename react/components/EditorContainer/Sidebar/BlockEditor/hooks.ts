@@ -259,6 +259,7 @@ export const useFormHandlers: UseFormHandlers = ({
           formData,
           label: configuration.label,
           mode: newMode,
+          origin: configuration.origin,
         })
       }
     },
