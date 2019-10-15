@@ -84,6 +84,10 @@ export const useFormHandlers: UseFormHandlers = ({
   )
 
   const handleFormClose = useCallback(async () => {
+    if (!editor.getIsLoading()) {
+      editor.setIsLoading(true)
+    }
+
     await iframeRuntime.updateRuntime()
 
     editor.editExtensionPoint(null)
