@@ -7,6 +7,20 @@ interface Props {
   style?: React.CSSProperties
 }
 
+const classNames = {
+  enter: styles['overlay-mask-enter'],
+  enterActive: styles['overlay-mask-enter-active'],
+  enterDone: styles['overlay-mask-enter-done'],
+  exit: styles['overlay-mask-exit'],
+  exitActive: styles['overlay-mask-exit-active'],
+  exitDone: styles['overlay-mask-exit-done'],
+}
+
+const timeout = {
+  enter: 300,
+  exit: 150,
+}
+
 export default function OverlayMask({ style, isActive }: Props) {
   const overlayMaskStyle: React.CSSProperties = isActive
     ? {}
@@ -16,18 +30,8 @@ export default function OverlayMask({ style, isActive }: Props) {
     <CSSTransition
       mountOnEnter
       in={isActive}
-      timeout={{
-        enter: 300,
-        exit: 150,
-      }}
-      classNames={{
-        enter: styles['overlay-mask-enter'],
-        enterActive: styles['overlay-mask-enter-active'],
-        enterDone: styles['overlay-mask-enter-done'],
-        exit: styles['overlay-mask-exit'],
-        exitActive: styles['overlay-mask-exit-active'],
-        exitDone: styles['overlay-mask-exit-done'],
-      }}
+      timeout={timeout}
+      classNames={classNames}
     >
       <div
         className="absolute bg-base h-100 w-100"

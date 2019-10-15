@@ -19,6 +19,15 @@ interface Props {
   highlightTreePath: string | null
 }
 
+const classNames = {
+  enter: styles['highlight-enter'],
+  enterActive: styles['highlight-enter-active'],
+  enterDone: styles['highlight-enter-done'],
+  exit: styles['highlight-exit'],
+  exitActive: styles['highlight-exit-active'],
+  exitDone: styles['highlight-exit-done'],
+}
+
 const HighlightOverlay: React.FC<Props> = props => {
   const [state, setState] = React.useState<State>(() => ({
     editExtensionPoint: props.editExtensionPoint,
@@ -87,14 +96,7 @@ const HighlightOverlay: React.FC<Props> = props => {
     <>
       <CSSTransition
         in={Boolean((hasValidElement && hasHighlight) || openBlockTreePath)}
-        classNames={{
-          enter: styles['highlight-enter'],
-          enterActive: styles['highlight-enter-active'],
-          enterDone: styles['highlight-enter-done'],
-          exit: styles['highlight-exit'],
-          exitActive: styles['highlight-exit-active'],
-          exitDone: styles['highlight-exit-done'],
-        }}
+        classNames={classNames}
         mountOnEnter
         timeout={150}
       >
