@@ -73,34 +73,35 @@ export default function useStyles({
     const isBlockWidthSmaller = width < 98 * 1.25
     const isBlockHeightSmaller = height < 26
 
-    const finalWidth =
-      !isBlockWidthSmaller && width >= document.body.scrollWidth
-        ? document.body.scrollWidth
-        : width + 8
-
-    const widthRatio = finalWidth / document.body.scrollWidth
-
-    const highlightStyle: CSSProperties = {
-      boxShadow: `rgb(0, 0, 0) 0px ${60 * widthRatio}px ${66 *
-        widthRatio}px -${78 * widthRatio}px`,
+    const highlightDimensions = {
       height: !isBlockHeightSmaller && top - 4 < 0 ? height : height + 8,
       left:
         !isBlockWidthSmaller && width >= document.body.scrollWidth
           ? left
           : left - 4,
-      pointerEvents: 'none',
       top: !isBlockHeightSmaller && top - 4 < 0 ? top : top - 4,
-      width: finalWidth,
+      width:
+        !isBlockWidthSmaller && width >= document.body.scrollWidth
+          ? document.body.scrollWidth
+          : width + 8,
+    }
+
+    const highlightWidthRatio =
+      highlightDimensions.width / document.body.scrollWidth
+
+    const highlightStyle: CSSProperties = {
+      ...highlightDimensions,
+      boxShadow: `rgb(0, 0, 0) 0px ${60 * highlightWidthRatio}px ${66 *
+        highlightWidthRatio}px -${78 * highlightWidthRatio}px`,
+      pointerEvents: 'none',
       zIndex: 9999,
     }
 
-    const startX = `${highlightStyle.left}px`
-    const endX = `${Number(highlightStyle.left) +
-      Number(highlightStyle.width)}px`
+    const startX = `${highlightDimensions.left}px`
+    const endX = `${highlightDimensions.left + highlightDimensions.width}px`
 
-    const startY = `${highlightStyle.top}px`
-    const endY = `${Number(highlightStyle.top) +
-      Number(highlightStyle.height)}px`
+    const startY = `${highlightDimensions.top}px`
+    const endY = `${highlightDimensions.top + highlightDimensions.height}px`
 
     const maskStyle = {
       clipPath:
