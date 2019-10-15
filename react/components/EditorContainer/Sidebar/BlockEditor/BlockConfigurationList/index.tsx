@@ -1,7 +1,9 @@
 import React from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 
+import { getActiveContentId } from '../../../../../utils/components'
 import { useEditorContext } from '../../../../EditorContext'
+import { EditingState } from '../../typings'
 import EditorHeader from '../EditorHeader'
 import { getIsDefaultContent } from '../utils'
 
@@ -9,9 +11,9 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
-import { getActiveContentId } from '../../../../../utils/components'
 
 interface Props extends UseListHandlersParams {
+  editingContentId: EditingState['contentId']
   onConfigurationCreate: () => void
   onConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onListClose?: () => void
@@ -27,6 +29,7 @@ const messages = defineMessages({
 
 const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
+  editingContentId,
   iframeRuntime,
   intl,
   onConfigurationCreate,
@@ -81,6 +84,7 @@ const BlockConfigurationList: React.FC<Props> = ({
             configuration={configuration}
             isActive={isActiveConfiguration}
             isDefaultContent={getIsDefaultContent(configuration)}
+            isEditing={editingContentId === configuration.contentId}
             key={configuration.contentId || index}
             onClick={onConfigurationOpen}
             onDelete={handleConfigurationDelete}

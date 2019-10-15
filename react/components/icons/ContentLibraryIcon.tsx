@@ -8,8 +8,6 @@ const ContentLibraryIcon: React.FC = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect width="24" height="24" fill="white" />
-
     <path
       d="M20 7V18C20 19.1046 19.1046 20 18 20H7"
       stroke="#727273"

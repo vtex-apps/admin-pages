@@ -1,6 +1,7 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { Tooltip } from 'vtex.styleguide'
 
 import ActionMenu from '../../../../../ActionMenu'
 import { useEditorContext } from '../../../../../EditorContext'
@@ -15,9 +16,10 @@ import './styles.css'
 
 interface Props {
   configuration: ExtensionConfiguration
-  isActive?: boolean
+  isActive: boolean
   isDefaultContent?: boolean
   isDisabled?: boolean
+  isEditing: boolean
   onClick: (configuration: ExtensionConfiguration) => void
   onDelete: (configuration: ExtensionConfiguration) => void
 }
@@ -64,6 +66,10 @@ const messages = defineMessages({
     defaultMessage: 'Saved in',
     id: 'admin/pages.editor.configuration.scope.template.saved',
   },
+  tooltip: {
+    defaultMessage: 'This card is currently being edited.',
+    id: 'admin/pages.editor.component-list.action-menu.tooltip',
+  },
 })
 
 const Card = ({
@@ -71,6 +77,7 @@ const Card = ({
   isActive = false,
   isDefaultContent = false,
   isDisabled = false,
+  isEditing = false,
   intl,
   onClick,
   onDelete,
@@ -89,6 +96,7 @@ const Card = ({
 
   const actionMenuOptions = [
     {
+      isDangerous: true,
       label: intl.formatMessage(
         isDefaultContent ? messages.reset : messages.delete
       ),
@@ -131,8 +139,8 @@ const Card = ({
   return (
     <div
       className={`relative mh5 mt5 pa5 ba br2 ${
-          isActive ? 'b--action-primary' : 'b--action-secondary'
-        } bg-action-secondary hover-bg-action-secondary outline-0 ${
+        isActive ? 'b--action-primary' : 'b--action-secondary'
+      } bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
       onClick={handleMainClick}
@@ -180,16 +188,18 @@ const Card = ({
         )}
       </div>
 
-      <div
-        className="absolute top-0 right-0 mt1 outline-0"
-        id="action-menu-parent"
-        onClick={stopPropagation}
-        onKeyDown={stopPropagationByKeyDown}
-        role="button"
-        tabIndex={0}
-      >
-        <ActionMenu options={actionMenuOptions} />
-      </div>
+      <Tooltip label={intl.formatMessage(messages.tooltip)} position="left">
+        <div
+          className="absolute top-0 right-0 mt1"
+          id="action-menu-parent"
+          onClick={stopPropagation}
+          onKeyDown={stopPropagationByKeyDown}
+          role="button"
+          tabIndex={0}
+        >
+          <ActionMenu disabled={isEditing} options={actionMenuOptions} />
+        </div>
+      </Tooltip>
     </div>
   )
 }

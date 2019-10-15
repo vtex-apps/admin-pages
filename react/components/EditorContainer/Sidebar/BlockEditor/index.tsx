@@ -126,6 +126,7 @@ const BlockEditor = ({
             {deleteContent => (
               <BlockConfigurationList
                 deleteContent={deleteContent}
+                editingContentId={state.contentId}
                 iframeRuntime={iframeRuntime}
                 onConfigurationCreate={handleConfigurationCreate}
                 onConfigurationOpen={handleConfigurationOpen}
