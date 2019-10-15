@@ -130,6 +130,7 @@ export const getInitialEditingState: GetInitialEditingState = ({
     content,
     formData,
     label,
+    origin: (activeContent && activeContent.origin) || null,
   }
 }
 
