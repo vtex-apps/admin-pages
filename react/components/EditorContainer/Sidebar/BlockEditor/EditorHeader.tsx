@@ -35,13 +35,13 @@ const EditorHeader: React.FC<Props> = ({
         <div className="w-100 flex items-center">
           {onBack && (
             <span
-              className="pointer outline-0"
+              className="pointer outline-0 c-on-base hover-c-action-primary"
               onClick={onBack}
               onKeyDown={handleBackKeyDown}
               role="button"
               tabIndex={0}
             >
-              <IconArrowBack color="#727273" />
+              <IconArrowBack />
             </span>
           )}
 
@@ -53,19 +53,19 @@ const EditorHeader: React.FC<Props> = ({
 
           {onListClose && (
             <span
-              className="pointer outline-0"
+              className="pointer outline-0 c-on-base hover-c-action-primary"
               onClick={onListClose}
               onKeyDown={handleCloseListKeyDown}
               role="button"
               tabIndex={0}
             >
-              <IconClose color="#727273" />
+              <IconClose />
             </span>
           )}
 
           {onListOpen && (
             <span
-              className="pointer outline-0"
+              className="pointer outline-0 c-on-base hover-c-action-primary"
               onClick={onListOpen}
               onKeyDown={handleOpenListKeyDown}
               role="button"
