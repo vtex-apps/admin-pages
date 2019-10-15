@@ -8,6 +8,7 @@ import {
 
 interface GetDeleteStoreUpdaterParams
   extends Pick<BlockData, 'serverTreePath' | 'template'> {
+  action: 'reset' | 'delete'
   blockId: EditorContextType['blockData']['id']
   iframeRuntime: RenderContext
   setBlockData: EditorContextType['setBlockData']
