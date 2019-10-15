@@ -61,6 +61,7 @@ export const useListHandlers: UseListHandlers = ({
         try {
           await deleteContent({
             update: getDeleteStoreUpdater({
+              action,
               blockId,
               iframeRuntime,
               serverTreePath,

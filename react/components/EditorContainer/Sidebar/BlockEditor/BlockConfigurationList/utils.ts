@@ -4,12 +4,17 @@ import { ListContentData } from '../../../queries/ListContent'
 import { GetDeleteStoreUpdater } from './typings'
 
 export const getDeleteStoreUpdater: GetDeleteStoreUpdater = ({
+  action,
   blockId,
   iframeRuntime,
   serverTreePath,
   setBlockData,
   template,
 }) => (store, { data }) => {
+  if (action === 'reset') {
+    return
+  }
+
   const cacheAccessParameters = {
     query: ListContent,
     variables: {
