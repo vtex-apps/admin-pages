@@ -188,7 +188,20 @@ const Card = ({
         )}
       </div>
 
-      <Tooltip label={intl.formatMessage(messages.tooltip)} position="left">
+      {isEditing ? (
+        <Tooltip label={intl.formatMessage(messages.tooltip)} position="left">
+          <div
+            className="absolute top-0 right-0 mt1"
+            id="action-menu-parent"
+            onClick={stopPropagation}
+            onKeyDown={stopPropagationByKeyDown}
+            role="button"
+            tabIndex={0}
+          >
+            <ActionMenu disabled={isEditing} options={actionMenuOptions} />
+          </div>
+        </Tooltip>
+      ) : (
         <div
           className="absolute top-0 right-0 mt1"
           id="action-menu-parent"
@@ -199,7 +212,7 @@ const Card = ({
         >
           <ActionMenu disabled={isEditing} options={actionMenuOptions} />
         </div>
-      </Tooltip>
+      )}
     </div>
   )
 }
