@@ -1,10 +1,11 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
-import { IconArrowBack, IconClose } from 'vtex.styleguide'
+import { injectIntl, InjectedIntlProps } from 'react-intl'
+import { IconArrowBack, IconClose, Tooltip } from 'vtex.styleguide'
 
 import ContentLibraryIcon from '../../../icons/ContentLibraryIcon'
 
-interface Props {
+interface CustomProps {
   isTitleEditable?: boolean
   onBack?: () => void
   onListClose?: () => void
@@ -13,11 +14,14 @@ interface Props {
   title?: string
 }
 
+type Props = CustomProps & InjectedIntlProps
+
 const noOp = () => {
   return
 }
 
 const EditorHeader: React.FC<Props> = ({
+  intl,
   onBack,
   onListClose,
   onListOpen,
@@ -64,15 +68,23 @@ const EditorHeader: React.FC<Props> = ({
           )}
 
           {onListOpen && (
-            <span
-              className="pointer outline-0 c-on-base hover-c-action-primary"
-              onClick={onListOpen}
-              onKeyDown={handleOpenListKeyDown}
-              role="button"
-              tabIndex={0}
+            <Tooltip
+              label={intl.formatMessage({
+                defaultMessage: 'Content cards',
+                id: 'admin/pages.editor.component-list.contentCards',
+              })}
+              position="left"
             >
-              <ContentLibraryIcon />
-            </span>
+              <span
+                className="pointer outline-0 c-on-base hover-c-action-primary"
+                onClick={onListOpen}
+                onKeyDown={handleOpenListKeyDown}
+                role="button"
+                tabIndex={0}
+              >
+                <ContentLibraryIcon />
+              </span>
+            </Tooltip>
           )}
         </div>
       </div>
@@ -80,4 +92,4 @@ const EditorHeader: React.FC<Props> = ({
   )
 }
 
-export default EditorHeader
+export default injectIntl(EditorHeader)
