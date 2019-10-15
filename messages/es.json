@@ -112,6 +112,7 @@
   "admin/pages.admin.tabs.redirects": "Redirecciones",
   "admin/pages.editor.component-list.action-menu.delete": "Borrar",
   "admin/pages.editor.component-list.action-menu.reset": "Restaurar",
+  "admin/pages.editor.component-list.action-menu.tooltip": "Este card se está editando ahora.",
   "admin/pages.editor.component-list.untitled": "Bloque sin título",
   "admin/pages.editor.components.arrayTemplate.button.add": "Añadir",
   "admin/pages.editor.component-list.contentCards": "Cards de contenido",
