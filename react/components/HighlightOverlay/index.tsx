@@ -1,12 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { CSSTransition } from 'react-transition-group'
 import { canUseDOM } from 'vtex.render-runtime'
 import useAutoScroll from './hooks/useAutoScroll'
 import useHighlightOnHover from './hooks/useHighlightOnHover'
 import usePortal from './hooks/usePortal'
 import useStyles from './hooks/useStyles'
 import useHighlightedElementInfo from './hooks/useHighlightedElementInfo'
+import OverlayMask from './OverlayMask'
 import { State } from './typings'
+
+import styles from './HighlightOverlay.css'
 
 interface Props {
   editExtensionPoint: (treePath: string | null) => void
@@ -81,35 +85,44 @@ const HighlightOverlay: React.FC<Props> = props => {
 
   return (
     <>
-      <div
-        id="editor-provider-overlay"
-        style={highlightStyle}
-        className={`absolute bw2 ba ${
-          (hasValidElement && hasHighlight) || openBlockTreePath
-            ? 'o-100'
-            : 'o-0'
-        }`}
+      <CSSTransition
+        in={Boolean((hasValidElement && hasHighlight) || openBlockTreePath)}
+        classNames={{
+          enter: styles['highlight-enter'],
+          enterActive: styles['highlight-enter-active'],
+          enterDone: styles['highlight-enter-done'],
+          exit: styles['highlight-exit'],
+          exitActive: styles['highlight-exit-active'],
+          exitDone: styles['highlight-exit-done'],
+        }}
+        mountOnEnter
+        timeout={150}
       >
-        {title && (
-          <p
-            className="absolute c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
-            style={labelStyle}
-            title={title}
-          >
-            {title}
-          </p>
-        )}
-      </div>
-      {hasValidElement &&
-        openBlockTreePath &&
-        portalContainer &&
-        ReactDOM.createPortal(
-          <div
-            className="absolute bg-base h-100 w-100 o-40"
-            style={maskStyle}
-          />,
-          portalContainer
-        )}
+        <div
+          id="editor-provider-overlay"
+          style={highlightStyle}
+          className="absolute bw2 ba"
+        >
+          {title && (
+            <p
+              className="absolute c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
+              style={labelStyle}
+              title={title}
+            >
+              {title}
+            </p>
+          )}
+        </div>
+      </CSSTransition>
+      {ReactDOM.createPortal(
+        <OverlayMask
+          style={maskStyle}
+          isActive={Boolean(
+            hasValidElement && openBlockTreePath && portalContainer
+          )}
+        />,
+        portalContainer
+      )}
     </>
   )
 }

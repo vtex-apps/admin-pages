@@ -73,9 +73,16 @@ export default function useStyles({
     const isBlockWidthSmaller = width < 98 * 1.25
     const isBlockHeightSmaller = height < 26
 
+    const finalWidth =
+      !isBlockWidthSmaller && width >= document.body.scrollWidth
+        ? document.body.scrollWidth
+        : width + 8
+
+    const widthRatio = finalWidth / document.body.scrollWidth
+
     const highlightStyle: CSSProperties = {
-      animationDuration: '0.6s',
-      borderColor: BLUE,
+      boxShadow: `rgb(0, 0, 0) 0px ${60 * widthRatio}px ${66 *
+        widthRatio}px -${78 * widthRatio}px`,
       height: !isBlockHeightSmaller && top - 4 < 0 ? height : height + 8,
       left:
         !isBlockWidthSmaller && width >= document.body.scrollWidth
@@ -83,11 +90,7 @@ export default function useStyles({
           : left - 4,
       pointerEvents: 'none',
       top: !isBlockHeightSmaller && top - 4 < 0 ? top : top - 4,
-      transition: 'opacity 100ms ease-out',
-      width:
-        !isBlockWidthSmaller && width >= document.body.scrollWidth
-          ? document.body.scrollWidth
-          : width + 8,
+      width: finalWidth,
       zIndex: 9999,
     }
 

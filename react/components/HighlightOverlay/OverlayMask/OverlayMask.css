@@ -1,0 +1,25 @@
+.overlay-mask-enter {
+  opacity: 0;
+}
+
+.overlay-mask-enter-active {
+  opacity: 0.4;
+  transition: opacity 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.overlay-mask-enter-done {
+  opacity: 0.4;
+}
+
+.overlay-mask-exit {
+  opacity: 0.4;
+}
+
+.overlay-mask-exit-active {
+  opacity: 0;
+  transition: opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.overlay-mask-exit-done {
+  opacity: 0;
+}
