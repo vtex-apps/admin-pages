@@ -107,7 +107,7 @@ const HighlightOverlay: React.FC<Props> = props => {
         >
           {title && (
             <p
-              className="absolute c-action-secondary f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
+              className="absolute white f7 ma0 right-0 ph2 pb2 pt1 truncate tc"
               style={labelStyle}
               title={title}
             >
