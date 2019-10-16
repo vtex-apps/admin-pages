@@ -18,6 +18,10 @@ import ObjectFieldTemplate from './form/ObjectFieldTemplate'
 import Radio from './form/Radio'
 import Toggle from './form/Toggle'
 
+interface Props extends Record<string, any> {
+  templates: Template[]
+}
+
 const defaultUiSchema = {
   classNames: 'pages-editor-form',
   conditions: {
@@ -102,7 +106,7 @@ const CUSTOM_ROUTE = [
   },
 ]
 
-class PageForm extends Component<any, any> {
+class PageForm extends Component<Props, any> {
   public static propTypes = {
     availableConditions: PropTypes.arrayOf(PropTypes.string).isRequired,
     configurationId: PropTypes.string,
@@ -121,7 +125,7 @@ class PageForm extends Component<any, any> {
     value: r.id,
   }))
 
-  constructor(props: any) {
+  constructor(props: Props) {
     super(props)
 
     let page: any
@@ -137,6 +141,14 @@ class PageForm extends Component<any, any> {
       }
     })
 
+    const templateObj =
+      page &&
+      props.templates.find(
+        template =>
+          template.id.replace(/(@\d+\.)\d+\.\d+(\/)/, '$1x$2') ===
+          page.template,
+      )
+
     this.state = {
       allMatches: page && page.allMatches,
       availableConditions: props.availableConditions,
@@ -151,7 +163,7 @@ class PageForm extends Component<any, any> {
       routeDeclarer: route && route.declarer,
       routeId: route && route.id,
       selectedRouteId: route && route.id,
-      template: page && page.template,
+      template: templateObj && templateObj.id,
     }
   }
 
