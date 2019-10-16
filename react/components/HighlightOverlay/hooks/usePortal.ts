@@ -37,6 +37,18 @@ export default function usePortal() {
         }
       })
 
+    function resizeOnLoad() {
+      const rootComputedStyle = (portalRoot &&
+        window.getComputedStyle(portalRoot)) || { height: 0, width: 0 }
+
+      portalContainer.setAttribute(
+        'style',
+        `width: ${rootComputedStyle.width}; height: ${rootComputedStyle.height}; pointer-events: none;`
+      )
+    }
+
+    window.addEventListener('load', resizeOnLoad)
+
     return () => {
       if (resizeDetector && resizeDetector.parentNode) {
         resizeDetector.parentNode.removeChild(resizeDetector)
@@ -44,6 +56,7 @@ export default function usePortal() {
       if (portalRoot) {
         portalRoot.removeChild(portalContainer)
       }
+      window.removeEventListener('load', resizeOnLoad)
     }
   }, [])
 
