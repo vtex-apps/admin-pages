@@ -71,7 +71,7 @@ const EditorHeader: React.FC<Props> = ({
             <Tooltip
               label={intl.formatMessage({
                 defaultMessage: 'Content cards',
-                id: 'admin/pages.editor.component-list.contentCards',
+                id: 'admin/pages.editor.component-list.title',
               })}
               position="left"
             >
