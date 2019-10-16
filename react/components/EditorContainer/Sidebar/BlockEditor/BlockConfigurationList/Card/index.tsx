@@ -10,6 +10,7 @@ import PageIcon from '../../../../../icons/PageIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
 
 import ConditionTags from './ConditionTags'
+import StatusLabel from './StatusLabel'
 import { getGenericContext } from './utils'
 
 import './styles.css'
@@ -136,6 +137,18 @@ const Card = ({
     []
   )
 
+  const status = React.useMemo(() => {
+    if (isActive) {
+      return 'active'
+    }
+
+    if (configuration.condition.statements.length > 0) {
+      return 'scheduled'
+    }
+
+    return 'inactive'
+  }, [configuration.condition.statements.length, isActive])
+
   const menuContainerProps = React.useMemo(
     () => ({
       className: 'absolute top-0 right-0 mt1',
@@ -158,8 +171,8 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 ba br2 ${
-        isActive ? 'b--action-primary' : 'b--action-secondary'
+      className={`relative mh5 mt5 pa5 ba br2 bw1 ${
+        isEditing ? 'b--action-primary' : 'b--action-secondary'
       } bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
@@ -168,6 +181,8 @@ const Card = ({
       role="button"
       tabIndex={0}
     >
+      <StatusLabel type={status} />
+
       <div className="c-on-base">
         {configuration.label ||
           intl.formatMessage({
