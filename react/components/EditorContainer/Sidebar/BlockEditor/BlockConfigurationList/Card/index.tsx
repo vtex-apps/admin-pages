@@ -136,6 +136,26 @@ const Card = ({
     []
   )
 
+  const menuContainerProps = React.useMemo(
+    () => ({
+      className: 'absolute top-0 right-0 mt1',
+      id: 'action-menu-parent',
+      onClick: stopPropagation,
+      onKeyDown: stopPropagationByKeyDown,
+      role: 'button',
+      tabIndex: 0,
+    }),
+    [stopPropagationByKeyDown]
+  )
+
+  const menuProps = React.useMemo(
+    () => ({
+      disabled: isEditing,
+      options: actionMenuOptions,
+    }),
+    [actionMenuOptions, isEditing]
+  )
+
   return (
     <div
       className={`relative mh5 mt5 pa5 ba br2 ${
@@ -190,27 +210,13 @@ const Card = ({
 
       {isEditing ? (
         <Tooltip label={intl.formatMessage(messages.tooltip)} position="left">
-          <div
-            className="absolute top-0 right-0 mt1"
-            id="action-menu-parent"
-            onClick={stopPropagation}
-            onKeyDown={stopPropagationByKeyDown}
-            role="button"
-            tabIndex={0}
-          >
-            <ActionMenu disabled={isEditing} options={actionMenuOptions} />
+          <div {...menuContainerProps}>
+            <ActionMenu {...menuProps} />
           </div>
         </Tooltip>
       ) : (
-        <div
-          className="absolute top-0 right-0 mt1"
-          id="action-menu-parent"
-          onClick={stopPropagation}
-          onKeyDown={stopPropagationByKeyDown}
-          role="button"
-          tabIndex={0}
-        >
-          <ActionMenu disabled={isEditing} options={actionMenuOptions} />
+        <div {...menuContainerProps}>
+          <ActionMenu {...menuProps} />
         </div>
       )}
     </div>
