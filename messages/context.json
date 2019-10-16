@@ -113,6 +113,7 @@
   "admin/pages.editor.component-list.action-menu.delete": "admin/pages.editor.component-list.action-menu.delete",
   "admin/pages.editor.component-list.action-menu.reset": "admin/pages.editor.component-list.action-menu.reset",
   "admin/pages.editor.component-list.action-menu.tooltip": "admin/pages.editor.component-list.action-menu.tooltip",
+  "admin/pages.editor.component-list.title": "admin/pages.editor.component-list.title",
   "admin/pages.editor.component-list.untitled": "admin/pages.editor.component-list.untitled",
   "admin/pages.editor.components.arrayTemplate.button.add": "admin/pages.editor.components.arrayTemplate.button.add",
   "admin/pages.editor.components.button.cancel": "admin/pages.editor.components.button.cancel",

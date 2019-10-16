@@ -23,7 +23,7 @@ interface Props extends UseListHandlersParams {
 const messages = defineMessages({
   contentCards: {
     defaultMessage: 'Content cards',
-    id: 'admin/pages.editor.component-list.contentCards',
+    id: 'admin/pages.editor.component-list.title',
   },
 })
 
