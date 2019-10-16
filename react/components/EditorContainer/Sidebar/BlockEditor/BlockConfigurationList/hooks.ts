@@ -6,7 +6,6 @@ import { getIsDefaultContent } from '../utils'
 
 import { UseListHandlers } from './typings'
 import { getDeleteStoreUpdater } from './utils'
-import { getActiveContentId } from '../../../../../utils/components'
 
 const messages = defineMessages({
   deleteError: {
@@ -49,13 +48,6 @@ export const useListHandlers: UseListHandlers = ({
       if (blockId && serverTreePath && template) {
         const { contentId } = configuration
 
-        const activeContentId = getActiveContentId({
-          extensions: iframeRuntime.extensions,
-          treePath: editor.editTreePath,
-        })
-
-        const isActive = contentId === activeContentId
-
         let wasSuccessful = true
 
         try {
@@ -75,10 +67,6 @@ export const useListHandlers: UseListHandlers = ({
               treePath: serverTreePath,
             },
           })
-
-          if (isActive) {
-            await iframeRuntime.updateRuntime()
-          }
         } catch (error) {
           wasSuccessful = false
 
