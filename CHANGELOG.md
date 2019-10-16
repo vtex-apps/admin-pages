@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Page form schema's default template selection.
+
 ## [2.7.2] - 2019-09-06
 
 ## [4.10.4] - 2019-09-03
