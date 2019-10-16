@@ -6,6 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+
+- Status label to configuration cards.
+
+### Changed
+
+- Show the editing form with the active configuration when clicking to edit a block instead of the list of configurations.
+- Refactor and improve the quality of a core part of our code base.
+
+### Fixed
+
+- When going back from edit a block, the blocks you expended before editing remain expanded.
+- A bug in which, once a block was selected, the content would load forever.
+- A few minor bugs.
+- Many UX issues.
 
 ## [4.13.2] - 2019-10-23
 
