@@ -97,13 +97,9 @@ const BlockEditor = ({
               : {}) as ExtensionConfiguration['condition']
           }
           contentSchema={editor.blockData.contentSchema}
+          editingContentId={state.contentId}
           data={state.formData as FormDataContainer}
           iframeRuntime={iframeRuntime}
-          isActive={
-            isFirstState ||
-            stateTransitions.editingActiveToList ||
-            stateTransitions.listToEditingActive
-          }
           isSitewide={editor.blockData.isSitewide}
           label={state.label}
           onBack={handleFormBack}

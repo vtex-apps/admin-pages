@@ -8,9 +8,10 @@ import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
 import { useEditorContext } from '../../../../EditorContext'
 import EditableText from '../../../EditableText'
 import { useFormMetaContext } from '../../FormMetaContext'
-import { FormDataContainer } from '../../typings'
+import { EditingState, FormDataContainer } from '../../typings'
 import { isUnidentifiedPageContext } from '../../utils'
 import EditorHeader from '../EditorHeader'
+import { getIsDefaultContent } from '../utils'
 
 import ConditionControls from './ConditionControls'
 import Form from './Form'
@@ -22,8 +23,8 @@ interface CustomProps {
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: FormDataContainer
+  editingContentId: EditingState['contentId']
   iframeRuntime: RenderContext
-  isActive?: boolean
   isNew?: boolean
   isSitewide?: boolean
   label?: string | null
@@ -54,9 +55,9 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   condition,
   contentSchema,
   data,
+  editingContentId,
   iframeRuntime,
   intl,
-  isActive,
   isNew,
   isSitewide = false,
   label,
@@ -135,6 +136,18 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
 
   const isRootLevel = componentFormState === undefined
 
+  const isDefaultContent = React.useMemo(() => {
+    if (!editor.blockData || !editor.blockData.configurations) {
+      return false
+    }
+
+    const defaultContent = editor.blockData.configurations.find(
+      getIsDefaultContent
+    )
+
+    return defaultContent && defaultContent.contentId === editingContentId
+  }, [editor.blockData, editingContentId])
+
   return (
     <div className="w-100 h-100 absolute flex flex-column">
       <div
@@ -186,7 +199,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
         </div>
 
         {isContent &&
-          !isActive &&
+          !isDefaultContent &&
           condition &&
           onConditionChange &&
           !isArrayFieldOpen && (
