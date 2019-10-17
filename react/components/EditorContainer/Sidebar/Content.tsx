@@ -16,7 +16,7 @@ import { useFormMetaContext } from './FormMetaContext'
 import { useModalContext } from './ModalContext'
 import { getComponents, getIsSitewide, getTitleByTreePathMap } from './utils'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   highlightHandler: (treePath: string | null) => void
   updateHighlightTitleByTreePath: (
     titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
@@ -30,7 +30,7 @@ const getInitialComponents = ({
 }: Pick<Props['iframeRuntime'], 'extensions' | 'page'>) =>
   getComponents(extensions, getIframeRenderComponents(), page)
 
-const Content = (props: Props) => {
+const Content = (props: Props & InjectedIntlProps) => {
   const {
     highlightHandler,
     iframeRuntime,
@@ -111,16 +111,32 @@ const Content = (props: Props) => {
             treePath: serverTreePath,
           }}
         >
-          {({ data, loading, refetch }) => (
-            <SaveContentMutation>
-              {saveContent => (
-                <DeleteContentMutation>
-                  {deleteContent =>
-                    loading ? (
-                      <div className="mt9 flex justify-center">
-                        <Spinner />
-                      </div>
-                    ) : (
+          {({ data, error, loading, refetch }) => {
+            if (loading || error) {
+              if (error) {
+                showToast({
+                  horizontalPosition: 'right',
+                  message: props.intl.formatMessage({
+                    defaultMessage: 'Something went wrong. Please try again.',
+                    id: 'admin/pages.editor.components.open.error',
+                  }),
+                })
+
+                editor.editExtensionPoint(null)
+              }
+
+              return (
+                <div className="mt9 flex justify-center">
+                  <Spinner />
+                </div>
+              )
+            }
+
+            return (
+              <SaveContentMutation>
+                {saveContent => (
+                  <DeleteContentMutation>
+                    {deleteContent => (
                       <ConfigurationList
                         deleteContent={deleteContent}
                         editor={editor}
@@ -135,12 +151,12 @@ const Content = (props: Props) => {
                         showToast={showToast}
                         template={template}
                       />
-                    )
-                  }
-                </DeleteContentMutation>
-              )}
-            </SaveContentMutation>
-          )}
+                    )}
+                  </DeleteContentMutation>
+                )}
+              </SaveContentMutation>
+            )
+          }}
         </ListContentQuery>
       )}
     </ToastConsumer>
