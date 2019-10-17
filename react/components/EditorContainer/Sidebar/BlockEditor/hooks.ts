@@ -26,7 +26,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.content.save.error',
   },
   saveSuccess: {
-    defaultMessage: 'Content saved.',
+    defaultMessage: 'Content saved successfully.',
     id: 'admin/pages.editor.components.content.save.success',
   },
 })
