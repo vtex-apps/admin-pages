@@ -31,8 +31,6 @@ const EditorHeader: React.FC<Props> = ({
   const handleCloseListKeyDown = useKeydownFromClick(onListClose || noOp)
   const handleOpenListKeyDown = useKeydownFromClick(onListOpen || noOp)
 
-  const titleBaseClassName = 'w-100 ma0 lh-copy f5 fw5 near-black'
-
   return (
     <div className="w-100 ph5 pt4 pb2">
       <div className="w-100 flex justify-between">
@@ -50,7 +48,7 @@ const EditorHeader: React.FC<Props> = ({
           )}
 
           <div className="w-100 pl3 flex flex-grow-1 justify-between items-center">
-            <h4 className={`ba b--transparent ${titleBaseClassName}`}>
+            <h4 className="w-100 ma0 lh-copy f5 fw5 near-black ba b--transparent">
               {title}
             </h4>
           </div>
