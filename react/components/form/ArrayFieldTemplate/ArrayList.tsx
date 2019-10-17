@@ -4,6 +4,7 @@ import React, { Fragment } from 'react'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableContainer, SortableContainerProps } from 'react-sortable-hoc'
 
+import { ANIMATION_TIMEOUT } from '../../consts'
 import { ActionMenuOption } from '../../ActionMenu/typings'
 
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
@@ -68,7 +69,7 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
           in={element.index === openItem}
           mountOnEnter
           unmountOnExit
-          timeout={300}
+          timeout={ANIMATION_TIMEOUT}
           classNames={transitionClassNames}
         >
           <ItemForm

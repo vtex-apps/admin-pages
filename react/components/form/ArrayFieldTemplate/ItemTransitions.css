@@ -4,7 +4,7 @@
 
 .item-enter-active {
   transform: translateX(18rem);
-  transition: transform 150ms ease-in-out;
+  transition: transform 250ms ease-in-out;
 }
 
 .item-enter-done {
@@ -17,7 +17,7 @@
 
 .item-exit-active {
   transform: translateX(36rem);
-  transition: transform 150ms ease-in-out;
+  transition: transform 250ms ease-in-out;
 }
 
 .item-exit-done {
@@ -30,7 +30,7 @@
 
 .item-depth-enter-active {
   transform: translateX(0rem);
-  transition: transform 150ms ease-in-out;
+  transition: transform 250ms ease-in-out;
 }
 
 .item-depth-enter-done {
@@ -49,7 +49,7 @@
 
 .item-depth-exit-active {
   transform: translateX(18rem);
-  transition: transform 150ms ease-in-out;
+  transition: transform 250ms ease-in-out;
 }
 
 .item-depth-exit-done {
