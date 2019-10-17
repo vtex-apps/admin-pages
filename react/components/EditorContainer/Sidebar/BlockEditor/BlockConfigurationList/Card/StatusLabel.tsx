@@ -24,20 +24,18 @@ const messages = defineMessages({
   },
 })
 
-const StatusLabel: React.FC<Props & InjectedIntlProps> = ({ intl, type }) => {
-  const iconByStatus = {
-    active: <ContentActiveIcon />,
-    inactive: <ContentInactiveIcon />,
-    scheduled: <ContentScheduledIcon />,
-  }
-
-  return (
-    <div className="flex items-center mb3">
-      {iconByStatus[type]}
-
-      <div className="ml2 ttu f7 fw7">{intl.formatMessage(messages[type])}</div>
-    </div>
-  )
+const ICON_BY_STATUS = {
+  active: <ContentActiveIcon />,
+  inactive: <ContentInactiveIcon />,
+  scheduled: <ContentScheduledIcon />,
 }
+
+const StatusLabel: React.FC<Props & InjectedIntlProps> = ({ intl, type }) => (
+  <div className="flex items-center mb3">
+    {ICON_BY_STATUS[type]}
+
+    <div className="ml2 ttu f7 fw7">{intl.formatMessage(messages[type])}</div>
+  </div>
+)
 
 export default injectIntl(StatusLabel)
