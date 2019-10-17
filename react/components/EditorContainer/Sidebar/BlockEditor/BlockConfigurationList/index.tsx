@@ -75,22 +75,17 @@ const BlockConfigurationList: React.FC<Props> = ({
 
       <CreateButton onClick={onConfigurationCreate} />
 
-      {configurations.map((configuration: ExtensionConfiguration, index) => {
-        const isActiveConfiguration =
-          configuration.contentId === activeContentId
-
-        return (
-          <Card
-            configuration={configuration}
-            isActive={isActiveConfiguration}
-            isDefaultContent={getIsDefaultContent(configuration)}
-            isEditing={editingContentId === configuration.contentId}
-            key={configuration.contentId || index}
-            onClick={onConfigurationOpen}
-            onDelete={handleConfigurationDelete}
-          />
-        )
-      })}
+      {configurations.map((configuration: ExtensionConfiguration, index) => (
+        <Card
+          configuration={configuration}
+          isActive={configuration.contentId === activeContentId}
+          isDefaultContent={getIsDefaultContent(configuration)}
+          isEditing={editingContentId === configuration.contentId}
+          key={configuration.contentId || index}
+          onClick={onConfigurationOpen}
+          onDelete={handleConfigurationDelete}
+        />
+      ))}
     </div>
   )
 }
