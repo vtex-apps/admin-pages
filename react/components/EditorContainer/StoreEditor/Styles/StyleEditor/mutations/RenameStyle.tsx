@@ -1,6 +1,10 @@
-import { Mutation, MutationFunction, MutationComponentOptions } from 'react-apollo'
+import React, { Component } from 'react'
+import {
+  Mutation,
+  MutationFunction,
+  MutationComponentOptions,
+} from 'react-apollo'
 import RenameStyle from '../graphql/RenameStyle.graphql'
-import { Component } from 'react'
 
 interface RenameStyleData {
   renameStyle: {
@@ -18,11 +22,13 @@ export type RenameStyleFunction = MutationFunction<
   RenameStyleVariables
 >
 
-class RenameStyleMutation extends Component<MutationComponentOptions<RenameStyleData, RenameStyleVariables>> {
+class RenameStyleMutation extends Component<
+  MutationComponentOptions<RenameStyleData, RenameStyleVariables>
+> {
   public static defaultProps = {
     mutation: RenameStyle,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<RenameStyleData, RenameStyleVariables> {...rest}>

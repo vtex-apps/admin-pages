@@ -1,6 +1,10 @@
-import { Mutation, MutationFunction, MutationComponentOptions } from 'react-apollo'
+import React, { Component } from 'react'
+import {
+  Mutation,
+  MutationFunction,
+  MutationComponentOptions,
+} from 'react-apollo'
 import SaveSelectedStyle from '../graphql/SaveSelectedStyle.graphql'
-import { Component } from 'react'
 
 interface SaveSelectedStyleData {
   saveSelectedStyle: {
@@ -19,11 +23,13 @@ export type SaveSelectedStyleMutationFn = MutationFunction<
   SaveSelectedStyleVariables
 >
 
-class SaveSelectedStyleMutation extends Component<MutationComponentOptions<SaveSelectedStyleData, SaveSelectedStyleVariables>> {
+class SaveSelectedStyleMutation extends Component<
+  MutationComponentOptions<SaveSelectedStyleData, SaveSelectedStyleVariables>
+> {
   public static defaultProps = {
     mutation: SaveSelectedStyle,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<SaveSelectedStyleData, SaveSelectedStyleVariables> {...rest}>

@@ -1,6 +1,10 @@
-import { Mutation, MutationFunction, MutationComponentOptions } from 'react-apollo'
+import React, { Component } from 'react'
+import {
+  Mutation,
+  MutationFunction,
+  MutationComponentOptions,
+} from 'react-apollo'
 import DeleteStyle from '../graphql/DeleteStyle.graphql'
-import { Component } from 'react'
 
 interface DeleteStyleData {
   deleteStyle: {
@@ -19,11 +23,13 @@ export type DeleteStyleMutationFn = MutationFunction<
   DeleteStyleVariables
 >
 
-class DeleteStyleMutation extends Component<MutationComponentOptions<DeleteStyleData, DeleteStyleVariables>> {
+class DeleteStyleMutation extends Component<
+  MutationComponentOptions<DeleteStyleData, DeleteStyleVariables>
+> {
   public static defaultProps = {
     mutation: DeleteStyle,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<DeleteStyleData, DeleteStyleVariables> {...rest}>

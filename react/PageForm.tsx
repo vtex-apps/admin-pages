@@ -35,9 +35,9 @@ interface CustomProps {
 
 type Props = WithApolloClient<
   CustomProps &
-  RenderContextProps &
-  TargetPathRenderProps &
-  TargetPathContextProps
+    RenderContextProps &
+    TargetPathRenderProps &
+    TargetPathContextProps
 >
 
 interface State {
@@ -140,45 +140,45 @@ class PageForm extends Component<Props, State> {
         {isLoading ? (
           <Loader />
         ) : (
-            <Operations interfaceId={formData.interfaceId}>
-              {({ deleteRoute, saveRoute, templatesResults }) => {
-                const templates =
-                  (templatesResults.data &&
-                    templatesResults.data.availableTemplates) ||
-                  []
-                const loading = templatesResults.loading
-                return loading ? (
-                  <Loader />
-                ) : (
-                    <Box>
-                      {this.isNew ? (
-                        <FormattedMessage id="admin/pages.admin.pages.form.title.new">
-                          {text => <Title>{text}</Title>}
-                        </FormattedMessage>
-                      ) : (
-                          formData && <Title>{getRouteTitle(formData)}</Title>
+          <Operations interfaceId={formData.interfaceId}>
+            {({ deleteRoute, saveRoute, templatesResults }) => {
+              const templates =
+                (templatesResults.data &&
+                  templatesResults.data.availableTemplates) ||
+                []
+              const loading = templatesResults.loading
+              return loading ? (
+                <Loader />
+              ) : (
+                <Box>
+                  {this.isNew ? (
+                    <FormattedMessage id="admin/pages.admin.pages.form.title.new">
+                      {text => <Title>{text}</Title>}
+                    </FormattedMessage>
+                  ) : (
+                    formData && <Title>{getRouteTitle(formData)}</Title>
+                  )}
+                  <ToastConsumer>
+                    {({ showToast, hideToast }) => (
+                      <Form
+                        initialData={formData}
+                        isCustomPage={formData.interfaceId.includes(
+                          'store.custom'
                         )}
-                      <ToastConsumer>
-                        {({ showToast, hideToast }) => (
-                          <Form
-                            initialData={formData}
-                            isCustomPage={formData.interfaceId.includes(
-                              'store.custom'
-                            )}
-                            onDelete={deleteRoute}
-                            onExit={this.handleExit}
-                            onSave={saveRoute}
-                            templates={templates}
-                            showToast={showToast}
-                            hideToast={hideToast}
-                          />
-                        )}
-                      </ToastConsumer>
-                    </Box>
-                  )
-              }}
-            </Operations>
-          )}
+                        onDelete={deleteRoute}
+                        onExit={this.handleExit}
+                        onSave={saveRoute}
+                        templates={templates}
+                        showToast={showToast}
+                        hideToast={hideToast}
+                      />
+                    )}
+                  </ToastConsumer>
+                </Box>
+              )
+            }}
+          </Operations>
+        )}
       </>
     )
   }
@@ -188,4 +188,4 @@ class PageForm extends Component<Props, State> {
   }
 }
 
-export default withApollo<any>(withRuntimeContext(withTargetPath(PageForm)))
+export default withRuntimeContext(withTargetPath(withApollo<Props>(PageForm)))

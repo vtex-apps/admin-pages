@@ -1,6 +1,6 @@
+import React, { Component } from 'react'
 import { Query, QueryResult, QueryComponentOptions } from 'react-apollo'
 import ListStyles from '../graphql/ListStyles.graphql'
-import { Component } from 'react'
 
 export interface ListStylesData {
   listStyles: Style[]
@@ -8,16 +8,16 @@ export interface ListStylesData {
 
 export type ListStylesQueryResult = QueryResult<ListStylesData>
 
-class ListStylesQuery extends Component<QueryComponentOptions<ListStylesData, {}>> {
+class ListStylesQuery extends Component<
+  QueryComponentOptions<ListStylesData, {}>
+> {
   public static defaultProps = {
     query: ListStyles,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
-      <Query<ListStylesData, {}> {...rest}>
-        {(result) => children(result)}
-      </Query>
+      <Query<ListStylesData, {}> {...rest}>{result => children(result)}</Query>
     )
   }
 }

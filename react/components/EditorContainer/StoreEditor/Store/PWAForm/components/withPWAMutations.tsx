@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { Mutation, MutationFunction, MutationResult, MutationComponentOptions } from 'react-apollo'
+import {
+  Mutation,
+  MutationFunction,
+  MutationResult,
+  MutationComponentOptions,
+} from 'react-apollo'
 
 import UpdateManifest from '../mutations/UpdateManifest.graphql'
 import UpdateManifestIcon from '../mutations/UpdateManifestIcon.graphql'
@@ -23,8 +28,10 @@ interface UpdateManifestVariables {
   manifest: ManifestMutationData
 }
 
-class UpdateManifestMutation extends Component<MutationComponentOptions<UpdateManifestData, UpdateManifestVariables>> {
-  render() {
+class UpdateManifestMutation extends Component<
+  MutationComponentOptions<UpdateManifestData, UpdateManifestVariables>
+> {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<UpdateManifestData, UpdateManifestVariables> {...rest}>
@@ -39,8 +46,10 @@ interface UpdateManifestIconVariables {
   iOS: boolean
 }
 
-class UpdateManifestIconMutation extends Component<MutationComponentOptions<UpdateManifestData, UpdateManifestIconVariables>> {
-  render() {
+class UpdateManifestIconMutation extends Component<
+  MutationComponentOptions<UpdateManifestData, UpdateManifestIconVariables>
+> {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<UpdateManifestData, UpdateManifestIconVariables> {...rest}>
@@ -54,8 +63,10 @@ interface UpdatePWASettingsData {
   settings: PWASettings
 }
 
-class UpdatePWASettingsMutation extends Component<MutationComponentOptions<PWASettings, UpdatePWASettingsData>> {
-  render() {
+class UpdatePWASettingsMutation extends Component<
+  MutationComponentOptions<PWASettings, UpdatePWASettingsData>
+> {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<PWASettings, UpdatePWASettingsData> {...rest}>

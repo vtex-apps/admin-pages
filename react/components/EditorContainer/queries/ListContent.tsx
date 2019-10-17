@@ -1,6 +1,6 @@
+import React, { Component } from 'react'
 import { Query, QueryResult, QueryComponentOptions } from 'react-apollo'
 import ListContent from '../graphql/ListContent.graphql'
-import { Component } from 'react'
 
 export const ListContentGraphqlDocument = ListContent
 
@@ -23,16 +23,18 @@ export type ListContentQueryResult = QueryResult<
   ListContentVariables
 >
 
-class ListContentQuery extends Component<QueryComponentOptions<ListContentData, ListContentVariables>> {
+class ListContentQuery extends Component<
+  QueryComponentOptions<ListContentData, ListContentVariables>
+> {
   public static defaultProps = {
     fetchPolicy: 'network-only',
     query: ListContent,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Query<ListContentData, ListContentVariables> {...rest}>
-        {(result) => children(result)}
+        {result => children(result)}
       </Query>
     )
   }

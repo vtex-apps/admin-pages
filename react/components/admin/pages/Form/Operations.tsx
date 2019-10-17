@@ -24,7 +24,10 @@ interface Props {
 }
 
 export interface OperationsResults {
-  deleteRoute: MutationFunction<DeleteMutationResult['data'], DeleteRouteVariables>
+  deleteRoute: MutationFunction<
+    DeleteMutationResult['data'],
+    DeleteRouteVariables
+  >
   saveRoute: MutationFunction<SaveMutationResult['data'], SaveRouteVariables>
   templatesResults: QueryResult<
     TemplateMutationResult['data'],

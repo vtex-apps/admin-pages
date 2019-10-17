@@ -33,7 +33,7 @@ interface Mutations {
 
 export type StoreUpdaterGetter = (
   operation: 'delete' | 'save'
-) => MutationUpdaterFn<any>
+) => MutationUpdaterFn<RedirectData>
 
 export type RedirectData = Redirect | undefined
 

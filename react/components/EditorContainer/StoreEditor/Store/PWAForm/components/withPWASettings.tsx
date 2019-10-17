@@ -45,13 +45,9 @@ interface PWAData {
 export type PWASettingsProps = PWAData & Pick<QueryResult<PWAData>, 'refetch'>
 
 class PWAQuery extends Component<QueryComponentOptions<PWAData, {}>> {
-  render() {
+  public render() {
     const { children, ...rest } = this.props
-    return (
-      <Query<PWAData, {}> {...rest}>
-        {(result) => children(result)}
-      </Query>
-    )
+    return <Query<PWAData, {}> {...rest}>{result => children(result)}</Query>
   }
 }
 

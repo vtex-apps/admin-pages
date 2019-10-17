@@ -1,10 +1,15 @@
+import React, { Component } from 'react'
 import { DataProxy } from 'apollo-cache'
-import { Mutation, MutationFunction, QueryResult, MutationComponentOptions } from 'react-apollo'
+import {
+  Mutation,
+  MutationFunction,
+  QueryResult,
+  MutationComponentOptions,
+} from 'react-apollo'
 
 import DeleteFontFamilyMutation from '../graphql/DeleteFontFamily.graphql'
 import ListFonts from '../graphql/ListFonts.graphql'
 import { ListFontsData } from '../queries/ListFontsQuery'
-import { Component } from 'react'
 
 interface FontFamilyVariables {
   id: string
@@ -44,12 +49,14 @@ const updateFontsAfterDelete = (
   })
 }
 
-class DeleteFontFamily extends Component<MutationComponentOptions<DeleteFontFamilyData, FontFamilyVariables>> {
+class DeleteFontFamily extends Component<
+  MutationComponentOptions<DeleteFontFamilyData, FontFamilyVariables>
+> {
   public static defaultProps = {
     mutation: DeleteFontFamilyMutation,
     update: updateFontsAfterDelete,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<DeleteFontFamilyData, FontFamilyVariables> {...rest}>

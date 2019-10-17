@@ -1,6 +1,10 @@
-import { Mutation, MutationFunction, MutationComponentOptions } from 'react-apollo'
+import React, { Component } from 'react'
+import {
+  Mutation,
+  MutationFunction,
+  MutationComponentOptions,
+} from 'react-apollo'
 import CreateStyle from '../graphql/CreateStyle.graphql'
-import { Component } from 'react'
 
 interface CreateStyleData {
   createStyle: {
@@ -20,11 +24,13 @@ export type CreateStyleMutationFn = MutationFunction<
   CreateStyleVariables
 >
 
-class CreateStyleMutation extends Component<MutationComponentOptions<CreateStyleData, CreateStyleVariables>> {
+class CreateStyleMutation extends Component<
+  MutationComponentOptions<CreateStyleData, CreateStyleVariables>
+> {
   public static defaultProps = {
     mutation: CreateStyle,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<CreateStyleData, CreateStyleVariables> {...rest}>

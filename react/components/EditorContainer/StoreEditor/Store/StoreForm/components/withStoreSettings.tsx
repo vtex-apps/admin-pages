@@ -22,12 +22,14 @@ interface InstalledAppVariables {
   slug: string
 }
 
-class InstalledAppQuery extends Component<QueryComponentOptions<InstalledAppData, InstalledAppVariables>> {
-  render() {
+class InstalledAppQuery extends Component<
+  QueryComponentOptions<InstalledAppData, InstalledAppVariables>
+> {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Query<InstalledAppData, InstalledAppVariables> {...rest}>
-        {(result) => children(result)}
+        {result => children(result)}
       </Query>
     )
   }
@@ -51,12 +53,14 @@ interface AvailableAppVariables {
   id: string
 }
 
-class AvailableAppQuery extends Component<QueryComponentOptions<AvailableAppData, AvailableAppVariables>> {
-  render() {
+class AvailableAppQuery extends Component<
+  QueryComponentOptions<AvailableAppData, AvailableAppVariables>
+> {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Query<AvailableAppData, AvailableAppVariables> {...rest}>
-        {(result) => children(result)}
+        {result => children(result)}
       </Query>
     )
   }
@@ -64,9 +68,9 @@ class AvailableAppQuery extends Component<QueryComponentOptions<AvailableAppData
 
 export interface FormProps {
   store: AvailableApp &
-  InstalledApp & {
-    settings: string
-  }
+    InstalledApp & {
+      settings: string
+    }
 }
 
 defineMessages({

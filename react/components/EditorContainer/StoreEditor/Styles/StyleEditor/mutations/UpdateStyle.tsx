@@ -1,6 +1,10 @@
-import { Mutation, MutationFunction, MutationComponentOptions } from 'react-apollo'
+import React, { Component } from 'react'
+import {
+  Mutation,
+  MutationFunction,
+  MutationComponentOptions,
+} from 'react-apollo'
 import UpdateStyle from '../graphql/UpdateStyle.graphql'
-import { Component } from 'react'
 
 interface UpdateStyleData {
   updateStyle: {
@@ -19,11 +23,13 @@ export type UpdateStyleFunction = MutationFunction<
   UpdateStyleVariables
 >
 
-class UpdateStyleMutation extends Component<MutationComponentOptions<UpdateStyleData, UpdateStyleVariables>> {
+class UpdateStyleMutation extends Component<
+  MutationComponentOptions<UpdateStyleData, UpdateStyleVariables>
+> {
   public static defaultProps = {
     mutation: UpdateStyle,
   }
-  render() {
+  public render() {
     const { children, ...rest } = this.props
     return (
       <Mutation<UpdateStyleData, UpdateStyleVariables> {...rest}>
