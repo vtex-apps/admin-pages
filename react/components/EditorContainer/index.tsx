@@ -221,7 +221,7 @@ const EditorContainer: React.FC<Props> = ({
                   {...containerProps}
                   role="main"
                   style={{
-                    transition: `width 300ms ease-in-out 0ms, height 300ms ease-in-out 0ms`,
+                    transition: `width 250ms ease-in-out 0ms, height 250ms ease-in-out 0ms`,
                   }}
                 >
                   {children}

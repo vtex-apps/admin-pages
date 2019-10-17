@@ -2,9 +2,9 @@ import React from 'react'
 import { injectIntl } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 
+import { ANIMATION_TIMEOUT } from '../../../consts'
 import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
-import { ANIMATION_TIMEOUT } from '../consts'
 import Transitions from '../Transitions'
 import { EditingState, FormDataContainer } from '../typings'
 
