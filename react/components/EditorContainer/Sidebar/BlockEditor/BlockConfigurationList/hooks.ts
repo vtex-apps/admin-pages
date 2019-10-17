@@ -13,7 +13,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.content.delete.error',
   },
   deleteSuccess: {
-    defaultMessage: 'Content deleted.',
+    defaultMessage: 'Content deleted successfully.',
     id: 'admin/pages.editor.components.content.delete.success',
   },
   resetError: {
@@ -21,7 +21,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.content.reset.error',
   },
   resetSuccess: {
-    defaultMessage: 'Content reset.',
+    defaultMessage: 'Content reset successfully.',
     id: 'admin/pages.editor.components.content.reset.success',
   },
 })
