@@ -95,16 +95,6 @@ const Card = ({
 
   const stopPropagationByKeyDown = useKeydownFromClick(stopPropagation)
 
-  const actionMenuOptions = [
-    {
-      isDangerous: true,
-      label: intl.formatMessage(
-        isDefaultContent ? messages.reset : messages.delete
-      ),
-      onClick: () => onDelete(configuration),
-    },
-  ]
-
   const appName = React.useMemo(() => {
     if (!isDefaultContent) {
       return null
@@ -164,9 +154,17 @@ const Card = ({
   const menuProps = React.useMemo(
     () => ({
       disabled: isEditing,
-      options: actionMenuOptions,
+      options: [
+        {
+          isDangerous: true,
+          label: intl.formatMessage(
+            isDefaultContent ? messages.reset : messages.delete
+          ),
+          onClick: () => onDelete(configuration),
+        },
+      ],
     }),
-    [actionMenuOptions, isEditing]
+    [configuration, intl, isDefaultContent, isEditing, onDelete]
   )
 
   return (
