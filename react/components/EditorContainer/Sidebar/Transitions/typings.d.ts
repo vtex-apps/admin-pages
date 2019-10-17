@@ -1,6 +1,8 @@
-import { TransitionProps } from 'react-transition-group/Transition'
+import { Transition } from 'react-transition-group'
 
 type Direction = 'left' | 'right'
+
+type TransitionProps = React.ComponentPropsWithoutRef<typeof Transition>
 
 interface Props {
   children: React.ReactElement
