@@ -67,6 +67,10 @@ export const useListHandlers: UseListHandlers = ({
               treePath: serverTreePath,
             },
           })
+
+          await iframeRuntime.updateRuntime()
+
+          editor.editExtensionPoint(null)
         } catch (error) {
           wasSuccessful = false
 

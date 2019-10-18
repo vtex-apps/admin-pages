@@ -1,7 +1,6 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
-import { Tooltip } from 'vtex.styleguide'
 
 import ActionMenu from '../../../../../ActionMenu'
 import { useEditorContext } from '../../../../../EditorContext'
@@ -86,10 +85,8 @@ const Card = ({
   const editor = useEditorContext()
 
   const handleMainClick = React.useCallback(() => {
-    if (!isDisabled) {
-      onClick(configuration)
-    }
-  }, [configuration, isDisabled, onClick])
+    onClick(configuration)
+  }, [configuration, onClick])
 
   const handleMainKeyDown = useKeydownFromClick(handleMainClick)
 
@@ -139,32 +136,17 @@ const Card = ({
     return 'inactive'
   }, [configuration.condition.statements.length, isActive])
 
-  const menuContainerProps = React.useMemo(
-    () => ({
-      className: 'absolute top-0 right-0 mt1',
-      id: 'action-menu-parent',
-      onClick: stopPropagation,
-      onKeyDown: stopPropagationByKeyDown,
-      role: 'button',
-      tabIndex: 0,
-    }),
-    [stopPropagationByKeyDown]
-  )
-
-  const menuProps = React.useMemo(
-    () => ({
-      disabled: isEditing,
-      options: [
-        {
-          isDangerous: true,
-          label: intl.formatMessage(
-            isDefaultContent ? messages.reset : messages.delete
-          ),
-          onClick: () => onDelete(configuration),
-        },
-      ],
-    }),
-    [configuration, intl, isDefaultContent, isEditing, onDelete]
+  const menuOptions = React.useMemo(
+    () => [
+      {
+        isDangerous: true,
+        label: intl.formatMessage(
+          isDefaultContent ? messages.reset : messages.delete
+        ),
+        onClick: () => onDelete(configuration),
+      },
+    ],
+    [configuration, intl, isDefaultContent, onDelete]
   )
 
   return (
@@ -221,17 +203,16 @@ const Card = ({
         )}
       </div>
 
-      {isEditing ? (
-        <Tooltip label={intl.formatMessage(messages.tooltip)} position="left">
-          <div {...menuContainerProps}>
-            <ActionMenu {...menuProps} />
-          </div>
-        </Tooltip>
-      ) : (
-        <div {...menuContainerProps}>
-          <ActionMenu {...menuProps} />
-        </div>
-      )}
+      <div
+        className="absolute top-0 right-0 mt1"
+        id="action-menu-parent"
+        onClick={stopPropagation}
+        onKeyDown={stopPropagationByKeyDown}
+        role="button"
+        tabIndex={0}
+      >
+        <ActionMenu options={menuOptions} />
+      </div>
     </div>
   )
 }
