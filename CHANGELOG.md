@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.13.0] - 2019-10-18
+
 ### Changed
 
 - `HighlightOverlay` now has a new look: No more background color and dashed border, also added a label to show which block is selected. It stays visible when the user is editing a content.
