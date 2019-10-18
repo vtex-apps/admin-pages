@@ -41,10 +41,10 @@ const BlockList: React.FC<Props> = ({
 
   return (
     <ul className="mv0 pl0 overflow-y-auto">
-      {blocks.map(block => (
+      {blocks.map((block, index) => (
         <BlockListItem
           block={block}
-          key={block.treePath}
+          key={`${block.treePath}-${index}`}
           onEdit={handleEdit}
           onMouseEnter={onMouseEnterBlock}
           onMouseLeave={onMouseLeaveBlock}
