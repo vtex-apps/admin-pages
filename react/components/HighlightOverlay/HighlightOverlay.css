@@ -1,0 +1,33 @@
+.highlight-enter {
+  opacity: 0;
+  border-color: rgba(19, 76, 216, 0);
+}
+
+.highlight-enter-active {
+  transition: opacity 150ms cubic-bezier(0.19, 1, 0.22, 1),
+    border-color 150ms cubic-bezier(0.19, 1, 0.22, 1);
+  opacity: 1;
+  border-color: rgba(19, 76, 216, 1);
+}
+
+.highlight-enter-done {
+  opacity: 1;
+  border-color: rgba(19, 76, 216, 1);
+}
+
+.highlight-exit {
+  opacity: 1;
+  border-color: rgba(19, 76, 216, 1);
+}
+
+.highlight-exit-active {
+  transition: opacity 150ms cubic-bezier(0.215, 0.61, 0.355, 1),
+    border-color 150ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  opacity: 0;
+  border-color: rgba(19, 76, 216, 0);
+}
+
+.highlight-exit-done {
+  opacity: 0;
+  border-color: rgba(19, 76, 216, 0);
+}

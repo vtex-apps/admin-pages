@@ -80,10 +80,9 @@ const EditorContainer: React.FC<Props> = ({
   const highlightExtensionPoint = useCallback(
     debounce((highlightTreePath: string | null) => {
       const iframe = document.getElementById('store-iframe') || {}
-      const setHighlightTreePath = path<(value: HighlightOverlayState) => void>(
-        ['contentWindow', '__setHighlightTreePath'],
-        iframe
-      )
+      const setHighlightTreePath = path<
+        (value: Partial<HighlightOverlayState>) => void
+      >(['contentWindow', '__setHighlightTreePath'], iframe)
       if (setHighlightTreePath) {
         setHighlightTreePath({
           editExtensionPoint,
@@ -94,6 +93,23 @@ const EditorContainer: React.FC<Props> = ({
       }
     }, 100),
     [editMode, editExtensionPoint]
+  )
+
+  const updateHighlightTitleByTreePath = useCallback(
+    (
+      sidebarBlocksMap?: Record<string, { title?: string; isEditable: boolean }>
+    ) => {
+      const iframe = document.getElementById('store-iframe') || {}
+      const setHighlightTreePath = path<
+        (value: Partial<HighlightOverlayState>) => void
+      >(['contentWindow', '__setHighlightTreePath'], iframe)
+      if (setHighlightTreePath) {
+        setHighlightTreePath({
+          sidebarBlocksMap: sidebarBlocksMap || {},
+        })
+      }
+    },
+    []
   )
 
   useEffect(() => {
@@ -117,6 +133,7 @@ const EditorContainer: React.FC<Props> = ({
               highlightHandler={highlightExtensionPoint}
               runtime={runtime}
               visible={visible}
+              updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
             />
           )}
           <div className="flex-grow-1 db-ns dn">

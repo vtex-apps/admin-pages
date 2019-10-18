@@ -285,7 +285,7 @@ declare global {
       messages: Record<string, string>,
       shouldUpdateRuntime: boolean
     ) => Promise<void>
-    __setHighlightTreePath: (HighlightOverlayState) => void
+    __setHighlightTreePath: (value: Partial<HighlightOverlayState>) => void
   }
 
   interface AdminContext {

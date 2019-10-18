@@ -1,9 +1,11 @@
 import ApolloClient from 'apollo-client'
-import { difference, equals, pathOr, uniq } from 'ramda'
+import { difference, equals, path, pathOr, uniq } from 'ramda'
 import React, { Component } from 'react'
 import { withApollo } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
+
+import { State as HighlightOverlayState } from '../HighlightOverlay'
 
 import { injectIntl } from 'react-intl'
 import {
@@ -240,6 +242,16 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public editExtensionPoint = (treePath: string | null) => {
+    const iframe = document.getElementById('store-iframe') || {}
+    const setHighlightTreePath = path<
+      (value: Partial<HighlightOverlayState>) => void
+    >(['contentWindow', '__setHighlightTreePath'], iframe)
+    if (setHighlightTreePath) {
+      setHighlightTreePath({
+        openBlockTreePath: treePath,
+      })
+    }
+
     this.setState({ editTreePath: treePath, editMode: false })
   }
 

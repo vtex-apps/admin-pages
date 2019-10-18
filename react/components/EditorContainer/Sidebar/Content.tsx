@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { injectIntl, InjectedIntlProps } from 'react-intl'
 import { Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { getSitewideTreePath } from '../../../utils/blocks'
@@ -13,10 +14,13 @@ import ComponentSelector from './ComponentSelector'
 import ConfigurationList from './ConfigurationList'
 import { useFormMetaContext } from './FormMetaContext'
 import { useModalContext } from './ModalContext'
-import { getComponents, getIsSitewide } from './utils'
+import { getComponents, getIsSitewide, getTitleByTreePathMap } from './utils'
 
-interface Props {
+interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
+  updateHighlightTitleByTreePath: (
+    titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
+  ) => void
   iframeRuntime: RenderContext
 }
 
@@ -27,7 +31,12 @@ const getInitialComponents = ({
   getComponents(extensions, getIframeRenderComponents(), page)
 
 const Content = (props: Props) => {
-  const { highlightHandler, iframeRuntime } = props
+  const {
+    highlightHandler,
+    iframeRuntime,
+    intl,
+    updateHighlightTitleByTreePath,
+  } = props
 
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
@@ -44,11 +53,13 @@ const Content = (props: Props) => {
 
   useEffect(() => {
     if (path.current !== iframeRuntime.route.path) {
-      setComponents(
-        getInitialComponents({
-          extensions: iframeRuntime.extensions,
-          page: iframeRuntime.page,
-        })
+      const nextComponents = getInitialComponents({
+        extensions: iframeRuntime.extensions,
+        page: iframeRuntime.page,
+      })
+      setComponents(nextComponents)
+      updateHighlightTitleByTreePath(
+        getTitleByTreePathMap(nextComponents, intl)
       )
       editor.setIsLoading(false)
       path.current = iframeRuntime.route.path
@@ -58,6 +69,8 @@ const Content = (props: Props) => {
     iframeRuntime.extensions,
     iframeRuntime.page,
     iframeRuntime.route.path,
+    intl,
+    updateHighlightTitleByTreePath,
   ])
 
   if (editor.editTreePath === null) {
@@ -134,4 +147,4 @@ const Content = (props: Props) => {
   )
 }
 
-export default Content
+export default injectIntl(Content)

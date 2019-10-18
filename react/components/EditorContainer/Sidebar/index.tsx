@@ -11,6 +11,9 @@ interface Props extends InjectedIntlProps {
   highlightHandler: (treePath: string | null) => void
   runtime: RenderContext
   visible: boolean
+  updateHighlightTitleByTreePath: (
+    titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
+  ) => void
 }
 
 const messages = defineMessages({
@@ -33,6 +36,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   intl,
   runtime,
   visible,
+  updateHighlightTitleByTreePath,
 }) => {
   const editor = useEditorContext()
   const {
@@ -76,6 +80,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
           <Content
             highlightHandler={highlightHandler}
             iframeRuntime={runtime}
+            updateHighlightTitleByTreePath={updateHighlightTitleByTreePath}
           />
         </div>
       </nav>
