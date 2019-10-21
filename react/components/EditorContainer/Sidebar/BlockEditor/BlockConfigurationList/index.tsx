@@ -12,7 +12,7 @@ import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
 
-interface Props extends UseListHandlersParams {
+interface Props extends Omit<UseListHandlersParams, 'activeContentId'> {
   editingContentId: EditingState['contentId']
   onConfigurationCreate: () => void
   onConfigurationOpen: (configuration: ExtensionConfiguration) => void
@@ -40,15 +40,6 @@ const BlockConfigurationList: React.FC<Props> = ({
 }) => {
   const editor = useEditorContext()
 
-  const { handleConfigurationDelete } = useListHandlers({
-    deleteContent,
-    iframeRuntime,
-    intl,
-    showToast,
-  })
-
-  const { configurations } = editor.blockData
-
   const activeContentId = React.useMemo(
     () =>
       getActiveContentId({
@@ -57,6 +48,16 @@ const BlockConfigurationList: React.FC<Props> = ({
       }),
     [editor.editTreePath, iframeRuntime.extensions]
   )
+
+  const { handleConfirmConfigurationDelete } = useListHandlers({
+    activeContentId,
+    deleteContent,
+    iframeRuntime,
+    intl,
+    showToast,
+  })
+
+  const { configurations } = editor.blockData
 
   if (!configurations) {
     return null
@@ -83,7 +84,7 @@ const BlockConfigurationList: React.FC<Props> = ({
           isEditing={editingContentId === configuration.contentId}
           key={configuration.contentId || index}
           onClick={onConfigurationOpen}
-          onDelete={handleConfigurationDelete}
+          onDelete={handleConfirmConfigurationDelete}
         />
       ))}
     </div>

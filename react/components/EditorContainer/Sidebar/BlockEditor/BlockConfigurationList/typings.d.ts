@@ -19,6 +19,7 @@ export type GetDeleteStoreUpdater = (
 ) => MutationUpdaterFn<DeleteContentData>
 
 export interface UseListHandlersParams {
+  activeContentId: ExtensionConfiguration['contentId']
   deleteContent: DeleteContentMutationFn
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
@@ -28,6 +29,9 @@ export interface UseListHandlersParams {
 export type UseListHandlers = (
   params: UseListHandlersParams
 ) => {
+  handleConfirmConfigurationDelete: (
+    configuration: ExtensionConfiguration
+  ) => void
   handleConfigurationDelete: (
     configuration: ExtensionConfiguration
   ) => Promise<void>
