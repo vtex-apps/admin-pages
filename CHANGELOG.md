@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Highlighting last valid block when clicking to edit a block that isn't rendered or isn't valid, i.e., isn't editable.
+- Highlighting block that isn't visible on the screen due to `overflow: hidden` (e.g., `Product Summary` on `Shelf`): Try to get the block closer to the middle of the window when selecting from a list of blocks (e.g.)
+
 ## [4.13.1] - 2019-10-18
 
 ### Fixed
