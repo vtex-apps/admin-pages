@@ -1,6 +1,6 @@
 import React from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -30,21 +30,6 @@ type Props = WithApolloClient<
   CustomProps & InjectedIntlProps & Pick<ToastConsumerFunctions, 'showToast'>
 >
 
-const messages = defineMessages({
-  discard: {
-    defaultMessage: 'Discard',
-    id: 'admin/pages.editor.components.modal.button.discard',
-  },
-  save: {
-    defaultMessage: 'Save',
-    id: 'admin/pages.editor.components.button.save',
-  },
-  unsaved: {
-    defaultMessage: 'You have unsaved modifications.',
-    id: 'admin/pages.editor.components.modal.text',
-  },
-})
-
 const Sidebar: React.FunctionComponent<Props> = ({
   client,
   highlightHandler,
@@ -66,6 +51,9 @@ const Sidebar: React.FunctionComponent<Props> = ({
     cancelHandler: handleModalCancel,
     close: handleModalClose,
     getIsOpen: getIsModalOpen,
+    getTextButtonAction,
+    getTextButtonCancel,
+    getTextMessage,
   } = useModalContext()
 
   const editor = useEditorContext()
@@ -90,9 +78,9 @@ const Sidebar: React.FunctionComponent<Props> = ({
             onClickAction={handleModalAction}
             onClickCancel={handleModalCancel}
             onClose={handleModalClose}
-            textButtonAction={intl.formatMessage(messages.save)}
-            textButtonCancel={intl.formatMessage(messages.discard)}
-            textMessage={intl.formatMessage(messages.unsaved)}
+            textButtonAction={getTextButtonAction()}
+            textButtonCancel={getTextButtonCancel()}
+            textMessage={getTextMessage()}
           />
 
           <div className="flex">

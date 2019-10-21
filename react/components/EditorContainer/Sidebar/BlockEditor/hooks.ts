@@ -29,6 +29,18 @@ const messages = defineMessages({
     defaultMessage: 'Content saved successfully.',
     id: 'admin/pages.editor.components.content.save.success',
   },
+  discard: {
+    defaultMessage: 'Discard',
+    id: 'admin/pages.editor.components.modal.button.discard',
+  },
+  save: {
+    defaultMessage: 'Save',
+    id: 'admin/pages.editor.components.button.save',
+  },
+  unsaved: {
+    defaultMessage: 'You have unsaved modifications.',
+    id: 'admin/pages.editor.components.modal.text',
+  },
 })
 
 export const useFormHandlers: UseFormHandlers = ({
@@ -176,6 +188,9 @@ export const useFormHandlers: UseFormHandlers = ({
   const handleFormBack = useCallback(() => {
     if (formMeta.getWasModified()) {
       modal.open({
+        textButtonAction: intl.formatMessage(messages.save),
+        textButtonCancel: intl.formatMessage(messages.discard),
+        textMessage: intl.formatMessage(messages.unsaved),
         actionHandler: async () => {
           await handleFormSave()
         },
@@ -207,6 +222,7 @@ export const useFormHandlers: UseFormHandlers = ({
     handleFormClose,
     handleFormSave,
     iframeRuntime,
+    intl,
     modal,
     state.content,
   ])
