@@ -22,15 +22,43 @@ function getElementInfo(
 
   const elementsArray: Element[] = Array.prototype.slice.call(elements)
 
-  const visibleElement = elementsArray.find(currElement => {
-    const currRect = currElement.getBoundingClientRect()
+  const viewportMiddle =
+    (window.innerWidth || document.documentElement.clientWidth) / 2
 
-    return (
-      currRect.width > 0 &&
-      currRect.height > 0 &&
-      isElementInHorizontalAxis(currElement)
-    )
-  })
+  const visibleElementsClosestToMiddle = elementsArray
+    .filter(currElement => {
+      const currRect = currElement.getBoundingClientRect()
+
+      return (
+        currRect.width > 0 &&
+        currRect.height > 0 &&
+        isElementInHorizontalAxis(currElement)
+      )
+    })
+    .sort((elemA, elemB) => {
+      const rectA = elemA.getBoundingClientRect()
+      const rectB = elemB.getBoundingClientRect()
+      const middleA = rectA.left || 0 + rectA.width
+      const middleB = rectB.left || 0 + rectB.width
+
+      const differenceA =
+        viewportMiddle - middleA < 0
+          ? middleA - viewportMiddle
+          : viewportMiddle - middleA
+      const differenceB =
+        viewportMiddle - middleB < 0
+          ? middleB - viewportMiddle
+          : viewportMiddle - middleB
+
+      if (differenceA < differenceB) {
+        return -1
+      } else if (differenceA > differenceB) {
+        return 1
+      }
+      return 0
+    })
+
+  const visibleElement = visibleElementsClosestToMiddle[0]
 
   const isEditable =
     sidebarBlocksMap[highlightTreePath] &&
