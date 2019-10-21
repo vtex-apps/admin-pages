@@ -10,6 +10,7 @@ const defaultExternalState: ModalContextT = {
   getTextButtonAction: () => '',
   getTextButtonCancel: () => '',
   getTextMessage: () => '',
+  isActionDanger: false,
   open: () => {
     return
   },
@@ -39,11 +40,12 @@ export class ModalProvider extends Component<{}, State> {
       getTextButtonAction: this.getTextButtonAction,
       getTextButtonCancel: this.getTextButtonCancel,
       getTextMessage: this.getTextMessage,
+      isActionDanger: false,
+      isOpen: false,
+      open: this.open,
       textButtonAction: '',
       textButtonCancel: '',
       textMessage: '',
-      isOpen: false,
-      open: this.open,
     }
   }
 
@@ -87,10 +89,11 @@ export class ModalProvider extends Component<{}, State> {
 
   private getTextMessage: State['getTextMessage'] = () => this.state.textMessage
 
-  private open: State['open'] = handlers => {
+  private open: State['open'] = params => {
     this.setState(prevState => ({
       ...prevState,
-      ...handlers,
+      ...params,
+      isActionDanger: (params && params.isActionDanger) || false,
       isOpen: true,
     }))
   }
