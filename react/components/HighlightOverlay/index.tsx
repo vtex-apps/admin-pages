@@ -95,7 +95,10 @@ const HighlightOverlay: React.FC<Props> = props => {
   return (
     <>
       <CSSTransition
-        in={Boolean((hasValidElement && hasHighlight) || openBlockTreePath)}
+        in={
+          Boolean(hasValidElement && hasHighlight) ||
+          Boolean(hasValidElement && openBlockTreePath)
+        }
         classNames={classNames}
         mountOnEnter
         timeout={150}
