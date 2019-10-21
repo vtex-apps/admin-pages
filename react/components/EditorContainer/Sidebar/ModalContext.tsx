@@ -71,9 +71,6 @@ export class ModalProvider extends Component<{}, State> {
           actionHandler: undefined,
           cancelHandler: undefined,
           closeCallbackHandler: undefined,
-          textButtonAction: '',
-          textButtonCancel: '',
-          textMessage: '',
         })
       }
     )
@@ -95,6 +92,9 @@ export class ModalProvider extends Component<{}, State> {
       ...params,
       isActionDanger: (params && params.isActionDanger) || false,
       isOpen: true,
+      textButtonAction: (params && params.textButtonAction) || '',
+      textButtonCancel: (params && params.textButtonCancel) || '',
+      textMessage: (params && params.textMessage) || '',
     }))
   }
 }
