@@ -165,16 +165,16 @@ export const useFormHandlers: UseFormHandlers = ({
 
       handleFormClose()
     } catch (err) {
-      if (modal.getIsOpen()) {
-        modal.close()
-      }
-
       console.error(err)
 
       error = err
 
       editor.setIsLoading(false)
     } finally {
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+
       showToast({
         horizontalPosition: 'right',
         message: intl.formatMessage(
