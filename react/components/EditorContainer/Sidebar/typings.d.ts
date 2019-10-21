@@ -14,20 +14,22 @@ export interface ModalContext {
   cancelHandler?: () => void
   close: () => void
   getIsOpen: () => boolean
-  textButtonAction: string
-  textButtonCancel: string
-  textMessage: string
   getTextButtonAction: () => string
   getTextButtonCancel: () => string
   getTextMessage: () => string
+  isActionDanger: boolean
   open: (handlers?: {
-    textButtonAction?: string
-    textButtonCancel?: string
-    textMessage?: string
     actionHandler?: ModalContext['actionHandler']
     cancelHandler?: ModalContext['cancelHandler']
     closeCallbackHandler?: () => void
+    isActionDanger?: ModalContext['isActionDanger']
+    textButtonAction?: ModalContext['textButtonAction']
+    textButtonCancel?: ModalContext['textButtonCancel']
+    textMessage?: ModalContext['textMessage']
   }) => void
+  textButtonAction: string
+  textButtonCancel: string
+  textMessage: string
 }
 
 export interface SidebarComponent {

@@ -54,6 +54,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     getTextButtonAction,
     getTextButtonCancel,
     getTextMessage,
+    isActionDanger,
   } = useModalContext()
 
   const editor = useEditorContext()
@@ -73,6 +74,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       >
         <div className="relative h-100 flex flex-column dark-gray">
           <Modal
+            isActionDanger={isActionDanger}
             isActionLoading={editor.getIsLoading()}
             isOpen={getIsModalOpen()}
             onClickAction={handleModalAction}
