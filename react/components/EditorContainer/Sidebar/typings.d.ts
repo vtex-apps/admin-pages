@@ -14,7 +14,16 @@ export interface ModalContext {
   cancelHandler?: () => void
   close: () => void
   getIsOpen: () => boolean
+  textButtonAction: string
+  textButtonCancel: string
+  textMessage: string
+  getTextButtonAction: () => string
+  getTextButtonCancel: () => string
+  getTextMessage: () => string
   open: (handlers?: {
+    textButtonAction?: string
+    textButtonCancel?: string
+    textMessage?: string
     actionHandler?: ModalContext['actionHandler']
     cancelHandler?: ModalContext['cancelHandler']
     closeCallbackHandler?: () => void
