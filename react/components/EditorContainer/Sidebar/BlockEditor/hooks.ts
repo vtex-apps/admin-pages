@@ -21,6 +21,22 @@ import {
 } from './utils'
 
 const messages = defineMessages({
+  cancel: {
+    defaultMessage: 'Cancel',
+    id: 'admin/pages.editor.components.modal.list.button.cancel',
+  },
+  discard: {
+    defaultMessage: 'Discard',
+    id: 'admin/pages.editor.components.modal.back.button.discard',
+  },
+  proceed: {
+    defaultMessage: 'Proceed',
+    id: 'admin/pages.editor.components.modal.list.button.proceed',
+  },
+  save: {
+    defaultMessage: 'Save',
+    id: 'admin/pages.editor.components.button.save',
+  },
   saveError: {
     defaultMessage: 'Something went wrong. Please try again.',
     id: 'admin/pages.editor.components.content.save.error',
@@ -29,17 +45,14 @@ const messages = defineMessages({
     defaultMessage: 'Content saved successfully.',
     id: 'admin/pages.editor.components.content.save.success',
   },
-  discard: {
-    defaultMessage: 'Discard',
-    id: 'admin/pages.editor.components.modal.button.discard',
-  },
-  save: {
-    defaultMessage: 'Save',
-    id: 'admin/pages.editor.components.button.save',
-  },
-  unsaved: {
+  unsavedBack: {
     defaultMessage: 'You have unsaved modifications.',
-    id: 'admin/pages.editor.components.modal.text',
+    id: 'admin/pages.editor.components.modal.back.text',
+  },
+  unsavedList: {
+    defaultMessage:
+      'You have unsaved changes. Are you sure you want to proceed and lose your modifications?',
+    id: 'admin/pages.editor.components.modal.list.text',
   },
 })
 
@@ -188,9 +201,6 @@ export const useFormHandlers: UseFormHandlers = ({
   const handleFormBack = useCallback(() => {
     if (formMeta.getWasModified()) {
       modal.open({
-        textButtonAction: intl.formatMessage(messages.save),
-        textButtonCancel: intl.formatMessage(messages.discard),
-        textMessage: intl.formatMessage(messages.unsaved),
         actionHandler: async () => {
           await handleFormSave()
         },
@@ -208,6 +218,9 @@ export const useFormHandlers: UseFormHandlers = ({
             handleFormBack()
           })
         },
+        textButtonAction: intl.formatMessage(messages.save),
+        textButtonCancel: intl.formatMessage(messages.discard),
+        textMessage: intl.formatMessage(messages.unsavedBack),
       })
     } else {
       if (modal.getIsOpen()) {
@@ -317,8 +330,47 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [setState, state.prevMode])
 
   const handleListOpen = useCallback(() => {
-    setState({ mode: 'list' })
-  }, [setState])
+    if (formMeta.getWasModified()) {
+      modal.open({
+        actionHandler: async () => {
+          editor.setIsLoading(true)
+
+          if (state.content) {
+            setState({
+              formData: getFormData({
+                componentImplementation:
+                  editor.blockData.componentImplementation,
+                content: state.content,
+                contentSchema: editor.blockData.contentSchema,
+                iframeRuntime,
+              }),
+            })
+          }
+
+          await iframeRuntime.updateRuntime()
+
+          editor.setIsLoading(false)
+
+          formMeta.setWasModified(false, () => {
+            handleListOpen()
+          })
+        },
+        cancelHandler: () => {
+          modal.close()
+        },
+        isActionDanger: true,
+        textButtonAction: intl.formatMessage(messages.proceed),
+        textButtonCancel: intl.formatMessage(messages.cancel),
+        textMessage: intl.formatMessage(messages.unsavedList),
+      })
+    } else {
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+
+      setState({ mode: 'list' })
+    }
+  }, [editor, formMeta, iframeRuntime, intl, modal, setState, state.content])
 
   return {
     handleConditionChange,
