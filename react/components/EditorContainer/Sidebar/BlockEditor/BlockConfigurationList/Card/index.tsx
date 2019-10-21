@@ -1,6 +1,7 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { Tag } from 'vtex.styleguide'
 
 import ActionMenu from '../../../../../ActionMenu'
 import { useEditorContext } from '../../../../../EditorContext'
@@ -12,7 +13,7 @@ import ConditionTags from './ConditionTags'
 import StatusLabel from './StatusLabel'
 import { getGenericContext } from './utils'
 
-import './styles.css'
+import styles from './styles.css'
 
 interface Props {
   configuration: ExtensionConfiguration
@@ -57,6 +58,10 @@ const messages = defineMessages({
   sitewideSaved: {
     defaultMessage: 'Saved on',
     id: 'admin/pages.editor.configuration.scope.sitewide.saved',
+  },
+  tag: {
+    defaultMessage: 'Editing',
+    id: 'admin/pages.editor.configuration.tag.editing',
   },
   templateContext: {
     defaultMessage: 'template',
@@ -151,9 +156,7 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 ba br2 bw1 ${
-        isEditing ? 'b--action-primary' : 'b--action-secondary'
-      } bg-action-secondary hover-bg-action-secondary outline-0 ${
+      className={`relative mh5 mt5 pa5 br3 bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
       onClick={handleMainClick}
@@ -213,6 +216,17 @@ const Card = ({
       >
         <ActionMenu options={menuOptions} />
       </div>
+
+      {isEditing && (
+        <div
+          className={
+            'absolute bottom-1 right-1 ' +
+            styles['editor-configuration-card-tag-editing']
+          }
+        >
+          <Tag size="small">{intl.formatMessage(messages.tag)}</Tag>
+        </div>
+      )}
     </div>
   )
 }
