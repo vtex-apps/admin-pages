@@ -207,7 +207,7 @@ const EditorContainer: React.FC<Props> = ({
                     }
                   }}
                 >
-                  <div className="animated br2 bg-base bn shadow-1 flex items-center justify-center z-max absolute bottom-1 bottom-2-ns left-1 left-2-ns">
+                  <div className="animated br2 bg-base bn shadow-1 flex items-center justify-center z-9999 absolute bottom-1 bottom-2-ns left-1 left-2-ns">
                     <DeviceSwitcher
                       inPreview={!visible}
                       setViewport={editor.setViewport}
