@@ -4,7 +4,7 @@ import { updateExtensionFromForm } from '../../../../utils/components'
 import { NEW_CONFIGURATION_ID } from '../consts'
 import { getDefaultCondition } from '../utils'
 
-import { GetDefaultConfiguration } from './typings'
+import { GetDefaultConfiguration, GetConfigurationType } from './typings'
 
 export const getDefaultConfiguration: GetDefaultConfiguration = ({
   iframeRuntime,
@@ -29,6 +29,21 @@ export const omitUndefined = (obj: Extension['content']) =>
 
     return { ...acc, [currKey]: currValue }
   }, {})
+
+export const getConfigurationType: GetConfigurationType = ({
+  configuration,
+  activeContentId,
+}) => {
+  if (getIsDefaultContent(configuration)) {
+    return 'app'
+  }
+
+  if (activeContentId === configuration.contentId) {
+    return 'active'
+  }
+
+  return 'inactive'
+}
 
 export const throttledUpdateExtensionFromForm = throttle(
   data => updateExtensionFromForm(data),

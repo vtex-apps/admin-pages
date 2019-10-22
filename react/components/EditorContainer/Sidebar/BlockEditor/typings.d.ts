@@ -16,6 +16,17 @@ export interface GetDefaultConditionParams {
   isSitewide: boolean
 }
 
+interface GetConfigurationTypeParams {
+  configuration: ExtensionConfiguration
+  activeContentId: ExtensionConfiguration['contentId']
+}
+
+type ConfigurationType = 'active' | 'inactive' | 'app'
+
+type GetConfigurationType = (
+  params: GetConfigurationTypeParams
+) => ConfigurationType
+
 export interface UseFormHandlersParams {
   iframeRuntime: RenderContext
   intl: InjectedIntl
