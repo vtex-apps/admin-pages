@@ -1,11 +1,13 @@
 import { useCallback } from 'react'
-import { defineMessages } from 'react-intl'
+import { defineMessages, FormattedMessage } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useModalContext } from '../../ModalContext'
 import { getIsDefaultContent } from '../utils'
 
+import { ConfigurationType } from '../typings'
 import { UseListHandlers } from './typings'
+import { getConfigurationType } from '../utils'
 import { getDeleteStoreUpdater } from './utils'
 
 const messages = defineMessages({
@@ -33,6 +35,10 @@ const messages = defineMessages({
     defaultMessage: 'Delete',
     id: 'admin/pages.editor.components.button.delete',
   },
+  reset: {
+    defaultMessage: 'Reset',
+    id: 'admin/pages.editor.components.button.continue',
+  },
   deleteActiveTitle: {
     defaultMessage: 'Delete active content',
     id: 'admin/pages.editor.components.modal.deleteActiveTitle',
@@ -49,6 +55,11 @@ const messages = defineMessages({
   deleteInactiveText: {
     defaultMessage: 'Are you sure you want to delete this content?',
     id: 'admin/pages.editor.components.modal.deleteInactiveText',
+  },
+  deleteResetText: {
+    defaultMessage:
+      'Reseting this configuration will bring up the original configuration set up in this theme',
+    id: 'admin/pages.editor.components.modal.resetText',
   },
 })
 
@@ -123,17 +134,34 @@ export const useListHandlers: UseListHandlers = ({
 
   const handleConfirmConfigurationDelete = useCallback(
     (configuration: ExtensionConfiguration) => {
-      const textMessageByType = {
+      const textMessageByType: Record<
+        ConfigurationType,
+        FormattedMessage.MessageDescriptor
+      > = {
         active: messages.deleteActiveText,
         inactive: messages.deleteInactiveText,
+        app: messages.deleteInactiveText,
       }
 
-      const configurationType =
-        activeContentId === configuration.contentId ? 'active' : 'inactive'
+      const buttonMessageByType: Record<
+        ConfigurationType,
+        FormattedMessage.MessageDescriptor
+      > = {
+        active: messages.delete,
+        inactive: messages.delete,
+        app: messages.reset,
+      }
+
+      const configurationType = getConfigurationType({
+        configuration,
+        activeContentId,
+      })
 
       modal.open({
         isActionDanger: true,
-        textButtonAction: intl.formatMessage(messages.delete),
+        textButtonAction: intl.formatMessage(
+          buttonMessageByType[configurationType]
+        ),
         textButtonCancel: intl.formatMessage(messages.cancel),
         textMessage: intl.formatMessage(textMessageByType[configurationType]),
         actionHandler: async () => {
