@@ -43,20 +43,24 @@ const messages = defineMessages({
     defaultMessage: 'Delete active content',
     id: 'admin/pages.editor.components.modal.deleteActiveTitle',
   },
+  deleteInactiveTitle: {
+    defaultMessage: 'Delete content',
+    id: 'admin/pages.editor.components.modal.deleteInactiveTitle',
+  },
   deleteActiveText: {
     defaultMessage:
       'You are trying to delete an active configuration which will cause another one to take its place. Are you sure you want to delete it?',
     id: 'admin/pages.editor.components.modal.deleteActiveText',
   },
-  deleteInactiveTitle: {
-    defaultMessage: 'Delete content',
-    id: 'admin/pages.editor.components.modal.deleteInactiveTitle',
-  },
   deleteInactiveText: {
     defaultMessage: 'Are you sure you want to delete this content?',
     id: 'admin/pages.editor.components.modal.deleteInactiveText',
   },
-  deleteResetText: {
+  resetTitle: {
+    defaultMessage: 'Reset configuration',
+    id: 'admin/pages.editor.components.modal.resetTitle',
+  },
+  resetText: {
     defaultMessage:
       'Reseting this configuration will bring up the original configuration set up in this theme',
     id: 'admin/pages.editor.components.modal.resetText',
@@ -140,7 +144,16 @@ export const useListHandlers: UseListHandlers = ({
       > = {
         active: messages.deleteActiveText,
         inactive: messages.deleteInactiveText,
-        app: messages.deleteInactiveText,
+        app: messages.resetText,
+      }
+
+      const titleByType: Record<
+        ConfigurationType,
+        FormattedMessage.MessageDescriptor
+      > = {
+        active: messages.deleteActiveTitle,
+        inactive: messages.deleteInactiveTitle,
+        app: messages.resetTitle,
       }
 
       const buttonMessageByType: Record<
@@ -159,6 +172,7 @@ export const useListHandlers: UseListHandlers = ({
 
       modal.open({
         isActionDanger: true,
+        title: intl.formatMessage(titleByType[configurationType]),
         textButtonAction: intl.formatMessage(
           buttonMessageByType[configurationType]
         ),

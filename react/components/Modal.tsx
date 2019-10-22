@@ -11,6 +11,7 @@ interface Props {
   textButtonAction: string
   textButtonCancel: string
   textMessage: string | React.ReactNode
+  title?: string
 }
 
 const Modal = ({
@@ -23,8 +24,9 @@ const Modal = ({
   textButtonAction,
   textButtonCancel,
   textMessage,
+  title,
 }: Props) => (
-  <StyleguideModal centered isOpen={isOpen} onClose={onClose}>
+  <StyleguideModal centered isOpen={isOpen} onClose={onClose} title={title}>
     <p className="mt6">{textMessage}</p>
     <div className="mt6 flex justify-end">
       <div className="mr3">

@@ -54,6 +54,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     getTextButtonAction,
     getTextButtonCancel,
     getTextMessage,
+    getTitle,
     isActionDanger,
   } = useModalContext()
 
@@ -83,8 +84,8 @@ const Sidebar: React.FunctionComponent<Props> = ({
             textButtonAction={getTextButtonAction()}
             textButtonCancel={getTextButtonCancel()}
             textMessage={getTextMessage()}
+            title={getTitle()}
           />
-
           <div className="flex">
             <AbsoluteLoader
               containerClassName={`w-100 h-100 absolute top-0 ${
