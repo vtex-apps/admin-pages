@@ -27,7 +27,8 @@ const Modal = ({
   title,
 }: Props) => (
   <StyleguideModal centered isOpen={isOpen} onClose={onClose} title={title}>
-    <p className="mt6">{textMessage}</p>
+    <p className="mt6 lh-copy">{textMessage}</p>
+
     <div className="mt6 flex justify-end">
       <div className="mr3">
         <Button
