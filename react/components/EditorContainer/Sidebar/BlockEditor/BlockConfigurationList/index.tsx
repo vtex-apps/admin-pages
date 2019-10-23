@@ -22,7 +22,7 @@ interface Props extends Omit<UseListHandlersParams, 'activeContentId'> {
 
 const messages = defineMessages({
   contentCards: {
-    defaultMessage: 'Content cards',
+    defaultMessage: 'Content list',
     id: 'admin/pages.editor.component-list.title',
   },
 })

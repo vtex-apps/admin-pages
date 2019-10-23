@@ -30,7 +30,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.modal.back.button.discard',
   },
   proceed: {
-    defaultMessage: 'Proceed',
+    defaultMessage: 'Continue',
     id: 'admin/pages.editor.components.modal.list.button.proceed',
   },
   save: {
@@ -47,7 +47,7 @@ const messages = defineMessages({
   },
   unsavedBack: {
     defaultMessage:
-      'You have unsaved changes. Are you sure you want to continue and lost your changes?',
+      'Your unsaved changes will be lost. Are you sure you want to continue?',
     id: 'admin/pages.editor.components.modal.back.text',
   },
   unsavedListTitle: {
@@ -56,7 +56,7 @@ const messages = defineMessages({
   },
   unsavedList: {
     defaultMessage:
-      'You have unsaved changes. Are you sure you want to continue and lost your changes?',
+      'Your unsaved changes will be lost. Are you sure you want to continue?',
     id: 'admin/pages.editor.components.modal.list.text',
   },
 })
