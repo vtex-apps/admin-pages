@@ -11,59 +11,59 @@ import { getConfigurationType } from '../utils'
 import { getDeleteStoreUpdater } from './utils'
 
 const messages = defineMessages({
-  deleteError: {
-    defaultMessage: 'Something went wrong. Please try again.',
-    id: 'admin/pages.editor.components.content.delete.error',
-  },
-  deleteSuccess: {
-    defaultMessage: 'Content deleted successfully.',
-    id: 'admin/pages.editor.components.content.delete.success',
-  },
-  resetError: {
-    defaultMessage: 'Something went wrong. Please try again.',
-    id: 'admin/pages.editor.components.content.reset.error',
-  },
-  resetSuccess: {
-    defaultMessage: 'Content reset successfully.',
-    id: 'admin/pages.editor.components.content.reset.success',
-  },
   cancel: {
     defaultMessage: 'Cancel',
-    id: 'admin/pages.editor.components.modal.button.cancel',
+    id: 'admin/pages.editor.components.modal.list.delete.button.cancel',
   },
   delete: {
     defaultMessage: 'Delete',
-    id: 'admin/pages.editor.components.button.delete',
-  },
-  reset: {
-    defaultMessage: 'Reset',
-    id: 'admin/pages.editor.components.button.continue',
-  },
-  deleteActiveTitle: {
-    defaultMessage: 'Delete active content',
-    id: 'admin/pages.editor.components.modal.deleteActiveTitle',
-  },
-  deleteInactiveTitle: {
-    defaultMessage: 'Delete content',
-    id: 'admin/pages.editor.components.modal.deleteInactiveTitle',
+    id: 'admin/pages.editor.components.modal.list.delete.button.delete',
   },
   deleteActiveText: {
     defaultMessage:
       'You are trying to delete the active content. The next available content will take its place. Are you sure you want to continue?',
-    id: 'admin/pages.editor.components.modal.deleteActiveText',
+    id: 'admin/pages.editor.components.modal.list.delete.active.text',
+  },
+  deleteActiveTitle: {
+    defaultMessage: 'Delete active content',
+    id: 'admin/pages.editor.components.modal.list.delete.active.title',
+  },
+  deleteError: {
+    defaultMessage: 'Something went wrong. Please try again.',
+    id: 'admin/pages.editor.components.toast.delete.error',
   },
   deleteInactiveText: {
     defaultMessage: 'Are you sure you want to delete this content?',
-    id: 'admin/pages.editor.components.modal.deleteInactiveText',
+    id: 'admin/pages.editor.components.modal.list.delete.inactive.text',
+  },
+  deleteInactiveTitle: {
+    defaultMessage: 'Delete content',
+    id: 'admin/pages.editor.components.modal.list.delete.inactive.title',
+  },
+  reset: {
+    defaultMessage: 'Reset',
+    id: 'admin/pages.editor.components.modal.list.reset.button.reset',
+  },
+  deleteSuccess: {
+    defaultMessage: 'Content deleted successfully.',
+    id: 'admin/pages.editor.components.toast.delete.success',
+  },
+  resetError: {
+    defaultMessage: 'Something went wrong. Please try again.',
+    id: 'admin/pages.editor.components.toast.reset.error',
+  },
+  resetSuccess: {
+    defaultMessage: 'Content reset successfully.',
+    id: 'admin/pages.editor.components.toast.reset.success',
   },
   resetTitle: {
-    defaultMessage: 'Reset configuration',
-    id: 'admin/pages.editor.components.modal.resetTitle',
+    defaultMessage: 'Reset content from an app',
+    id: 'admin/pages.editor.components.modal.list.reset.title',
   },
   resetText: {
     defaultMessage:
-      "You are trying to reset content created by an application. This action will discard any changes you've made. Are you sure you want to continue?",
-    id: 'admin/pages.editor.components.modal.resetText',
+      "You are trying to reset content created by an app. This action will discard any changes you've made. Are you sure you want to continue?",
+    id: 'admin/pages.editor.components.modal.list.reset.text',
   },
 })
 
