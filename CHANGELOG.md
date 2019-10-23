@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.13.2] - 2019-10-23
+
 ### Fixed
 
 - Highlighting last valid block when clicking to edit a block that isn't rendered or isn't valid, i.e., isn't editable.
