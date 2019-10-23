@@ -23,41 +23,41 @@ import {
 const messages = defineMessages({
   cancel: {
     defaultMessage: 'Cancel',
-    id: 'admin/pages.editor.components.modal.list.button.cancel',
+    id: 'admin/pages.editor.components.modal.form.button.cancel',
+  },
+  continue: {
+    defaultMessage: 'Continue',
+    id: 'admin/pages.editor.components.modal.form.button.continue',
   },
   discard: {
     defaultMessage: 'Discard',
     id: 'admin/pages.editor.components.modal.back.button.discard',
   },
-  proceed: {
-    defaultMessage: 'Continue',
-    id: 'admin/pages.editor.components.modal.list.button.proceed',
-  },
   save: {
     defaultMessage: 'Save',
-    id: 'admin/pages.editor.components.button.save',
+    id: 'admin/pages.editor.components.modal.back.button.save',
   },
   saveError: {
     defaultMessage: 'Something went wrong. Please try again.',
-    id: 'admin/pages.editor.components.content.save.error',
+    id: 'admin/pages.editor.components.toast.save.error',
   },
   saveSuccess: {
     defaultMessage: 'Content saved successfully.',
-    id: 'admin/pages.editor.components.content.save.success',
+    id: 'admin/pages.editor.components.toast.save.success',
   },
-  unsavedBack: {
+  unsavedBackText: {
+    defaultMessage:
+      'Your unsaved changes will be lost. Do you want to save them?',
+    id: 'admin/pages.editor.components.modal.back.text',
+  },
+  unsavedListText: {
     defaultMessage:
       'Your unsaved changes will be lost. Are you sure you want to continue?',
-    id: 'admin/pages.editor.components.modal.back.text',
+    id: 'admin/pages.editor.components.modal.form.text',
   },
   unsavedListTitle: {
     defaultMessage: 'Unsaved changes',
-    id: 'admin/pages.editor.components.modal.list.title',
-  },
-  unsavedList: {
-    defaultMessage:
-      'Your unsaved changes will be lost. Are you sure you want to continue?',
-    id: 'admin/pages.editor.components.modal.list.text',
+    id: 'admin/pages.editor.components.modal.form.title',
   },
 })
 
@@ -225,7 +225,7 @@ export const useFormHandlers: UseFormHandlers = ({
         },
         textButtonAction: intl.formatMessage(messages.save),
         textButtonCancel: intl.formatMessage(messages.discard),
-        textMessage: intl.formatMessage(messages.unsavedBack),
+        textMessage: intl.formatMessage(messages.unsavedBackText),
         title: intl.formatMessage(messages.unsavedListTitle),
       })
     } else {
@@ -365,9 +365,9 @@ export const useFormHandlers: UseFormHandlers = ({
           modal.close()
         },
         isActionDanger: true,
-        textButtonAction: intl.formatMessage(messages.proceed),
+        textButtonAction: intl.formatMessage(messages.continue),
         textButtonCancel: intl.formatMessage(messages.cancel),
-        textMessage: intl.formatMessage(messages.unsavedList),
+        textMessage: intl.formatMessage(messages.unsavedListText),
         title: intl.formatMessage(messages.unsavedListTitle),
       })
     } else {
