@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.14.1] - 2019-10-23
+
 ### Fixed
 
 - No option to "cancel" configuration delete
