@@ -17,6 +17,7 @@ export interface ModalContext {
   getTextButtonAction: () => string
   getTextButtonCancel: () => string
   getTextMessage: () => string
+  getTitle: () => string
   isActionDanger: boolean
   open: (handlers?: {
     actionHandler?: ModalContext['actionHandler']
@@ -26,10 +27,12 @@ export interface ModalContext {
     textButtonAction?: ModalContext['textButtonAction']
     textButtonCancel?: ModalContext['textButtonCancel']
     textMessage?: ModalContext['textMessage']
+    title?: ModalContext['title']
   }) => void
   textButtonAction: string
   textButtonCancel: string
   textMessage: string
+  title: string
 }
 
 export interface SidebarComponent {
