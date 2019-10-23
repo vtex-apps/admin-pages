@@ -46,12 +46,17 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.content.save.success',
   },
   unsavedBack: {
-    defaultMessage: 'You have unsaved modifications.',
+    defaultMessage:
+      'You have unsaved changes. Are you sure you want to continue and lost your changes?',
     id: 'admin/pages.editor.components.modal.back.text',
+  },
+  unsavedListTitle: {
+    defaultMessage: 'Unsaved changes',
+    id: 'admin/pages.editor.components.modal.list.title',
   },
   unsavedList: {
     defaultMessage:
-      'You have unsaved changes. Are you sure you want to proceed and lose your modifications?',
+      'You have unsaved changes. Are you sure you want to continue and lost your changes?',
     id: 'admin/pages.editor.components.modal.list.text',
   },
 })
@@ -221,6 +226,7 @@ export const useFormHandlers: UseFormHandlers = ({
         textButtonAction: intl.formatMessage(messages.save),
         textButtonCancel: intl.formatMessage(messages.discard),
         textMessage: intl.formatMessage(messages.unsavedBack),
+        title: intl.formatMessage(messages.unsavedListTitle),
       })
     } else {
       if (modal.getIsOpen()) {
@@ -362,6 +368,7 @@ export const useFormHandlers: UseFormHandlers = ({
         textButtonAction: intl.formatMessage(messages.proceed),
         textButtonCancel: intl.formatMessage(messages.cancel),
         textMessage: intl.formatMessage(messages.unsavedList),
+        title: intl.formatMessage(messages.unsavedListTitle),
       })
     } else {
       if (modal.getIsOpen()) {
