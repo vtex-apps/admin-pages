@@ -49,7 +49,7 @@ const messages = defineMessages({
   },
   deleteActiveText: {
     defaultMessage:
-      'You are trying to delete an active content, the next content available will replace it. Are you sure you want to delete?',
+      'You are trying to delete the active content. The next available content will take its place. Are you sure you want to continue?',
     id: 'admin/pages.editor.components.modal.deleteActiveText',
   },
   deleteInactiveText: {
@@ -62,7 +62,7 @@ const messages = defineMessages({
   },
   resetText: {
     defaultMessage:
-      'You are trying to reset content created by an application, this action deletes any changes you’ve made. Are you sure you want to continue?',
+      "You are trying to reset content created by an application. This action will discard any changes you've made. Are you sure you want to continue?",
     id: 'admin/pages.editor.components.modal.resetText',
   },
 })
