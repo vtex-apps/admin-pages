@@ -180,7 +180,7 @@
   "admin/pages.editor.components.modal.back.button.resetText": "Você está tentando restaurar um conteúdo criado por uma app. Esta ação apagará todas as modificações feitas. Tem certeza que deseja continuar?",
   "admin/pages.editor.components.modal.back.button.resetTitle": "Restaurar conteúdo da app",
   "admin/pages.editor.components.modal.back.text": "Suas modificações não salvas serão perdidas. Tem certeza que deseja continuar?",
-  "admin/pages.editor.components.modal.button.cancel": "Deletar",
+  "admin/pages.editor.components.modal.button.cancel": "Cancelar",
   "admin/pages.editor.components.modal.button.delete": "Deletar",
   "admin/pages.editor.components.modal.deleteActiveText": "Você está tentando deletar o conteúdo ativo. O próximo conteúdo disponível irá substituí-lo. Você tem certeza que deseja continuar?",
   "admin/pages.editor.components.modal.deleteActiveTitle": "Deletar conteúdo ativo",

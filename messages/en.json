@@ -179,7 +179,7 @@
   "admin/pages.editor.components.modal.back.button.resetText": "You are trying to reset content created by an application. This action will discard any changes you've made. Are you sure you want to continue?",
   "admin/pages.editor.components.modal.back.button.resetTitle": "Reset app content",
   "admin/pages.editor.components.modal.back.text": "Your unsaved changes will be lost. Are you sure you want to continue?",
-  "admin/pages.editor.components.modal.button.cancel": "Delete",
+  "admin/pages.editor.components.modal.button.cancel": "Cancel",
   "admin/pages.editor.components.modal.button.delete": "Delete",
   "admin/pages.editor.components.modal.deleteActiveText": "You are trying to delete the active content. The next available content will take its place. Are you sure you want to continue?",
   "admin/pages.editor.components.modal.deleteActiveTitle": "Delete active content",
