@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Users were not able to schedule content because datepicker was not appearing
+  in full inside sidebar
+
 ## [4.14.1] - 2019-10-23
 
 ### Fixed
@@ -14,6 +19,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - No option to "cancel" configuration delete
 
 ## [4.14.0] - 2019-10-23
+
 ### Added
 
 - Status label to configuration cards.
