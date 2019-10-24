@@ -77,9 +77,7 @@ const BlockListItem: React.FC<Props> = ({
               >
                 <BlockListItem
                   block={item}
-                  onEdit={() => {
-                    onEdit(item)
-                  }}
+                  onEdit={onEdit}
                   onMouseEnter={onMouseEnter}
                   onMouseLeave={onMouseLeave}
                 />

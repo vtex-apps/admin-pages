@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Z-index issues with the date picker, which prevented users from scheduling content.
 - Block editing's modals' messages.
+- Issue where clicking children blocks in the sidebar would open their parents.
 
 ### Removed
 
