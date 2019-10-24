@@ -9,8 +9,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Users were not able to schedule content because datepicker was not appearing
-  in full inside sidebar
+- Z-index issues with the date picker, which prevented users from scheduling content.
+- Block editing's modals' messages.
+
+### Removed
+
+- Unused i18n messages and the `SaveButton` component.
 
 ## [4.14.1] - 2019-10-23
 
