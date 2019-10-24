@@ -13,10 +13,8 @@ const Enter: React.FC<EnterProps> = ({ children, condition, from }) => (
     classNames={{
       appear: styles[`transition-editor-enter-${from}`],
       appearActive: styles[`transition-editor-enter-${from}-active`],
-      appearDone: styles[`transition-editor-enter-${from}-done`],
       enter: styles[`transition-editor-enter-${from}`],
       enterActive: styles[`transition-editor-enter-${from}-active`],
-      enterDone: styles[`transition-editor-enter-${from}-done`],
     }}
     in={condition}
     mountOnEnter
