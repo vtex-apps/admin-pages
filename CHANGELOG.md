@@ -19,9 +19,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Use new translate API from vtex.messages
 
 ## [4.15.0] - 2019-11-01
+
 ### Added
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 
+
+### Changed
+
+- Make app configuration card to appear last in the block list
 
 ## [4.14.3] - 2019-10-28
 
