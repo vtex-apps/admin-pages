@@ -57,11 +57,34 @@ const BlockConfigurationList: React.FC<Props> = ({
     showToast,
   })
 
-  const { configurations } = editor.blockData
-
-  if (!configurations) {
+  if (!editor.blockData.configurations) {
     return null
   }
+
+  const sortConfigurations = (
+    current: ExtensionConfiguration,
+    previous: ExtensionConfiguration
+  ) => {
+    const isActiveConfiguration = (configuration: ExtensionConfiguration) =>
+      configuration.contentId === activeContentId
+
+    const isAppConfiguration = (configuration: ExtensionConfiguration) =>
+      configuration.origin
+
+    if (isActiveConfiguration(current) || isAppConfiguration(previous)) {
+      return -1
+    }
+
+    if (isAppConfiguration(current) || isActiveConfiguration(previous)) {
+      return 1
+    }
+
+    return 0
+  }
+
+  const configurations = editor.blockData.configurations.sort(
+    sortConfigurations
+  )
 
   return (
     <div
