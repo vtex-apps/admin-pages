@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ## [4.14.2] - 2019-10-25
+### Fixed
+
+- Race condition when more than one messages batch was fetched from the server
 
 ### Fixed
 
