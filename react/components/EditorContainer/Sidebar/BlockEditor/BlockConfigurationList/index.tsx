@@ -71,11 +71,67 @@ const BlockConfigurationList: React.FC<Props> = ({
     const isAppConfiguration = (configuration: ExtensionConfiguration) =>
       configuration.origin
 
-    if (isActiveConfiguration(current) || isAppConfiguration(previous)) {
+    const isExpired = (configuration: ExtensionConfiguration) => {
+      const parsedDate = configuration.condition.statements.reduce(
+        (acc?: Date, curr?: ExtensionConfigurationConditionStatement) => {
+          if (acc) {
+            return acc
+          }
+          if (curr && curr.subject === 'date') {
+            const value = JSON.parse(curr.objectJSON)
+            if (value.to) {
+              return new Date(value.to)
+            }
+          }
+          return undefined
+        },
+        undefined
+      )
+
+      if (parsedDate && parsedDate < new Date()) {
+        return true
+      }
+
+      return false
+    }
+
+    const hasDate = (configuration: ExtensionConfiguration) => {
+      const parsedDate = configuration.condition.statements.reduce(
+        (acc?: boolean, curr?: ExtensionConfigurationConditionStatement) => {
+          if (acc) {
+            return acc
+          }
+          if (curr && curr.subject === 'date') {
+            const value = JSON.parse(curr.objectJSON)
+            if (value.to || value.from) {
+              return true
+            }
+          }
+          return false
+        },
+        false
+      )
+
+      return parsedDate
+    }
+
+    if (isActiveConfiguration(current)) {
       return -1
     }
 
-    if (isAppConfiguration(current) || isActiveConfiguration(previous)) {
+    if (isAppConfiguration(current)) {
+      return 1
+    }
+
+    if (isAppConfiguration(previous)) {
+      return -1
+    }
+
+    if (!hasDate(current) && isExpired(previous)) {
+      return -1
+    }
+
+    if (isExpired(current)) {
       return 1
     }
 
