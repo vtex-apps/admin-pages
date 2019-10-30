@@ -49,13 +49,11 @@ interface MessagesData {
 
 interface MessagesVariables {
   args: {
-    from?: string
-    messages: {
-      provider: string
+    indexedByFrom: {
+      from: string
       messages: {
-        id: string
-        content?: string
-        description?: string
+        content: string
+        context?: string
         behavior?: 'USER_ONLY' | 'USER_AND_APP' | 'FULL'
       }[]
     }[]
@@ -172,12 +170,16 @@ function withContentContext<T>(
                           query={ContentIOMessageQuery}
                           variables={{
                             args: {
-                              from: 'en-DV',
-                              messages: [
+                              indexedByFrom: [
                                 {
-                                  provider: contentId,
-                                  messages: [{ id: contentText || '' }],
-                                },
+                                  from: 'en-DV',
+                                  messages: [
+                                    {
+                                      context: contentId,
+                                      content: contentText || '',
+                                    },
+                                  ],
+                                }
                               ],
                               to: culture.locale,
                             },
@@ -192,7 +194,7 @@ function withContentContext<T>(
                               id: contentId,
                               text: pathOr(
                                 contentText,
-                                ['newTranslate', 0],
+                                ['translate', 0],
                                 dataMessage || {}
                               ),
                             }
