@@ -177,7 +177,7 @@ const Card = ({
           })}
       </div>
 
-      <ConditionTags conditions={conditions} />
+      {conditions.length > 0 && <ConditionTags conditions={conditions} />}
 
       {scope !== 'page' && (
         <div className="mt5">
