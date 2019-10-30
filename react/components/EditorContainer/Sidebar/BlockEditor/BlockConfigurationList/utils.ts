@@ -3,6 +3,36 @@ import { ListContentData } from '../../../queries/ListContent'
 
 import { GetDeleteStoreUpdater } from './typings'
 
+export const isConfigurationExpired = (
+  configuration: ExtensionConfiguration
+) => {
+  const parsedDate = configuration.condition.statements.reduce(
+    (acc?: Date, curr?: ExtensionConfigurationConditionStatement) => {
+      if (acc) {
+        return acc
+      }
+      if (curr && curr.subject === 'date') {
+        const value = JSON.parse(curr.objectJSON)
+        if (value.to) {
+          return new Date(value.to)
+        }
+      }
+      return undefined
+    },
+    undefined
+  )
+
+  if (parsedDate && parsedDate < new Date()) {
+    return true
+  }
+
+  return false
+}
+
+export const isConfigurationScheduled = (
+  configuration: ExtensionConfiguration
+) => configuration.condition.statements.length > 0
+
 export const getDeleteStoreUpdater: GetDeleteStoreUpdater = ({
   action,
   blockId,

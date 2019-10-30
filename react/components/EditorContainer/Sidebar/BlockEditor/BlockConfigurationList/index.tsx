@@ -11,6 +11,7 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
+import { isConfigurationExpired } from './utils'
 
 interface Props extends Omit<UseListHandlersParams, 'activeContentId'> {
   editingContentId: EditingState['contentId']
@@ -71,50 +72,6 @@ const BlockConfigurationList: React.FC<Props> = ({
     const isAppConfiguration = (configuration: ExtensionConfiguration) =>
       configuration.origin
 
-    const isExpired = (configuration: ExtensionConfiguration) => {
-      const parsedDate = configuration.condition.statements.reduce(
-        (acc?: Date, curr?: ExtensionConfigurationConditionStatement) => {
-          if (acc) {
-            return acc
-          }
-          if (curr && curr.subject === 'date') {
-            const value = JSON.parse(curr.objectJSON)
-            if (value.to) {
-              return new Date(value.to)
-            }
-          }
-          return undefined
-        },
-        undefined
-      )
-
-      if (parsedDate && parsedDate < new Date()) {
-        return true
-      }
-
-      return false
-    }
-
-    const hasDate = (configuration: ExtensionConfiguration) => {
-      const parsedDate = configuration.condition.statements.reduce(
-        (acc?: boolean, curr?: ExtensionConfigurationConditionStatement) => {
-          if (acc) {
-            return acc
-          }
-          if (curr && curr.subject === 'date') {
-            const value = JSON.parse(curr.objectJSON)
-            if (value.to || value.from) {
-              return true
-            }
-          }
-          return false
-        },
-        false
-      )
-
-      return parsedDate
-    }
-
     if (isActiveConfiguration(current)) {
       return -1
     }
@@ -127,11 +84,11 @@ const BlockConfigurationList: React.FC<Props> = ({
       return -1
     }
 
-    if (!hasDate(current) && isExpired(previous)) {
+    if (isConfigurationExpired(previous)) {
       return -1
     }
 
-    if (isExpired(current)) {
+    if (isConfigurationExpired(current)) {
       return 1
     }
 

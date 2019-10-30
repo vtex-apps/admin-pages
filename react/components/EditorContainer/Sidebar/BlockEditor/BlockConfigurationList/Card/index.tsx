@@ -8,6 +8,7 @@ import { useEditorContext } from '../../../../../EditorContext'
 import EarthIcon from '../../../../../icons/EarthIcon'
 import PageIcon from '../../../../../icons/PageIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
+import { isConfigurationExpired, isConfigurationScheduled } from '../utils'
 
 import ConditionTags from './ConditionTags'
 import StatusLabel from './StatusLabel'
@@ -134,12 +135,15 @@ const Card = ({
       return 'active'
     }
 
-    if (configuration.condition.statements.length > 0) {
+    if (
+      isConfigurationScheduled(configuration) &&
+      !isConfigurationExpired(configuration)
+    ) {
       return 'scheduled'
     }
 
     return 'inactive'
-  }, [configuration.condition.statements.length, isActive])
+  }, [configuration, isActive])
 
   const menuOptions = React.useMemo(
     () => [
