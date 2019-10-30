@@ -248,16 +248,18 @@ declare global {
 
   type ConditionSubject = 'date' | 'utm'
 
+  interface ExtensionConfigurationConditionStatement {
+    objectJSON: string
+    subject: ConditionSubject
+    verb: string
+  }
+
   interface ExtensionConfiguration {
     condition: {
       allMatches: boolean
       id: string
       pageContext: RenderRuntime['route']['pageContext']
-      statements: {
-        objectJSON: string
-        subject: ConditionSubject
-        verb: string
-      }[]
+      statements: ExtensionConfigurationConditionStatement[]
     }
     contentId: string | null
     contentJSON: string
