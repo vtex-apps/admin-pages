@@ -26,7 +26,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Make app configuration card to appear last in the block list
+- Place app cards last in the configuration list
+- Place active card first in the configuration list
+- Place expired cards just before the app card in the configuration list
+- Mark expired configuration cards as inactive
 
 ## [4.14.3] - 2019-10-28
 
