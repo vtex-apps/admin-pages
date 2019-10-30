@@ -179,27 +179,31 @@ const Card = ({
 
       <ConditionTags conditions={conditions} />
 
-      <div className="mt5">
-        <FormattedMessage
-          id={`admin/pages.editor.configuration.scope.${scope}.saved`}
-        >
-          {message => (
-            <div className="flex items-center">
-              {iconByScope[scope]}
+      {scope !== 'page' && (
+        <div className="mt5">
+          <FormattedMessage
+            id={`admin/pages.editor.configuration.scope.${scope}.saved`}
+          >
+            {message => (
+              <div className="flex items-center">
+                {iconByScope[scope]}
 
-              <span className="ml2 f6">
-                {message}{' '}
-                <FormattedMessage
-                  id={`admin/pages.editor.configuration.scope.${scope}.context`}
-                >
-                  {message => <span className="fw5">{message}</span>}
-                </FormattedMessage>
-              </span>
-            </div>
-          )}
-        </FormattedMessage>
+                <span className="ml2 f6">
+                  {message}{' '}
+                  <FormattedMessage
+                    id={`admin/pages.editor.configuration.scope.${scope}.context`}
+                  >
+                    {message => <span className="fw5">{message}</span>}
+                  </FormattedMessage>
+                </span>
+              </div>
+            )}
+          </FormattedMessage>
+        </div>
+      )}
 
-        {appName && (
+      {appName && (
+        <div className="mt5">
           <FormattedMessage
             defaultMessage="Created by {name}"
             id="admin/pages.editor.configuration.createdBy"
@@ -207,8 +211,8 @@ const Card = ({
           >
             {message => <div className="mt3 f7 c-muted-2">{message}</div>}
           </FormattedMessage>
-        )}
-      </div>
+        </div>
+      )}
 
       <div
         className="absolute top-0 right-0 mt1"
