@@ -18,7 +18,23 @@ interface Props {
   pageContext: RenderRuntime['route']['pageContext']
 }
 
-class ConditionControls extends PureComponent<Props> {
+interface State {
+  originalScope: ConfigurationScope
+}
+
+class ConditionControls extends PureComponent<Props, State> {
+  public constructor(props: Props) {
+    super(props)
+
+    this.state = {
+      originalScope: this.props.isSitewide
+        ? 'sitewide'
+        : this.props.condition.pageContext.id === '*'
+        ? 'template'
+        : 'entity',
+    }
+  }
+
   private isScopeDisabled =
     this.props.isSitewide || isUnidentifiedPageContext(this.props.pageContext)
 
@@ -42,15 +58,19 @@ class ConditionControls extends PureComponent<Props> {
         </FormattedMessage>
 
         <div className="mv7 ph5">
-          <ScopeSelector
-            isDisabled={this.isScopeDisabled}
-            isSitewide={isSitewide}
-            onChange={this.handleScopeChange}
-            pageContext={pageContext}
-            scope={scope}
-          />
+          {this.state.originalScope === 'template' && (
+            <React.Fragment>
+              <ScopeSelector
+                isDisabled={this.isScopeDisabled}
+                isSitewide={isSitewide}
+                onChange={this.handleScopeChange}
+                pageContext={pageContext}
+                scope={scope}
+              />
 
-          <Separator />
+              <Separator />
+            </React.Fragment>
+          )}
 
           <Scheduler
             onConditionUpdate={this.handleDateChange}
