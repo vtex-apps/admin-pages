@@ -16,6 +16,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 
 
+### Changed
+
+- Updated sidebar block editor header visual
+
 ## [4.14.3] - 2019-10-28
 
 ## [4.14.2] - 2019-10-25
