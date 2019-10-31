@@ -15,3 +15,10 @@ export type GetStyles = (
   labelStyle: CSSProperties
   maskStyle: CSSProperties
 }
+
+interface UseStylesParams extends GetStylesParams {
+  isOverlayMaskActive: boolean
+  setState: React.Dispatch<React.SetStateAction<State>>
+}
+
+export type UseStyles = (params: UseStylesParams) => void
