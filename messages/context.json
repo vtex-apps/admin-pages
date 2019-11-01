@@ -425,6 +425,7 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "admin/pages.editor.store.settings.pwa.orientation.portrait",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart": "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.checkout": "admin/pages.editor.store.settings.pwa.prompt-custom-event.checkout",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.default": "admin/pages.editor.store.settings.pwa.prompt-custom-event.default",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event": "admin/pages.editor.store.settings.pwa.prompt-custom-event",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "admin/pages.editor.store.settings.pwa.screen-orientation",

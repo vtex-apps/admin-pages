@@ -425,6 +425,7 @@
   "admin/pages.editor.store.settings.pwa.orientation.portrait-secondary": "Portrait (Secondary)",
   "admin/pages.editor.store.settings.pwa.orientation.portrait": "Portrait",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.addToCart": "On the first item added to cart",
+  "admin/pages.editor.store.settings.pwa.prompt-custom-event.checkout": "On the first purchase",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event.default": "On the first visit",
   "admin/pages.editor.store.settings.pwa.prompt-custom-event": "Prompt \"Add to Home Screen\"",
   "admin/pages.editor.store.settings.pwa.screen-orientation": "Screen Orientation",
