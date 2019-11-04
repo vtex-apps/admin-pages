@@ -1,19 +1,13 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 
 import { LabelledLocale } from '../../DomainMessages'
 import EditableText from '../EditableText'
 
-import ModeButton from './components/ModeButton'
-
-const modes: StoreEditMode[] = ['settings', 'theme']
-
 interface Props {
   availableCultures: LabelledLocale[]
-  changeMode: (mode?: StoreEditMode) => void
   iframeRuntime: RenderContext
-  mode?: StoreEditMode
   urlPath: string
   onChangeUrlPath: (url: string) => void
   visible: boolean
@@ -21,9 +15,7 @@ interface Props {
 
 const Topbar: React.FunctionComponent<Props> = ({
   availableCultures,
-  changeMode,
   iframeRuntime,
-  mode,
   onChangeUrlPath,
   urlPath,
   visible,
@@ -70,52 +62,32 @@ const Topbar: React.FunctionComponent<Props> = ({
       }
     >
       <div className="flex items-stretch w-100">
-        {mode ? (
-          <Fragment>
-            <ModeButton changeMode={changeMode} mode={undefined} />
-            <ModeButton changeMode={changeMode} mode={mode} />
-          </Fragment>
-        ) : (
-          <Fragment>
-            {modes.map(buttonMode => (
-              <ModeButton
-                key={buttonMode}
-                changeMode={changeMode}
-                mode={buttonMode}
-              />
-            ))}
-            <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
-              <FormattedMessage
-                id="admin/pages.editor.settings.language"
-                defaultMessage="Language"
-              />
-              <Dropdown
-                variation="inline"
-                size="small"
-                options={availableCultures}
-                value={locale}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  const { emitter } = iframeRuntime
-                  setLocale(e.target.value)
-                  emitter.emit('localesChanged', e.target.value)
-                }}
-              />
-            </div>
-            <div className="flex items-center flex-grow-1 mv4 pl5 bw1 bl b--muted-5">
-              <div className="nowrap">
-                <FormattedMessage id="admin/pages.editor.container.editpath.label" />
-              </div>
-              <EditableText
-                baseClassName="w-100 pl3 c-muted-2"
-                onChange={handleChangeUrl}
-                onBlur={handleNavigateToUrl}
-                onKeyPress={handleUrlKeyPress}
-                disabled={urlInputDisabled}
-                value={url}
-              />
-            </div>
-          </Fragment>
-        )}
+        <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
+          <Dropdown
+            variation="inline"
+            size="small"
+            options={availableCultures}
+            value={locale}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+              const { emitter } = iframeRuntime
+              setLocale(e.target.value)
+              emitter.emit('localesChanged', e.target.value)
+            }}
+          />
+        </div>
+        <div className="flex items-center flex-grow-1 mv4 pl5 bw1 bl b--muted-5">
+          <div className="nowrap">
+            <FormattedMessage id="admin/pages.editor.container.editpath.label" />
+          </div>
+          <EditableText
+            baseClassName="w-100 pl3 c-muted-2"
+            onChange={handleChangeUrl}
+            onBlur={handleNavigateToUrl}
+            onKeyPress={handleUrlKeyPress}
+            disabled={urlInputDisabled}
+            value={url}
+          />
+        </div>
       </div>
     </div>
   )
