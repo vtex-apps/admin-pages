@@ -33,7 +33,7 @@ const EditorHeader: React.FC<Props> = ({
     <div className="ph5 pt4 pb2">
       <div className="w-100 flex justify-between">
         <div
-          className="items-center c-action-primary hover-c-action-primary pointer"
+          className="flex items-center c-action-primary hover-c-action-primary pointer"
           role="button"
           tabIndex={0}
           onKeyDown={handleBackKeyDown}
@@ -44,10 +44,10 @@ const EditorHeader: React.FC<Props> = ({
               <span className="outline-0">
                 <IconArrowBack />
               </span>
-              <span className="ml3 fw5 t-mini">
+              <span className="ml3 fw5 f7 ttu">
                 {intl.formatMessage({
-                  defaultMessage: 'Configurations',
-                  id: 'admin/pages.editor.component-list.title',
+                  defaultMessage: 'Back',
+                  id: 'admin/pages.editor.component-list.back',
                 })}
               </span>
             </React.Fragment>
