@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react'
+import observeResize from 'simple-element-resize-detector'
 
 import { UseStyles } from './typings'
 import { getStyles } from './utils'
@@ -18,16 +19,8 @@ const useStyles: UseStyles = ({
   visibleElement,
 }) => {
   const updateStyles = useCallback(
-    (mutationList?: MutationRecord[]) => {
-      let elementHeight: HTMLElement['clientHeight']
-
-      if (mutationList) {
-        const { target } = mutationList[0]
-
-        if (target instanceof HTMLElement) {
-          elementHeight = target.clientHeight
-        }
-      }
+    (clientHeight?) => {
+      const elementHeight: HTMLElement['clientHeight'] = clientHeight
 
       const styles = getStyles({
         hasValidElement,
@@ -35,26 +28,35 @@ const useStyles: UseStyles = ({
         visibleElement,
       })
 
-      setState(state => ({ ...state, ...styles, elementHeight }))
+      setState(state => ({
+        ...state,
+        ...styles,
+        elementHeight: elementHeight || state.elementHeight,
+      }))
     },
     [hasValidElement, highlightTreePath, setState, visibleElement]
   )
 
   useEffect(() => {
-    if (isOverlayMaskActive && visibleElement) {
-      const observer = new MutationObserver(updateStyles)
-
-      observer.observe(visibleElement, {
-        attributes: true,
+    const root = document.querySelector<HTMLBodyElement>('body')
+    if (root) {
+      root.setAttribute(
+        'style',
+        root.getAttribute('style') || '' + 'position: relative;'
+      )
+    }
+    const resizeDetector =
+      root &&
+      observeResize(root, element => {
+        updateStyles(element.clientHeight)
       })
 
-      return () => {
-        observer.disconnect()
-      }
-    } else {
-      updateStyles()
+    updateStyles()
 
-      return () => {}
+    return () => {
+      if (resizeDetector && resizeDetector.parentNode) {
+        resizeDetector.parentNode.removeChild(resizeDetector)
+      }
     }
   }, [isOverlayMaskActive, updateStyles, visibleElement])
 }

@@ -75,7 +75,8 @@ const HighlightOverlay: React.FC<Props> = props => {
 
   const { visibleElement, hasValidElement } = useHighlightedElementInfo(
     titleTreePath,
-    sidebarBlocksMap
+    sidebarBlocksMap,
+    state.elementHeight
   ) || { visibleElement: undefined, hasValidElement: false }
 
   useAutoScroll({ editMode, highlightTreePath, visibleElement })

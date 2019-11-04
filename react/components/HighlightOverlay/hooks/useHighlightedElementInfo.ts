@@ -77,7 +77,8 @@ function getElementInfo(
 
 export default function useHighlightedElementInfo(
   highlightTreePath: State['highlightTreePath'],
-  sidebarBlocksMap: State['sidebarBlocksMap']
+  sidebarBlocksMap: State['sidebarBlocksMap'],
+  elementHeight: State['elementHeight']
 ) {
   return useMemo<Partial<ReturnType<typeof getElementInfo>>>(() => {
     return (
@@ -85,5 +86,6 @@ export default function useHighlightedElementInfo(
         getElementInfo(highlightTreePath, sidebarBlocksMap)) ||
       {}
     )
-  }, [highlightTreePath, sidebarBlocksMap])
+    // eslint-disable-next-line
+  }, [highlightTreePath, sidebarBlocksMap, elementHeight])
 }

@@ -22,6 +22,7 @@ export default function usePortal() {
     )
 
     if (portalRoot) {
+      portalRoot.setAttribute('style', 'position: relative;')
       portalRoot.prepend(portalContainer)
     }
 
@@ -54,6 +55,7 @@ export default function usePortal() {
         resizeDetector.parentNode.removeChild(resizeDetector)
       }
       if (portalRoot) {
+        portalRoot.removeAttribute('style')
         portalRoot.removeChild(portalContainer)
       }
       window.removeEventListener('load', resizeOnLoad)
