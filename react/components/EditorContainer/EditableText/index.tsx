@@ -22,7 +22,7 @@ const EditableText: React.FC<Props> = ({
   value,
 }) => (
   <input
-    className={`bn font-body input-reset ${baseClassName} ${styles.input}`}
+    className={`truncate outline-0 c-on-base bb bt-0 br-0 bl-0 b--light-gray hover-b--action-primary pb2 font-body input-reset ${baseClassName} ${styles.input}`}
     onChange={onChange}
     onBlur={onBlur}
     disabled={disabled}
