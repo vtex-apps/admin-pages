@@ -204,7 +204,7 @@
   "admin/pages.editor.configuration.scope.template.saved": "Salvo no",
   "admin/pages.editor.configuration.tag.editing": "Editando",
   "admin/pages.editor.container.dev-mode-warning.text": "Você está em modo de desenvolvimento. Mudanças no conteúdo não poderão ir pra loja em produção.",
-  "admin/pages.editor.container.editpath.label": "URL da página:",
+  "admin/pages.editor.container.editpath.label": "URL",
   "admin/pages.editor.container.master-workspace-warning.text": "Você está editando a loja em produção. Mudanças no conteúdo terão um efeito imediato.",
   "admin/pages.editor.iframe.confirm-prompt": "Tem certeza que deseja sair?",
   "admin/pages.editor.image-uploader.empty.button": "Fazer upload",

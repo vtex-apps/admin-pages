@@ -3,7 +3,6 @@ import { FormattedMessage } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 
 import { LabelledLocale } from '../../DomainMessages'
-import EditableText from '../EditableText'
 
 interface Props {
   availableCultures: LabelledLocale[]
@@ -62,9 +61,8 @@ const Topbar: React.FunctionComponent<Props> = ({
       }
     >
       <div className="flex items-stretch w-100">
-        <div className="flex items-center mv4 pl5 bw1 bl b--muted-5">
+        <div className="flex items-center mv4 pl5">
           <Dropdown
-            variation="inline"
             size="small"
             options={availableCultures}
             value={locale}
@@ -75,16 +73,30 @@ const Topbar: React.FunctionComponent<Props> = ({
             }}
           />
         </div>
-        <div className="flex items-center flex-grow-1 mv4 pl5 bw1 bl b--muted-5">
-          <div className="nowrap">
-            <FormattedMessage id="admin/pages.editor.container.editpath.label" />
-          </div>
-          <EditableText
-            baseClassName="w-100 pl3 c-muted-2"
-            onChange={handleChangeUrl}
-            onBlur={handleNavigateToUrl}
-            onKeyPress={handleUrlKeyPress}
+
+        <div className="ml6 mv4 pl5 bg-white ba bw1 br2 b--muted-4 hover-b--muted-3 flex items-center flex-grow-1">
+          <FormattedMessage
+            defaultMessage="URL"
+            id="admin/pages.editor.container.editpath.label"
+          >
+            {message => (
+              <label
+                className="c-muted-2"
+                htmlFor="topbar-url-input"
+                style={{ userSelect: 'none' }}
+              >
+                {message}
+              </label>
+            )}
+          </FormattedMessage>
+
+          <input
+            className="w-100 pl3 bn outline-0"
             disabled={urlInputDisabled}
+            id="topbar-url-input"
+            onBlur={handleNavigateToUrl}
+            onChange={handleChangeUrl}
+            onKeyPress={handleUrlKeyPress}
             value={url}
           />
         </div>
