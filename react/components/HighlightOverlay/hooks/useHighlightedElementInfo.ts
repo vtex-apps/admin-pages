@@ -86,6 +86,7 @@ export default function useHighlightedElementInfo(
         getElementInfo(highlightTreePath, sidebarBlocksMap)) ||
       {}
     )
-    // eslint-disable-next-line
+    /* eslint-disable react-hooks/exhaustive-deps */
   }, [highlightTreePath, sidebarBlocksMap, elementHeight])
+  /* eslint-enable react-hooks/exhaustive-deps */
 }

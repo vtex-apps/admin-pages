@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react'
-import observeResize from 'simple-element-resize-detector'
 
 import { UseStyles } from './typings'
 import { getStyles } from './utils'
@@ -16,6 +15,8 @@ const useStyles: UseStyles = ({
   highlightTreePath,
   isOverlayMaskActive,
   setState,
+  subscribeToResize,
+  unsubscribeToResize,
   visibleElement,
 }) => {
   const updateStyles = useCallback(
@@ -38,27 +39,23 @@ const useStyles: UseStyles = ({
   )
 
   useEffect(() => {
-    const root = document.querySelector<HTMLBodyElement>('body')
-    if (root) {
-      root.setAttribute(
-        'style',
-        root.getAttribute('style') || '' + 'position: relative;'
-      )
+    function resizeCallback(element: Element) {
+      updateStyles(element.clientHeight)
     }
-    const resizeDetector =
-      root &&
-      observeResize(root, element => {
-        updateStyles(element.clientHeight)
-      })
 
+    subscribeToResize(resizeCallback)
     updateStyles()
 
     return () => {
-      if (resizeDetector && resizeDetector.parentNode) {
-        resizeDetector.parentNode.removeChild(resizeDetector)
-      }
+      unsubscribeToResize(resizeCallback)
     }
-  }, [isOverlayMaskActive, updateStyles, visibleElement])
+  }, [
+    isOverlayMaskActive,
+    subscribeToResize,
+    unsubscribeToResize,
+    updateStyles,
+    visibleElement,
+  ])
 }
 
 export default useStyles

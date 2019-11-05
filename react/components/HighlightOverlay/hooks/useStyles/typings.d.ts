@@ -1,5 +1,6 @@
 import { CSSProperties } from 'react'
 
+import { ObserverReturnType } from '../useResizeObserver'
 import { State } from '../../typings'
 
 interface GetStylesParams {
@@ -16,7 +17,7 @@ export type GetStyles = (
   maskStyle: CSSProperties
 }
 
-interface UseStylesParams extends GetStylesParams {
+interface UseStylesParams extends GetStylesParams, ObserverReturnType {
   isOverlayMaskActive: boolean
   setState: React.Dispatch<React.SetStateAction<State>>
 }

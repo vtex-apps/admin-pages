@@ -7,6 +7,7 @@ import useAutoScroll from './hooks/useAutoScroll'
 import useHighlightOnHover from './hooks/useHighlightOnHover'
 import useHighlightedElementInfo from './hooks/useHighlightedElementInfo'
 import usePortal from './hooks/usePortal'
+import useResizeObserver from './hooks/useResizeObserver'
 import useStyles from './hooks/useStyles'
 import OverlayMask from './OverlayMask'
 import { State } from './typings'
@@ -46,7 +47,9 @@ const HighlightOverlay: React.FC<Props> = props => {
     sidebarBlocksMap,
   } = state
 
-  const portalContainer = usePortal()
+  const { subscribeToResize, unsubscribeToResize } = useResizeObserver()
+
+  const portalContainer = usePortal({ subscribeToResize, unsubscribeToResize })
 
   useHighlightOnHover(state)
 
@@ -90,6 +93,8 @@ const HighlightOverlay: React.FC<Props> = props => {
     highlightTreePath: titleTreePath,
     isOverlayMaskActive,
     setState,
+    subscribeToResize,
+    unsubscribeToResize,
     visibleElement,
   })
 
