@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Updated sidebar block editor header visual
+
 ## [4.16.0] - 2019-11-07
+
 ### Changed
 - Use new translate API from vtex.messages
 
@@ -15,10 +20,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 
-
-### Changed
-
-- Updated sidebar block editor header visual
 
 ## [4.14.3] - 2019-10-28
 
