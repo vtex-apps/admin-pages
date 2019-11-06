@@ -147,6 +147,7 @@
   "admin/pages.editor.component-list.status.active": "admin/pages.editor.component-list.status.active",
   "admin/pages.editor.component-list.status.inactive": "admin/pages.editor.component-list.status.inactive",
   "admin/pages.editor.component-list.status.scheduled": "admin/pages.editor.component-list.status.scheduled",
+  "admin/pages.editor.component-list.back": "admin/pages.editor.component-list.back",
   "admin/pages.editor.component-list.title": "admin/pages.editor.component-list.title",
   "admin/pages.editor.component-list.untitled": "admin/pages.editor.component-list.untitled",
   "admin/pages.editor.components.arrayTemplate.button.add": "admin/pages.editor.components.arrayTemplate.button.add",
