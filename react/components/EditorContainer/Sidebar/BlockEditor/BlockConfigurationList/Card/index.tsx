@@ -6,7 +6,6 @@ import { Tag } from 'vtex.styleguide'
 import ActionMenu from '../../../../../ActionMenu'
 import { useEditorContext } from '../../../../../EditorContext'
 import EarthIcon from '../../../../../icons/EarthIcon'
-import PageIcon from '../../../../../icons/PageIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
 import { isConfigurationExpired, isConfigurationScheduled } from '../utils'
 
@@ -39,14 +38,6 @@ const messages = defineMessages({
   delete: {
     defaultMessage: 'Delete',
     id: 'admin/pages.editor.component-list.action-menu.delete',
-  },
-  pageContext: {
-    defaultMessage: 'this page',
-    id: 'admin/pages.editor.configuration.scope.page.context',
-  },
-  pageSaved: {
-    defaultMessage: 'Saved on',
-    id: 'admin/pages.editor.configuration.scope.page.saved',
   },
   reset: {
     defaultMessage: 'Reset',
@@ -121,9 +112,11 @@ const Card = ({
     [conditionPageContext, editor.blockData.isSitewide]
   )
 
-  const iconByScope: Record<typeof scope, JSX.Element> = React.useMemo(
+  const iconByScope: Record<
+    'sitewide' | 'template',
+    JSX.Element
+  > = React.useMemo(
     () => ({
-      page: <PageIcon />,
       sitewide: <EarthIcon />,
       template: <TemplateIcon />,
     }),

@@ -198,8 +198,6 @@
   "admin/pages.editor.configuration.condition.date.to": "Fin:",
   "admin/pages.editor.configuration.createdBy": "Creado por {name}",
   "admin/pages.editor.configuration.defaultTitle": "Contenido sin título",
-  "admin/pages.editor.configuration.scope.page.context": "página",
-  "admin/pages.editor.configuration.scope.page.saved": "Guardado en esta",
   "admin/pages.editor.configuration.scope.sitewide.context": "todo el sitio",
   "admin/pages.editor.configuration.scope.sitewide.saved": "Guardado en",
   "admin/pages.editor.configuration.scope.template.context": "template",
