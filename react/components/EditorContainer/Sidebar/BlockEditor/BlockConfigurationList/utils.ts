@@ -6,23 +6,18 @@ import { GetDeleteStoreUpdater } from './typings'
 export const isConfigurationExpired = (
   configuration: ExtensionConfiguration
 ) => {
-  const parsedDate = configuration.condition.statements.reduce(
-    (acc?: Date, curr?: ExtensionConfigurationConditionStatement) => {
-      if (acc) {
-        return acc
-      }
-      if (curr && curr.subject === 'date') {
-        const value = JSON.parse(curr.objectJSON)
-        if (value.to) {
-          return new Date(value.to)
-        }
-      }
-      return undefined
-    },
-    undefined
+  const endDateStatement = configuration.condition.statements.find(
+    (statement: ExtensionConfigurationConditionStatement) =>
+      statement &&
+      statement.subject === 'date' &&
+      JSON.parse(statement.objectJSON).to
   )
 
-  if (parsedDate && parsedDate < new Date()) {
+  const getEndDate = (statement: ExtensionConfigurationConditionStatement) => {
+    return new Date(JSON.parse(statement.objectJSON).to)
+  }
+
+  if (endDateStatement && getEndDate(endDateStatement) < new Date()) {
     return true
   }
 
