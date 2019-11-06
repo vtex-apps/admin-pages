@@ -160,7 +160,7 @@ const Card = ({
 
   return (
     <div
-      className={`relative mh5 mt5 pa5 br3 bg-action-secondary hover-bg-action-secondary outline-0 ${
+      className={`relative mh5 mv5 pa5 br3 bg-action-secondary hover-bg-action-secondary outline-0 ${
         !isDisabled ? 'pointer' : ''
       }`}
       onClick={handleMainClick}
