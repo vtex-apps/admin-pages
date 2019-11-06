@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Place app cards last in the configuration list.
+- Place active card first in the configuration list.
+- Place expired cards just before the app card in the configuration list.
+- Mark expired configuration cards as inactive.
+
 ## [4.16.1] - 2019-11-07
 
 ### Changed
@@ -23,13 +30,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 
-
-### Changed
-
-- Place app cards last in the configuration list
-- Place active card first in the configuration list
-- Place expired cards just before the app card in the configuration list
-- Mark expired configuration cards as inactive
 
 ## [4.14.3] - 2019-10-28
 
