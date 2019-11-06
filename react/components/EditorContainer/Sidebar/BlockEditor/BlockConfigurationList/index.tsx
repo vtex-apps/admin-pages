@@ -11,7 +11,7 @@ import Card from './Card'
 import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
 import { UseListHandlersParams } from './typings'
-import { isConfigurationExpired } from './utils'
+import { getConfigurationSort } from './utils'
 
 interface Props extends Omit<UseListHandlersParams, 'activeContentId'> {
   editingContentId: EditingState['contentId']
@@ -62,41 +62,8 @@ const BlockConfigurationList: React.FC<Props> = ({
     return null
   }
 
-  const sortConfigurations = (
-    current: ExtensionConfiguration,
-    previous: ExtensionConfiguration
-  ) => {
-    const isActiveConfiguration = (configuration: ExtensionConfiguration) =>
-      configuration.contentId === activeContentId
-
-    const isAppConfiguration = (configuration: ExtensionConfiguration) =>
-      configuration.origin
-
-    if (isActiveConfiguration(current)) {
-      return -1
-    }
-
-    if (isAppConfiguration(current)) {
-      return 1
-    }
-
-    if (isAppConfiguration(previous)) {
-      return -1
-    }
-
-    if (isConfigurationExpired(previous)) {
-      return -1
-    }
-
-    if (isConfigurationExpired(current)) {
-      return 1
-    }
-
-    return 0
-  }
-
   const configurations = editor.blockData.configurations.sort(
-    sortConfigurations
+    getConfigurationSort(activeContentId)
   )
 
   return (
