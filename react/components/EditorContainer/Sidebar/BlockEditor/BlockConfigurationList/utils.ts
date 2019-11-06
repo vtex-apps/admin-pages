@@ -24,6 +24,39 @@ export const isConfigurationExpired = (
   return false
 }
 
+export const getConfigurationSort = (activeContentId: string) => (
+  current: ExtensionConfiguration,
+  previous: ExtensionConfiguration
+) => {
+  const isActiveConfiguration = (configuration: ExtensionConfiguration) =>
+    configuration.contentId === activeContentId
+
+  const isAppConfiguration = (configuration: ExtensionConfiguration) =>
+    configuration.origin
+
+  if (isActiveConfiguration(current)) {
+    return -1
+  }
+
+  if (isAppConfiguration(current)) {
+    return 1
+  }
+
+  if (isAppConfiguration(previous)) {
+    return -1
+  }
+
+  if (isConfigurationExpired(previous)) {
+    return -1
+  }
+
+  if (isConfigurationExpired(current)) {
+    return 1
+  }
+
+  return 0
+}
+
 export const isConfigurationScheduled = (
   configuration: ExtensionConfiguration
 ) => configuration.condition.statements.length > 0
