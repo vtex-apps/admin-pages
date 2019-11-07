@@ -1,18 +1,13 @@
-.input {
-  transition: font-style, border, color 100ms ease-in-out;
-}
-
 .input::placeholder {
   color: #979899;
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
 }
 
-.input:focus {
-  border: 1px solid #dbe9fd;
-  box-shadow: 0 0 1px #dbe9fd;
-  color: #3f3f40;
-  margin-bottom: -1px;
-  margin-top: -1px;
-  outline: none !important;
+.editableTextInputWrapper .editableTextInputWrapper__input {
+  opacity: 0;
+}
+
+.editableTextInputWrapper:hover .editableTextInputWrapper__input {
+  opacity: 1;
 }

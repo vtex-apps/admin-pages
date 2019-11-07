@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Changed style of the editable input that goes in the block editor header
+
 ## [4.16.2] - 2019-11-07
 
 ### Changed
@@ -28,7 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Use new translate API from vtex.messages
 
 ## [4.15.0] - 2019-11-01
-
 ### Added
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 

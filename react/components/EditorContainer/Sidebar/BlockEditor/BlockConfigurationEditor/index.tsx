@@ -173,7 +173,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           >
             {placeholder => (
               <EditableText
-                baseClassName="lh-copy f6 fw5 near-black"
+                baseClassName="lh-copy f5 fw5 near-black"
                 onChange={onLabelChange}
                 placeholder={placeholder as string}
                 value={label || ''}
