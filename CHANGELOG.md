@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.16.3] - 2019-11-07
+
 ### Changed
 
 - Changed style of the editable input that goes in the block editor header
