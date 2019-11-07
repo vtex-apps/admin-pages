@@ -13,7 +13,7 @@ import {
   Toggle,
 } from 'vtex.styleguide'
 
-import ImageUploader from '../../../../form/ImageUploader'
+import ImageUploader from '../../../form/ImageUploader'
 import withPWAMutations, {
   ManifestMutationData,
   PWAMutationProps,
@@ -333,7 +333,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               }
             />
           </div>
-          {!settings.disablePrompt &&
+          {!settings.disablePrompt && (
             <div className="pt4">
               <Dropdown
                 disabled={submitting}
@@ -351,7 +351,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
                 }
               />
             </div>
-          }
+          )}
         </>
       )}
       <div className="w-100 mt7 tr">
