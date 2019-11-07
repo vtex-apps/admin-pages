@@ -24,6 +24,12 @@ const EditableText: React.FC<Props> = ({
 }) => {
   const [isEditing, setIsEditing] = React.useState(false)
 
+  const inputRef = React.useRef<HTMLInputElement | null>(null)
+
+  const startEditing = React.useCallback(() => {
+    inputRef && inputRef.current && inputRef.current.focus()
+  }, [inputRef])
+
   const handleOnFocus = React.useCallback(() => {
     setIsEditing(true)
   }, [setIsEditing])
@@ -33,16 +39,19 @@ const EditableText: React.FC<Props> = ({
       setIsEditing(false)
       onBlur && onBlur(e)
     },
-    [setIsEditing]
+    [setIsEditing, onBlur]
   )
 
   return (
     <div
+      role="presentation"
       className={`flex items-baseline bb b--light-gray ${
         isEditing ? 'hover-b--action-primary' : ''
       } pb2 ${isEditing ? 'b--action-primary' : ''} ${
         styles.editableTextInputWrapper
       }`}
+      style={{ cursor: 'text' }}
+      onClick={startEditing}
     >
       <input
         className={`flex-grow-1 w-100 truncate outline-0 c-on-base bn font-body input-reset ${baseClassName} ${styles.input}`}
@@ -52,6 +61,7 @@ const EditableText: React.FC<Props> = ({
         disabled={disabled}
         onKeyPress={onKeyPress}
         placeholder={placeholder || ''}
+        ref={inputRef}
         type="text"
         value={value || ''}
       />
