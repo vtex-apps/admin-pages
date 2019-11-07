@@ -38,7 +38,7 @@ const EditableText: React.FC<Props> = ({
 
   return (
     <div
-      className={`flex bb b--light-gray ${
+      className={`flex items-baseline bb b--light-gray ${
         isEditing ? 'hover-b--action-primary' : ''
       } pb2 ${isEditing ? 'b--action-primary' : ''} editableTextInputWrapper`}
     >
