@@ -1,8 +1,6 @@
-import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
 
-import SelectionIcon from '../../../../images/SelectionIcon'
 import { getIframeRenderComponents } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
 
@@ -67,10 +65,6 @@ const BlockSelector: React.FunctionComponent<Props & InjectedIntlProps> = ({
     updateHighlightTitleByTreePath,
   ])
 
-  const handleEditModeToggle = editor.toggleEditMode
-
-  const handleKeyPress = useKeydownFromClick(handleEditModeToggle)
-
   const handleMouseEnter = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement | HTMLLIElement>) => {
       const treePath = event.currentTarget.getAttribute('data-tree-path')
@@ -85,24 +79,10 @@ const BlockSelector: React.FunctionComponent<Props & InjectedIntlProps> = ({
   }, [highlightHandler])
 
   return (
-    <div className="w-100 absolute">
-      <div className="flex justify-between items-center flex-shrink-0 h-3em">
-        <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
-          <FormattedMessage id="admin/pages.editor.components.title" />
-        </h3>
-
-        <div
-          className="bg-white bn link pl3 pv3 dn flex-ns items-center justify-center self-right z-max pointer animated fadeIn outline-0"
-          onClick={handleEditModeToggle}
-          onKeyPress={handleKeyPress}
-          role="button"
-          tabIndex={0}
-        >
-          <span className="pr5 b--light-gray flex items-center">
-            <SelectionIcon stroke={editor.editMode ? '#368df7' : '#979899'} />
-          </span>
-        </div>
-      </div>
+    <div className="w-100 absolute h-3em">
+      <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
+        <FormattedMessage id="admin/pages.editor.components.title" />
+      </h3>
 
       <div className="bb bw1 b--light-silver" />
 

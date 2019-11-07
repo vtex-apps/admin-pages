@@ -181,6 +181,7 @@ declare global {
     getIsLoading: () => boolean
     onChangeIframeUrl: (url: string) => void
     iframeWindow?: Window
+    isSidebarVisible: boolean
     messages: RenderRuntime['messages']
     mode: EditorMode
     viewport: Viewport
@@ -191,6 +192,7 @@ declare global {
     setViewport: (viewport: Viewport) => void
     editExtensionPoint: (treePath: string | null) => void
     toggleEditMode: () => void
+    toggleSidebarVisibility: () => void
   }
 
   interface RenderRuntime {

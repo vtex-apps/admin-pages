@@ -11,6 +11,7 @@ export const initialEditorContextState: EditorContextType = {
   editTreePath: null,
   getIsLoading: () => false,
   iframeWindow: window.self,
+  isSidebarVisible: true,
   messages: {},
   mode: 'content',
   onChangeIframeUrl: () => {},
@@ -20,6 +21,7 @@ export const initialEditorContextState: EditorContextType = {
   setBlockData: () => {},
   setViewport: () => {},
   toggleEditMode: () => {},
+  toggleSidebarVisibility: () => {},
   viewport: 'desktop',
 }
 

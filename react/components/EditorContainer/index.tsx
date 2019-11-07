@@ -1,23 +1,19 @@
 import debounce from 'lodash/debounce'
 import { path } from 'ramda'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import Draggable from 'react-draggable'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Alert, ToastConsumer } from 'vtex.styleguide'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay/typings'
 
-import DeviceSwitcher from './DeviceSwitcher'
 import Sidebar from './Sidebar'
 import { FormMetaProvider } from './Sidebar/FormMetaContext'
 import { ModalProvider } from './Sidebar/ModalContext'
 
 import IframeNavigationController from './IframeNavigationController'
-import StoreEditor from './StoreEditor'
 import Topbar from './Topbar'
 
 import '../../editbar.global.css'
-import { LabelledLocale } from '../DomainMessages'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
 
@@ -51,31 +47,16 @@ const getContainerProps = (layout: Viewport) => {
 }
 
 interface Props {
-  availableCultures: LabelledLocale[]
   editor: EditorContextType
   iframeRuntime: RenderContext | null
-  onShowAdminControlsToggle: () => void
-  viewports: Viewport[]
-  visible: boolean
 }
 
 const EditorContainer: React.FC<Props> = ({
-  availableCultures,
   children,
   editor,
   iframeRuntime,
-  onShowAdminControlsToggle,
-  viewports,
-  visible,
 }) => {
-  const {
-    editMode,
-    editExtensionPoint,
-    viewport,
-    iframeWindow,
-    onChangeIframeUrl,
-  } = editor
-  const [storeEditMode, setStoreEditMode] = useState<StoreEditMode>()
+  const { editMode, editExtensionPoint, viewport } = editor
 
   const highlightExtensionPoint = useCallback(
     debounce((highlightTreePath: string | null) => {
@@ -122,14 +103,12 @@ const EditorContainer: React.FC<Props> = ({
     iframeRuntime && iframeRuntime.workspace === 'master'
   const hasAlert = isMasterWorkspace || isDevelopment
 
-  const urlPath = iframeWindow ? iframeWindow.location.pathname : ''
-
   return (
     <FormMetaProvider>
       <ModalProvider>
         <IframeNavigationController iframeRuntime={iframeRuntime} />
-        <div className="w-100 h-100 min-vh-100 flex flex-row-reverse flex-wrap-l bg-base bb bw1 b--muted-5">
-          {!storeEditMode && iframeRuntime && (
+        <div className="w-100 h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
+          {iframeRuntime && (
             <ToastConsumer>
               {({ showToast }) => (
                 <Sidebar
@@ -139,24 +118,14 @@ const EditorContainer: React.FC<Props> = ({
                   updateHighlightTitleByTreePath={
                     updateHighlightTitleByTreePath
                   }
-                  visible={visible}
                 />
               )}
             </ToastConsumer>
           )}
 
-          <div className="flex-grow-1 db-ns dn">
-            {iframeRuntime && (
-              <Topbar
-                availableCultures={availableCultures}
-                changeMode={setStoreEditMode}
-                iframeRuntime={iframeRuntime}
-                mode={storeEditMode}
-                onChangeUrlPath={onChangeIframeUrl}
-                urlPath={urlPath}
-                visible={visible}
-              />
-            )}
+          <div className="w-100 dn flex-ns flex-column">
+            {iframeRuntime && <Topbar iframeRuntime={iframeRuntime} />}
+
             {isDevelopment && (
               <div className="pa5 bg-muted-5">
                 <Alert type="warning">
@@ -167,6 +136,7 @@ const EditorContainer: React.FC<Props> = ({
                 </Alert>
               </div>
             )}
+
             {isMasterWorkspace && (
               <div className="pa5 bg-muted-5">
                 <Alert type="warning">
@@ -177,46 +147,15 @@ const EditorContainer: React.FC<Props> = ({
                 </Alert>
               </div>
             )}
+
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
-                visible && iframeRuntime
+                iframeRuntime
                   ? `calc--height-relative${hasAlert ? '--dev' : ''}`
                   : 'top-0 w-100 h-100'
               }`}
             >
-              {iframeRuntime && storeEditMode && (
-                <StoreEditor
-                  editor={editor}
-                  mode={storeEditMode}
-                  visible={visible}
-                />
-              )}
               <div id={APP_CONTENT_ELEMENT_ID} className="relative w-100 h-100">
-                <Draggable
-                  bounds="parent"
-                  onStart={() => {
-                    const iframe = document.getElementById('store-iframe')
-                    if (iframe !== null) {
-                      iframe.classList.add('iframe-pointer-none')
-                    }
-                  }}
-                  onStop={() => {
-                    const iframe = document.getElementById('store-iframe')
-                    if (iframe !== null) {
-                      iframe.classList.remove('iframe-pointer-none')
-                    }
-                  }}
-                >
-                  <div className="animated br2 bg-base bn shadow-1 flex items-center justify-center z-9999 absolute bottom-1 bottom-2-ns left-1 left-2-ns">
-                    <DeviceSwitcher
-                      inPreview={!visible}
-                      setViewport={editor.setViewport}
-                      toggleEditMode={onShowAdminControlsToggle}
-                      viewport={editor.viewport}
-                      viewports={viewports}
-                    />
-                  </div>
-                </Draggable>
                 <main
                   {...containerProps}
                   role="main"

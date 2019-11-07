@@ -313,7 +313,3 @@
 .accordion-label:hover .accordion-handle {
   display: block;
 }
-
-.iframe-pointer-none {
-  pointer-events: none;
-}
