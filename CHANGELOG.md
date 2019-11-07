@@ -32,11 +32,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Use new translate API from vtex.messages
 
 ## [4.15.0] - 2019-11-01
-
-<<<<<<< HEAD
-=======
-## [4.15.0] - 2019-11-01
->>>>>>> Update changelog
 ### Added
 
 - Add `On the first purchase` prompt event option in `PWAForm`. 
