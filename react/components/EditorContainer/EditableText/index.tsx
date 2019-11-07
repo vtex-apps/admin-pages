@@ -40,7 +40,9 @@ const EditableText: React.FC<Props> = ({
     <div
       className={`flex items-baseline bb b--light-gray ${
         isEditing ? 'hover-b--action-primary' : ''
-      } pb2 ${isEditing ? 'b--action-primary' : ''} editableTextInputWrapper`}
+      } pb2 ${isEditing ? 'b--action-primary' : ''} ${
+        styles.editableTextInputWrapper
+      }`}
     >
       <input
         className={`flex-grow-1 w-100 truncate outline-0 c-on-base bn font-body input-reset ${baseClassName} ${styles.input}`}
@@ -54,7 +56,9 @@ const EditableText: React.FC<Props> = ({
         value={value || ''}
       />
       <span
-        className={`editableTextInputWrapper__input ${isEditing ? 'dn' : ''}`}
+        className={`${styles.editableTextInputWrapper__input} ${
+          isEditing ? 'dn' : ''
+        }`}
       >
         <IconEdit />
       </span>

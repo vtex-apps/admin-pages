@@ -3,3 +3,11 @@
   font-style: normal;
   font-weight: 400;
 }
+
+.editableTextInputWrapper .editableTextInputWrapper__input {
+  opacity: 0;
+}
+
+.editableTextInputWrapper:hover .editableTextInputWrapper__input {
+  opacity: 1;
+}
