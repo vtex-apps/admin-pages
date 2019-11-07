@@ -201,7 +201,6 @@
   width: 360px;
   height: 640px;
   max-height: 100%;
-  overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -209,7 +208,6 @@
   width: 768px;
   height: 1024px;
   max-height: 100%;
-  overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
 }
 
