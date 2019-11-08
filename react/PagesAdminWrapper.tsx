@@ -2,7 +2,9 @@ import { mapObjIndexed, values } from 'ramda'
 import React, { useState } from 'react'
 import { defineMessages, injectIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
-import { PageHeader, Tab, Tabs } from 'vtex.styleguide'
+import { Tab, Tabs } from 'vtex.styleguide'
+
+import AdminStyles from './components/admin/AdminStyles'
 import TargetPathContext from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
@@ -55,36 +57,34 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
 
   return (
     <TargetPathContext.Provider value={{ targetPath, setTargetPath }}>
-      <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
-        <div className="center mw8">
-          <PageHeader title="CMS" />
-          <div className="ph7">
-            <Tabs>
-              {values(
-                mapObjIndexed(
-                  (info: FieldInfo, key: string) => (
-                    <Tab
-                      active={
-                        targetPath.startsWith(info.path) &&
-                        (targetPath === '' ? targetPath === info.path : true)
-                      }
-                      key={key}
-                      label={intl.formatMessage({ id: info.titleId })}
-                      onClick={() => {
-                        runtime.navigate({ to: '/admin/app/cms/' + info.path })
-                        startLoading()
-                        setTargetPath(info.path)
-                      }}
-                    />
-                  ),
-                  fields
-                )
-              )}
-            </Tabs>
-          </div>
-          <div className="ma7">{runtime.preview ? <Loader /> : children}</div>
+      <AdminStyles title="CMS">
+        <div className="ph7">
+          <Tabs>
+            {values(
+              mapObjIndexed(
+                (info: FieldInfo, key: string) => (
+                  <Tab
+                    active={
+                      targetPath.startsWith(info.path) &&
+                      (targetPath === '' ? targetPath === info.path : true)
+                    }
+                    key={key}
+                    label={intl.formatMessage({ id: info.titleId })}
+                    onClick={() => {
+                      runtime.navigate({ to: '/admin/app/cms/' + info.path })
+                      startLoading()
+                      setTargetPath(info.path)
+                    }}
+                  />
+                ),
+                fields
+              )
+            )}
+          </Tabs>
         </div>
-      </div>
+
+        <div className="ma7">{runtime.preview ? <Loader /> : children}</div>
+      </AdminStyles>
     </TargetPathContext.Provider>
   )
 }

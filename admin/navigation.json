@@ -12,6 +12,11 @@
         "isNew": true,
         "labelId": "admin/pages.admin-menu-button.pages",
         "path": "/admin/cms/pages"
+      },
+      {
+        "isNew": true,
+        "labelId": "admin/pages.admin-menu-button.store",
+        "path": "/admin/cms/store"
       }
     ]
   },
