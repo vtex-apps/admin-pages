@@ -19,7 +19,6 @@ function getElementInfo(
   )
 
   const provider = document.querySelector<HTMLDivElement>('.render-provider')
-
   const elementsArray: Element[] = Array.prototype.slice.call(elements)
 
   const viewportMiddle =
@@ -88,5 +87,4 @@ export default function useHighlightedElementInfo(
     )
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [highlightTreePath, sidebarBlocksMap, elementHeight])
-  /* eslint-enable react-hooks/exhaustive-deps */
 }

@@ -117,6 +117,7 @@ const HighlightOverlay: React.FC<Props> = props => {
         timeout={150}
       >
         <div
+          data-testid="editor-provider-overlay"
           id="editor-provider-overlay"
           style={state.highlightStyle}
           className="absolute bw2 ba"
