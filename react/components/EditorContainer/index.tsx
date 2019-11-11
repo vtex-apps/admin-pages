@@ -11,6 +11,7 @@ import { FormMetaProvider } from './Sidebar/FormMetaContext'
 import { ModalProvider } from './Sidebar/ModalContext'
 
 import IframeNavigationController from './IframeNavigationController'
+import Styles from './Styles'
 import Topbar from './Topbar'
 
 import '../../editbar.global.css'
@@ -49,12 +50,14 @@ const getContainerProps = (layout: Viewport) => {
 interface Props {
   editor: EditorContextType
   iframeRuntime: RenderContext | null
+  isSiteEditor: boolean
 }
 
 const EditorContainer: React.FC<Props> = ({
   children,
   editor,
   iframeRuntime,
+  isSiteEditor,
 }) => {
   const { editMode, editExtensionPoint, viewport } = editor
 
@@ -108,7 +111,7 @@ const EditorContainer: React.FC<Props> = ({
       <ModalProvider>
         <IframeNavigationController iframeRuntime={iframeRuntime} />
         <div className="w-100 h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
-          {iframeRuntime && (
+          {isSiteEditor && iframeRuntime && (
             <ToastConsumer>
               {({ showToast }) => (
                 <Sidebar
@@ -124,7 +127,9 @@ const EditorContainer: React.FC<Props> = ({
           )}
 
           <div className="w-100 dn flex-ns flex-column">
-            {iframeRuntime && <Topbar iframeRuntime={iframeRuntime} />}
+            {isSiteEditor && iframeRuntime && (
+              <Topbar iframeRuntime={iframeRuntime} />
+            )}
 
             {isDevelopment && (
               <div className="pa5 bg-muted-5">
@@ -150,11 +155,13 @@ const EditorContainer: React.FC<Props> = ({
 
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
-                iframeRuntime
+                isSiteEditor && iframeRuntime
                   ? `calc--height-relative${hasAlert ? '--dev' : ''}`
                   : 'top-0 w-100 h-100'
               }`}
             >
+              {!isSiteEditor && iframeRuntime && <Styles />}
+
               <div id={APP_CONTENT_ELEMENT_ID} className="relative w-100 h-100">
                 <main
                   {...containerProps}

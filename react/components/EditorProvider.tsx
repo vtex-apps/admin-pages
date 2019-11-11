@@ -19,7 +19,9 @@ import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  MessagesContextProps & { client: ApolloClient<unknown> }
+  MessagesContextProps & { client: ApolloClient<unknown> } & {
+    isSiteEditor: boolean
+  }
 
 export interface State {
   activeConditions: string[]
@@ -330,7 +332,7 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public render() {
-    const { children } = this.props
+    const { children, isSiteEditor } = this.props
 
     const {
       activeConditions,
@@ -376,7 +378,11 @@ class EditorProvider extends Component<Props, State> {
     return (
       <ToastProvider positioning="parent">
         <EditorContext.Provider value={editor}>
-          <EditorContainer editor={editor} iframeRuntime={iframeRuntime}>
+          <EditorContainer
+            editor={editor}
+            iframeRuntime={iframeRuntime}
+            isSiteEditor={isSiteEditor}
+          >
             {children}
           </EditorContainer>
         </EditorContext.Provider>

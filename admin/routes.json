@@ -45,6 +45,10 @@
     "component": "PageEditor",
     "path": "/admin/app/cms/storefront/*targetPath"
   },
+  "admin.app.cms.styles": {
+    "component": "PageEditor",
+    "path": "/admin/app/cms/styles"
+  },
   "admin.app.cms.store": {
     "component": "StoreSettings",
     "path": "/admin/app/cms/store"
