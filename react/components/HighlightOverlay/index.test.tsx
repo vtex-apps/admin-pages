@@ -9,8 +9,8 @@ function createMockDiv(width: number, height: number) {
   const renderProviderDiv = document.createElement('div')
   renderProviderDiv.setAttribute('class', 'render-provider')
   Object.assign(renderProviderDiv.style, {
-    width: `1440px`,
-    height: `900px`,
+    width: '1440px',
+    height: '900px',
   })
 
   const div = document.createElement('div')
