@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Store and Styles shortcuts to the admin sidebar.
+
+### Changed
+
+- Redesign the Site Editor's topbar and its components.
+- Move the Store and Styles editors to separate admin pages.
+- Move the viewport controls to the topbar.
+
+### Fixed
+
+- Unnecessary Y overflow on smaller viewports.
+
 ## [4.16.3] - 2019-11-07
 
 ### Changed
@@ -31,16 +45,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [4.16.0] - 2019-11-07
 
 ### Changed
+
 - Use new translate API from vtex.messages
 
 ## [4.15.0] - 2019-11-01
+
 ### Added
 
-- Add `On the first purchase` prompt event option in `PWAForm`. 
+- Add `On the first purchase` prompt event option in `PWAForm`.
 
 ## [4.14.3] - 2019-10-28
 
 ## [4.14.2] - 2019-10-25
+
 ### Fixed
 
 - Race condition when more than one messages batch was fetched from the server
