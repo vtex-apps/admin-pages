@@ -18,19 +18,17 @@ const SidebarVisibilityToggle = () => {
   )
 
   return (
-    <div
-      className={`w2 h2 bg-white br2 outline-0 pointer flex justify-center items-center ${
+    <button
+      className={`w2 h2 bg-white br2 b--transparent outline-0 pointer flex justify-center items-center ${
         editor.isSidebarVisible && !hover ? 'c-on-disabled' : 'c-action-primary'
       }`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleSidebarVisibilityToggle}
       onKeyDown={handleSidebarVisibilityToggleKeyDown}
-      role="button"
-      tabIndex={0}
     >
       <IconView />
-    </div>
+    </button>
   )
 }
 

@@ -29,7 +29,7 @@ const DeviceItem: React.FC<Props> = ({ onClick, position, isActive, type }) => {
   const Icon = Icons[type]
 
   return (
-    <div
+    <button
       className={`w2 h2 pointer flex justify-center items-center bg-white outline-0 ${
         isActive || hover ? 'c-action-primary' : 'c-on-disabled'
       } ${BORDER_BY_POSITION[position]}`}
@@ -38,11 +38,9 @@ const DeviceItem: React.FC<Props> = ({ onClick, position, isActive, type }) => {
       onKeyDown={handleKeyDown}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      role="button"
-      tabIndex={0}
     >
       <Icon />
-    </div>
+    </button>
   )
 }
 

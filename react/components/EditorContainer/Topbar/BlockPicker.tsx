@@ -16,19 +16,17 @@ const BlockPicker = () => {
   const handleKeyPress = useKeydownFromClick(handleEditModeToggle)
 
   return (
-    <div
-      className={`w2 h2 bg-white br2 outline-0 pointer flex justify-center items-center ${
+    <button
+      className={`w2 h2 bg-white br2 b--transparent outline-0 pointer flex justify-center items-center ${
         editor.editMode || hover ? 'c-action-primary' : 'c-on-disabled'
       }`}
       onClick={handleEditModeToggle}
       onKeyPress={handleKeyPress}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      role="button"
-      tabIndex={0}
     >
       <IconPicker />
-    </div>
+    </button>
   )
 }
 
