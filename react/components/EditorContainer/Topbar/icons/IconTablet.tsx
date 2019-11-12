@@ -4,7 +4,7 @@ interface Props {
   color?: string
 }
 
-const IconTablet: React.FC<Props> = ({ color = '#979899' }) => (
+const IconTablet: React.FC<Props> = ({ color = 'currentColor' }) => (
   <svg
     width="14"
     height="18"

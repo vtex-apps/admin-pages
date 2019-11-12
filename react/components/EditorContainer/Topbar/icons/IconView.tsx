@@ -4,7 +4,7 @@ interface Props {
   color?: string
 }
 
-const IconView: React.FC<Props> = ({ color = '#979899' }) => (
+const IconView: React.FC<Props> = ({ color = 'currentColor' }) => (
   <svg
     width="17"
     height="14"

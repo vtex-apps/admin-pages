@@ -4,7 +4,7 @@ interface Props {
   color?: string
 }
 
-const IconPhone: React.FC<Props> = ({ color = '#979899' }) => (
+const IconPhone: React.FC<Props> = ({ color = 'currentColor' }) => (
   <svg
     width="10"
     height="16"

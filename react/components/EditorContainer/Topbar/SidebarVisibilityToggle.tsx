@@ -29,7 +29,7 @@ const SidebarVisibilityToggle = () => {
       role="button"
       tabIndex={0}
     >
-      <IconView color="currentColor" />
+      <IconView />
     </div>
   )
 }

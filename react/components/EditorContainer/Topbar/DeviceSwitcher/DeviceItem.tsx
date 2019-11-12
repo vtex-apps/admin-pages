@@ -45,7 +45,7 @@ const DeviceItem: React.FC<Props> = ({ onClick, position, isActive, type }) => {
       role="button"
       tabIndex={0}
     >
-      <Icon color="currentColor" />
+      <Icon />
     </div>
   )
 }

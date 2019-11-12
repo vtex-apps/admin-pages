@@ -27,7 +27,7 @@ const BlockPicker = () => {
       role="button"
       tabIndex={0}
     >
-      <IconPicker color="currentColor" />
+      <IconPicker />
     </div>
   )
 }
