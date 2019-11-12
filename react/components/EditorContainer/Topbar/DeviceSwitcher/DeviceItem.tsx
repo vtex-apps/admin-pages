@@ -6,17 +6,13 @@ import IconDesktop from '../icons/IconDesktop'
 import IconTablet from '../icons/IconTablet'
 import { useHover } from '../hooks'
 
-interface Props {
-  onClick: (e: Pick<React.MouseEvent, 'currentTarget'>) => void
-  isActive: boolean
-  position: 'first' | 'last' | 'middle'
-  type: Viewport
-}
+import { BORDER_BY_POSITION } from './consts'
 
-const BORDER_BY_POSITION = {
-  first: 'br2 br--left',
-  last: 'br2 br--right',
-  middle: '',
+interface Props {
+  isActive: boolean
+  onClick: (e: Pick<React.MouseEvent, 'currentTarget'>) => void
+  position: keyof typeof BORDER_BY_POSITION
+  type: Viewport
 }
 
 const Icons = {
