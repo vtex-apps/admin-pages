@@ -19,7 +19,8 @@ import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  MessagesContextProps & { client: ApolloClient<unknown> } & {
+  MessagesContextProps & {
+    client: ApolloClient<unknown>
     isSiteEditor: boolean
   }
 
