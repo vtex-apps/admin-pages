@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.17.0] - 2019-11-13
+
 ### Added
 
 - Store and Styles shortcuts to the admin sidebar.
