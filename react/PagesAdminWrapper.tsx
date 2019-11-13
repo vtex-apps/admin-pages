@@ -4,7 +4,7 @@ import { defineMessages, injectIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { Tab, Tabs } from 'vtex.styleguide'
 
-import AdminStyles from './components/admin/AdminStyles'
+import AdminStructure from './components/admin/AdminStructure'
 import TargetPathContext from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
@@ -57,7 +57,7 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
 
   return (
     <TargetPathContext.Provider value={{ targetPath, setTargetPath }}>
-      <AdminStyles title="CMS">
+      <AdminStructure title="CMS">
         <div className="ph7">
           <Tabs>
             {values(
@@ -84,7 +84,7 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
         </div>
 
         <div className="ma7">{runtime.preview ? <Loader /> : children}</div>
-      </AdminStyles>
+      </AdminStructure>
     </TargetPathContext.Provider>
   )
 }

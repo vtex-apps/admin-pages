@@ -5,7 +5,7 @@ interface Props {
   title: string
 }
 
-const AdminStyles: React.FC<Props> = ({ children, title }) => (
+const AdminStructure: React.FC<Props> = ({ children, title }) => (
   <div className="h-100 min-vh-100 overflow-y-auto bg-light-silver">
     <div className="center mw8">
       <PageHeader title={title} />
@@ -15,4 +15,4 @@ const AdminStyles: React.FC<Props> = ({ children, title }) => (
   </div>
 )
 
-export default AdminStyles
+export default AdminStructure
