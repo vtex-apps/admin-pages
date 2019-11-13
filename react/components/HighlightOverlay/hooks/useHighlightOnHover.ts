@@ -13,11 +13,7 @@ export default function useHighlightOnHover({
   const highlightRemovalTimeout = useRef<number | undefined>()
   const handleMouseOverHighlight = useCallback<EventListener>(
     e => {
-      if (
-        !e.currentTarget ||
-        !(e.currentTarget instanceof HTMLElement) ||
-        !highlightRemovalTimeout.current
-      ) {
+      if (!e.currentTarget || !(e.currentTarget instanceof HTMLElement)) {
         return
       }
 
@@ -68,6 +64,7 @@ export default function useHighlightOnHover({
     if (editMode) {
       elements.forEach((e: Element) => {
         const element = e as HTMLElement
+
         if (editMode) {
           element.addEventListener('mouseover', handleMouseOverHighlight)
           element.addEventListener('mouseleave', handleMouseLeaveHighlight)

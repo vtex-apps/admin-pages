@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- `HighlightOverlay` now appropriately updates its height as the block being edited changes.
+- Missing `State` export from `HighlightOverlay`.
+
 ## [4.17.0] - 2019-11-13
 
 ### Added

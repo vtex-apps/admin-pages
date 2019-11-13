@@ -1,7 +1,10 @@
-import observeResize from 'simple-element-resize-detector'
 import { useEffect, useRef } from 'react'
+import { ObserverReturnType } from './useResizeObserver'
 
-export default function usePortal() {
+export default function usePortal({
+  subscribeToResize,
+  unsubscribeToResize,
+}: ObserverReturnType) {
   const portalContainerRef = useRef<HTMLDivElement>(
     document.createElement<'div'>('div')
   )
@@ -25,17 +28,17 @@ export default function usePortal() {
       portalRoot.prepend(portalContainer)
     }
 
-    const resizeDetector =
-      portalRoot &&
-      observeResize(portalRoot, () => {
-        if (portalRoot) {
-          const rootComputedStyle = window.getComputedStyle(portalRoot)
-          portalContainer.setAttribute(
-            'style',
-            `width: ${rootComputedStyle.width}; height: ${rootComputedStyle.height}; pointer-events: none;`
-          )
-        }
-      })
+    function resizeCallback() {
+      if (portalRoot) {
+        const rootComputedStyle = window.getComputedStyle(portalRoot)
+        portalContainer.setAttribute(
+          'style',
+          `width: ${rootComputedStyle.width}; height: ${rootComputedStyle.height}; pointer-events: none;`
+        )
+      }
+    }
+
+    subscribeToResize(resizeCallback)
 
     function resizeOnLoad() {
       const rootComputedStyle = (portalRoot &&
@@ -50,15 +53,14 @@ export default function usePortal() {
     window.addEventListener('load', resizeOnLoad)
 
     return () => {
-      if (resizeDetector && resizeDetector.parentNode) {
-        resizeDetector.parentNode.removeChild(resizeDetector)
-      }
+      unsubscribeToResize(resizeCallback)
+
       if (portalRoot) {
         portalRoot.removeChild(portalContainer)
       }
       window.removeEventListener('load', resizeOnLoad)
     }
-  }, [])
+  }, [subscribeToResize, unsubscribeToResize])
 
   return portalContainerRef.current
 }
