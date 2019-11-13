@@ -29,17 +29,14 @@ const DeviceSwitcher: React.FC<Props> = ({ device }) => {
         const isLast = index === viewports.length - 1
 
         return (
-          <>
+          <div className={!isLast ? 'mr05' : ''} key={deviceType}>
             <DeviceItem
               isActive={deviceType === editor.viewport}
-              key={deviceType}
               onClick={handleClick}
               position={index === 0 ? 'first' : isLast ? 'last' : 'middle'}
               type={deviceType}
             />
-
-            {!isLast && <div className="br c-muted-5" />}
-          </>
+          </div>
         )
       })}
     </div>
