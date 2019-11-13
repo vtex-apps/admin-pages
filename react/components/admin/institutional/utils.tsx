@@ -1,7 +1,7 @@
 import {
   AvailableApp,
   InstalledApp,
-} from '../../EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
+} from '../store/StoreForm/components/withStoreSettings'
 
 export const parseStoreAppId = (
   store: InstalledApp & AvailableApp & { settings: string }

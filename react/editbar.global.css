@@ -156,6 +156,10 @@
   height: calc(100% - 8.5em);
 }
 
+.mr05 {
+  margin-right: 1px;
+}
+
 /* Non small */
 @media screen and (min-width: 30em) {
   .h-3em-ns {
@@ -201,16 +205,16 @@
   width: 360px;
   height: 640px;
   max-height: 100%;
-  overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .tablet-preview {
   width: 768px;
   height: 1024px;
   max-height: 100%;
-  overflow-x: hidden;
   box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .stroke-blue {
@@ -312,8 +316,4 @@
 .accordion-item--dragged .accordion-handle,
 .accordion-label:hover .accordion-handle {
   display: block;
-}
-
-.iframe-pointer-none {
-  pointer-events: none;
 }

@@ -19,7 +19,10 @@ import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
   ReactIntl.InjectedIntlProps &
-  MessagesContextProps & { client: ApolloClient<unknown> }
+  MessagesContextProps & {
+    client: ApolloClient<unknown>
+    isSiteEditor: boolean
+  }
 
 export interface State {
   activeConditions: string[]
@@ -31,9 +34,9 @@ export interface State {
   iframeRuntime: RenderContext | null
   iframeWindow?: Window
   isLoading: boolean
+  isSidebarVisible: boolean
   messages: RenderRuntime['messages']
   mode: EditorMode
-  showAdminControls: boolean
   viewport: Viewport
 }
 
@@ -58,12 +61,6 @@ const getUrlProperties = (href: string) => {
   )
 }
 
-const viewPorts: { [name: string]: Viewport[] } = {
-  default: ['mobile', 'tablet', 'desktop'],
-  desktop: [],
-  mobile: ['mobile', 'tablet'],
-}
-
 class EditorProvider extends Component<Props, State> {
   private unlisten?: (() => void) | void
 
@@ -80,9 +77,9 @@ class EditorProvider extends Component<Props, State> {
       iframeRuntime: null,
       iframeWindow: window.self,
       isLoading: false,
+      isSidebarVisible: true,
       messages: {},
       mode: 'content',
-      showAdminControls: true,
       viewport: 'desktop',
     }
 
@@ -265,18 +262,11 @@ class EditorProvider extends Component<Props, State> {
     })
   }
 
-  public handleToggleShowAdminControls = () => {
-    const showAdminControls = !this.state.showAdminControls
-
-    Array.prototype.forEach.call(
-      document.getElementsByClassName('render-container'),
-      (e: Element) =>
-        showAdminControls
-          ? e.classList.add('editor-provider')
-          : e.classList.remove('editor-provider')
-    )
-
-    this.setState({ showAdminControls })
+  public toggleSidebarVisibility = () => {
+    this.setState(prevState => ({
+      ...prevState,
+      isSidebarVisible: !prevState.isSidebarVisible,
+    }))
   }
 
   public handleAddCondition = (conditionId: string) => {
@@ -306,35 +296,15 @@ class EditorProvider extends Component<Props, State> {
     })
   }
 
-  public getViewport = (device: ConfigurationDevice) => {
-    switch (device) {
-      case 'any':
-        return 'desktop'
-      default:
-        return device
-    }
-  }
-
   public handleSetDevice = (device: ConfigurationDevice) => {
     this.props.runtime.setDevice(device)
 
-    this.handleSetViewport(this.getViewport(device))
+    this.handleSetViewport(device === 'any' ? 'desktop' : device)
 
     this.props.runtime.updateRuntime({
       conditions: this.state.activeConditions,
       device,
     })
-  }
-
-  public getAvailableViewports = (device: ConfigurationDevice): Viewport[] => {
-    switch (device) {
-      case 'mobile':
-        return viewPorts.mobile
-      case 'desktop':
-        return viewPorts.desktop
-      default:
-        return viewPorts.default
-    }
   }
 
   public handleSetViewport = (viewport: Viewport) => {
@@ -363,10 +333,7 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public render() {
-    const {
-      children,
-      runtime: { device },
-    } = this.props
+    const { children, isSiteEditor } = this.props
 
     const {
       activeConditions,
@@ -377,9 +344,9 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       iframeRuntime,
       iframeWindow,
+      isSidebarVisible,
       messages,
       mode,
-      showAdminControls,
       viewport,
     } = this.state
 
@@ -394,6 +361,7 @@ class EditorProvider extends Component<Props, State> {
       editTreePath,
       getIsLoading: this.getIsLoading,
       iframeWindow,
+      isSidebarVisible,
       messages,
       mode,
       onChangeIframeUrl: this.handleChangeIframeUrl,
@@ -404,6 +372,7 @@ class EditorProvider extends Component<Props, State> {
       setMode: this.handleSetMode,
       setViewport: this.handleSetViewport,
       toggleEditMode: this.handleToggleEditMode,
+      toggleSidebarVisibility: this.toggleSidebarVisibility,
       viewport,
     }
 
@@ -411,12 +380,9 @@ class EditorProvider extends Component<Props, State> {
       <ToastProvider positioning="parent">
         <EditorContext.Provider value={editor}>
           <EditorContainer
-            availableCultures={this.state.availableCultures}
             editor={editor}
             iframeRuntime={iframeRuntime}
-            onShowAdminControlsToggle={this.handleToggleShowAdminControls}
-            viewports={this.getAvailableViewports(device)}
-            visible={showAdminControls}
+            isSiteEditor={isSiteEditor}
           >
             {children}
           </EditorContainer>

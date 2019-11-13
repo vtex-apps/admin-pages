@@ -1,10 +1,12 @@
 import React from 'react'
 import { FormattedMessage } from 'react-intl'
-import ImageIcon from '../../../../images/ImageIcon'
+
+import IconImage from './icons/IconImage'
 
 const NoImagePlaceholder = () => (
   <div className="w-100 h-100 flex flex-column items-center justify-center bg-muted-5 br3">
-    <ImageIcon />
+    <IconImage />
+
     <FormattedMessage
       id="admin/pages.editor.components.no-image"
       defaultMessage="No image"

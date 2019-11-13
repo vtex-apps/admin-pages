@@ -26,7 +26,7 @@ import { TargetPathRenderProps } from './PagesAdminWrapper'
 
 import withStoreSettings, {
   FormProps,
-} from './components/EditorContainer/StoreEditor/Store/StoreForm/components/withStoreSettings'
+} from './components/admin/store/StoreForm/components/withStoreSettings'
 
 interface CustomProps {
   params: {

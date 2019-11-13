@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { useEditorContext } from '../../EditorContext'
+
 import StyleEditor from './StyleEditor'
 import StyleList from './StyleList'
 
@@ -7,13 +9,13 @@ const SELECTED_STYLE_TAG_ID = 'style_link'
 const PATH_STYLE_TAG_ID = 'style_path'
 const SHEET_STYLE_TAG_ID = 'style_sheet'
 
-interface Props {
-  iframeWindow: Window
-}
-
 type EditingState = Style | undefined
 
-const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
+const setStyleAsset = (window?: Window) => (asset: StyleAssetInfo) => {
+  if (!window) {
+    return
+  }
+
   if (asset.type === 'path') {
     const pathStyleTag = window.document.getElementById(PATH_STYLE_TAG_ID)
     if (pathStyleTag) {
@@ -41,8 +43,8 @@ const setStyleAsset = (window: Window) => (asset: StyleAssetInfo) => {
   }
 }
 
-const createStyleTag = (window: Window, id: string) => {
-  if (window.document.getElementById(id)) {
+const createStyleTag = (id: string, window?: Window) => {
+  if (!window || window.document.getElementById(id)) {
     return
   }
   const styleTag = window.document.createElement('style')
@@ -53,7 +55,11 @@ const createStyleTag = (window: Window, id: string) => {
   }
 }
 
-const removeStyleTag = (window: Window, id: string) => {
+const removeStyleTag = (id: string, window?: Window) => {
+  if (!window) {
+    return
+  }
+
   const styleTag = window.document.getElementById(id)
   if (styleTag && window.document.head) {
     try {
@@ -64,30 +70,42 @@ const removeStyleTag = (window: Window, id: string) => {
   }
 }
 
-const Styles: React.FunctionComponent<Props> = ({ iframeWindow }) => {
+const Styles = () => {
   const [editing, setEditing] = useState<EditingState>(undefined)
 
+  const { iframeWindow } = useEditorContext()
+
   useEffect(() => {
-    createStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
-    createStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
+    createStyleTag(PATH_STYLE_TAG_ID, iframeWindow)
+    createStyleTag(SHEET_STYLE_TAG_ID, iframeWindow)
 
     return () => {
-      removeStyleTag(iframeWindow, PATH_STYLE_TAG_ID)
-      removeStyleTag(iframeWindow, SHEET_STYLE_TAG_ID)
+      removeStyleTag(PATH_STYLE_TAG_ID, iframeWindow)
+      removeStyleTag(SHEET_STYLE_TAG_ID, iframeWindow)
     }
   }, [editing, iframeWindow])
 
-  return editing ? (
-    <StyleEditor
-      style={editing}
-      stopEditing={() => setEditing(undefined)}
-      setStyleAsset={setStyleAsset(iframeWindow)}
-    />
-  ) : (
-    <StyleList
-      startEditing={setEditing}
-      setStyleAsset={setStyleAsset(iframeWindow)}
-    />
+  return (
+    <div
+      className="h-100 mr5 bg-base ba b--muted-4 br3"
+      style={{
+        minWidth: '31rem',
+        width: '31rem',
+      }}
+    >
+      {editing ? (
+        <StyleEditor
+          style={editing}
+          stopEditing={() => setEditing(undefined)}
+          setStyleAsset={setStyleAsset(iframeWindow)}
+        />
+      ) : (
+        <StyleList
+          startEditing={setEditing}
+          setStyleAsset={setStyleAsset(iframeWindow)}
+        />
+      )}
+    </div>
   )
 }
 

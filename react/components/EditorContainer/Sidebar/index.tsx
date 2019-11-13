@@ -20,7 +20,6 @@ import Transitions from './Transitions'
 interface CustomProps {
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContext
-  visible: boolean
   updateHighlightTitleByTreePath: (
     titleByTreePath?: Record<string, { title?: string; isEditable: boolean }>
   ) => void
@@ -36,7 +35,6 @@ const Sidebar: React.FunctionComponent<Props> = ({
   iframeRuntime,
   intl,
   showToast,
-  visible,
   updateHighlightTitleByTreePath,
 }) => {
   const initialEditingState = useInitialEditingState({
@@ -64,7 +62,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     <div
       id="sidebar-vtex-editor"
       className={
-        visible
+        editor.isSidebarVisible
           ? 'z-1 h-100 top-3em-ns w-18em-ns w-100 w-auto-ns flex flex-row-reverse overflow-x-auto'
           : 'dn'
       }

@@ -31,12 +31,14 @@ const PageEditor: ComponentWithCustomMessage = (props: Props) => {
     })
   }
 
+  const isSiteEditor = React.useMemo(() => page.includes('site-editor'), [page])
+
   const path = params && params.targetPath
 
   const messagesContextValue = useMemo(
     () => ({
       setMessages(newMessages?: object) {
-        messages = {...messages, ...newMessages}
+        messages = { ...messages, ...newMessages }
       },
     }),
     []
@@ -51,7 +53,7 @@ const PageEditor: ComponentWithCustomMessage = (props: Props) => {
   return (
     <div className="h-100 overflow-y-auto bg-light-silver">
       <MessagesContext.Provider value={messagesContextValue}>
-        <EditorProvider>
+        <EditorProvider isSiteEditor={isSiteEditor}>
           <StoreIframe path={path} />
         </EditorProvider>
       </MessagesContext.Provider>
