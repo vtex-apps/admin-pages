@@ -471,5 +471,10 @@
   "admin/pages.editor.styles.select.delete-success": "Estilo '{name}' foi deletado.",
   "admin/pages.editor.styles.select.delete.toast.undo": "Desfazer",
   "admin/pages.editor.styles.select.save-fail": "Erro ao selecionar estilo '{name}'.",
-  "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado."
+  "admin/pages.editor.styles.select.save-success": "Estilo '{name}' foi selecionado.",
+  "admin/pages.editor.topbar.button.block-picker.tooltip": "Selecione um bloco",
+  "admin/pages.editor.topbar.button.device.desktop.tooltip": "Visão desktop",
+  "admin/pages.editor.topbar.button.device.mobile.tooltip": "Visão mobile",
+  "admin/pages.editor.topbar.button.device.tablet.tooltip": "Visão tablet",
+  "admin/pages.editor.topbar.button.preview.tooltip": "Pré-visualização"
 }
