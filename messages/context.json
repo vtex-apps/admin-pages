@@ -471,5 +471,10 @@
   "admin/pages.editor.styles.select.delete-success": "admin/pages.editor.styles.select.delete-success",
   "admin/pages.editor.styles.select.delete.toast.undo": "admin/pages.editor.styles.select.delete.toast.undo",
   "admin/pages.editor.styles.select.save-fail": "admin/pages.editor.styles.select.save-fail",
-  "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success"
+  "admin/pages.editor.styles.select.save-success": "admin/pages.editor.styles.select.save-success",
+  "admin/pages.editor.topbar.button.block-picker.tooltip": "admin/pages.editor.topbar.button.block-picker.tooltip",
+  "admin/pages.editor.topbar.button.device.desktop.tooltip": "admin/pages.editor.topbar.button.device.desktop.tooltip",
+  "admin/pages.editor.topbar.button.device.mobile.tooltip": "admin/pages.editor.topbar.button.device.mobile.tooltip",
+  "admin/pages.editor.topbar.button.device.tablet.tooltip": "admin/pages.editor.topbar.button.device.tablet.tooltip",
+  "admin/pages.editor.topbar.button.preview.tooltip": "admin/pages.editor.topbar.button.preview.tooltip"
 }

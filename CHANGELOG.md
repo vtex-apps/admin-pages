@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Tooltips to Site Editor's topbar controls.
+
 ## [4.17.1] - 2019-11-13
 
 ### Fixed
