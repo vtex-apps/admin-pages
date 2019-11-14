@@ -21,7 +21,7 @@ const messages = defineMessages({
   },
   deleteActiveText: {
     defaultMessage:
-      'You are trying to delete the active content. The next available content will take its place. Are you sure you want to continue?',
+      'You are trying to delete the active content. The next available content will take its place. Are you sure you want to continue? This action cannot be undone.',
     id: 'admin/pages.editor.components.modal.list.delete.active.text',
   },
   deleteActiveTitle: {
@@ -33,7 +33,8 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.toast.delete.error',
   },
   deleteInactiveText: {
-    defaultMessage: 'Are you sure you want to delete this content?',
+    defaultMessage:
+      'Are you sure you want to delete this content? This action cannot be undone.',
     id: 'admin/pages.editor.components.modal.list.delete.inactive.text',
   },
   deleteInactiveTitle: {
@@ -62,7 +63,7 @@ const messages = defineMessages({
   },
   resetText: {
     defaultMessage:
-      "You are trying to reset content created by an app. This action will discard any changes you've made. Are you sure you want to continue?",
+      "You are trying to reset content created by an application. This action will discard any changes you've made. Are you sure you want to continue? This action cannot be undone.",
     id: 'admin/pages.editor.components.modal.list.reset.text',
   },
 })

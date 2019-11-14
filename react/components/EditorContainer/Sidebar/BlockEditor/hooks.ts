@@ -25,10 +25,6 @@ const messages = defineMessages({
     defaultMessage: 'Cancel',
     id: 'admin/pages.editor.components.modal.form.button.cancel',
   },
-  continue: {
-    defaultMessage: 'Continue',
-    id: 'admin/pages.editor.components.modal.form.button.continue',
-  },
   discard: {
     defaultMessage: 'Discard',
     id: 'admin/pages.editor.components.modal.back.button.discard',
@@ -52,7 +48,7 @@ const messages = defineMessages({
   },
   unsavedListText: {
     defaultMessage:
-      'Your unsaved changes will be lost. Are you sure you want to continue?',
+      'You have unsaved changes. Are you sure you want to continue and discard your modifications? This action cannot be undone.',
     id: 'admin/pages.editor.components.modal.form.text',
   },
   unsavedListTitle: {
@@ -365,7 +361,7 @@ export const useFormHandlers: UseFormHandlers = ({
           modal.close()
         },
         isActionDanger: true,
-        textButtonAction: intl.formatMessage(messages.continue),
+        textButtonAction: intl.formatMessage(messages.discard),
         textButtonCancel: intl.formatMessage(messages.cancel),
         textMessage: intl.formatMessage(messages.unsavedListText),
         title: intl.formatMessage(messages.unsavedListTitle),

@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Improve the Site Editor's modals' texts.
+
 ## [4.18.0] - 2019-11-14
 
 ### Added
