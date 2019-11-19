@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Small visual tweak: removed unwanted shadow from the card block list
+
 ## [4.18.1] - 2019-11-14
 
 ### Changed
