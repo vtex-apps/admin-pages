@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.18.3] - 2019-11-21
+
 ### Fixed
 
 - Editor sidebar width.
