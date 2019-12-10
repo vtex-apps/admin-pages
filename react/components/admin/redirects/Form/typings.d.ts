@@ -34,14 +34,12 @@ export type StoreUpdaterGetter = (
   operation: 'delete' | 'save'
 ) => MutationUpdaterFn<Mutations>
 
-export type RedirectData = Redirect | undefined
-
 export type DeleteRedirectMutationFn = MutationFn<
-  RedirectData,
+  Redirect,
   DeleteRedirectVariables
 >
 
 export type SaveRedirectMutationFn = MutationFn<
-  RedirectData,
+  Redirect,
   SaveRedirectVariables
 >
