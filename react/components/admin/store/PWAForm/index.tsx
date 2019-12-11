@@ -11,6 +11,7 @@ import {
   Input,
   ToastContext,
   Toggle,
+  Checkbox,
 } from 'vtex.styleguide'
 
 import ImageUploader from '../../../form/ImageUploader'
@@ -225,6 +226,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             }}
             onFileDrop={(icon: File) => uploadIcon({ icon })}
           />
+          <Checkbox label="Maskable icon" checked={true}/>
         </div>
         <div className="w-100 pt4">
           <ImageUploader
