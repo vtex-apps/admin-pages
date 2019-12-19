@@ -12,6 +12,8 @@ import {
   ToastContext,
   Toggle,
   Checkbox,
+  Modal,
+  ButtonPlain,
 } from 'vtex.styleguide'
 
 import ImageUploader from '../../../form/ImageUploader'
@@ -31,6 +33,7 @@ import {
   TOAST_DURATION,
   INSTALL_PROMPT_OPTIONS,
 } from './utils/constants'
+import AdaptiveIconPreview from './components/AdaptiveIconPreview'
 
 const fillManifest = (manifest: Manifest): Manifest => ({
   ...manifest,
@@ -69,6 +72,8 @@ const PWAForm: React.FunctionComponent<Props> = ({
   ])
   const [submitting, setSubmitting] = useState(false)
   const [showSpecific, setShowSpecific] = useState(false)
+  const [isMaskable, setIsMaskable] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const toggleSpecific = React.useCallback(
     () => setShowSpecific(!showSpecific),
@@ -226,7 +231,14 @@ const PWAForm: React.FunctionComponent<Props> = ({
             }}
             onFileDrop={(icon: File) => uploadIcon({ icon })}
           />
-          <Checkbox label="Maskable icon" checked={true}/>
+          <Checkbox label="It's an adaptive icon" checked={isMaskable} onChange={() => {setIsMaskable(!isMaskable)}} />
+          <ButtonPlain size="small" onClick={() => {setIsModalOpen(true)}}>Preview</ButtonPlain>
+          <Modal isOpen={isModalOpen} onClose={() => {setIsModalOpen(false)}}>
+            <AdaptiveIconPreview imageURL={androidIcon
+                ? new URL(`https://${location.hostname}/${androidIcon.src}`)
+                    .href
+                : ''}/>
+          </Modal>
         </div>
         <div className="w-100 pt4">
           <ImageUploader
