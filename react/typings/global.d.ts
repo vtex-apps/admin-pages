@@ -112,6 +112,10 @@ declare global {
   interface RenderContext {
     account: RenderRuntime['account']
     addMessages: (newMessages: RenderContext['messages']) => Promise<void>
+    binding?: {
+      canonicalBaseAddress: string
+      id: string
+    }
     components: RenderRuntime['components']
     contentMap: RenderRuntime['contentMap']
     culture: RenderRuntime['culture']

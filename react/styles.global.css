@@ -63,6 +63,45 @@
   width: 100%;
 }
 
+.vtex-admin-pages-4-x .binding-selector .vtex-dropdown label > div {
+  background: #eef3f7;
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.vtex-admin-pages-4-x .binding-selector .vtex-dropdown .vtex-dropdown__caption {
+  color: #134cd8;
+}
+
+.vtex-admin-pages-4-x
+  .binding-selector-disabled
+  .vtex-dropdown
+  .vtex-dropdown__caption {
+  color: #979899;
+}
+
+.vtex-admin-pages-4-x
+  .locale-selector-with-bindings
+  .vtex-dropdown
+  label
+  > div {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.vtex-admin-pages-4-x
+  .locale-selector-with-bindings
+  .vtex-dropdown
+  .vtex-dropdown__arrow {
+  color: #3f3f40;
+}
+
+@media screen and (min-width: 30em) {
+  .vtex-admin-pages-4-x .w-18em-ns {
+    width: 18em;
+  }
+}
+
 @media only screen and (min-width: 40em) {
   .vtex-admin-pages-4-x .field-range-wrapper > input {
     width: 85%;

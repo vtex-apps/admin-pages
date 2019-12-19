@@ -76,6 +76,7 @@ export const getDeleteStoreUpdater: GetDeleteStoreUpdater = ({
   const cacheAccessParameters = {
     query: ListContent,
     variables: {
+      bindingId: iframeRuntime.binding && iframeRuntime.binding.id,
       blockId,
       pageContext: iframeRuntime.route.pageContext,
       template,

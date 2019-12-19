@@ -1,10 +1,12 @@
 query ListContent(
+  $bindingId: String
   $blockId: String
   $pageContext: PageContextInput
   $template: String
   $treePath: String
 ) {
   listContentWithSchema(
+    bindingId: $bindingId
     blockId: $blockId
     pageContext: $pageContext
     template: $template

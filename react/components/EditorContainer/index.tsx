@@ -109,8 +109,8 @@ const EditorContainer: React.FC<Props> = ({
     <FormMetaProvider>
       <ModalProvider>
         <IframeNavigationController iframeRuntime={iframeRuntime} />
-        <div className="w-500 h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
-          <div style={{ minWidth: '284px' }}>
+        <div className="vtex-admin-pages-4-x h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
+          <div className={editor.isSidebarVisible ? 'w-18em-ns' : 'dn'}>
             {isSiteEditor && iframeRuntime ? (
               <ToastConsumer>
                 {({ showToast }) => (
@@ -125,7 +125,7 @@ const EditorContainer: React.FC<Props> = ({
                 )}
               </ToastConsumer>
             ) : (
-              <div className="bg-white-70 flex items-center h-100 justify-center w-100 z-2">
+              <div className="bg-white-70 flex items-center w-18em-ns h-100 justify-center z-2">
                 <Spinner />
               </div>
             )}

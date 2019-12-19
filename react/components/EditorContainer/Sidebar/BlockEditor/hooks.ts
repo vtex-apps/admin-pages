@@ -154,6 +154,7 @@ export const useFormHandlers: UseFormHandlers = ({
 
       await saveContent({
         variables: {
+          bindingId: iframeRuntime.binding && iframeRuntime.binding.id,
           blockId,
           configuration,
           lang: iframeRuntime.culture.locale,

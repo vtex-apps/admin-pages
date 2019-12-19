@@ -1,8 +1,9 @@
 import React from 'react'
+import { ToastConsumer } from 'vtex.styleguide'
 
 import BlockPicker from './BlockPicker'
+import ContextSelectors from './ContextSelectors'
 import DeviceSwitcher from './DeviceSwitcher'
-import LocaleSelector from './LocaleSelector'
 import SidebarVisibilityToggle from './SidebarVisibilityToggle'
 import UrlInput from './UrlInput'
 
@@ -16,10 +17,11 @@ const Topbar: React.FunctionComponent<Props> = ({ iframeRuntime }) => (
   <div
     className={`ph5 pv7 f6 ${styles['h-3em']} w-100 bg-muted-5 flex justify-center items-center`}
   >
-    <LocaleSelector
-      emitter={iframeRuntime.emitter}
-      initialLocale={iframeRuntime.culture.locale}
-    />
+    <ToastConsumer>
+      {({ showToast }) => (
+        <ContextSelectors iframeRuntime={iframeRuntime} showToast={showToast} />
+      )}
+    </ToastConsumer>
 
     <div className="ml6 flex flex-grow-1">
       <UrlInput />

@@ -47,6 +47,7 @@ const useInitialEditingState: UseInitialEditingState = ({
         fetchPolicy: 'network-only',
         query: ListContent,
         variables: {
+          bindingId: iframeRuntime.binding && iframeRuntime.binding.id,
           blockId,
           pageContext: iframeRuntime.route.pageContext,
           template,

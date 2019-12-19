@@ -179,7 +179,7 @@ function withContentContext<T>(
                                       content: contentText || '',
                                     },
                                   ],
-                                }
+                                },
                               ],
                               to: culture.locale,
                             },
