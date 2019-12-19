@@ -12,7 +12,8 @@ import IframeNavigationController from './IframeNavigationController'
 import Styles from './Styles'
 import Topbar from './Topbar'
 import styles from './EditorContainer.css'
-import '../../editbar.global.css'
+
+import '../../styles.global.css'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
 
