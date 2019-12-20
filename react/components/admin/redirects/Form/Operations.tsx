@@ -5,8 +5,10 @@ import DeleteRedirect from '../../../../queries/DeleteRedirect.graphql'
 import SaveRedirect from '../../../../queries/SaveRedirect.graphql'
 
 import {
+  DeleteRedirectData,
   DeleteRedirectMutationFn,
   DeleteRedirectVariables,
+  SaveRedirectData,
   SaveRedirectMutationFn,
   SaveRedirectVariables,
 } from './typings'
@@ -22,14 +24,14 @@ interface OperationsObj {
 }
 
 const Operations = (props: Props) => (
-  <Mutation<Redirect, DeleteRedirectVariables>
+  <Mutation<DeleteRedirectData, DeleteRedirectVariables>
     mutation={DeleteRedirect}
-    update={getStoreUpdater('delete') as any}
+    update={getStoreUpdater('delete')}
   >
     {deleteRedirect => (
-      <Mutation<Redirect, SaveRedirectVariables>
+      <Mutation<SaveRedirectData, SaveRedirectVariables>
         mutation={SaveRedirect}
-        update={getStoreUpdater('save') as any}
+        update={getStoreUpdater('save')}
       >
         {saveRedirect =>
           props.children({
