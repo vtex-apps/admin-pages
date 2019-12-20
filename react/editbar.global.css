@@ -51,14 +51,6 @@
   background-color: #ffffff;
 }
 
-.draggable {
-  cursor: move;
-}
-
-.h-3em {
-  height: 48px;
-}
-
 .build-status {
   top: 0 !important;
   left: 0 !important;

@@ -11,6 +11,7 @@ import {
 } from './utils'
 
 import BlockList from './BlockList'
+import styles from '../../EditorContainer.css'
 
 interface Props {
   highlightHandler: (treePath: string | null) => void
@@ -79,7 +80,7 @@ const BlockSelector: React.FunctionComponent<Props & InjectedIntlProps> = ({
   }, [highlightHandler])
 
   return (
-    <div className="w-100 absolute h-3em">
+    <div className={`w-100 absolute ${styles['h-3em']}`}>
       <h3 className="fw5 ph5 pv4 ma0 lh-copy f5 near-black">
         <FormattedMessage id="admin/pages.editor.components.title" />
       </h3>
