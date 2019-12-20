@@ -1,9 +1,5 @@
 @import '~react-select/dist/react-select.css';
 
-.track-1 {
-  letter-spacing: 0.2px;
-}
-
 .min-h-2 {
   min-height: 2rem;
 }
