@@ -20,7 +20,7 @@ const validateUrlBeginning = (path: string) => {
 const validateConditionalTemplates: (data: RouteFormData) => { pages?: {} } = (
   data: RouteFormData
 ) => {
-  return data.pages.reduce<Record<string, unknown>>(
+  return data.pages.reduce<Record<string, any>>(
     (acc, { uniqueId, condition, template }) => {
       const templateError = !template && { template: REQUIRED_MESSAGE }
       const conditionError = !condition.statements.length && {

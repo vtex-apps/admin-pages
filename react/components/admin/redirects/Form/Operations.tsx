@@ -25,12 +25,12 @@ interface OperationsObj {
 const Operations = (props: Props) => (
   <Mutation<RedirectData, DeleteRedirectVariables>
     mutation={DeleteRedirect}
-    update={getStoreUpdater('delete')}
+    update={getStoreUpdater('delete') as any}
   >
     {deleteRedirect => (
       <Mutation<RedirectData, SaveRedirectVariables>
         mutation={SaveRedirect}
-        update={getStoreUpdater('save')}
+        update={getStoreUpdater('save') as any}
       >
         {saveRedirect =>
           props.children({
