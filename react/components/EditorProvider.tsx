@@ -178,17 +178,8 @@ class EditorProvider extends Component<Props, State> {
 
   public componentDidMount() {
     const {
-      runtime: { page, production, emitter },
+      runtime: { production, emitter },
     } = this.props
-
-    const root = page.split('/')[0]
-
-    if (root !== 'admin') {
-      Array.prototype.forEach.call(
-        document.getElementsByClassName('render-container'),
-        (e: Element) => e.classList.add('editor-provider')
-      )
-    }
 
     if (window.top) {
       window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')

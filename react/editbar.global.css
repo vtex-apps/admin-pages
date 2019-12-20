@@ -8,14 +8,6 @@
   min-height: 2rem;
 }
 
-.editor-provider {
-  height: 100%;
-}
-
-.editor-provider .preview-button {
-  display: none;
-}
-
 .shadow-editor {
   -webkit-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
