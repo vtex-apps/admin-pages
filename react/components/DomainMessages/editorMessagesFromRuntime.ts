@@ -4,7 +4,7 @@ import { Data, Message, Props, Variables } from './typings'
 
 import messagesForDomainQuery from '../../queries/MessagesForDomain.graphql'
 
-const MAX_COMPONENTS_PER_QUERY = 100
+const MAX_COMPONENTS_PER_QUERY = 30
 
 const messagesToReactIntlFormat = (messages: Message[]) =>
   messages.reduce((acc, { key, message }) => ({ ...acc, [key]: message }), {})
