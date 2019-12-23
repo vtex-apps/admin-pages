@@ -4,7 +4,8 @@ import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { Button } from 'vtex.styleguide'
 
-import styles from './ItemTransitions.css'
+import styles from './styles.css'
+import transitionStyles from './ItemTransitions.css'
 
 interface Props extends InjectedIntlProps {
   children: React.ReactElement
@@ -30,18 +31,18 @@ const ItemForm: React.FC<Props> = ({
   <CSSTransition
     in={stackDepth < currentDepth}
     classNames={{
-      enter: styles['item-depth-enter'],
-      enterActive: styles['item-depth-enter-active'],
-      enterDone: styles['item-depth-enter-done'],
-      exit: styles['item-depth-exit'],
-      exitActive: styles['item-depth-exit-active'],
-      exitDone: styles['item-depth-exit-done'],
+      enter: transitionStyles['item-depth-enter'],
+      enterActive: transitionStyles['item-depth-enter-active'],
+      enterDone: transitionStyles['item-depth-enter-done'],
+      exit: transitionStyles['item-depth-exit'],
+      exitActive: transitionStyles['item-depth-exit-active'],
+      exitDone: transitionStyles['item-depth-exit-done'],
     }}
     timeout={150}
   >
     <div
       className={classnames(
-        'accordion-item bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1'
+        `${styles['accordion-item']} bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
       )}
     >
       {children}

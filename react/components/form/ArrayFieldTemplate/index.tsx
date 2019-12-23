@@ -10,6 +10,8 @@ import {
 import AddButton from './AddButton'
 import ArrayList from './ArrayList'
 
+import styles from './styles.css'
+
 interface Props extends InjectedIntlProps {
   canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
@@ -23,7 +25,9 @@ interface State {
 }
 
 function getHelperDimensions({ node }: SortStart): Dimensions {
-  const label = node.querySelector('.accordion-label') as HTMLElement
+  const label = node.querySelector(
+    `.${styles['accordion-label']}`
+  ) as HTMLElement
   const width = node instanceof HTMLElement ? node.offsetWidth : 0
 
   return {
@@ -64,7 +68,7 @@ class ArrayFieldTemplate extends Component<
           formContext={this.props.formContext}
           getHelperDimensions={getHelperDimensions}
           getContainer={this.getContainer}
-          helperClass="accordion-item--dragged"
+          helperClass={styles['accordion-item--dragged']}
           items={items}
           lockAxis="y"
           lockToContainerEdges
