@@ -69,7 +69,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
     >
       <nav
         id="admin-sidebar"
-        className="transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns admin-sidebar"
+        className={`transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns ${styles['admin-sidebar']}`}
       >
         <div className="relative h-100 flex flex-column dark-gray">
           <Modal

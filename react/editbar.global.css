@@ -100,27 +100,9 @@
   width: calc(100% - 18em);
 }
 
-@media only screen and (max-width: 40em) {
-  .size-editor {
-    bottom: 0;
-    height: 100%;
-  }
-}
-
 @media only screen and (min-width: 40em) {
   .field-range-wrapper > input {
     width: 85%;
-  }
-  .form-schema {
-    min-height: 300px;
-  }
-  .size-editor {
-    max-width: 450px;
-  }
-  .shadow-editor-desktop {
-    -webkit-box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
-    -moz-box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
-    box-shadow: 0px 4px 10px 0px rgba(86, 88, 107, 0.5);
   }
 }
 
@@ -158,22 +140,6 @@
   }
   .w-18em-ns {
     width: 18em;
-  }
-
-  .admin-sidebar {
-    border-left: 2px solid #f2f4f5;
-  }
-
-  .admin-sidebar::-webkit-scrollbar,
-  .admin-sidebar::-webkit-scrollbar-track {
-    width: 2px;
-    background: #f2f4f5;
-  }
-
-  .admin-sidebar::-webkit-scrollbar-thumb {
-    width: 2px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 2px;
   }
 }
 
