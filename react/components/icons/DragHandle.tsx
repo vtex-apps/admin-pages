@@ -1,6 +1,8 @@
 import React from 'react'
 import { calcIconSize } from './utils'
 
+import styles from './DragHandle.css'
+
 interface Props {
   className?: string
   size?: number
@@ -20,7 +22,7 @@ const DragHandle: React.FunctionComponent<Props> = ({
 
   return (
     <svg
-      className={`editor-icon editor-icon--fill ${className}`}
+      className={`${styles['editor-icon--fill']} ${className}`}
       width={newSize.width}
       height={newSize.height}
       viewBox="0 0 6 12"

@@ -101,13 +101,3 @@
     width: 85%;
   }
 }
-
-.editor-icon--stroke path,
-.editor-icon--stroke circle {
-  stroke: #727273;
-}
-
-.editor-icon--fill path,
-.editor-icon--fill circle {
-  fill: #727273;
-}
