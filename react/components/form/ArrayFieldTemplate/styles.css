@@ -1,0 +1,58 @@
+.accordion-item {
+  background-color: white;
+}
+
+.accordion-list-container--sorting .accordion-item {
+  pointer-events: none;
+}
+
+.accordion-item--dragged {
+  z-index: 999;
+}
+
+.accordion-label {
+  display: flex;
+  position: relative;
+  margin: 0 -24px 0;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.accordion-item--dragged .accordion-label {
+  background-color: #fff;
+}
+
+.accordion-item--handle-hidden .accordion-label {
+  padding-left: 16px;
+}
+
+.accordion-item--dragged .accordion-label {
+  box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, 0.2);
+}
+
+.accordion-label-title {
+  color: #727273;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.accordion-item--dragged .accordion-handle,
+.accordion-label:hover .accordion-handle {
+  display: block;
+}
+
+.drag-handle-container {
+  transform: translateZ(0);
+  transition: transform ease-in-out 100ms;
+}
+
+.drag-handle-container:hover,
+.accordion-item--dragged .drag-handle-container {
+  transform: scale(1.1);
+}
+
+.drag-handle-container:hover circle,
+.accordion-item--dragged .drag-handle-container circle {
+  fill: #368df7;
+}

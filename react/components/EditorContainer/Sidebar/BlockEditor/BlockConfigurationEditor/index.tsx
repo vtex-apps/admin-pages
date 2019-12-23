@@ -162,7 +162,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
 
         <div
           className={classnames(
-            'relative bg-white flex flex-column justify-between size-editor w-100 pb3 ph5',
+            'relative bg-white flex flex-column justify-between w-100 pb3 ph5',
+            styles['size-editor'],
             styles['form'],
             { [styles['form--leave']]: isArrayFieldOpen }
           )}

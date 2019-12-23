@@ -4,6 +4,8 @@ import React from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
+import styles from './Item.css'
+
 interface Props extends InjectedIntlProps {
   hasSubitems?: boolean
   isEditable: boolean
@@ -58,7 +60,7 @@ const Item: React.FunctionComponent<Props> = ({
       }}
       tabIndex={0}
     >
-      <span className="f6 fw4 track-1 pl2">
+      <span className={`f6 fw4 ${styles['track-1']} pl2`}>
         {typeof title === 'string' ? (
           formatIOMessage({ id: title, intl })
         ) : (

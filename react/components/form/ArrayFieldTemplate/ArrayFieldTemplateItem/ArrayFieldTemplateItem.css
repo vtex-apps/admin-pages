@@ -38,18 +38,3 @@
 .preview-container:hover .preview-overlay {
   opacity: 0.15;
 }
-
-.drag-handle-container {
-  transform: translateZ(0);
-  transition: transform ease-in-out 100ms;
-}
-
-.drag-handle-container:hover,
-:global(.accordion-item--dragged) .drag-handle-container {
-  transform: scale(1.1);
-}
-
-.drag-handle-container:hover circle,
-:global(.accordion-item--dragged) .drag-handle-container circle {
-  fill: #368df7;
-}

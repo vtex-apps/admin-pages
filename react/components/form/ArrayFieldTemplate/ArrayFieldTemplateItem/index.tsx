@@ -14,7 +14,8 @@ import Handle from './Handle'
 import NoImagePlaceholder from './NoImagePlaceholder'
 import PreviewOverlay from './PreviewOverlay'
 
-import styles from './ArrayFieldTemplateItem.css'
+import templateStyles from '../styles.css'
+import itemStyles from './ArrayFieldTemplateItem.css'
 
 const stopPropagation = (e: Pick<React.MouseEvent, 'stopPropagation'>) => {
   e.stopPropagation()
@@ -171,12 +172,18 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   return (
     <div
-      className={classnames('accordion-item bg-white bb b--light-silver', {
-        'accordion-item--handle-hidden': showDragHandle,
-      })}
+      className={classnames(
+        'bg-white bb b--light-silver',
+        {
+          [templateStyles['accordion-item--handle-hidden']]: showDragHandle,
+        },
+        templateStyles['accordion-item']
+      )}
     >
       <div
-        className={`accordion-label bg-white flex items-center justify-center overflow-hidden relative outline-0 ${
+        className={`${
+          templateStyles['accordion-label']
+        } bg-white flex items-center justify-center overflow-hidden relative outline-0 ${
           hasImageUploader ? 'h4' : 'h3'
         }`}
         onClick={handleItemClick}
@@ -188,11 +195,11 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
         <div
           className={classnames(
             'relative flex items-center',
-            styles['preview-container'],
+            itemStyles['preview-container'],
             {
-              [`${styles['multi-item']} mr3`]: showDragHandle,
-              [`${styles['single-item']}`]: !showDragHandle,
-              [`${styles['preview-text-container']} ml3`]:
+              [`${itemStyles['multi-item']} mr3`]: showDragHandle,
+              [`${itemStyles['single-item']}`]: !showDragHandle,
+              [`${itemStyles['preview-text-container']} ml3`]:
                 !hasImageUploader && !showDragHandle,
             }
           )}
@@ -202,7 +209,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
               {imagePreview ? (
                 <img
                   alt="Preview"
-                  className={`br3 bg-muted-5 h-100 w-100 ${styles['preview-image']}`}
+                  className={`br3 bg-muted-5 h-100 w-100 ${itemStyles['preview-image']}`}
                   src={imagePreview}
                 />
               ) : (
@@ -211,14 +218,14 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
               <PreviewOverlay />
             </>
           ) : (
-            <span className="f6 accordion-label-title">
+            <span className={`f6 ${templateStyles['accordion-label-title']}`}>
               {intl.formatMessage(
                 title ? { id: title } : messages.defaultTitle
               )}
             </span>
           )}
           <div
-            className={`absolute top-0 right-0 mr3 mt3 ${styles['action-menu-container']}`}
+            className={`absolute top-0 right-0 mr3 mt3 ${itemStyles['action-menu-container']}`}
             onClick={stopPropagation}
             onKeyDown={itemStopPropagation}
             role="button"

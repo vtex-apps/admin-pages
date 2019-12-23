@@ -5,6 +5,8 @@ import { useEditorContext } from '../../../EditorContext'
 import { VIEWPORTS_BY_DEVICE } from './consts'
 import DeviceItem from './DeviceItem'
 
+import styles from './DeviceSwitcher.css'
+
 interface Props {
   device: RenderContext['device']
 }
@@ -29,7 +31,7 @@ const DeviceSwitcher: React.FC<Props> = ({ device }) => {
         const isLast = index === viewports.length - 1
 
         return (
-          <div className={!isLast ? 'mr05' : ''} key={deviceType}>
+          <div className={!isLast ? styles['mr05'] : ''} key={deviceType}>
             <DeviceItem
               isActive={deviceType === editor.viewport}
               onClick={handleClick}

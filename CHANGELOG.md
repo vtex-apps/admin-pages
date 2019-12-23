@@ -7,9 +7,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Move global CSS to scoped modules.
+
+### Fixed
+
+- Typescript errors.
+
+### Removed
+
+- Unused CSS classes from components and CSS files.
+
 ## [4.18.4] - 2019-12-20
 ### Changed
-- Decreas batch size to make less probable a timeout with messages
+- Decrease batch size to make less probable a timeout with messages
 
 ## [4.18.3] - 2019-11-21
 

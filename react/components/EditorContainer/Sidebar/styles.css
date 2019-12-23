@@ -49,3 +49,26 @@
 .transition-selector-exit-done {
   transform: translateX(0);
 }
+
+/* Non small */
+@media screen and (min-width: 30em) {
+  .admin-sidebar {
+    border-left: 2px solid #f2f4f5;
+  }
+
+  .admin-sidebar::-webkit-scrollbar,
+  .admin-sidebar::-webkit-scrollbar-track {
+    width: 2px;
+    background: #f2f4f5;
+  }
+
+  .admin-sidebar::-webkit-scrollbar-thumb {
+    width: 2px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 2px;
+  }
+
+  .w-18em-ns {
+    width: 18em;
+  }
+}

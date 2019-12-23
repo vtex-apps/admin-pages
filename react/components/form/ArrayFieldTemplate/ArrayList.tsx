@@ -10,7 +10,8 @@ import { ActionMenuOption } from '../../ActionMenu/typings'
 import ArrayFieldTemplateItem from './ArrayFieldTemplateItem'
 import ItemForm from './ItemForm'
 
-import styles from './ItemTransitions.css'
+import styles from './styles.css'
+import transitionStyles from './ItemTransitions.css'
 
 interface ArrayListProps {
   formContext: { currentDepth: number }
@@ -26,15 +27,15 @@ interface ArrayListProps {
 }
 
 const transitionClassNames = {
-  appear: styles['item-enter'],
-  appearActive: styles['item-enter-active'],
-  appearDone: styles['item-enter-done'],
-  enter: styles['item-enter'],
-  enterActive: styles['item-enter-active'],
-  enterDone: styles['item-enter-done'],
-  exit: styles['item-exit'],
-  exitActive: styles['item-exit-active'],
-  exitDone: styles['item-exit-done'],
+  appear: transitionStyles['item-enter'],
+  appearActive: transitionStyles['item-enter-active'],
+  appearDone: transitionStyles['item-enter-done'],
+  enter: transitionStyles['item-enter'],
+  enterActive: transitionStyles['item-enter-active'],
+  enterDone: transitionStyles['item-enter-done'],
+  exit: transitionStyles['item-exit'],
+  exitActive: transitionStyles['item-exit-active'],
+  exitDone: transitionStyles['item-exit-done'],
 }
 
 const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
@@ -48,11 +49,7 @@ const ArrayList: React.FC<ArrayListProps & SortableContainerProps> = ({
   sorting,
   stackDepth,
 }) => (
-  <div
-    className={`accordion-list-container ${
-      sorting ? 'accordion-list-container--sorting' : ''
-    }`}
-  >
+  <div className={sorting ? styles['accordion-list-container--sorting'] : ''}>
     {children}
     {items.map(element => (
       <Fragment key={element.index}>
