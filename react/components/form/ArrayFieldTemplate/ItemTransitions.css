@@ -38,7 +38,7 @@
 }
 
 /* So the hidden item doesn't affect the height of the current form */
-.item-depth-enter-done > :global(.form-group) {
+.item-depth-enter-done > :global(.vtex-admin-pages-4-x .form-group) {
   height: 0;
   overflow: hidden;
 }

@@ -1,17 +1,11 @@
 @import '~react-select/dist/react-select.css';
 
-.shadow-editor {
-  -webkit-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
-  -moz-box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
-  box-shadow: 0px -2px 1px 0px rgba(0, 0, 0, 0.2);
-}
-
-.form-group {
+.vtex-admin-pages-4-x .form-group {
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.form-group.field.field-object > label {
+.vtex-admin-pages-4-x .form-group.field.field-object > label {
   border-top: 2px solid #f0f2f4;
   color: #c3c4c5;
   font-weight: 700;
@@ -20,25 +14,20 @@
   text-transform: uppercase;
 }
 
-.form-group.field.field-object:first-child > label {
+.vtex-admin-pages-4-x .form-group.field.field-object:first-child > label {
   border-top: none;
   margin-top: 0;
   padding-top: 0;
 }
 
-.checkbox span {
-  padding-left: 5px;
-  font-size: 0.875rem;
-}
-
-.field-description {
+.vtex-admin-pages-4-x .field-description {
   font-size: 12px;
   color: #979899;
   margin-top: 0px;
   font-style: italic;
 }
 
-.form-control {
+.vtex-admin-pages-4-x .form-control {
   border: 2px solid #e1e3e5;
   height: 40px;
   width: 100%;
@@ -47,57 +36,35 @@
   background-color: #ffffff;
 }
 
-.build-status {
-  top: 0 !important;
-  left: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  background-color: #fff !important;
-  margin: 11px !important;
-  padding: 0 !important;
-}
-
-.build-status.reload {
-  margin-top: 0 !important;
-  width: 100% !important;
-  height: 46px !important;
-}
-
-.build-status.fail {
-  margin-top: 0 !important;
-  width: 100% !important;
-  height: 46px !important;
-}
-
-.radio-inline > span > span {
+.vtex-admin-pages-4-x .radio-inline > span > span {
   padding-left: 5px;
   padding-right: 15px;
 }
 
-.field-range-wrapper > input {
+.vtex-admin-pages-4-x .field-range-wrapper > input {
   width: 80%;
 }
 
-.field-range-wrapper {
+.vtex-admin-pages-4-x .field-range-wrapper {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.field-range-wrapper > span {
+.vtex-admin-pages-4-x .field-range-wrapper > span {
   font-size: 16px;
   font-weight: 700;
   padding-right: 3px;
   color: #368df7;
 }
 
-.panel-danger {
+.vtex-admin-pages-4-x .panel-danger {
   position: fixed;
   width: 100%;
 }
 
 @media only screen and (min-width: 40em) {
-  .field-range-wrapper > input {
+  .vtex-admin-pages-4-x .field-range-wrapper > input {
     width: 85%;
   }
 }
