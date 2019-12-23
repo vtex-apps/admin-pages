@@ -63,7 +63,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
       id="sidebar-vtex-editor"
       className={
         editor.isSidebarVisible
-          ? 'z-1 h-100 top-3em-ns w-18em-ns w-100 flex flex-row-reverse'
+          ? 'z-1 h-100 w-18em-ns w-100 flex flex-row-reverse'
           : 'dn'
       }
     >
