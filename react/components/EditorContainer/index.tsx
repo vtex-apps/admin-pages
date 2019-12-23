@@ -24,7 +24,7 @@ const getContainerProps = (layout: Viewport) => {
   switch (layout) {
     case 'mobile':
       return {
-        className: 'mobile-preview center',
+        className: `${styles['mobile-preview']} center`,
         style: {
           animationDuration: '0.2s',
           transition: `width 660ms`,
@@ -32,7 +32,7 @@ const getContainerProps = (layout: Viewport) => {
       }
     case 'tablet':
       return {
-        className: 'tablet-preview center',
+        className: `${styles['tablet-preview']} center`,
         style: {
           animationDuration: '0.2s',
           transition: `width 660ms`,

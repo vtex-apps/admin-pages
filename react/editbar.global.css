@@ -102,22 +102,6 @@
   }
 }
 
-.mobile-preview {
-  width: 360px;
-  height: 640px;
-  max-height: 100%;
-  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
-.tablet-preview {
-  width: 768px;
-  height: 1024px;
-  max-height: 100%;
-  box-shadow: 1px 4px 8px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-}
-
 .stroke-blue {
   stroke: #368df7;
 }
