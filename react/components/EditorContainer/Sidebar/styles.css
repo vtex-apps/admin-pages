@@ -67,4 +67,8 @@
     background: rgba(0, 0, 0, 0.2);
     border-radius: 2px;
   }
+
+  .w-18em-ns {
+    width: 18em;
+  }
 }

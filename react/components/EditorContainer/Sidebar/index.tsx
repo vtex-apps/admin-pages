@@ -63,13 +63,16 @@ const Sidebar: React.FunctionComponent<Props> = ({
       id="sidebar-vtex-editor"
       className={
         editor.isSidebarVisible
-          ? 'z-1 h-100 w-18em-ns w-100 flex flex-row-reverse'
+          ? `z-1 h-100 ${styles['w-18em-ns']} w-100 flex flex-row-reverse`
           : 'dn'
       }
     >
       <nav
         id="admin-sidebar"
-        className={`transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns ${styles['admin-sidebar']}`}
+        className={
+          `transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns ` +
+          `overflow-x-hidden w-100 font-display bg-white shadow-solid-x ${styles['w-18em-ns']} ${styles['admin-sidebar']}`
+        }
       >
         <div className="relative h-100 flex flex-column dark-gray">
           <Modal

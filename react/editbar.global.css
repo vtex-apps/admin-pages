@@ -102,16 +102,6 @@
   }
 }
 
-/* Non small */
-@media screen and (min-width: 30em) {
-  .w-3em-ns {
-    width: 3em;
-  }
-  .w-18em-ns {
-    width: 18em;
-  }
-}
-
 .mobile-preview {
   width: 360px;
   height: 640px;
