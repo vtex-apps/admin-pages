@@ -96,10 +96,6 @@
   width: 100%;
 }
 
-.calc--width {
-  width: calc(100% - 18em);
-}
-
 @media only screen and (min-width: 40em) {
   .field-range-wrapper > input {
     width: 85%;
@@ -128,9 +124,6 @@
   }
   .top-3em-ns {
     top: 3em;
-  }
-  .calc--width-ns {
-    width: calc(100% - 18em);
   }
   .calc--minified-width-ns {
     width: calc(100% - 3em);
