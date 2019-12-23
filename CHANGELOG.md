@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.18.5] - 2019-12-23
+
 ### Changed
 
 - Move global CSS to scoped modules.
