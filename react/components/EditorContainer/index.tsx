@@ -14,6 +14,8 @@ import IframeNavigationController from './IframeNavigationController'
 import Styles from './Styles'
 import Topbar from './Topbar'
 
+import styles from './EditorContainer.css'
+
 import '../../editbar.global.css'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
@@ -156,7 +158,7 @@ const EditorContainer: React.FC<Props> = ({
             <div
               className={`pa5 bg-muted-5 flex items-start z-0 center-m left-0-m overflow-x-auto-m ${
                 isSiteEditor && iframeRuntime
-                  ? `calc--height-relative${hasAlert ? '--dev' : ''}`
+                  ? styles[`calc--height-relative${hasAlert ? '--dev' : ''}`]
                   : 'top-0 w-100 h-100'
               }`}
             >

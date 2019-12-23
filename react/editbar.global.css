@@ -102,14 +102,6 @@
   }
 }
 
-.calc--height-relative {
-  height: calc(100% - 3em);
-}
-
-.calc--height-relative--dev {
-  height: calc(100% - 8.5em);
-}
-
 .mr05 {
   margin-right: 1px;
 }
@@ -119,14 +111,8 @@
   .h-3em-ns {
     height: 3em;
   }
-  .calc--height-relative-ns {
-    height: calc(100% - 3em);
-  }
   .top-3em-ns {
     top: 3em;
-  }
-  .calc--minified-width-ns {
-    width: calc(100% - 3em);
   }
   .w-3em-ns {
     width: 3em;
