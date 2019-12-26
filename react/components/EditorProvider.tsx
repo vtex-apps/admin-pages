@@ -15,11 +15,9 @@ import {
 } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
-import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
-  ReactIntl.InjectedIntlProps &
-  MessagesContextProps & {
+  ReactIntl.InjectedIntlProps & {
     client: ApolloClient<unknown>
     isSiteEditor: boolean
   }
@@ -393,18 +391,10 @@ class EditorProvider extends Component<Props, State> {
   }
 }
 
-const EditorWithMessageContext = (props: Omit<Props, 'setMessages'>) => (
-  <MessagesContext.Consumer>
-    {({ setMessages }) => {
-      return <EditorProvider {...props} setMessages={setMessages} />
-    }}
-  </MessagesContext.Consumer>
-)
-
 const EditorWithApolloAndRuntime = withRuntimeContext(
-  withApollo<
-    Omit<React.ComponentProps<typeof EditorWithMessageContext>, 'client'>
-  >(EditorWithMessageContext)
+  withApollo<Omit<React.ComponentProps<typeof EditorProvider>, 'client'>>(
+    EditorProvider
+  )
 )
 
 export default injectIntl(EditorWithApolloAndRuntime)

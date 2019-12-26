@@ -1,9 +1,8 @@
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useRuntime } from 'vtex.render-runtime'
 
 import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
-import MessagesContext from './components/MessagesContext'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
 interface Props extends RenderContextProps {
@@ -13,13 +12,7 @@ interface Props extends RenderContextProps {
   }
 }
 
-let messages = {}
-
-type ComponentWithCustomMessage = React.FunctionComponent<Props> & {
-  getCustomMessages: () => object
-}
-
-const PageEditor: ComponentWithCustomMessage = (props: Props) => {
+const PageEditor: React.FC<Props> = props => {
   const { page, params } = props
 
   const runtime = useRuntime()
@@ -35,15 +28,6 @@ const PageEditor: ComponentWithCustomMessage = (props: Props) => {
 
   const path = params && params.targetPath
 
-  const messagesContextValue = useMemo(
-    () => ({
-      setMessages(newMessages?: object) {
-        messages = { ...messages, ...newMessages }
-      },
-    }),
-    []
-  )
-
   const { stopLoading } = useAdminLoadingContext()
 
   useEffect(() => {
@@ -52,15 +36,11 @@ const PageEditor: ComponentWithCustomMessage = (props: Props) => {
 
   return (
     <div className="h-100 overflow-y-auto bg-light-silver">
-      <MessagesContext.Provider value={messagesContextValue}>
-        <EditorProvider isSiteEditor={isSiteEditor}>
-          <StoreIframe path={path} />
-        </EditorProvider>
-      </MessagesContext.Provider>
+      <EditorProvider isSiteEditor={isSiteEditor}>
+        <StoreIframe path={path} />
+      </EditorProvider>
     </div>
   )
 }
-
-PageEditor.getCustomMessages = () => messages
 
 export default PageEditor
