@@ -110,7 +110,7 @@ class EditorProvider extends Component<Props, State> {
           ...formattedEditorMessages,
         }
 
-        this.props.setMessages(newMessages)
+        this.updateRenderRuntimeMessage(newMessages)
 
         if (shouldUpdateRuntime) {
           await this.props.runtime.updateRuntime()
@@ -383,6 +383,10 @@ class EditorProvider extends Component<Props, State> {
   }
 
   private getIsLoading = () => this.state.isLoading
+
+  private updateRenderRuntimeMessage = (messages: Record<string, string>) => {
+    this.props.runtime.addMessages(messages)
+  }
 
   private handleSetIsLoading = (isLoading: boolean) => {
     this.setState({ isLoading })
