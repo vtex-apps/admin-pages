@@ -24,13 +24,16 @@ const reduceP = async <T, K>(
 let cachedResult: Record<string, string> = {}
 const fetchedKeys = new Set()
 
-export const editorMessagesFromRuntime = async ({
-  client,
-  domain,
-  runtime,
-}: Props) => {
+export const editorMessagesFromRuntime = async (
+  { client, domain, runtime }: Props,
+  { isRetry, componentsPerQuery } = {
+    isRetry: false,
+    componentsPerQuery: MAX_COMPONENTS_PER_QUERY,
+  }
+) => {
   const { components, renderMajor } = runtime
   const allComponentNames = keys(components)
+  let shouldRetry = false
 
   const componentNamesToFetch = allComponentNames.filter(componentName => {
     const shouldFetchComponent = !fetchedKeys.has(componentName)
@@ -42,10 +45,7 @@ export const editorMessagesFromRuntime = async ({
     return cachedResult
   }
 
-  const componentsBatch = splitEvery(
-    MAX_COMPONENTS_PER_QUERY,
-    componentNamesToFetch
-  )
+  const componentsBatch = splitEvery(componentsPerQuery, componentNamesToFetch)
 
   const responses = map(
     batch =>
@@ -76,6 +76,7 @@ export const editorMessagesFromRuntime = async ({
         } = await response
         return [...acc, ...batchMessages]
       } catch (e) {
+        shouldRetry = true
         return acc
       }
     },
@@ -86,5 +87,22 @@ export const editorMessagesFromRuntime = async ({
   const messagesInReactIntlFormat = messagesToReactIntlFormat(messages)
   cachedResult = { ...cachedResult, ...messagesInReactIntlFormat }
 
-  return messagesInReactIntlFormat
+  let retriedMessages
+  if (shouldRetry && !isRetry) {
+    retriedMessages = await new Promise<Record<string, string>>(res =>
+      setTimeout(async () => {
+        res(
+          await editorMessagesFromRuntime(
+            { client, domain, runtime },
+            {
+              isRetry: true,
+              componentsPerQuery: Math.round(MAX_COMPONENTS_PER_QUERY / 2),
+            }
+          )
+        )
+      }, 700)
+    )
+  }
+
+  return { ...messagesInReactIntlFormat, ...retriedMessages }
 }
