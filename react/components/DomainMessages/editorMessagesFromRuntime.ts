@@ -35,10 +35,6 @@ export const editorMessagesFromRuntime = async ({
   const componentNamesToFetch = allComponentNames.filter(componentName => {
     const shouldFetchComponent = !fetchedKeys.has(componentName)
 
-    if (shouldFetchComponent) {
-      fetchedKeys.add(componentName)
-    }
-
     return shouldFetchComponent
   })
 
@@ -53,23 +49,35 @@ export const editorMessagesFromRuntime = async ({
 
   const responses = map(
     batch =>
-      client.query<Data, Variables>({
-        fetchPolicy: 'network-only',
-        query: messagesForDomainQuery,
-        variables: {
-          components: batch,
-          domain,
-          renderMajor,
-        },
-      }),
+      client
+        .query<Data, Variables>({
+          fetchPolicy: 'network-only',
+          query: messagesForDomainQuery,
+          variables: {
+            components: batch,
+            domain,
+            renderMajor,
+          },
+        })
+        .then(res => {
+          batch.forEach(componentName => {
+            fetchedKeys.add(componentName)
+          })
+
+          return res
+        }),
     componentsBatch
   )
   const messages = await reduceP(
     async (acc, response) => {
-      const {
-        data: { messages: batchMessages },
-      } = await response
-      return [...acc, ...batchMessages]
+      try {
+        const {
+          data: { messages: batchMessages },
+        } = await response
+        return [...acc, ...batchMessages]
+      } catch (e) {
+        return acc
+      }
     },
     [] as Message[],
     responses
