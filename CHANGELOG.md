@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.18.7] - 2020-01-06
+
 ## [4.18.6] - 2019-12-26
 ### Changed
 - Decrease batch size AGAIN to make a timeout with messages service less probable.
