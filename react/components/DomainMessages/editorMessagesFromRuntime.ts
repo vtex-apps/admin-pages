@@ -11,10 +11,10 @@ const messagesToReactIntlFormat = (messages: Message[]) =>
 
 const reduceP = async <T, K>(
   fn: (acc: K, item: T) => Promise<K>,
-  intialValue: K,
+  initialValue: K,
   list: T[]
 ) => {
-  let acc = intialValue
+  let acc = initialValue
   for (const item of list) {
     acc = await fn(acc, item)
   }
