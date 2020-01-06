@@ -34,6 +34,10 @@
         "path": "/admin/cms/site-editor"
       },
       {
+        "labelId": "admin/pages.admin-menu-button.styles",
+        "path": "/admin/cms/styles"
+      },
+      {
         "labelId": "admin/pages.admin-menu-button.pages",
         "path": "/admin/cms/content"
       }
