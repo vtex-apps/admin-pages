@@ -15,11 +15,9 @@ import {
 } from './DomainMessages'
 import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
-import MessagesContext, { MessagesContextProps } from './MessagesContext'
 
 type Props = RenderContextProps &
-  ReactIntl.InjectedIntlProps &
-  MessagesContextProps & {
+  ReactIntl.InjectedIntlProps & {
     client: ApolloClient<unknown>
     isSiteEditor: boolean
   }
@@ -110,7 +108,7 @@ class EditorProvider extends Component<Props, State> {
           ...formattedEditorMessages,
         }
 
-        this.props.setMessages(newMessages)
+        this.updateRenderRuntimeMessage(newMessages)
 
         if (shouldUpdateRuntime) {
           await this.props.runtime.updateRuntime()
@@ -384,23 +382,19 @@ class EditorProvider extends Component<Props, State> {
 
   private getIsLoading = () => this.state.isLoading
 
+  private updateRenderRuntimeMessage = (messages: Record<string, string>) => {
+    this.props.runtime.addMessages(messages)
+  }
+
   private handleSetIsLoading = (isLoading: boolean) => {
     this.setState({ isLoading })
   }
 }
 
-const EditorWithMessageContext = (props: Omit<Props, 'setMessages'>) => (
-  <MessagesContext.Consumer>
-    {({ setMessages }) => {
-      return <EditorProvider {...props} setMessages={setMessages} />
-    }}
-  </MessagesContext.Consumer>
-)
-
 const EditorWithApolloAndRuntime = withRuntimeContext(
-  withApollo<
-    Omit<React.ComponentProps<typeof EditorWithMessageContext>, 'client'>
-  >(EditorWithMessageContext)
+  withApollo<Omit<React.ComponentProps<typeof EditorProvider>, 'client'>>(
+    EditorProvider
+  )
 )
 
 export default injectIntl(EditorWithApolloAndRuntime)

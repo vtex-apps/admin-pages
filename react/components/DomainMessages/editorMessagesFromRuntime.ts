@@ -11,10 +11,10 @@ const messagesToReactIntlFormat = (messages: Message[]) =>
 
 const reduceP = async <T, K>(
   fn: (acc: K, item: T) => Promise<K>,
-  intialValue: K,
+  initialValue: K,
   list: T[]
 ) => {
-  let acc = intialValue
+  let acc = initialValue
   for (const item of list) {
     acc = await fn(acc, item)
   }
@@ -24,20 +24,19 @@ const reduceP = async <T, K>(
 let cachedResult: Record<string, string> = {}
 const fetchedKeys = new Set()
 
-export const editorMessagesFromRuntime = async ({
-  client,
-  domain,
-  runtime,
-}: Props) => {
+export const editorMessagesFromRuntime = async (
+  { client, domain, runtime }: Props,
+  { isRetry, componentsPerQuery } = {
+    isRetry: false,
+    componentsPerQuery: MAX_COMPONENTS_PER_QUERY,
+  }
+) => {
   const { components, renderMajor } = runtime
   const allComponentNames = keys(components)
+  let shouldRetry = false
 
   const componentNamesToFetch = allComponentNames.filter(componentName => {
     const shouldFetchComponent = !fetchedKeys.has(componentName)
-
-    if (shouldFetchComponent) {
-      fetchedKeys.add(componentName)
-    }
 
     return shouldFetchComponent
   })
@@ -46,30 +45,40 @@ export const editorMessagesFromRuntime = async ({
     return cachedResult
   }
 
-  const componentsBatch = splitEvery(
-    MAX_COMPONENTS_PER_QUERY,
-    componentNamesToFetch
-  )
+  const componentsBatch = splitEvery(componentsPerQuery, componentNamesToFetch)
 
   const responses = map(
     batch =>
-      client.query<Data, Variables>({
-        fetchPolicy: 'network-only',
-        query: messagesForDomainQuery,
-        variables: {
-          components: batch,
-          domain,
-          renderMajor,
-        },
-      }),
+      client
+        .query<Data, Variables>({
+          fetchPolicy: 'network-only',
+          query: messagesForDomainQuery,
+          variables: {
+            components: batch,
+            domain,
+            renderMajor,
+          },
+        })
+        .then(res => {
+          batch.forEach(componentName => {
+            fetchedKeys.add(componentName)
+          })
+
+          return res
+        }),
     componentsBatch
   )
   const messages = await reduceP(
     async (acc, response) => {
-      const {
-        data: { messages: batchMessages },
-      } = await response
-      return [...acc, ...batchMessages]
+      try {
+        const {
+          data: { messages: batchMessages },
+        } = await response
+        return [...acc, ...batchMessages]
+      } catch (e) {
+        shouldRetry = true
+        return acc
+      }
     },
     [] as Message[],
     responses
@@ -78,5 +87,22 @@ export const editorMessagesFromRuntime = async ({
   const messagesInReactIntlFormat = messagesToReactIntlFormat(messages)
   cachedResult = { ...cachedResult, ...messagesInReactIntlFormat }
 
-  return messagesInReactIntlFormat
+  let retriedMessages
+  if (shouldRetry && !isRetry) {
+    retriedMessages = await new Promise<Record<string, string>>(res =>
+      setTimeout(async () => {
+        res(
+          await editorMessagesFromRuntime(
+            { client, domain, runtime },
+            {
+              isRetry: true,
+              componentsPerQuery: Math.round(MAX_COMPONENTS_PER_QUERY / 2),
+            }
+          )
+        )
+      }, 700)
+    )
+  }
+
+  return { ...messagesInReactIntlFormat, ...retriedMessages }
 }
