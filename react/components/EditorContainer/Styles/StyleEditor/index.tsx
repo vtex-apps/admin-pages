@@ -1,17 +1,15 @@
 import React from 'react'
-
 import { createMemoryHistory } from 'history'
-import { InjectedIntl, injectIntl } from 'react-intl'
+import { injectIntl, IntlShape } from 'react-intl'
 import { Router } from 'react-router-dom'
 import { ToastConsumer } from 'vtex.styleguide'
 
 import RenameStyleMutation from './mutations/RenameStyle'
 import UpdateStyleMutation from './mutations/UpdateStyle'
-
 import StyleEditorHooks from './StyleEditorHooks'
 
 interface Props {
-  intl: InjectedIntl
+  intl: IntlShape
   setStyleAsset: (asset: StyleAssetInfo) => void
   stopEditing: () => void
   style: Style

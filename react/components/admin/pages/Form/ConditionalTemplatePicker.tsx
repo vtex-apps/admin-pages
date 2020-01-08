@@ -1,14 +1,17 @@
 import { path } from 'ramda'
 import React from 'react'
-import { defineMessages } from 'react-intl'
+import {
+  defineMessages,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 import {
   ConditionsProps,
   ConditionsStatement,
   Dropdown,
   IconClose,
 } from 'vtex.styleguide'
-
 import { ConditionFormsData } from 'pages'
+
 import SelectConditions from './SelectConditions'
 import { FormErrors } from './typings'
 
@@ -34,7 +37,7 @@ export interface ConditionalTemplatePickerProps {
   templates: Template[]
 }
 
-type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
+type Props = ConditionalTemplatePickerProps & InjectedIntlProps
 
 const messages = defineMessages({
   errorMessage: {

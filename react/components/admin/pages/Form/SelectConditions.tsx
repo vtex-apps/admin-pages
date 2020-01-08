@@ -1,5 +1,9 @@
 import React from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ConditionsProps,
@@ -8,8 +12,8 @@ import {
   DatePicker,
   EXPERIMENTAL_Conditions as Conditions,
 } from 'vtex.styleguide'
-
 import { ConditionFormsData } from 'pages'
+
 import { messages } from './messages'
 
 interface ComponentProps {

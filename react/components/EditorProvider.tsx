@@ -4,10 +4,12 @@ import React, { Component } from 'react'
 import { withApollo } from 'react-apollo'
 import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
+import {
+  injectIntl,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
-
-import { injectIntl } from 'react-intl'
 import {
   editorMessagesFromRuntime,
   getAvailableCultures,
@@ -17,9 +19,10 @@ import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
 
 type Props = RenderContextProps &
-  ReactIntl.InjectedIntlProps & {
+  InjectedIntlProps & {
     client: ApolloClient<unknown>
     isSiteEditor: boolean
+    children?: React.ReactNode
   }
 
 export interface State {
@@ -38,7 +41,9 @@ export interface State {
   viewport: Viewport
 }
 
-const noop = () => {}
+const noop = () => {
+  return undefined
+}
 
 const getUrlProperties = (href: string) => {
   const match = href.match(

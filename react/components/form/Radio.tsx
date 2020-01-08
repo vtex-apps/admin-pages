@@ -1,6 +1,9 @@
 import { JSONSchema6Type } from 'json-schema'
 import React, { Component, Fragment } from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import {
+  injectIntl,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Radio as StyleguideRadio } from 'vtex.styleguide'

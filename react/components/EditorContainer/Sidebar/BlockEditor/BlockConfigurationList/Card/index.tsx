@@ -1,6 +1,6 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { Tag } from 'vtex.styleguide'
 
 import ActionMenu from '../../../../../ActionMenu'
@@ -8,11 +8,9 @@ import { useEditorContext } from '../../../../../EditorContext'
 import EarthIcon from '../../../../../icons/EarthIcon'
 import TemplateIcon from '../../../../../icons/TemplateIcon'
 import { isConfigurationExpired, isConfigurationScheduled } from '../utils'
-
 import ConditionTags from './ConditionTags'
 import StatusLabel from './StatusLabel'
 import { getGenericContext } from './utils'
-
 import styles from './styles.css'
 
 interface Props {
@@ -75,10 +73,10 @@ const Card = ({
   isDefaultContent = false,
   isDisabled = false,
   isEditing = false,
-  intl,
   onClick,
   onDelete,
-}: Props & ReactIntl.InjectedIntlProps) => {
+}: Props) => {
+  const intl = useIntl()
   const editor = useEditorContext()
 
   const handleMainClick = React.useCallback(() => {
@@ -232,4 +230,4 @@ const Card = ({
   )
 }
 
-export default injectIntl(Card)
+export default Card

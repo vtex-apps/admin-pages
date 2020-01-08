@@ -1,20 +1,17 @@
 import { RouteFormData } from 'pages'
 import * as React from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
-
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { Button, Input, Textarea, IconEdit } from 'vtex.styleguide'
 
 import { RouteContentFromData } from './index'
-
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { FormErrors } from '../../pages/Form/typings'
 import SeparatorWithLine from '../../pages/SeparatorWithLine'
 import { slugify } from '../../utils'
-
 import RichTextEditor from '../../../RichTextEditor/index'
 import SeoPreview from '../../../SeoPreview'
 
-interface CustomProps {
+interface Props {
   data: RouteFormData & RouteContentFromData
   errors: FormErrors
   isLoading: boolean
@@ -25,8 +22,6 @@ interface CustomProps {
   isDeletable: boolean
   isInfoEditable: boolean
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
   contentSection: {
@@ -62,7 +57,6 @@ const messages = defineMessages({
 const Form = ({
   data,
   errors,
-  intl,
   isDeletable,
   isLoading,
   onDelete,
@@ -70,6 +64,7 @@ const Form = ({
   onFieldValueChange,
   onSubmit,
 }: Props) => {
+  const intl = useIntl()
   const pathRef = React.useRef<HTMLInputElement>(null)
   const [hasDefinedPath, setHasDefinedPath] = React.useState(false)
 
@@ -224,4 +219,4 @@ const Form = ({
   )
 }
 
-export default injectIntl(Form)
+export default Form

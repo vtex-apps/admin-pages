@@ -1,14 +1,18 @@
 import React from 'react'
-import { defineMessages, FormattedMessage } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
+import { PagesFormData, RouteFormData } from 'pages'
+
 import {
   ConditionalTemplatePicker,
   ConditionalTemplatePickerProps,
 } from './ConditionalTemplatePicker'
 import SectionTitle from './SectionTitle'
 import { FormErrors } from './typings'
-
-import { PagesFormData, RouteFormData } from 'pages'
 
 type TemplatePickerCallbacks = Pick<
   ConditionalTemplatePickerProps,
@@ -32,7 +36,7 @@ export interface ConditionalTemplateSectionProps
   templates: Template[]
 }
 
-type Props = ConditionalTemplateSectionProps & ReactIntl.InjectedIntlProps
+type Props = ConditionalTemplateSectionProps & InjectedIntlProps
 
 const messages = defineMessages({
   defaultFieldLabel: {

@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps as InjectedIntlProps,
+} from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ButtonWithIcon,
@@ -12,7 +16,6 @@ import {
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-
 import CreateButton from './CreateButton'
 import { messages } from './messages'
 
@@ -25,9 +28,7 @@ interface CustomProps {
   openModal: () => void
 }
 
-export type Props = CustomProps &
-  ReactIntl.InjectedIntlProps &
-  RenderContextProps
+export type Props = CustomProps & InjectedIntlProps & RenderContextProps
 
 interface State {
   schema: {

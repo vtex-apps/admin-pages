@@ -1,11 +1,6 @@
 import React, { Dispatch, SetStateAction, useCallback } from 'react'
 import { DropzoneOptions, useDropzone } from 'react-dropzone'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import {
   ActionMenu,
   ButtonWithIcon,
@@ -39,7 +34,7 @@ const { pickStylePlaceholder, removeMessage } = defineMessages({
   },
 })
 
-interface FileFontEditorProps extends InjectedIntlProps {
+interface FileFontEditorProps {
   familyState: [string, Dispatch<SetStateAction<string>>]
   filesReducer: [FontFileInput[], Dispatch<FontFileAction>]
   showToast: ToastConsumerFunctions['showToast']
@@ -48,7 +43,6 @@ interface FileFontEditorProps extends InjectedIntlProps {
 const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   filesReducer,
   familyState,
-  intl,
   showToast,
 }) => {
   const [files, dispatchFiles] = filesReducer
@@ -105,7 +99,6 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
         <FontFileItem
           fileName={getFileName(file)}
           key={getFileName(file)}
-          intl={intl}
           onRemove={() => removeFile(index)}
           onStyleUpdate={(style: FontFlavour) => updateFile(index, style)}
           style={getFontFlavour(files[index])}
@@ -116,7 +109,7 @@ const FileFontEditor: React.FunctionComponent<FileFontEditorProps> = ({
   )
 }
 
-interface FontFileItemProps extends InjectedIntlProps {
+interface FontFileItemProps {
   fileName: string
   onRemove: () => void
   onStyleUpdate: (style: FontFlavour) => void
@@ -125,11 +118,11 @@ interface FontFileItemProps extends InjectedIntlProps {
 
 const FontFileItem: React.FunctionComponent<FontFileItemProps> = ({
   fileName,
-  intl,
   onRemove,
   onStyleUpdate,
   style,
 }) => {
+  const intl = useIntl()
   const actionMenuProps = {
     buttonProps: {
       icon: <IconOptionsDots color="currentColor" />,
@@ -209,4 +202,4 @@ const FontFileUploadComponent: React.FunctionComponent<FontFileUploadProps> = ({
   )
 }
 
-export default injectIntl(FileFontEditor)
+export default FileFontEditor

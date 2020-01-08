@@ -1,13 +1,11 @@
 import { useCallback } from 'react'
-import { defineMessages, FormattedMessage } from 'react-intl'
+import { defineMessages } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useModalContext } from '../../ModalContext'
-import { getIsDefaultContent } from '../utils'
-
+import { getConfigurationType, getIsDefaultContent } from '../utils'
 import { ConfigurationType } from '../typings'
 import { UseListHandlers } from './typings'
-import { getConfigurationType } from '../utils'
 import { getDeleteStoreUpdater } from './utils'
 
 const messages = defineMessages({
@@ -141,7 +139,7 @@ export const useListHandlers: UseListHandlers = ({
     (configuration: ExtensionConfiguration) => {
       const textMessageByType: Record<
         ConfigurationType,
-        FormattedMessage.MessageDescriptor
+        ReturnType<typeof defineMessages>
       > = {
         active: messages.deleteActiveText,
         inactive: messages.deleteInactiveText,
@@ -150,7 +148,7 @@ export const useListHandlers: UseListHandlers = ({
 
       const titleByType: Record<
         ConfigurationType,
-        FormattedMessage.MessageDescriptor
+        ReturnType<typeof defineMessages>
       > = {
         active: messages.deleteActiveTitle,
         inactive: messages.deleteInactiveTitle,
@@ -159,7 +157,7 @@ export const useListHandlers: UseListHandlers = ({
 
       const buttonMessageByType: Record<
         ConfigurationType,
-        FormattedMessage.MessageDescriptor
+        ReturnType<typeof defineMessages>
       > = {
         active: messages.delete,
         inactive: messages.delete,

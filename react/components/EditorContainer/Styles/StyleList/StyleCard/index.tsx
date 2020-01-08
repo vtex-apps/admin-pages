@@ -1,10 +1,5 @@
 import React, { useState } from 'react'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntl,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { ActionMenu, Card, IconOptionsDots, Tag } from 'vtex.styleguide'
 
 import Colors from '../../components/Colors'
@@ -16,7 +11,6 @@ type StyleMutation = (style: Style) => Promise<unknown>
 interface Props {
   deleteStyle: StyleMutation
   duplicateStyle: StyleMutation
-  intl: InjectedIntl
   selectStyle: StyleMutation
   startEditing: StyleFunction
   style: Style
@@ -44,13 +38,13 @@ const messages = defineMessages({
 const StyleCard: React.FunctionComponent<Props> = ({
   deleteStyle,
   duplicateStyle,
-  intl,
   selectStyle,
   startEditing,
   style,
   style: { app: appId, name, selected, editable, config },
 }) => {
   const [isLoading, setIsLoading] = useState(false)
+  const intl = useIntl()
 
   const setIsLoadingWrapper = (fn: () => Promise<unknown>) => async () => {
     setIsLoading(true)
@@ -151,4 +145,4 @@ const StyleCard: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleCard)
+export default StyleCard

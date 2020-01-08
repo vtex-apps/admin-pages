@@ -2,12 +2,7 @@ import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo, useRef, useState } from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
 import { Spinner } from 'vtex.styleguide'
@@ -15,13 +10,12 @@ import { Spinner } from 'vtex.styleguide'
 import UploadFile from '../../../queries/UploadFile.graphql'
 import ActionMenu from '../../ActionMenu'
 import { ActionMenuOption } from '../../ActionMenu/typings'
-
 import Dropzone from './Dropzone'
 import EmptyState from './EmptyState'
 import ErrorAlert from './ErrorAlert'
 import ImagePreview from './ImagePreview'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   disabled?: boolean
   onChange?: (pathname: string | null) => void
   onFileDrop?: (file: File) => void
@@ -63,9 +57,10 @@ const ImageUploader: React.FC<Props> = props => {
   const [state, setState] = useState<State>({ error: null, isLoading: false })
   const dropZoneRef = useRef<HTMLDivElement>(null)
 
+  const intl = useIntl()
+
   const {
     disabled,
-    intl,
     onChange,
     schema: { title },
     value,
@@ -188,8 +183,6 @@ ImageUploader.defaultProps = {
   value: '',
 }
 
-export default injectIntl(
-  graphql<Props & (WidgetProps | {})>(UploadFile, {
-    name: 'uploadFile',
-  })(ImageUploader)
-)
+export default graphql<Props & (WidgetProps | {})>(UploadFile, {
+  name: 'uploadFile',
+})(ImageUploader)
