@@ -1,12 +1,11 @@
 import { flatten, path, pathOr } from 'ramda'
-import { InjectedIntl } from 'react-intl'
+import { IntlShape } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { ComponentsRegistry } from 'vtex.render-runtime'
 
 import { getBlockRole } from '../../../../utils/blocks'
 import { getIframeRenderComponents } from '../../../../utils/components'
 import { ModifiedSidebarComponent, SidebarComponent } from '../typings'
-
 import { BlocksByRole, NormalizedBlock } from './typings'
 
 export const generateWarningMessage = (name: string) =>
@@ -273,7 +272,7 @@ const partitionNodesChildrenByRole = (
 const hoistSubtrees = (
   component: NormalizedBlock,
   pathToChildrenByRole: Record<string, BlocksByRole>,
-  isRoot: boolean = false
+  isRoot = false
 ): NormalizedBlock[] => {
   const { treePath, components } = component
   const childrenByRole = pathToChildrenByRole[treePath]
@@ -356,7 +355,7 @@ export const getNormalizedBlocks = (
 
 export const getTitleByTreePathMap = (
   components: SidebarComponent[],
-  intl: InjectedIntl
+  intl: IntlShape
 ) => {
   return components.reduce<
     Record<string, { title?: string; isEditable: boolean }>

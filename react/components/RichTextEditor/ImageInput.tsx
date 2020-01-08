@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { graphql, MutationFunc } from 'react-apollo'
 import { useDropzone } from 'react-dropzone'
-import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
-
+import { defineMessages, useIntl } from 'react-intl'
 import {
   Button,
   IconClose,
@@ -14,9 +13,7 @@ import {
 
 import StyleButton from './StyleButton'
 import { useClickOutside } from './utils'
-
 import SeparatorWithLine from '../admin/pages/SeparatorWithLine'
-
 import UploadFile from '../../queries/UploadFile.graphql'
 
 interface MutationData {
@@ -24,7 +21,6 @@ interface MutationData {
 }
 
 interface Props {
-  intl: InjectedIntl
   onAdd: (imageUrl: string) => void
   uploadFile?: MutationFunc<MutationData>
 }
@@ -67,7 +63,8 @@ const messages = defineMessages({
   },
 })
 
-const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
+const ImageInput = ({ onAdd, uploadFile }: Props) => {
+  const intl = useIntl()
   const ref = React.useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
@@ -179,8 +176,6 @@ const ImageInput = ({ onAdd, intl, uploadFile }: Props) => {
   )
 }
 
-export default injectIntl(
-  graphql<Props>(UploadFile, {
-    name: 'uploadFile',
-  })(ImageInput)
-)
+export default graphql<Props>(UploadFile, {
+  name: 'uploadFile',
+})(ImageInput)

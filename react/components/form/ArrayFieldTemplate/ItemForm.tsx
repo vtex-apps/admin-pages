@@ -1,13 +1,13 @@
 import classnames from 'classnames'
 import React from 'react'
-import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { Button } from 'vtex.styleguide'
 
 import styles from './styles.css'
 import transitionStyles from './ItemTransitions.css'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   children: React.ReactElement
   currentDepth: number
   onClose: () => void
@@ -24,35 +24,37 @@ const messages = defineMessages({
 const ItemForm: React.FC<Props> = ({
   children,
   currentDepth,
-  intl,
   onClose,
   stackDepth,
-}) => (
-  <CSSTransition
-    in={stackDepth < currentDepth}
-    classNames={{
-      enter: transitionStyles['item-depth-enter'],
-      enterActive: transitionStyles['item-depth-enter-active'],
-      enterDone: transitionStyles['item-depth-enter-done'],
-      exit: transitionStyles['item-depth-exit'],
-      exitActive: transitionStyles['item-depth-exit-active'],
-      exitDone: transitionStyles['item-depth-exit-done'],
-    }}
-    timeout={150}
-  >
-    <div
-      className={classnames(
-        `${styles['accordion-item']} bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
-      )}
+}) => {
+  const intl = useIntl()
+  return (
+    <CSSTransition
+      in={stackDepth < currentDepth}
+      classNames={{
+        enter: transitionStyles['item-depth-enter'],
+        enterActive: transitionStyles['item-depth-enter-active'],
+        enterDone: transitionStyles['item-depth-enter-done'],
+        exit: transitionStyles['item-depth-exit'],
+        exitActive: transitionStyles['item-depth-exit-active'],
+        exitDone: transitionStyles['item-depth-exit-done'],
+      }}
+      timeout={150}
     >
-      {children}
-      <div className="mb5">
-        <Button type="button" variation="primary" onClick={onClose}>
-          {intl.formatMessage(messages.apply)}
-        </Button>
+      <div
+        className={classnames(
+          `${styles['accordion-item']} bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
+        )}
+      >
+        {children}
+        <div className="mb5">
+          <Button type="button" variation="primary" onClick={onClose}>
+            {intl.formatMessage(messages.apply)}
+          </Button>
+        </div>
       </div>
-    </div>
-  </CSSTransition>
-)
+    </CSSTransition>
+  )
+}
 
-export default injectIntl(ItemForm)
+export default ItemForm

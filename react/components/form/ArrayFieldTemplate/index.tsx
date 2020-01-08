@@ -1,18 +1,21 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import {
+  injectIntl,
+  WrappedComponentProps as ComponentWithIntlProps,
+} from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
   Dimensions,
   SortableContainerProps,
   SortStart,
 } from 'react-sortable-hoc'
+
 import AddButton from './AddButton'
 import ArrayList from './ArrayList'
-
 import styles from './styles.css'
 
-interface Props extends InjectedIntlProps {
+interface Props extends ComponentWithIntlProps {
   canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void
@@ -164,9 +167,7 @@ class ArrayFieldTemplate extends Component<
 
 const ArrayFieldTemplateWithIntl = injectIntl(ArrayFieldTemplate)
 
-const StatelessArrayFieldTemplate: React.FunctionComponent<
-  ArrayFieldTemplateProps
-> = props => {
+const StatelessArrayFieldTemplate: React.FunctionComponent<ArrayFieldTemplateProps> = props => {
   return <ArrayFieldTemplateWithIntl {...props} />
 }
 

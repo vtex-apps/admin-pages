@@ -1,10 +1,9 @@
 import { createKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { Tooltip } from 'vtex.styleguide'
 
 import { useHover } from '../hooks'
-
 import { BORDER_BY_POSITION, ICON_BY_VIEWPORT } from './consts'
 import messages from './messages'
 
@@ -15,16 +14,11 @@ interface Props {
   type: Viewport
 }
 
-const DeviceItem: React.FC<Props & InjectedIntlProps> = ({
-  onClick,
-  position,
-  intl,
-  isActive,
-  type,
-}) => {
+const DeviceItem: React.FC<Props> = ({ onClick, position, isActive, type }) => {
   const handleKeyDown = createKeydownFromClick(onClick)
 
   const { handleMouseEnter, handleMouseLeave, hover } = useHover()
+  const intl = useIntl()
 
   const Icon = ICON_BY_VIEWPORT[type]
 
@@ -46,4 +40,4 @@ const DeviceItem: React.FC<Props & InjectedIntlProps> = ({
   )
 }
 
-export default injectIntl(DeviceItem)
+export default DeviceItem

@@ -1,6 +1,6 @@
 import { mapObjIndexed, values } from 'ramda'
 import React, { useState } from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
 import { Tab, Tabs } from 'vtex.styleguide'
 
@@ -45,15 +45,13 @@ defineMessages({
   },
 })
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps & RenderContextProps
+type Props = CustomProps & RenderContextProps
 
-const PagesAdminWrapper: React.FunctionComponent<Props> = ({
-  children,
-  intl,
-}) => {
+const PagesAdminWrapper: React.FunctionComponent<Props> = ({ children }) => {
   const [targetPath, setTargetPath] = useState('')
   const { startLoading } = useAdminLoadingContext()
   const runtime = useRuntime()
+  const intl = useIntl()
 
   return (
     <TargetPathContext.Provider value={{ targetPath, setTargetPath }}>
@@ -89,4 +87,4 @@ const PagesAdminWrapper: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(PagesAdminWrapper)
+export default PagesAdminWrapper

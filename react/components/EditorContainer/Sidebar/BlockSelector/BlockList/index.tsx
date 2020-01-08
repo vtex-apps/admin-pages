@@ -1,12 +1,10 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { NormalizedBlock } from '../typings'
-
 import BlockListItem from './BlockListItem'
 
-interface CustomProps {
+interface Props {
   blocks: NormalizedBlock[]
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
@@ -15,8 +13,6 @@ interface CustomProps {
   ) => void
   onMouseLeaveBlock: () => void
 }
-
-type Props = CustomProps & InjectedIntlProps
 
 const BlockList: React.FC<Props> = ({
   blocks,
@@ -54,4 +50,4 @@ const BlockList: React.FC<Props> = ({
   )
 }
 
-export default injectIntl(BlockList)
+export default BlockList

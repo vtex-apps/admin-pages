@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
+
 import { useEditorContext } from '../EditorContext'
 import { useFormMetaContext } from './Sidebar/FormMetaContext'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   iframeRuntime: RenderContext | null
 }
 
@@ -22,8 +23,8 @@ const messages = defineMessages({
 
 const IframeNavigationController: React.FunctionComponent<Props> = ({
   iframeRuntime,
-  intl,
 }) => {
+  const intl = useIntl()
   const { getWasModified, setWasModified } = useFormMetaContext()
   const { editExtensionPoint } = useEditorContext()
 
@@ -57,4 +58,4 @@ const IframeNavigationController: React.FunctionComponent<Props> = ({
   return null
 }
 
-export default injectIntl(IframeNavigationController)
+export default IframeNavigationController

@@ -1,15 +1,17 @@
 import { RouteFormData } from 'pages'
 import { isEmpty } from 'ramda'
 import * as React from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
-
+import {
+  defineMessages,
+  injectIntl,
+  WrappedComponentProps as ComponentWithIntlProps,
+} from 'react-intl'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { formatStatements } from '../../../../utils/conditions'
 import { FormErrors } from '../../pages/Form/typings'
 import { generateNewRouteId } from '../../pages/Form/utils'
 import { FormProps } from '../../store/StoreForm/components/withStoreSettings'
-
 import Form from './Form'
 import { getValidateFormState } from './utils'
 import { OperationsResults } from './withContentContext'
@@ -34,7 +36,7 @@ export interface RouteContentFromData {
   contentId: string
 }
 
-type Props = ComponentProps & InjectedIntlProps & FormProps
+type Props = ComponentProps & ComponentWithIntlProps & FormProps
 
 export interface State {
   data: RouteFormData & RouteContentFromData

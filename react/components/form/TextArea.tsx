@@ -1,18 +1,17 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { Textarea } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-interface Props extends CustomWidgetProps, InjectedIntlProps {
+interface Props extends CustomWidgetProps {
   isI18n?: boolean
 }
 
 const TextArea: React.FunctionComponent<Props> = ({
   disabled,
   id,
-  intl,
   isI18n,
   label,
   onBlur,
@@ -24,6 +23,7 @@ const TextArea: React.FunctionComponent<Props> = ({
   schema,
   value,
 }) => {
+  const intl = useIntl()
   const handleBlur = React.useCallback(
     (event: React.FocusEvent<HTMLTextAreaElement>) => {
       if (onBlur) {
@@ -79,4 +79,4 @@ const TextArea: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(TextArea)
+export default TextArea

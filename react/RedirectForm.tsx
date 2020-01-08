@@ -1,6 +1,9 @@
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { injectIntl } from 'react-intl'
+import {
+  injectIntl,
+  WrappedComponentProps as ComponentWithIntlProps,
+} from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
 
@@ -26,7 +29,7 @@ interface CustomProps {
 type Props = WithApolloClient<
   CustomProps &
     RenderContextProps &
-    ReactIntl.InjectedIntlProps &
+    ComponentWithIntlProps &
     TargetPathContextProps
 >
 

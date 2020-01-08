@@ -1,22 +1,15 @@
 import { find, zip } from 'ramda'
 import React, { useState } from 'react'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntl,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { ButtonWithIcon, Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import Operations from './Operations'
-
 import CreateNewIcon from './icons/CreateNewIcon'
 import StyleCard from './StyleCard'
 
 interface Props {
   startEditing: (style: Style) => void
   setStyleAsset: (asset: StyleAssetInfo) => void
-  intl: InjectedIntl
 }
 
 const compareStyles = (a: Style, b: Style) => {
@@ -85,10 +78,10 @@ const messages = defineMessages({
 })
 
 const StyleList: React.FunctionComponent<Props> = ({
-  intl,
   startEditing,
   setStyleAsset,
 }) => {
+  const intl = useIntl()
   const [isCreatingStyle, setIsCreatingStyle] = useState(false)
 
   return (
@@ -254,4 +247,4 @@ const StyleList: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleList)
+export default StyleList

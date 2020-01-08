@@ -1,7 +1,7 @@
 import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import React, { useMemo } from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -12,14 +12,13 @@ import { EditingState, FormDataContainer } from '../../typings'
 import { isUnidentifiedPageContext } from '../../utils'
 import EditorHeader from '../EditorHeader'
 import { getIsDefaultContent } from '../utils'
-
 import ConditionControls from './ConditionControls'
 import Form from './Form'
 import { useComponentFormStateStack } from './hooks'
 import styles from './styles.css'
 import { getSchemas } from './utils'
 
-interface CustomProps {
+interface Props {
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: FormDataContainer
@@ -41,8 +40,6 @@ interface CustomProps {
   title: ComponentSchema['title']
 }
 
-type Props = CustomProps & ReactIntl.InjectedIntlProps
-
 const messages = defineMessages({
   pageContextError: {
     defaultMessage:
@@ -57,7 +54,6 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   data,
   editingContentId,
   iframeRuntime,
-  intl,
   isNew,
   isSitewide = false,
   label,
@@ -70,6 +66,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   showToast,
   title,
 }) => {
+  const intl = useIntl()
+
   React.useEffect(() => {
     const { pageContext } = iframeRuntime.route
 
@@ -252,4 +250,4 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(BlockConfigurationEditor)
+export default BlockConfigurationEditor

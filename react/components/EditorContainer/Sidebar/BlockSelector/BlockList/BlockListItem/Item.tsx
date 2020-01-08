@@ -1,12 +1,12 @@
 import classnames from 'classnames'
 import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
 import styles from './Item.css'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   hasSubitems?: boolean
   isEditable: boolean
   onEdit: () => void
@@ -25,7 +25,6 @@ const messages = defineMessages({
 
 const Item: React.FunctionComponent<Props> = ({
   hasSubitems,
-  intl,
   isEditable,
   onEdit,
   onMouseEnter,
@@ -33,6 +32,7 @@ const Item: React.FunctionComponent<Props> = ({
   title,
   treePath,
 }) => {
+  const intl = useIntl()
   const handleKeyDown = useKeydownFromClick(onEdit)
 
   const leftPaddingClassName = hasSubitems ? 'pl2' : 'pl8'
@@ -71,4 +71,4 @@ const Item: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(Item)
+export default Item

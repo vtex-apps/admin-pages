@@ -1,10 +1,10 @@
 import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
-import { InjectedIntl } from 'react-intl'
+import { IntlShape } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
 export const formatSchema = (
   schema: JSONSchema6Definition,
-  intl: InjectedIntl
+  intl: IntlShape
 ): JSONSchema6Definition => {
   if (typeof schema === 'boolean') {
     return schema

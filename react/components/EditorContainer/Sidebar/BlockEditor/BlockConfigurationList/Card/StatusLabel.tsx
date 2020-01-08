@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 
 import ContentActiveIcon from '../../../../../icons/ContentActiveIcon'
 import ContentInactiveIcon from '../../../../../icons/ContentInactiveIcon'
@@ -30,12 +30,15 @@ const ICON_BY_STATUS = {
   scheduled: <ContentScheduledIcon />,
 }
 
-const StatusLabel: React.FC<Props & InjectedIntlProps> = ({ intl, type }) => (
-  <div className="flex items-center mb3">
-    {ICON_BY_STATUS[type]}
+const StatusLabel: React.FC<Props> = ({ type }) => {
+  const intl = useIntl()
 
-    <div className="ml2 ttu f7 fw7">{intl.formatMessage(messages[type])}</div>
-  </div>
-)
+  return (
+    <div className="flex items-center mb3">
+      {ICON_BY_STATUS[type]}
+      <div className="ml2 ttu f7 fw7">{intl.formatMessage(messages[type])}</div>
+    </div>
+  )
+}
 
-export default injectIntl(StatusLabel)
+export default StatusLabel

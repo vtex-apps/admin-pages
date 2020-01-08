@@ -1,4 +1,4 @@
-import { defineMessages, InjectedIntl } from 'react-intl'
+import { defineMessages, IntlShape } from 'react-intl'
 
 // Messages used in getScopeStandardOptions
 defineMessages({
@@ -45,7 +45,7 @@ defineMessages({
 })
 
 export const getScopeStandardOptions = (
-  intl: InjectedIntl,
+  intl: IntlShape,
   pageContext: PageContext
 ) => [
   {

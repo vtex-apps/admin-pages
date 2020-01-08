@@ -1,14 +1,9 @@
 import React, { useContext, useReducer, useState } from 'react'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { matchPath, RouteComponentProps } from 'react-router'
 import { Button, Spinner, Tab, Tabs, ToastContext } from 'vtex.styleguide'
-
 import { ApolloError } from 'apollo-client'
+
 import DeleteFontFamily, {
   DeleteFontFamilyFn,
 } from '../mutations/DeleteFontFamily'
@@ -135,7 +130,6 @@ function FontEditorLoading() {
 
 interface Props
   extends RouteComponentProps<CustomFontParams>,
-    InjectedIntlProps,
     ListFontsQueryResult {
   deleteFont: DeleteFontFamilyFn
   saveFont: SaveFontFamilyFn
@@ -148,13 +142,13 @@ const CustomFont: React.FunctionComponent<Props> = ({
   data,
   deleteFont,
   error,
-  intl,
   loading,
   loadingDelete,
   loadingSave,
   history,
   saveFont,
 }) => {
+  const intl = useIntl()
   const { customFontFile, customFontLink } = EditorPath
   const { pathname } = history.location
 
@@ -278,7 +272,7 @@ const CustomFont: React.FunctionComponent<Props> = ({
   )
 }
 
-type WrapperProps = RouteComponentProps<CustomFontParams> & InjectedIntlProps
+type WrapperProps = RouteComponentProps<CustomFontParams>
 
 const FontEditorWrapper: React.FunctionComponent<WrapperProps> = props => {
   return (
@@ -306,4 +300,4 @@ const FontEditorWrapper: React.FunctionComponent<WrapperProps> = props => {
   )
 }
 
-export default injectIntl(FontEditorWrapper)
+export default FontEditorWrapper

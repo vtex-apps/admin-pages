@@ -1,5 +1,7 @@
 import React from 'react'
-import { act, fireEvent, render } from '@vtex/test-tools/react'
+import { act } from '@testing-library/react'
+import { fireEvent, render } from '@vtex/test-tools/react'
+
 import { State } from './typings'
 import HighlightOverlay from './index'
 
@@ -29,6 +31,10 @@ function createMockDiv(width: number, height: number) {
     bottom: height,
     x: width,
     y: height,
+    toJSON() {
+      const { toJSON, ...rect } = this
+      return rect
+    },
   })
   div.textContent = 'Welcome'
   div.setAttribute('data-extension-point', extensionPointName)
@@ -42,6 +48,10 @@ function createMockDiv(width: number, height: number) {
     bottom: height,
     x: width,
     y: height,
+    toJSON() {
+      const { toJSON, ...rect } = this
+      return rect
+    },
   })
   renderProviderDiv.appendChild(div)
   return renderProviderDiv
@@ -64,6 +74,8 @@ function setUpDom() {
       this._scrollWidth = val
     },
   })
+
+  // eslint-disable-next-line
   // @ts-ignore
   document.body.scrollWidth = 1440
   document.body.appendChild(createMockDiv(300, 300))

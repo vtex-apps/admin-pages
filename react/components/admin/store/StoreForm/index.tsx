@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import { assoc, dissoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import Form, { UiSchema } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
@@ -11,7 +11,6 @@ import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
 import FieldTemplate from '../../../form/FieldTemplate'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
-
 import withStoreSettings, { FormProps } from './components/withStoreSettings'
 import SaveAppSettings from './mutations/SaveAppSettings.graphql'
 import { formatSchema, tryParseJson } from './utils'
@@ -26,17 +25,14 @@ interface MutationVariables {
   settings: string
 }
 
-type Props = ChildMutateProps<
-  FormProps & InjectedIntlProps,
-  MutationData,
-  MutationVariables
->
+type Props = ChildMutateProps<FormProps, MutationData, MutationVariables>
 
 const widgets = {
   BaseInput,
 }
 
-const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
+const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
+  const intl = useIntl()
   const [formData, setFormData] = useState(tryParseJson(store.settings))
 
   const [submitting, setSubmitting] = useState(false)
@@ -119,6 +115,6 @@ export default withMutation<{}, MutationData, MutationVariables>(
   SaveAppSettings
 )(
   withStoreSettings<ChildMutateProps<{}, MutationData, MutationVariables>>(
-    injectIntl(StoreForm)
+    StoreForm
   )
 )

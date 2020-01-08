@@ -1,11 +1,11 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { Input } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-interface Props extends CustomWidgetProps, InjectedIntlProps {
+interface Props extends CustomWidgetProps {
   isI18n?: boolean
   label: string
   max?: number
@@ -21,7 +21,6 @@ const BaseInput: React.FunctionComponent<Props> = props => {
   const {
     disabled,
     id,
-    intl,
     isI18n,
     label,
     max,
@@ -37,6 +36,8 @@ const BaseInput: React.FunctionComponent<Props> = props => {
     schema,
     value,
   } = props
+
+  const intl = useIntl()
 
   const schemaType = schema.type === 'number' ? 'number' : 'text'
 
@@ -95,4 +96,4 @@ BaseInput.defaultProps = {
   required: false,
 }
 
-export default injectIntl(BaseInput)
+export default BaseInput

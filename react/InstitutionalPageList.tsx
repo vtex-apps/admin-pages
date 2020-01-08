@@ -1,13 +1,11 @@
 import React, { useEffect, useMemo } from 'react'
 import { Query } from 'react-apollo'
-import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
-
+import { defineMessages, useIntl } from 'react-intl'
 import { PageHeader } from 'vtex.styleguide'
 
 import Loader from './components/admin/institutional/Form/Loader'
 import List from './components/admin/institutional/List/index'
 import RoutesQuery from './queries/Routes.graphql'
-
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
 interface QueryData {
@@ -17,7 +15,6 @@ interface QueryData {
 interface PageListProps {
   data?: QueryData
   isLoading: boolean
-  intl: InjectedIntl
 }
 
 const messages = defineMessages({
@@ -27,21 +24,12 @@ const messages = defineMessages({
   },
 })
 
-const PageListWithQuery = () => {
-  return (
-    <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
-      {({ data, loading: isLoading }) => {
-        return <PageListWithIntl isLoading={isLoading} data={data} />
-      }}
-    </Query>
-  )
-}
-
 const PageList: React.FunctionComponent<PageListProps> = ({
   data,
   isLoading,
-  intl,
 }) => {
+  const intl = useIntl()
+
   const { startLoading, stopLoading } = useAdminLoadingContext()
 
   useEffect(() => {
@@ -79,6 +67,14 @@ const PageList: React.FunctionComponent<PageListProps> = ({
   )
 }
 
-const PageListWithIntl = injectIntl(PageList)
+const PageListWithQuery = () => {
+  return (
+    <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
+      {({ data, loading: isLoading }) => {
+        return <PageList isLoading={isLoading} data={data} />
+      }}
+    </Query>
+  )
+}
 
 export default React.memo(PageListWithQuery)

@@ -1,13 +1,11 @@
 import * as React from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 
-interface CustomProps {
+interface Props {
   title?: string | null
   description?: string | null
   url?: string | null
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
   seoDescription: {
@@ -48,34 +46,38 @@ const styles = {
   },
 }
 
-const SeoPreview = ({ title, description, url, intl }: Props) => (
-  <div className="pl5 pt4 ba br2 bw1 b--muted-4 h-100 pb4">
-    <div>
-      <span style={{ ...styles.button, ...styles.buttonClose }} />
-      <span style={{ ...styles.button, ...styles.buttonMaximize }} />
-      <span style={{ ...styles.button, ...styles.buttonMinimize }} />
-    </div>
-    <div className="pt5">
-      <span
-        className={`db f4 pb1 word-break ${!title && 'o-30'}`}
-        style={styles.title}
-      >
-        {title || intl.formatMessage(messages.seoTitle)}
-      </span>
-      <span
-        className={`db f6 pb1 word-break ${!url && 'o-30'}`}
-        style={styles.url}
-      >
-        {`${window.location.origin}${url || '/<url>'}`}
-      </span>
-      <span
-        className={`db pt2 f6 fw3 word-break ${!description && 'o-30'}`}
-        style={styles.description}
-      >
-        {description || intl.formatMessage(messages.seoDescription)}
-      </span>
-    </div>
-  </div>
-)
+const SeoPreview = ({ title, description, url }: Props) => {
+  const intl = useIntl()
 
-export default injectIntl(SeoPreview)
+  return (
+    <div className="pl5 pt4 ba br2 bw1 b--muted-4 h-100 pb4">
+      <div>
+        <span style={{ ...styles.button, ...styles.buttonClose }} />
+        <span style={{ ...styles.button, ...styles.buttonMaximize }} />
+        <span style={{ ...styles.button, ...styles.buttonMinimize }} />
+      </div>
+      <div className="pt5">
+        <span
+          className={`db f4 pb1 word-break ${!title && 'o-30'}`}
+          style={styles.title}
+        >
+          {title || intl.formatMessage(messages.seoTitle)}
+        </span>
+        <span
+          className={`db f6 pb1 word-break ${!url && 'o-30'}`}
+          style={styles.url}
+        >
+          {`${window.location.origin}${url || '/<url>'}`}
+        </span>
+        <span
+          className={`db pt2 f6 fw3 word-break ${!description && 'o-30'}`}
+          style={styles.description}
+        >
+          {description || intl.formatMessage(messages.seoDescription)}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+export default SeoPreview

@@ -1,6 +1,5 @@
 import * as React from 'react'
-import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
-
+import { defineMessages, useIntl } from 'react-intl'
 import { Button, IconLink, Input } from 'vtex.styleguide'
 
 import StyleButton from './StyleButton'
@@ -9,7 +8,6 @@ import { useClickOutside } from './utils'
 interface Props {
   onAdd: (text: string, link: string) => void
   getCurrentSelection: () => string | null
-  intl: InjectedIntl
 }
 
 const messages = defineMessages({
@@ -27,7 +25,8 @@ const messages = defineMessages({
   },
 })
 
-const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
+const LinkInput = ({ onAdd, getCurrentSelection }: Props) => {
+  const intl = useIntl()
   const ref = React.useRef<HTMLDivElement>(null)
 
   const [isOpen, setIsOpen] = React.useState(false)
@@ -92,4 +91,4 @@ const LinkInput = ({ onAdd, getCurrentSelection, intl }: Props) => {
   )
 }
 
-export default injectIntl(LinkInput)
+export default LinkInput

@@ -2,7 +2,12 @@ import classnames from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps as ComponentWithIntlProps,
+} from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   Button,
@@ -26,7 +31,7 @@ interface CustomProps {
 }
 
 type Props = CustomProps &
-  ReactIntl.InjectedIntlProps &
+  ComponentWithIntlProps &
   RenderContextProps &
   Pick<ToastConsumerFunctions, 'showToast'>
 
