@@ -6,7 +6,7 @@ import { canUseDOM, withRuntimeContext } from 'vtex.render-runtime'
 import { ToastProvider } from 'vtex.styleguide'
 import {
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
@@ -19,7 +19,7 @@ import EditorContainer, { APP_CONTENT_ELEMENT_ID } from './EditorContainer'
 import { EditorContext } from './EditorContext'
 
 type Props = RenderContextProps &
-  InjectedIntlProps & {
+  ComponentWithIntlProps & {
     client: ApolloClient<unknown>
     isSiteEditor: boolean
     children?: React.ReactNode

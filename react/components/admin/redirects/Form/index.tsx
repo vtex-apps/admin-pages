@@ -6,7 +6,7 @@ import {
   defineMessages,
   FormattedMessage,
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -31,7 +31,7 @@ interface CustomProps {
 }
 
 type Props = CustomProps &
-  InjectedIntlProps &
+  ComponentWithIntlProps &
   RenderContextProps &
   Pick<ToastConsumerFunctions, 'showToast'>
 

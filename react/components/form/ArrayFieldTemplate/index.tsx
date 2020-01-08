@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import {
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import {
@@ -15,7 +15,7 @@ import AddButton from './AddButton'
 import ArrayList from './ArrayList'
 import styles from './styles.css'
 
-interface Props extends InjectedIntlProps {
+interface Props extends ComponentWithIntlProps {
   canAdd: boolean
   items?: ArrayFieldTemplateProps['items']
   onAddClick?: (event: Event) => void

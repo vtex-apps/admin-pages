@@ -2,13 +2,13 @@ import { JSONSchema6Type } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import {
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Radio as StyleguideRadio } from 'vtex.styleguide'
 
-interface Props extends InjectedIntlProps {
+interface Props extends ComponentWithIntlProps {
   label?: string
   name?: string
   schema: {

@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import {
   FormattedMessage,
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -28,7 +28,7 @@ interface CustomProps {
   openModal: () => void
 }
 
-export type Props = CustomProps & InjectedIntlProps & RenderContextProps
+export type Props = CustomProps & ComponentWithIntlProps & RenderContextProps
 
 interface State {
   schema: {

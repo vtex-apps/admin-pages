@@ -4,7 +4,7 @@ import * as React from 'react'
 import {
   defineMessages,
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
@@ -36,7 +36,7 @@ export interface RouteContentFromData {
   contentId: string
 }
 
-type Props = ComponentProps & InjectedIntlProps & FormProps
+type Props = ComponentProps & ComponentWithIntlProps & FormProps
 
 export interface State {
   data: RouteFormData & RouteContentFromData

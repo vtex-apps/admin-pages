@@ -2,7 +2,7 @@ import React from 'react'
 import {
   defineMessages,
   FormattedMessage,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { Dropdown } from 'vtex.styleguide'
 import { PagesFormData, RouteFormData } from 'pages'
@@ -36,7 +36,7 @@ export interface ConditionalTemplateSectionProps
   templates: Template[]
 }
 
-type Props = ConditionalTemplateSectionProps & InjectedIntlProps
+type Props = ConditionalTemplateSectionProps & ComponentWithIntlProps
 
 const messages = defineMessages({
   defaultFieldLabel: {

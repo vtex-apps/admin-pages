@@ -2,7 +2,7 @@ import { path } from 'ramda'
 import React from 'react'
 import {
   defineMessages,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import {
   ConditionsProps,
@@ -37,7 +37,7 @@ export interface ConditionalTemplatePickerProps {
   templates: Template[]
 }
 
-type Props = ConditionalTemplatePickerProps & InjectedIntlProps
+type Props = ConditionalTemplatePickerProps & ComponentWithIntlProps
 
 const messages = defineMessages({
   errorMessage: {

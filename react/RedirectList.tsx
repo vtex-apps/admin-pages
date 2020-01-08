@@ -3,7 +3,7 @@ import { Query, QueryResult } from 'react-apollo'
 import {
   defineMessages,
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { Helmet } from 'vtex.render-runtime'
 import { Box, Pagination, ToastConsumer } from 'vtex.styleguide'
@@ -22,7 +22,7 @@ import {
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = InjectedIntlProps & TargetPathContextProps
+type Props = ComponentWithIntlProps & TargetPathContextProps
 
 interface State {
   paginationFrom: number

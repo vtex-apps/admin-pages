@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
 import {
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
@@ -27,7 +27,10 @@ interface CustomProps {
 }
 
 type Props = WithApolloClient<
-  CustomProps & RenderContextProps & InjectedIntlProps & TargetPathContextProps
+  CustomProps &
+    RenderContextProps &
+    ComponentWithIntlProps &
+    TargetPathContextProps
 >
 
 interface State {

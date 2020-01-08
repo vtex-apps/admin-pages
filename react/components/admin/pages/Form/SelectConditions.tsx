@@ -2,7 +2,7 @@ import React from 'react'
 import {
   FormattedMessage,
   injectIntl,
-  WrappedComponentProps as InjectedIntlProps,
+  WrappedComponentProps as ComponentWithIntlProps,
 } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
@@ -24,7 +24,7 @@ interface ComponentProps {
   onChangeStatements: (statements: ConditionsStatement[]) => void
 }
 
-type Props = ComponentProps & RenderContextProps & InjectedIntlProps
+type Props = ComponentProps & RenderContextProps & ComponentWithIntlProps
 
 class SelectConditions extends React.Component<Props> {
   private options: ConditionsProps['options']
