@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.18.9] - 2020-01-08
+
 ### Changed
 - Update `react-intl` to latest version.
 
