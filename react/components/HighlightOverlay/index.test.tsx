@@ -22,31 +22,37 @@ function createMockDiv(width: number, height: number) {
   })
 
   // we have to mock this for jsdom.
-  div.getBoundingClientRect = () =>
-    ({
-      width,
-      height,
-      top: 0,
-      left: 0,
-      right: width,
-      bottom: height,
-      x: width,
-      y: height,
-    } as any)
+  div.getBoundingClientRect = () => ({
+    width,
+    height,
+    top: 0,
+    left: 0,
+    right: width,
+    bottom: height,
+    x: width,
+    y: height,
+    toJSON() {
+      const { toJSON, ...rect } = this
+      return rect
+    },
+  })
   div.textContent = 'Welcome'
   div.setAttribute('data-extension-point', extensionPointName)
 
-  renderProviderDiv.getBoundingClientRect = () =>
-    ({
-      width,
-      height,
-      top: 0,
-      left: 0,
-      right: width,
-      bottom: height,
-      x: width,
-      y: height,
-    } as any)
+  renderProviderDiv.getBoundingClientRect = () => ({
+    width,
+    height,
+    top: 0,
+    left: 0,
+    right: width,
+    bottom: height,
+    x: width,
+    y: height,
+    toJSON() {
+      const { toJSON, ...rect } = this
+      return rect
+    },
+  })
   renderProviderDiv.appendChild(div)
   return renderProviderDiv
 }
