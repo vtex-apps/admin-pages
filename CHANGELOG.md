@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Update `react-intl` to latest version.
+
 ## [4.18.8] - 2020-01-06
 ### Added
 - Add styles menu item to GoCommerce sidebar too.
