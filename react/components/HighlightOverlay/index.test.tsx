@@ -1,5 +1,7 @@
 import React from 'react'
-import { act, fireEvent, render } from '@vtex/test-tools/react'
+import { act } from '@testing-library/react'
+import { fireEvent, render } from '@vtex/test-tools/react'
+
 import { State } from './typings'
 import HighlightOverlay from './index'
 
@@ -20,29 +22,31 @@ function createMockDiv(width: number, height: number) {
   })
 
   // we have to mock this for jsdom.
-  div.getBoundingClientRect = () => ({
-    width,
-    height,
-    top: 0,
-    left: 0,
-    right: width,
-    bottom: height,
-    x: width,
-    y: height,
-  })
+  div.getBoundingClientRect = () =>
+    ({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+      x: width,
+      y: height,
+    } as any)
   div.textContent = 'Welcome'
   div.setAttribute('data-extension-point', extensionPointName)
 
-  renderProviderDiv.getBoundingClientRect = () => ({
-    width,
-    height,
-    top: 0,
-    left: 0,
-    right: width,
-    bottom: height,
-    x: width,
-    y: height,
-  })
+  renderProviderDiv.getBoundingClientRect = () =>
+    ({
+      width,
+      height,
+      top: 0,
+      left: 0,
+      right: width,
+      bottom: height,
+      x: width,
+      y: height,
+    } as any)
   renderProviderDiv.appendChild(div)
   return renderProviderDiv
 }
@@ -64,6 +68,8 @@ function setUpDom() {
       this._scrollWidth = val
     },
   })
+
+  // eslint-disable-next-line
   // @ts-ignore
   document.body.scrollWidth = 1440
   document.body.appendChild(createMockDiv(300, 300))
