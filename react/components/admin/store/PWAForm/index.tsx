@@ -11,6 +11,7 @@ import {
   Input,
   ToastContext,
   Toggle,
+  Spinner,
 } from 'vtex.styleguide'
 
 import ImageUploader from '../../../form/ImageUploader'
@@ -68,6 +69,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
   ])
   const [submitting, setSubmitting] = useState(false)
   const [showSpecific, setShowSpecific] = useState(false)
+  const [splashLoading, setSplashLoading] = useState(true)
 
   const toggleSpecific = React.useCallback(
     () => setShowSpecific(!showSpecific),
@@ -247,12 +249,15 @@ const PWAForm: React.FunctionComponent<Props> = ({
             <FormattedMessage id="admin/pages.editor.store.settings.pwa.splash-screen" />
           </div>
           <div className="w-100 flex justify-center items-center">
+            {splashLoading && <Spinner/>}
             <img
               alt={intl.formatMessage({
                 id: 'admin/pages.editor.store.settings.pwa.splash-screen',
               })}
               className="h5 shadow-1 mb3"
               src={`${splash.src}?v=${Date.now()}`}
+              onLoad={() => setSplashLoading(false)}
+              style={{display: splashLoading ? 'none': 'block'}}
             />
           </div>
         </div>
