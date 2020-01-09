@@ -2,20 +2,16 @@ import debounce from 'lodash/debounce'
 import { path } from 'ramda'
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Alert, ToastConsumer } from 'vtex.styleguide'
+import { Alert, Spinner, ToastConsumer } from 'vtex.styleguide'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay/typings'
-
 import Sidebar from './Sidebar'
 import { FormMetaProvider } from './Sidebar/FormMetaContext'
 import { ModalProvider } from './Sidebar/ModalContext'
-
 import IframeNavigationController from './IframeNavigationController'
 import Styles from './Styles'
 import Topbar from './Topbar'
-
 import styles from './EditorContainer.css'
-
 import '../../editbar.global.css'
 
 export const APP_CONTENT_ELEMENT_ID = 'app-content-editor'
@@ -112,26 +108,34 @@ const EditorContainer: React.FC<Props> = ({
     <FormMetaProvider>
       <ModalProvider>
         <IframeNavigationController iframeRuntime={iframeRuntime} />
-        <div className="w-100 h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
-          {isSiteEditor && iframeRuntime && (
-            <ToastConsumer>
-              {({ showToast }) => (
-                <Sidebar
-                  highlightHandler={highlightExtensionPoint}
-                  iframeRuntime={iframeRuntime}
-                  showToast={showToast}
-                  updateHighlightTitleByTreePath={
-                    updateHighlightTitleByTreePath
-                  }
-                />
-              )}
-            </ToastConsumer>
-          )}
+        <div className="w-500 h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
+          <div style={{ minWidth: '284px' }}>
+            {isSiteEditor && iframeRuntime ? (
+              <ToastConsumer>
+                {({ showToast }) => (
+                  <Sidebar
+                    highlightHandler={highlightExtensionPoint}
+                    iframeRuntime={iframeRuntime}
+                    showToast={showToast}
+                    updateHighlightTitleByTreePath={
+                      updateHighlightTitleByTreePath
+                    }
+                  />
+                )}
+              </ToastConsumer>
+            ) : (
+              <div className="bg-white-70 flex items-center h-100 justify-center w-100 z-2">
+                <Spinner />
+              </div>
+            )}
+          </div>
 
           <div className="w-100 dn flex-ns flex-column">
-            {isSiteEditor && iframeRuntime && (
-              <Topbar iframeRuntime={iframeRuntime} />
-            )}
+            <div style={{ minHeight: '64px' }} className="bg-muted-5">
+              {isSiteEditor && iframeRuntime && (
+                <Topbar iframeRuntime={iframeRuntime} />
+              )}
+            </div>
 
             {isDevelopment && (
               <div className="pa5 bg-muted-5">
