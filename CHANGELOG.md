@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Add Splash Screen image loading animation. 
+
 ## [4.18.9] - 2020-01-08
 
 ### Changed
