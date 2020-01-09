@@ -256,9 +256,6 @@ const PWAForm: React.FunctionComponent<Props> = ({
               })}
               className="h5 shadow-1 mb3"
               src={`${splash.src}?v=${Date.now()}`}
-              loading="lazy"
-              width="144px"
-              height="256px"
               onLoad={() => { setSplashLoading(false) }}
               style={{display: splashLoading ? 'none': 'block'}}
             />
