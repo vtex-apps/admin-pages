@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.19.1] - 2020-01-10
+
 ### Fixed
 - Layout instability when loading the site editor. The sidebar would take a few
   seconds to appear and the page would undesirably resize
