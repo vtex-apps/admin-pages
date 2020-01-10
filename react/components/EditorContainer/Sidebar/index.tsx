@@ -8,7 +8,6 @@ import { ANIMATION_TIMEOUT } from '../../consts'
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
 import SaveContentMutation from '../mutations/SaveContent'
-
 import AbsoluteLoader from './AbsoluteLoader'
 import BlockEditor from './BlockEditor'
 import BlockSelector from './BlockSelector'
@@ -61,11 +60,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   return (
     <div
       id="sidebar-vtex-editor"
-      className={
-        editor.isSidebarVisible
-          ? `z-1 h-100 ${styles['w-18em-ns']} w-100 flex flex-row-reverse`
-          : 'dn'
-      }
+      className={`z-1 h-100 ${styles['w-18em-ns']} w-100 flex flex-row-reverse`}
     >
       <nav
         id="admin-sidebar"
