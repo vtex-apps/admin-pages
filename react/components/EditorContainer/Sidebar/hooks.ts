@@ -4,7 +4,6 @@ import { getSitewideTreePath } from '../../../utils/blocks'
 import { useEditorContext } from '../../EditorContext'
 import ListContent from '../graphql/ListContent.graphql'
 import { ListContentData, ListContentVariables } from '../queries/ListContent'
-
 import { EditingState, UseInitialEditingState } from './typings'
 import {
   getInitialEditingState,
@@ -47,7 +46,7 @@ const useInitialEditingState: UseInitialEditingState = ({
         fetchPolicy: 'network-only',
         query: ListContent,
         variables: {
-          bindingId: iframeRuntime.binding && iframeRuntime.binding.id,
+          bindingId: iframeRuntime.binding?.id,
           blockId,
           pageContext: iframeRuntime.route.pageContext,
           template,
