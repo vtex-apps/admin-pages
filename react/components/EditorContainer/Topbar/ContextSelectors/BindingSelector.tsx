@@ -18,20 +18,23 @@ const BindingSelector: React.FC<Props> = ({
   options,
   value,
 }) => {
-  const Selector = () => (
-    <div
-      className={
-        'binding-selector' + (isDisabled ? ' binding-selector-disabled' : '')
-      }
-    >
-      <Dropdown
-        disabled={isDisabled}
-        onChange={onChange}
-        options={options}
-        size="small"
-        value={value}
-      />
-    </div>
+  const Selector = React.useCallback(
+    () => (
+      <div
+        className={
+          'binding-selector' + (isDisabled ? ' binding-selector-disabled' : '')
+        }
+      >
+        <Dropdown
+          disabled={isDisabled}
+          onChange={onChange}
+          options={options}
+          size="small"
+          value={value}
+        />
+      </div>
+    ),
+    [isDisabled, onChange, options, value]
   )
 
   const editor = useEditorContext()

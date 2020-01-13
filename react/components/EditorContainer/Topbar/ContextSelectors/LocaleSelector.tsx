@@ -31,16 +31,19 @@ const LocaleSelector: React.FC<Props> = ({
     [emitter]
   )
 
-  const Selector = () => (
-    <div className={className}>
-      <Dropdown
-        disabled={isDisabled}
-        onChange={handleChange}
-        options={options}
-        size="small"
-        value={locale}
-      />
-    </div>
+  const Selector = React.useCallback(
+    () => (
+      <div className={className}>
+        <Dropdown
+          disabled={isDisabled}
+          onChange={handleChange}
+          options={options}
+          size="small"
+          value={locale}
+        />
+      </div>
+    ),
+    [className, handleChange, isDisabled, locale, options]
   )
 
   const editor = useEditorContext()
