@@ -39,24 +39,22 @@ export default class Form extends React.Component<Props> {
 
   public render() {
     return (
-      <span className="vtex-admin-pages-4-x">
-        <JsonSchemaForm
-          schema={this.props.schema}
-          formData={this.props.formData}
-          onChange={this.props.onChange}
-          onSubmit={this.props.onSubmit}
-          FieldTemplate={FieldTemplate}
-          ArrayFieldTemplate={ArrayFieldTemplate}
-          ObjectFieldTemplate={ObjectFieldTemplate}
-          uiSchema={this.props.uiSchema}
-          widgets={widgets}
-          showErrorList
-          ErrorList={ErrorListTemplate}
-          formContext={this.props.formContext}
-        >
-          <button className="dn" type="submit" />
-        </JsonSchemaForm>
-      </span>
+      <JsonSchemaForm
+        schema={this.props.schema}
+        formData={this.props.formData}
+        onChange={this.props.onChange}
+        onSubmit={this.props.onSubmit}
+        FieldTemplate={FieldTemplate}
+        ArrayFieldTemplate={ArrayFieldTemplate}
+        ObjectFieldTemplate={ObjectFieldTemplate}
+        uiSchema={this.props.uiSchema}
+        widgets={widgets}
+        showErrorList
+        ErrorList={ErrorListTemplate}
+        formContext={this.props.formContext}
+      >
+        <button className="dn" type="submit" />
+      </JsonSchemaForm>
     )
   }
 }

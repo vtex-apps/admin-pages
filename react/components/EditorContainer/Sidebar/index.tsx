@@ -60,13 +60,13 @@ const Sidebar: React.FunctionComponent<Props> = ({
   return (
     <div
       id="sidebar-vtex-editor"
-      className={`z-1 h-100 ${styles['w-18em-ns']} w-100 flex flex-row-reverse`}
+      className="z-1 h-100 w-100 flex flex-row-reverse"
     >
       <nav
         id="admin-sidebar"
         className={
           `transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns ` +
-          `overflow-x-hidden w-100 font-display bg-white shadow-solid-x ${styles['w-18em-ns']} ${styles['admin-sidebar']}`
+          `overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns ${styles['admin-sidebar']}`
         }
       >
         <div className="relative h-100 flex flex-column dark-gray">

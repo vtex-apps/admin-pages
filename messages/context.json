@@ -475,5 +475,8 @@
   "admin/pages.editor.topbar.button.device.desktop.tooltip": "admin/pages.editor.topbar.button.device.desktop.tooltip",
   "admin/pages.editor.topbar.button.device.mobile.tooltip": "admin/pages.editor.topbar.button.device.mobile.tooltip",
   "admin/pages.editor.topbar.button.device.tablet.tooltip": "admin/pages.editor.topbar.button.device.tablet.tooltip",
-  "admin/pages.editor.topbar.button.preview.tooltip": "admin/pages.editor.topbar.button.preview.tooltip"
+  "admin/pages.editor.topbar.button.preview.tooltip": "admin/pages.editor.topbar.button.preview.tooltip",
+  "admin/pages.editor.topbar.context.binding.error": "admin/pages.editor.topbar.context.binding.error",
+  "admin/pages.editor.topbar.context.binding.tooltip": "admin/pages.editor.topbar.context.binding.tooltip",
+  "admin/pages.editor.topbar.context.locale.tooltip": "admin/pages.editor.topbar.context.locale.tooltip"
 }

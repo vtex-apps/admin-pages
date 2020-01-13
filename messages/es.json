@@ -475,5 +475,8 @@
   "admin/pages.editor.topbar.button.device.desktop.tooltip": "Visión desktop",
   "admin/pages.editor.topbar.button.device.mobile.tooltip": "Visión mobile",
   "admin/pages.editor.topbar.button.device.tablet.tooltip": "Visión tablet",
-  "admin/pages.editor.topbar.button.preview.tooltip": "Vista previa"
+  "admin/pages.editor.topbar.button.preview.tooltip": "Vista previa",
+  "admin/pages.editor.topbar.context.binding.error": "No se pudo cargar la lista de bindings disponibles.",
+  "admin/pages.editor.topbar.context.binding.tooltip": "No se puede cambiar el binding mientras se edita un bloque.",
+  "admin/pages.editor.topbar.context.locale.tooltip": "No se puede cambiar el idioma mientras se edita un bloque."
 }

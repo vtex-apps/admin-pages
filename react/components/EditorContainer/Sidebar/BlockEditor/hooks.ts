@@ -12,7 +12,6 @@ import { NEW_CONFIGURATION_ID } from '../consts'
 import { useFormMetaContext } from '../FormMetaContext'
 import { useModalContext } from '../ModalContext'
 import { getFormData } from '../utils'
-
 import { UseFormHandlers } from './typings'
 import {
   getDefaultConfiguration,
@@ -154,6 +153,7 @@ export const useFormHandlers: UseFormHandlers = ({
 
       await saveContent({
         variables: {
+          bindingId: iframeRuntime.binding?.id,
           blockId,
           configuration,
           lang: iframeRuntime.culture.locale,

@@ -1,6 +1,5 @@
 import ListContent from '../../../graphql/ListContent.graphql'
 import { ListContentData } from '../../../queries/ListContent'
-
 import { GetDeleteStoreUpdater } from './typings'
 
 export const isConfigurationExpired = (
@@ -76,6 +75,7 @@ export const getDeleteStoreUpdater: GetDeleteStoreUpdater = ({
   const cacheAccessParameters = {
     query: ListContent,
     variables: {
+      bindingId: iframeRuntime.binding?.id,
       blockId,
       pageContext: iframeRuntime.route.pageContext,
       template,

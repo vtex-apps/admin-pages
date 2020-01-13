@@ -7,30 +7,45 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Bindings support.
+
+### Fixed
+
+- Preview mode toggle.
+
 ## [4.19.1] - 2020-01-10
 
 ### Fixed
+
 - Layout instability when loading the site editor. The sidebar would take a few
   seconds to appear and the page would undesirably resize
 
 ## [4.19.0] - 2020-01-09
 
 ### Added
-- Add Splash Screen image loading animation. 
+
+- Add Splash Screen image loading animation.
 
 ## [4.18.9] - 2020-01-08
 
 ### Changed
+
 - Update `react-intl` to latest version.
 
 ## [4.18.8] - 2020-01-06
+
 ### Added
+
 - Add styles menu item to GoCommerce sidebar too.
 
 ## [4.18.7] - 2020-01-06
 
 ## [4.18.6] - 2019-12-26
+
 ### Changed
+
 - Decrease batch size AGAIN to make a timeout with messages service less probable.
 
 ## [4.18.5] - 2019-12-23
@@ -48,7 +63,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Unused CSS classes from components and CSS files.
 
 ## [4.18.4] - 2019-12-20
+
 ### Changed
+
 - Decrease batch size to make less probable a timeout with messages
 
 ## [4.18.3] - 2019-11-21

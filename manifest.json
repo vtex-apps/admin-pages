@@ -20,13 +20,12 @@
     "vtex.store": "2.x",
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x",
-    "vtex.messages": "1.x"
+    "vtex.messages": "1.x",
+    "vtex.tenant-graphql": "0.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "settingsSchema": {},
   "scripts": {
     "postreleasy": "vtex publish -r vtex --verbose"

@@ -5,7 +5,7 @@ import { Tab, Tabs } from 'vtex.styleguide'
 import PWAForm from './PWAForm'
 import StoreForm from './StoreForm'
 
-import '../../../editbar.global.css'
+import '../../../styles.global.css'
 
 const messages = defineMessages({
   advanced: {
