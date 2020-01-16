@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.20.1] - 2020-01-16
+
 ### Fixed
 
 - Bug in which changing to a binding with a default locale different than the current one wouldn't update the locale selector's value.
