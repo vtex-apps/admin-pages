@@ -21,6 +21,7 @@
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x",
     "vtex.messages": "1.x",
+    "vtex.rewriter": "1.x",
     "vtex.tenant-graphql": "0.x"
   },
   "mustUpdateAt": "2018-09-05",
