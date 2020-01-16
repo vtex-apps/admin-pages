@@ -1,10 +1,10 @@
-mutation DeleteRedirect($id: ID!) {
-  deleteRedirect(id: $id) {
-    cacheId
-    disabled
-    endDate
-    from
-    id
-    to
+mutation DeleteRedirect($path: String!) {
+  redirect @context(provider: "vtex.rewriter") {
+    delete(path: $path) {
+      endDate
+      from
+      to
+      type
+    }
   }
 }

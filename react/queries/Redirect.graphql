@@ -1,10 +1,10 @@
-query Redirect($id: ID!) {
-  redirect(id: $id) {
-    cacheId
-    endDate
-    from
-    id
-    to
-    type
+query Redirect($path: String!) {
+  redirect @context(provider: "vtex.rewriter") {
+    get(path: $path) {
+      endDate
+      from
+      to
+      type
+    }
   }
 }
