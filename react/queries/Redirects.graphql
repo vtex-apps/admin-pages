@@ -1,13 +1,11 @@
-query Redirects($from: Int, $to: Int) {
-  redirects(from: $from, to: $to) {
-    redirects {
-      cacheId
+query Redirects($from: Int!, $to: Int!) {
+  redirect @context(provider: "vtex.rewriter") {
+    list(from: $from, to: $to) {
       endDate
       from
-      id
       to
       type
     }
-    total
+    numberOfEntries
   }
 }

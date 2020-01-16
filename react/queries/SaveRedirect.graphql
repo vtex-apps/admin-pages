@@ -1,17 +1,15 @@
 mutation saveRedirect(
-  $id: ID
-  $endDate: String!
+  $endDate: String
   $from: String!
   $to: String!
-  $type: String!
+  $type: RedirectTypes!
 ) {
-  saveRedirect(id: $id, endDate: $endDate, from: $from, to: $to, type: $type) {
-    cacheId
-    disabled
-    endDate
-    from
-    id
-    to
-    type
+  redirect @context(provider: "vtex.rewriter") {
+    save(route: { endDate: $endDate, from: $from, to: $to, type: $type }) {
+      endDate
+      from
+      to
+      type
+    }
   }
 }
