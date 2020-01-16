@@ -1,0 +1,5 @@
+mutation SaveManyRedirects($redirects: [RedirectInput!]!) {
+  redirect @context(provider: "vtex.rewriter") {
+    saveMany(routes: $redirects)
+  }
+}
