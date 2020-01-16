@@ -31,6 +31,13 @@ const LocaleSelector: React.FC<Props> = ({
     [emitter]
   )
 
+  React.useEffect(() => {
+    if (locale !== culture.locale) {
+      setLocale(culture.locale)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [culture.locale])
+
   const Selector = React.useCallback(
     () => (
       <div className={className}>
