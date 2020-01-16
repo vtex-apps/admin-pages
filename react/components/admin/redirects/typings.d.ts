@@ -1,6 +1,6 @@
 export interface RedirectsQuery {
-  redirects: {
-    redirects: Redirect[]
-    total: number
+  redirect: {
+    list: Redirect[]
+    numberOfEntries: number
   }
 }

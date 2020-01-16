@@ -1,11 +1,10 @@
-import { Component, ReactElement } from 'react'
+import { DocumentNode } from 'graphql'
+import { JSONSchema6 } from 'json-schema'
 
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 
 declare global {
   declare module '*.graphql' {
-    import { DocumentNode } from 'graphql'
-
     const value: DocumentNode
     export default value
   }
@@ -245,14 +244,11 @@ declare global {
     label?: string
   }
 
-  type RedirectTypes = 'permanent' | 'temporary'
+  type RedirectTypes = 'PERMANENT' | 'TEMPORARY'
 
   interface Redirect {
-    cacheId: string
-    disabled: boolean
-    endDate: string
+    endDate: string | null
     from: string
-    id: string
     to: string
     type: RedirectTypes
   }
