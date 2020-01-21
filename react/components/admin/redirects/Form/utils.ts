@@ -4,7 +4,6 @@ import Redirect from '../../../../queries/Redirect.graphql'
 import Redirects from '../../../../queries/Redirects.graphql'
 import { PAGINATION_START, PAGINATION_STEP } from '../consts'
 import { RedirectsQuery } from '../typings'
-
 import { QueryData, StoreUpdaterGetter } from './typings'
 
 const cacheAccessParameters = {
@@ -29,8 +28,10 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
   store,
   result
 ) => {
-  const deleteRedirect = result.data && result.data.deleteRedirect
-  const saveRedirect = result.data && result.data.saveRedirect
+  const deleteRedirect =
+    result.data && result.data.redirect && result.data.redirect.delete
+  const saveRedirect =
+    result.data && result.data.redirect && result.data.redirect.save
 
   const isDelete = operation === 'delete'
 
@@ -41,31 +42,26 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
       const newRedirects =
         (isDelete
           ? deleteRedirect &&
-            queryData.redirects.redirects.filter(
-              redirect => redirect.id !== deleteRedirect.id
+            queryData.redirect.list.filter(
+              redirect => redirect.from !== deleteRedirect.from
             )
           : saveRedirect &&
-            queryData.redirects.redirects.reduce(
+            queryData.redirect.list.reduce(
               (acc, currRedirect) =>
-                currRedirect.id === saveRedirect.id
+                currRedirect.from === saveRedirect.from
                   ? acc
                   : [...acc, currRedirect],
               [saveRedirect]
-            )) || queryData.redirects.redirects
-
-      const newTotal =
-        newRedirects.length !== queryData.redirects.redirects.length
-          ? isDelete
-            ? queryData.redirects.total - 1
-            : queryData.redirects.total + 1
-          : queryData.redirects.total
+            )) || queryData.redirect.list
 
       const newData = {
         ...queryData,
-        redirects: {
-          ...queryData.redirects,
-          redirects: newRedirects,
-          total: newTotal,
+        redirect: {
+          ...queryData.redirect,
+          list: newRedirects,
+          numberOfEntries: isDelete
+            ? queryData.redirect.numberOfEntries - 1
+            : queryData.redirect.numberOfEntries + 1,
         },
       }
 
@@ -77,12 +73,12 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
 
   try {
     store.writeQuery({
-      data: { redirect: isDelete ? undefined : saveRedirect },
+      data: { redirect: isDelete ? undefined : { save: saveRedirect } },
       query: Redirect,
       variables: {
-        id: isDelete
-          ? deleteRedirect && deleteRedirect.id
-          : saveRedirect && saveRedirect.id,
+        path: isDelete
+          ? deleteRedirect && deleteRedirect.from
+          : saveRedirect && saveRedirect.from,
       },
     })
   } catch (e) {

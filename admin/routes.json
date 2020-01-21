@@ -19,7 +19,7 @@
   },
   "admin.app.cms.pages.redirect-details": {
     "component": "RedirectForm",
-    "path": "/admin/app/cms/redirects/*id"
+    "path": "/admin/app/cms/redirects/*path"
   },
   "admin.app.cms.content": {
     "component": "InstitutionalPageList",
