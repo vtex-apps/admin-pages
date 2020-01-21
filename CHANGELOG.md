@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Better feedback to redirects bulk upload.
+
+### Changed
+
+- Redirects admin uses `rewriter` instead of `pages` to read/write redirects, since `rewriter` has a higher limit to the number redirects that can be created.
+
 ## [4.21.0] - 2020-01-27
 
 ### Added
