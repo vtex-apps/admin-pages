@@ -1,15 +1,15 @@
 import { Mutation, MutationFn, MutationResult } from 'react-apollo'
-import SaveRedirectFromFile from '../graphql/SaveRedirectFromFile.graphql'
+
+import SaveRedirectFromFile from './SaveRedirectFromFile.graphql'
 
 interface SaveRedirectFromFileData {
   saveRedirectFromFile: boolean
 }
 
-export type UploadActionType = 'merge' | 'overwrite'
+export type UploadActionType = 'save' | 'delete'
 
 interface SaveRedirectFromFileVariables {
-  file: File | FileList | Blob
-  uploadActionType: UploadActionType
+  redirects: Redirect[]
 }
 
 type SaveRedirectFromFileMutationFn = MutationFn<

@@ -1,0 +1,15 @@
+.validation-errors-container {
+  max-height: 16rem;
+}
+
+.validation-errors-container::-webkit-scrollbar,
+.validation-errors-container::-webkit-scrollbar-track {
+  width: 4px;
+  background: #f2f4f5;
+}
+
+.validation-errors-container::-webkit-scrollbar-thumb {
+  width: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
