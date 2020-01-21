@@ -93,7 +93,7 @@ class Form extends Component<Props, State> {
   constructor(props: Props) {
     super(props)
 
-    this.isEditingRedirect = props.initialData.id !== NEW_REDIRECT_ID
+    this.isEditingRedirect = props.initialData.from !== NEW_REDIRECT_ID
 
     this.state = {
       data: props.initialData,
@@ -123,9 +123,9 @@ class Form extends Component<Props, State> {
           isActionDanger
           isActionLoading={isLoading}
           isOpen={shouldShowModal}
-          onClickAction={this.handleDelete(data.id)}
-          onClickCancel={this.toggleModalVisibility}
-          onClose={this.toggleModalVisibility}
+          onClickAction={this.handleDelete(data.from)}
+          onClickCancel={this.handleModalVisibilityToggle}
+          onClose={this.handleModalVisibilityToggle}
           textButtonAction={intl.formatMessage(messages.buttonRemove)}
           textButtonCancel={intl.formatMessage(messages.buttonCancel)}
           textMessage={intl.formatMessage(messages.modalText)}
@@ -164,18 +164,18 @@ class Form extends Component<Props, State> {
             options={[
               {
                 label: intl.formatMessage(messages.permanent),
-                value: 'permanent',
+                value: 'PERMANENT',
               },
               {
                 label: intl.formatMessage(messages.temporary),
-                value: 'temporary',
+                value: 'TEMPORARY',
               },
             ]}
             value={data.type}
             onChange={this.changeType}
           />
           <FormFieldSeparator />
-          {data.type === 'temporary' ? (
+          {data.type === 'TEMPORARY' ? (
             <>
               <div className="relative">
                 <Toggle
@@ -269,14 +269,14 @@ class Form extends Component<Props, State> {
     this.props.runtime.navigate({ to: BASE_URL })
   }
 
-  private handleDelete = (redirectId: string) => () => {
+  private handleDelete = (redirectFrom: string) => () => {
     const { intl, onDelete } = this.props
 
     this.setState({ isLoading: true }, async () => {
       try {
         await onDelete({
           variables: {
-            id: redirectId,
+            path: redirectFrom,
           },
         })
 
@@ -318,10 +318,6 @@ class Form extends Component<Props, State> {
           variables: {
             endDate,
             from,
-            id:
-              this.props.initialData.id !== NEW_REDIRECT_ID
-                ? this.props.initialData.id
-                : undefined,
             to,
             type,
           },
@@ -367,7 +363,7 @@ class Form extends Component<Props, State> {
   private changeType = (e: React.ChangeEvent<HTMLInputElement>) => {
     const type = e.target.value
     this.handleInputChange({
-      ...(type === 'permanent' ? { endDate: '' } : null),
+      ...(type === 'PERMANENT' ? { endDate: '' } : null),
       type,
     })
   }

@@ -20,7 +20,9 @@ import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
 interface CustomProps {
-  params: { id: string }
+  params: {
+    path: string
+  }
 }
 
 type Props = WithApolloClient<
@@ -40,16 +42,13 @@ class RedirectForm extends Component<Props, State> {
     super(props)
 
     const defaultFormData = {
-      cacheId: '',
-      disabled: false,
-      endDate: '',
+      endDate: null,
       from: '',
-      id: NEW_REDIRECT_ID,
       to: '',
-      type: 'permanent' as RedirectTypes,
+      type: 'PERMANENT' as RedirectTypes,
     }
 
-    const isNew = props.params.id === NEW_REDIRECT_ID
+    const isNew = props.params.path === NEW_REDIRECT_ID
 
     this.state = {
       formData: isNew ? defaultFormData : undefined,
@@ -73,11 +72,11 @@ class RedirectForm extends Component<Props, State> {
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            id: params.id,
+            path: '/' + params.path,
           },
         })
 
-        const redirectInfo = response.data.redirect
+        const redirectInfo = response.data.redirect.get
 
         if (redirectInfo) {
           this.setState({
@@ -85,7 +84,7 @@ class RedirectForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-          console.log('Invalid ID. Navigating to redirect list...')
+          console.warn('Invalid path. Navigating to redirect list...')
 
           navigate({ to: BASE_URL })
         }
@@ -107,7 +106,7 @@ class RedirectForm extends Component<Props, State> {
           <title>
             {intl.formatMessage({
               id:
-                params.id === NEW_REDIRECT_ID
+                params.path === NEW_REDIRECT_ID
                   ? 'admin/pages.admin.redirects.form.title.new'
                   : 'admin/pages.admin.redirects.form.title.info',
             })}
