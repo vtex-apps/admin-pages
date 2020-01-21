@@ -1,16 +1,23 @@
-import React, { Component } from 'react'
-import { Query, QueryResult } from 'react-apollo'
-import { defineMessages, injectIntl } from 'react-intl'
+import React, { useCallback, useEffect, useState } from 'react'
+import { Query, QueryResult, withApollo, WithApolloClient } from 'react-apollo'
+import { defineMessages, useIntl } from 'react-intl'
+import streamSaver from 'streamsaver'
+import { TextEncoder } from 'text-encoding'
 import { Helmet } from 'vtex.render-runtime'
-import { Box, Pagination, ToastConsumer } from 'vtex.styleguide'
+import { Alert, Box, Pagination, ToastConsumer } from 'vtex.styleguide'
+import * as WebStreamsPolyfill from 'web-streams-polyfill/ponyfill'
 
 import {
+  CSV_HEADER,
+  CSV_TEMPLATE,
   PAGINATION_START,
   PAGINATION_STEP,
   WRAPPER_PATH,
 } from './components/admin/redirects/consts'
+import ImportErrorModal from './components/admin/redirects/ImportErrorModal'
 import List from './components/admin/redirects/List'
 import UploadModal from './components/admin/redirects/UploadModal'
+import { AlertState } from './components/admin/redirects/typings'
 import {
   TargetPathContextProps,
   withTargetPath,
@@ -18,18 +25,12 @@ import {
 import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = ReactIntl.InjectedIntlProps & TargetPathContextProps
-
-interface State {
-  paginationFrom: number
-  paginationTo: number
-  isModalOpen: boolean
-}
+type Props = WithApolloClient<TargetPathContextProps>
 
 interface RedirectListQueryResult {
-  redirects: {
-    redirects: Redirect[]
-    total: number
+  redirect: {
+    list: Redirect[]
+    numberOfEntries: number
   }
 }
 
@@ -54,52 +55,190 @@ const messages = defineMessages({
   },
 })
 
-class RedirectList extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
+streamSaver.WritableStream = WebStreamsPolyfill.WritableStream
 
-    this.state = {
-      isModalOpen: false,
-      paginationFrom: PAGINATION_START,
-      paginationTo: PAGINATION_START + PAGINATION_STEP,
-    }
-  }
+const textEncoder = new TextEncoder()
 
-  public componentDidMount() {
-    const { setTargetPath } = this.props
+const getNextPaginationTo = (paginationFrom: number, total: number) =>
+  total > paginationFrom + PAGINATION_STEP
+    ? paginationFrom + PAGINATION_STEP
+    : total
+
+const handleDownloadTemplate = () => {
+  const fileStream = streamSaver.createWriteStream('redirects_template.csv')
+  const writer = fileStream.getWriter()
+  writer.write(textEncoder.encode(CSV_TEMPLATE))
+  writer.close()
+}
+
+const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
+  const intl = useIntl()
+
+  useEffect(() => {
     setTargetPath(WRAPPER_PATH)
+  }, [setTargetPath])
+
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [
+    { paginationFrom, paginationTo: statePaginationTo },
+    setPagination,
+  ] = useState({
+    paginationFrom: PAGINATION_START,
+    paginationTo: PAGINATION_START + PAGINATION_STEP,
+  })
+  const [alertState, setAlert] = useState<AlertState | null>(null)
+
+  const paginationTo = statePaginationTo && statePaginationTo - 1
+
+  const openModal = useCallback(() => {
+    setIsModalOpen(true)
+  }, [setIsModalOpen])
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false)
+  }, [setIsModalOpen])
+
+  const handleDownload = useCallback(async () => {
+    const STEP = 999
+
+    const fileStream = streamSaver.createWriteStream('redirects.csv')
+    const writer = fileStream.getWriter()
+    let current = 0
+    let list: Redirect[] | null = []
+
+    writer.write(textEncoder.encode(CSV_HEADER + '\n'))
+    while (list !== null) {
+      const response = await client.query<
+        RedirectListQueryResult,
+        RedirectListVariables
+      >({
+        query: Redirects,
+        variables: {
+          from: current,
+          to: current + STEP,
+        },
+      })
+      current += STEP + 1
+      response.data.redirect.list.forEach(({ endDate, from, to, type }) => {
+        writer.write(
+          textEncoder.encode(`${from};${to};${type};${endDate || ''}\n`)
+        )
+      })
+
+      list =
+        response.data.redirect.list.length === STEP + 1
+          ? response.data.redirect.list
+          : null
+    }
+    writer.close()
+  }, [client])
+
+  const getNextPageNavigationHandler = (
+    dataLength: number,
+    total: number,
+    fetchMore: QueryResult<
+      RedirectListQueryResult,
+      RedirectListVariables
+    >['fetchMore']
+  ) => async () => {
+    const nextPaginationTo = getNextPaginationTo(
+      paginationFrom + PAGINATION_STEP,
+      total
+    )
+
+    if (nextPaginationTo > dataLength) {
+      await fetchMore({
+        updateQuery: (prevData, { fetchMoreResult }) =>
+          fetchMoreResult
+            ? {
+                ...prevData,
+                redirect: {
+                  ...prevData.redirect,
+                  list: [
+                    ...prevData.redirect.list,
+                    ...fetchMoreResult.redirect.list,
+                  ],
+                },
+              }
+            : prevData,
+        variables: {
+          from: paginationTo,
+          to: nextPaginationTo,
+        },
+      })
+    }
+
+    setPagination(prevState => ({
+      paginationFrom: prevState.paginationTo,
+      paginationTo: nextPaginationTo,
+    }))
   }
 
-  public render() {
-    const { intl } = this.props
-    const { isModalOpen, paginationFrom, paginationTo } = this.state
+  const handlePrevPageNavigation = useCallback(() => {
+    setPagination(prevState => ({
+      paginationFrom: prevState.paginationFrom - PAGINATION_STEP,
+      paginationTo: prevState.paginationFrom,
+    }))
+  }, [setPagination])
 
-    return (
-      <>
-        <Helmet>
-          <title>{intl.formatMessage(messages.title)}</title>
-        </Helmet>
-        <Query<RedirectListQueryResult, RedirectListVariables>
-          notifyOnNetworkStatusChange
-          query={Redirects}
-          variables={{
-            from: PAGINATION_START,
-            to: PAGINATION_STEP,
-          }}
-        >
-          {({ data, fetchMore, loading, refetch, error }) => {
-            const redirects =
-              (data && data.redirects && data.redirects.redirects) || []
-            const total = (data && data.redirects && data.redirects.total) || 0
-            const hasRedirects = redirects.length > 0
+  const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
 
-            return (
-              <>
-                {loading ? (
-                  <Loader />
-                ) : !error ? (
-                  <ToastConsumer>
-                    {({ showToast }) => (
+  return (
+    <>
+      <Helmet>
+        <title>{intl.formatMessage(messages.title)}</title>
+      </Helmet>
+      <Query<RedirectListQueryResult, RedirectListVariables>
+        notifyOnNetworkStatusChange
+        query={Redirects}
+        variables={{
+          from: PAGINATION_START,
+          to: PAGINATION_STEP,
+        }}
+      >
+        {({ data, fetchMore, loading, refetch, error }) => {
+          const redirects = (data && data.redirect && data.redirect.list) || []
+          const total =
+            (data && data.redirect && data.redirect.numberOfEntries) || 0
+          const hasRedirects = redirects.length > 0
+
+          return (
+            <>
+              {loading ? (
+                <Loader />
+              ) : !error ? (
+                <ToastConsumer>
+                  {({ showToast }) => (
+                    <>
+                      {alertState && (
+                        <div className="mb4">
+                          <Alert
+                            type={alertState.type}
+                            onClose={() => setAlert(null)}
+                            action={
+                              alertState.meta && alertState.action
+                                ? {
+                                    ...alertState.action,
+                                    onClick: () =>
+                                      setIsImportErrorModalOpen(true),
+                                  }
+                                : undefined
+                            }
+                          >
+                            {alertState.message}
+                          </Alert>
+                        </div>
+                      )}
+                      {isImportErrorModalOpen && alertState?.meta && (
+                        <ImportErrorModal
+                          isSave={alertState.meta.isSave}
+                          isOpen={isImportErrorModalOpen}
+                          mutation={alertState.meta.mutation}
+                          onClose={() => setIsImportErrorModalOpen(false)}
+                          redirects={alertState.meta.failedRedirects}
+                          setAlert={setAlert}
+                        />
+                      )}
                       <Box>
                         <List
                           from={paginationFrom}
@@ -112,18 +251,19 @@ class RedirectList extends Component<Props, State> {
                           }}
                           to={paginationTo}
                           showToast={showToast}
-                          openModal={this.openModal}
+                          openModal={openModal}
+                          onHandleDownload={handleDownload}
                         />
                         {total > 0 && (
                           <Pagination
                             currentItemFrom={paginationFrom + 1}
-                            currentItemTo={paginationTo}
-                            onNextClick={this.getGoToNextPage(
+                            currentItemTo={paginationTo + 1}
+                            onNextClick={getNextPageNavigationHandler(
                               redirects.length,
                               total,
                               fetchMore
                             )}
-                            onPrevClick={this.goToPrevPage}
+                            onPrevClick={handlePrevPageNavigation}
                             textOf={intl.formatMessage(messages.paginationOf)}
                             textShowRows={intl.formatMessage(messages.showRows)}
                             totalItems={total}
@@ -132,80 +272,24 @@ class RedirectList extends Component<Props, State> {
                         <UploadModal
                           isOpen={isModalOpen}
                           hasRedirects={hasRedirects}
-                          onClose={this.closeModal}
+                          onClose={closeModal}
+                          onDownloadTemplate={handleDownloadTemplate}
                           refetchRedirects={refetch}
+                          setAlert={setAlert}
                         />
                       </Box>
-                    )}
-                  </ToastConsumer>
-                ) : (
-                  <div> Something went wrong. </div>
-                )}
-              </>
-            )
-          }}
-        </Query>
-      </>
-    )
-  }
-
-  private getGoToNextPage = (
-    dataLength: number,
-    total: number,
-    fetchMore: QueryResult<
-      RedirectListQueryResult,
-      RedirectListVariables
-    >['fetchMore']
-  ) => async () => {
-    const nextPaginationTo = this.getNextPaginationTo(
-      this.state.paginationFrom + PAGINATION_STEP,
-      total
-    )
-
-    if (nextPaginationTo > dataLength) {
-      await fetchMore({
-        updateQuery: (prevData, { fetchMoreResult }) =>
-          fetchMoreResult
-            ? {
-                ...prevData,
-                redirects: {
-                  ...prevData.redirects,
-                  redirects: [
-                    ...prevData.redirects.redirects,
-                    ...fetchMoreResult.redirects.redirects,
-                  ],
-                },
-              }
-            : prevData,
-        variables: {
-          from: this.state.paginationTo,
-          to: nextPaginationTo,
-        },
-      })
-    }
-
-    this.setState(prevState => ({
-      ...prevState,
-      paginationFrom: prevState.paginationTo,
-      paginationTo: nextPaginationTo,
-    }))
-  }
-
-  private getNextPaginationTo = (paginationFrom: number, total: number) =>
-    total > paginationFrom + PAGINATION_STEP
-      ? paginationFrom + PAGINATION_STEP
-      : total
-
-  private goToPrevPage = () => {
-    this.setState(prevState => ({
-      ...prevState,
-      paginationFrom: prevState.paginationFrom - PAGINATION_STEP,
-      paginationTo: prevState.paginationFrom,
-    }))
-  }
-
-  private openModal = () => this.setState({ isModalOpen: true })
-  private closeModal = () => this.setState({ isModalOpen: false })
+                    </>
+                  )}
+                </ToastConsumer>
+              ) : (
+                <div> Something went wrong. </div>
+              )}
+            </>
+          )
+        }}
+      </Query>
+    </>
+  )
 }
 
-export default injectIntl(withTargetPath(RedirectList))
+export default withApollo(withTargetPath(RedirectList))

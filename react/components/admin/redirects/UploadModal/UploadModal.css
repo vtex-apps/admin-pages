@@ -1,16 +1,5 @@
-.modal-container {
-  min-height: calc(40vh - 3rem);
-  width: calc(80vw - 3rem);
-}
-
 .full-modal-width {
   width: calc(100% + 6rem);
-}
-
-@media screen and (min-width: 30em) {
-  .modal-container {
-    width: 20rem;
-  }
 }
 
 .error-container {
