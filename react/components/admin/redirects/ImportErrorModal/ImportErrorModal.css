@@ -1,0 +1,11 @@
+.import-error-modal-scroll::-webkit-scrollbar,
+.import-error-modal-scroll::-webkit-scrollbar-track {
+  width: 2px;
+  background: #f2f4f5;
+}
+
+.import-error-modal-scroll::-webkit-scrollbar-thumb {
+  width: 2px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}

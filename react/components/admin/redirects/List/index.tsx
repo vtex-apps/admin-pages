@@ -21,6 +21,7 @@ import { messages } from './messages'
 
 interface CustomProps {
   from: number
+  onHandleDownload: () => void
   items: Redirect[]
   to: number
   refetch: () => void
@@ -65,7 +66,7 @@ class List extends Component<Props, State> {
   }
 
   public render() {
-    const { intl, openModal } = this.props
+    const { intl, openModal, onHandleDownload } = this.props
     const { schema } = this.state
 
     const items = schema.items
@@ -112,7 +113,7 @@ class List extends Component<Props, State> {
               mediumOptionLabel: intl.formatMessage(messages.lineDensityMedium),
             },
             download: {
-              handleCallback: this.handleDownload,
+              handleCallback: onHandleDownload,
               label: intl.formatMessage(messages.download),
             },
             fields: {
@@ -194,7 +195,7 @@ class List extends Component<Props, State> {
 
     const selectedItem = event.rowData
 
-    navigate({ to: `${BASE_URL}/${selectedItem.id}` })
+    navigate({ to: `${BASE_URL}${selectedItem.from}` })
   }
 
   private handleNewItemOpen = () => {
@@ -204,10 +205,6 @@ class List extends Component<Props, State> {
   }
 
   private handleUpload = () => this.props.openModal()
-
-  private handleDownload() {
-    window.open('/_v/private/pages/redirects.csv')
-  }
 }
 
 export default withRuntimeContext(injectIntl(List))
