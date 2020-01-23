@@ -110,7 +110,11 @@ const EditorContainer: React.FC<Props> = ({
       <ModalProvider>
         <IframeNavigationController iframeRuntime={iframeRuntime} />
         <div className="vtex-admin-pages-4-x h-100 min-vh-100 flex flex-row-reverse bg-base bb bw1 b--muted-5">
-          <div className={editor.isSidebarVisible ? 'w-18em-ns' : 'dn'}>
+          <div
+            className={
+              editor.isSidebarVisible && isSiteEditor ? 'w-18em-ns' : 'dn'
+            }
+          >
             {isSiteEditor && iframeRuntime ? (
               <ToastConsumer>
                 {({ showToast }) => (
