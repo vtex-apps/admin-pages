@@ -67,6 +67,7 @@
   "admin/pages.admin.pages.list.section.product": "Product",
   "admin/pages.admin.pages.list.section.productCollections": "Product collections",
   "admin/pages.admin.pages.list.section.standard": "Standard",
+  "admin/pages.admin.pages.list.section.notFound": "Not found (404)",
   "admin/pages.admin.redirects.button.create": "New redirect",
   "admin/pages.admin.redirects.emptyState.upload": "Upload a CSV",
   "admin/pages.admin.redirects.emptyState": "No redirects created.",

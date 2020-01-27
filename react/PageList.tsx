@@ -60,6 +60,13 @@ const PageList: React.FunctionComponent<PageListProps> = ({
       (acc: CategorizedRoutes, currRoute: Route) => {
         const currRouteContext = currRoute.context || ''
 
+        if (currRoute.interfaceId.endsWith('store.not-found')) {
+          return {
+            ...acc,
+            notFoundSection: [...acc.notFoundSection, currRoute],
+          }
+        }
+
         if (currRouteContext.endsWith('ContentPageContext')) {
           return acc
         }
@@ -84,6 +91,7 @@ const PageList: React.FunctionComponent<PageListProps> = ({
         multipleProducts: [],
         noProducts: [],
         singleProduct: [],
+        notFoundSection: [],
       }
     )
   }, [data])

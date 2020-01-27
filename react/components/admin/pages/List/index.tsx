@@ -42,6 +42,11 @@ const List: React.FunctionComponent<Props> = ({ categorizedRoutes }) => (
       routes={sortRoutes(categorizedRoutes.multipleProducts)}
       titleId="admin/pages.admin.pages.list.section.productCollections"
     />
+    <SectionSeparator />
+    <Section
+      routes={sortRoutes(categorizedRoutes.notFoundSection)}
+      titleId="admin/pages.admin.pages.list.section.notFound"
+    />
   </Fragment>
 )
 

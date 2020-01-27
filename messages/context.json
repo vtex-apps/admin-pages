@@ -67,6 +67,7 @@
   "admin/pages.admin.pages.list.section.product": "admin/pages.admin.pages.list.section.product",
   "admin/pages.admin.pages.list.section.productCollections": "admin/pages.admin.pages.list.section.productCollections",
   "admin/pages.admin.pages.list.section.standard": "admin/pages.admin.pages.list.section.standard",
+  "admin/pages.admin.pages.list.section.notFound": "admin/pages.admin.pages.list.section.notFound",
   "admin/pages.admin.redirects.button.create": "admin/pages.admin.redirects.button.create",
   "admin/pages.admin.redirects.emptyState.upload": "admin/pages.admin.redirects.emptyState.upload",
   "admin/pages.admin.redirects.emptyState": "admin/pages.admin.redirects.emptyState",
