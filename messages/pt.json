@@ -67,6 +67,7 @@
   "admin/pages.admin.pages.list.section.product": "Produto",
   "admin/pages.admin.pages.list.section.productCollections": "Coleção de produtos",
   "admin/pages.admin.pages.list.section.standard": "Padrão",
+  "admin/pages.admin.pages.list.section.notFound": "Não encontrado (404)",
   "admin/pages.admin.redirects.button.create": "Novo redirecionamento",
   "admin/pages.admin.redirects.emptyState.upload": "Importe um CSV",
   "admin/pages.admin.redirects.emptyState": "Nenhum redirecionamento criado.",
