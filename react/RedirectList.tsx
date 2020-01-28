@@ -79,6 +79,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
   }, [setTargetPath])
 
   const [isModalOpen, setIsModalOpen] = useState(false)
+
   const [
     { paginationFrom, paginationTo: statePaginationTo },
     setPagination,
@@ -86,7 +87,10 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
     paginationFrom: PAGINATION_START,
     paginationTo: PAGINATION_START + PAGINATION_STEP,
   })
+
   const [alertState, setAlert] = useState<AlertState | null>(null)
+
+  const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
 
   const paginationTo = statePaginationTo && statePaginationTo - 1
 
@@ -97,6 +101,18 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
   const closeModal = useCallback(() => {
     setIsModalOpen(false)
   }, [setIsModalOpen])
+
+  const resetAlert = useCallback(() => {
+    setAlert(null)
+  }, [setAlert])
+
+  const handleOpenErrorModal = useCallback(() => {
+    setIsImportErrorModalOpen(true)
+  }, [setIsImportErrorModalOpen])
+
+  const handleCloseErrorModal = useCallback(() => {
+    setIsImportErrorModalOpen(false)
+  }, [setIsImportErrorModalOpen])
 
   const handleDownload = useCallback(async () => {
     const STEP = 999
@@ -181,8 +197,6 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
     }))
   }, [setPagination])
 
-  const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
-
   return (
     <>
       <Helmet>
@@ -218,12 +232,12 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                     <div className="mb4">
                       <Alert
                         type={alertState.type}
-                        onClose={() => setAlert(null)}
+                        onClose={resetAlert}
                         action={
                           alertState.meta && alertState.action
                             ? {
                                 ...alertState.action,
-                                onClick: () => setIsImportErrorModalOpen(true),
+                                onClick: handleOpenErrorModal,
                               }
                             : undefined
                         }
@@ -237,7 +251,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                       isSave={alertState.meta.isSave}
                       isOpen={isImportErrorModalOpen}
                       mutation={alertState.meta.mutation}
-                      onClose={() => setIsImportErrorModalOpen(false)}
+                      onClose={handleCloseErrorModal}
                       redirects={alertState.meta.failedRedirects}
                       setAlert={setAlert}
                     />

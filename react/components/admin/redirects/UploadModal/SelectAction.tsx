@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Radio } from 'vtex.styleguide'
 
@@ -18,6 +18,16 @@ export default function SelectAction({
   setModalStep,
   setUploadActionType,
 }: Props) {
+  const handleSaveRadioChange = useCallback(() => {
+    setUploadActionType('save')
+    setModalStep('UPLOAD_FILE')
+  }, [setModalStep, setUploadActionType])
+
+  const handleDeleteRadioChange = useCallback(() => {
+    setUploadActionType('delete')
+    setModalStep('UPLOAD_FILE')
+  }, [setModalStep, setUploadActionType])
+
   return (
     <>
       <p className="f4 fw3 mt0 mb5">
@@ -30,10 +40,7 @@ export default function SelectAction({
           <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.select-action.save" />
         }
         name="upload-action-type"
-        onChange={() => {
-          setUploadActionType('save')
-          setModalStep('UPLOAD_FILE')
-        }}
+        onChange={handleSaveRadioChange}
         value="save"
       />
       <Radio
@@ -43,10 +50,7 @@ export default function SelectAction({
           <FormattedMessage id="admin/pages.admin.redirects.upload-modal.prompt.select-action.delete" />
         }
         name="upload-action-type"
-        onChange={() => {
-          setUploadActionType('delete')
-          setModalStep('UPLOAD_FILE')
-        }}
+        onChange={handleDeleteRadioChange}
         value="delete"
       />
     </>
