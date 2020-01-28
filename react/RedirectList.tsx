@@ -221,7 +221,19 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
           }
 
           if (error) {
-            return <div> Something went wrong. </div>
+            return (
+              <div>
+                Something went wrong.
+                <button
+                  className="bg-transparent bn c-action-primary pointer"
+                  onClick={() => {
+                    refetch({ from: paginationFrom, to: statePaginationTo })
+                  }}
+                >
+                  Click here to try again.
+                </button>
+              </div>
+            )
           }
 
           return (
