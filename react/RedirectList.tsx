@@ -202,89 +202,88 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
             (data && data.redirect && data.redirect.numberOfEntries) || 0
           const hasRedirects = redirects.length > 0
 
+          if (loading) {
+            return <Loader />
+          }
+
+          if (error) {
+            return <div> Something went wrong. </div>
+          }
+
           return (
-            <>
-              {loading ? (
-                <Loader />
-              ) : !error ? (
-                <ToastConsumer>
-                  {({ showToast }) => (
-                    <>
-                      {alertState && (
-                        <div className="mb4">
-                          <Alert
-                            type={alertState.type}
-                            onClose={() => setAlert(null)}
-                            action={
-                              alertState.meta && alertState.action
-                                ? {
-                                    ...alertState.action,
-                                    onClick: () =>
-                                      setIsImportErrorModalOpen(true),
-                                  }
-                                : undefined
-                            }
-                          >
-                            {alertState.message}
-                          </Alert>
-                        </div>
-                      )}
-                      {isImportErrorModalOpen && alertState?.meta && (
-                        <ImportErrorModal
-                          isSave={alertState.meta.isSave}
-                          isOpen={isImportErrorModalOpen}
-                          mutation={alertState.meta.mutation}
-                          onClose={() => setIsImportErrorModalOpen(false)}
-                          redirects={alertState.meta.failedRedirects}
-                          setAlert={setAlert}
-                        />
-                      )}
-                      <Box>
-                        <List
-                          from={paginationFrom}
-                          items={redirects.slice(paginationFrom, paginationTo)}
-                          refetch={() => {
-                            refetch({
-                              from: PAGINATION_START,
-                              to: PAGINATION_STEP,
-                            })
-                          }}
-                          to={paginationTo}
-                          showToast={showToast}
-                          openModal={openModal}
-                          onHandleDownload={handleDownload}
-                        />
-                        {total > 0 && (
-                          <Pagination
-                            currentItemFrom={paginationFrom + 1}
-                            currentItemTo={paginationTo + 1}
-                            onNextClick={getNextPageNavigationHandler(
-                              redirects.length,
-                              total,
-                              fetchMore
-                            )}
-                            onPrevClick={handlePrevPageNavigation}
-                            textOf={intl.formatMessage(messages.paginationOf)}
-                            textShowRows={intl.formatMessage(messages.showRows)}
-                            totalItems={total}
-                          />
-                        )}
-                        <UploadModal
-                          isOpen={isModalOpen}
-                          hasRedirects={hasRedirects}
-                          onClose={closeModal}
-                          onDownloadTemplate={handleDownloadTemplate}
-                          refetchRedirects={refetch}
-                          setAlert={setAlert}
-                        />
-                      </Box>
-                    </>
+            <ToastConsumer>
+              {({ showToast }) => (
+                <>
+                  {alertState && (
+                    <div className="mb4">
+                      <Alert
+                        type={alertState.type}
+                        onClose={() => setAlert(null)}
+                        action={
+                          alertState.meta && alertState.action
+                            ? {
+                                ...alertState.action,
+                                onClick: () => setIsImportErrorModalOpen(true),
+                              }
+                            : undefined
+                        }
+                      >
+                        {alertState.message}
+                      </Alert>
+                    </div>
                   )}
-                </ToastConsumer>
-              ) : (
-                <div> Something went wrong. </div>
+                  {isImportErrorModalOpen && alertState?.meta && (
+                    <ImportErrorModal
+                      isSave={alertState.meta.isSave}
+                      isOpen={isImportErrorModalOpen}
+                      mutation={alertState.meta.mutation}
+                      onClose={() => setIsImportErrorModalOpen(false)}
+                      redirects={alertState.meta.failedRedirects}
+                      setAlert={setAlert}
+                    />
+                  )}
+                  <Box>
+                    <List
+                      from={paginationFrom}
+                      items={redirects.slice(paginationFrom, paginationTo)}
+                      refetch={() => {
+                        refetch({
+                          from: PAGINATION_START,
+                          to: PAGINATION_STEP,
+                        })
+                      }}
+                      to={paginationTo}
+                      showToast={showToast}
+                      openModal={openModal}
+                      onHandleDownload={handleDownload}
+                    />
+                    {total > 0 && (
+                      <Pagination
+                        currentItemFrom={paginationFrom + 1}
+                        currentItemTo={paginationTo + 1}
+                        onNextClick={getNextPageNavigationHandler(
+                          redirects.length,
+                          total,
+                          fetchMore
+                        )}
+                        onPrevClick={handlePrevPageNavigation}
+                        textOf={intl.formatMessage(messages.paginationOf)}
+                        textShowRows={intl.formatMessage(messages.showRows)}
+                        totalItems={total}
+                      />
+                    )}
+                    <UploadModal
+                      isOpen={isModalOpen}
+                      hasRedirects={hasRedirects}
+                      onClose={closeModal}
+                      onDownloadTemplate={handleDownloadTemplate}
+                      refetchRedirects={refetch}
+                      setAlert={setAlert}
+                    />
+                  </Box>
+                </>
               )}
-            </>
+            </ToastConsumer>
           )
         }}
       </Query>
