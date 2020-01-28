@@ -94,26 +94,26 @@ const UploadPrompt: React.FC<Props> = ({
   const intl = useIntl()
   const [file, setFile] = useState<File | null>(null)
   const [shouldShowErrors, setShouldShowError] = useState(false)
-  const [parsedJsonFromCsv, setParsedJsonFromCsv] = useState<
-    Redirect[] | undefined
-  >()
+  const [parsedJsonFromCsv, setParsedJsonFromCsv] = useState<Redirect[] | null>(
+    null
+  )
 
-  const [alertState, setAlert] = useState<AlertState | undefined>()
-  const [validationErrors, setValidationErrors] = useState<
-    string[] | undefined
-  >()
+  const [alertState, setAlert] = useState<AlertState | null>(null)
+  const [validationErrors, setValidationErrors] = useState<string[] | null>(
+    null
+  )
 
   const resetErrors = useCallback(() => {
     setShouldShowError(false)
-    setValidationErrors(undefined)
-    setAlert(undefined)
+    setValidationErrors(null)
+    setAlert(null)
   }, [setShouldShowError, setValidationErrors, setAlert])
 
   const onDrop = useCallback(
     acceptedFiles => {
       const file = acceptedFiles[0]
       const fileExtension = file.name.substr(file.name.lastIndexOf('.') + 1)
-      let nextValidationErrors: typeof validationErrors = undefined
+      let nextValidationErrors: typeof validationErrors = null
 
       if (fileExtension !== 'csv') {
         return setAlert({
@@ -128,7 +128,7 @@ const UploadPrompt: React.FC<Props> = ({
         const redirectKeys = CSV_HEADER.split(CSV_SEPARATOR) as Array<
           keyof Redirect
         >
-        let parsedJsonFromCsv
+        let parsedJsonFromCsv = null
         if (typeof reader.result === 'string') {
           parsedJsonFromCsv = reader.result
             .trim()
