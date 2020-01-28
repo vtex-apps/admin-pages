@@ -41,9 +41,17 @@ interface RedirectListVariables {
 }
 
 const messages = defineMessages({
+  error: {
+    defaultMessage: 'Something went wrong.',
+    id: 'admin/pages.admin.redirects.error',
+  },
   paginationOf: {
     defaultMessage: 'of',
     id: 'admin/pages.admin.redirects.pagination.of',
+  },
+  retry: {
+    defaultMessage: 'Try again',
+    id: 'admin/pages.admin.redirects.error.retry',
   },
   showRows: {
     defaultMessage: 'Number of rows',
@@ -222,17 +230,17 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
 
           if (error) {
             return (
-              <div>
-                Something went wrong.
+              <>
+                {intl.formatMessage(messages.error)}
                 <button
                   className="bg-transparent bn c-action-primary pointer"
                   onClick={() => {
                     refetch({ from: paginationFrom, to: statePaginationTo })
                   }}
                 >
-                  Click here to try again.
+                  {intl.formatMessage(messages.retry)}
                 </button>
-              </div>
+              </>
             )
           }
 
