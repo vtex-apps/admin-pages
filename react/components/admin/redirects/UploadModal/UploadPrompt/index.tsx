@@ -257,7 +257,7 @@ const UploadPrompt: React.FC<Props> = ({
           <>
             <p className="c-on-base">{file.name}</p>
             <button
-              className="input-reset pa0 bn c-action-primary pointer"
+              className="input-reset pa0 bn c-action-primary pointer bg-transparent"
               onClick={() => {
                 setFile(null)
                 resetErrors()
