@@ -77,6 +77,10 @@ const UploadModal: React.FunctionComponent<Props &
     [hasRedirects, onClose, refetchRedirects]
   )
 
+  const handlePromptCancel = useCallback(() => {
+    resetState(false)
+  }, [resetState])
+
   const saveRedirectFromFileCb = useCallback(
     async (parsedJsonFromCsv: Redirect[], fileName: string) => {
       shouldUploadRef.current = true
@@ -148,6 +152,7 @@ const UploadModal: React.FunctionComponent<Props &
           uploadActionType && (
             <UploadPrompt
               hasRedirects={hasRedirects}
+              onCancel={handlePromptCancel}
               onClickBack={() => setModalStep('SELECT_ACTION')}
               onDownloadTemplate={onDownloadTemplate}
               saveRedirectFromFile={saveRedirectFromFileCb}
@@ -174,6 +179,7 @@ const UploadModal: React.FunctionComponent<Props &
   }, [
     currentStep,
     error,
+    handlePromptCancel,
     hasRedirects,
     numberOfRedirects,
     onDownloadTemplate,

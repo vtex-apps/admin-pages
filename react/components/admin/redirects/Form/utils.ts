@@ -28,10 +28,8 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
   store,
   result
 ) => {
-  const deleteRedirect =
-    result.data && result.data.redirect && result.data.redirect.delete
-  const saveRedirect =
-    result.data && result.data.redirect && result.data.redirect.save
+  const deleteRedirect = result.data?.redirect?.delete
+  const saveRedirect = result.data?.redirect?.save
 
   const isDelete = operation === 'delete'
 
