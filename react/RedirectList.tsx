@@ -22,7 +22,6 @@ import {
   TargetPathContextProps,
   withTargetPath,
 } from './components/admin/TargetPathContext'
-import Loader from './components/Loader'
 import Redirects from './queries/Redirects.graphql'
 
 type Props = WithApolloClient<TargetPathContextProps>
@@ -224,10 +223,6 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
             (data && data.redirect && data.redirect.numberOfEntries) || 0
           const hasRedirects = redirects.length > 0
 
-          if (loading) {
-            return <Loader />
-          }
-
           if (error) {
             return (
               <>
@@ -278,6 +273,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                   )}
                   <Box>
                     <List
+                      loading={loading}
                       from={paginationFrom}
                       items={redirects.slice(paginationFrom, paginationTo)}
                       refetch={() => {

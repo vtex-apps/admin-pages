@@ -18,12 +18,13 @@ import { messages } from './messages'
 
 interface CustomProps {
   from: number
-  onHandleDownload: () => void
   items: Redirect[]
-  to: number
+  loading: boolean
+  onHandleDownload: () => void
+  openModal: () => void
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
-  openModal: () => void
+  to: number
 }
 
 export type Props = CustomProps &
@@ -60,18 +61,21 @@ class List extends Component<Props, State> {
     const { locale } = this.context.culture
     const { from: currentFrom, items } = this.props
 
-    if (prevProps.from !== currentFrom) {
+    if (
+      prevProps.from !== currentFrom ||
+      prevProps.loading !== this.props.loading
+    ) {
       this.setState({ schema: this.getSchema(items, locale) })
     }
   }
 
   public render() {
-    const { intl, openModal, onHandleDownload } = this.props
+    const { intl, loading, openModal, onHandleDownload } = this.props
     const { schema } = this.state
 
     const items = schema.items
 
-    return items.length === 0 ? (
+    return items.length === 0 && !loading ? (
       <EmptyState title={intl.formatMessage(messages.emptyState)}>
         <div className="pt5 flex flex-column tc">
           <div>
@@ -102,6 +106,7 @@ class List extends Component<Props, State> {
       <>
         <Table
           fullWidth
+          loading={loading}
           items={items}
           onRowClick={this.viewItem}
           schema={schema}
