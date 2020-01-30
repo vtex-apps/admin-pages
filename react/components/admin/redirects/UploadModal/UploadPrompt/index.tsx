@@ -19,6 +19,7 @@ import styles from './UploadPrompt.css'
 
 interface Props {
   hasRedirects: boolean
+  onCancel: () => void
   onClickBack: () => void
   onDownloadTemplate: () => void
   saveRedirectFromFile: (
@@ -86,6 +87,7 @@ interface AlertState {
 
 const UploadPrompt: React.FC<Props> = ({
   hasRedirects,
+  onCancel,
   onClickBack,
   onDownloadTemplate,
   saveRedirectFromFile,
@@ -192,7 +194,7 @@ const UploadPrompt: React.FC<Props> = ({
       {hasRedirects && (
         <div>
           <button
-            className="input-reset bn pointer c-action-primary mr2 ph0"
+            className="input-reset bn pointer c-action-primary mr2 ph0 bg-transparent"
             onClick={onClickBack}
           >
             <IconArrowBack />
@@ -202,7 +204,7 @@ const UploadPrompt: React.FC<Props> = ({
       )}
       <p className="f5 lh-copy mv5">{intl.formatMessage(messages.body)}</p>
       <button
-        className="c-action-primary link hover-c-action-primary pointer bn pa0 f5 fw5 mb5 self-start"
+        className="c-action-primary link hover-c-action-primary pointer bn pa0 f5 fw5 mb5 self-start bg-transparent"
         onClick={onDownloadTemplate}
       >
         {intl.formatMessage(messages.downloadTemplate)}
@@ -271,7 +273,7 @@ const UploadPrompt: React.FC<Props> = ({
 
       <div className="flex mt5 ml-auto">
         <div className="mr3">
-          <Button type="button" variation="tertiary">
+          <Button type="button" variation="tertiary" onClick={onCancel}>
             {intl.formatMessage(messages.buttonCancel)}
           </Button>
         </div>
