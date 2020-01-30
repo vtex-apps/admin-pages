@@ -1,1 +1,1 @@
-export type ModalStates = 'SELECT_ACTION' | 'UPLOAD_FILE' | 'LOADING' | 'ERROR'
+export type ModalStates = 'UPLOAD_FILE' | 'LOADING' | 'ERROR'

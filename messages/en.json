@@ -120,8 +120,6 @@
   "admin/pages.admin.redirects.upload-modal.fail.message": "Please try again.",
   "admin/pages.admin.redirects.upload-modal.fail.subtitle": "Your redirects could not be uploaded.",
   "admin/pages.admin.redirects.upload-modal.fail.title": "Something went wrong.",
-  "admin/pages.admin.redirects.upload-modal.file.title-delete": "Delete Redirects",
-  "admin/pages.admin.redirects.upload-modal.file.title-save": "Save Redirects",
   "admin/pages.admin.redirects.upload-modal.loading.cancel": "Cancel",
   "admin/pages.admin.redirects.upload-modal.loading.warning": "Please don't close this window.",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.unsupported-file": "Unsupported file type. Please upload a .csv file.",

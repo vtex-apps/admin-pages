@@ -3,13 +3,7 @@ import { zipObj } from 'ramda'
 import React, { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { defineMessages, useIntl } from 'react-intl'
-import {
-  Alert,
-  AlertProps,
-  Button,
-  IconArrowBack,
-  IconDelete,
-} from 'vtex.styleguide'
+import { Alert, AlertProps, Button, IconDelete, Radio } from 'vtex.styleguide'
 
 import UploadTableIcon from '../../../../icons/UploadTable'
 import { UploadActionType } from '../../mutations/SaveRedirectFromFile'
@@ -20,12 +14,14 @@ import styles from './UploadPrompt.css'
 interface Props {
   hasRedirects: boolean
   onCancel: () => void
-  onClickBack: () => void
   onDownloadTemplate: () => void
   saveRedirectFromFile: (
     parsedJsonFromCsv: Redirect[],
     fileName: string
   ) => void
+  setUploadActionType: React.Dispatch<
+    React.SetStateAction<UploadActionType | null>
+  >
   uploadActionType: UploadActionType
 }
 
@@ -47,10 +43,6 @@ const messages = defineMessages({
     defaultMessage: 'Import file',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.button.import',
   },
-  delete: {
-    defaultMessage: 'Delete Redirects',
-    id: 'admin/pages.admin.redirects.upload-modal.file.title-delete',
-  },
   dropButton: {
     defaultMessage: 'choose a file',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.drop.button',
@@ -64,9 +56,17 @@ const messages = defineMessages({
     id:
       'admin/pages.admin.redirects.upload-modal.prompt.body.download-template',
   },
-  save: {
-    defaultMessage: 'Save Redirects',
-    id: 'admin/pages.admin.redirects.upload-modal.file.title-save',
+  selectSave: {
+    defaultMessage: 'Save',
+    id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.save',
+  },
+  selectDelete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.delete',
+  },
+  selectUploadBody: {
+    defaultMessage: 'Do you want to save or delete redirects?',
+    id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.body',
   },
   unsupportedFileFormat: {
     defaultMessage: 'Unsupported file type. Please upload a .csv file.',
@@ -88,9 +88,9 @@ interface AlertState {
 const UploadPrompt: React.FC<Props> = ({
   hasRedirects,
   onCancel,
-  onClickBack,
   onDownloadTemplate,
   saveRedirectFromFile,
+  setUploadActionType,
   uploadActionType,
 }) => {
   const intl = useIntl()
@@ -189,26 +189,38 @@ const UploadPrompt: React.FC<Props> = ({
     multiple: false,
   })
 
+  const handleSaveRadioChange = useCallback(() => {
+    setUploadActionType('save')
+  }, [setUploadActionType])
+
+  const handleDeleteRadioChange = useCallback(() => {
+    setUploadActionType('delete')
+  }, [setUploadActionType])
+
   return (
     <>
-      {hasRedirects && (
-        <div>
-          <button
-            className="input-reset bn pointer c-action-primary mr2 ph0 bg-transparent"
-            onClick={onClickBack}
-          >
-            <IconArrowBack />
-          </button>
-          {intl.formatMessage(messages[uploadActionType])}
-        </div>
-      )}
+      <p className="f4 fw3 mt0 mb5">
+        {intl.formatMessage(messages.selectUploadBody)}
+      </p>
+      <Radio
+        disabled={!hasRedirects}
+        id="merge-upload-action-type"
+        checked={uploadActionType === 'save'}
+        label={intl.formatMessage(messages.selectSave)}
+        name="upload-action-type"
+        onChange={handleSaveRadioChange}
+        value="save"
+      />
+      <Radio
+        disabled={!hasRedirects}
+        id="overwrite-upload-action-type"
+        checked={uploadActionType === 'delete'}
+        label={intl.formatMessage(messages.selectDelete)}
+        name="upload-action-type"
+        onChange={handleDeleteRadioChange}
+        value="delete"
+      />
       <p className="f5 lh-copy mv5">{intl.formatMessage(messages.body)}</p>
-      <button
-        className="c-action-primary link hover-c-action-primary pointer bn pa0 f5 fw5 mb5 self-start bg-transparent"
-        onClick={onDownloadTemplate}
-      >
-        {intl.formatMessage(messages.downloadTemplate)}
-      </button>
 
       {alertState && (
         <>
@@ -271,7 +283,16 @@ const UploadPrompt: React.FC<Props> = ({
         )}
       </div>
 
-      <div className="flex mt5 ml-auto">
+      <div className="flex mt5">
+        <div className="mr-auto">
+          <Button
+            type="button"
+            variation="tertiary"
+            onClick={onDownloadTemplate}
+          >
+            {intl.formatMessage(messages.downloadTemplate)}
+          </Button>
+        </div>
         <div className="mr3">
           <Button type="button" variation="tertiary" onClick={onCancel}>
             {intl.formatMessage(messages.buttonCancel)}
