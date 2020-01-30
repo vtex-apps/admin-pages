@@ -100,8 +100,6 @@
   "admin/pages.admin.redirects.upload-modal.fail.message": "admin/pages.admin.redirects.upload-modal.fail.message",
   "admin/pages.admin.redirects.upload-modal.fail.subtitle": "admin/pages.admin.redirects.upload-modal.fail.subtitle",
   "admin/pages.admin.redirects.upload-modal.fail.title": "admin/pages.admin.redirects.upload-modal.fail.title",
-  "admin/pages.admin.redirects.upload-modal.file.title-delete": "admin/pages.admin.redirects.upload-modal.file.title-delete",
-  "admin/pages.admin.redirects.upload-modal.file.title-save": "admin/pages.admin.redirects.upload-modal.file.title-save",
   "admin/pages.admin.redirects.upload-modal.loading.cancel": "admin/pages.admin.redirects.upload-modal.loading.cancel",
   "admin/pages.admin.redirects.upload-modal.loading.warning": "admin/pages.admin.redirects.upload-modal.loading.warning",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.unsupported-file": "admin/pages.admin.redirects.upload-modal.prompt.alert.unsupported-file",

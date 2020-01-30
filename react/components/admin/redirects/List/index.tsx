@@ -4,7 +4,6 @@ import { FormattedMessage, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ButtonWithIcon,
-  EmptyState,
   IconUpload,
   Table,
   ToastConsumerFunctions,
@@ -75,34 +74,7 @@ class List extends Component<Props, State> {
 
     const items = schema.items
 
-    return items.length === 0 && !loading ? (
-      <EmptyState title={intl.formatMessage(messages.emptyState)}>
-        <div className="pt5 flex flex-column tc">
-          <div>
-            <CreateButton onClick={this.openNewItem} />
-          </div>
-          <p className="mv2">
-            <FormattedMessage
-              id="admin/pages.admin.redirects.or.text"
-              defaultMessage="or"
-            />
-          </p>
-          <div>
-            <ButtonWithIcon
-              icon={<IconUpload />}
-              variation="secondary"
-              onClick={openModal}
-              size="small"
-            >
-              <FormattedMessage
-                id="admin/pages.admin.redirects.emptyState.upload"
-                defaultMessage="Upload a CSV"
-              />
-            </ButtonWithIcon>
-          </div>
-        </div>
-      </EmptyState>
-    ) : (
+    return (
       <>
         <Table
           fullWidth
@@ -110,6 +82,33 @@ class List extends Component<Props, State> {
           items={items}
           onRowClick={this.viewItem}
           schema={schema}
+          emptyStateLabel=""
+          emptyStateChildren={
+            <div className="pt5 flex flex-column tc">
+              <div>
+                <CreateButton onClick={this.handleNewItemOpen} />
+              </div>
+              <p className="mv2">
+                <FormattedMessage
+                  id="admin/pages.admin.redirects.or.text"
+                  defaultMessage="or"
+                />
+              </p>
+              <div>
+                <ButtonWithIcon
+                  icon={<IconUpload />}
+                  variation="secondary"
+                  onClick={openModal}
+                  size="small"
+                >
+                  <FormattedMessage
+                    id="admin/pages.admin.redirects.emptyState.upload"
+                    defaultMessage="Upload a CSV"
+                  />
+                </ButtonWithIcon>
+              </div>
+            </div>
+          }
           toolbar={{
             density: {
               buttonLabel: intl.formatMessage(messages.lineDensityLabel),
@@ -118,6 +117,7 @@ class List extends Component<Props, State> {
               mediumOptionLabel: intl.formatMessage(messages.lineDensityMedium),
             },
             download: {
+              disabled: items.length === 0,
               handleCallback: onHandleDownload,
               label: intl.formatMessage(messages.download),
             },

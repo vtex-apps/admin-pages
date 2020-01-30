@@ -100,8 +100,6 @@
   "admin/pages.admin.redirects.upload-modal.fail.message": "Por favor, inténtelo de nuevo.",
   "admin/pages.admin.redirects.upload-modal.fail.subtitle": "Sus redirecciones no se han cargado.",
   "admin/pages.admin.redirects.upload-modal.fail.title": "Algo ha ido mal.",
-  "admin/pages.admin.redirects.upload-modal.file.title-delete": "Borrar Redirecciones",
-  "admin/pages.admin.redirects.upload-modal.file.title-save": "Salvar Redirecciones",
   "admin/pages.admin.redirects.upload-modal.loading.cancel": "Cancelar",
   "admin/pages.admin.redirects.upload-modal.loading.warning": "Por favor no cierre esta ventana.",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.unsupported-file": "El formato de archivo no se admite. Cargue un archivo \".csv\".",

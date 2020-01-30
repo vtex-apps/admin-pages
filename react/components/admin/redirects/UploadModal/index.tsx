@@ -9,7 +9,6 @@ import SaveRedirectFromFileMutation, {
   UploadActionType,
 } from '../mutations/SaveRedirectFromFile'
 import Loading from './Loading'
-import SelectAction from './SelectAction'
 import UploadError from './UploadError'
 import UploadPrompt from './UploadPrompt'
 import {
@@ -32,6 +31,8 @@ interface Props {
   setAlert: (alertState: AlertState) => void
 }
 
+const INITIAL_MODAL_STATE = 'UPLOAD_FILE'
+
 const UploadModal: React.FunctionComponent<
   Props & MutationRenderProps & DeleteManyRedirectsProps
 > = ({
@@ -46,9 +47,7 @@ const UploadModal: React.FunctionComponent<
   setAlert,
 }) => {
   const intl = useIntl()
-  const [currentStep, setModalStep] = useState<ModalStates>(
-    hasRedirects ? 'SELECT_ACTION' : 'UPLOAD_FILE'
-  )
+  const [currentStep, setModalStep] = useState<ModalStates>(INITIAL_MODAL_STATE)
 
   const [processedRedirect, setProcessedRedirect] = useState<number>(0)
   const [numberOfRedirects, setNumberOfRedirects] = useState<number>(-1)
@@ -66,7 +65,7 @@ const UploadModal: React.FunctionComponent<
   const resetState = useCallback(
     async (refetch = false) => {
       onClose()
-      setModalStep('SELECT_ACTION')
+      setModalStep(INITIAL_MODAL_STATE)
       setUploadActionType(hasRedirects ? null : 'save')
       setProcessedRedirect(0)
       setNumberOfRedirects(-1)
@@ -139,21 +138,13 @@ const UploadModal: React.FunctionComponent<
 
   const CurrentComponent = useMemo(() => {
     switch (currentStep) {
-      case 'SELECT_ACTION':
-        return (
-          <SelectAction
-            setUploadActionType={setUploadActionType}
-            uploadActionType={uploadActionType}
-            setModalStep={setModalStep}
-          />
-        )
       case 'UPLOAD_FILE':
         return (
           uploadActionType && (
             <UploadPrompt
+              setUploadActionType={setUploadActionType}
               hasRedirects={hasRedirects}
               onCancel={handlePromptCancel}
-              onClickBack={() => setModalStep('SELECT_ACTION')}
               onDownloadTemplate={onDownloadTemplate}
               saveRedirectFromFile={saveRedirectFromFileCb}
               uploadActionType={uploadActionType}
