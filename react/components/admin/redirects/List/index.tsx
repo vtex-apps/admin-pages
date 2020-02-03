@@ -118,68 +118,66 @@ const List: React.FC<Props> = ({
   }, [navigate])
 
   return (
-    <>
-      <Table
-        fullWidth
-        loading={loading}
-        items={items}
-        onRowClick={handleItemView}
-        schema={schema}
-        emptyStateLabel=""
-        emptyStateChildren={
-          <div className="pt5 flex flex-column tc">
-            <div>
-              <CreateButton onClick={handleNewItemOpen} />
-            </div>
-            <p className="mv2">
-              <FormattedMessage
-                id="admin/pages.admin.redirects.or.text"
-                defaultMessage="or"
-              />
-            </p>
-            <div>
-              <ButtonWithIcon
-                icon={<IconUpload />}
-                variation="secondary"
-                onClick={openModal}
-                size="small"
-              >
-                <FormattedMessage
-                  id="admin/pages.admin.redirects.emptyState.upload"
-                  defaultMessage="Upload a CSV"
-                />
-              </ButtonWithIcon>
-            </div>
+    <Table
+      fullWidth
+      loading={loading}
+      items={items}
+      onRowClick={handleItemView}
+      schema={schema}
+      emptyStateLabel=""
+      emptyStateChildren={
+        <div className="pt5 flex flex-column tc">
+          <div>
+            <CreateButton onClick={handleNewItemOpen} />
           </div>
-        }
-        toolbar={{
-          density: {
-            buttonLabel: intl.formatMessage(messages.lineDensityLabel),
-            highOptionLabel: intl.formatMessage(messages.lineDensityHigh),
-            lowOptionLabel: intl.formatMessage(messages.lineDensityLow),
-            mediumOptionLabel: intl.formatMessage(messages.lineDensityMedium),
-          },
-          download: {
-            disabled: items.length === 0,
-            handleCallback: onHandleDownload,
-            label: intl.formatMessage(messages.download),
-          },
-          fields: {
-            hideAllLabel: intl.formatMessage(messages.hideAll),
-            label: intl.formatMessage(messages.fieldsLabel),
-            showAllLabel: intl.formatMessage(messages.showAll),
-          },
-          newLine: {
-            handleCallback: handleNewItemOpen,
-            label: intl.formatMessage(messages.newLine),
-          },
-          upload: {
-            handleCallback: openModal,
-            label: intl.formatMessage(messages.upload),
-          },
-        }}
-      />
-    </>
+          <p className="mv2">
+            <FormattedMessage
+              id="admin/pages.admin.redirects.or.text"
+              defaultMessage="or"
+            />
+          </p>
+          <div>
+            <ButtonWithIcon
+              icon={<IconUpload />}
+              variation="secondary"
+              onClick={openModal}
+              size="small"
+            >
+              <FormattedMessage
+                id="admin/pages.admin.redirects.emptyState.upload"
+                defaultMessage="Upload a CSV"
+              />
+            </ButtonWithIcon>
+          </div>
+        </div>
+      }
+      toolbar={{
+        density: {
+          buttonLabel: intl.formatMessage(messages.lineDensityLabel),
+          highOptionLabel: intl.formatMessage(messages.lineDensityHigh),
+          lowOptionLabel: intl.formatMessage(messages.lineDensityLow),
+          mediumOptionLabel: intl.formatMessage(messages.lineDensityMedium),
+        },
+        download: {
+          disabled: items.length === 0,
+          handleCallback: onHandleDownload,
+          label: intl.formatMessage(messages.download),
+        },
+        fields: {
+          hideAllLabel: intl.formatMessage(messages.hideAll),
+          label: intl.formatMessage(messages.fieldsLabel),
+          showAllLabel: intl.formatMessage(messages.showAll),
+        },
+        newLine: {
+          handleCallback: handleNewItemOpen,
+          label: intl.formatMessage(messages.newLine),
+        },
+        upload: {
+          handleCallback: openModal,
+          label: intl.formatMessage(messages.upload),
+        },
+      }}
+    />
   )
 }
 
