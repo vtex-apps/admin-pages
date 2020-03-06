@@ -1,6 +1,6 @@
 import { path } from 'ramda'
 import React from 'react'
-import { defineMessages } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import {
   ConditionsProps,
   ConditionsStatement,
@@ -34,7 +34,7 @@ export interface ConditionalTemplatePickerProps {
   templates: Template[]
 }
 
-type Props = ConditionalTemplatePickerProps & ReactIntl.InjectedIntlProps
+type Props = ConditionalTemplatePickerProps
 
 const messages = defineMessages({
   errorMessage: {
@@ -54,7 +54,6 @@ const messages = defineMessages({
 export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
   condition,
   formErrors,
-  intl,
   onChangeOperatorConditionalTemplate,
   onChangeStatementsConditionalTemplate,
   onChangeTemplateConditionalTemplate,
@@ -64,6 +63,7 @@ export const ConditionalTemplatePicker: React.FunctionComponent<Props> = ({
   template,
   templates,
 }) => {
+  const intl = useIntl()
   const hasError =
     !!path(['pages', pageId, 'condition'], formErrors) ||
     !!path(['pages', pageId, 'template'], formErrors)

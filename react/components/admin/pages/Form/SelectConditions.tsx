@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   ConditionsProps,
@@ -15,12 +15,13 @@ import { messages } from './messages'
 interface ComponentProps {
   condition: ConditionFormsData
   errorMessage?: string
+  intl: IntlShape
   operator: ConditionsProps['operator']
   onChangeOperator: ConditionsProps['onChangeOperator']
   onChangeStatements: (statements: ConditionsStatement[]) => void
 }
 
-type Props = ComponentProps & RenderContextProps & InjectedIntlProps
+type Props = ComponentProps & RenderContextProps
 
 class SelectConditions extends React.Component<Props> {
   private options: ConditionsProps['options']
