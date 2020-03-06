@@ -57,23 +57,22 @@ const UploadModal: React.FunctionComponent<Props &
     shouldUploadRef.current = isOpen
   }, [isOpen])
 
-  const [
-    uploadActionType,
-    setUploadActionType,
-  ] = useState<UploadActionType | null>(hasRedirects ? null : 'save')
+  const [uploadActionType, setUploadActionType] = useState<UploadActionType>(
+    'save'
+  )
 
   const resetState = useCallback(
     async (refetch = false) => {
       onClose()
       setModalStep(INITIAL_MODAL_STATE)
-      setUploadActionType(hasRedirects ? null : 'save')
+      setUploadActionType('save')
       setProcessedRedirect(0)
       setNumberOfRedirects(-1)
       if (refetch) {
         await refetchRedirects()
       }
     },
-    [hasRedirects, onClose, refetchRedirects]
+    [onClose, refetchRedirects]
   )
 
   const handlePromptCancel = useCallback(() => {
@@ -140,16 +139,14 @@ const UploadModal: React.FunctionComponent<Props &
     switch (currentStep) {
       case 'UPLOAD_FILE':
         return (
-          uploadActionType && (
-            <UploadPrompt
-              setUploadActionType={setUploadActionType}
-              hasRedirects={hasRedirects}
-              onCancel={handlePromptCancel}
-              onDownloadTemplate={onDownloadTemplate}
-              saveRedirectFromFile={saveRedirectFromFileCb}
-              uploadActionType={uploadActionType}
-            />
-          )
+          <UploadPrompt
+            setUploadActionType={setUploadActionType}
+            hasRedirects={hasRedirects}
+            onCancel={handlePromptCancel}
+            onDownloadTemplate={onDownloadTemplate}
+            saveRedirectFromFile={saveRedirectFromFileCb}
+            uploadActionType={uploadActionType}
+          />
         )
       case 'LOADING':
         return (
