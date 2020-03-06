@@ -1,4 +1,4 @@
-import { defineMessages, InjectedIntl } from 'react-intl'
+import { defineMessages, IntlShape } from 'react-intl'
 
 // Messages used in getScopeStandardOptions
 defineMessages({
@@ -45,14 +45,12 @@ defineMessages({
 })
 
 export const getScopeStandardOptions = (
-  intl: InjectedIntl,
+  intl: IntlShape,
   pageContext: PageContext
 ) => [
   {
     label: intl.formatMessage({
-      id: `admin/pages.editor.components.condition.scope.entity.${
-        pageContext.type
-      }`,
+      id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
     }),
     value: 'entity',
   },

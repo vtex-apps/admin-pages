@@ -1,11 +1,11 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { injectIntl, WrappedComponentProps } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { Toggle as StyleguideToggle } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-type Props = CustomWidgetProps & InjectedIntlProps
+type Props = CustomWidgetProps & WrappedComponentProps
 
 const Toggle: React.FunctionComponent<Props> = ({
   autofocus,

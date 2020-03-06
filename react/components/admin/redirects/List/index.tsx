@@ -10,7 +10,6 @@ import {
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
-
 import CreateButton from './CreateButton'
 import { messages } from './messages'
 

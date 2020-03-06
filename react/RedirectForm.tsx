@@ -21,7 +21,7 @@ import Redirect from './queries/Redirect.graphql'
 
 interface CustomProps {
   params: {
-    path: string
+    id: string
   }
 }
 
@@ -48,7 +48,9 @@ class RedirectForm extends Component<Props, State> {
       type: 'PERMANENT' as RedirectTypes,
     }
 
-    const isNew = props.params.path === NEW_REDIRECT_ID
+    const isNew = props.params.id === NEW_REDIRECT_ID
+
+    console.log({ isNew, id: props.params.id, defaultFormData })
 
     this.state = {
       formData: isNew ? defaultFormData : undefined,
@@ -72,7 +74,7 @@ class RedirectForm extends Component<Props, State> {
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            path: '/' + params.path,
+            path: '/' + params.id,
           },
         })
 
@@ -106,7 +108,7 @@ class RedirectForm extends Component<Props, State> {
           <title>
             {intl.formatMessage({
               id:
-                params.path === NEW_REDIRECT_ID
+                params.id === NEW_REDIRECT_ID
                   ? 'admin/pages.admin.redirects.form.title.new'
                   : 'admin/pages.admin.redirects.form.title.info',
             })}

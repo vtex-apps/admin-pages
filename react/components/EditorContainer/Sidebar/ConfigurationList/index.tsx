@@ -3,7 +3,7 @@ import { JSONSchema6 } from 'json-schema'
 import throttle from 'lodash.throttle'
 import { clone, Dictionary, equals, isEmpty, path, pickBy } from 'ramda'
 import React from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, injectIntl, IntlShape } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { RenderComponent } from 'vtex.render-runtime'
@@ -35,7 +35,7 @@ interface Props {
   editor: EditorContext
   formMeta: FormMetaContext
   iframeRuntime: RenderContext
-  intl: ReactIntl.InjectedIntl
+  intl: IntlShape
   isSitewide: boolean
   modal: ModalContext
   queryData?: ListContentData
@@ -412,9 +412,7 @@ class ConfigurationList extends React.Component<Props, State> {
               },
               {
                 entity: intl.formatMessage({
-                  id: `admin/pages.editor.components.condition.scope.entity.${
-                    pageContext.type
-                  }`,
+                  id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
                 }),
                 template: intl.formatMessage({
                   id: 'admin/pages.editor.components.condition.scope.template',

@@ -1,7 +1,6 @@
 import { MutationFn, MutationUpdaterFn } from 'react-apollo'
 
 import { RedirectsQuery } from '../typings'
-import { from } from 'zen-observable'
 
 export interface MutationResult {
   data?: {
@@ -40,7 +39,6 @@ export type StoreUpdaterGetter = (
   operation: 'delete' | 'save'
 ) => MutationUpdaterFn<Mutations>
 
-export type RedirectData = Redirect | undefined
 export interface DeleteRedirectData {
   redirect: {
     delete: Redirect
@@ -48,7 +46,7 @@ export interface DeleteRedirectData {
 }
 
 export type DeleteRedirectMutationFn = MutationFn<
-  RedirectData,
+  DeleteRedirectData,
   DeleteRedirectVariables
 >
 
@@ -59,6 +57,6 @@ export interface SaveRedirectData {
 }
 
 export type SaveRedirectMutationFn = MutationFn<
-  RedirectData,
+  SaveRedirectData,
   SaveRedirectVariables
 >

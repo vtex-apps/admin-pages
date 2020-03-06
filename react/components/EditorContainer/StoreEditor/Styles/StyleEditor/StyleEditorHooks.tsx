@@ -1,6 +1,6 @@
 import { mergeDeepRight } from 'ramda'
 import React, { useCallback, useReducer, useState } from 'react'
-import { defineMessages, InjectedIntl, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { ShowToastFunction } from 'vtex.styleguide'
 
 import { RenameStyleFunction } from './mutations/RenameStyle'
@@ -10,7 +10,6 @@ import StyleEditorRouter from './StyleEditorRouter'
 
 interface Props {
   style: Style
-  intl: InjectedIntl
   renameStyle: RenameStyleFunction
   updateStyle: UpdateStyleFunction
   setStyleAsset: (asset: StyleAssetInfo) => void
@@ -36,13 +35,13 @@ defineMessages({
 
 const StyleEditorStates: React.FunctionComponent<Props> = ({
   style,
-  intl,
   renameStyle,
   setStyleAsset,
   updateStyle,
   showToast,
   stopEditing,
 }) => {
+  const intl = useIntl()
   const nameState = useState<string>(style.name)
   const [name] = nameState
   const configReducer = useReducer<ConfigReducer>(
@@ -60,46 +59,40 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
     name: nameState,
   }
 
-  const saveStyle = useCallback(
-    async () => {
-      await renameStyle({ variables: { id: style.id, name } })
-      const result = await updateStyle({
-        variables: { id: style.id, config },
+  const saveStyle = useCallback(async () => {
+    await renameStyle({ variables: { id: style.id, name } })
+    const result = await updateStyle({
+      variables: { id: style.id, config },
+    })
+    const styleInfo = result && result.data && result.data.updateStyle
+    if (styleInfo) {
+      const { path, selected } = styleInfo
+      setStyleAsset({
+        keepSheet: true,
+        selected,
+        type: 'path',
+        value: path,
       })
-      const styleInfo = result && result.data && result.data.updateStyle
-      if (styleInfo) {
-        const { path, selected } = styleInfo
-        setStyleAsset({
-          keepSheet: true,
-          selected,
-          type: 'path',
-          value: path,
-        })
-        showToast({
-          horizontalPosition: 'left',
-          message: intl.formatMessage({
-            id: 'admin/pages.editor.styles.edit.save.successful',
-          }),
-        })
-      } else {
-        showToast({
-          horizontalPosition: 'left',
-          message: intl.formatMessage({
-            id: 'admin/pages.editor.styles.edit.save.failed',
-          }),
-        })
-      }
-    },
-    [style, name, config]
-  )
+      showToast({
+        horizontalPosition: 'left',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.styles.edit.save.successful',
+        }),
+      })
+    } else {
+      showToast({
+        horizontalPosition: 'left',
+        message: intl.formatMessage({
+          id: 'admin/pages.editor.styles.edit.save.failed',
+        }),
+      })
+    }
+  }, [style, name, config])
 
-  const onSave = useCallback(
-    () => {
-      setEditing(false)
-      saveStyle()
-    },
-    [saveStyle, setEditing]
-  )
+  const onSave = useCallback(() => {
+    setEditing(false)
+    saveStyle()
+  }, [saveStyle, setEditing])
 
   return (
     <GenerateStyleSheetQuery
@@ -120,4 +113,4 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(StyleEditorStates)
+export default StyleEditorStates

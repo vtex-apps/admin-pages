@@ -33,9 +33,9 @@ interface Props {
 
 const INITIAL_MODAL_STATE = 'UPLOAD_FILE'
 
-const UploadModal: React.FunctionComponent<
-  Props & MutationRenderProps & DeleteManyRedirectsProps
-> = ({
+const UploadModal: React.FunctionComponent<Props &
+  MutationRenderProps &
+  DeleteManyRedirectsProps> = ({
   deleteManyRedirects,
   error,
   hasRedirects,

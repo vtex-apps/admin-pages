@@ -2,7 +2,12 @@ import classnames from 'classnames'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import React, { Component, Fragment } from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import {
+  defineMessages,
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps as ComponentWithIntlProps,
+} from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   Button,
@@ -26,7 +31,7 @@ interface CustomProps {
 }
 
 type Props = CustomProps &
-  ReactIntl.InjectedIntlProps &
+  ComponentWithIntlProps &
   RenderContextProps &
   Pick<ToastConsumerFunctions, 'showToast'>
 
@@ -84,13 +89,12 @@ class Form extends Component<Props, State> {
   public static contextTypes = {
     culture: PropTypes.shape({ locale: PropTypes.string.isRequired })
       .isRequired,
-    stopLoading: PropTypes.func.isRequired,
   }
 
   private isEditingRedirect: boolean
   private minDate = new Date()
 
-  constructor(props: Props) {
+  public constructor(props: Props) {
     super(props)
 
     this.isEditingRedirect = props.initialData.from !== NEW_REDIRECT_ID
@@ -104,7 +108,7 @@ class Form extends Component<Props, State> {
   }
 
   public componentDidMount() {
-    this.context.stopLoading()
+    window.top.postMessage({ action: { type: 'STOP_LOADING' } }, '*')
   }
 
   public render() {
@@ -147,14 +151,14 @@ class Form extends Component<Props, State> {
         <form onSubmit={this.handleSave}>
           <Input
             label={intl.formatMessage(messages.from)}
-            onChange={this.updateFrom}
+            onChange={this.handleFromUpdate}
             required
             value={data.from}
           />
           <FormFieldSeparator />
           <Input
             label={intl.formatMessage(messages.to)}
-            onChange={this.updateTo}
+            onChange={this.handleToUpdate}
             required
             value={data.to}
           />
@@ -172,7 +176,7 @@ class Form extends Component<Props, State> {
               },
             ]}
             value={data.type}
-            onChange={this.changeType}
+            onChange={this.handleTypeChange}
           />
           <FormFieldSeparator />
           {data.type === 'TEMPORARY' ? (
@@ -181,7 +185,7 @@ class Form extends Component<Props, State> {
                 <Toggle
                   checked={shouldShowDatePicker}
                   label={intl.formatMessage(messages.toggleEndDate)}
-                  onChange={this.toggleDatePickerVisibility}
+                  onChange={this.handleDatePickerVisibilityToggle}
                 />
               </div>
               <FormFieldSeparator />
@@ -195,7 +199,7 @@ class Form extends Component<Props, State> {
                       useTime
                       direction="up"
                       locale={locale}
-                      onChange={this.updateEndDate}
+                      onChange={this.handleEndDateUpdate}
                       minDate={this.minDate}
                       value={
                         data.endDate ? moment(data.endDate).toDate() : undefined
@@ -204,7 +208,7 @@ class Form extends Component<Props, State> {
                     <button
                       type="button"
                       className="flex items-center justify-center bn input-reset near-black"
-                      onClick={this.clearEndDate}
+                      onClick={this.handleEndDateClear}
                     >
                       <IconClose />
                     </button>
@@ -222,7 +226,7 @@ class Form extends Component<Props, State> {
             {this.isEditingRedirect ? (
               <Button
                 size="small"
-                onClick={this.toggleModalVisibility}
+                onClick={this.handleModalVisibilityToggle}
                 variation="danger"
               >
                 <FormattedMessage
@@ -235,7 +239,7 @@ class Form extends Component<Props, State> {
               <div className="mr6">
                 <Button
                   disabled={isLoading}
-                  onClick={this.exit}
+                  onClick={this.handleExit}
                   size="small"
                   variation="tertiary"
                 >
@@ -265,7 +269,7 @@ class Form extends Component<Props, State> {
     )
   }
 
-  private exit = () => {
+  private handleExit = () => {
     this.props.runtime.navigate({ to: BASE_URL })
   }
 
@@ -280,10 +284,10 @@ class Form extends Component<Props, State> {
           },
         })
 
-        this.exit()
+        this.handleExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           this.props.showToast({
             horizontalPosition: 'right',
@@ -323,10 +327,10 @@ class Form extends Component<Props, State> {
           },
         })
 
-        this.exit()
+        this.handleExit()
       } catch (err) {
         this.setState({ isLoading: false }, () => {
-          console.log(err)
+          console.error(err)
 
           this.props.showToast({
             horizontalPosition: 'right',
@@ -337,7 +341,7 @@ class Form extends Component<Props, State> {
     })
   }
 
-  private toggleDatePickerVisibility = () => {
+  private handleDatePickerVisibilityToggle = () => {
     this.setState(
       prevState => ({
         ...prevState,
@@ -353,14 +357,14 @@ class Form extends Component<Props, State> {
     )
   }
 
-  private toggleModalVisibility = () => {
+  private handleModalVisibilityToggle = () => {
     this.setState(prevState => ({
       ...prevState,
       shouldShowModal: !prevState.shouldShowModal,
     }))
   }
 
-  private changeType = (e: React.ChangeEvent<HTMLInputElement>) => {
+  private handleTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const type = e.target.value
     this.handleInputChange({
       ...(type === 'PERMANENT' ? { endDate: '' } : null),
@@ -368,21 +372,21 @@ class Form extends Component<Props, State> {
     })
   }
 
-  private updateEndDate = (value: Date) => {
+  private handleEndDateUpdate = (value: Date) => {
     this.handleInputChange({ endDate: value })
   }
 
-  private clearEndDate = () => {
+  private handleEndDateClear = () => {
     this.handleInputChange({ endDate: '' })
   }
 
-  private updateFrom = (event: Event) => {
+  private handleFromUpdate = (event: Event) => {
     if (event.target instanceof HTMLInputElement) {
       this.handleInputChange({ from: event.target.value })
     }
   }
 
-  private updateTo = (event: Event) => {
+  private handleToUpdate = (event: Event) => {
     if (event.target instanceof HTMLInputElement) {
       this.handleInputChange({ to: event.target.value })
     }

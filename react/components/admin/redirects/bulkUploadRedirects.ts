@@ -1,5 +1,5 @@
-import { MutableRefObject } from 'react'
 import { splitEvery } from 'ramda'
+import { MutableRefObject } from 'react'
 
 const MAX_REDIRECTS_PER_REQUEST = 200
 const NUMBER_OF_RETRIES = 3
@@ -25,12 +25,12 @@ export default async function bulkUploadRedirects({
 
   const redirectBatches = splitEvery(MAX_REDIRECTS_PER_REQUEST, data)
 
-  for (const data of redirectBatches) {
+  for (const redirectData of redirectBatches) {
     if (!shouldUploadRef.current) {
       break
     }
 
-    const payload = isSave ? data : data.map(({ from }) => from)
+    const payload = isSave ? redirectData : redirectData.map(({ from }) => from)
 
     for (let i = 1; i <= NUMBER_OF_RETRIES; i++) {
       try {
@@ -41,12 +41,12 @@ export default async function bulkUploadRedirects({
           setTimeout(() => res(), i * 750)
         })
         if (i === NUMBER_OF_RETRIES) {
-          failedRedirects = failedRedirects.concat(data)
+          failedRedirects = failedRedirects.concat(redirectData)
         }
       }
     }
 
-    updateProgress(data.length)
+    updateProgress(redirectData.length)
 
     await new Promise(res => {
       setTimeout(() => res(), 750)

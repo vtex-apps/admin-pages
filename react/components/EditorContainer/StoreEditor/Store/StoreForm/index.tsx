@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import { assoc, dissoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, useIntl } from 'react-intl'
 import Form from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
@@ -26,50 +26,44 @@ interface MutationVariables {
   settings: string
 }
 
-type Props = ChildMutateProps<
-  FormProps & InjectedIntlProps,
-  MutationData,
-  MutationVariables
->
+type Props = ChildMutateProps<FormProps, MutationData, MutationVariables>
 
 const widgets = {
   BaseInput,
 }
 
-const StoreForm: React.FunctionComponent<Props> = ({ store, intl, mutate }) => {
+const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
+  const intl = useIntl()
   const [formData, setFormData] = useState(tryParseJson(store.settings))
 
   const [submitting, setSubmitting] = useState(false)
 
   const { showToast } = useContext(ToastContext)
 
-  useEffect(
-    () => {
-      if (submitting) {
-        const { slug: app, version } = store
+  useEffect(() => {
+    if (submitting) {
+      const { slug: app, version } = store
 
-        mutate({
-          variables: { app, version, settings: JSON.stringify(formData) },
-        })
-          .then(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.success',
-              })
-            )
+      mutate({
+        variables: { app, version, settings: JSON.stringify(formData) },
+      })
+        .then(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.success',
+            })
           )
-          .catch(() =>
-            showToast(
-              intl.formatMessage({
-                id: 'admin/pages.admin.pages.form.save.error',
-              })
-            )
+        )
+        .catch(() =>
+          showToast(
+            intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.save.error',
+            })
           )
-          .finally(() => setSubmitting(false))
-      }
-    },
-    [submitting]
-  )
+        )
+        .finally(() => setSubmitting(false))
+    }
+  }, [submitting])
 
   const { settingsSchema, settingsUiSchema } = store
 
@@ -122,6 +116,6 @@ export default withMutation<{}, MutationData, MutationVariables>(
   SaveAppSettings
 )(
   withStoreSettings<ChildMutateProps<{}, MutationData, MutationVariables>>(
-    injectIntl(StoreForm)
+    StoreForm
   )
 )

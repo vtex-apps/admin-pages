@@ -1,4 +1,4 @@
-export const BASE_URL = '/admin/cms/redirects/'
+export const BASE_URL = '/admin/cms/redirects'
 export const CSV_HEADER = 'from;to;type;endDate'
 export const CSV_SEPARATOR = ';'
 

@@ -1,8 +1,8 @@
 import { JSONSchema6 } from 'json-schema'
 import React, { Fragment, useMemo } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl, IntlShape } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button, Spinner } from 'vtex.styleguide'
+import { Button } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../EditorContext'
 import EditorHeader from '../EditorHeader'
@@ -14,11 +14,12 @@ import { getSchemas } from './utils'
 
 import ContentContainer from '../ContentContainer'
 
-interface CustomProps {
+interface Props {
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: object
   iframeRuntime: RenderContext
+  intl: IntlShape
   isDefault?: boolean
   isNew?: boolean
   isSitewide?: boolean
@@ -31,8 +32,6 @@ interface CustomProps {
   onTitleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   title?: ComponentSchema['title']
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const ComponentEditor: React.FunctionComponent<Props> = ({
   condition,

@@ -42,35 +42,35 @@ export function getAlertState({
 }: GetAlertStateArgs): AlertState {
   if (failedRedirects.length > 0 && failedRedirects.length === total) {
     return {
-      type: 'error',
       message: intl.formatMessage(messages.bulkUploadAllFailed, {
         fileName,
         lines: intl.formatNumber(total),
       }),
+      type: 'error',
     }
   } else if (failedRedirects.length === 0) {
     return {
-      type: 'success',
       message: intl.formatMessage(messages.bulkUploadSuccess, {
         fileName,
         lines: intl.formatNumber(total),
       }),
+      type: 'success',
     }
   }
   return {
-    type: 'warning',
-    message: intl.formatMessage(messages.bulkUploadPartial, {
-      fileName,
-      success: intl.formatNumber(total - failedRedirects.length),
-      failed: intl.formatNumber(failedRedirects.length),
-    }),
-    meta: {
-      failedRedirects: failedRedirects,
-      mutation,
-      isSave,
-    },
     action: {
       label: intl.formatMessage(messages.bulkUploadErrorButtonLabel),
     },
+    message: intl.formatMessage(messages.bulkUploadPartial, {
+      failed: intl.formatNumber(failedRedirects.length),
+      fileName,
+      success: intl.formatNumber(total - failedRedirects.length),
+    }),
+    meta: {
+      failedRedirects,
+      isSave,
+      mutation,
+    },
+    type: 'warning',
   }
 }

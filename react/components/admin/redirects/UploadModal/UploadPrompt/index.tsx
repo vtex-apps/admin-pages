@@ -1,15 +1,15 @@
 import classnames from 'classnames'
 import { zipObj } from 'ramda'
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { defineMessages, useIntl } from 'react-intl'
 import { Alert, AlertProps, Button, IconDelete, Radio } from 'vtex.styleguide'
 
 import UploadTableIcon from '../../../../icons/UploadTable'
-import { UploadActionType } from '../../mutations/SaveRedirectFromFile'
 import { CSV_HEADER, CSV_SEPARATOR } from '../../consts'
-import { isRedirectType, validateRedirect } from './validateRedirect'
+import { UploadActionType } from '../../mutations/SaveRedirectFromFile'
 import styles from './UploadPrompt.css'
+import { isRedirectType, validateRedirect } from './validateRedirect'
 
 interface Props {
   hasRedirects: boolean
@@ -43,6 +43,11 @@ const messages = defineMessages({
     defaultMessage: 'Import file',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.button.import',
   },
+  downloadTemplate: {
+    defaultMessage: 'Download template',
+    id:
+      'admin/pages.admin.redirects.upload-modal.prompt.body.download-template',
+  },
   dropButton: {
     defaultMessage: 'choose a file',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.drop.button',
@@ -51,18 +56,13 @@ const messages = defineMessages({
     defaultMessage: 'Drop here your CSV or ',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.drop.message',
   },
-  downloadTemplate: {
-    defaultMessage: 'Download template',
-    id:
-      'admin/pages.admin.redirects.upload-modal.prompt.body.download-template',
+  selectDelete: {
+    defaultMessage: 'Delete',
+    id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.delete',
   },
   selectSave: {
     defaultMessage: 'Save',
     id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.save',
-  },
-  selectDelete: {
-    defaultMessage: 'Delete',
-    id: 'admin/pages.admin.redirects.upload-modal.prompt.select-action.delete',
   },
   selectUploadBody: {
     defaultMessage: 'Do you want to save or delete redirects?',
@@ -113,8 +113,10 @@ const UploadPrompt: React.FC<Props> = ({
 
   const onDrop = useCallback(
     acceptedFiles => {
-      const file = acceptedFiles[0]
-      const fileExtension = file.name.substr(file.name.lastIndexOf('.') + 1)
+      const acceptedFile = acceptedFiles[0]
+      const fileExtension = acceptedFile.name.substr(
+        acceptedFile.name.lastIndexOf('.') + 1
+      )
       let nextValidationErrors: typeof validationErrors = null
 
       if (fileExtension !== 'csv') {
@@ -130,9 +132,9 @@ const UploadPrompt: React.FC<Props> = ({
         const redirectKeys = CSV_HEADER.split(CSV_SEPARATOR) as Array<
           keyof Redirect
         >
-        let parsedJsonFromCsv = null
+        let readerParsedJsonFromCsv = null
         if (typeof reader.result === 'string') {
-          parsedJsonFromCsv = reader.result
+          readerParsedJsonFromCsv = reader.result
             .trim()
             .split('\n')
             .reduce<Redirect[]>((acc, line, lineNumber) => {
@@ -165,28 +167,28 @@ const UploadPrompt: React.FC<Props> = ({
 
         if (nextValidationErrors && nextValidationErrors.length > 0) {
           setAlert({
-            message: intl.formatMessage(messages.validationErrors, {
-              name: file.name,
-            }),
             action: {
               label: intl.formatMessage(messages.alertSeeErrors),
               onClick: () => setShouldShowError(value => !value),
             },
+            message: intl.formatMessage(messages.validationErrors, {
+              name: acceptedFile.name,
+            }),
           })
           return setValidationErrors(nextValidationErrors)
         }
 
-        setParsedJsonFromCsv(parsedJsonFromCsv)
+        setParsedJsonFromCsv(readerParsedJsonFromCsv)
       }
-      reader.readAsText(file)
-      setFile(file)
+      reader.readAsText(acceptedFile)
+      setFile(acceptedFile)
     },
     [intl, resetErrors, validationErrors]
   )
 
   const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
     multiple: false,
+    onDrop,
   })
 
   const handleSaveRadioChange = useCallback(() => {

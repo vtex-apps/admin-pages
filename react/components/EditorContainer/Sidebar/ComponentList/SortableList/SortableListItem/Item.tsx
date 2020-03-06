@@ -1,9 +1,9 @@
 import classnames from 'classnames'
 import React from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   hasSubItems?: boolean
   isEditable: boolean
   isSortable?: boolean
@@ -24,7 +24,6 @@ const messages = defineMessages({
 
 const Item: React.FunctionComponent<Props> = ({
   hasSubItems,
-  intl,
   isEditable,
   isSortable,
   isChild,
@@ -34,6 +33,7 @@ const Item: React.FunctionComponent<Props> = ({
   title,
   treePath,
 }) => {
+  const intl = useIntl()
   let leftPaddingClassName = 'pl8'
   if ((isSortable && !hasSubItems) || isChild) {
     leftPaddingClassName = 'pl5'
@@ -72,4 +72,4 @@ const Item: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(Item)
+export default Item

@@ -14,6 +14,16 @@ const cacheAccessParameters = {
   },
 }
 
+const readRedirectsFromStore = (store: DataProxy): QueryData =>
+  store.readQuery(cacheAccessParameters)
+
+const writeRedirectsToStore = (newData: RedirectsQuery, store: DataProxy) => {
+  store.writeQuery({
+    data: newData,
+    ...cacheAccessParameters,
+  })
+}
+
 export const getStoreUpdater: StoreUpdaterGetter = operation => (
   store,
   result
@@ -56,7 +66,7 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
       writeRedirectsToStore(newData, store)
     }
   } catch (err) {
-    console.log('No cache found for "Redirects".')
+    console.warn('No cache found for "Redirects".')
   }
 
   try {
@@ -70,16 +80,6 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
       },
     })
   } catch (e) {
-    console.log('Error writing to "Redirect".')
+    console.error('Error writing to "Redirect".')
   }
-}
-
-const readRedirectsFromStore = (store: DataProxy): QueryData =>
-  store.readQuery(cacheAccessParameters)
-
-const writeRedirectsToStore = (newData: RedirectsQuery, store: DataProxy) => {
-  store.writeQuery({
-    data: newData,
-    ...cacheAccessParameters,
-  })
 }

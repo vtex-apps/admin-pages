@@ -1,11 +1,11 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { Dropdown as StyleguideDropdown } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-interface Props extends CustomWidgetProps, InjectedIntlProps {
+interface Props extends CustomWidgetProps {
   onClose?: () => void
   onOpen?: () => void
   options: { [key: string]: boolean | number | string | object | null }
@@ -15,7 +15,6 @@ const Dropdown: React.FunctionComponent<Props> = ({
   autofocus,
   disabled,
   id,
-  intl,
   label,
   onChange,
   onClose,
@@ -26,6 +25,7 @@ const Dropdown: React.FunctionComponent<Props> = ({
   schema,
   value,
 }) => {
+  const intl = useIntl()
   const handleChange = React.useCallback(
     ({
       target: { value: optionValue },
@@ -72,4 +72,4 @@ Dropdown.defaultProps = {
   value: '',
 }
 
-export default injectIntl(Dropdown)
+export default Dropdown
