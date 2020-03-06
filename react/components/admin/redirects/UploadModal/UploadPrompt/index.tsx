@@ -19,9 +19,7 @@ interface Props {
     parsedJsonFromCsv: Redirect[],
     fileName: string
   ) => void
-  setUploadActionType: React.Dispatch<
-    React.SetStateAction<UploadActionType | null>
-  >
+  setUploadActionType: React.Dispatch<React.SetStateAction<UploadActionType>>
   uploadActionType: UploadActionType
 }
 

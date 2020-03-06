@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { injectIntl } from 'react-intl'
+import { injectIntl, IntlShape } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
 
@@ -23,13 +23,11 @@ interface CustomProps {
   params: {
     id: string
   }
+  intl: IntlShape
 }
 
 type Props = WithApolloClient<
-  CustomProps &
-    RenderContextProps &
-    ReactIntl.InjectedIntlProps &
-    TargetPathContextProps
+  CustomProps & RenderContextProps & TargetPathContextProps
 >
 
 interface State {
@@ -49,8 +47,6 @@ class RedirectForm extends Component<Props, State> {
     }
 
     const isNew = props.params.id === NEW_REDIRECT_ID
-
-    console.log({ isNew, id: props.params.id, defaultFormData })
 
     this.state = {
       formData: isNew ? defaultFormData : undefined,
