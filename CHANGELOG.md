@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.17.2-beta] - 2020-03-10
+
 ### Added
 
 - Better feedback to redirects bulk upload.
