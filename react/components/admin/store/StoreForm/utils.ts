@@ -48,3 +48,22 @@ export const tryParseJson = <T>(str: string): T => {
 
   return parsed
 }
+
+/**
+ * Returns the original object without the received properties
+ * @param object
+ * @param properties
+ */
+export const removeObjectProperties = (
+  object: Record<string, any>,
+  properties: string[]
+) => {
+  let newObject = object
+
+  properties.forEach(property => {
+    const { [property]: deletedProperty, ...otherProperties } = newObject
+    newObject = otherProperties
+  })
+
+  return newObject
+}
