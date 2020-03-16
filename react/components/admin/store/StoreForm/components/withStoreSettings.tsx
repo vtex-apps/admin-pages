@@ -55,6 +55,7 @@ export interface FormProps {
     InstalledApp & {
       settings: string
     }
+  advanced?: boolean
 }
 
 defineMessages({
