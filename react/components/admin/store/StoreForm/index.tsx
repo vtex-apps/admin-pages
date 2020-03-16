@@ -1,5 +1,5 @@
 import { JSONSchema6 } from 'json-schema'
-import { assoc, dissoc } from 'ramda'
+import { assoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
 import { FormattedMessage, useIntl } from 'react-intl'
@@ -9,11 +9,13 @@ import { Button, ToastContext } from 'vtex.styleguide'
 
 import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
+import Toggle from '../../../form/Toggle'
 import FieldTemplate from '../../../form/FieldTemplate'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
 import withStoreSettings, { FormProps } from './components/withStoreSettings'
 import SaveAppSettings from './mutations/SaveAppSettings.graphql'
-import { formatSchema, tryParseJson } from './utils'
+import { formatSchema, tryParseJson, removeObjectProperties } from './utils'
+import { CustomWidgetProps } from '../../../form/typings'
 
 interface MutationData {
   message: string
@@ -27,11 +29,27 @@ interface MutationVariables {
 
 type Props = ChildMutateProps<FormProps, MutationData, MutationVariables>
 
+const CheckboxWidget = (props: CustomWidgetProps) => (
+  <div className="pv4">
+    <Toggle {...props} />
+    {props.schema.description && (
+      <span className="t-small c-muted-1 pv3 relative">
+        {props.schema.description}
+      </span>
+    )}
+  </div>
+)
+
 const widgets = {
   BaseInput,
+  CheckboxWidget,
 }
 
-const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
+const StoreForm: React.FunctionComponent<Props> = ({
+  store,
+  mutate,
+  advanced,
+}) => {
   const intl = useIntl()
   const [formData, setFormData] = useState(tryParseJson(store.settings))
 
@@ -67,15 +85,35 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
   const { settingsSchema, settingsUiSchema } = store
 
   const schema = tryParseJson<JSONSchema6>(settingsSchema)
+  const advancedSettingsSchema = (schema.properties
+    ?.advancedSettings as JSONSchema6) ?? {
+    properties: {},
+  }
   const uiSchema = tryParseJson<UiSchema>(settingsUiSchema)
 
   const schemas = {
-    ...(schema && {
-      schema: assoc<JSONSchema6>(
-        'properties',
-        formatSchema(dissoc('title', schema).properties || {}, intl),
-        schema
-      ),
+    ...(advancedSettingsSchema && {
+      schema: advanced
+        ? assoc<JSONSchema6>(
+            'properties',
+            formatSchema(
+              removeObjectProperties(advancedSettingsSchema, ['title'])
+                .properties || {},
+              intl
+            ),
+            advancedSettingsSchema
+          )
+        : assoc<JSONSchema6>(
+            'properties',
+            formatSchema(
+              removeObjectProperties(
+                removeObjectProperties(schema, ['title']).properties,
+                ['advancedSettings']
+              ) || {},
+              intl
+            ),
+            schema
+          ),
       title: formatIOMessage({ id: schema.title || '', intl }),
     }),
     ...(uiSchema && { uiSchema }),
@@ -83,6 +121,13 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
 
   return (
     <div className="flex flex-column justify-center">
+      {advanced && (
+        <div className="pv3">
+          <span className="c-emphasis">
+            <FormattedMessage id="admin/pages.editor.store.settings.advanced.disclaimer" />
+          </span>
+        </div>
+      )}
       <Form
         {...schemas}
         formData={formData}
@@ -111,9 +156,11 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate }) => {
   )
 }
 
-export default withMutation<{}, MutationData, MutationVariables>(
-  SaveAppSettings
-)(
+export default withMutation<
+  { advanced?: boolean },
+  MutationData,
+  MutationVariables
+>(SaveAppSettings)(
   withStoreSettings<ChildMutateProps<{}, MutationData, MutationVariables>>(
     StoreForm
   )
