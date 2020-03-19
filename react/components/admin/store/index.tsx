@@ -48,7 +48,7 @@ const Store: React.FC<WrappedComponentProps> = ({ intl }) => {
           label={intl.formatMessage(messages.general)}
         >
           <div className="pv6">
-            <StoreForm />
+            <StoreForm tab="general" />
           </div>
         </Tab>
 
@@ -58,7 +58,7 @@ const Store: React.FC<WrappedComponentProps> = ({ intl }) => {
           label={intl.formatMessage(messages.advanced)}
         >
           <div className="pv6">
-            <StoreForm advanced />
+            <StoreForm tab="advanced" />
           </div>
         </Tab>
 

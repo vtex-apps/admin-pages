@@ -2,7 +2,7 @@ import { JSONSchema6 } from 'json-schema'
 import { assoc } from 'ramda'
 import React, { useContext, useEffect, useState } from 'react'
 import { ChildMutateProps, withMutation } from 'react-apollo'
-import { FormattedMessage, useIntl } from 'react-intl'
+import { FormattedMessage, useIntl, IntlShape } from 'react-intl'
 import Form, { UiSchema } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
@@ -45,11 +45,50 @@ const widgets = {
   CheckboxWidget,
 }
 
-const StoreForm: React.FunctionComponent<Props> = ({
-  store,
-  mutate,
-  advanced,
-}) => {
+function resolveSchemaForCurrentTab(
+  tab: string | undefined,
+  schema: JSONSchema6,
+  intl: IntlShape
+) {
+  const advancedSettingsSchema = (schema.properties
+    ?.advancedSettings as JSONSchema6) ?? {
+    properties: {},
+  }
+
+  switch (tab) {
+    case 'general':
+      return assoc<JSONSchema6>(
+        'properties',
+        formatSchema({
+          schema: schema.properties || {},
+          intl,
+          ignore: ['title', 'advancedSettings'],
+        }),
+        schema
+      )
+    case 'advanced':
+      return assoc<JSONSchema6>(
+        'properties',
+        formatSchema({
+          schema: advancedSettingsSchema.properties || {},
+          intl,
+          ignore: ['title'],
+        }),
+        advancedSettingsSchema
+      )
+    default:
+      return assoc<JSONSchema6>(
+        'properties',
+        formatSchema({
+          schema: removeObjectProperties(schema, ['title']).properties || {},
+          intl,
+        }),
+        schema
+      )
+  }
+}
+
+const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
   const intl = useIntl()
   const [formData, setFormData] = useState(tryParseJson(store.settings))
 
@@ -82,46 +121,21 @@ const StoreForm: React.FunctionComponent<Props> = ({
     }
   }, [formData, intl, mutate, showToast, store, submitting])
 
+  const shouldDisplayWarning = tab === 'advanced'
   const { settingsSchema, settingsUiSchema } = store
 
   const schema = tryParseJson<JSONSchema6>(settingsSchema)
-  const advancedSettingsSchema = (schema.properties
-    ?.advancedSettings as JSONSchema6) ?? {
-    properties: {},
-  }
   const uiSchema = tryParseJson<UiSchema>(settingsUiSchema)
 
   const schemas = {
-    ...(advancedSettingsSchema && {
-      schema: advanced
-        ? assoc<JSONSchema6>(
-            'properties',
-            formatSchema(
-              removeObjectProperties(advancedSettingsSchema, ['title'])
-                .properties || {},
-              intl
-            ),
-            advancedSettingsSchema
-          )
-        : assoc<JSONSchema6>(
-            'properties',
-            formatSchema(
-              removeObjectProperties(
-                removeObjectProperties(schema, ['title']).properties,
-                ['advancedSettings']
-              ) || {},
-              intl
-            ),
-            schema
-          ),
-      title: formatIOMessage({ id: schema.title || '', intl }),
-    }),
+    schema: resolveSchemaForCurrentTab(tab, schema, intl),
+    title: formatIOMessage({ id: schema.title || '', intl }),
     ...(uiSchema && { uiSchema }),
   }
 
   return (
     <div className="flex flex-column justify-center">
-      {advanced && (
+      {shouldDisplayWarning && (
         <div className="pv3">
           <span className="c-emphasis">
             <FormattedMessage id="admin/pages.editor.store.settings.advanced.disclaimer" />
@@ -156,11 +170,9 @@ const StoreForm: React.FunctionComponent<Props> = ({
   )
 }
 
-export default withMutation<
-  { advanced?: boolean },
-  MutationData,
-  MutationVariables
->(SaveAppSettings)(
+export default withMutation<{ tab?: string }, MutationData, MutationVariables>(
+  SaveAppSettings
+)(
   withStoreSettings<ChildMutateProps<{}, MutationData, MutationVariables>>(
     StoreForm
   )
