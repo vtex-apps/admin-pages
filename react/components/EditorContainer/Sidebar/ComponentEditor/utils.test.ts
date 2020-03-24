@@ -107,9 +107,11 @@ describe('getUiSchema', () => {
       bar: { 'ui:widget': 'textarea' },
       baz: { 'ui:widget': 'IOMessage' },
     }
-    const result = getUiSchema({}, mockComponents[
-      'vtex.schema-with-dependencies'
-    ].schema as ComponentSchema)
+    const result = getUiSchema(
+      {},
+      (mockComponents['vtex.schema-with-dependencies']
+        .schema as unknown) as ComponentSchema
+    )
     expect(result).toEqual(uiSchema)
   })
 
@@ -118,22 +120,28 @@ describe('getUiSchema', () => {
       baar: { 'ui:widget': 'textarea' },
       baz: { 'ui:widget': 'IOMessage' },
     }
-    const result = getUiSchema({}, mockComponents[
-      'vtex.schema-with-nested-dependencies'
-    ].schema as ComponentSchema)
+    const result = getUiSchema(
+      {},
+      (mockComponents['vtex.schema-with-nested-dependencies']
+        .schema as unknown) as ComponentSchema
+    )
     expect(result).toEqual(uiSchema)
   })
 
   it('should deal with empty schemas', () => {
-    const result = getUiSchema({}, mockComponents['vtex.no-schema']
-      .schema as ComponentSchema)
+    const result = getUiSchema(
+      {},
+      mockComponents['vtex.no-schema'].schema as ComponentSchema
+    )
     expect(result).toEqual({})
   })
 
   it('should get ui schema for simple schemas', () => {
     const uiSchema = { foo: { bar: { 'ui:widget': 'textarea' } } }
-    const result = getUiSchema({}, mockComponents['vtex.simple-schema']
-      .schema as ComponentSchema)
+    const result = getUiSchema(
+      {},
+      mockComponents['vtex.simple-schema'].schema as ComponentSchema
+    )
     expect(result).toEqual(uiSchema)
   })
 })
