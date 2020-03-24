@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, FormattedMessage, injectIntl } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import {
   Button,
   Checkbox,
@@ -24,7 +24,7 @@ type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
   'pages' | 'blockId'
 >
-interface CustomProps extends TemplateSectionProps {
+interface Props extends TemplateSectionProps {
   data: RouteFormData
   detailChangeHandlerGetter: (
     detailName: keyof RouteFormData
@@ -49,8 +49,6 @@ interface CustomProps extends TemplateSectionProps {
   templates: Template[]
   onChangeKeywords: (values: KeywordsFormData[]) => void
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 const messages = defineMessages({
   createKeywordsMessage: {
@@ -95,7 +93,6 @@ const Form: React.FunctionComponent<Props> = ({
   data,
   detailChangeHandlerGetter,
   formErrors,
-  intl,
   isCustomPage,
   isDeletable,
   isInfoEditable,
@@ -112,6 +109,7 @@ const Form: React.FunctionComponent<Props> = ({
   onSave,
   templates,
 }) => {
+  const intl = useIntl()
   const path = data.path || ''
 
   return (
@@ -184,7 +182,6 @@ const Form: React.FunctionComponent<Props> = ({
       <FormFieldSeparator />
       <SeparatorWithLine />
       <ConditionalTemplateSection
-        intl={intl}
         detailChangeHandlerGetter={detailChangeHandlerGetter}
         pages={data.pages}
         templates={templates}
@@ -250,4 +247,4 @@ const Form: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(Form)
+export default Form

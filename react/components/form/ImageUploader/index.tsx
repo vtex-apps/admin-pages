@@ -4,9 +4,8 @@ import { graphql, MutationFunc } from 'react-apollo'
 import {
   defineMessages,
   FormattedMessage,
-  InjectedIntl,
-  InjectedIntlProps,
   injectIntl,
+  IntlShape,
 } from 'react-intl'
 import { WidgetProps } from 'react-jsonschema-form'
 import URL from 'url-parse'
@@ -20,8 +19,9 @@ import ErrorAlert from './ErrorAlert'
 
 import styles from './imageUploader.css'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   disabled?: boolean
+  intl: IntlShape
   onChange?: (pathname: string | null) => void
   onFileDrop?: (file: File) => void
   schema: JSONSchema6
@@ -101,9 +101,7 @@ class ImageUploader extends Component<Props, State> {
                 style={backgroundImageStyle}
               >
                 <div
-                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${
-                    styles.gradient
-                  }`}
+                  className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.gradient}`}
                 >
                   <div className="flex justify-center mb3">
                     <ImageIcon stroke="#fff" />
@@ -166,10 +164,7 @@ class ImageUploader extends Component<Props, State> {
   }
 
   private handleImageDrop = async (acceptedFiles: File[]) => {
-    const { intl, uploadFile } = this.props as {
-      intl: InjectedIntl
-      uploadFile: MutationFunc<MutationData>
-    }
+    const { intl, uploadFile } = this.props
 
     if (acceptedFiles && acceptedFiles[0]) {
       this.setState({ isLoading: true })

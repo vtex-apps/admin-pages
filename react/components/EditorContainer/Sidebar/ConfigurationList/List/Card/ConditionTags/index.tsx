@@ -1,17 +1,9 @@
 import React from 'react'
-import {
-  defineMessages,
-  FormattedMessage,
-  InjectedIntlProps,
-  injectIntl,
-} from 'react-intl'
+import { defineMessages, MessageDescriptor, useIntl } from 'react-intl'
 
 import Tag from './Tag'
 
-const messages: Record<
-  string,
-  FormattedMessage.MessageDescriptor
-> = defineMessages({
+const messages: Record<string, MessageDescriptor> = defineMessages({
   from: {
     defaultMessage: 'Start:',
     id: 'admin/pages.editor.configuration.condition.date.from',
@@ -22,11 +14,12 @@ const messages: Record<
   },
 })
 
-interface Props extends InjectedIntlProps {
+interface Props {
   conditions: ExtensionConfiguration['condition']['statements']
 }
 
-const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
+const ConditionTags: React.FC<Props> = ({ conditions }) => {
+  const intl = useIntl()
   const format = React.useCallback(
     ({ kind, value }: { kind: ConditionSubject; value: string }) => {
       const textByKind: Record<ConditionSubject, string> = {
@@ -55,7 +48,7 @@ const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
           return null
         }
 
-        return Object.entries(parsedConditionObj).reduce<Array<JSX.Element>>(
+        return Object.entries(parsedConditionObj).reduce<JSX.Element[]>(
           (acc, [key, value]) => {
             const tagTitle = messages[key]
 
@@ -83,4 +76,4 @@ const ConditionTags: React.FC<Props> = ({ conditions, intl }) => {
   )
 }
 
-export default injectIntl(ConditionTags)
+export default ConditionTags

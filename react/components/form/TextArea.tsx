@@ -1,11 +1,11 @@
 import React from 'react'
-import { InjectedIntlProps, injectIntl } from 'react-intl'
+import { injectIntl, WrappedComponentProps } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 import { Textarea } from 'vtex.styleguide'
 
 import { CustomWidgetProps } from './typings'
 
-type Props = CustomWidgetProps & InjectedIntlProps
+type Props = CustomWidgetProps & WrappedComponentProps
 
 const TextArea: React.FunctionComponent<Props> = ({
   autofocus,

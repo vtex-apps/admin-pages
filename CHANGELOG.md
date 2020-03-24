@@ -7,6 +7,462 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [3.17.2-beta] - 2020-03-10
+
+### Added
+
+- Better feedback to redirects bulk upload.
+
+### Changed
+
+- Redirects admin uses `rewriter` instead of `pages` to read/write redirects, since `rewriter` has a higher limit to the number redirects that can be created.
+
+## [4.21.0] - 2020-01-27
+
+### Added
+
+- "Not found (404)" category on pages.
+
+## [4.20.2] - 2020-01-23
+
+### Fixed
+
+- The styles admin was displaying a loading in the right side. This loading
+  animation was removed since there was nothing to be displayed there.
+
+## [4.20.1] - 2020-01-16
+
+### Fixed
+
+- Bug in which changing to a binding with a default locale different than the current one wouldn't update the locale selector's value.
+
+## [4.20.0] - 2020-01-13
+
+### Added
+
+- Bindings support.
+
+### Fixed
+
+- Preview mode toggle.
+
+## [4.19.1] - 2020-01-10
+
+### Fixed
+
+- Layout instability when loading the site editor. The sidebar would take a few
+  seconds to appear and the page would undesirably resize
+
+## [4.19.0] - 2020-01-09
+
+### Added
+
+- Add Splash Screen image loading animation.
+
+## [4.18.9] - 2020-01-08
+
+### Changed
+
+- Update `react-intl` to latest version.
+
+## [4.18.8] - 2020-01-06
+
+### Added
+
+- Add styles menu item to GoCommerce sidebar too.
+
+## [4.18.7] - 2020-01-06
+
+## [4.18.6] - 2019-12-26
+
+### Changed
+
+- Decrease batch size AGAIN to make a timeout with messages service less probable.
+
+## [4.18.5] - 2019-12-23
+
+### Changed
+
+- Move global CSS to scoped modules.
+
+### Fixed
+
+- Typescript errors.
+
+### Removed
+
+- Unused CSS classes from components and CSS files.
+
+## [4.18.4] - 2019-12-20
+
+### Changed
+
+- Decrease batch size to make less probable a timeout with messages
+
+## [4.18.3] - 2019-11-21
+
+### Fixed
+
+- Editor sidebar width.
+
+## [4.18.2] - 2019-11-19
+
+### Changed
+
+- Small visual tweak: removed unwanted shadow from the card block list
+
+## [4.18.1] - 2019-11-14
+
+### Changed
+
+- Improve the Site Editor's modals' texts.
+
+## [4.18.0] - 2019-11-14
+
+### Added
+
+- Tooltips to Site Editor's topbar controls.
+
+## [4.17.1] - 2019-11-13
+
+### Fixed
+
+- `HighlightOverlay` now appropriately updates its height as the block being edited changes.
+- Missing `State` export from `HighlightOverlay`.
+
+## [4.17.0] - 2019-11-13
+
+### Added
+
+- Store and Styles shortcuts to the admin sidebar.
+
+### Changed
+
+- Redesign the Site Editor's topbar and its components.
+- Move the Store and Styles editors to separate admin pages.
+- Move the viewport controls to the topbar.
+
+### Fixed
+
+- Unnecessary Y overflow on smaller viewports.
+
+## [4.16.3] - 2019-11-07
+
+### Changed
+
+- Changed style of the editable input that goes in the block editor header
+
+## [4.16.2] - 2019-11-07
+
+### Changed
+
+- Place app cards last in the configuration list.
+- Place active card first in the configuration list.
+- Place expired cards just before the app card in the configuration list.
+- Mark expired configuration cards as inactive.
+
+## [4.16.1] - 2019-11-07
+
+### Changed
+
+- Updated sidebar block editor header visual
+
+## [4.16.0] - 2019-11-07
+
+### Changed
+
+- Use new translate API from vtex.messages
+
+## [4.15.0] - 2019-11-01
+
+### Added
+
+- Add `On the first purchase` prompt event option in `PWAForm`.
+
+## [4.14.3] - 2019-10-28
+
+## [4.14.2] - 2019-10-25
+
+### Fixed
+
+- Race condition when more than one messages batch was fetched from the server
+
+### Fixed
+
+- Z-index issues with the date picker, which prevented users from scheduling content.
+- Block editing's modals' messages.
+- Issue where clicking children blocks in the sidebar would open their parents.
+
+### Removed
+
+- Unused i18n messages and the `SaveButton` component.
+
+## [4.14.1] - 2019-10-23
+
+### Fixed
+
+- No option to "cancel" configuration delete
+
+## [4.14.0] - 2019-10-23
+
+### Added
+
+- Status label to configuration cards.
+
+### Changed
+
+- Show the editing form with the active configuration when clicking to edit a block instead of the list of configurations.
+- Refactor and improve the quality of a core part of our code base.
+
+### Fixed
+
+- When going back from edit a block, the blocks you expended before editing remain expanded.
+- A bug in which, once a block was selected, the content would load forever.
+- A few minor bugs.
+- Many UX issues.
+
+## [4.13.2] - 2019-10-23
+
+### Fixed
+
+- Highlighting last valid block when clicking to edit a block that isn't rendered or isn't valid, i.e., isn't editable.
+- Highlighting block that isn't visible on the screen due to `overflow: hidden` (e.g., `Product Summary` on `Shelf`): Try to get the block closer to the middle of the window when selecting from a list of blocks (e.g.)
+
+## [4.13.1] - 2019-10-18
+
+### Fixed
+
+- Bug in which the content would load forever.
+
+## [4.13.0] - 2019-10-18
+
+### Changed
+
+- `HighlightOverlay` now has a new look: No more background color and dashed border, also added a label to show which block is selected. It stays visible when the user is editing a content.
+
+## [4.12.7] - 2019-10-08
+
+### Fixed
+
+- Locale switcher's spanish and portuguese strings.
+
+## [4.12.6] - 2019-09-30
+
+### Added
+
+- Suggest a path based on the page title when creating a new page.
+
+## [4.12.5] - 2019-09-20
+
+### Added
+
+- Local cache to function `editorMessagesFromRuntime`.
+- Localization to confirm prompt when attempting to navigate with open form.
+
+## [4.12.4] - 2019-09-18
+
+### Fixed
+
+- Widgets' `onChange` and, consequently, v4.12.3's i18n solution.
+
+## [4.12.3] - 2019-09-17
+
+### Changed
+
+- Replace the way i18n fields updates are handled with a (somewhat hacky) solution that doesn't use Runtime's `addMessages`.
+
+### Fixed
+
+- Some i18n editing inconsistencies.
+
+## [4.12.2] - 2019-09-13
+
+### Changed
+
+- Where `__setHighlightTreePath` was typed: deleted old interface and add it to `Window` interface.
+
+### Fixed
+
+- Issue when hovering over an element that wasn't in the DOM, `HighlightOverlay` made the iframe height grow indefinitely.
+
+## [4.12.1] - 2019-09-12
+
+## Changed
+
+- Improve rich text editor
+- Save page slug based on page title
+
+## [4.12.0] - 2019-09-11
+
+### Changed
+
+- Preview width
+
+### Fixed
+
+- Visibility of filters when editing an array item.
+
+## [4.11.2] - 2019-09-11
+
+### Added
+
+- Missing messages that weren't being detected by babel plugin.
+
+### Changed
+
+- Always re-fetch content when opening a card.
+
+### Removed
+
+- `docs` from `.vtexignore`.
+- Unused messages.
+
+## [4.11.1] - 2019-09-09
+
+### Added
+
+- Changes from releases `v4.10.0` and `v4.10.1`.
+
+### Fixed
+
+- Editing nested arrays.
+
+## [4.11.0] - 2019-09-09
+
+### Added
+
+- Docs builder.
+
+## [4.10.5] - 2019-09-09
+
+### Changed
+
+- PWA splash screen title.
+
+### Fixed
+
+- PWA splash screen preview not found.
+
+## [4.10.4] - 2019-09-03
+
+### Fixed
+
+- Rich text editor bug caused by wrong typings
+
+## [4.10.3] - 2019-09-02
+
+### Removed
+
+- Temporarily revert releases v4.10.0 and v4.10.1.
+
+## [4.10.2] - 2019-09-02
+
+### Added
+
+- Redirect from pages with `storefront` to `site-editor`.
+
+### Changed
+
+- Rename "Storefront" to "Site Editor".
+- Make CI scripts run in parallel.
+
+## [4.10.1] - 2019-08-29
+
+### Fixed
+
+- Array item editing's state stack logic.
+
+## [4.10.0] - 2019-08-29
+
+### Added
+
+- Image preview for schemas that use the `image-uploader` widget.
+
+### Changed
+
+- Array item editing flow.
+
+## [4.9.0] - 2019-08-29
+
+### Added
+
+- `promptOnCustomEvent` in `PWAForm`.
+
+## [4.8.1] - 2019-08-29
+
+### Fixed
+
+- Content edition bug due to the usage of wrong tree paths in sitewide blocks.
+
+## [4.8.0] - 2019-08-27
+
+### Added
+
+- `checkTypes` and `format` scripts to `react`'s `package.json`.
+
+### Changed
+
+- Replace TSLint with ESLint.
+- Move linting and pre-commit configurations to the `react` folder.
+- Update the Travis CI Node version.
+- Update the Travis CI script.
+- Update `react`'s `lint` script.
+
+### Fixed
+
+- All linting issues pointed out by VTEX's ESLint config, from typings to a11y.
+- Typo in the Portuguese version of the production workspace warning text.
+
+### Removed
+
+- Unused scripts.
+
+## [4.7.3] - 2019-08-27
+
+## Fixed
+
+- Make ContentIOMessage call newTranslate graphql resolver
+
+## [4.7.2] - 2019-08-13
+
+### Fixed
+
+- Avoid crash when content translation fails
+
+## [4.7.1] - 2019-08-06
+
+### Fixed
+
+- Responsiveness in content pages form and list
+
+## [4.7.0] - 2019-08-01
+
+### Removed
+
+- Settings tab from the Pages admin.
+
+## [4.6.1] - 2019-08-01
+
+### Added
+
+- Instructions to use content page.
+
+### Fixed
+
+- Avoid crash when trying to create a content page in a theme that doesn't support it.
+
+## [4.6.0] - 2019-07-30
+
+### Added
+
+- Store's locale switcher at topbar
+
+## [4.5.1] - 2019-07-29
+
+### Fixed
+
+- Send all route data when it's a user route.
+
 ## [3.17.1] - 2019-07-29
 
 ## [4.5.0] - 2019-07-29

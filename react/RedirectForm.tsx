@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { withApollo, WithApolloClient } from 'react-apollo'
-import { injectIntl } from 'react-intl'
+import { injectIntl, IntlShape } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
 
@@ -20,14 +20,14 @@ import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 
 interface CustomProps {
-  params: { id: string }
+  params: {
+    id: string
+  }
+  intl: IntlShape
 }
 
 type Props = WithApolloClient<
-  CustomProps &
-    RenderContextProps &
-    ReactIntl.InjectedIntlProps &
-    TargetPathContextProps
+  CustomProps & RenderContextProps & TargetPathContextProps
 >
 
 interface State {
@@ -40,13 +40,10 @@ class RedirectForm extends Component<Props, State> {
     super(props)
 
     const defaultFormData = {
-      cacheId: '',
-      disabled: false,
-      endDate: '',
+      endDate: null,
       from: '',
-      id: NEW_REDIRECT_ID,
       to: '',
-      type: 'permanent' as RedirectTypes,
+      type: 'PERMANENT' as RedirectTypes,
     }
 
     const isNew = props.params.id === NEW_REDIRECT_ID
@@ -73,11 +70,11 @@ class RedirectForm extends Component<Props, State> {
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            id: params.id,
+            path: '/' + params.id,
           },
         })
 
-        const redirectInfo = response.data.redirect
+        const redirectInfo = response.data.redirect.get
 
         if (redirectInfo) {
           this.setState({
@@ -85,7 +82,7 @@ class RedirectForm extends Component<Props, State> {
             isLoading: false,
           })
         } else {
-          console.log('Invalid ID. Navigating to redirect list...')
+          console.warn('Invalid path. Navigating to redirect list...')
 
           navigate({ to: BASE_URL })
         }

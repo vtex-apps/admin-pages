@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { defineMessages, injectIntl } from 'react-intl'
+import { defineMessages, injectIntl, IntlShape } from 'react-intl'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
 import { NormalizedComponent } from '../../typings'
@@ -10,7 +10,7 @@ import ExpandArrow from './ExpandArrow'
 import Item from './Item'
 import { ActionMenuOption } from './typings'
 
-interface CustomProps extends SortableElementProps {
+interface Props extends SortableElementProps {
   component: NormalizedComponent
   onDelete: (treePath: string) => void
   onEdit: (event: NormalizedComponent) => void
@@ -18,9 +18,8 @@ interface CustomProps extends SortableElementProps {
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
   onMouseLeave: () => void
+  intl: IntlShape
 }
-
-type Props = CustomProps & ReactIntl.InjectedIntlProps
 
 interface State {
   isExpanded: boolean

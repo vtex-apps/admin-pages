@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, useIntl } from 'react-intl'
 
 import { useEditorContext } from '../../EditorContext'
 import Modal from '../../Modal'
@@ -7,7 +7,7 @@ import Modal from '../../Modal'
 import Content from './Content'
 import { useModalContext } from './ModalContext'
 
-interface Props extends InjectedIntlProps {
+interface Props {
   highlightHandler: (treePath: string | null) => void
   runtime: RenderContext
   visible: boolean
@@ -30,10 +30,10 @@ const messages = defineMessages({
 
 const Sidebar: React.FunctionComponent<Props> = ({
   highlightHandler,
-  intl,
   runtime,
   visible,
 }) => {
+  const intl = useIntl()
   const editor = useEditorContext()
   const modal = useModalContext()
 
@@ -78,4 +78,4 @@ const Sidebar: React.FunctionComponent<Props> = ({
   )
 }
 
-export default injectIntl(Sidebar)
+export default Sidebar

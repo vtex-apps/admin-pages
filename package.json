@@ -1,11 +1,11 @@
 {
   "license": "UNLICENSED",
-  "version": "3.14.4",
+  "version": "3.17.2-beta",
   "devDependencies": {
     "@vtex/intl-equalizer": "^2.2.1",
     "husky": "^1.1.4",
     "lint-staged": "^8.0.4",
-    "prettier": "^1.15.2"
+    "prettier": "^1.19.1"
   },
   "scripts": {
     "lint:locales": "intl-equalizer"

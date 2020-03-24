@@ -3,8 +3,8 @@ import React, { Component, Fragment } from 'react'
 import {
   defineMessages,
   FormattedMessage,
-  InjectedIntlProps,
   injectIntl,
+  IntlShape,
 } from 'react-intl'
 import { arrayMove, SortEndHandler } from 'react-sortable-hoc'
 import { Button, ButtonWithIcon, ToastConsumerFunctions } from 'vtex.styleguide'
@@ -21,11 +21,12 @@ import SortableList from './SortableList'
 import { NormalizedComponent, ReorderChange } from './typings'
 import { getParentTreePath, normalize, pureSplice } from './utils'
 
-interface CustomProps {
+interface Props extends Pick<ToastConsumerFunctions, 'showToast'> {
   components: SidebarComponent[]
   editor: EditorContext
   highlightHandler: (treePath: string | null) => void
   iframeRuntime: RenderContextProps['runtime']
+  intl: IntlShape
   onMouseEnterComponent: (
     event: React.MouseEvent<HTMLDivElement | HTMLLIElement>
   ) => void
@@ -33,10 +34,6 @@ interface CustomProps {
   updateBlock: UpdateBlockMutationFn
   updateSidebarComponents: (components: SidebarComponent[]) => void
 }
-
-type Props = CustomProps &
-  InjectedIntlProps &
-  Pick<ToastConsumerFunctions, 'showToast'>
 
 interface State {
   blocks: Extension['blocks']

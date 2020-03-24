@@ -5,9 +5,9 @@ interface Props {
   isActionDanger?: boolean
   isActionLoading: boolean
   isOpen: boolean
-  onClickAction: (event: Event) => void
-  onClickCancel: (event: Event) => void
-  onClose: (event: Event) => void
+  onClickAction?: (event: Event) => void
+  onClickCancel?: (event: Event) => void
+  onClose: (event?: Event) => void
   textButtonAction: string
   textButtonCancel: string
   textMessage: string | React.ReactNode
