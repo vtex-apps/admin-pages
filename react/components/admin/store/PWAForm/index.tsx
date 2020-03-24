@@ -1,7 +1,7 @@
 import { useKeydownFromClick } from 'keydown-from-click'
 import { equals, last, path, pick } from 'ramda'
 import React, { useContext, useState } from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import { FormattedMessage, injectIntl, WrappedComponentProps } from 'react-intl'
 import {
   Button,
   ColorPicker,
@@ -48,7 +48,7 @@ const isManifestValid = (manifest: Manifest): boolean =>
       manifest.theme_color
   )
 
-type Props = InjectedIntlProps & PWAMutationProps & PWASettingsProps
+type Props = WrappedComponentProps & PWAMutationProps & PWASettingsProps
 
 const PWAForm: React.FunctionComponent<Props> = ({
   manifest: pwaManifest,
@@ -249,7 +249,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
             <FormattedMessage id="admin/pages.editor.store.settings.pwa.splash-screen" />
           </div>
           <div className="w-100 flex justify-center items-center">
-            {splashLoading && <Spinner/>}
+            {splashLoading && <Spinner />}
             <img
               alt={intl.formatMessage({
                 id: 'admin/pages.editor.store.settings.pwa.splash-screen',
@@ -257,7 +257,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
               className="h5 shadow-1 mb3"
               src={`${splash.src}?v=${Date.now()}`}
               onLoad={() => setSplashLoading(false)}
-              style={{display: splashLoading ? 'none': 'block'}}
+              style={{ display: splashLoading ? 'none' : 'block' }}
             />
           </div>
         </div>
@@ -376,7 +376,7 @@ const PWAForm: React.FunctionComponent<Props> = ({
 }
 
 export default injectIntl(
-  withPWASettings<InjectedIntlProps>(
-    withPWAMutations<InjectedIntlProps & PWASettingsProps>(PWAForm)
+  withPWASettings<WrappedComponentProps>(
+    withPWAMutations<WrappedComponentProps & PWASettingsProps>(PWAForm)
   )
 )

@@ -1,5 +1,5 @@
 import React from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, injectIntl, WrappedComponentProps } from 'react-intl'
 import { Tab, Tabs } from 'vtex.styleguide'
 
 import PWAForm from './PWAForm'
@@ -16,15 +16,23 @@ const messages = defineMessages({
     defaultMessage: 'General',
     id: 'admin/pages.editor.store.settings.tabs.general',
   },
+  pwa: {
+    defaultMessage: 'PWA',
+    id: 'admin/pages.editor.store.settings.tabs.pwa',
+  },
 })
 
-const Store: React.FC<InjectedIntlProps> = ({ intl }) => {
-  const [activeTab, setActiveTab] = React.useState<'advanced' | 'general'>(
-    'general'
-  )
+const Store: React.FC<WrappedComponentProps> = ({ intl }) => {
+  const [activeTab, setActiveTab] = React.useState<
+    'advanced' | 'general' | 'pwa'
+  >('general')
 
   const handleAdvancedOpen = React.useCallback(() => {
     setActiveTab('advanced')
+  }, [])
+
+  const handlePWAOpen = React.useCallback(() => {
+    setActiveTab('pwa')
   }, [])
 
   const handleGeneralOpen = React.useCallback(() => {
@@ -40,7 +48,7 @@ const Store: React.FC<InjectedIntlProps> = ({ intl }) => {
           label={intl.formatMessage(messages.general)}
         >
           <div className="pv6">
-            <StoreForm />
+            <StoreForm tab="general" />
           </div>
         </Tab>
 
@@ -48,6 +56,16 @@ const Store: React.FC<InjectedIntlProps> = ({ intl }) => {
           active={activeTab === 'advanced'}
           onClick={handleAdvancedOpen}
           label={intl.formatMessage(messages.advanced)}
+        >
+          <div className="pv6">
+            <StoreForm tab="advanced" />
+          </div>
+        </Tab>
+
+        <Tab
+          active={activeTab === 'pwa'}
+          onClick={handlePWAOpen}
+          label={intl.formatMessage(messages.pwa)}
         >
           <div className="pv6">
             <PWAForm />

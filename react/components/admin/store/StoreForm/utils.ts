@@ -2,15 +2,44 @@ import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
 import { IntlShape } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
-export const formatSchema = (
-  schema: JSONSchema6Definition,
+interface FormatSchemaArgs {
+  schema: JSONSchema6Definition
   intl: IntlShape
-): JSONSchema6Definition => {
+  ignore?: string[]
+}
+
+/**
+ * Returns the original object without the received properties
+ * @param object
+ * @param properties
+ */
+export const removeObjectProperties = (
+  object: Record<string, any>,
+  properties: string[]
+) => {
+  let newObject = object
+
+  properties.forEach(property => {
+    const { [property]: deletedProperty, ...otherProperties } = newObject
+    newObject = otherProperties
+  })
+
+  return newObject
+}
+
+export const formatSchema = ({
+  schema,
+  intl,
+  ignore,
+}: FormatSchemaArgs): JSONSchema6Definition => {
   if (typeof schema === 'boolean') {
     return schema
   }
+  const filteredSchema = ignore
+    ? removeObjectProperties(schema, ignore)
+    : schema
 
-  return Object.entries(schema).reduce<JSONSchema6>(
+  return Object.entries(filteredSchema).reduce<JSONSchema6>(
     (acc, [currKey, currValue]) => {
       let formattedValue: unknown
 
@@ -19,7 +48,7 @@ export const formatSchema = (
         currValue !== null &&
         !Array.isArray(currValue)
       ) {
-        formattedValue = formatSchema(currValue, intl)
+        formattedValue = formatSchema({ schema: currValue, intl })
       } else if (typeof currValue === 'string') {
         formattedValue = formatIOMessage({ id: currValue, intl })
       } else {
@@ -31,7 +60,7 @@ export const formatSchema = (
         [currKey]: formattedValue,
       }
     },
-    schema
+    filteredSchema
   )
 }
 
