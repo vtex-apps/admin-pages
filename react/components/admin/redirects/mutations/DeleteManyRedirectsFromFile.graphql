@@ -1,0 +1,5 @@
+mutation DeleteManyRedirects($paths: [String!]!) {
+  redirect @context(provider: "vtex.rewriter") {
+    deleteMany(paths: $paths)
+  }
+}

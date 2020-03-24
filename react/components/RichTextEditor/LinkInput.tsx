@@ -30,14 +30,16 @@ const LinkInput = ({ onAdd, getCurrentSelection }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null)
 
   const [isOpen, setIsOpen] = React.useState(false)
-  const [link, setLink] = React.useState()
-  const [text, setText] = React.useState()
+  const [link, setLink] = React.useState<string | undefined>()
+  const [text, setText] = React.useState<string | undefined>()
 
   useClickOutside(ref, () => setIsOpen(false))
 
   const handleAddLink = () => {
     setIsOpen(false)
-    return onAdd(text, link)
+    if (text && link) {
+      return onAdd(text, link)
+    }
   }
 
   const handleToggleDialog = () => {
@@ -45,7 +47,7 @@ const LinkInput = ({ onAdd, getCurrentSelection }: Props) => {
       return setIsOpen(false)
     }
 
-    setText(getCurrentSelection())
+    setText(getCurrentSelection() || undefined)
     setIsOpen(true)
   }
 

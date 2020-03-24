@@ -1,3 +1,0 @@
-mutation SaveRedirectsFromFile($file: Upload!, $uploadActionType: String) {
-  saveRedirectsFromFile(file: $file, uploadActionType: $uploadActionType)
-}

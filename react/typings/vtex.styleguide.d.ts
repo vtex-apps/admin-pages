@@ -143,8 +143,39 @@ declare module 'vtex.styleguide' {
   > &
     StyleguideDatePickerCustomProps
 
+  interface ProgressProps {
+    type: 'line' | 'steps'
+    percent?: number
+  }
+
+  interface AlertProps {
+    type: 'success' | 'error' | 'warning'
+    children: ReactNode
+    action?: {
+      onClick: () => void
+      label: ReactNode
+    }
+    autoClose?: number
+    onClose?: () => void
+  }
+
+  interface ModalProps {
+    children: ReactNode
+    onClose: (event?: Event) => void
+    bottomBar?: ReactNode
+    centered?: boolean
+    closeOnEsc?: boolean
+    closeOnOverlayClick?: boolean
+    container?: object
+    isOpen?: boolean
+    onCloseTransitionFinish?: () => void
+    responsiveFullScreen?: boolean
+    showTopBar?: boolean
+    title?: ReactNode
+  }
+
   export const ActionMenu: ComponentType<Record<string, unknown>>
-  export const Alert: ComponentType<Record<string, unknown>>
+  export const Alert: ComponentType<AlertProps>
   export const Box: ComponentType<Record<string, unknown>>
   export const Button: ComponentType<Record<string, unknown>>
   export const ButtonWithIcon: ComponentType<Record<string, unknown>>
@@ -164,6 +195,8 @@ declare module 'vtex.styleguide' {
   export const IconCheck: ComponentType<Record<string, unknown>>
   export const IconClear: ComponentType<Record<string, unknown>>
   export const IconClose: ComponentType<Record<string, unknown>>
+  export const IconDelete: ComponentType<Record<string, unknown>>
+  export const IconDownload: ComponentType<Record<string, unknown>>
   export const IconItalic: ComponentType<Record<string, unknown>>
   export const IconImage: ComponentType<Record<string, unknown>>
   export const IconLink: ComponentType<Record<string, unknown>>
@@ -173,9 +206,10 @@ declare module 'vtex.styleguide' {
   export const IconUnorderedList: ComponentType<Record<string, unknown>>
   export const IconUpload: ComponentType<Record<string, unknown>>
   export const Input: ComponentType<Record<string, unknown>>
-  export const Modal: ComponentType<Record<string, unknown>>
+  export const Modal: ComponentType<ModalProps>
   export const PageHeader: ComponentType<Record<string, unknown>>
   export const Pagination: ComponentType<Record<string, unknown>>
+  export class Progress extends Component<ProgressProps> {}
   export const Radio: ComponentType<Record<string, unknown>>
   export const RadioGroup: ComponentType<Record<string, unknown>>
   export const Spinner: ComponentType<Record<string, unknown>>

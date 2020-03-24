@@ -1,7 +1,7 @@
 {
   "vendor": "vtex",
   "name": "admin-pages",
-  "version": "4.21.0",
+  "version": "4.21.2-beta.2",
   "title": "VTEX Pages Admin",
   "description": "The VTEX Pages CMS admin interface",
   "builders": {
@@ -21,6 +21,7 @@
     "vtex.styles-graphql": "1.x",
     "vtex.styleguide": "9.x",
     "vtex.messages": "1.x",
+    "vtex.rewriter": "1.x",
     "vtex.tenant-graphql": "0.x"
   },
   "mustUpdateAt": "2018-09-05",

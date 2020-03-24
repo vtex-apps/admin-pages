@@ -68,7 +68,7 @@ const ImageInput = ({ onAdd, uploadFile }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null)
   const [isLoading, setIsLoading] = React.useState(false)
   const [isOpen, setIsOpen] = React.useState(false)
-  const [imageUrl, setImageUrl] = React.useState()
+  const [imageUrl, setImageUrl] = React.useState<string | undefined>()
   const [error, setError] = React.useState<string | null>()
 
   useClickOutside(ref, () => setIsOpen(false))
@@ -108,7 +108,9 @@ const ImageInput = ({ onAdd, uploadFile }: Props) => {
 
   const handleAddImage = () => {
     setIsOpen(false)
-    return onAdd(imageUrl)
+    if (imageUrl) {
+      return onAdd(imageUrl)
+    }
   }
 
   return (

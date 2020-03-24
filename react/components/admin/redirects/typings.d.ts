@@ -1,6 +1,21 @@
+import { AlertProps } from 'vtex.styleguide'
+
 export interface RedirectsQuery {
-  redirects: {
-    redirects: Redirect[]
-    total: number
+  redirect: {
+    list: Redirect[]
+    numberOfEntries: number
+  }
+}
+
+export interface AlertState {
+  type: AlertProps['type']
+  message: string
+  meta?: {
+    failedRedirects: Redirect[]
+    mutation: (data: Redirect[] | string[]) => Promise<void>
+    isSave: boolean
+  }
+  action?: {
+    label: string
   }
 }
