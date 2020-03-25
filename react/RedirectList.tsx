@@ -156,30 +156,27 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
   ) => async () => {
     const nextPaginationTo = paginationTo + PAGINATION_STEP + 1
 
-    setPagination(prevState => ({
-      paginationFrom: prevState.paginationTo >= nextPaginationTo ? prevState.paginationFrom : prevState.paginationTo,
-      paginationTo: nextPaginationTo,
-    }))
-
     if (nextPaginationTo > dataLength && nextToken) {
       await fetchMore({
-        updateQuery: (prevData, { fetchMoreResult }) =>
-          fetchMoreResult
-            ? {
-                redirect: {
-                  listRedirects: {
-                    routes: prevData.redirect.listRedirects.routes.concat(fetchMoreResult.redirect.listRedirects.routes),
-                    next: fetchMoreResult.redirect.listRedirects.next,
-                  },
-                },
-              }
-            : prevData,
+        updateQuery: (prevData, { fetchMoreResult }) => {
+          if (!fetchMoreResult) {
+            return prevData
+          }
+          prevData.redirect.listRedirects.routes = prevData.redirect.listRedirects.routes.concat(fetchMoreResult.redirect.listRedirects.routes)
+          prevData.redirect.listRedirects.next = fetchMoreResult.redirect.listRedirects.next
+          return prevData
+      },
         variables: {
           limit: REDIRECTS_LIMIT,
           next: nextToken,
         },
       })
     }
+
+    setPagination(prevState => ({
+      paginationFrom: prevState.paginationTo >= nextPaginationTo ? prevState.paginationFrom : prevState.paginationTo,
+      paginationTo: nextPaginationTo,
+    }))
   }
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
