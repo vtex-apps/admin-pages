@@ -13,6 +13,7 @@ import {
   PAGINATION_START,
   PAGINATION_STEP,
   WRAPPER_PATH,
+  REDIRECTS_LIMIT,
 } from './components/admin/redirects/consts'
 import ImportErrorModal from './components/admin/redirects/ImportErrorModal'
 import List from './components/admin/redirects/List'
@@ -28,15 +29,16 @@ type Props = WithApolloClient<TargetPathContextProps>
 
 interface RedirectListQueryResult {
   redirect: {
-    list: Redirect[]
-    numberOfEntries: number
+    listRedirects: {
+      routes: Redirect[]
+      next?: string
+    }
   }
 }
 
 interface RedirectListVariables {
-  from: number
-  to: number
-  fetchMoreResult?: RedirectListQueryResult
+  limit: number
+  next?: string
 }
 
 const messages = defineMessages({
@@ -65,11 +67,6 @@ const messages = defineMessages({
 streamSaver.WritableStream = WebStreamsPolyfill.WritableStream
 
 const textEncoder = new TextEncoder()
-
-const getNextPaginationTo = (paginationFrom: number, total: number) =>
-  total > paginationFrom + PAGINATION_STEP
-    ? paginationFrom + PAGINATION_STEP
-    : total
 
 const handleDownloadTemplate = () => {
   const fileStream = streamSaver.createWriteStream('redirects_template.csv')
@@ -122,81 +119,68 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
   }, [setIsImportErrorModalOpen])
 
   const handleDownload = useCallback(async () => {
-    const STEP = 999
-
     const fileStream = streamSaver.createWriteStream('redirects.csv')
     const writer = fileStream.getWriter()
-    let current = 0
-    let list: Redirect[] | null = []
+    let next: string | undefined
 
     writer.write(textEncoder.encode(CSV_HEADER + '\n'))
-    while (list !== null) {
+    do {
       const response = await client.query<
         RedirectListQueryResult,
         RedirectListVariables
       >({
         query: Redirects,
         variables: {
-          from: current,
-          to: current + STEP,
+          limit: REDIRECTS_LIMIT,
+          next,
         },
       })
-      current += STEP + 1
-      response.data.redirect.list.forEach(({ endDate, from, to, type }) => {
+      const redirects = response.data.redirect.listRedirects.routes
+      next = response.data.redirect.listRedirects.next
+      redirects.forEach(({ endDate, from, to, type }) => {
         writer.write(
           textEncoder.encode(`${from};${to};${type};${endDate || ''}\n`)
         )
       })
-
-      list =
-        response.data.redirect.list.length === STEP + 1
-          ? response.data.redirect.list
-          : null
-    }
+    } while (next !== null)
     writer.close()
   }, [client])
 
   const getNextPageNavigationHandler = (
     dataLength: number,
-    total: number,
     fetchMore: QueryResult<
       RedirectListQueryResult,
       RedirectListVariables
-    >['fetchMore']
+    >['fetchMore'],
+    nextToken?: string
   ) => async () => {
-    const nextPaginationTo = getNextPaginationTo(
-      paginationFrom + PAGINATION_STEP,
-      total
-    )
+    const nextPaginationTo = paginationTo + PAGINATION_STEP + 1
 
-    if (nextPaginationTo > dataLength) {
+    setPagination(prevState => ({
+      paginationFrom: prevState.paginationTo >= nextPaginationTo ? prevState.paginationFrom : prevState.paginationTo,
+      paginationTo: nextPaginationTo,
+    }))
+
+    if (nextPaginationTo > dataLength && nextToken) {
       await fetchMore({
         updateQuery: (prevData, { fetchMoreResult }) =>
           fetchMoreResult
             ? {
-                ...prevData,
                 redirect: {
-                  ...prevData.redirect,
-                  list: [
-                    ...prevData.redirect.list,
-                    ...fetchMoreResult.redirect.list,
-                  ],
+                  listRedirects: {
+                    routes: prevData.redirect.listRedirects.routes.concat(fetchMoreResult.redirect.listRedirects.routes),
+                    next: fetchMoreResult.redirect.listRedirects.next,
+                  },
                 },
               }
             : prevData,
         variables: {
-          from: paginationTo,
-          to: nextPaginationTo,
+          limit: REDIRECTS_LIMIT,
+          next: nextToken,
         },
       })
     }
-
-    setPagination(prevState => ({
-      paginationFrom: prevState.paginationTo,
-      paginationTo: nextPaginationTo,
-    }))
   }
-
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
       paginationFrom: prevState.paginationFrom - PAGINATION_STEP,
@@ -213,14 +197,11 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
         notifyOnNetworkStatusChange
         query={Redirects}
         variables={{
-          from: PAGINATION_START,
-          to: PAGINATION_STEP,
+          limit: REDIRECTS_LIMIT,
         }}
       >
         {({ data, fetchMore, loading, refetch, error }) => {
-          const redirects = (data && data.redirect && data.redirect.list) || []
-          const total =
-            (data && data.redirect && data.redirect.numberOfEntries) || 0
+          const redirects = (data && data.redirect && data.redirect.listRedirects.routes) || []
           const hasRedirects = redirects.length > 0
 
           if (error) {
@@ -230,7 +211,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                 <button
                   className="bg-transparent bn c-action-primary pointer"
                   onClick={() => {
-                    refetch({ from: paginationFrom, to: statePaginationTo })
+                    refetch({ limit: REDIRECTS_LIMIT, next}) // Use last next (in stateO
                   }}
                 >
                   {intl.formatMessage(messages.retry)}
@@ -238,6 +219,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
               </>
             )
           }
+          const next = (data && data.redirect && data.redirect.listRedirects.next)
 
           return (
             <ToastConsumer>
@@ -278,8 +260,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                       items={redirects.slice(paginationFrom, paginationTo)}
                       refetch={() => {
                         refetch({
-                          from: PAGINATION_START,
-                          to: PAGINATION_STEP,
+                          limit: REDIRECTS_LIMIT,
                         })
                       }}
                       to={paginationTo}
@@ -287,19 +268,19 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                       openModal={openModal}
                       onHandleDownload={handleDownload}
                     />
-                    {total > 0 && (
+                    {redirects.length > 0 && (
                       <Pagination
                         currentItemFrom={paginationFrom + 1}
                         currentItemTo={paginationTo + 1}
                         onNextClick={getNextPageNavigationHandler(
                           redirects.length,
-                          total,
-                          fetchMore
+                          fetchMore,
+                          next
                         )}
                         onPrevClick={handlePrevPageNavigation}
                         textOf={intl.formatMessage(messages.paginationOf)}
                         textShowRows={intl.formatMessage(messages.showRows)}
-                        totalItems={total}
+                        totaItems={redirects.length}
                       />
                     )}
                     <UploadModal
