@@ -157,9 +157,9 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
     if (!nextToken && paginationFrom >= dataLength) {
       return
     }
-    const nextPaginationTo = paginationTo + PAGINATION_STEP + 1
+    const maybeNextPaginationTo = paginationTo + PAGINATION_STEP + 1
 
-    if (nextPaginationTo > dataLength && nextToken) {
+    if (maybeNextPaginationTo > dataLength && nextToken) {
       await fetchMore({
         updateQuery: (prevData, { fetchMoreResult }) => {
           if (!fetchMoreResult) {
@@ -176,14 +176,15 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
       })
     }
 
+    const nextPaginationTo = maybeNextPaginationTo > dataLength ? dataLength : maybeNextPaginationTo
     setPagination(prevState => ({
-      paginationFrom: prevState.paginationTo >= nextPaginationTo ? prevState.paginationFrom : prevState.paginationTo,
+      paginationFrom: prevState.paginationTo >= nextPaginationTo? prevState.paginationFrom : prevState.paginationTo,
       paginationTo: nextPaginationTo,
     }))
   }
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
-      paginationFrom: prevState.paginationFrom - PAGINATION_STEP,
+      paginationFrom:  prevState.paginationFrom - PAGINATION_STEP < 0 ? 0 : prevState.paginationFrom - PAGINATION_STEP,
       paginationTo: prevState.paginationFrom,
     }))
   }, [setPagination])
@@ -281,9 +282,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                           next
                         )}
                         onPrevClick={handlePrevPageNavigation}
-                        textOf={''}
                         textShowRows={intl.formatMessage(messages.showRows)}
-                        totaItems={redirects.length}
                       />
                     )}
                     <UploadModal
