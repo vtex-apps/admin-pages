@@ -154,6 +154,9 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
     >['fetchMore'],
     nextToken?: string
   ) => async () => {
+    if (!nextToken && paginationFrom >= dataLength) {
+      return
+    }
     const nextPaginationTo = paginationTo + PAGINATION_STEP + 1
 
     if (nextPaginationTo > dataLength && nextToken) {
@@ -217,6 +220,9 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
             )
           }
           const next = (data && data.redirect && data.redirect.listRedirects.next)
+          if (next && redirects.length < PAGINATION_STEP) {
+            refetch({ limit: REDIRECTS_LIMIT, next})
+          }
 
           return (
             <ToastConsumer>
@@ -275,7 +281,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                           next
                         )}
                         onPrevClick={handlePrevPageNavigation}
-                        textOf={intl.formatMessage(messages.paginationOf)}
+                        textOf={''}
                         textShowRows={intl.formatMessage(messages.showRows)}
                         totaItems={redirects.length}
                       />
