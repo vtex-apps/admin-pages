@@ -97,7 +97,6 @@
   "admin/pages.admin.redirects.import-error.retry-success": "Operación realizada con éxito.",
   "admin/pages.admin.redirects.import-error.title": "Redirecciones fallidas",
   "admin/pages.admin.redirects.or.text": "o",
-  "admin/pages.admin.redirects.pagination.of": "de",
   "admin/pages.admin.redirects.pagination.showRows": "Número de filas",
   "admin/pages.admin.redirects.table.endDate.default": "no establecida",
   "admin/pages.admin.redirects.table.endDate.title": "Fecha final",

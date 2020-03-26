@@ -46,10 +46,6 @@ const messages = defineMessages({
     defaultMessage: 'Something went wrong.',
     id: 'admin/pages.admin.redirects.error',
   },
-  paginationOf: {
-    defaultMessage: 'of',
-    id: 'admin/pages.admin.redirects.pagination.of',
-  },
   retry: {
     defaultMessage: 'Try again',
     id: 'admin/pages.admin.redirects.error.retry',
