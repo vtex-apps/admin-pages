@@ -77,7 +77,6 @@
   "admin/pages.admin.redirects.import-error.retry-success": "Retry successful.",
   "admin/pages.admin.redirects.import-error.title": "Failed Redirects",
   "admin/pages.admin.redirects.or.text": "or",
-  "admin/pages.admin.redirects.pagination.of": "of",
   "admin/pages.admin.redirects.pagination.showRows": "Number of rows",
   "admin/pages.admin.redirects.table.endDate.default": "not set",
   "admin/pages.admin.redirects.table.endDate.title": "End date",
