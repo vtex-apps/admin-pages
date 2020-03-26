@@ -208,7 +208,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                 <button
                   className="bg-transparent bn c-action-primary pointer"
                   onClick={() => {
-                    refetch({ limit: REDIRECTS_LIMIT, next}) // Use last next (in stateO
+                    refetch({ limit: REDIRECTS_LIMIT, next})
                   }}
                 >
                   {intl.formatMessage(messages.retry)}
