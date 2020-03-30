@@ -216,7 +216,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
               </>
             )
           }
-          const next = (data && data.redirect && data.redirect.listRedirects.next)
+          const next = data?.redirect?.listRedirects.next
           if (next && redirects.length < PAGINATION_STEP) {
             refetch({ limit: REDIRECTS_LIMIT, next})
           }
@@ -277,6 +277,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                           fetchMore,
                           next
                         )}
+                        textOf=""
                         onPrevClick={handlePrevPageNavigation}
                         textShowRows={intl.formatMessage(messages.showRows)}
                       />
