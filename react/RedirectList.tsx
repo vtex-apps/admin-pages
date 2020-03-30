@@ -198,7 +198,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
         }}
       >
         {({ data, fetchMore, loading, refetch, error }) => {
-          const redirects = (data && data.redirect && data.redirect.listRedirects.routes) || []
+          const redirects = data?.redirect?.listRedirects.routes || []
           const hasRedirects = redirects.length > 0
 
           if (error) {
@@ -208,7 +208,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                 <button
                   className="bg-transparent bn c-action-primary pointer"
                   onClick={() => {
-                    refetch({ limit: REDIRECTS_LIMIT, next})
+                    refetch({ limit: REDIRECTS_LIMIT, next })
                   }}
                 >
                   {intl.formatMessage(messages.retry)}
@@ -218,7 +218,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
           }
           const next = data?.redirect?.listRedirects.next
           if (next && redirects.length < PAGINATION_STEP) {
-            refetch({ limit: REDIRECTS_LIMIT, next})
+            refetch({ limit: REDIRECTS_LIMIT, next })
           }
 
           return (
