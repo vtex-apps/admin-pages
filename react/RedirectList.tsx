@@ -161,10 +161,13 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
           if (!fetchMoreResult) {
             return prevData
           }
-          prevData.redirect.listRedirects.routes = prevData.redirect.listRedirects.routes.concat(fetchMoreResult.redirect.listRedirects.routes)
-          prevData.redirect.listRedirects.next = fetchMoreResult.redirect.listRedirects.next
+          prevData.redirect.listRedirects.routes = prevData.redirect.listRedirects.routes.concat(
+            fetchMoreResult.redirect.listRedirects.routes
+          )
+          prevData.redirect.listRedirects.next =
+            fetchMoreResult.redirect.listRedirects.next
           return prevData
-      },
+        },
         variables: {
           limit: REDIRECTS_LIMIT,
           next: nextToken,
@@ -172,15 +175,22 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
       })
     }
 
-    const nextPaginationTo = maybeNextPaginationTo > dataLength ? dataLength : maybeNextPaginationTo
+    const nextPaginationTo =
+      maybeNextPaginationTo > dataLength ? dataLength : maybeNextPaginationTo
     setPagination(prevState => ({
-      paginationFrom: prevState.paginationTo >= nextPaginationTo? prevState.paginationFrom : prevState.paginationTo,
+      paginationFrom:
+        prevState.paginationTo >= nextPaginationTo
+          ? prevState.paginationFrom
+          : prevState.paginationTo,
       paginationTo: nextPaginationTo,
     }))
   }
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
-      paginationFrom:  prevState.paginationFrom - PAGINATION_STEP < 0 ? 0 : prevState.paginationFrom - PAGINATION_STEP,
+      paginationFrom:
+        prevState.paginationFrom - PAGINATION_STEP < 0
+          ? 0
+          : prevState.paginationFrom - PAGINATION_STEP,
       paginationTo: prevState.paginationFrom,
     }))
   }, [setPagination])
@@ -208,7 +218,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                 <button
                   className="bg-transparent bn c-action-primary pointer"
                   onClick={() => {
-                    refetch({ limit: REDIRECTS_LIMIT, next })
+                    refetch({ limit: REDIRECTS_LIMIT })
                   }}
                 >
                   {intl.formatMessage(messages.retry)}
