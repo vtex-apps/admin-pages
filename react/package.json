@@ -75,5 +75,6 @@
     "tslint-config-vtex": "^2.0.0",
     "tslint-eslint-rules": "^5.1.0",
     "typescript": "3.8.3"
-  }
+  },
+  "version": "3.19.1"
 }
