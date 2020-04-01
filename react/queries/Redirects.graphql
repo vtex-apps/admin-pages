@@ -1,11 +1,13 @@
-query Redirects($from: Int!, $to: Int!) {
+query Redirects($limit: Int, $next: String) {
   redirect @context(provider: "vtex.rewriter") {
-    list(from: $from, to: $to) {
-      endDate
-      from
-      to
-      type
+    listRedirects(limit: $limit, next: $next) {
+      routes {
+        endDate
+        from
+        to
+        type
+      }
+      next
     }
-    numberOfEntries
   }
 }

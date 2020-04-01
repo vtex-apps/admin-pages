@@ -77,7 +77,6 @@
   "admin/pages.admin.redirects.import-error.retry-success": "admin/pages.admin.redirects.import-error.retry-success",
   "admin/pages.admin.redirects.import-error.title": "admin/pages.admin.redirects.import-error.title",
   "admin/pages.admin.redirects.or.text": "admin/pages.admin.redirects.or.text",
-  "admin/pages.admin.redirects.pagination.of": "admin/pages.admin.redirects.pagination.of",
   "admin/pages.admin.redirects.pagination.showRows": "admin/pages.admin.redirects.pagination.showRows",
   "admin/pages.admin.redirects.table.endDate.default": "admin/pages.admin.redirects.table.endDate.default",
   "admin/pages.admin.redirects.table.endDate.title": "admin/pages.admin.redirects.table.endDate.title",

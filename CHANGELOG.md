@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fix
+
+- Uses new redirect list API
+
 ## [3.19.0] - 2020-03-24
 
 ## [3.17.2-beta] - 2020-03-10
