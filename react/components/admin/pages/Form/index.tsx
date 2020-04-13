@@ -255,6 +255,7 @@ class FormContainer extends Component<Props, State> {
         routeId,
         title,
         uuid,
+        dataSource
       } = isUserRoute(this.props.initialData)
         ? this.state.data
         : {
@@ -310,6 +311,7 @@ class FormContainer extends Component<Props, State> {
                   ),
                 title,
                 uuid,
+                dataSource
               },
             },
           })
