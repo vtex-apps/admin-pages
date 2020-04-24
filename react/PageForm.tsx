@@ -62,6 +62,7 @@ class PageForm extends Component<Props, State> {
     routeId: '',
     title: '',
     uuid: undefined,
+    dataSource: 'vtex.rewriter'
   }
 
   constructor(props: Props) {
