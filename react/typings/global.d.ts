@@ -85,6 +85,7 @@ declare global {
     routeId: string
     title: string | null
     uuid?: string
+    dataSource?: string
   }
 
   interface Routes {
