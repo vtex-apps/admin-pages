@@ -76,5 +76,5 @@
     "tslint-eslint-rules": "^5.1.0",
     "typescript": "3.8.3"
   },
-  "version": "3.19.1"
+  "version": "3.20.0"
 }
