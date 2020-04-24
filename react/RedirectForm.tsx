@@ -24,7 +24,8 @@ import Redirect from './queries/Redirect.graphql'
 
 interface CustomProps {
   params: {
-    path: string
+    path: string,
+    binding: string
   }
 }
 
@@ -75,7 +76,10 @@ class RedirectForm extends Component<Props, State> {
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            path: '/' + params.path,
+            locator: {
+              from: '/' + params.path,
+              binding: params.binding,
+            },
           },
         })
 

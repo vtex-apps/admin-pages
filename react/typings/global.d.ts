@@ -280,6 +280,7 @@ declare global {
     from: string
     to: string
     type: RedirectTypes
+    binding: string
   }
 
   interface HighlightableIFrame extends HTMLIFrameElement {

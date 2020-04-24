@@ -7,6 +7,7 @@ import {
   Table,
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
+import { join } from 'path'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
@@ -108,7 +109,9 @@ const List: React.FC<Props> = ({
   const handleItemView = useCallback(
     (event: { rowData: Redirect }) => {
       const selectedItem = event.rowData
-      navigate({ to: `${BASE_URL}${selectedItem.from}` })
+      const to = join(BASE_URL, selectedItem.binding, selectedItem.from)
+      console.log(`navigating to ${to}`)
+      navigate({ to })
     },
     [navigate]
   )

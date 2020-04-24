@@ -1,10 +1,11 @@
-query Redirect($path: String!) {
+query Redirect($locator: RouteLocator!) {
   redirect @context(provider: "vtex.rewriter") {
-    get(path: $path) {
+    get(path: "", locator: $locator) {
       endDate
       from
       to
       type
+      binding
     }
   }
 }
