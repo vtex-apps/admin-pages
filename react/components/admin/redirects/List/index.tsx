@@ -110,7 +110,6 @@ const List: React.FC<Props> = ({
     (event: { rowData: Redirect }) => {
       const selectedItem = event.rowData
       const to = join(BASE_URL, selectedItem.binding, selectedItem.from)
-      console.log(`navigating to ${to}`)
       navigate({ to })
     },
     [navigate]
