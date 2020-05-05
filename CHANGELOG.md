@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.7.5] - 2020-05-05
+
 ### Changes
 
 - Upgrade TypeScript version.
