@@ -20,6 +20,11 @@ export interface State {
   highlightTreePath: string | null
 }
 
+const isHighlightableWindow = (
+  windowObj: Window,
+): windowObj is HighlightableWindow =>
+  Object.prototype.hasOwnProperty.call(windowObj, '__setHighlightTreePath')
+
 export default class HighlightOverlay extends Component<Props, State> {
   public static propTypes = {
     editExtensionPoint: PropTypes.func,
@@ -47,8 +52,8 @@ export default class HighlightOverlay extends Component<Props, State> {
       highlightTreePath: props.highlightTreePath,
     }
 
-    if (canUseDOM) {
-      (window as HighlightableWindow).__setHighlightTreePath = (newState: State) => {
+    if (canUseDOM && isHighlightableWindow(window)) {
+      window.__setHighlightTreePath = (newState: State) => {
         this.setState(newState)
       }
     }
