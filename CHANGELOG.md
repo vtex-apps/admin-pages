@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [2.7.4] - 2020-05-05
+
 ### Fixed
 
 - `Incompatible2x` was breaking the page because `data` from the GraphQL query could be `undefined`.
