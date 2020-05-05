@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changes
+
+- Upgrade TypeScript version.
+
+### Fixed
+
+- Replace type assertion with a type guard to make sure the window is "highlightable".
+
 ## [2.7.4] - 2020-05-05
 
 ### Fixed
