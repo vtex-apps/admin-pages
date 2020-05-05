@@ -18,7 +18,7 @@ query InstalledStoreVersion {
 const IncompatibleMajor: React.SFC<Props> = ({children}) => (
   <Query query={GET_STORE_VERSION}>
     {({data}) => {
-      const { installedApp } = data
+      const installedApp = data && data.installedApp
       const isMajor2 = installedApp && semver.satisfies(semver.coerce(installedApp.version) || '', '2.x')
       return (
         children({isMajor2})
