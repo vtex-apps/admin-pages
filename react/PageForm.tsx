@@ -11,6 +11,7 @@ import {
   NEW_ROUTE_ID,
   ROUTES_LIST,
   WRAPPER_PATH,
+  DATA_SOURCE,
 } from './components/admin/pages/consts'
 import Form from './components/admin/pages/Form'
 import Operations from './components/admin/pages/Form/Operations'
@@ -62,7 +63,7 @@ class PageForm extends Component<Props, State> {
     routeId: '',
     title: '',
     uuid: undefined,
-    dataSource: 'vtex.rewriter'
+    dataSource: DATA_SOURCE
   }
 
   public constructor(props: Props) {

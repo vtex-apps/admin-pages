@@ -14,6 +14,7 @@ import { parseStoreAppId } from './components/admin/institutional/utils'
 import {
   INSTITUTIONAL_ROUTES_LIST,
   NEW_ROUTE_ID,
+  DATA_SOURCE,
 } from './components/admin/pages/consts'
 import Title from './components/admin/pages/Form/Title'
 import { formatToFormData } from './components/admin/pages/Form/utils'
@@ -125,7 +126,7 @@ class PageForm extends Component<Props, State> {
       routeId: '',
       title: '',
       uuid: undefined,
-      dataSource: 'vtex.rewriter'
+      dataSource: DATA_SOURCE
     }
   }
 
