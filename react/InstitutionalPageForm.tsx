@@ -126,7 +126,7 @@ class PageForm extends Component<Props, State> {
       routeId: '',
       title: '',
       uuid: undefined,
-      dataSource: DATA_SOURCE
+      dataSource: DATA_SOURCE,
     }
   }
 

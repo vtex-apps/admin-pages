@@ -153,7 +153,7 @@ export const formatToFormData = (route: Route): RouteFormData => {
       operator: page.condition.allMatches ? 'all' : 'any',
       uniqueId: index,
     })),
-    dataSource: DATA_SOURCE
+    dataSource: DATA_SOURCE,
   }
 }
 
