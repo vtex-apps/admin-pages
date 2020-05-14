@@ -13,6 +13,7 @@ import {
   RoutesQuery,
   SaveMutationResult,
 } from './typings'
+import { DATA_SOURCE } from '../consts'
 
 const cacheAccessParameters = {
   query: Routes,
@@ -152,6 +153,7 @@ export const formatToFormData = (route: Route): RouteFormData => {
       operator: page.condition.allMatches ? 'all' : 'any',
       uniqueId: index,
     })),
+    dataSource: DATA_SOURCE,
   }
 }
 
