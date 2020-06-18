@@ -9,7 +9,8 @@ const UrlInput = () => {
   const editor = useEditorContext()
 
   const urlPath = editor.iframeWindow
-    ? editor.iframeWindow.location.pathname
+    ? editor.iframeWindow.location.pathname +
+      editor.iframeWindow.location.search
     : ''
 
   const [url, setUrl] = React.useState(urlPath)

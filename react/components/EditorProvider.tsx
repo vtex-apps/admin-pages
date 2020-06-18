@@ -313,7 +313,9 @@ class EditorProvider extends Component<Props, State> {
     window.top.postMessage({ action: { type: 'START_LOADING' } }, '*')
 
     const convertedUrl = getUrlProperties(url)
-    const storePath = convertedUrl ? convertedUrl.pathname : url
+    const storePath = convertedUrl
+      ? `${convertedUrl.pathname}${convertedUrl.search}`
+      : url
     const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
 
     window.top.location.assign(`/admin/cms/site-editor${pathname}`)

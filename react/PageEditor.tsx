@@ -10,10 +10,16 @@ interface Props extends RenderContextProps {
   params: {
     targetPath: string
   }
+  query: Record<string, string>[]
 }
 
 const PageEditor: React.FC<Props> = props => {
-  const { page, params } = props
+  const { page, params, query } = props
+
+  const queryString = Object.entries(query).reduce(
+    (acc, [key, value]) => `${acc ? acc : '?'}${`${acc}&${key}=${value}`}`,
+    ''
+  )
 
   const runtime = useRuntime()
 
@@ -26,7 +32,7 @@ const PageEditor: React.FC<Props> = props => {
 
   const isSiteEditor = React.useMemo(() => page.includes('site-editor'), [page])
 
-  const path = params && params.targetPath
+  const path = params && `${params.targetPath}${queryString}`
 
   const { stopLoading } = useAdminLoadingContext()
 
