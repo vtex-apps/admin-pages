@@ -314,7 +314,7 @@ class EditorProvider extends Component<Props, State> {
 
     const convertedUrl = getUrlProperties(url)
     const storePath = convertedUrl
-      ? `${convertedUrl.pathname}${convertedUrl.search}`
+      ? `${convertedUrl.pathname}${convertedUrl.search ?? ''}`
       : url
     const pathname = /^\//.test(storePath) ? storePath : `/${storePath}`
 
