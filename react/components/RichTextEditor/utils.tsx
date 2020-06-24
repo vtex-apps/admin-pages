@@ -6,7 +6,7 @@ import {
   convertToRaw,
   EditorState,
 } from 'draft-js'
-import { draftjsToMd, mdToDraftjs } from 'draftjs-md-converter'
+import { draftToMarkdown, markdownToDraft } from 'markdown-draft-js'
 
 import Media from './Media'
 
@@ -45,11 +45,11 @@ export function findLinkEntities(
 
 export function convertToMarkdown(editorState: EditorState) {
   const rawContentState = convertToRaw(editorState.getCurrentContent())
-  return draftjsToMd(rawContentState)
+  return draftToMarkdown(rawContentState)
 }
 
 export function convertToEditorState(markdownText: string) {
-  const rawMarkdown = mdToDraftjs(markdownText)
+  const rawMarkdown = markdownToDraft(markdownText)
   return convertFromRaw(rawMarkdown)
 }
 
