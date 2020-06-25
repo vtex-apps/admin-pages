@@ -47,7 +47,7 @@ const widgets = {
 
 
 function removeProp(obj: Record<string, any>, propToDelete: string) {
-  for (var property in obj) {
+  for (const property in obj) {
     if (obj.hasOwnProperty(property)) {
       if (property === propToDelete) {
         delete obj[property]
@@ -87,19 +87,10 @@ function resolveSchemaForCurrentTab(
         }),
         schema,
       )
-    // return {
-    //   ...schema,
-    // properties: formatSchema({
-    //   schema: schema.properties || {},
-    //   intl,
-    //   ignore: ['title'],
-    //   }),
-    // }
     case 'advanced':
       if (formData.bindingBounded) {
         return {} as JSONSchema6
       }
-      // if () se tem bindingBounded, retornar {}
       return assoc<JSONSchema6>(
         'properties',
         formatSchema({
@@ -123,11 +114,8 @@ function resolveSchemaForCurrentTab(
 }
 
 const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
-  console.log('teste store3: ', store)
-  console.log('teste tab: ', tab)
   const intl = useIntl()
-  const [formData, setFormData] = useState(tryParseJson(store.settings))
-  console.log('teste formData: ', formData)
+  const [formData, setFormData] = useState(() => tryParseJson(store.settings))
 
   const [submitting, setSubmitting] = useState(false)
 
@@ -169,9 +157,6 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
     title: formatIOMessage({ id: schema.title || '', intl }),
     ...(uiSchema && { uiSchema }),
   }
-
-  console.log('teste schemas: ', schemas)
-  //aqui
 
   return (
     <div className="flex flex-column justify-center">
