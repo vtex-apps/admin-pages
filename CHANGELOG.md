@@ -6,9 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+- Trigger a new version, something went wrong with previous release.
 
 ## [4.25.2] - 2020-06-30
-
 ### Fixed
 
 - `undefined` appearing in the URL path wouldn't allow page to be loaded
