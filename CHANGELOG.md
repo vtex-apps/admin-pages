@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.25.2] - 2020-06-30
+
 ### Fixed
 
 - `undefined` appearing in the URL path wouldn't allow page to be loaded
