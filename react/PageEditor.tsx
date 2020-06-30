@@ -17,11 +17,11 @@ const PageEditor: React.FC<Props> = props => {
   const { page, params, query } = props
 
   const queryString =
-    query !== undefined &&
-    Object.entries(query).reduce(
-      (acc, [key, value]) => `${acc ?? '?'}${`${acc}&${key}=${value}`}`,
-      ''
-    )
+    query === undefined || query === null
+      ? ''
+      : `?${Object.entries(query)
+          .map(([key, value]) => `${key}=${value}`)
+          .join('&')}`
 
   const runtime = useRuntime()
 
