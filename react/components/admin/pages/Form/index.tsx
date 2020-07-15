@@ -13,7 +13,6 @@ import {
 import { formatStatements } from '../../../../utils/conditions'
 import { isNewRoute, isUserRoute } from '../utils'
 import { generateNewRouteId } from './utils'
-
 import Form from './Form'
 import {
   getAddConditionalTemplateState,
@@ -25,9 +24,7 @@ import {
   getValidateFormState,
 } from './stateHandlers'
 import { FormErrors } from './typings'
-
 import { OperationsResults } from './Operations'
-
 import { slugify } from '../../utils'
 
 interface ComponentProps {
@@ -255,13 +252,14 @@ class FormContainer extends Component<Props, State> {
         routeId,
         title,
         uuid,
-        dataSource
+        dataSource,
       } = isUserRoute(this.props.initialData)
         ? this.state.data
         : {
             ...(diff(this.props.initialData, this.state.data) as Partial<
               RouteFormData
             >),
+            pages: this.state.data.pages || this.state.data,
             declarer: this.state.data.declarer,
             domain: this.state.data.domain,
             path: this.state.data.path,
@@ -311,7 +309,7 @@ class FormContainer extends Component<Props, State> {
                   ),
                 title,
                 uuid,
-                dataSource
+                dataSource,
               },
             },
           })
