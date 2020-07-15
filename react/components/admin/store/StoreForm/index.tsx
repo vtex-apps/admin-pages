@@ -64,7 +64,6 @@ function removeProp(obj: Record<string, any>, propToDelete: string) {
   }
 }
 
-
 function resolveSchemaForCurrentTab(
   tab: string | undefined,
   schema: JSONSchema6,
@@ -113,6 +112,27 @@ function resolveSchemaForCurrentTab(
   }
 }
 
+const removeAdvancedSetting = (formData: Record<string, any>) => {
+  const { advancedSettings, ...rest } = formData
+  return {
+    ...rest,
+    ...(advancedSettings ?? {})
+  }
+}
+
+const spreadAdvancedSettings = (formData: Record<string, any>) => {
+  if (!formData) {
+    return formData
+  }
+
+  const cleanFirstLevel = removeAdvancedSetting(formData)
+  const hasSettingsProp = formData.bindingBounded
+  const settings = hasSettingsProp ? cleanFirstLevel.settings : undefined
+  const cleanSettings = settings && Array.isArray(settings) ?
+    settings.map((setting: any) => removeAdvancedSetting(setting)) : settings
+  return { ...cleanFirstLevel, settings: cleanSettings }
+}
+
 const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
   const intl = useIntl()
   const [formData, setFormData] = useState(() => tryParseJson(store.settings))
@@ -126,7 +146,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
       const { slug: app, version } = store
 
       mutate({
-        variables: { app, version, settings: JSON.stringify(formData) },
+        variables: { app, version, settings: JSON.stringify(spreadAdvancedSettings(formData as any)) },
       })
         .then(() =>
           showToast(
