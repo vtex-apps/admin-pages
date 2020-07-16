@@ -6,7 +6,7 @@ The Pages Admin is a platform to dynamically edit a VTEX Store, making it possib
 
 ### Travis CI
 
-[![Build Status](https://travis-ci.org/vtex-apps/pages-editor.svg?branch=master)](https://travis-ci.org/vtex-apps/pages-editor)
+[![Build Status](https://travis-ci.org/vtex-apps/admin-pages.svg?branch=master)](https://travis-ci.org/vtex-apps/admin-pages)
 
 ## How to make your Component editable
 
