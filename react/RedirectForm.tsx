@@ -36,7 +36,7 @@ type Props = WithApolloClient<
 >
 
 interface State {
-  formData?: Redirect
+  formData?: Omit<Redirect, 'binding'>
   isLoading: boolean
 }
 
