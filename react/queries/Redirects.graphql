@@ -6,7 +6,6 @@ query Redirects($limit: Int, $next: String) {
         from
         to
         type
-        binding
       }
       next
     }

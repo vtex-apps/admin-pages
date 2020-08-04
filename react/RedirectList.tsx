@@ -133,9 +133,9 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
       })
       const redirects = response.data.redirect.listRedirects.routes
       next = response.data.redirect.listRedirects.next
-      redirects.forEach(({ endDate, from, to, type, binding }) => {
+      redirects.forEach(({ endDate, from, to, type }) => {
         writer.write(
-          textEncoder.encode(`${from};${to};${type};${binding || ''};${endDate || ''}\n`)
+          textEncoder.encode(`${from};${to};${type};${endDate || ''}\n`)
         )
       })
     } while (next !== null)
