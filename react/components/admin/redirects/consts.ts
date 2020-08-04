@@ -1,5 +1,5 @@
 export const BASE_URL = '/admin/app/cms/redirects'
-export const CSV_HEADER = 'from;to;type;binding;endDate'
+export const CSV_HEADER = 'from;to;type;endDate'
 export const CSV_SEPARATOR = ';'
 
 export const CSV_TEMPLATE = `${CSV_HEADER}
