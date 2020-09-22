@@ -63,7 +63,7 @@ class RedirectForm extends Component<Props, State> {
     const {
       client,
       params,
-      runtime: { navigate },
+      runtime: { navigate, history },
       setTargetPath,
     } = this.props
     const { formData } = this.state
@@ -72,10 +72,11 @@ class RedirectForm extends Component<Props, State> {
 
     if (!formData) {
       try {
+        const querystring = history?.location?.search || ''
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            path: '/' + params.path,
+            path: `/${params.path}${querystring}`,
           },
         })
 
