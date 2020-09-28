@@ -173,6 +173,7 @@
   "admin/pages.editor.components.condition.date.toggle.start": "admin/pages.editor.components.condition.date.toggle.start",
   "admin/pages.editor.components.condition.scope.entity.brand": "admin/pages.editor.components.condition.scope.entity.brand",
   "admin/pages.editor.components.condition.scope.entity.category": "admin/pages.editor.components.condition.scope.entity.category",
+  "admin/pages.editor.components.condition.scope.entity.custom": "admin/pages.editor.components.condition.scope.entity.custom",
   "admin/pages.editor.components.condition.scope.entity.department": "admin/pages.editor.components.condition.scope.entity.department",
   "admin/pages.editor.components.condition.scope.entity.product": "admin/pages.editor.components.condition.scope.entity.product",
   "admin/pages.editor.components.condition.scope.entity.route": "admin/pages.editor.components.condition.scope.entity.route",

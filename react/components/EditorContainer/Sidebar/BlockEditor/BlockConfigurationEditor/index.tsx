@@ -80,7 +80,9 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           },
           {
             entity: intl.formatMessage({
-              id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
+              id: `admin/pages.editor.components.condition.scope.entity.${
+                pageContext.type.startsWith('$') ? 'custom' : pageContext.type
+              }`,
             }),
             template: intl.formatMessage({
               id: 'admin/pages.editor.components.condition.scope.template',

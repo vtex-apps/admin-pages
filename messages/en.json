@@ -173,6 +173,7 @@
   "admin/pages.editor.components.condition.date.toggle.start": "Set a start date",
   "admin/pages.editor.components.condition.scope.entity.brand": "this brand",
   "admin/pages.editor.components.condition.scope.entity.category": "this category",
+  "admin/pages.editor.components.condition.scope.entity.custom": "this URL",
   "admin/pages.editor.components.condition.scope.entity.department": "this department",
   "admin/pages.editor.components.condition.scope.entity.product": "this product",
   "admin/pages.editor.components.condition.scope.entity.route": "this URL",
