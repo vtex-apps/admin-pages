@@ -72,7 +72,7 @@ class RedirectForm extends Component<Props, State> {
 
     if (!formData) {
       try {
-        const querystring = history?.location?.search || ''
+        const querystring = history?.location?.search ?? ''
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
