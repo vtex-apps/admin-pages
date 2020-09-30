@@ -50,7 +50,9 @@ export const getScopeStandardOptions = (
 ) => [
   {
     label: intl.formatMessage({
-      id: `admin/pages.editor.components.condition.scope.entity.${pageContext.type}`,
+      id: `admin/pages.editor.components.condition.scope.entity.${
+        pageContext.type.startsWith('$') ? 'custom' : pageContext.type
+      }`,
     }),
     value: 'entity',
   },
