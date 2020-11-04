@@ -111,7 +111,7 @@ export const getComponentSchema = ({
     return adaptedComponentSchema
   }
 
-  return mergeDeepRight(adaptedComponentSchema, contentSchema)
+  return mergeDeepRight(adaptedComponentSchema, contentSchema) as any
 }
 
 export const getExtension = (
