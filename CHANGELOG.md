@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [4.28.0] - 2020-11-23
 ### Fixed
 - Templates scheduled to go live in a specific day now always go live at midnight
 
