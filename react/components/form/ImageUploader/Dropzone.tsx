@@ -7,7 +7,7 @@ interface Props {
   extraClasses?: string
   onClick: React.MouseEventHandler<HTMLElement>
   onDrop: DropzoneOptions['onDrop']
-  ref: React.RefObject<HTMLDivElement>
+  ref?: React.Ref<HTMLDivElement>
 }
 
 const MAX_SIZE = 4 * 1024 * 1024

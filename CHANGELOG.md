@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.28.0] - 2020-11-23
+### Fixed
+- Templates scheduled to go live in a specific day now always go live at midnight
+
 ## [4.27.2] - 2020-09-30
 ### Added
 - Add custom entity scope message

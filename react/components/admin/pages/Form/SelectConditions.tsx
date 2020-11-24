@@ -137,9 +137,15 @@ class SelectConditions extends React.Component<Props> {
         value={values && values.date}
         onChange={(date: Date) => {
           const newStatements = statements.map((statement, index) => {
+            const dateAtMidnight = new Date(date)
+            dateAtMidnight.setHours(0, 0, 0, 0)
+
             return {
               ...statement,
-              object: index === statementIndex ? { date } : statement.object,
+              object:
+                index === statementIndex
+                  ? { date: dateAtMidnight }
+                  : statement.object,
             }
           })
           this.props.onChangeStatements(newStatements)
