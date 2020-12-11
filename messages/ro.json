@@ -173,6 +173,7 @@
   "admin/pages.editor.components.condition.date.toggle.start": "Setează o dată de început",
   "admin/pages.editor.components.condition.scope.entity.brand": "această marcă",
   "admin/pages.editor.components.condition.scope.entity.category": "această categorie",
+  "admin/pages.editor.components.condition.scope.entity.custom": "acest URL",
   "admin/pages.editor.components.condition.scope.entity.department": "acest departament",
   "admin/pages.editor.components.condition.scope.entity.product": "acest produs",
   "admin/pages.editor.components.condition.scope.entity.route": "acest URL",

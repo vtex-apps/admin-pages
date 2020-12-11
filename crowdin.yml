@@ -1,6 +1,4 @@
 "project_id" : "416630"
-"api_token" : "c171d67a29cd6676859dc21b11551db2bf38e122eddea7f3deff444c8b3ee69351bf62815a90799d"
-"base_path" : "/Users/Camilacoutinho/Desktop/vtex/crowdin/admin"
 "base_url" : "https://api.crowdin.com"
 "preserve_hierarchy": true
 files: [
