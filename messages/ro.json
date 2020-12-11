@@ -494,5 +494,6 @@
   "admin/pages.editor.topbar.button.preview.tooltip": "Previzualizare",
   "admin/pages.editor.topbar.context.binding.error": "Lista legăturilor disponibile nu a putut fi încărcată.",
   "admin/pages.editor.topbar.context.binding.tooltip": "Legătura nu poate fi modificată în timp ce se editează un bloc.",
-  "admin/pages.editor.topbar.context.locale.tooltip": "Locale nu poate fi modificat în timp ce se editează un bloc."
+  "admin/pages.editor.topbar.context.locale.tooltip": "Locale nu poate fi modificat în timp ce se editează un bloc.",
+  "admin/appframe.navigation.contentManagement": "Gestionarea conținutului"
 }
