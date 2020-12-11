@@ -12,29 +12,28 @@ interface Props {
 
 const MAX_SIZE = 4 * 1024 * 1024
 
-const Dropzone: React.FunctionComponent<Props> = React.forwardRef<
-  HTMLDivElement,
-  Props
->(({ disabled, children, extraClasses, onClick, onDrop }, ref) => (
-  <ReactDropzone
-    accept="image/*"
-    disabled={disabled}
-    maxSize={MAX_SIZE}
-    multiple={false}
-    onDrop={onDrop}
-  >
-    {({ getRootProps, getInputProps }) => (
-      <div
-        {...getRootProps({ onClick: e => onClick(e) })}
-        className={`w-100 h4 br2 ${extraClasses}`}
-        ref={ref}
-      >
-        <input {...getInputProps()} />
-        {children}
-      </div>
-    )}
-  </ReactDropzone>
-))
+const Dropzone = React.forwardRef<HTMLDivElement, Props>(
+  ({ disabled, children, extraClasses, onClick, onDrop }, ref) => (
+    <ReactDropzone
+      accept="image/*"
+      disabled={disabled}
+      maxSize={MAX_SIZE}
+      multiple={false}
+      onDrop={onDrop}
+    >
+      {({ getRootProps, getInputProps }) => (
+        <div
+          {...getRootProps({ onClick: e => onClick(e) })}
+          className={`w-100 h4 br2 ${extraClasses}`}
+          ref={ref}
+        >
+          <input {...getInputProps()} />
+          {children}
+        </div>
+      )}
+    </ReactDropzone>
+  )
+)
 
 Dropzone.displayName = 'Dropzone'
 

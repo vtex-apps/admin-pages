@@ -7,20 +7,32 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Admin v4 navigation setup
+
 ## [4.28.0] - 2020-11-23
+
 ### Fixed
+
 - Templates scheduled to go live in a specific day now always go live at midnight
 
 ## [4.27.2] - 2020-09-30
+
 ### Added
+
 - Add custom entity scope message
 
 ## [4.27.1] - 2020-09-30
+
 ### Fixed
+
 - Uses querystring to get the redirect
 
 ## [4.27.0] - 2020-07-21 [YANKED]
+
 ### Added
+
 - Field `binding` to redirects export spreadsheet.
 
 ## [4.26.0] - 2020-07-16
@@ -34,6 +46,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [4.25.1] - 2020-06-29
 
 ### Fixed
+
 - Revert changes made in `4.25.0`
 
 ## [4.25.0] - 2020-06-29 [YANKED]
@@ -43,15 +56,21 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Replace node lib with browser version.
 
 ## [4.24.2] - 2020-06-18
+
 ### Fixed
+
 - When accessing a specific page directly, the querystring was being ignored
 
 ## [4.24.1] - 2020-05-14
+
 ### Fixed
+
 - Add vtex.rewriter as datasource for page editing.
 
 ## [4.24.0] - 2020-04-24
+
 ### Added
+
 - `dataSource` field to save user routes as rewriter internal routes
 
 ## [4.23.1] - 2020-04-01
