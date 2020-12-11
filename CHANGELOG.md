@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.29.0] - 2020-12-11
+
 ### Added
 
 - Admin v4 navigation setup
