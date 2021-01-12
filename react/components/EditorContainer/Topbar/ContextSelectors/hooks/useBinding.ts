@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 
 import { Binding } from '../typings'
 
@@ -15,13 +15,15 @@ export const useBinding = (): [
 
   return [
     binding,
-    (value: Binding | undefined) => {
-      if (value) {
-        window.localStorage.setItem(LAST_BINDING_KEY, JSON.stringify(value))
-      } else {
-        window.localStorage.removeItem(LAST_BINDING_KEY)
+    useMemo(() => {
+      return (value: Binding | undefined) => {
+        if (value) {
+          window.localStorage.setItem(LAST_BINDING_KEY, JSON.stringify(value))
+        } else {
+          window.localStorage.removeItem(LAST_BINDING_KEY)
+        }
+        setBinding(value)
       }
-      setBinding(value)
-    },
+    }, [setBinding]),
   ]
 }
