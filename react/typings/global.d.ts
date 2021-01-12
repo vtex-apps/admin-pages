@@ -133,6 +133,7 @@ declare global {
     prefetchPage: (name: string) => Promise<void>
     preview: RenderRuntime['preview']
     production: RenderRuntime['production']
+    query?: RenderRuntime['query']
     route: RenderRuntime['route']
     renderMajor: RenderRuntime['renderMajor']
     setDevice: (device: ConfigurationDevice) => void
