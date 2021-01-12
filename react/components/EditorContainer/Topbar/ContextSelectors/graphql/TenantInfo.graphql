@@ -1,0 +1,10 @@
+query TenantInfoQuery {
+  tenantInfo {
+    bindings {
+      canonicalBaseAddress
+      id
+      supportedLocales
+      targetProduct
+    }
+  }
+}
