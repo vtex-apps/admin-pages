@@ -1,7 +1,8 @@
-query Routes($domain: String) {
-  routes(domain: $domain) {
+query Routes($domain: String, $bindingId: String) {
+  routes(domain: $domain, bindingId: $bindingId) {
     auth
     blockId
+    bindingId
     context
     declarer
     domain
