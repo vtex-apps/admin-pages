@@ -2,7 +2,7 @@ query Routes($domain: String, $bindingId: String) {
   routes(domain: $domain, bindingId: $bindingId) {
     auth
     blockId
-    bindingId
+    binding
     context
     declarer
     domain

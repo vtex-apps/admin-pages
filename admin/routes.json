@@ -6,7 +6,7 @@
     "around": ["pages-wrapper"]
   },
   "admin.app.cms.pages.page-list": {
-    "component": "PageList",
+    "component": "PageListWrapper",
     "path": "/admin/app/cms/pages"
   },
   "admin.app.cms.pages.page-details": {

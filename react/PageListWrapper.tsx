@@ -1,15 +1,22 @@
 import React, { useMemo, useState } from 'react'
 import { Query } from 'react-apollo'
-import { Binding, Tenant } from 'vtex.tenant-graphql'
+import { Tenant } from 'vtex.tenant-graphql'
 import { Dropdown } from 'vtex.styleguide'
 
 import Loader from './components/Loader'
 import TenantInfo from './queries/TenantInfo.graphql'
+import PageList from './PageList'
 
 const STORE_PRODUCT = 'vtex-storefront'
 
 interface BindingSelectorProps {
   tenantInfo: Tenant
+}
+
+interface ChangeInput {
+  target: {
+    value: string
+  }
 }
 
 const getStoreBindings = (tenant: Tenant) => {
@@ -18,7 +25,7 @@ const getStoreBindings = (tenant: Tenant) => {
   )
 }
 
-const BindingSelectorWithQuery = () => {
+const PageListWrapperWithQuery = () => {
   return (
     <Query<{ tenantInfo: Tenant }> query={TenantInfo}>
       {({ data, loading: isLoading }) => {
@@ -26,14 +33,14 @@ const BindingSelectorWithQuery = () => {
         return isLoading || !tenantInfo ? (
           <Loader />
         ) : (
-          <BindingSelector tenantInfo={tenantInfo} />
+          <PageListWrapper tenantInfo={tenantInfo} />
         )
       }}
     </Query>
   )
 }
 
-const BindingSelector: React.FunctionComponent<BindingSelectorProps> = ({
+const PageListWrapper: React.FunctionComponent<BindingSelectorProps> = ({
   tenantInfo,
 }) => {
   const storeBindings = getStoreBindings(tenantInfo)
@@ -49,16 +56,27 @@ const BindingSelector: React.FunctionComponent<BindingSelectorProps> = ({
     [storeBindings]
   )
 
-  const handleChange = (binding: Binding) => {
-    setSelectedBinding(binding)
+  const handleChange = ({ target: { value } }: ChangeInput) => {
+    const selectedBinding = storeBindings.find(binding => binding.id === value)
+    if (!selectedBinding) {
+      throw new Error(
+        "Selected binding does not exist or isn't a store binding"
+      )
+    }
+    setSelectedBinding(selectedBinding)
   }
+
   return (
-    <Dropdown
-      onChange={handleChange}
-      options={bindingOptions}
-      value={binding.id}
-    />
+    <div>
+      <Dropdown
+        disabled={storeBindings.length === 1}
+        onChange={handleChange}
+        options={bindingOptions}
+        value={binding.id}
+      />
+      <PageList binding={binding.id} />
+    </div>
   )
 }
 
-export default React.memo(BindingSelectorWithQuery)
+export default React.memo(PageListWrapperWithQuery)

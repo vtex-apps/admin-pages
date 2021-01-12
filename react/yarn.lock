@@ -7958,6 +7958,58 @@ vtex.ajv@^6.10.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+"vtex.apps-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.6.3/public/@types/vtex.apps-graphql":
+  version "2.6.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.6.3/public/@types/vtex.apps-graphql#cbb2aa02fa3522c663be71b677b8ee10238f5805"
+
+"vtex.file-manager-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager-graphql@0.3.0/public/@types/vtex.file-manager-graphql":
+  version "0.3.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager-graphql@0.3.0/public/@types/vtex.file-manager-graphql#601e8962c656e184a9f30b258b9441df5970bbdd"
+
+"vtex.file-manager@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager@0.10.1/public/_types/react":
+  version "0.0.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager@0.10.1/public/_types/react#fa7a0347e046eab3dd768998fc9252b2c0dd5aef"
+
+"vtex.messages@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.61.0/public/@types/vtex.messages":
+  version "1.61.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.61.0/public/@types/vtex.messages#9f539aa5e98ad8024b2b92e7218c2ae5a1a59a94"
+
+"vtex.native-types@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types":
+  version "0.7.5"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types#52d8c0b675fcdf2b6b1ca93f6a99a630519f618f"
+
+"vtex.pages-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.106.0/public/@types/vtex.pages-graphql":
+  version "2.106.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.106.0/public/@types/vtex.pages-graphql#846277ed50ea921d76ff7723a6cb50824ab65e4b"
+
+"vtex.pwa-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.15.7/public/@types/vtex.pwa-graphql":
+  version "1.15.7"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.15.7/public/@types/vtex.pwa-graphql#f01533b0acd2a2d5e0c08fc701796357feb40fa5"
+
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.126.4/public/@types/vtex.render-runtime":
+  version "8.126.4"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.126.4/public/@types/vtex.render-runtime#40d7ad8a7b04c50e61ff84a1089dcf7045efd548"
+
+"vtex.rewriter@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.0/public/@types/vtex.rewriter":
+  version "1.53.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.0/public/@types/vtex.rewriter#90aa934f19138cf65adb554117183d2dbf5103ef"
+
+"vtex.store@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.110.0/public/@types/vtex.store":
+  version "2.110.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.110.0/public/@types/vtex.store#b6472e42914bbeaf805b9acf9137fe9302feecb4"
+
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.134.1/public/@types/vtex.styleguide":
+  version "9.134.1"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.134.1/public/@types/vtex.styleguide#7210ed4908f4e6482d2499d71c4cfcc21e3dfd6a"
+
+"vtex.styles-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.17.2/public/@types/vtex.styles-graphql":
+  version "1.17.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.17.2/public/@types/vtex.styles-graphql#37526a1fc29bc0ce524aa7f794bc02aa376db0c3"
+
+"vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2-beta.0/public/@types/vtex.tenant-graphql":
+  version "0.1.2-beta.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2-beta.0/public/@types/vtex.tenant-graphql#ddad69d1a0ad02da406156681f85af38ae7fc170"
+
 w3c-hr-time@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.1.tgz#82ac2bff63d950ea9e3189a58a65625fedf19045"
