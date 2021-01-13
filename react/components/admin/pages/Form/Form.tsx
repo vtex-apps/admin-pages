@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import {
   Button,
   Checkbox,
+  Dropdown,
   EXPERIMENTAL_Select as Select,
   Input,
   Textarea,
 } from 'vtex.styleguide'
+import { Binding } from 'vtex.tenant-graphql'
 import { KeywordsFormData, RouteFormData } from 'pages'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
@@ -17,6 +19,7 @@ import {
   ConditionalTemplateSection,
   ConditionalTemplateSectionProps,
 } from './ConditionalTemplateSection'
+import { ChangeInput } from '../../../../PageListWrapper'
 
 type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
@@ -46,6 +49,8 @@ interface Props extends TemplateSectionProps {
   onRemoveConditionalTemplate: (uniqueId: number) => void
   templates: Template[]
   onChangeKeywords: (values: KeywordsFormData[]) => void
+  storeBindings: Binding[]
+  onChangeBinding: (input: ChangeInput) => void
 }
 
 const messages = defineMessages({
@@ -106,13 +111,30 @@ const Form: React.FunctionComponent<Props> = ({
   onRemoveConditionalTemplate,
   onSave,
   templates,
+  storeBindings,
+  onChangeBinding,
 }) => {
   const intl = useIntl()
   const path = data.path || ''
 
+  const bindingOptions = useMemo(
+    () =>
+      storeBindings.map(binding => ({
+        label: binding.canonicalBaseAddress,
+        value: binding.id,
+      })),
+    [storeBindings]
+  )
+
   return (
     <form onSubmit={onSave}>
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
+      <Dropdown
+        disabled={storeBindings.length === 1}
+        onChange={onChangeBinding}
+        options={bindingOptions}
+        value={data.binding || storeBindings[0]}
+      />
       <Input
         disabled={!!data.context}
         label={intl.formatMessage(messages.fieldTitle)}
