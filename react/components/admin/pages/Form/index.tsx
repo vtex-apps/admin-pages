@@ -260,6 +260,7 @@ class FormContainer extends Component<Props, State> {
     if (isEmpty(nextState.formErrors)) {
       const {
         auth,
+        binding: bindingId,
         blockId,
         context,
         declarer,
@@ -293,6 +294,7 @@ class FormContainer extends Component<Props, State> {
             variables: {
               route: {
                 auth,
+                bindingId,
                 blockId,
                 context,
                 declarer,
