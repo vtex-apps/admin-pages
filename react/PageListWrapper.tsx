@@ -13,13 +13,13 @@ interface BindingSelectorProps {
   tenantInfo: Tenant
 }
 
-interface ChangeInput {
+export interface ChangeInput {
   target: {
     value: string
   }
 }
 
-const getStoreBindings = (tenant: Tenant) => {
+export const getStoreBindings = (tenant: Tenant) => {
   return tenant.bindings.filter(
     binding => binding.targetProduct === STORE_PRODUCT
   )
@@ -43,7 +43,9 @@ const PageListWrapperWithQuery = () => {
 const PageListWrapper: React.FunctionComponent<BindingSelectorProps> = ({
   tenantInfo,
 }) => {
-  const storeBindings = getStoreBindings(tenantInfo)
+  const storeBindings = useMemo(() => getStoreBindings(tenantInfo), [
+    tenantInfo,
+  ])
   const defaultBinding = storeBindings[0] // Error check here
   const [binding, setSelectedBinding] = useState(defaultBinding)
 
