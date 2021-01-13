@@ -1,6 +1,7 @@
 query Route($domain: String, $routeId: String!) {
   route(domain: $domain, routeId: $routeId) {
     auth
+    binding
     blockId
     context
     declarer
