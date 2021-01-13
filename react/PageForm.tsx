@@ -4,7 +4,7 @@ import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
-
+import { Binding, Tenant } from 'vtex.tenant-graphql'
 import { RouteFormData } from 'pages'
 
 import {
@@ -26,6 +26,8 @@ import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
+import TenantInfoQuery from './queries/TenantInfo.graphql'
+import { getStoreBindings } from './PageListWrapper'
 
 interface CustomProps {
   params: {
@@ -45,6 +47,7 @@ interface State {
   formData: RouteFormData
   isLoading: boolean
   routeId: string
+  storeBindings: Binding[] | null
 }
 
 class PageForm extends Component<Props, State> {
@@ -52,6 +55,7 @@ class PageForm extends Component<Props, State> {
   private defaultFormData: RouteFormData = {
     auth: false,
     blockId: '',
+    binding: undefined,
     context: null,
     declarer: null,
     domain: 'store',
@@ -73,6 +77,8 @@ class PageForm extends Component<Props, State> {
 
     const { client } = props
     let currentRoute = null
+    let tenantInfo = null
+    let storeBindings = null
 
     // Find route from cache
     try {
@@ -87,6 +93,24 @@ class PageForm extends Component<Props, State> {
       // console.error(e)
     }
 
+    // Get tenant data
+    try {
+      const data =
+        client.readQuery<{ tenantInfo: Tenant }>({
+          query: TenantInfoQuery,
+        }) || null
+      tenantInfo = data?.tenantInfo
+    } catch (e) {
+      // console.error(e)
+    }
+    if (tenantInfo) {
+      storeBindings = getStoreBindings(tenantInfo)
+      this.setState({
+        storeBindings,
+      })
+      this.defaultFormData.binding = storeBindings[0].id
+    }
+
     this.isNew = routeId === NEW_ROUTE_ID
 
     this.state = {
@@ -95,14 +119,35 @@ class PageForm extends Component<Props, State> {
         : this.defaultFormData,
       isLoading: !this.isNew,
       routeId,
+      storeBindings,
     }
   }
 
   public async componentDidMount() {
     const { client, setTargetPath } = this.props
-    const { formData } = this.state
+    const { formData, storeBindings } = this.state
 
     setTargetPath(WRAPPER_PATH)
+
+    // Get tenant info
+    if (storeBindings === null) {
+      try {
+        const { data } = await client.query<{ tenantInfo: Tenant }, {}>({
+          query: TenantInfoQuery,
+        })
+        const tenantInfo = data?.tenantInfo
+        if (!tenantInfo) {
+          throw Error()
+        }
+        const storeBindings = getStoreBindings(tenantInfo)
+        // [TODO] Check binding value for new form data
+        this.setState({
+          storeBindings,
+        })
+      } catch (e) {
+        // console.error(e)
+      }
+    }
 
     if (equals(formData, this.defaultFormData) && !this.isNew) {
       // didnt find in cache
@@ -135,7 +180,7 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
-    const { formData, isLoading } = this.state
+    const { formData, isLoading, storeBindings } = this.state
 
     return (
       <>
@@ -173,6 +218,7 @@ class PageForm extends Component<Props, State> {
                         templates={templates}
                         showToast={showToast}
                         hideToast={hideToast}
+                        storeBindings={storeBindings}
                       />
                     )}
                   </ToastConsumer>
