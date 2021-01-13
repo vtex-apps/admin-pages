@@ -7,7 +7,8 @@ import { useEditorContext } from '../../../EditorContext'
 import BindingSelector from './BindingSelector'
 import TenantInfoQuery from './graphql/TenantInfo.graphql'
 import LocaleSelector from './LocaleSelector'
-import { Binding, QueryStateReducer, TenantInfoData } from './typings'
+import { QueryStateReducer, TenantInfoData } from './typings'
+import { useBinding } from './hooks/useBinding'
 
 interface Props {
   iframeRuntime: RenderContext
@@ -27,14 +28,13 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
     { data: undefined, hasError: false, isLoading: true }
   )
 
-  const { binding: iframeBinding } = iframeRuntime
-
-  const [binding, setBinding] = React.useState<Binding>()
-
+  const { binding: iframeBinding, query } = iframeRuntime
+  const explicitBinding = Boolean(query?.__bindingAddress)
+  const [binding, setBinding] = useBinding()
   const intl = useIntl()
 
   React.useEffect(() => {
-    if (iframeBinding) {
+    if (iframeBinding || explicitBinding) {
       const fetchBindings = async () => {
         let data, hasError
 
@@ -72,7 +72,7 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
 
       fetchBindings()
     }
-  }, [client, iframeBinding, intl, showToast])
+  }, [client, explicitBinding, setBinding, iframeBinding, intl, showToast])
 
   const bindings = React.useMemo(
     () =>
@@ -100,7 +100,7 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
         }
       }
     },
-    [bindings, editor.iframeWindow]
+    [bindings, setBinding, editor.iframeWindow]
   )
 
   const bindingOptions = React.useMemo(
@@ -129,7 +129,7 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
   )
 
   const shouldShowBindingSelector = !!(
-    iframeBinding &&
+    (iframeBinding || explicitBinding) &&
     bindings &&
     bindings.length > 1 &&
     !queryState.hasError

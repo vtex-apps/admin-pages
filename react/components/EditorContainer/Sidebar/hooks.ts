@@ -27,9 +27,10 @@ const useInitialEditingState: UseInitialEditingState = ({
     iframeRuntime.extensions[treePath] &&
     iframeRuntime.extensions[treePath].blockId
 
-  const template = isSitewide
-    ? '*'
-    : iframeRuntime.pages[iframeRuntime.page].blockId
+  const template =
+    isSitewide || !iframeRuntime.page
+      ? '*'
+      : iframeRuntime.pages[iframeRuntime.page].blockId
 
   const serverTreePath = isSitewide ? getSitewideTreePath(treePath) : treePath
 
