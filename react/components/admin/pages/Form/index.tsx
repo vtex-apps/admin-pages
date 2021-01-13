@@ -27,7 +27,7 @@ import {
 import { FormErrors } from './typings'
 import { OperationsResults } from './Operations'
 import { slugify } from '../../utils'
-import { ChangeInput } from '../../../../PageListWrapper'
+import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 
 interface ComponentProps {
   isCustomPage: boolean
@@ -146,7 +146,9 @@ class FormContainer extends Component<Props, State> {
     this.setState(getAddConditionalTemplateState)
   }
 
-  private handleBindingChange = ({ target: { value } }: ChangeInput) => {
+  private handleBindingChange = ({
+    target: { value },
+  }: DropdownChangeInput) => {
     const { storeBindings, data } = this.state
     const selectedBinding = storeBindings.find(binding => binding.id === value)
     if (!selectedBinding) {

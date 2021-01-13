@@ -19,7 +19,8 @@ import {
   ConditionalTemplateSection,
   ConditionalTemplateSectionProps,
 } from './ConditionalTemplateSection'
-import { ChangeInput } from '../../../../PageListWrapper'
+import { DropdownChangeInput } from '../../../../utils/bindings/typings'
+import { getBindingSelectorOptions } from '../../../../utils/bindings'
 
 type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
@@ -50,7 +51,7 @@ interface Props extends TemplateSectionProps {
   templates: Template[]
   onChangeKeywords: (values: KeywordsFormData[]) => void
   storeBindings: Binding[]
-  onChangeBinding: (input: ChangeInput) => void
+  onChangeBinding: (input: DropdownChangeInput) => void
 }
 
 const messages = defineMessages({
@@ -118,11 +119,7 @@ const Form: React.FunctionComponent<Props> = ({
   const path = data.path || ''
 
   const bindingOptions = useMemo(
-    () =>
-      storeBindings.map(binding => ({
-        label: binding.canonicalBaseAddress,
-        value: binding.id,
-      })),
+    () => getBindingSelectorOptions(storeBindings),
     [storeBindings]
   )
 

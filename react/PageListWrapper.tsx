@@ -6,23 +6,11 @@ import { Dropdown } from 'vtex.styleguide'
 import Loader from './components/Loader'
 import TenantInfo from './queries/TenantInfo.graphql'
 import PageList from './PageList'
+import { getBindingSelectorOptions, getStoreBindings } from './utils/bindings'
+import { DropdownChangeInput } from './utils/bindings/typings'
 
-const STORE_PRODUCT = 'vtex-storefront'
-
-interface BindingSelectorProps {
+interface PageListWrapperProps {
   tenantInfo: Tenant
-}
-
-export interface ChangeInput {
-  target: {
-    value: string
-  }
-}
-
-export const getStoreBindings = (tenant: Tenant) => {
-  return tenant.bindings.filter(
-    binding => binding.targetProduct === STORE_PRODUCT
-  )
 }
 
 const PageListWrapperWithQuery = () => {
@@ -40,7 +28,7 @@ const PageListWrapperWithQuery = () => {
   )
 }
 
-const PageListWrapper: React.FunctionComponent<BindingSelectorProps> = ({
+const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
   tenantInfo,
 }) => {
   const storeBindings = useMemo(() => getStoreBindings(tenantInfo), [
@@ -50,15 +38,11 @@ const PageListWrapper: React.FunctionComponent<BindingSelectorProps> = ({
   const [binding, setSelectedBinding] = useState(defaultBinding)
 
   const bindingOptions = useMemo(
-    () =>
-      storeBindings.map(binding => ({
-        label: binding.canonicalBaseAddress,
-        value: binding.id,
-      })),
+    () => getBindingSelectorOptions(storeBindings),
     [storeBindings]
   )
 
-  const handleChange = ({ target: { value } }: ChangeInput) => {
+  const handleChange = ({ target: { value } }: DropdownChangeInput) => {
     const selectedBinding = storeBindings.find(binding => binding.id === value)
     if (!selectedBinding) {
       throw new Error(

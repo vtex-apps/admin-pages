@@ -27,7 +27,7 @@ import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
 import TenantInfoQuery from './queries/TenantInfo.graphql'
-import { getStoreBindings } from './PageListWrapper'
+import { getStoreBindings } from './utils/bindings'
 
 interface CustomProps {
   params: {
