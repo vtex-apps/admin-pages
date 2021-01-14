@@ -91,6 +91,10 @@ const messages = defineMessages({
     defaultMessage: 'Keywords',
     id: 'admin/pages.admin.pages.form.field.meta.keywords',
   },
+  bindingSelectorTitle: {
+    defaultMessage: 'Binding',
+    id: 'admin/pages.admin.pages.form.binding-selector.title',
+  },
 })
 
 const Form: React.FunctionComponent<Props> = ({
@@ -125,13 +129,16 @@ const Form: React.FunctionComponent<Props> = ({
 
   return (
     <form onSubmit={onSave}>
-      <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
+      <FormFieldSeparator />
       <Dropdown
+        label={intl.formatMessage(messages.bindingSelectorTitle)}
         disabled={storeBindings.length === 1}
         onChange={onChangeBinding}
         options={bindingOptions}
         value={data.binding || storeBindings[0]}
       />
+      <FormFieldSeparator />
+      <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
         disabled={!!data.context}
         label={intl.formatMessage(messages.fieldTitle)}
