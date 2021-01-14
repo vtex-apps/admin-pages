@@ -28,6 +28,10 @@ const PageListWrapperWithQuery = () => {
   )
 }
 
+const BindingSelectorWrapper: React.FunctionComponent = ({ children }) => {
+  return <div className="flex justify-end pb5">{children}</div>
+}
+
 const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
   tenantInfo,
 }) => {
@@ -54,12 +58,14 @@ const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
 
   return (
     <div>
-      <Dropdown
-        disabled={storeBindings.length === 1}
-        onChange={handleChange}
-        options={bindingOptions}
-        value={binding.id}
-      />
+      <BindingSelectorWrapper>
+        <Dropdown
+          disabled={storeBindings.length === 1}
+          onChange={handleChange}
+          options={bindingOptions}
+          value={binding.id}
+        />
+      </BindingSelectorWrapper>
       <PageList binding={binding.id} />
     </div>
   )
