@@ -21,6 +21,7 @@ import {
 } from './ConditionalTemplateSection'
 import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 import { getBindingSelectorOptions } from '../../../../utils/bindings'
+import Line from './Line'
 
 type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
@@ -137,6 +138,7 @@ const Form: React.FunctionComponent<Props> = ({
         options={bindingOptions}
         value={data.binding || storeBindings[0]}
       />
+      <Line visible={storeBindings.length > 1} />
       <FormFieldSeparator />
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
