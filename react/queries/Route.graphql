@@ -1,5 +1,5 @@
-query Route($domain: String, $routeId: String!) {
-  route(domain: $domain, routeId: $routeId) {
+query Route($domain: String, $routeId: String!, $bindingId: String) {
+  route(domain: $domain, routeId: $routeId, bindingId: $bindingId) {
     auth
     binding
     blockId

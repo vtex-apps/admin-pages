@@ -84,7 +84,7 @@ class PageForm extends Component<Props, State> {
     try {
       const { routes } = client.readQuery<{ routes: Route[] }>({
         query: RoutesQuery,
-        variables: { domain: 'store' },
+        variables: { domain: 'store' }, // Get Binding from local storage
       }) || { routes: [] }
       currentRoute = routes.find(
         ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId
@@ -159,7 +159,7 @@ class PageForm extends Component<Props, State> {
           variables: {
             domain: 'store',
             routeId: this.state.routeId,
-            // [TODO] Add binding here
+            bindingId: formData.binding,
           },
         })
 
