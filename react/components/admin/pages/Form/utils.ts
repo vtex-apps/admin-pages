@@ -40,14 +40,14 @@ const writeRoutesToStore = (
   })
 }
 
-export const updateStoreAfterDelete = (
+export const updateStoreAfterDelete = (binding?: string) => (
   store: DataProxy,
   result: DeleteMutationResult
 ) => {
   const deletedPageId = result.data && result.data.deleteRoute
 
   try {
-    const queryData = readRoutesFromStore(store)
+    const queryData = readRoutesFromStore(store, binding)
 
     if (queryData) {
       const routes = queryData.routes
@@ -59,7 +59,7 @@ export const updateStoreAfterDelete = (
         routes: newRoutes || routes,
       }
 
-      writeRoutesToStore(newData, store)
+      writeRoutesToStore(newData, store, binding)
     }
   } catch (err) {
     logCacheError()

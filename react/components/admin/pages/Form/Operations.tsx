@@ -4,7 +4,6 @@ import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
 import SaveRoute from '../../../../queries/SaveRoute.graphql'
-
 import {
   DeleteMutationResult,
   DeleteRouteVariables,
@@ -20,6 +19,7 @@ interface TemplateVariables {
 
 interface Props {
   interfaceId: string
+  binding?: string
   children: (mutations: OperationsResults) => React.ReactNode
 }
 
@@ -32,7 +32,7 @@ export interface OperationsResults {
   >
 }
 
-const Operations = ({ interfaceId, children }: Props) => (
+const Operations = ({ interfaceId, children, binding }: Props) => (
   <Query<TemplateMutationResult['data'], TemplateVariables>
     query={AvailableTemplates}
     variables={{ interfaceId }}
@@ -40,7 +40,7 @@ const Operations = ({ interfaceId, children }: Props) => (
     {templatesResults => (
       <Mutation<DeleteMutationResult['data'], DeleteRouteVariables>
         mutation={DeleteRoute}
-        update={updateStoreAfterDelete}
+        update={updateStoreAfterDelete(binding)}
       >
         {deleteRoute => (
           <Mutation<SaveMutationResult['data'], SaveRouteVariables>

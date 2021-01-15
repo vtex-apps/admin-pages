@@ -4,7 +4,6 @@ import { Mutation, MutationFn, Query, QueryResult } from 'react-apollo'
 
 import Loader from './Loader'
 import UnallowedWarning from './UnallowedWarning'
-
 import {
   DeleteMutationResult,
   DeleteRouteVariables,
@@ -15,7 +14,6 @@ import {
   updateStoreAfterDelete,
   updateStoreAfterSave,
 } from '../../pages/Form/utils'
-
 import AvailableTemplates from '../../../../queries/AvailableTemplates.graphql'
 import ContentIOMessageQuery from '../../../../queries/ContentIOMessage.graphql'
 import DeleteRoute from '../../../../queries/DeleteRoute.graphql'
@@ -205,7 +203,7 @@ function withContentContext<T>(
                                 DeleteRouteVariables
                               >
                                 mutation={DeleteRoute}
-                                update={updateStoreAfterDelete}
+                                update={updateStoreAfterDelete()}
                               >
                                 {deleteRoute => (
                                   <Mutation<

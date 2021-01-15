@@ -159,6 +159,7 @@ class PageForm extends Component<Props, State> {
           variables: {
             domain: 'store',
             routeId: this.state.routeId,
+            // [TODO] Add binding here
           },
         })
 
@@ -187,7 +188,10 @@ class PageForm extends Component<Props, State> {
         {isLoading ? (
           <Loader />
         ) : (
-          <Operations interfaceId={formData.interfaceId}>
+          <Operations
+            interfaceId={formData.interfaceId}
+            binding={formData.binding}
+          >
             {({ deleteRoute, saveRoute, templatesResults }) => {
               const templates =
                 (templatesResults.data &&
