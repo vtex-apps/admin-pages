@@ -36,12 +36,18 @@ interface CustomProps {
   runtime: RenderContext
 }
 
-type Props = WithApolloClient<
-  CustomProps &
-    RenderContextProps &
-    TargetPathRenderProps &
-    TargetPathContextProps
->
+interface BindingProps {
+  localStorageBinding?: Binding
+  setLocalStorageBinding: (binding: Binding) => void
+}
+
+type Props = BindingProps &
+  WithApolloClient<
+    CustomProps &
+      RenderContextProps &
+      TargetPathRenderProps &
+      TargetPathContextProps
+  >
 
 interface State {
   formData: RouteFormData
@@ -72,6 +78,7 @@ class PageForm extends Component<Props, State> {
 
   public constructor(props: Props) {
     super(props)
+    const { localStorageBinding } = props
 
     const routeId = decodeURIComponent(props.params.id)
 
@@ -84,7 +91,7 @@ class PageForm extends Component<Props, State> {
     try {
       const { routes } = client.readQuery<{ routes: Route[] }>({
         query: RoutesQuery,
-        variables: { domain: 'store' }, // Get Binding from local storage
+        variables: { domain: 'store', bindingId: localStorageBinding },
       }) || { routes: [] }
       currentRoute = routes.find(
         ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId
@@ -108,7 +115,8 @@ class PageForm extends Component<Props, State> {
       this.setState({
         storeBindings,
       })
-      this.defaultFormData.binding = storeBindings[0].id
+      this.defaultFormData.binding =
+        localStorageBinding?.id || storeBindings[0].id
     }
 
     this.isNew = routeId === NEW_ROUTE_ID
@@ -181,6 +189,7 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
+    const { setLocalStorageBinding } = this.props
     const { formData, isLoading, storeBindings } = this.state
 
     return (
@@ -223,6 +232,7 @@ class PageForm extends Component<Props, State> {
                         showToast={showToast}
                         hideToast={hideToast}
                         storeBindings={storeBindings}
+                        setLocalStorageBinding={setLocalStorageBinding}
                       />
                     )}
                   </ToastConsumer>

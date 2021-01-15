@@ -10,7 +10,7 @@
     "path": "/admin/app/cms/pages"
   },
   "admin.app.cms.pages.page-details": {
-    "component": "PageForm",
+    "component": "PageFormWrapper",
     "path": "/admin/app/cms/pages/*id"
   },
   "admin.app.cms.pages.redirects": {

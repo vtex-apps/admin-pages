@@ -40,6 +40,7 @@ interface ComponentProps {
   showToast: ToastConsumerFunctions['showToast']
   hideToast: ToastConsumerFunctions['hideToast']
   storeBindings: Binding[]
+  setLocalStorageBinding: (b: Binding) => void
 }
 
 type Props = ComponentProps & InjectedIntlProps
@@ -149,6 +150,7 @@ class FormContainer extends Component<Props, State> {
   private handleBindingChange = ({
     target: { value },
   }: DropdownChangeInput) => {
+    const { setLocalStorageBinding } = this.props
     const { storeBindings, data } = this.state
     const selectedBinding = storeBindings.find(binding => binding.id === value)
     if (!selectedBinding) {
@@ -157,6 +159,7 @@ class FormContainer extends Component<Props, State> {
       )
     }
     data.binding = selectedBinding.id
+    setLocalStorageBinding(selectedBinding)
     this.setState({ data })
   }
 
