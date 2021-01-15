@@ -4,7 +4,6 @@ import { indexBy, pathOr, pickBy, prop, values } from 'ramda'
 
 import Routes from '../../../../queries/Routes.graphql'
 import { DateVerbOptions } from '../../../../utils/conditions/typings'
-
 import {
   DateInfoFormat,
   DateStatementFormat,
@@ -15,24 +14,31 @@ import {
 } from './typings'
 import { DATA_SOURCE } from '../consts'
 
-const cacheAccessParameters = {
+const cacheAccessParameters = (bindingId?: string) => ({
   query: Routes,
   variables: {
     domain: 'store',
+    bindingId,
   },
-}
+})
 
 const logCacheError = () => {
   console.warn('No cache found for "Routes".')
 }
 
-const readRedirectsFromStore = (store: DataProxy): QueryData =>
-  store.readQuery(cacheAccessParameters)
+const readRedirectsFromStore = (
+  store: DataProxy,
+  binding?: string
+): QueryData => store.readQuery(cacheAccessParameters(binding))
 
-const writeRedirectsToStore = (newData: RoutesQuery, store: DataProxy) => {
+const writeRedirectsToStore = (
+  newData: RoutesQuery,
+  store: DataProxy,
+  bindingId?: string
+) => {
   store.writeQuery({
     data: newData,
-    ...cacheAccessParameters,
+    ...cacheAccessParameters(bindingId),
   })
 }
 
@@ -69,7 +75,8 @@ export const updateStoreAfterSave = (
   const savedRoute = result.data && result.data.saveRoute
 
   try {
-    const queryData = readRedirectsFromStore(store)
+    const binding = savedRoute?.binding
+    const queryData = readRedirectsFromStore(store, binding)
 
     if (queryData) {
       const routes = queryData.routes
@@ -95,7 +102,7 @@ export const updateStoreAfterSave = (
         routes: newRoutes,
       }
 
-      writeRedirectsToStore(newData, store)
+      writeRedirectsToStore(newData, store, binding)
     }
   } catch (err) {
     logCacheError()
