@@ -41,7 +41,7 @@ interface BindingProps {
   setLocalStorageBinding: (binding: Binding) => void
 }
 
-type Props = BindingProps &
+export type Props = BindingProps &
   WithApolloClient<
     CustomProps &
       RenderContextProps &
@@ -91,7 +91,7 @@ class PageForm extends Component<Props, State> {
     try {
       const { routes } = client.readQuery<{ routes: Route[] }>({
         query: RoutesQuery,
-        variables: { domain: 'store', bindingId: localStorageBinding },
+        variables: { domain: 'store', bindingId: localStorageBinding?.id },
       }) || { routes: [] }
       currentRoute = routes.find(
         ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId

@@ -1,12 +1,13 @@
 import React from 'react'
 
-import PageForm from './PageForm'
+import PageForm, { Props } from './PageForm'
 import { useBinding } from './utils/bindings'
 
-const PageFormWrapper: React.FunctionComponent = () => {
+const PageFormWrapper: React.FunctionComponent<Props> = (props: Props) => {
   const [localStorageBinding, setLocalStorageBinding] = useBinding()
   return (
     <PageForm
+      {...props}
       localStorageBinding={localStorageBinding}
       setLocalStorageBinding={setLocalStorageBinding}
     />
