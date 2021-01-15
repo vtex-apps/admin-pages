@@ -6,7 +6,11 @@ import { Dropdown } from 'vtex.styleguide'
 import Loader from './components/Loader'
 import TenantInfo from './queries/TenantInfo.graphql'
 import PageList from './PageList'
-import { getBindingSelectorOptions, getStoreBindings } from './utils/bindings'
+import {
+  getBindingSelectorOptions,
+  getStoreBindings,
+  useBinding,
+} from './utils/bindings'
 import { DropdownChangeInput } from './utils/bindings/typings'
 
 interface PageListWrapperProps {
@@ -38,7 +42,9 @@ const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
   const storeBindings = useMemo(() => getStoreBindings(tenantInfo), [
     tenantInfo,
   ])
-  const defaultBinding = storeBindings[0] // Error check here
+  // Get Binding from local Storage
+  const [localStorageBinding, setLocalStorageBinding] = useBinding()
+  const defaultBinding = localStorageBinding || storeBindings[0] // [TODO] Error check here
   const [binding, setSelectedBinding] = useState(defaultBinding)
 
   const bindingOptions = useMemo(
@@ -54,6 +60,7 @@ const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
       )
     }
     setSelectedBinding(selectedBinding)
+    setLocalStorageBinding(selectedBinding)
   }
 
   return (
