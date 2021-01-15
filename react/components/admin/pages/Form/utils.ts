@@ -26,12 +26,10 @@ const logCacheError = () => {
   console.warn('No cache found for "Routes".')
 }
 
-const readRedirectsFromStore = (
-  store: DataProxy,
-  binding?: string
-): QueryData => store.readQuery(cacheAccessParameters(binding))
+const readRoutesFromStore = (store: DataProxy, binding?: string): QueryData =>
+  store.readQuery(cacheAccessParameters(binding))
 
-const writeRedirectsToStore = (
+const writeRoutesToStore = (
   newData: RoutesQuery,
   store: DataProxy,
   bindingId?: string
@@ -49,7 +47,7 @@ export const updateStoreAfterDelete = (
   const deletedPageId = result.data && result.data.deleteRoute
 
   try {
-    const queryData = readRedirectsFromStore(store)
+    const queryData = readRoutesFromStore(store)
 
     if (queryData) {
       const routes = queryData.routes
@@ -61,7 +59,7 @@ export const updateStoreAfterDelete = (
         routes: newRoutes || routes,
       }
 
-      writeRedirectsToStore(newData, store)
+      writeRoutesToStore(newData, store)
     }
   } catch (err) {
     logCacheError()
@@ -76,7 +74,7 @@ export const updateStoreAfterSave = (
 
   try {
     const binding = savedRoute?.binding
-    const queryData = readRedirectsFromStore(store, binding)
+    const queryData = readRoutesFromStore(store, binding)
 
     if (queryData) {
       const routes = queryData.routes
@@ -102,7 +100,7 @@ export const updateStoreAfterSave = (
         routes: newRoutes,
       }
 
-      writeRedirectsToStore(newData, store, binding)
+      writeRoutesToStore(newData, store, binding)
     }
   } catch (err) {
     logCacheError()
