@@ -108,7 +108,7 @@ class PageForm extends Component<Props, State> {
         }) || null
       tenantInfo = data?.tenantInfo
     } catch (e) {
-      // console.error(e)
+      console.error(e)
     }
     if (tenantInfo) {
       storeBindings = getStoreBindings(tenantInfo)
@@ -154,7 +154,8 @@ class PageForm extends Component<Props, State> {
           storeBindings,
         })
       } catch (e) {
-        // console.error(e)
+        console.error(e)
+        this.handleExit()
       }
     }
 
