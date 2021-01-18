@@ -21,7 +21,6 @@ import {
 } from './ConditionalTemplateSection'
 import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 import { getBindingSelectorOptions } from '../../../../utils/bindings'
-import Line from './Line'
 
 type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
@@ -53,6 +52,10 @@ interface Props extends TemplateSectionProps {
   onChangeKeywords: (values: KeywordsFormData[]) => void
   storeBindings: Binding[]
   onChangeBinding: (input: DropdownChangeInput) => void
+}
+
+interface BindingSelectorWrapper {
+  visible: boolean
 }
 
 const messages = defineMessages({
@@ -98,6 +101,18 @@ const messages = defineMessages({
   },
 })
 
+const BindingSelectorWrapper: React.FunctionComponent<BindingSelectorWrapper> = props => {
+  const { children, visible } = props
+  return visible ? (
+    <div>
+      <FormFieldSeparator />
+      {children}
+      <div className="mb7 pb7 bb bw1 b--light-silver f3 normal" />
+      <FormFieldSeparator />
+    </div>
+  ) : null
+}
+
 const Form: React.FunctionComponent<Props> = ({
   data,
   detailChangeHandlerGetter,
@@ -130,16 +145,15 @@ const Form: React.FunctionComponent<Props> = ({
 
   return (
     <form onSubmit={onSave}>
-      <FormFieldSeparator />
-      <Dropdown
-        label={intl.formatMessage(messages.bindingSelectorTitle)}
-        disabled={storeBindings.length === 1}
-        onChange={onChangeBinding}
-        options={bindingOptions}
-        value={data.binding || storeBindings[0]}
-      />
-      <Line visible={storeBindings.length > 1} />
-      <FormFieldSeparator />
+      <BindingSelectorWrapper visible={storeBindings.length > 1}>
+        <Dropdown
+          label={intl.formatMessage(messages.bindingSelectorTitle)}
+          disabled={storeBindings.length === 1}
+          onChange={onChangeBinding}
+          options={bindingOptions}
+          value={data.binding || storeBindings[0]}
+        />
+      </BindingSelectorWrapper>
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
         disabled={!!data.context}

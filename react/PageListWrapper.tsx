@@ -17,6 +17,10 @@ interface PageListWrapperProps {
   tenantInfo: Tenant
 }
 
+interface BindingSelectorWrapper {
+  visible: boolean
+}
+
 const PageListWrapperWithQuery = () => {
   return (
     <Query<{ tenantInfo: Tenant }> query={TenantInfo}>
@@ -32,8 +36,9 @@ const PageListWrapperWithQuery = () => {
   )
 }
 
-const BindingSelectorWrapper: React.FunctionComponent = ({ children }) => {
-  return <div className="flex justify-end pb5">{children}</div>
+const BindingSelectorWrapper: React.FunctionComponent<BindingSelectorWrapper> = props => {
+  const { children, visible } = props
+  return visible ? <div className="flex justify-end pb5">{children}</div> : null
 }
 
 const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
@@ -65,7 +70,7 @@ const PageListWrapper: React.FunctionComponent<PageListWrapperProps> = ({
 
   return (
     <div>
-      <BindingSelectorWrapper>
+      <BindingSelectorWrapper visible={storeBindings.length > 1}>
         <Dropdown
           disabled={storeBindings.length === 1}
           onChange={handleChange}
