@@ -148,8 +148,9 @@ class PageForm extends Component<Props, State> {
           throw Error()
         }
         const storeBindings = getStoreBindings(tenantInfo)
-        // [TODO] Check binding value for new form data
+        formData.binding = storeBindings[0].id
         this.setState({
+          formData,
           storeBindings,
         })
       } catch (e) {
