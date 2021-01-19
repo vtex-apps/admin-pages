@@ -1,8 +1,9 @@
 import { DataProxy } from 'apollo-cache'
 import { RouteFormData } from 'pages'
-import { indexBy, pathOr, pickBy, prop, values } from 'ramda'
+import { pathOr } from 'ramda'
 
 import Routes from '../../../../queries/Routes.graphql'
+import Route from '../../../../queries/Route.graphql'
 import { DateVerbOptions } from '../../../../utils/conditions/typings'
 import {
   DateInfoFormat,
@@ -14,10 +15,19 @@ import {
 } from './typings'
 import { DATA_SOURCE } from '../consts'
 
-const cacheAccessParameters = (bindingId?: string) => ({
+const routesCacheAccessParameters = (bindingId?: string) => ({
   query: Routes,
   variables: {
     domain: 'store',
+    bindingId,
+  },
+})
+
+const routeCacheAccessParameters = (routeId: string, bindingId?: string) => ({
+  query: Route,
+  variables: {
+    domain: 'store',
+    routeId,
     bindingId,
   },
 })
@@ -27,17 +37,24 @@ const logCacheError = () => {
 }
 
 const readRoutesFromStore = (store: DataProxy, binding?: string): QueryData =>
-  store.readQuery(cacheAccessParameters(binding))
+  store.readQuery(routesCacheAccessParameters(binding))
 
 const writeRoutesToStore = (
   newData: RoutesQuery,
   store: DataProxy,
-  bindingId?: string
+  bindingId?: string,
+  updatedRoute?: Route
 ) => {
   store.writeQuery({
     data: newData,
-    ...cacheAccessParameters(bindingId),
+    ...routesCacheAccessParameters(bindingId),
   })
+  if (updatedRoute) {
+    store.writeQuery({
+      data: { route: updatedRoute },
+      ...routeCacheAccessParameters(updatedRoute.routeId, bindingId),
+    })
+  }
 }
 
 export const updateStoreAfterDelete = (binding?: string) => (
@@ -76,31 +93,24 @@ export const updateStoreAfterSave = (
     const binding = savedRoute?.binding
     const queryData = readRoutesFromStore(store, binding)
 
-    if (queryData) {
+    if (queryData && savedRoute) {
       const routes = queryData.routes
 
-      const savedRoutePath = savedRoute && savedRoute.path
-      const routesByPath = indexBy(prop<Route, 'path'>('path'), routes)
-
-      const newRoutesByPath = {
-        ...routesByPath,
-        ...(savedRoutePath
-          ? {
-              [savedRoutePath]: {
-                ...routesByPath[savedRoutePath],
-                ...pickBy(val => val != null, savedRoute || {}),
-              },
-            }
-          : null),
+      const savedRouteId = savedRoute && savedRoute.uuid
+      const matchedRoute = routes.find(route => route.uuid === savedRouteId)
+      if (matchedRoute) {
+        const idx = routes.indexOf(matchedRoute)
+        routes[idx] = savedRoute
+      } else {
+        routes.push(savedRoute)
       }
-      const newRoutes = values(newRoutesByPath)
 
       const newData = {
         ...queryData,
-        routes: newRoutes,
+        routes,
       }
 
-      writeRoutesToStore(newData, store, binding)
+      writeRoutesToStore(newData, store, binding, savedRoute)
     }
   } catch (err) {
     logCacheError()
