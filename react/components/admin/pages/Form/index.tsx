@@ -237,6 +237,7 @@ class FormContainer extends Component<Props, State> {
     event.preventDefault()
 
     const nextState = getValidateFormState(this.state)
+
     if (isEmpty(nextState.formErrors)) {
       const {
         auth,
@@ -262,6 +263,7 @@ class FormContainer extends Component<Props, State> {
             pages: this.state.data.pages || this.state.data,
             declarer: this.state.data.declarer,
             domain: this.state.data.domain,
+            blockId: this.state.data.blockId || this.props.initialData,
             path: this.state.data.path,
             routeId: this.state.data.routeId,
             uuid: this.state.data.uuid,
