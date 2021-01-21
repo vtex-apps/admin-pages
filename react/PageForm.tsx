@@ -4,7 +4,7 @@ import { withApollo, WithApolloClient } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
-
+import { Binding, Tenant } from 'vtex.tenant-graphql'
 import { RouteFormData } from 'pages'
 
 import {
@@ -26,6 +26,8 @@ import Loader from './components/Loader'
 import { TargetPathRenderProps } from './PagesAdminWrapper'
 import RouteQuery from './queries/Route.graphql'
 import RoutesQuery from './queries/Routes.graphql'
+import TenantInfoQuery from './queries/TenantInfo.graphql'
+import { getStoreBindings } from './utils/bindings'
 
 interface CustomProps {
   params: {
@@ -34,17 +36,24 @@ interface CustomProps {
   runtime: RenderContext
 }
 
-type Props = WithApolloClient<
-  CustomProps &
-    RenderContextProps &
-    TargetPathRenderProps &
-    TargetPathContextProps
->
+interface BindingProps {
+  localStorageBinding?: Binding
+  setLocalStorageBinding: (binding: Binding) => void
+}
+
+export type Props = BindingProps &
+  WithApolloClient<
+    CustomProps &
+      RenderContextProps &
+      TargetPathRenderProps &
+      TargetPathContextProps
+  >
 
 interface State {
   formData: RouteFormData
   isLoading: boolean
   routeId: string
+  storeBindings: Binding[] | null
 }
 
 class PageForm extends Component<Props, State> {
@@ -52,6 +61,7 @@ class PageForm extends Component<Props, State> {
   private defaultFormData: RouteFormData = {
     auth: false,
     blockId: '',
+    binding: undefined,
     context: null,
     declarer: null,
     domain: 'store',
@@ -68,23 +78,45 @@ class PageForm extends Component<Props, State> {
 
   public constructor(props: Props) {
     super(props)
+    const { localStorageBinding } = props
 
     const routeId = decodeURIComponent(props.params.id)
 
     const { client } = props
     let currentRoute = null
+    let tenantInfo = null
+    let storeBindings = null
 
     // Find route from cache
     try {
       const { routes } = client.readQuery<{ routes: Route[] }>({
         query: RoutesQuery,
-        variables: { domain: 'store' },
+        variables: { domain: 'store', bindingId: localStorageBinding?.id },
       }) || { routes: [] }
       currentRoute = routes.find(
         ({ routeId: routeIdFromRoute }) => routeIdFromRoute === routeId
       )
     } catch (e) {
       // console.error(e)
+    }
+
+    // Get tenant data
+    try {
+      const data =
+        client.readQuery<{ tenantInfo: Tenant }>({
+          query: TenantInfoQuery,
+        }) || null
+      tenantInfo = data?.tenantInfo
+    } catch (e) {
+      console.error(e)
+    }
+    if (tenantInfo) {
+      storeBindings = getStoreBindings(tenantInfo)
+      this.setState({
+        storeBindings,
+      })
+      this.defaultFormData.binding =
+        localStorageBinding?.id || storeBindings[0].id
     }
 
     this.isNew = routeId === NEW_ROUTE_ID
@@ -95,14 +127,37 @@ class PageForm extends Component<Props, State> {
         : this.defaultFormData,
       isLoading: !this.isNew,
       routeId,
+      storeBindings,
     }
   }
 
   public async componentDidMount() {
     const { client, setTargetPath } = this.props
-    const { formData } = this.state
+    const { formData, storeBindings } = this.state
 
     setTargetPath(WRAPPER_PATH)
+
+    // Get tenant info
+    if (storeBindings === null) {
+      try {
+        const { data } = await client.query<{ tenantInfo: Tenant }, {}>({
+          query: TenantInfoQuery,
+        })
+        const tenantInfo = data?.tenantInfo
+        if (!tenantInfo) {
+          throw Error()
+        }
+        const storeBindings = getStoreBindings(tenantInfo)
+        formData.binding = storeBindings[0].id
+        this.setState({
+          formData,
+          storeBindings,
+        })
+      } catch (e) {
+        console.error(e)
+        this.handleExit()
+      }
+    }
 
     if (equals(formData, this.defaultFormData) && !this.isNew) {
       // didnt find in cache
@@ -114,6 +169,7 @@ class PageForm extends Component<Props, State> {
           variables: {
             domain: 'store',
             routeId: this.state.routeId,
+            bindingId: formData.binding,
           },
         })
 
@@ -135,14 +191,18 @@ class PageForm extends Component<Props, State> {
   }
 
   public render() {
-    const { formData, isLoading } = this.state
+    const { setLocalStorageBinding } = this.props
+    const { formData, isLoading, storeBindings } = this.state
 
     return (
       <>
         {isLoading ? (
           <Loader />
         ) : (
-          <Operations interfaceId={formData.interfaceId}>
+          <Operations
+            interfaceId={formData.interfaceId}
+            binding={formData.binding}
+          >
             {({ deleteRoute, saveRoute, templatesResults }) => {
               const templates =
                 (templatesResults.data &&
@@ -173,6 +233,8 @@ class PageForm extends Component<Props, State> {
                         templates={templates}
                         showToast={showToast}
                         hideToast={hideToast}
+                        storeBindings={storeBindings}
+                        setLocalStorageBinding={setLocalStorageBinding}
                       />
                     )}
                   </ToastConsumer>

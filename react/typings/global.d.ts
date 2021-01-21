@@ -74,6 +74,7 @@ declare global {
 
   interface Route {
     auth: boolean
+    binding?: string
     blockId: string
     context: string | null
     declarer: string | null

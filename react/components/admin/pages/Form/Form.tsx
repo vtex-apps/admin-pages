@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import {
   Button,
   Checkbox,
+  Dropdown,
   EXPERIMENTAL_Select as Select,
   Input,
   Textarea,
 } from 'vtex.styleguide'
+import { Binding } from 'vtex.tenant-graphql'
 import { KeywordsFormData, RouteFormData } from 'pages'
 
 import FormFieldSeparator from '../../FormFieldSeparator'
@@ -17,6 +19,8 @@ import {
   ConditionalTemplateSection,
   ConditionalTemplateSectionProps,
 } from './ConditionalTemplateSection'
+import { DropdownChangeInput } from '../../../../utils/bindings/typings'
+import { getBindingSelectorOptions } from '../../../../utils/bindings'
 
 type TemplateSectionProps = Omit<
   ConditionalTemplateSectionProps,
@@ -46,6 +50,12 @@ interface Props extends TemplateSectionProps {
   onRemoveConditionalTemplate: (uniqueId: number) => void
   templates: Template[]
   onChangeKeywords: (values: KeywordsFormData[]) => void
+  storeBindings: Binding[]
+  onChangeBinding: (input: DropdownChangeInput) => void
+}
+
+interface BindingSelectorWrapper {
+  visible: boolean
 }
 
 const messages = defineMessages({
@@ -85,7 +95,23 @@ const messages = defineMessages({
     defaultMessage: 'Keywords',
     id: 'admin/pages.admin.pages.form.field.meta.keywords',
   },
+  bindingSelectorTitle: {
+    defaultMessage: 'Binding',
+    id: 'admin/pages.admin.pages.form.binding-selector.title',
+  },
 })
+
+const BindingSelectorWrapper: React.FunctionComponent<BindingSelectorWrapper> = props => {
+  const { children, visible } = props
+  return visible ? (
+    <div>
+      <FormFieldSeparator />
+      {children}
+      <div className="mb7 pb7 bb bw1 b--light-silver f3 normal" />
+      <FormFieldSeparator />
+    </div>
+  ) : null
+}
 
 const Form: React.FunctionComponent<Props> = ({
   data,
@@ -106,12 +132,28 @@ const Form: React.FunctionComponent<Props> = ({
   onRemoveConditionalTemplate,
   onSave,
   templates,
+  storeBindings,
+  onChangeBinding,
 }) => {
   const intl = useIntl()
   const path = data.path || ''
 
+  const bindingOptions = useMemo(
+    () => getBindingSelectorOptions(storeBindings),
+    [storeBindings]
+  )
+
   return (
     <form onSubmit={onSave}>
+      <BindingSelectorWrapper visible={storeBindings.length > 1}>
+        <Dropdown
+          label={intl.formatMessage(messages.bindingSelectorTitle)}
+          disabled={storeBindings.length === 1}
+          onChange={onChangeBinding}
+          options={bindingOptions}
+          value={data.binding || storeBindings[0]}
+        />
+      </BindingSelectorWrapper>
       <SectionTitle textId="admin/pages.admin.pages.form.details.title" />
       <Input
         disabled={!!data.context}

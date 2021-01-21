@@ -8,7 +8,6 @@ import { isStoreRoute } from './components/admin/pages/utils'
 import { useTargetPathContext } from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import RoutesQuery from './queries/Routes.graphql'
-
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
 interface QueryData {
@@ -20,9 +19,12 @@ interface PageListProps {
   isLoading: boolean
 }
 
-const PageListWithQuery = () => {
+const PageListWithQuery = ({ binding }: { binding: string | undefined }) => {
   return (
-    <Query<QueryData> query={RoutesQuery} variables={{ domain: 'store' }}>
+    <Query<QueryData>
+      query={RoutesQuery}
+      variables={{ domain: 'store', bindingId: binding }}
+    >
       {({ data, loading: isLoading }) => {
         return <PageList isLoading={isLoading} data={data} />
       }}

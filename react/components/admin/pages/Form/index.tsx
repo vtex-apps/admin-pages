@@ -9,6 +9,7 @@ import {
   ConditionsStatement,
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
+import { Binding } from 'vtex.tenant-graphql'
 
 import { formatStatements } from '../../../../utils/conditions'
 import { isNewRoute, isUserRoute } from '../utils'
@@ -26,6 +27,7 @@ import {
 import { FormErrors } from './typings'
 import { OperationsResults } from './Operations'
 import { slugify } from '../../utils'
+import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 
 interface ComponentProps {
   isCustomPage: boolean
@@ -37,6 +39,8 @@ interface ComponentProps {
   templates: Template[]
   showToast: ToastConsumerFunctions['showToast']
   hideToast: ToastConsumerFunctions['hideToast']
+  storeBindings: Binding[]
+  setLocalStorageBinding: (b: Binding) => void
 }
 
 type Props = ComponentProps & InjectedIntlProps
@@ -47,6 +51,7 @@ export interface State {
   isLoading: boolean
   isInfoEditable: boolean
   formErrors: FormErrors
+  storeBindings: Binding[]
 }
 
 const messages = defineMessages({
@@ -83,6 +88,7 @@ class FormContainer extends Component<Props, State> {
       isDeletable: !declarer && !this.isNew,
       isInfoEditable: !declarer || this.isNew,
       isLoading: false,
+      storeBindings: props.storeBindings,
     }
   }
 
@@ -98,6 +104,7 @@ class FormContainer extends Component<Props, State> {
       isDeletable,
       isInfoEditable,
       isLoading,
+      storeBindings,
     } = this.state
 
     return (
@@ -113,12 +120,14 @@ class FormContainer extends Component<Props, State> {
         onLoginToggle={this.handleLoginToggle}
         onSave={this.handleSave}
         templates={templates}
+        storeBindings={storeBindings}
         onAddConditionalTemplate={this.handleAddConditionalTemplate}
         onChangeKeywords={this.handleMetaTagKeywords}
         onRemoveConditionalTemplate={this.handleRemoveConditionalTemplate}
         onChangeTemplateConditionalTemplate={
           this.handleChangeTemplateConditionalTemplate
         }
+        onChangeBinding={this.handleBindingChange}
         onChangeOperatorConditionalTemplate={
           this.handleChangeOperatorConditionalTemplate
         }
@@ -136,6 +145,22 @@ class FormContainer extends Component<Props, State> {
 
   private handleAddConditionalTemplate = () => {
     this.setState(getAddConditionalTemplateState)
+  }
+
+  private handleBindingChange = ({
+    target: { value },
+  }: DropdownChangeInput) => {
+    const { setLocalStorageBinding } = this.props
+    const { storeBindings, data } = this.state
+    const selectedBinding = storeBindings.find(binding => binding.id === value)
+    if (!selectedBinding) {
+      throw new Error(
+        "Selected binding does not exist or isn't a store binding"
+      )
+    }
+    data.binding = selectedBinding.id
+    setLocalStorageBinding(selectedBinding)
+    this.setState({ data })
   }
 
   private handleChangeTemplateConditionalTemplate = (
@@ -241,6 +266,7 @@ class FormContainer extends Component<Props, State> {
     if (isEmpty(nextState.formErrors)) {
       const {
         auth,
+        binding: bindingId,
         blockId,
         context,
         declarer,
@@ -275,6 +301,7 @@ class FormContainer extends Component<Props, State> {
             variables: {
               route: {
                 auth,
+                bindingId,
                 blockId,
                 context,
                 declarer,

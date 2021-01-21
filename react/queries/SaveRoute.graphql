@@ -2,6 +2,7 @@ mutation SaveRoute($route: NewRouteInput) {
   saveRoute(route: $route) {
     auth
     blockId
+    binding
     context
     declarer
     domain

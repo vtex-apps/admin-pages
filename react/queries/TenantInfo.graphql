@@ -1,4 +1,4 @@
-query TenantInfoQuery {
+query TenantInfo {
   tenantInfo {
     bindings {
       canonicalBaseAddress
