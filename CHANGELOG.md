@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.33.0] - 2021-01-21
+
 ### Added
 
 - Site editor flag in the iframe URL.
