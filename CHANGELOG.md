@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Site editor flag in the iframe url.
+- Site editor flag in the iframe URL.
 
 ## [4.32.0] - 2021-01-21
 ### Added
