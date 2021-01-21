@@ -28,15 +28,15 @@ const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
     }
   }, [])
 
-  const getJoiner = () => (src.includes('?') ? '&' : '?')
+  const getJoiner = (src: string) => (src.includes('?') ? '&' : '?')
 
   let src = path ? `/${path}` : '/'
 
   if (binding && !src.includes('__bindingAddress')) {
-    src += `${getJoiner()}__bindingAddress=${binding.canonicalBaseAddress}`
+    src += `${getJoiner(src)}__bindingAddress=${binding.canonicalBaseAddress}`
   }
 
-  src += `${getJoiner()}__siteEditor`
+  src += `${getJoiner(src)}__siteEditor`
 
   return (
     <iframe
