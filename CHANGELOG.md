@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Site editor flag in the iframe URL.
+
 ## [4.32.0] - 2021-01-21
 ### Added
 - Adds binding selector for CMS Pages 
@@ -16,7 +20,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Sending blockId in `Form index` component even when is not changed to prevent unexpected behaviors
 
 ## [4.31.0] - 2021-01-13
+
 ### Added
+
 - Keep selected binding between admin reloads.
 
 ## [4.30.0] - 2020-12-14
