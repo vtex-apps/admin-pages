@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.34.0] - 2021-01-22
+
 ### Added
 
 - Site editor flag when navigating between bindings.
