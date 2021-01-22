@@ -96,7 +96,7 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
         if (newBinding && editor.iframeWindow) {
           setBinding(newBinding)
 
-          editor.iframeWindow.location.search = `__bindingAddress=${newBinding.canonicalBaseAddress}`
+          editor.iframeWindow.location.search = `__bindingAddress=${newBinding.canonicalBaseAddress}&__siteEditor`
         }
       }
     },
