@@ -2,6 +2,7 @@ query Redirects($limit: Int, $next: String) {
   redirect @context(provider: "vtex.rewriter") {
     listRedirects(limit: $limit, next: $next) {
       routes {
+        binding
         endDate
         from
         to
