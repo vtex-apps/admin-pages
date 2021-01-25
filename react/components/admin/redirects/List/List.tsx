@@ -7,6 +7,7 @@ import {
   Table,
   ToastConsumerFunctions,
 } from 'vtex.styleguide'
+import { Binding } from 'vtex.tenant-graphql'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
@@ -22,6 +23,7 @@ interface CustomProps {
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
   to: number
+  storeBindings: Binding[]
 }
 
 export type Props = CustomProps
