@@ -61,4 +61,8 @@ export const messages = defineMessages({
     defaultMessage: 'Import',
     id: 'admin/pages.admin.redirects.table.toolbar.import',
   },
+  tableBinding: {
+    defaultMessage: 'Binding',
+    id: 'admin/pages.admin.redirects.table.binding',
+  },
 })

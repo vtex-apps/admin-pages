@@ -31,6 +31,13 @@ interface Schema {
 }
 
 function getSchema(intl: IntlShape, locale: string) {
+  const bindingProperty = {
+    binding: {
+      title: intl.formatMessage(messages.tableBinding),
+      type: 'string',
+    },
+  }
+
   return {
     properties: {
       from: {
@@ -80,6 +87,7 @@ function getSchema(intl: IntlShape, locale: string) {
         title: intl.formatMessage(messages.endDateTitle),
         type: 'string',
       },
+      ...bindingProperty,
     },
   }
 }
@@ -93,6 +101,7 @@ const List: React.FC<Props> = ({
 }) => {
   const { culture, navigate } = useRuntime()
   const intl = useIntl()
+
   const [schema, setSchema] = useState<Schema>(() =>
     getSchema(intl, culture.locale)
   )
