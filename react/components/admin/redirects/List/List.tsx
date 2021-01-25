@@ -32,13 +32,23 @@ interface Schema {
   properties: object
 }
 
-function getSchema(intl: IntlShape, locale: string) {
-  const bindingProperty = {
-    binding: {
-      title: intl.formatMessage(messages.tableBinding),
-      type: 'string',
-    },
-  }
+const getBindingAddress = (bindingId: string, storeBindings: Binding[]) =>
+  storeBindings.find(({ id }) => id === bindingId)?.canonicalBaseAddress
+
+function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
+  const bindingProperty =
+    storeBindings.length > 1
+      ? {
+          binding: {
+            title: intl.formatMessage(messages.tableBinding),
+            type: 'string',
+            cellRenderer: function Binding(cell: { cellData: string }) {
+              const address = getBindingAddress(cell.cellData, storeBindings)
+              return <span className="ph4">{address}</span>
+            },
+          },
+        }
+      : {}
 
   return {
     properties: {
@@ -71,6 +81,7 @@ function getSchema(intl: IntlShape, locale: string) {
           )
         },
       },
+      ...bindingProperty,
       endDate: {
         cellRenderer: function EndDate(cell: { cellData: string }) {
           cell.cellData ? (
@@ -89,7 +100,6 @@ function getSchema(intl: IntlShape, locale: string) {
         title: intl.formatMessage(messages.endDateTitle),
         type: 'string',
       },
-      ...bindingProperty,
     },
   }
 }
@@ -100,12 +110,13 @@ const List: React.FC<Props> = ({
   loading,
   onHandleDownload,
   openModal,
+  storeBindings,
 }) => {
   const { culture, navigate } = useRuntime()
   const intl = useIntl()
 
   const [schema, setSchema] = useState<Schema>(() =>
-    getSchema(intl, culture.locale)
+    getSchema(intl, culture.locale, storeBindings)
   )
 
   useEffect(() => {
@@ -113,7 +124,7 @@ const List: React.FC<Props> = ({
   }, [])
 
   useEffect(() => {
-    setSchema(getSchema(intl, culture.locale))
+    setSchema(getSchema(intl, culture.locale, storeBindings))
   }, [culture.locale, from, intl, loading])
 
   const handleItemView = useCallback(
