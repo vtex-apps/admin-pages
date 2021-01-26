@@ -130,7 +130,9 @@ const List: React.FC<Props> = ({
   const handleItemView = useCallback(
     (event: { rowData: Redirect }) => {
       const selectedItem = event.rowData
-      navigate({ to: `${BASE_URL}${selectedItem.from}` })
+      navigate({
+        to: `${BASE_URL}/${selectedItem.binding}${selectedItem.from}`,
+      })
     },
     [navigate]
   )
