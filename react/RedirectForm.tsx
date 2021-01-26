@@ -120,13 +120,16 @@ class RedirectForm extends Component<Props, State> {
     } else {
       if (!formData.binding) {
         formData.binding = storeBindings[0].id
+        this.setState({
+          formData,
+        })
       }
     }
   }
 
   public render() {
     const { intl, params } = this.props
-    const { formData, isLoading } = this.state
+    const { formData, isLoading, storeBindings } = this.state
 
     return (
       <>
@@ -153,7 +156,7 @@ class RedirectForm extends Component<Props, State> {
                       onDelete={deleteRedirect}
                       onSave={saveRedirect}
                       showToast={showToast}
-                      // storeBindings={storeBindings}
+                      storeBindings={storeBindings}
                     />
                   </Box>
                 )}
