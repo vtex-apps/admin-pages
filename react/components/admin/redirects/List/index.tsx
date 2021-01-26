@@ -7,7 +7,7 @@ import List, { Props } from './List'
 import TenantInfo from '../../../../queries/TenantInfo.graphql'
 import { getStoreBindings } from '../../../../utils/bindings'
 
-const ListWrapper: React.FC<Props> = props => {
+const ListWrapper: React.FC<Omit<Props, 'storeBindings'>> = props => {
   return (
     <Query<{ tenantInfo: Tenant }> query={TenantInfo}>
       {({ data, loading: isLoading }) => {
