@@ -6,6 +6,7 @@ import {
 } from 'react-intl'
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
+import { Binding, Tenant } from 'vtex.tenant-graphql'
 
 import {
   BASE_URL,
@@ -21,6 +22,8 @@ import {
 } from './components/admin/TargetPathContext'
 import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
+import TenantInfoQuery from './queries/TenantInfo.graphql'
+import { getStoreBindings } from './utils/bindings'
 
 interface CustomProps {
   params: {
@@ -36,8 +39,9 @@ type Props = WithApolloClient<
 >
 
 interface State {
-  formData?: Omit<Redirect, 'binding'>
+  formData?: Redirect
   isLoading: boolean
+  storeBindings: Binding[] | null
 }
 
 class RedirectForm extends Component<Props, State> {
@@ -49,6 +53,7 @@ class RedirectForm extends Component<Props, State> {
       from: '',
       to: '',
       type: 'PERMANENT' as RedirectTypes,
+      binding: '',
     }
 
     const isNew = props.params.path === NEW_REDIRECT_ID
@@ -56,6 +61,7 @@ class RedirectForm extends Component<Props, State> {
     this.state = {
       formData: isNew ? defaultFormData : undefined,
       isLoading: isNew ? false : true,
+      storeBindings: null,
     }
   }
 
@@ -69,19 +75,33 @@ class RedirectForm extends Component<Props, State> {
     const { formData } = this.state
 
     setTargetPath(WRAPPER_PATH)
+    // Get tenant info
+    const { data } = await client.query<{ tenantInfo: Tenant }, {}>({
+      query: TenantInfoQuery,
+    })
+    const tenantInfo = data?.tenantInfo
+    if (!tenantInfo) {
+      throw Error()
+    }
+    const storeBindings = getStoreBindings(tenantInfo)
+    this.setState({
+      storeBindings,
+    })
 
     if (!formData) {
       try {
         const querystring = history?.location?.search ?? ''
+        const [bindingId, ...rest] = params.path.split('/')
+        const path = rest.join('/')
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            path: `/${params.path}${querystring}`,
+            path: `/${path}${querystring}`,
+            binding: bindingId,
           },
         })
 
         const redirectInfo = response.data.redirect.get
-
         if (redirectInfo) {
           this.setState({
             formData: redirectInfo,
@@ -96,6 +116,10 @@ class RedirectForm extends Component<Props, State> {
         console.error(err)
 
         navigate({ to: BASE_URL })
+      }
+    } else {
+      if (!formData.binding) {
+        formData.binding = storeBindings[0].id
       }
     }
   }
@@ -129,6 +153,7 @@ class RedirectForm extends Component<Props, State> {
                       onDelete={deleteRedirect}
                       onSave={saveRedirect}
                       showToast={showToast}
+                      // storeBindings={storeBindings}
                     />
                   </Box>
                 )}
