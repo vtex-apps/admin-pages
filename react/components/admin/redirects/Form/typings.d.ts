@@ -26,6 +26,7 @@ export interface SaveRedirectVariables {
   from: string
   to: string
   type: RedirectTypes
+  binding?: string
 }
 
 interface Mutations {

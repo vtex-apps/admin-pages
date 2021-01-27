@@ -350,7 +350,7 @@ class Form extends Component<Props, State> {
   private handleSave = (event: React.FormEvent) => {
     const { intl, onSave } = this.props
     const {
-      data: { endDate, from, to, type },
+      data: { endDate, from, to, type, binding },
     } = this.state
 
     event.preventDefault()
@@ -363,6 +363,7 @@ class Form extends Component<Props, State> {
             from,
             to,
             type,
+            binding,
           },
         })
 
