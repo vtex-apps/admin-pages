@@ -7,6 +7,7 @@ import {
 import { Helmet, withRuntimeContext } from 'vtex.render-runtime'
 import { Box, ToastConsumer } from 'vtex.styleguide'
 import { Binding, Tenant } from 'vtex.tenant-graphql'
+import queryString from 'query-string'
 
 import {
   BASE_URL,
@@ -90,14 +91,17 @@ class RedirectForm extends Component<Props, State> {
 
     if (!formData) {
       try {
-        const querystring = history?.location?.search ?? ''
-        const [bindingId, ...rest] = params.path.split('/')
-        const path = rest.join('/')
+        const rawQuerystring = history?.location?.search ?? ''
+        const querystring = queryString.parse(rawQuerystring)
+        const { binding, ...rest } = querystring
+        const restQuerystring = queryString.stringify(rest)
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
-            path: `/${path}${querystring}`,
-            binding: bindingId,
+            path: `/${params.path}${
+              restQuerystring ? '?' + restQuerystring : ''
+            }`,
+            binding: binding,
           },
         })
 

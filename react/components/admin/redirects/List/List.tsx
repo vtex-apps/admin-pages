@@ -125,13 +125,16 @@ const List: React.FC<Props> = ({
 
   useEffect(() => {
     setSchema(getSchema(intl, culture.locale, storeBindings))
-  }, [culture.locale, from, intl, loading])
+  }, [culture.locale, from, intl, loading, storeBindings])
 
   const handleItemView = useCallback(
     (event: { rowData: Redirect }) => {
       const selectedItem = event.rowData
+      const bindingQS = selectedItem.from.includes('?')
+        ? `&binding=${selectedItem.binding}`
+        : `?binding=${selectedItem.binding}`
       navigate({
-        to: `${BASE_URL}/${selectedItem.binding}${selectedItem.from}`,
+        to: `${BASE_URL}${selectedItem.from}${bindingQS}`,
       })
     },
     [navigate]
