@@ -155,7 +155,7 @@ class Form extends Component<Props, State> {
           isActionDanger
           isActionLoading={isLoading}
           isOpen={shouldShowModal}
-          onClickAction={this.handleDelete(data.from)}
+          onClickAction={this.handleDelete(data.from, data.binding)}
           onClickCancel={this.handleModalVisibilityToggle}
           onClose={this.handleModalVisibilityToggle}
           textButtonAction={intl.formatMessage(messages.buttonRemove)}
@@ -312,7 +312,10 @@ class Form extends Component<Props, State> {
     this.props.runtime.navigate({ to: BASE_URL })
   }
 
-  private handleDelete = (redirectFrom: string) => () => {
+  private handleDelete = (
+    redirectFrom: string,
+    redirectBinding: string
+  ) => () => {
     const { intl, onDelete } = this.props
 
     this.setState({ isLoading: true }, async () => {
@@ -320,6 +323,7 @@ class Form extends Component<Props, State> {
         await onDelete({
           variables: {
             path: redirectFrom,
+            binding: redirectBinding,
           },
         })
 
