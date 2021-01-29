@@ -32,11 +32,18 @@ const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
 
   let src = path ? `/${path}` : '/'
 
+  if (window?.location.search && !src.includes(window.location.search)) {
+    src = src + `${window.location.search}`
+  }
+
   if (binding && !src.includes('__bindingAddress')) {
+    console.log('PASSOU')
     src += `${getJoiner(src)}__bindingAddress=${binding.canonicalBaseAddress}`
   }
 
-  src += `${getJoiner(src)}__siteEditor`
+  if (!src.includes('__siteEditor')) {
+    src += `${getJoiner(src)}__siteEditor=true`
+  }
 
   return (
     <iframe
