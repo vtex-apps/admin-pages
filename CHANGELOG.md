@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Hides query strings from site editor top bar.
+- Hides query strings from the site editor top bar.
 
 ## [4.37.0] - 2021-02-09
 - Adds support for multi binding for redirect CSV managment
