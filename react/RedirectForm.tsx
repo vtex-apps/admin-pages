@@ -43,6 +43,7 @@ interface State {
   formData?: Redirect
   isLoading: boolean
   storeBindings: Binding[] | null
+  isNew: boolean
 }
 
 class RedirectForm extends Component<Props, State> {
@@ -63,6 +64,7 @@ class RedirectForm extends Component<Props, State> {
       formData: isNew ? defaultFormData : undefined,
       isLoading: isNew ? false : true,
       storeBindings: null,
+      isNew,
     }
   }
 
@@ -133,7 +135,7 @@ class RedirectForm extends Component<Props, State> {
 
   public render() {
     const { intl, params } = this.props
-    const { formData, isLoading, storeBindings } = this.state
+    const { formData, isLoading, storeBindings, isNew } = this.state
 
     return (
       <>
@@ -161,6 +163,7 @@ class RedirectForm extends Component<Props, State> {
                       onSave={saveRedirect}
                       showToast={showToast}
                       storeBindings={storeBindings}
+                      isNew={isNew}
                     />
                   </Box>
                 )}

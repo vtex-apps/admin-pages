@@ -33,6 +33,7 @@ interface CustomProps {
   onDelete: DeleteRedirectMutationFn
   onSave: SaveRedirectMutationFn
   storeBindings: Binding[] | null
+  isNew: boolean
 }
 
 type Props = CustomProps &
@@ -138,7 +139,7 @@ class Form extends Component<Props, State> {
 
   public render() {
     const { locale } = this.context.culture
-    const { intl, storeBindings } = this.props
+    const { intl, storeBindings, isNew } = this.props
     const {
       data,
       isLoading,
@@ -180,7 +181,7 @@ class Form extends Component<Props, State> {
           <BindingSelectorWrapper visible={storeBindings.length > 1}>
             <Dropdown
               label={intl.formatMessage(messages.bindingSelectorTitle)}
-              disabled={storeBindings.length === 1}
+              disabled={!isNew || storeBindings.length === 1}
               onChange={this.handleBindingChange}
               options={bindingOptions}
               value={data.binding || storeBindings[0]}
