@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Setting `Description` and `Keywords` as editable fields with the same condition as `Title` in `admin-pages`
+
 ## [4.34.0] - 2021-01-22
 
 ### Added
