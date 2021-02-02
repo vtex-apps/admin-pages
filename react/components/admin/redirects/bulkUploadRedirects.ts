@@ -6,7 +6,7 @@ const NUMBER_OF_RETRIES = 3
 
 interface BulkUploadRedirectsArgs {
   data: Redirect[]
-  mutation: (data: Redirect[] | string[]) => Promise<void>
+  mutation: (data: Redirect[]) => Promise<void>
   isSave: boolean
   shouldUploadRef: MutableRefObject<boolean>
   updateProgress?: (processed: number) => void
@@ -30,7 +30,7 @@ export default async function bulkUploadRedirects({
       break
     }
 
-    const payload = isSave ? data : data.map(({ from }) => from)
+    const payload = data
 
     for (let i = 1; i <= NUMBER_OF_RETRIES; i++) {
       try {

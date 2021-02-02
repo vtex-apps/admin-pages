@@ -22,6 +22,10 @@ import { getAlertState } from './UploadPrompt/getAlertState'
 import { AlertState } from '../typings'
 import bulkUploadRedirects from '../bulkUploadRedirects'
 
+interface RouteLocator {
+  from: string
+  binding: string
+}
 interface Props {
   hasRedirects: boolean
   isOpen: boolean
@@ -83,14 +87,31 @@ const UploadModal: React.FunctionComponent<Props &
     async (parsedJsonFromCsv: Redirect[], fileName: string) => {
       shouldUploadRef.current = true
       const isSave = uploadActionType === 'save'
-      const mutation = (data: Redirect[] | string[]) =>
-        isSave
-          ? saveRedirectFromFile({
-              variables: { redirects: data as Redirect[] },
+      const mutation = (data: Redirect[]) => {
+        if (isSave) {
+          return saveRedirectFromFile({
+            variables: { redirects: data as Redirect[] },
+          })
+        }
+        const { paths, locators } = data.reduce(
+          (acc, redirect) => {
+            acc.paths.push(redirect.from)
+            acc.locators.push({
+              from: redirect.from,
+              binding: redirect.binding,
             })
-          : deleteManyRedirects({
-              variables: { paths: data as string[] },
-            })
+            return acc
+          },
+          {
+            paths: [] as string[],
+            locators: [] as RouteLocator[],
+          }
+        )
+        // TODO: Do not send locators if not binding
+        return deleteManyRedirects({
+          variables: { paths, locators },
+        })
+      }
 
       try {
         const numberOfLines = parsedJsonFromCsv.length

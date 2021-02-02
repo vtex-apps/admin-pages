@@ -7,7 +7,7 @@ interface GetAlertStateArgs {
   failedRedirects: Redirect[]
   fileName: string
   intl: IntlShape
-  mutation: (data: Redirect[] | string[]) => Promise<void>
+  mutation: (data: Redirect[]) => Promise<void>
   total: number
 }
 
