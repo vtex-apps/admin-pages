@@ -293,7 +293,17 @@ class FormContainer extends Component<Props, State> {
             path: this.state.data.path,
             routeId: this.state.data.routeId,
             uuid: this.state.data.uuid,
+            metaTagKeywords: this.state.data.metaTagKeywords,
+            metaTagDescription: this.state.data.metaTagDescription,
           }
+
+      const metaTags =
+        metaTagDescription || metaTagKeywords
+          ? {
+              description: metaTagDescription,
+              keywords: metaTagKeywords?.map(({ value }) => value),
+            }
+          : undefined
 
       this.setState({ isLoading: true }, async () => {
         try {
@@ -307,15 +317,7 @@ class FormContainer extends Component<Props, State> {
                 declarer,
                 domain,
                 interfaceId,
-                metaTags:
-                  metaTagDescription || metaTagKeywords
-                    ? {
-                        description: metaTagDescription,
-                        keywords: (metaTagKeywords || []).map(
-                          ({ value }) => value
-                        ),
-                      }
-                    : undefined,
+                metaTags,
                 pages:
                   pages &&
                   pages.map(page => {

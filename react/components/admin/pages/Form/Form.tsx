@@ -196,7 +196,7 @@ const Form: React.FunctionComponent<Props> = ({
         <>
           <FormFieldSeparator />
           <Textarea
-            disabled={!isInfoEditable}
+            disabled={!!data.context}
             label={intl.formatMessage(messages.seoDescription)}
             onChange={detailChangeHandlerGetter('metaTagDescription')}
             resize="vertical"
@@ -205,7 +205,7 @@ const Form: React.FunctionComponent<Props> = ({
           <FormFieldSeparator />
           <Select
             creatable
-            disabled={!isInfoEditable}
+            disabled={!!data.context}
             formatCreateLabel={(keyword: string) =>
               intl.formatMessage(messages.createKeywordsMessage, { keyword })
             }
