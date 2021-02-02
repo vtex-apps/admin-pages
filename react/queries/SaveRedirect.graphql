@@ -3,9 +3,10 @@ mutation saveRedirect(
   $from: String!
   $to: String!
   $type: RedirectTypes!
+  $binding: String
 ) {
   redirect @context(provider: "vtex.rewriter") {
-    save(route: { endDate: $endDate, from: $from, to: $to, type: $type }) {
+    save(route: { endDate: $endDate, from: $from, to: $to, type: $type, binding: $binding}) {
       endDate
       from
       to
