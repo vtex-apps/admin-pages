@@ -46,7 +46,8 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
           : saveRedirect &&
             queryData.redirect.list.reduce(
               (acc, currRedirect) =>
-                currRedirect.from === saveRedirect.from
+                currRedirect.from === saveRedirect.from &&
+                currRedirect.binding === saveRedirect.binding
                   ? acc
                   : [...acc, currRedirect],
               [saveRedirect]
@@ -70,14 +71,20 @@ export const getStoreUpdater: StoreUpdaterGetter = operation => (
   }
 
   try {
+    const variables = isDelete
+      ? deleteRedirect && {
+          path: deleteRedirect.from,
+          binding: deleteRedirect.binding,
+        }
+      : saveRedirect && {
+          path: saveRedirect.from,
+          binding: saveRedirect.binding,
+        }
+
     store.writeQuery({
       data: { redirect: isDelete ? undefined : { save: saveRedirect } },
       query: Redirect,
-      variables: {
-        path: isDelete
-          ? deleteRedirect && deleteRedirect.from
-          : saveRedirect && saveRedirect.from,
-      },
+      variables,
     })
   } catch (e) {
     console.error('Error writing to "Redirect".')

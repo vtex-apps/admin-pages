@@ -1,6 +1,7 @@
-query Redirect($path: String!) {
+query Redirect($path: String!, $binding: String!) {
   redirect @context(provider: "vtex.rewriter") {
-    get(path: $path) {
+    get(path: $path, locator: { from: $path, binding: $binding }) {
+      binding
       endDate
       from
       to

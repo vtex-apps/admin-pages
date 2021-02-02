@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Setting `Description` and `Keywords` as editable fields with the same condition as `Title` in `admin-pages`
 
+## [4.35.0] - 2021-02-02
+### Added
+- Adds binding selector for CMS Redirects
+
 ## [4.34.0] - 2021-01-22
 
 ### Added

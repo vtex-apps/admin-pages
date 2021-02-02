@@ -18,6 +18,7 @@ export interface RedirectQuery {
 
 export interface DeleteRedirectVariables {
   path: string
+  binding?: string
 }
 
 export interface SaveRedirectVariables {
@@ -26,6 +27,7 @@ export interface SaveRedirectVariables {
   from: string
   to: string
   type: RedirectTypes
+  binding?: string
 }
 
 interface Mutations {

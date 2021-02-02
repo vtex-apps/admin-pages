@@ -12,13 +12,17 @@ import { withRuntimeContext } from 'vtex.render-runtime'
 import {
   Button,
   DatePicker,
+  Dropdown,
   IconClose,
   Input,
   RadioGroup,
   ToastConsumerFunctions,
   Toggle,
 } from 'vtex.styleguide'
+import { Binding } from 'vtex.tenant-graphql'
 
+import { getBindingSelectorOptions } from '../../../../utils/bindings'
+import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 import Modal from '../../../Modal'
 import FormFieldSeparator from '../../FormFieldSeparator'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
@@ -28,6 +32,8 @@ interface CustomProps {
   initialData: Redirect
   onDelete: DeleteRedirectMutationFn
   onSave: SaveRedirectMutationFn
+  storeBindings: Binding[] | null
+  isNew: boolean
 }
 
 type Props = CustomProps &
@@ -83,7 +89,27 @@ const messages = defineMessages({
     defaultMessage: 'This redirect has an end date',
     id: 'admin/pages.admin.redirects.form.toggle.endDate',
   },
+  bindingSelectorTitle: {
+    defaultMessage: 'Binding',
+    id: 'admin/pages.admin.pages.form.binding-selector.title',
+  },
 })
+
+interface BindingSelectorWrapper {
+  visible: boolean
+}
+
+const BindingSelectorWrapper: React.FunctionComponent<BindingSelectorWrapper> = props => {
+  const { children, visible } = props
+  return visible ? (
+    <div>
+      <FormFieldSeparator />
+      {children}
+      <div className="mb7 pb7 bb bw1 b--light-silver f3 normal" />
+      <FormFieldSeparator />
+    </div>
+  ) : null
+}
 
 class Form extends Component<Props, State> {
   public static contextTypes = {
@@ -113,7 +139,7 @@ class Form extends Component<Props, State> {
 
   public render() {
     const { locale } = this.context.culture
-    const { intl } = this.props
+    const { intl, storeBindings, isNew } = this.props
     const {
       data,
       isLoading,
@@ -121,13 +147,16 @@ class Form extends Component<Props, State> {
       shouldShowDatePicker,
     } = this.state
 
+    const bindingOptions =
+      storeBindings && getBindingSelectorOptions(storeBindings)
+
     return (
       <Fragment>
         <Modal
           isActionDanger
           isActionLoading={isLoading}
           isOpen={shouldShowModal}
-          onClickAction={this.handleDelete(data.from)}
+          onClickAction={this.handleDelete(data.from, data.binding)}
           onClickCancel={this.handleModalVisibilityToggle}
           onClose={this.handleModalVisibilityToggle}
           textButtonAction={intl.formatMessage(messages.buttonRemove)}
@@ -148,6 +177,17 @@ class Form extends Component<Props, State> {
           )}
         </h1>
         <FormFieldSeparator />
+        {storeBindings && (
+          <BindingSelectorWrapper visible={storeBindings.length > 1}>
+            <Dropdown
+              label={intl.formatMessage(messages.bindingSelectorTitle)}
+              disabled={!isNew || storeBindings.length === 1}
+              onChange={this.handleBindingChange}
+              options={bindingOptions}
+              value={data.binding || storeBindings[0]}
+            />
+          </BindingSelectorWrapper>
+        )}
         <form onSubmit={this.handleSave}>
           <Input
             label={intl.formatMessage(messages.from)}
@@ -273,7 +313,10 @@ class Form extends Component<Props, State> {
     this.props.runtime.navigate({ to: BASE_URL })
   }
 
-  private handleDelete = (redirectFrom: string) => () => {
+  private handleDelete = (
+    redirectFrom: string,
+    redirectBinding: string
+  ) => () => {
     const { intl, onDelete } = this.props
 
     this.setState({ isLoading: true }, async () => {
@@ -281,6 +324,7 @@ class Form extends Component<Props, State> {
         await onDelete({
           variables: {
             path: redirectFrom,
+            binding: redirectBinding,
           },
         })
 
@@ -311,7 +355,7 @@ class Form extends Component<Props, State> {
   private handleSave = (event: React.FormEvent) => {
     const { intl, onSave } = this.props
     const {
-      data: { endDate, from, to, type },
+      data: { endDate, from, to, type, binding },
     } = this.state
 
     event.preventDefault()
@@ -324,6 +368,7 @@ class Form extends Component<Props, State> {
             from,
             to,
             type,
+            binding,
           },
         })
 
@@ -390,6 +435,24 @@ class Form extends Component<Props, State> {
     if (event.target instanceof HTMLInputElement) {
       this.handleInputChange({ to: event.target.value })
     }
+  }
+
+  private handleBindingChange = ({
+    target: { value },
+  }: DropdownChangeInput) => {
+    const { storeBindings } = this.props
+    const { data } = this.state
+    if (!storeBindings) {
+      return
+    }
+    const selectedBinding = storeBindings.find(binding => binding.id === value)
+    if (!selectedBinding) {
+      throw new Error(
+        "Selected binding does not exist or isn't a store binding"
+      )
+    }
+    data.binding = selectedBinding.id
+    this.setState({ data })
   }
 }
 

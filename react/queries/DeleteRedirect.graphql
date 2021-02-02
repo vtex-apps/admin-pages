@@ -1,6 +1,6 @@
-mutation DeleteRedirect($path: String!) {
+mutation DeleteRedirect($path: String!, $binding: String!) {
   redirect @context(provider: "vtex.rewriter") {
-    delete(path: $path) {
+    delete(path: $path, locator: { from: $path, binding: $binding }) {
       endDate
       from
       to
