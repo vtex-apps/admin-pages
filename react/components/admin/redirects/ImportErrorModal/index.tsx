@@ -12,16 +12,17 @@ import { TextEncoder } from 'text-encoding'
 import * as WebStreamsPolyfill from 'web-streams-polyfill/ponyfill'
 
 import styles from './ImportErrorModal.css'
-import { CSV_HEADER } from '../consts'
+import { getCSVHeader } from '../consts'
 import { AlertState } from '../typings'
 import bulkUploadRedirects from '../bulkUploadRedirects'
 
 interface Props extends Omit<ModalProps, 'children'> {
   isOpen: boolean
   redirects: Redirect[]
-  mutation: (data: Redirect[] | string[]) => Promise<void>
+  mutation: (data: Redirect[]) => Promise<void>
   isSave: boolean
   setAlert: (alertState: AlertState) => void
+  hasMultipleBindings: boolean
 }
 
 interface GetAlertStateArgs {
@@ -102,6 +103,7 @@ const ImportErrorModal: React.FC<Props> = ({
   mutation,
   onClose,
   setAlert,
+  hasMultipleBindings,
 }) => {
   const intl = useIntl()
   const shouldUploadRef = React.useRef<boolean>(false)
@@ -116,14 +118,14 @@ const ImportErrorModal: React.FC<Props> = ({
     const fileStream = streamSaver.createWriteStream('failed_redirects.csv')
     const writer = fileStream.getWriter()
     const textEncoder = new TextEncoder()
-    writer.write(textEncoder.encode(CSV_HEADER + '\n'))
+    writer.write(textEncoder.encode(getCSVHeader(hasMultipleBindings) + '\n'))
     redirects.forEach(({ endDate, from, to, type }) => {
       writer.write(
         textEncoder.encode(`${from};${to};${type};${endDate || ''}\n`)
       )
     })
     writer.close()
-  }, [redirects])
+  }, [redirects, hasMultipleBindings])
 
   const handleRetry = React.useCallback(async () => {
     shouldUploadRef.current = true
@@ -198,7 +200,7 @@ const ImportErrorModal: React.FC<Props> = ({
       <ul
         className={`list pl0 b--muted-5 ba br2 f6 lh-copy pa3 ${styles['import-error-modal-scroll']}`}
       >
-        <li>{CSV_HEADER}</li>
+        <li>{getCSVHeader(hasMultipleBindings)}</li>
         {redirects.map(({ endDate, from, to, type }) => (
           <li
             key={`failed-redirect-${from}`}

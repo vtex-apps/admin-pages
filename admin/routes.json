@@ -14,7 +14,7 @@
     "path": "/admin/app/cms/pages/*id"
   },
   "admin.app.cms.pages.redirects": {
-    "component": "RedirectList",
+    "component": "RedirectListWrapper",
     "path": "/admin/app/cms/redirects"
   },
   "admin.app.cms.pages.redirect-details": {
