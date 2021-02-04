@@ -7,7 +7,7 @@ import { Alert, AlertProps, Button, IconDelete, Radio } from 'vtex.styleguide'
 
 import UploadTableIcon from '../../../../icons/UploadTable'
 import { UploadActionType } from '../../mutations/SaveRedirectFromFile'
-import { CSV_HEADER, CSV_SEPARATOR } from '../../consts'
+import { getCSVHeader, CSV_SEPARATOR } from '../../consts'
 import { isRedirectType, validateRedirect } from './validateRedirect'
 import styles from './UploadPrompt.css'
 
@@ -17,10 +17,12 @@ interface Props {
   onDownloadTemplate: () => void
   saveRedirectFromFile: (
     parsedJsonFromCsv: Redirect[],
-    fileName: string
+    fileName: string,
+    hasMultipleBindings: boolean
   ) => void
   setUploadActionType: React.Dispatch<React.SetStateAction<UploadActionType>>
   uploadActionType: UploadActionType
+  hasMultipleBindings: boolean
 }
 
 const messages = defineMessages({
@@ -90,6 +92,7 @@ const UploadPrompt: React.FC<Props> = ({
   saveRedirectFromFile,
   setUploadActionType,
   uploadActionType,
+  hasMultipleBindings,
 }) => {
   const intl = useIntl()
   const [file, setFile] = useState<File | null>(null)
@@ -125,9 +128,9 @@ const UploadPrompt: React.FC<Props> = ({
 
       const reader = new FileReader()
       reader.onload = async () => {
-        const redirectKeys = CSV_HEADER.split(CSV_SEPARATOR) as Array<
-          keyof Redirect
-        >
+        const redirectKeys = getCSVHeader(hasMultipleBindings).split(
+          CSV_SEPARATOR
+        ) as Array<keyof Redirect>
         let parsedJsonFromCsv = null
         if (typeof reader.result === 'string') {
           parsedJsonFromCsv = reader.result
@@ -179,7 +182,7 @@ const UploadPrompt: React.FC<Props> = ({
       reader.readAsText(file)
       setFile(file)
     },
-    [intl, resetErrors, validationErrors]
+    [intl, resetErrors, validationErrors, hasMultipleBindings]
   )
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -303,7 +306,11 @@ const UploadPrompt: React.FC<Props> = ({
           onClick={() =>
             parsedJsonFromCsv &&
             file &&
-            saveRedirectFromFile(parsedJsonFromCsv, file.name)
+            saveRedirectFromFile(
+              parsedJsonFromCsv,
+              file.name,
+              hasMultipleBindings
+            )
           }
         >
           {intl.formatMessage(messages.buttonImport)}

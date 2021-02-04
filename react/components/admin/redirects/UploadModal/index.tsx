@@ -33,6 +33,7 @@ interface Props {
   onDownloadTemplate: () => void
   refetchRedirects: () => void
   setAlert: (alertState: AlertState) => void
+  hasMultipleBindings: boolean
 }
 
 const INITIAL_MODAL_STATE = 'UPLOAD_FILE'
@@ -49,6 +50,7 @@ const UploadModal: React.FunctionComponent<Props &
   refetchRedirects,
   saveRedirectFromFile,
   setAlert,
+  hasMultipleBindings,
 }) => {
   const intl = useIntl()
   const [currentStep, setModalStep] = useState<ModalStates>(INITIAL_MODAL_STATE)
@@ -84,7 +86,11 @@ const UploadModal: React.FunctionComponent<Props &
   }, [resetState])
 
   const saveRedirectFromFileCb = useCallback(
-    async (parsedJsonFromCsv: Redirect[], fileName: string) => {
+    async (
+      parsedJsonFromCsv: Redirect[],
+      fileName: string,
+      hasMultipleBindings: boolean
+    ) => {
       shouldUploadRef.current = true
       const isSave = uploadActionType === 'save'
       const mutation = (data: Redirect[]) => {
@@ -107,9 +113,14 @@ const UploadModal: React.FunctionComponent<Props &
             locators: [] as RouteLocator[],
           }
         )
-        // TODO: Do not send locators if not binding
+        const variables = hasMultipleBindings
+          ? {
+              paths,
+              locators,
+            }
+          : { paths }
         return deleteManyRedirects({
-          variables: { paths, locators },
+          variables,
         })
       }
 
@@ -167,6 +178,7 @@ const UploadModal: React.FunctionComponent<Props &
             onDownloadTemplate={onDownloadTemplate}
             saveRedirectFromFile={saveRedirectFromFileCb}
             uploadActionType={uploadActionType}
+            hasMultipleBindings={hasMultipleBindings}
           />
         )
       case 'LOADING':
@@ -195,6 +207,7 @@ const UploadModal: React.FunctionComponent<Props &
     processedRedirect,
     saveRedirectFromFileCb,
     uploadActionType,
+    hasMultipleBindings,
   ])
 
   return (

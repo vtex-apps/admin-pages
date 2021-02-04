@@ -1,8 +1,11 @@
 export const BASE_URL = '/admin/app/cms/redirects'
-export const CSV_HEADER = 'from;to;type;binding;endDate'
 export const CSV_SEPARATOR = ';'
 
-export const CSV_TEMPLATE = `${CSV_HEADER}
+export const getCSVHeader = (hasMultipleBindings: boolean) =>
+  hasMultipleBindings ? 'from;to;type;binding;endDate' : 'from;to;type;endDate'
+
+export const getCSVTemplate = (hasMultipleBindings: boolean) =>
+  `${getCSVHeader(hasMultipleBindings)}
 /temporary;/;TEMPORARY;
 /temporary-with-date;/;TEMPORARY;2025-01-01T00:00:00.000Z
 /permanent;/;PERMANENT;
