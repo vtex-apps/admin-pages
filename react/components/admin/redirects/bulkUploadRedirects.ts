@@ -15,7 +15,6 @@ interface BulkUploadRedirectsArgs {
 export default async function bulkUploadRedirects({
   data,
   mutation,
-  isSave,
   shouldUploadRef,
   updateProgress = () => {
     return undefined

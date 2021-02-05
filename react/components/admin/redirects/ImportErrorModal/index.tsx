@@ -29,7 +29,7 @@ interface GetAlertStateArgs {
   isSave: boolean
   failedRedirects: Redirect[]
   intl: IntlShape
-  mutation: (data: Redirect[] | string[]) => Promise<void>
+  mutation: (data: Redirect[]) => Promise<void>
   total: number
 }
 
