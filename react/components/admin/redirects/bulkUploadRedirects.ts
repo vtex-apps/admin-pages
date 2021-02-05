@@ -24,12 +24,10 @@ export default async function bulkUploadRedirects({
 
   const redirectBatches = splitEvery(MAX_REDIRECTS_PER_REQUEST, data)
 
-  for (const data of redirectBatches) {
+  for (const payload of redirectBatches) {
     if (!shouldUploadRef.current) {
       break
     }
-
-    const payload = data
 
     for (let i = 1; i <= NUMBER_OF_RETRIES; i++) {
       try {
