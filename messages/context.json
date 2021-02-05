@@ -495,5 +495,7 @@
   "admin/pages.editor.topbar.context.binding.error": "admin/pages.editor.topbar.context.binding.error",
   "admin/pages.editor.topbar.context.binding.tooltip": "admin/pages.editor.topbar.context.binding.tooltip",
   "admin/pages.editor.topbar.context.locale.tooltip": "admin/pages.editor.topbar.context.locale.tooltip",
-  "admin/appframe.navigation.contentManagement": "admin/appframe.navigation.contentManagement"
+  "admin/appframe.navigation.contentManagement": "admin/appframe.navigation.contentManagement",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data"
 }

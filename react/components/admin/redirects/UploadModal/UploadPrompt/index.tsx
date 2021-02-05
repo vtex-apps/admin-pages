@@ -78,6 +78,16 @@ const messages = defineMessages({
     id:
       'admin/pages.admin.redirects.upload-modal.prompt.alert.validation-errors',
   },
+  missingBindingData: {
+    defaultMessage: 'Binding information missing from redirect {route}',
+    id:
+      'admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data',
+  },
+  extraBindingData: {
+    defaultMessage: 'Uneccessary binding information from redirect {route}',
+    id:
+      'admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data',
+  },
 })
 
 interface AlertState {
@@ -142,6 +152,24 @@ const UploadPrompt: React.FC<Props> = ({
               }
               const values = line.split(CSV_SEPARATOR)
               const redirect = zipObj(redirectKeys, values)
+              const wrongNumberOfPropeties =
+                redirectKeys.length != values.length
+              if (hasMultipleBindings && wrongNumberOfPropeties) {
+                nextValidationErrors = (nextValidationErrors || []).concat(
+                  intl.formatMessage(messages.missingBindingData, {
+                    route: redirect.from,
+                  })
+                )
+                return acc
+              }
+              if (!hasMultipleBindings && wrongNumberOfPropeties) {
+                nextValidationErrors = (nextValidationErrors || []).concat(
+                  intl.formatMessage(messages.extraBindingData, {
+                    route: redirect.from,
+                  })
+                )
+                return acc
+              }
               if (isRedirectType(redirect)) {
                 const validationError = validateRedirect(
                   redirect,
