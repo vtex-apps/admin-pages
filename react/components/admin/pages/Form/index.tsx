@@ -286,15 +286,9 @@ class FormContainer extends Component<Props, State> {
             ...(diff(this.props.initialData, this.state.data) as Partial<
               RouteFormData
             >),
+            ...this.state.data,
             pages: this.state.data.pages || this.state.data,
-            declarer: this.state.data.declarer,
-            domain: this.state.data.domain,
             blockId: this.state.data.blockId || this.props.initialData,
-            path: this.state.data.path,
-            routeId: this.state.data.routeId,
-            uuid: this.state.data.uuid,
-            metaTagKeywords: this.state.data.metaTagKeywords,
-            metaTagDescription: this.state.data.metaTagDescription,
           }
 
       const metaTags =
