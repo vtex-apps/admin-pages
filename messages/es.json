@@ -495,5 +495,7 @@
   "admin/pages.editor.topbar.context.binding.error": "No se pudo cargar la lista de bindings disponibles.",
   "admin/pages.editor.topbar.context.binding.tooltip": "No se puede cambiar el binding mientras se edita un bloque.",
   "admin/pages.editor.topbar.context.locale.tooltip": "No se puede cambiar el idioma mientras se edita un bloque.",
-  "admin/appframe.navigation.contentManagement": "Content Management"
+  "admin/appframe.navigation.contentManagement": "Content Management",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Información del binding innecesaria de la redirección {ruta}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Falta información del binding en el redireccionamiento {ruta}"
 }

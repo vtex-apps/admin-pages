@@ -495,5 +495,7 @@
   "admin/pages.editor.topbar.context.binding.error": "Lista legăturilor disponibile nu a putut fi încărcată.",
   "admin/pages.editor.topbar.context.binding.tooltip": "Legătura nu poate fi modificată în timp ce se editează un bloc.",
   "admin/pages.editor.topbar.context.locale.tooltip": "Locale nu poate fi modificat în timp ce se editează un bloc.",
-  "admin/appframe.navigation.contentManagement": "Gestionarea conținutului"
+  "admin/appframe.navigation.contentManagement": "Gestionarea conținutului",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Uneccessary binding information from redirect {route}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Binding information missing from redirect {route}"
 }
