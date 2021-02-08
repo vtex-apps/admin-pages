@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Preventing the unchanged informations to be sent and updated as undefined in `admin-pages\Form\index`
+
 ## [4.36.0] - 2021-02-02
 
 ### Fixed
