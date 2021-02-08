@@ -495,5 +495,7 @@
   "admin/pages.editor.topbar.context.binding.error": "The list of available bindings could not be loaded.",
   "admin/pages.editor.topbar.context.binding.tooltip": "The binding cannot be changed while editing a block.",
   "admin/pages.editor.topbar.context.locale.tooltip": "The locale cannot be changed while editing a block.",
-  "admin/appframe.navigation.contentManagement": "Content Management"
+  "admin/appframe.navigation.contentManagement": "Content Management",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Uneccessary binding information from redirect {route}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Binding information missing from redirect {route}"
 }
