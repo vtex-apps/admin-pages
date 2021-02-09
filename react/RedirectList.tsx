@@ -8,8 +8,8 @@ import { Alert, Box, Pagination, ToastConsumer } from 'vtex.styleguide'
 import * as WebStreamsPolyfill from 'web-streams-polyfill/ponyfill'
 
 import {
-  CSV_HEADER,
-  CSV_TEMPLATE,
+  getCSVHeader,
+  getCSVTemplate,
   PAGINATION_START,
   PAGINATION_STEP,
   WRAPPER_PATH,
@@ -25,8 +25,11 @@ import {
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = WithApolloClient<TargetPathContextProps>
+type Props = CustomProps & WithApolloClient<TargetPathContextProps>
 
+interface CustomProps {
+  hasMultipleBindings: boolean
+}
 interface RedirectListQueryResult {
   redirect: {
     listRedirects: {
@@ -64,14 +67,11 @@ streamSaver.WritableStream = WebStreamsPolyfill.WritableStream
 
 const textEncoder = new TextEncoder()
 
-const handleDownloadTemplate = () => {
-  const fileStream = streamSaver.createWriteStream('redirects_template.csv')
-  const writer = fileStream.getWriter()
-  writer.write(textEncoder.encode(CSV_TEMPLATE))
-  writer.close()
-}
-
-const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
+const RedirectList: React.FC<Props> = ({
+  client,
+  setTargetPath,
+  hasMultipleBindings,
+}) => {
   const intl = useIntl()
 
   useEffect(() => {
@@ -114,12 +114,19 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
     setIsImportErrorModalOpen(false)
   }, [setIsImportErrorModalOpen])
 
+  const handleDownloadTemplate = () => {
+    const fileStream = streamSaver.createWriteStream('redirects_template.csv')
+    const writer = fileStream.getWriter()
+    writer.write(textEncoder.encode(getCSVTemplate(hasMultipleBindings)))
+    writer.close()
+  }
+
   const handleDownload = useCallback(async () => {
     const fileStream = streamSaver.createWriteStream('redirects.csv')
     const writer = fileStream.getWriter()
     let next: string | undefined
 
-    writer.write(textEncoder.encode(CSV_HEADER + '\n'))
+    writer.write(textEncoder.encode(getCSVHeader(hasMultipleBindings) + '\n'))
     do {
       const response = await client.query<
         RedirectListQueryResult,
@@ -133,14 +140,17 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
       })
       const redirects = response.data.redirect.listRedirects.routes
       next = response.data.redirect.listRedirects.next
-      redirects.forEach(({ endDate, from, to, type }) => {
+      redirects.forEach(({ endDate, from, to, type, binding }) => {
+        const bindingString = hasMultipleBindings ? `${binding || ''};` : ''
         writer.write(
-          textEncoder.encode(`${from};${to};${type};${endDate || ''}\n`)
+          textEncoder.encode(
+            `${from};${to};${type};${bindingString}${endDate || ''}\n`
+          )
         )
       })
     } while (next !== null)
     writer.close()
-  }, [client])
+  }, [client, hasMultipleBindings])
 
   const getNextPageNavigationHandler = (
     dataLength: number,
@@ -261,6 +271,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                       onClose={handleCloseErrorModal}
                       redirects={alertState.meta.failedRedirects}
                       setAlert={setAlert}
+                      hasMultipleBindings={hasMultipleBindings}
                     />
                   )}
                   <Box>
@@ -299,6 +310,7 @@ const RedirectList: React.FC<Props> = ({ client, setTargetPath }) => {
                       onDownloadTemplate={handleDownloadTemplate}
                       refetchRedirects={refetch}
                       setAlert={setAlert}
+                      hasMultipleBindings={hasMultipleBindings}
                     />
                   </Box>
                 </>

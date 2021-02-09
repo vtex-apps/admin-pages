@@ -1,5 +1,5 @@
-mutation DeleteManyRedirects($paths: [String!]!) {
+mutation DeleteManyRedirects($paths: [String!]!, $locators: [RouteLocator!]) {
   redirect @context(provider: "vtex.rewriter") {
-    deleteMany(paths: $paths)
+    deleteMany(paths: $paths, locators: $locators)
   }
 }

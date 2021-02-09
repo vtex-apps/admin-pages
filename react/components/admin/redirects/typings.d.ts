@@ -12,7 +12,7 @@ export interface AlertState {
   message: string
   meta?: {
     failedRedirects: Redirect[]
-    mutation: (data: Redirect[] | string[]) => Promise<void>
+    mutation: (data: Redirect[]) => Promise<void>
     isSave: boolean
   }
   action?: {

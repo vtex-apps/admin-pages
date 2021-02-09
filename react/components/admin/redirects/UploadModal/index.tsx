@@ -22,6 +22,10 @@ import { getAlertState } from './UploadPrompt/getAlertState'
 import { AlertState } from '../typings'
 import bulkUploadRedirects from '../bulkUploadRedirects'
 
+interface RouteLocator {
+  from: string
+  binding: string
+}
 interface Props {
   hasRedirects: boolean
   isOpen: boolean
@@ -29,6 +33,7 @@ interface Props {
   onDownloadTemplate: () => void
   refetchRedirects: () => void
   setAlert: (alertState: AlertState) => void
+  hasMultipleBindings: boolean
 }
 
 const INITIAL_MODAL_STATE = 'UPLOAD_FILE'
@@ -45,6 +50,7 @@ const UploadModal: React.FunctionComponent<Props &
   refetchRedirects,
   saveRedirectFromFile,
   setAlert,
+  hasMultipleBindings,
 }) => {
   const intl = useIntl()
   const [currentStep, setModalStep] = useState<ModalStates>(INITIAL_MODAL_STATE)
@@ -80,17 +86,43 @@ const UploadModal: React.FunctionComponent<Props &
   }, [resetState])
 
   const saveRedirectFromFileCb = useCallback(
-    async (parsedJsonFromCsv: Redirect[], fileName: string) => {
+    async (
+      parsedJsonFromCsv: Redirect[],
+      fileName: string,
+      hasMultipleBindings: boolean
+    ) => {
       shouldUploadRef.current = true
       const isSave = uploadActionType === 'save'
-      const mutation = (data: Redirect[] | string[]) =>
-        isSave
-          ? saveRedirectFromFile({
-              variables: { redirects: data as Redirect[] },
+      const mutation = (data: Redirect[]) => {
+        if (isSave) {
+          return saveRedirectFromFile({
+            variables: { redirects: data as Redirect[] },
+          })
+        }
+        const { paths, locators } = data.reduce(
+          (acc, redirect) => {
+            acc.paths.push(redirect.from)
+            acc.locators.push({
+              from: redirect.from,
+              binding: redirect.binding,
             })
-          : deleteManyRedirects({
-              variables: { paths: data as string[] },
-            })
+            return acc
+          },
+          {
+            paths: [] as string[],
+            locators: [] as RouteLocator[],
+          }
+        )
+        const variables = hasMultipleBindings
+          ? {
+              paths,
+              locators,
+            }
+          : { paths }
+        return deleteManyRedirects({
+          variables,
+        })
+      }
 
       try {
         const numberOfLines = parsedJsonFromCsv.length
@@ -146,6 +178,7 @@ const UploadModal: React.FunctionComponent<Props &
             onDownloadTemplate={onDownloadTemplate}
             saveRedirectFromFile={saveRedirectFromFileCb}
             uploadActionType={uploadActionType}
+            hasMultipleBindings={hasMultipleBindings}
           />
         )
       case 'LOADING':
@@ -174,6 +207,7 @@ const UploadModal: React.FunctionComponent<Props &
     processedRedirect,
     saveRedirectFromFileCb,
     uploadActionType,
+    hasMultipleBindings,
   ])
 
   return (
