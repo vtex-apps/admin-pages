@@ -37,7 +37,6 @@ const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
   }
 
   if (binding && !src.includes('__bindingAddress')) {
-    console.log('PASSOU')
     src += `${getJoiner(src)}__bindingAddress=${binding.canonicalBaseAddress}`
   }
 
