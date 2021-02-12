@@ -10,9 +10,9 @@ const UrlInput = () => {
 
   const resolveUrlPath = (pathname: string, searchQueries: string) => {
     const searchParams = new URLSearchParams(searchQueries)
-    const SEARCH_QUERIES_BLACKLIST = ['__siteEditor', '__bindingAddress']
+    const SEARCH_QUERIES_TO_HIDE = ['__siteEditor', '__bindingAddress']
 
-    SEARCH_QUERIES_BLACKLIST.forEach(query => {
+    SEARCH_QUERIES_TO_HIDE.forEach(query => {
       searchParams.delete(query)
     })
 
