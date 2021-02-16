@@ -168,7 +168,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
 
   const title =
     children.props.formData.__editorItemTitle ||
-    path(['items', 'properties', '__editorItemTitle', 'default'], schema)
+    path(['items', 'properties', '__editorItemTitle', 'default'], schema) ||
+    (children.props.formData.type === 'custom' &&
+      children.props.formData.iconId)
 
   return (
     <div
