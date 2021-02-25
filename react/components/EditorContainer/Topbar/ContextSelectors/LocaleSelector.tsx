@@ -20,13 +20,27 @@ const LocaleSelector: React.FC<Props> = ({
 }) => {
   const { culture, emitter } = iframeRuntime
 
+  const editor = useEditorContext()
+
   const [locale, setLocale] = React.useState(culture.locale)
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
       setLocale(e.target.value)
 
-      emitter.emit('localesChanged', e.target.value)
+      emitter.emit('localesChanged', e.target.value, null, () => {
+        if (editor.iframeWindow) {
+          const searchParams = new URLSearchParams(
+            editor.iframeWindow.location.search
+          )
+
+          const bindingQueryString = searchParams.get('__bindingAddress')
+
+          editor.iframeWindow.location.search = `__bindingAddress=${bindingQueryString}&__localeAddress=${e.target.value}&__siteEditor=true`
+        }
+      })
+
+      editor.setMode('disabled')
     },
     [emitter]
   )
@@ -35,6 +49,8 @@ const LocaleSelector: React.FC<Props> = ({
     if (locale !== culture.locale) {
       setLocale(culture.locale)
     }
+
+    if (editor.mode !== 'layout') editor.setMode('layout')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [culture.locale])
 
@@ -53,7 +69,6 @@ const LocaleSelector: React.FC<Props> = ({
     [className, handleChange, isDisabled, locale, options]
   )
 
-  const editor = useEditorContext()
   const intl = useIntl()
 
   return editor.editTreePath ? (

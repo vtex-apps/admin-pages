@@ -4,7 +4,6 @@ import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { Tooltip } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../EditorContext'
-
 import { useHover } from './hooks'
 import IconPicker from './icons/IconPicker'
 
@@ -26,13 +25,17 @@ const BlockPicker: React.FC<InjectedIntlProps> = ({ intl }) => {
       position="bottom"
     >
       <button
+        style={editor.mode === 'disabled' ? { cursor: 'wait' } : {}}
         className={`w2 h2 bg-white br2 b--transparent outline-0 pointer flex justify-center items-center ${
-          editor.editMode || hover ? 'c-action-primary' : 'c-on-disabled'
+          editor.editMode || (hover && editor.mode !== 'disabled')
+            ? 'c-action-primary'
+            : 'c-on-disabled'
         }`}
         onClick={handleEditModeToggle}
         onKeyPress={handleKeyPress}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        disabled={editor.mode === 'disabled'}
       >
         <IconPicker />
       </button>
