@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
+### Added
+
+- I18n Jp.
+
+### Changed
+
+- I18n Ro.
 ## [4.37.0] - 2021-02-09
 - Adds support for multi binding for redirect CSV managment
 
