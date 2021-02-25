@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Hides query strings from the site editor top bar.
+
 ## [4.37.0] - 2021-02-09
 - Adds support for multi binding for redirect CSV managment
 
@@ -39,11 +43,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Site editor flag in the iframe URL.
 
 ## [4.32.0] - 2021-01-21
+
 ### Added
-- Adds binding selector for CMS Pages 
+
+- Adds binding selector for CMS Pages
 
 ## [4.31.1] - 2021-01-20
+
 ### Fixed
+
 - Sending blockId in `Form index` component even when is not changed to prevent unexpected behaviors
 
 ## [4.31.0] - 2021-01-13

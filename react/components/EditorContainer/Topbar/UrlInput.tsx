@@ -8,9 +8,26 @@ const UrlInput = () => {
 
   const editor = useEditorContext()
 
+  const resolveUrlPath = (pathname: string, searchQueries: string) => {
+    const searchParams = new URLSearchParams(searchQueries)
+    const SEARCH_QUERIES_TO_HIDE = ['__siteEditor', '__bindingAddress']
+
+    SEARCH_QUERIES_TO_HIDE.forEach(query => {
+      searchParams.delete(query)
+    })
+
+    if (searchParams.toString().length) {
+      return pathname + `?${searchParams.toString()}`
+    }
+
+    return pathname
+  }
+
   const urlPath = editor.iframeWindow
-    ? editor.iframeWindow.location.pathname +
-      editor.iframeWindow.location.search
+    ? resolveUrlPath(
+        editor.iframeWindow.location.pathname,
+        editor.iframeWindow.location.search
+      )
     : ''
 
   const [url, setUrl] = React.useState(urlPath)
