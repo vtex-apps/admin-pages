@@ -1,0 +1,12 @@
+mutation CopyBindingContent($from: String!, $to: String!, $template: String, $context: PageContextInput) {
+  copyBindingContent(from: $from, to: $to, template: $template, context: $context) {
+    added {
+      contentId
+      origin
+    }
+    removed {
+      contentId
+      origin
+    }
+  }
+}
