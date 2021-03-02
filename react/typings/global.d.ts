@@ -87,6 +87,7 @@ declare global {
     title: string | null
     uuid?: string
     dataSource?: string
+    conflicts?: Route[]
   }
 
   interface Routes {
