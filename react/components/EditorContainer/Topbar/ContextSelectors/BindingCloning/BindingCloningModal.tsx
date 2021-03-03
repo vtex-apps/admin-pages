@@ -145,7 +145,6 @@ const BindingCloningModal: FunctionComponent<Props> = ({
 
   const saveItem = (item: BindingSelectorItem) =>
     new Promise<void>(async (resolve, reject) => {
-      // TODO: copiar metatags etc
       if (!item.overwrites) {
         try {
           const saveRouteVariables = {
