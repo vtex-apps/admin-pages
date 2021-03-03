@@ -45,6 +45,8 @@ const saveRouteSanityCheck = (variables: any) => {
     // uuid shouldn't be defined, it will be generated on route creation,
     // otherwise it might replace an existing route
     route.uuid ||
+    // dataSource needs to be 'vtex.rewriter', otherwise it will be
+    // treated as a "colossus" route, which is not what we want here
     route.dataSource !== 'vtex.rewriter' ||
     !route.bindingId
   ) {
