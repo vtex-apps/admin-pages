@@ -5,10 +5,12 @@ import { pick } from 'ramda'
 import { withBindingsContext } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
+import { Binding } from '../typings'
 
-type PageContext = any
-
-type SaveRouteVariables = any
+// TODO: improve typings
+interface SaveRouteVariables {
+  route: Route
+}
 
 type MutationArgs<T> = {
   variables: T
@@ -22,7 +24,7 @@ interface CopyBindingVariables {
 }
 
 interface Props {
-  currentBinding: any
+  currentBinding: Binding
   isOpen?: boolean
   onClose: () => void
   saveRoute: (args: MutationArgs<SaveRouteVariables>) => any
@@ -31,7 +33,7 @@ interface Props {
   error?: any
   state: BindingSelectorState
   dispatch: (action: any) => any
-  routeInfo: any,
+  routeInfo: Route,
   pageContext: PageContext
   refetch: () => void
 }
