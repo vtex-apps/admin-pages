@@ -7,7 +7,6 @@ import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
 import { Binding } from '../typings'
 
-// TODO: improve typings
 interface SaveRouteVariables {
   route: Route
 }
