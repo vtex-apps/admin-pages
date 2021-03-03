@@ -124,7 +124,7 @@ const BindingFormatter = ({
   })
 }
 
-interface A {
+interface BindingsContext {
   saveRoute: () => any
   copyBindings: () => any
   refetch: () => any
@@ -145,7 +145,7 @@ const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
   currentBinding: Binding
   iframeRuntime: RenderContext
 } &
-  Omit<T, keyof A>) => {
+  Omit<T, keyof BindingsContext>) => {
   const route = iframeRuntime?.route
   const { id: routeId, pageContext } = route ?? {}
 
