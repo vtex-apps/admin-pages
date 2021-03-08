@@ -61,9 +61,9 @@
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-and": "și",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-any": "oricare",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-or": "sau",
-  "admin/pages.admin.pages.form.templates.title": "Șabloane",
+  "admin/pages.admin.pages.form.templates.title": "Template-uri",
   "admin/pages.admin.pages.form.title.new": "Pagină nouă",
-  "admin/pages.admin.pages.list.button.create": "Creează un nou",
+  "admin/pages.admin.pages.list.button.create": "Creează o nouă pagină",
   "admin/pages.admin.pages.list.section.notFound": "Nu s-a găsit (404)",
   "admin/pages.admin.pages.list.section.product": "Produs",
   "admin/pages.admin.pages.list.section.productCollections": "Colecții produs",
@@ -162,7 +162,7 @@
   "admin/pages.editor.component-list.back": "Înapoi",
   "admin/pages.editor.component-list.status.active": "Activ",
   "admin/pages.editor.component-list.status.inactive": "Inactiv",
-  "admin/pages.editor.component-list.status.scheduled": "Programată",
+  "admin/pages.editor.component-list.status.scheduled": "Programate",
   "admin/pages.editor.component-list.title": "Configurări",
   "admin/pages.editor.component-list.untitled": "Bloc fără titlu",
   "admin/pages.editor.components.arrayTemplate.button.add": "Adaugă",
@@ -496,6 +496,6 @@
   "admin/pages.editor.topbar.context.binding.tooltip": "Legătura nu poate fi modificată în timp ce se editează un bloc.",
   "admin/pages.editor.topbar.context.locale.tooltip": "Locale nu poate fi modificat în timp ce se editează un bloc.",
   "admin/appframe.navigation.contentManagement": "Gestionarea conținutului",
-  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Binding information missing from redirect {route}",
-  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Uneccessary binding information from redirect {route}"
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Informațiile privind legăturile lipsesc din redirecționare {route}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Informații privind legăturile inutile din redirecționare {route}"
 }
