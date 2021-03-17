@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.38.1] - 2021-03-17
+
 ### Fixed
 
 - I18n En, Es, Pt, Ro and Jp.
