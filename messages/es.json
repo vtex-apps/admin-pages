@@ -1,4 +1,5 @@
 {
+  "admin/store-name.description": "This is your store's name, in Spanish",
   "admin/pages.admin-menu-button.content-pages": "Institucional",
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.site-editor-smb": "Escaparate",
@@ -415,7 +416,7 @@
   "admin/pages.editor.store.settings.advanced.disclaimer": "⚠️ Estas funcionalidades deben usarse con atención.",
   "admin/pages.editor.store.settings.error.title": "Algo salió mal",
   "admin/pages.editor.store.settings.error": "No se pudo cargar la configuración de la tienda.",
-  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Icono de Logotipo Android (512x512)",
+  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Icono de Logotipo Android (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.app-settings": "Otras configuraciones de PWA",
   "admin/pages.editor.store.settings.pwa.background_color": "Color de fondo",
   "admin/pages.editor.store.settings.pwa.disable-prompt": "Añadir a la pantalla principal",
@@ -425,7 +426,7 @@
   "admin/pages.editor.store.settings.pwa.display.standalone": "Aplicación (Añadir a la pantalla principal)",
   "admin/pages.editor.store.settings.pwa.display": "Visual",
   "admin/pages.editor.store.settings.pwa.error": "No se pudo cargar la configuración de PWA.",
-  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "Icono de Logotipo iOS (512x512)",
+  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "Icono de Logotipo iOS (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.orientation.any": "Cualquier",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-primary": "Paisaje (Primario)",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-secondary": "Paisaje (Secundario)",

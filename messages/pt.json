@@ -1,4 +1,5 @@
 {
+  "admin/store-name.description": "This is your store's name, in Portuguese",
   "admin/pages.admin-menu-button.content-pages": "Institucional",
   "admin/pages.admin-menu-button.pages": "Páginas",
   "admin/pages.admin-menu-button.site-editor-smb": "Editor de layout",
@@ -415,7 +416,7 @@
   "admin/pages.editor.store.settings.advanced.disclaimer": "⚠️ Esses recursos devem ser usados com cuidado.",
   "admin/pages.editor.store.settings.error.title": "Algo deu errado",
   "admin/pages.editor.store.settings.error": "Não foi possível carregar as informações da loja.",
-  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Ícone de Logo Android (512x512)",
+  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Ícone de Logo Android (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.app-settings": "Outras configurações do PWA",
   "admin/pages.editor.store.settings.pwa.background_color": "Cor de fundo",
   "admin/pages.editor.store.settings.pwa.disable-prompt": "Adicionar à tela inicial",
@@ -425,7 +426,7 @@
   "admin/pages.editor.store.settings.pwa.display.standalone": "Aplicativo (Adicionar à tela inicial)",
   "admin/pages.editor.store.settings.pwa.display": "Visual",
   "admin/pages.editor.store.settings.pwa.error": "Não foi possível carregar os dados de PWA.",
-  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "Ícone de Logo iOS (512x512)",
+  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "Ícone de Logo iOS (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.orientation.any": "Qualquer",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-primary": "Panorama (Primário)",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-secondary": "Panorama (Secundário)",

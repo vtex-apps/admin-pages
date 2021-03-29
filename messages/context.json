@@ -1,4 +1,5 @@
 {
+  "admin/store-name.description": "This is your store's name",
   "admin/pages.admin-menu-button.content-pages": "admin/pages.admin-menu-button.content-pages",
   "admin/pages.admin-menu-button.pages": "admin/pages.admin-menu-button.pages",
   "admin/pages.admin-menu-button.site-editor-smb": "admin/pages.admin-menu-button.site-editor-smb",

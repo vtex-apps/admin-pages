@@ -1,4 +1,5 @@
 {
+  "admin/store-name.description": "This is your store's name",
   "admin/pages.admin-menu-button.content-pages": "Content Pages",
   "admin/pages.admin-menu-button.pages": "Pages",
   "admin/pages.admin-menu-button.site-editor-smb": "Site Editor",
@@ -415,7 +416,7 @@
   "admin/pages.editor.store.settings.advanced.disclaimer": "⚠️ These features should be used with caution.",
   "admin/pages.editor.store.settings.error.title": "Something went wrong",
   "admin/pages.editor.store.settings.error": "Couldn't load store settings.",
-  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Android Logo Icon (512x512)",
+  "admin/pages.editor.store.settings.pwa.android-logo-icon": "Android Logo Icon (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.app-settings": "Other PWA settings",
   "admin/pages.editor.store.settings.pwa.background_color": "Background color",
   "admin/pages.editor.store.settings.pwa.disable-prompt": "Add to Home Screen",
@@ -425,7 +426,7 @@
   "admin/pages.editor.store.settings.pwa.display.standalone": "Standalone (Add to Home Screen)",
   "admin/pages.editor.store.settings.pwa.display": "Display",
   "admin/pages.editor.store.settings.pwa.error": "Couldn't load PWA settings.",
-  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "iOS Logo Icon (512x512)",
+  "admin/pages.editor.store.settings.pwa.ios-logo-icon": "iOS Logo Icon (512x512, PNG)",
   "admin/pages.editor.store.settings.pwa.orientation.any": "Any",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-primary": "Landscape (Primary)",
   "admin/pages.editor.store.settings.pwa.orientation.landscape-secondary": "Landscape (Secondary)",
