@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- File format disclaimer to both iOS and Android icons uploaded via the PWA section inside of Store settings page.
 
 ## [4.38.1] - 2021-03-17
 
@@ -24,18 +26,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - I18n Ro.
 ## [4.37.0] - 2021-02-09
-- Adds support for multi binding for redirect CSV managment
+### Added
+- Support for multi binding for redirect CSV management.
 
 ## [4.36.1] - 2021-02-08
-
 ### Fixed
-
-- Preventing the unchanged informations to be sent and updated as undefined in `admin-pages\Form\index`
+- Preventing unchanged information to be sent and updated as undefined in `admin-pages\Form\index`
 
 ## [4.36.0] - 2021-02-02
-
 ### Fixed
-
 - Setting `Description` and `Keywords` as editable fields with the same condition as `Title` in `admin-pages`
 
 ## [4.35.0] - 2021-02-02
