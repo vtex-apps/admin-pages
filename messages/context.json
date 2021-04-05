@@ -498,12 +498,12 @@
   "admin/appframe.navigation.contentManagement": "admin/appframe.navigation.contentManagement",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data",
-  "admin/store.title": "admin/store.title", 
-  "admin/store.storeName.title": "admin/store.storeName.title", 
+  "admin/store.title": "admin/store.title",
+  "admin/store.storeName.title": "admin/store.storeName.title",
   "admin/store.requiresAuthorization.title": "admin/store.requiresAuthorization.title",
-  "admin/store.titleTag.title": "admin/store.titleTag.title",  
-  "admin/store.metaTagDescription.title": "admin/store.metaTagDescription.title", 
-  "admin/store.metaTagRobots.title": "admin/store.metaTagRobots.title", 
+  "admin/store.titleTag.title": "admin/store.titleTag.title",
+  "admin/store.metaTagDescription.title": "admin/store.metaTagDescription.title",
+  "admin/store.metaTagRobots.title": "admin/store.metaTagRobots.title",
   "admin/store.metaTagRobots.description": "admin/store.metaTagRobots.description",
   "admin/store.faviconLinks.title": "admin/store.faviconLinks.title",
   "admin/store.faviconLinks.rel.title": "admin/store.faviconLinks.rel.title",
@@ -550,5 +550,5 @@
   "admin/store.advancedSettings.enableLazyFooter.title": "admin/store.advancedSettings.enableLazyFooter.title",
   "admin/store.advancedSettings.enableLazyFooter.description": "admin/store.advancedSettings.enableLazyFooter.description",
   "admin/store.advancedSettings.enableLazyFold.title": "admin/store.advancedSettings.enableLazyFold.title",
-  "admin/store.advancedSettings.enableLazyFold.description":"admin/store.advancedSettings.enableLazyFold.description"
+  "admin/store.advancedSettings.enableLazyFold.description": "admin/store.advancedSettings.enableLazyFold.description"
 }
