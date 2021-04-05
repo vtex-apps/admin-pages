@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [4.39.0] - 2021-04-05
 ### Added
 - File format disclaimer to both iOS and Android icons uploaded via the PWA section inside of Store settings page.
 
