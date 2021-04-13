@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.40.0] - 2021-04-13
+
 ### Fixed
 - File format disclaimer to both iOS and Android icons uploaded via the PWA section inside of Store settings page not added in some languages.
 
