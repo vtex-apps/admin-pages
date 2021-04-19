@@ -26,21 +26,38 @@ const LocaleSelector: React.FC<Props> = ({
 
   const handleChange = React.useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setLocale(e.target.value)
-
-      emitter.emit('localesChanged', e.target.value, null, () => {
-        if (editor.iframeWindow) {
-          const searchParams = new URLSearchParams(
-            editor.iframeWindow.location.search
-          )
-
-          const bindingQueryString = searchParams.get('__bindingAddress')
-
-          editor.iframeWindow.location.search = `__bindingAddress=${bindingQueryString}&__localeAddress=${e.target.value}&__siteEditor=true`
-        }
-      })
-
       editor.setMode('disabled')
+
+      setLocale(e?.target?.value)
+
+      emitter.emit(
+        'localesChanged',
+        e?.target?.value,
+        null,
+        (locale: string) => {
+          let bindingQueryString
+
+          if (editor.iframeWindow) {
+            const searchParams = new URLSearchParams(
+              editor?.iframeWindow?.location.search
+            )
+
+            const bindingAddress = searchParams.get('__bindingAddress')
+
+            if (bindingAddress) {
+              bindingQueryString = `__bindingAddress=${decodeURIComponent(
+                bindingAddress
+              )}`
+            }
+
+            if (e?.target?.value) {
+              editor.iframeWindow.location.search = `${bindingQueryString}&__locale=${e.target.value}&__siteEditor=true`
+            } else {
+              editor.iframeWindow.location.search = `${bindingQueryString}&__locale=${locale}&__siteEditor=true`
+            }
+          }
+        }
+      )
     },
     [emitter]
   )

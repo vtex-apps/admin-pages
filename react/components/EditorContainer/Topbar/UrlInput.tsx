@@ -13,7 +13,7 @@ const UrlInput = () => {
     const SEARCH_QUERIES_TO_HIDE = [
       '__siteEditor',
       '__bindingAddress',
-      '__localeAddress',
+      '__locale',
     ]
 
     SEARCH_QUERIES_TO_HIDE.forEach(query => {
@@ -21,7 +21,7 @@ const UrlInput = () => {
     })
 
     if (searchParams.toString().length) {
-      return pathname + `?${searchParams.toString()}`
+      return pathname + decodeURIComponent(`?${searchParams.toString()}`)
     }
 
     return pathname
