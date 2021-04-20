@@ -38,8 +38,6 @@ const UrlInput = () => {
 
   React.useEffect(() => {
     setUrl(urlPath)
-
-    if (editor.mode !== 'layout') editor.setMode('layout')
   }, [urlPath])
 
   const onEnter = (

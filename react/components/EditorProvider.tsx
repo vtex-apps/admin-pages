@@ -306,7 +306,7 @@ class EditorProvider extends Component<Props, State> {
   }
 
   public handleSetMode = (mode: EditorMode) => {
-    this.setState({ mode, editMode: mode === 'content' ? true : false })
+    this.setState({ mode, editMode: mode === 'content' ? false : true })
   }
 
   public handleChangeIframeUrl = (url: string) => {
