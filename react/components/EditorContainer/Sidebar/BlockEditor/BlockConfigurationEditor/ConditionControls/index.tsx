@@ -16,6 +16,7 @@ interface Props {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   pageContext: RenderRuntime['route']['pageContext']
+  contentStatusFromRuntime: boolean
 }
 
 class ConditionControls extends PureComponent<Props> {
@@ -23,7 +24,12 @@ class ConditionControls extends PureComponent<Props> {
     this.props.isSitewide || isUnidentifiedPageContext(this.props.pageContext)
 
   public render() {
-    const { condition, isSitewide, pageContext } = this.props
+    const {
+      condition,
+      isSitewide,
+      pageContext,
+      contentStatusFromRuntime,
+    } = this.props
 
     const scope = isSitewide
       ? 'sitewide'
@@ -52,10 +58,12 @@ class ConditionControls extends PureComponent<Props> {
 
           <Separator />
 
-          <Scheduler
-            onConditionUpdate={this.handleDateChange}
-            initialValues={this.getDatesInitialValues()}
-          />
+          {!contentStatusFromRuntime && (
+            <Scheduler
+              onConditionUpdate={this.handleDateChange}
+              initialValues={this.getDatesInitialValues()}
+            />
+          )}
         </div>
       </Fragment>
     )
@@ -120,8 +128,9 @@ class ConditionControls extends PureComponent<Props> {
   private handleScopeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { condition, onConditionChange } = this.props
 
-    const newPageContext = this.getPageContextFromScope(event.target
-      .value as ConfigurationScope)
+    const newPageContext = this.getPageContextFromScope(
+      event.target.value as ConfigurationScope
+    )
 
     if (
       newPageContext.id !== condition.pageContext.id ||

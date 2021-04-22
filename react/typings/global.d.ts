@@ -263,6 +263,7 @@ declare global {
   }
 
   interface ExtensionConfiguration {
+    isActive?: boolean
     condition: {
       allMatches: boolean
       id: string

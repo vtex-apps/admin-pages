@@ -34,11 +34,13 @@ export interface UseFormHandlersParams {
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState
+  contentStatusFromRuntime?: boolean
 }
 
 export type UseFormHandlers = (
   params: UseFormHandlersParams
 ) => {
+  handleStatusChange: () => void
   handleConditionChange: (changes: Partial<FormState['condition']>) => void
   handleConfigurationCreate: () => ReturnType<
     ReturnType<UseFormHandlers>['handleInactiveConfigurationOpen']

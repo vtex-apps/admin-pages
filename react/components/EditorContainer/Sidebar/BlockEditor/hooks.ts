@@ -63,10 +63,27 @@ export const useFormHandlers: UseFormHandlers = ({
   setState,
   showToast,
   state,
+  contentStatusFromRuntime,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
+
+  const handleStatusChange = () => {
+    const isContentActive =
+      state.status !== undefined
+        ? state.status === 'active'
+        : contentStatusFromRuntime
+
+    setState({
+      ...state,
+      status: isContentActive ? 'inactive' : 'active',
+    })
+
+    if (!formMeta.getWasModified()) {
+      formMeta.setWasModified(true)
+    }
+  }
 
   const handleConditionChange = useCallback(
     (changes: Partial<typeof state['condition']>) => {
@@ -133,12 +150,20 @@ export const useFormHandlers: UseFormHandlers = ({
     const contentId =
       state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
 
+    const isActive =
+      state.status !== undefined
+        ? state.status === 'active'
+        : contentStatusFromRuntime
+
+    const isDefaultContent = state.origin
+
     const configuration = {
+      ...(isActive || isDefaultContent ? { isActive: true } : {}),
       condition: state.condition,
       contentId,
       contentJSON: JSON.stringify(content),
       label: state.label || null,
-      origin: state.origin || null,
+      origin: isDefaultContent || null,
     }
 
     const blockId = path<string>(
@@ -192,6 +217,7 @@ export const useFormHandlers: UseFormHandlers = ({
     modal,
     saveContent,
     showToast,
+    state.status,
     state.condition,
     state.contentId,
     state.formData,
@@ -376,6 +402,7 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [editor, formMeta, iframeRuntime, intl, modal, setState, state.content])
 
   return {
+    handleStatusChange,
     handleConditionChange,
     handleConfigurationCreate,
     handleConfigurationOpen,

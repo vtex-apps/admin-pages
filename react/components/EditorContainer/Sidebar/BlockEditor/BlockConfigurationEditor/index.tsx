@@ -3,7 +3,7 @@ import { JSONSchema6 } from 'json-schema'
 import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
+import { Button, ToastConsumerFunctions, Toggle } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditableText from '../../../EditableText'
@@ -19,6 +19,7 @@ import styles from './styles.css'
 import { getSchemas } from './utils'
 
 interface Props {
+  status?: string
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: FormDataContainer
@@ -29,6 +30,7 @@ interface Props {
   label?: string | null
   onBack: () => void
   onChange: FormProps<FormDataContainer>['onChange']
+  onStatusChange: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
@@ -38,6 +40,7 @@ interface Props {
   onSave: () => void
   showToast: ToastConsumerFunctions['showToast']
   title: ComponentSchema['title']
+  contentStatusFromRuntime: boolean
 }
 
 const messages = defineMessages({
@@ -46,9 +49,16 @@ const messages = defineMessages({
       'Could not identify {entity}. The configuration will be set to "{template}".',
     id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
+  activationToggleChecked: {
+    id: 'admin/pages.editor.components.status.activationToggle.checked',
+  },
+  activationToggleUnchecked: {
+    id: 'admin/pages.editor.components.status.activationToggle.unchecked',
+  },
 })
 
 const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
+  status,
   condition,
   contentSchema,
   data,
@@ -59,14 +69,18 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   label,
   onBack,
   onChange,
+  onStatusChange,
   onConditionChange,
   onLabelChange,
   onListOpen,
   onSave,
   showToast,
   title,
+  contentStatusFromRuntime,
 }) => {
   const intl = useIntl()
+  const statusToggleChecked =
+    status !== undefined ? status === 'active' : contentStatusFromRuntime
 
   React.useEffect(() => {
     const { pageContext } = iframeRuntime.route
@@ -209,8 +223,31 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               isSitewide={isSitewide}
               onConditionChange={onConditionChange}
               pageContext={iframeRuntime.route.pageContext}
+              contentStatusFromRuntime={contentStatusFromRuntime}
             />
           )}
+
+        {isContent && !isDefaultContent && (
+          <div className="mt9 ph5">
+            <>
+              <div className="f4">
+                <FormattedMessage id="admin/pages.editor.components.status.title"></FormattedMessage>
+              </div>
+
+              <div className="mv7">
+                <Toggle
+                  label={statusToggleChecked ? 'Activated' : 'Desactivated'}
+                  semantic
+                  disabled={
+                    contentStatusFromRuntime || condition?.statements.length
+                  }
+                  checked={statusToggleChecked}
+                  onChange={() => onStatusChange()}
+                />
+              </div>
+            </>
+          </div>
+        )}
       </div>
 
       <div
