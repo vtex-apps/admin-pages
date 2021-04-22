@@ -36,7 +36,9 @@ const StoreIframe: React.FunctionComponent<Props> = ({ path }) => {
     src += `${getJoiner(src)}__bindingAddress=${binding.canonicalBaseAddress}`
   }
 
-  src += `${getJoiner(src)}__siteEditor`
+  if (!src.includes('__siteEditor')) {
+    src += `${getJoiner(src)}__siteEditor=true`
+  }
 
   return (
     <iframe

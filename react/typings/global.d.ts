@@ -170,7 +170,7 @@ declare global {
 
   type ConfigurationDevice = 'any' | 'desktop' | 'mobile'
 
-  type EditorMode = 'content' | 'layout'
+  type EditorMode = 'content' | 'layout' | 'disabled'
 
   interface EditorConditionSection {
     activeConditions: string[]

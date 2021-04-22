@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Block selector not working after a locale change.
+
+### Added
+- Block selector status(wait).
+
+### Changed
+- Hides query strings from site editor top bar.
+
 ## [4.40.0] - 2021-04-13
 
 ### Fixed

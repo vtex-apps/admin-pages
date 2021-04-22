@@ -96,8 +96,10 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
         if (newBinding && editor.iframeWindow) {
           setBinding(newBinding)
 
-          editor.iframeWindow.location.search = `__bindingAddress=${newBinding.canonicalBaseAddress}&__siteEditor`
+          editor.iframeWindow.location.search = `__bindingAddress=${newBinding.canonicalBaseAddress}&__siteEditor=true`
         }
+
+        editor.setMode('disabled')
       }
     },
     [bindings, setBinding, editor.iframeWindow]
