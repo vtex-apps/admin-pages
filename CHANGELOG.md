@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.40.1] - 2021-04-22
+
 ### Fixed
 - Block selector not working after a locale change.
 
