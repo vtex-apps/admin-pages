@@ -50,6 +50,10 @@
     "titleId": "admin/appframe.navigation.contentManagement",
     "subSectionItems": [
       {
+        "position": {
+          "index": 0,
+          "operation": "add"
+        },
         "isNew": true,
         "labelId": "admin/pages.admin-menu-button.site-editor",
         "path": "/admin/cms/site-editor"
