@@ -1,11 +1,15 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react'
-import { Button, Modal, ToastConsumer } from 'vtex.styleguide'
-import BindingSelector, { BindingSelectorState, BindingSelectorItem } from './BindingSelector'
+import { Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
+import BindingSelector, {
+  BindingSelectorState,
+  BindingSelectorItem,
+} from './BindingSelector'
 import { pick } from 'ramda'
 import { withBindingsContext } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
-import BetaAlert from './BetaAlert'
 import { Binding } from '../typings'
+import ModalBottomBar from './ModalBottomBar'
+import { useIntl } from 'react-intl'
 
 interface SaveRouteVariables {
   route: Route
@@ -16,13 +20,14 @@ type MutationArgs<T> = {
 }
 
 interface CopyBindingVariables {
-  from: string,
-  to: string,
-  template: string,
-  context: PageContext,
+  from: string
+  to: string
+  template: string
+  context: PageContext
 }
 
 interface Props {
+  iframeRuntime: RenderContext
   currentBinding: Binding
   isOpen?: boolean
   onClose: () => void
@@ -32,7 +37,7 @@ interface Props {
   error?: any
   state: BindingSelectorState
   dispatch: (action: any) => any
-  routeInfo: Route,
+  routeInfo: Route
   pageContext: PageContext
   refetch: () => void
 }
@@ -75,8 +80,8 @@ const copyBindingsSanityCheck = (variables: any) => {
   return true
 }
 
-
-const BindingCloningModal: FunctionComponent<Props> = ({
+const LocaleCloningModal: FunctionComponent<Props> = ({
+  iframeRuntime,
   currentBinding,
   isOpen,
   onClose,
@@ -90,20 +95,26 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   dispatch,
   refetch,
   routeInfo,
-  pageContext
+  pageContext,
 }) => {
   const {
     showOverwriteDialog,
     isOverwriteDialogOpen,
     hideOverwriteDialog,
     onOverwriteCancel,
-    onOverwriteConfirm
+    onOverwriteConfirm,
   } = useOverwriteDialogState()
+  const intl = useIntl()
+  const currentLocale = iframeRuntime?.culture.locale
+  const currentLocaleLabel =
+    intl.formatMessage({
+      id: `admin/pages.editor.locale.${currentLocale.split('-')[0]}`,
+    }) + ` (${currentLocale})`
 
   const checkOverwrites = () => {
     return new Promise<void>((resolve, reject) => {
       const checkedItems = state.filter(item => item.checked)
-      const willOverwrite = checkedItems.some(item => item.overwrites)
+      const willOverwrite = checkedItems.some(item => item.overwritesPage)
 
       if (!willOverwrite) {
         resolve()
@@ -122,7 +133,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   const wasOpen = useRef(true)
   useEffect(() => {
     if (!wasOpen.current && isOpen) {
-      refetch()
+      refetch && refetch()
       dispatch({ type: 'uncheck-all' })
       wasOpen.current = false
     }
@@ -134,6 +145,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
 
   const applyChanges = async () => {
     const checkedItems = state.filter(item => item.checked)
+
     for (const item of checkedItems) {
       try {
         await saveItem(item)
@@ -146,28 +158,67 @@ const BindingCloningModal: FunctionComponent<Props> = ({
     return Promise.resolve()
   }
 
+  type ToastArgs = {
+    message: string
+    duration?: any
+    [key: string]: any
+  }
+
+  const onConfirm = (showToast: (args: ToastArgs) => void) => {
+    checkOverwrites()
+      .then(() => {
+        // TODO: i18n. also better messages
+        showToast({ message: 'Saving...', duration: Infinity })
+        applyChanges()
+          .then(() => {
+            // See comment below on the catch block
+            setTimeout(() => {
+              showToast({ message: 'Done!' })
+            }, 500)
+          })
+          .catch(() => {
+            // There is a bug with the Toast component, where
+            // if you call two toasts on rapid succession,
+            // the second one will be ignored. This timeout
+            // gets around this issue, which happens if the error
+            // is immediate
+            setTimeout(() => {
+              showToast({ message: 'An error has occourred. Please try again' })
+            }, 500)
+          })
+
+        onClose()
+      })
+      .catch(() => {
+        //  not an error, the user has just refused to overwrite
+      })
+  }
+
   const saveItem = (item: BindingSelectorItem) =>
     new Promise<void>(async (resolve, reject) => {
-      if (!item.overwrites) {
+      if (!item.overwritesPage) {
         try {
           const saveRouteVariables = {
             route: {
-              ...pick([
-                'auth',
-                'blockId',
-                'context',
-                'declarer',
-                'domain',
-                'interfaceId',
-                'path',
-                'routeId',
-                'pages',
-                'title',
-                'metaTags',
-              ], routeInfo),
+              ...pick(
+                [
+                  'auth',
+                  'blockId',
+                  'context',
+                  'declarer',
+                  'domain',
+                  'interfaceId',
+                  'path',
+                  'routeId',
+                  'pages',
+                  'title',
+                  'metaTags',
+                ],
+                routeInfo
+              ),
               dataSource: 'vtex.rewriter',
               bindingId: item.id,
-            }
+            },
           }
 
           const copyBindingsVariables = {
@@ -186,11 +237,11 @@ const BindingCloningModal: FunctionComponent<Props> = ({
           }
 
           await saveRoute({
-            variables: saveRouteVariables
+            variables: saveRouteVariables,
           })
 
           await copyBindings({
-            variables: copyBindingsVariables
+            variables: copyBindingsVariables,
           })
 
           // TODO: check result of mutations for success or error
@@ -214,7 +265,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
           }
 
           await copyBindings({
-            variables: copyBindingsVariables
+            variables: copyBindingsVariables,
           })
           // TODO: check result of mutation for success or error
           resolve()
@@ -229,50 +280,21 @@ const BindingCloningModal: FunctionComponent<Props> = ({
     <>
       <ToastConsumer>
         {({ showToast }) => (
-          <Modal isOpen={isOpen} onClose={onClose} bottomBar={(
-            <div className="flex justify-end">
-              <span className="mr4">
-                {/* TODO: i18n */}
-                <Button onClick={() => onClose()} variation="secondary">
-                  Cancel
-                </Button>
-              </span>
-              <Button onClick={() => {
-                checkOverwrites().then(() => {
-                  // TODO: i18n. also better messages
-                  showToast({ message: 'Saving...', duration: Infinity })
-                  applyChanges()
-                    .then(() => {
-                      // See comment below on the catch block
-                      setTimeout(() => {
-                        showToast('Done!')
-                      }, 500)
-                    })
-                    .catch(() => {
-                      // There is a bug with the Toast component, where
-                      // if you call two toasts on rapid succession,
-                      // the second one will be ignored. This timeout
-                      // gets around this issue, which happens if the error
-                      // is immediate
-                      setTimeout(() => {
-                        showToast('An error has occourred. Please try again')
-                      }, 500)
-                    })
-                  onClose()
-                }).catch(() => {
-                  //  not an error, the user has just refused to overwrite
-                })
-              }}>Confirm</Button>
-              {/* TODO: i18n */}
-            </div>
-          )}>
+          <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            bottomBar={
+              <ModalBottomBar
+                onConfirm={() => onConfirm(showToast)}
+                onCancel={onClose}
+              />
+            }
+          >
             {(() => {
               if (loading) {
-                // TODO: better spinner
                 return (
-                  <div>
-                    <BetaAlert />
-                    <div>Loading...</div>
+                  <div className="pv7">
+                    <Spinner />
                   </div>
                 )
               }
@@ -281,7 +303,6 @@ const BindingCloningModal: FunctionComponent<Props> = ({
               if (error) {
                 return (
                   <div>
-                    <BetaAlert />
                     <div>Error: {JSON.stringify(error)}</div>
                   </div>
                 )
@@ -290,11 +311,22 @@ const BindingCloningModal: FunctionComponent<Props> = ({
               // TODO: i18n
               return (
                 <div className="mb6">
-                  <h3>Duplicate to other bindings</h3>
-                  <BetaAlert />
-                  <div className="f5 mb5">
-                  Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.
-                  </div>
+                  <h3 className="t-heading-3 near-black fw6 mb7 mt0">
+                    Duplicate to other bindings
+                  </h3>
+
+                  <p className="f5 near-black mb5">
+                    Please choose to which bindings the content will be
+                    duplicated from <strong>{currentLocaleLabel}</strong>:
+                  </p>
+
+                  <p className="mid-gray mb7">
+                    If the page doesn't exist in a binding, a new one will be
+                    created, and metadata (such as SEO information) will also be
+                    copied from the original locale{' '}
+                    <strong>{currentLocaleLabel}</strong> to all locales of that
+                    binding.
+                  </p>
                   <BindingSelector
                     reducer={[state, dispatch]}
                     pathId={routeInfo?.path}
@@ -305,7 +337,9 @@ const BindingCloningModal: FunctionComponent<Props> = ({
           </Modal>
         )}
       </ToastConsumer>
+
       <OverwriteDialog
+        currentLocaleLabel={currentLocaleLabel}
         state={state}
         pathId={routeInfo?.path}
         isOpen={isOverwriteDialogOpen}
@@ -317,4 +351,4 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   )
 }
 
-export default withBindingsContext<Props>(BindingCloningModal)
+export default withBindingsContext<Props>(LocaleCloningModal)

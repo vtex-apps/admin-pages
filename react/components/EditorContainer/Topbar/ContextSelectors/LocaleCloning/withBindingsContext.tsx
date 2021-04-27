@@ -1,58 +1,64 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 import { compose, graphql, RefetchQueriesProviderFn } from 'react-apollo'
 import GetRouteQuery from '../graphql/GetRoute.graphql'
-import { BindingSelectorItem, useBindingSelectorReducer } from './BindingSelector'
+import {
+  BindingSelectorItem,
+  useBindingSelectorReducer,
+} from './BindingSelector'
 import SaveRouteMutation from '../graphql/SaveRoute.graphql'
 import CopyBindingsMutation from '../graphql/CopyBindings.graphql'
-import { Binding } from '../typings'
+import { Binding, Locale } from '../typings'
+import { useIntl } from 'react-intl'
 
 const withBindingsQueries = compose(
   graphql(GetRouteQuery, {
-    name: "routeInfoQuery",
-    options: ({ routeId } : { routeId: string }) => ({
+    name: 'routeQuery',
+    options: ({ routeId }: { routeId: string }) => ({
       notifyOnNetworkStatusChange: true,
-      variables: { routeId }
+      variables: { routeId },
     }),
   }),
-  graphql(SaveRouteMutation, { name: "saveRoute" }),
-  graphql(CopyBindingsMutation, { name: "copyBindings" })
+  graphql(SaveRouteMutation, { name: 'saveRoute' }),
+  graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
 
 // TODO: use the proper React context API
 // It was kept this way due to a bug that was
 // introduced when switching to the Context API,
 // which caused the modal to blink.
-const BindingsContext = withBindingsQueries(({
-  bindings,
-  routeInfoQuery,
-  currentBinding,
-  children,
-  ...props
-} : {
-  bindings: Binding[]
-  routeInfoQuery: any
-  currentBinding: Binding
-  children: (...args: any) => ReactNode
-}) => {
-  const { loading, error, route, refetch } = routeInfoQuery
-
-  if (loading) {
-    return children({ loading: true })
-  }
-
-  if (error || !route) {
-    return children({ error: error ?? {} })
-  }
-
-  return BindingFormatter({
-    children,
+const BindingsContext = withBindingsQueries(
+  ({
     bindings,
+    routeQuery,
     currentBinding,
-    routeInfo: route,
-    refetch,
-    ...props,
-  })
-})
+    children,
+    ...props
+  }: {
+    bindings: Binding[]
+    routeQuery: any
+    currentBinding: Binding
+    children: (...args: any) => ReactNode
+  }) => {
+    const { loading, error, route: currentRouteInfo, refetch } = routeQuery
+
+    if (loading) {
+      return children({ loading: true })
+    }
+
+    if (error || !currentRouteInfo) {
+      return children({ error: error ?? {} })
+    }
+
+    return BindingFormatter({
+      children,
+      bindings,
+      currentBinding,
+      currentRouteInfo,
+      refetch,
+      ...props,
+    })
+  }
+)
 
 // TODO: use the proper React context API
 // It was kept this way due to a bug that was
@@ -62,54 +68,67 @@ const BindingFormatter = ({
   children,
   bindings,
   currentBinding,
-  routeInfo,
+  currentRouteInfo,
   refetch,
   ...props
 }: {
   bindings: Binding[]
   currentBinding: Binding
-  routeInfo: Route
-  refetch: RefetchQueriesProviderFn,
+  currentRouteInfo: Route
+  refetch: RefetchQueriesProviderFn
   children: (...args: any) => ReactNode
 }) => {
+  const intl = useIntl()
+
   const formattedBindings = bindings.map((binding: any) => ({
     label: binding.canonicalBaseAddress,
     id: binding.id,
-    supportedLocales: binding.supportedLocales,
+    supportedLocales: binding.supportedLocales.map((locale: Locale) => {
+      return {
+        label:
+          intl.formatMessage({
+            id: `admin/pages.editor.locale.${locale.split('-')[0]}`,
+          }) + ` (${locale})`,
+        checked: false,
+      }
+    }),
     checked: false,
-    overwrites: false,
+    overwritesPage: false,
+    overwritesTemplate: false,
     isCurrent: currentBinding.id === binding.id,
   }))
 
   // Mark items as conflicting or not--that is, if saving on a
   // binding will overwrite a page present there or not
-  const formattedState = formattedBindings.map((item: any) => {
-    if (item.isCurrent) {
-      return item
+  const formattedState = formattedBindings.map((binding: any) => {
+    if (binding.isCurrent) {
+      return binding
     }
 
     // If the page has undefined binding, it is present on all bindings
-    if (!routeInfo.binding) {
+    if (!currentRouteInfo.binding) {
       return {
-        ...item,
-        overwrites: true,
+        ...binding,
+        overwritesPage: true,
       }
     }
 
-    if (!routeInfo.conflicts) {
-      return item
+    if (!currentRouteInfo.conflicts) {
+      return binding
     }
 
-    if (routeInfo.conflicts.find(
-      (conflict: any) => item.id === conflict.binding)
-    ) {
+    const currentConflict = currentRouteInfo.conflicts.find(
+      (conflict: any) => binding.id === conflict.binding
+    )
+    if (currentConflict) {
       return {
-        ...item,
-        overwrites: true,
+        ...binding,
+        overwritesPage: true,
+        overwritesTemplate: currentConflict.blockId !== binding.blockId,
       }
     }
 
-    return item
+    return binding
   })
 
   const [state, dispatch] = useBindingSelectorReducer(formattedState)
@@ -119,7 +138,7 @@ const BindingFormatter = ({
     dispatch,
     refetch,
     currentBinding,
-    routeInfo,
+    currentRouteInfo,
     ...props,
   })
 }
@@ -140,18 +159,18 @@ const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
   iframeRuntime,
   currentBinding,
   ...props
-} : {
+}: {
   bindings: Binding[]
   currentBinding: Binding
   iframeRuntime: RenderContext
-} &
-  Omit<T, keyof BindingsContext>) => {
+} & Omit<T, keyof BindingsContext>) => {
   const route = iframeRuntime?.route
   const { id: routeId, pageContext } = route ?? {}
 
   return (
     <BindingsContext
       currentBinding={currentBinding}
+      iframeRuntime={iframeRuntime}
       bindings={bindings}
       routeId={routeId}
       key={routeId}

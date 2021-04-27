@@ -1,0 +1,7 @@
+.checkBoxContainer > div {
+  align-items: center !important;
+}
+
+.localesList label {
+  color: #727273 !important;
+}

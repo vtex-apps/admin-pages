@@ -1,0 +1,8 @@
+query GetRouteV2($routeId: String!, $domain: String) {
+  route {
+    routeByBinding {
+      binding
+      blockId
+    }
+  }
+}

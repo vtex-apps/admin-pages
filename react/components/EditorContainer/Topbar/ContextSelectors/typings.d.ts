@@ -9,11 +9,11 @@ export type DropdownValue = string
 
 type BaseAddress = string
 
-type Locale = string
+export type Locale = string
 
 interface Binding {
-  canonicalBaseAddress: string
   id: string
+  canonicalBaseAddress: string
   supportedLocales: Locale[]
   targetProduct: string
 }
