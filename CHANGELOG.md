@@ -7,24 +7,34 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Position the `Site Editor` as the first item in the `Storefront` section of the admin V4 sidebar.
+
 ## [4.40.1] - 2021-04-22
 
 ### Fixed
+
 - Block selector not working after a locale change.
 
 ### Added
+
 - Block selector status(wait).
 
 ### Changed
+
 - Hides query strings from site editor top bar.
 
 ## [4.40.0] - 2021-04-13
 
 ### Fixed
+
 - File format disclaimer to both iOS and Android icons uploaded via the PWA section inside of Store settings page not added in some languages.
 
 ## [4.39.0] - 2021-04-05
+
 ### Added
+
 - File format disclaimer to both iOS and Android icons uploaded via the PWA section inside of Store settings page.
 
 ## [4.38.1] - 2021-03-17
@@ -33,8 +43,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - I18n En, Es, Pt, Ro and Jp.
 - Context.json with new strings.
-## [4.38.0] - 2021-03-08
 
+## [4.38.0] - 2021-03-08
 
 ### Added
 
@@ -43,20 +53,29 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 
 - I18n Ro.
+
 ## [4.37.0] - 2021-02-09
+
 ### Added
+
 - Support for multi binding for redirect CSV management.
 
 ## [4.36.1] - 2021-02-08
+
 ### Fixed
+
 - Preventing unchanged information to be sent and updated as undefined in `admin-pages\Form\index`
 
 ## [4.36.0] - 2021-02-02
+
 ### Fixed
+
 - Setting `Description` and `Keywords` as editable fields with the same condition as `Title` in `admin-pages`
 
 ## [4.35.0] - 2021-02-02
+
 ### Added
+
 - Adds binding selector for CMS Redirects
 
 ## [4.34.0] - 2021-01-22
@@ -72,11 +91,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Site editor flag in the iframe URL.
 
 ## [4.32.0] - 2021-01-21
+
 ### Added
-- Adds binding selector for CMS Pages 
+
+- Adds binding selector for CMS Pages
 
 ## [4.31.1] - 2021-01-20
+
 ### Fixed
+
 - Sending blockId in `Form index` component even when is not changed to prevent unexpected behaviors
 
 ## [4.31.0] - 2021-01-13
