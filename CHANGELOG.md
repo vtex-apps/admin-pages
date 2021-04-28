@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 
-- Position of the `Site Editor` in the `Storefront` section of the admin V4 sidebar.
+- Position the `Site Editor` as the first item in the `Storefront` section of the admin V4 sidebar.
 
 ## [4.40.1] - 2021-04-22
 
