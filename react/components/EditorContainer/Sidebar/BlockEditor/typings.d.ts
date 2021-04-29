@@ -4,8 +4,7 @@ import { FormProps } from 'react-jsonschema-form'
 import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { GetDefaultConditionParams } from '../typings'
-
-import { State as FormState } from './index'
+import { ConfigurationStatus, State as FormState } from './index'
 
 export type GetDefaultConfiguration = (
   params: GetDefaultConditionParams
@@ -34,7 +33,7 @@ export interface UseFormHandlersParams {
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState
-  contentStatusFromRuntime?: boolean
+  extensionStatus?: ConfigurationStatus
 }
 
 export type UseFormHandlers = (

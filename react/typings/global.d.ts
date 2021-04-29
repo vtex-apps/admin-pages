@@ -1,6 +1,7 @@
 import { DocumentNode } from 'graphql'
 import { JSONSchema6 } from 'json-schema'
 
+import { ConfigurationStatus } from '../components/EditorContainer/Sidebar/BlockEditor/typings'
 import { State as EditorProviderState } from '../components/EditorProvider'
 import { State as HighlightOverlayState } from '../HighlightOverlay'
 
@@ -261,9 +262,8 @@ declare global {
     subject: ConditionSubject
     verb: string
   }
-
   interface ExtensionConfiguration {
-    isActive?: boolean
+    status?: ConfigurationStatus
     condition: {
       allMatches: boolean
       id: string

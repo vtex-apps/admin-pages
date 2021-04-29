@@ -7,7 +7,6 @@ import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
 import Transitions from '../Transitions'
 import { EditingState, FormDataContainer } from '../typings'
-
 import BlockConfigurationEditor from './BlockConfigurationEditor'
 import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
@@ -18,10 +17,16 @@ type Props = Omit<UseFormHandlersParams, 'setState' | 'state'> & {
   initialEditingState?: EditingState
 }
 
+export enum ConfigurationStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  SCHEDULED = 'SCHEDULED',
+}
+
 export interface State extends EditingState {
   mode: 'editingActive' | 'editingInactive' | 'list'
   prevMode?: State['mode']
-  status?: string
+  status?: ConfigurationStatus
 }
 
 const BlockEditor = ({
@@ -74,7 +79,10 @@ const BlockEditor = ({
     config => state.contentId === config.contentId
   )
 
-  const contentStatusFromRuntime = currentContent?.contentId === activeContentId
+  const extensionStatus =
+    currentContent?.contentId === activeContentId
+      ? ConfigurationStatus.ACTIVE
+      : ConfigurationStatus.INACTIVE
 
   const {
     handleStatusChange,
@@ -94,7 +102,7 @@ const BlockEditor = ({
     setState,
     showToast,
     state,
-    contentStatusFromRuntime,
+    extensionStatus,
   })
 
   return (
@@ -127,7 +135,7 @@ const BlockEditor = ({
           onSave={handleFormSave}
           showToast={showToast}
           title={editor.blockData.title}
-          contentStatusFromRuntime={contentStatusFromRuntime}
+          extensionStatus={extensionStatus}
         />
       </CSSTransition>
 

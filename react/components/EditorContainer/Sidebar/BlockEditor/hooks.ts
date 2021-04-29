@@ -2,6 +2,7 @@ import { equals, path } from 'ramda'
 import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
 
+import { ConfigurationStatus } from '.'
 import {
   getActiveContentId,
   getSchemaPropsOrContent,
@@ -63,21 +64,21 @@ export const useFormHandlers: UseFormHandlers = ({
   setState,
   showToast,
   state,
-  contentStatusFromRuntime,
+  extensionStatus,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
   const handleStatusChange = () => {
-    const isContentActive =
-      state.status !== undefined
-        ? state.status === 'active'
-        : contentStatusFromRuntime
+    const status = state.status ?? extensionStatus
 
     setState({
       ...state,
-      status: isContentActive ? 'inactive' : 'active',
+      status:
+        status === ConfigurationStatus.ACTIVE
+          ? ConfigurationStatus.INACTIVE
+          : ConfigurationStatus.ACTIVE,
     })
 
     if (!formMeta.getWasModified()) {
@@ -146,24 +147,24 @@ export const useFormHandlers: UseFormHandlers = ({
       propsOrContent: state.formData,
       schema: editor.blockData.componentSchema,
     })
-
     const contentId =
       state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
 
-    const isActive =
-      state.status !== undefined
-        ? state.status === 'active'
-        : contentStatusFromRuntime
+    const status = state.status ?? extensionStatus
 
-    const isDefaultContent = state.origin
+    const isScheduled = state.condition?.statements.length
+    const isActive = status === ConfigurationStatus.ACTIVE
+    const isDefault = state.origin
+
+    const shouldSendStatus = isActive || isDefault || isScheduled
 
     const configuration = {
-      ...(isActive || isDefaultContent ? { isActive: true } : {}),
+      ...(shouldSendStatus ? { status } : {}),
       condition: state.condition,
       contentId,
       contentJSON: JSON.stringify(content),
       label: state.label || null,
-      origin: isDefaultContent || null,
+      origin: isDefault || null,
     }
 
     const blockId = path<string>(
@@ -210,19 +211,20 @@ export const useFormHandlers: UseFormHandlers = ({
     }
   }, [
     editor,
-    formMeta,
-    handleFormClose,
-    iframeRuntime,
-    intl,
-    modal,
-    saveContent,
-    showToast,
+    state.formData,
+    state.contentId,
     state.status,
     state.condition,
-    state.contentId,
-    state.formData,
-    state.label,
     state.origin,
+    state.label,
+    extensionStatus,
+    iframeRuntime,
+    saveContent,
+    formMeta,
+    handleFormClose,
+    modal,
+    showToast,
+    intl,
   ])
 
   const handleFormBack = useCallback(() => {

@@ -1,9 +1,9 @@
 import React, { Fragment, PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 
+import { ConfigurationStatus } from '../..'
 import { formatStatements } from '../../../../../../utils/conditions'
 import { isUnidentifiedPageContext } from '../../../utils'
-
 import Scheduler from './Scheduler'
 import ScopeSelector from './ScopeSelector'
 import Separator from './Separator'
@@ -16,7 +16,7 @@ interface Props {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   pageContext: RenderRuntime['route']['pageContext']
-  contentStatusFromRuntime: boolean
+  extensionStatus: ConfigurationStatus
 }
 
 class ConditionControls extends PureComponent<Props> {
@@ -24,12 +24,7 @@ class ConditionControls extends PureComponent<Props> {
     this.props.isSitewide || isUnidentifiedPageContext(this.props.pageContext)
 
   public render() {
-    const {
-      condition,
-      isSitewide,
-      pageContext,
-      contentStatusFromRuntime,
-    } = this.props
+    const { condition, isSitewide, pageContext, extensionStatus } = this.props
 
     const scope = isSitewide
       ? 'sitewide'
@@ -47,7 +42,7 @@ class ConditionControls extends PureComponent<Props> {
           )}
         </FormattedMessage>
 
-        <div className="mv7 ph5">
+        <div className="mv5 ph5">
           <ScopeSelector
             isDisabled={this.isScopeDisabled}
             isSitewide={isSitewide}
@@ -58,7 +53,7 @@ class ConditionControls extends PureComponent<Props> {
 
           <Separator />
 
-          {!contentStatusFromRuntime && (
+          {extensionStatus !== ConfigurationStatus.ACTIVE && (
             <Scheduler
               onConditionUpdate={this.handleDateChange}
               initialValues={this.getDatesInitialValues()}

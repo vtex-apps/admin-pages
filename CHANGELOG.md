@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Status toggle for content configurations.
+
 ## [4.45.1] - 2021-09-28
 
 ### Changed
