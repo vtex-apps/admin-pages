@@ -176,7 +176,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
     return defaultContent && defaultContent.contentId === editingContentId
   }, [editor.blockData, editingContentId])
 
-  const getStatusWarning = () => {
+  const getStatusWarningText = () => {
     if (extensionStatus === ConfigurationStatus.ACTIVE) {
       return 'You can only activate content. Choose the one you want to be active and all others will be deactivated.'
     } else if (condition?.statements.length) {
@@ -263,7 +263,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               <div className="mv5">
                 <div className="dib mb6">
                   <IconWarning />
-                  <span className="ml3">{getStatusWarning()}</span>
+                  <span className="ml3">{getStatusWarningText()}</span>
                 </div>
 
                 <Toggle
