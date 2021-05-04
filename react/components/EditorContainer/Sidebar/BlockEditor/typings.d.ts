@@ -33,13 +33,16 @@ export interface UseFormHandlersParams {
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState
-  extensionStatus?: ConfigurationStatus
+  statusFromRuntime?: ConfigurationStatus
 }
 
 export type UseFormHandlers = (
   params: UseFormHandlersParams
 ) => {
   handleStatusChange: () => void
+  handleConfigurationActivate: (
+    configuration: ExtensionConfiguration
+  ) => Promise<void>
   handleConditionChange: (changes: Partial<FormState['condition']>) => void
   handleConfigurationCreate: () => ReturnType<
     ReturnType<UseFormHandlers>['handleInactiveConfigurationOpen']

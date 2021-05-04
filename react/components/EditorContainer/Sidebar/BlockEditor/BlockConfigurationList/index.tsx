@@ -6,7 +6,6 @@ import { useEditorContext } from '../../../../EditorContext'
 import { EditingState } from '../../typings'
 import EditorHeader from '../EditorHeader'
 import { getIsDefaultContent } from '../utils'
-
 import Card from './Card'
 import CreateButton from './CreateButton'
 import { useListHandlers } from './hooks'
@@ -18,6 +17,9 @@ interface Props extends Omit<UseListHandlersParams, 'activeContentId'> {
   onConfigurationCreate: () => void
   onConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onListClose?: () => void
+  onConfigurationActivate: (
+    configuration: ExtensionConfiguration
+  ) => Promise<void>
   onListOpen?: () => void
 }
 
@@ -35,6 +37,7 @@ const BlockConfigurationList: React.FC<Props> = ({
   intl,
   onConfigurationCreate,
   onConfigurationOpen,
+  onConfigurationActivate,
   onListClose,
   onListOpen,
   showToast,
@@ -86,7 +89,8 @@ const BlockConfigurationList: React.FC<Props> = ({
           isDefaultContent={getIsDefaultContent(configuration)}
           isEditing={editingContentId === configuration.contentId}
           key={configuration.contentId || index}
-          onClick={onConfigurationOpen}
+          onConfigurationOpen={onConfigurationOpen}
+          onConfigurationActivate={onConfigurationActivate}
           onDelete={handleConfirmConfigurationDelete}
         />
       ))}

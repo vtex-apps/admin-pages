@@ -64,14 +64,14 @@ export const useFormHandlers: UseFormHandlers = ({
   setState,
   showToast,
   state,
-  extensionStatus,
+  statusFromRuntime,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
 
   const handleStatusChange = () => {
-    const status = state.status ?? extensionStatus
+    const status = state.status ?? statusFromRuntime
 
     setState({
       ...state,
@@ -149,17 +149,27 @@ export const useFormHandlers: UseFormHandlers = ({
     })
     const contentId =
       state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
+    const contentStatus = state.status ?? statusFromRuntime
 
-    const status = state.status ?? extensionStatus
-
+    const hasEndDate = state.condition?.statements?.some(
+      statement => statement.verb === 'to'
+    )
     const isScheduled = state.condition?.statements.length
-    const isActive = status === ConfigurationStatus.ACTIVE
+    const isActive = contentStatus === ConfigurationStatus.ACTIVE
     const isDefault = state.origin
 
-    const shouldSendStatus = isActive || isDefault || isScheduled
+    let newStatus
 
-    const configuration = {
-      ...(shouldSendStatus ? { status } : {}),
+    if (isActive || hasEndDate || isDefault) {
+      newStatus = ConfigurationStatus.ACTIVE
+    } else if (isScheduled) {
+      newStatus = ConfigurationStatus.SCHEDULED
+    } else {
+      newStatus = ConfigurationStatus.INACTIVE
+    }
+
+    const newConfiguration = {
+      status: newStatus,
       condition: state.condition,
       contentId,
       contentJSON: JSON.stringify(content),
@@ -181,7 +191,7 @@ export const useFormHandlers: UseFormHandlers = ({
         variables: {
           bindingId: iframeRuntime.binding?.id,
           blockId,
-          configuration,
+          configuration: newConfiguration,
           lang: iframeRuntime.culture.locale,
           template: editor.blockData.template,
           treePath: editor.blockData.serverTreePath,
@@ -217,7 +227,7 @@ export const useFormHandlers: UseFormHandlers = ({
     state.condition,
     state.origin,
     state.label,
-    extensionStatus,
+    statusFromRuntime,
     iframeRuntime,
     saveContent,
     formMeta,
@@ -269,6 +279,56 @@ export const useFormHandlers: UseFormHandlers = ({
     modal,
     state.content,
   ])
+
+  const handleConfigurationActivate = async (
+    configuration: ExtensionConfiguration
+  ) => {
+    const blockId = path<string>(
+      ['extensions', editor.editTreePath || '', 'blockId'],
+      iframeRuntime
+    )
+
+    let error: Error | undefined
+
+    try {
+      editor.setIsLoading(true)
+
+      await saveContent({
+        variables: {
+          bindingId: iframeRuntime.binding?.id,
+          blockId,
+          configuration: {
+            ...configuration,
+            status: ConfigurationStatus.ACTIVE,
+          },
+          lang: iframeRuntime.culture.locale,
+          template: editor.blockData.template,
+          treePath: editor.blockData.serverTreePath,
+        },
+      })
+    } catch (err) {
+      console.error(err)
+
+      error = err
+
+      editor.setIsLoading(false)
+    } finally {
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+
+      await iframeRuntime.updateRuntime()
+
+      showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage(
+          error ? messages.saveError : messages.saveSuccess
+        ),
+      })
+
+      editor.setIsLoading(false)
+    }
+  }
 
   const handleConfigurationOpen = useCallback(
     async (configuration: ExtensionConfiguration) => {
@@ -408,6 +468,7 @@ export const useFormHandlers: UseFormHandlers = ({
     handleConditionChange,
     handleConfigurationCreate,
     handleConfigurationOpen,
+    handleConfigurationActivate,
     handleFormBack,
     handleFormChange,
     handleFormSave,

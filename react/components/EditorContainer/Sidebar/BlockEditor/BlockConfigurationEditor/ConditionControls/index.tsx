@@ -1,5 +1,4 @@
-import React, { Fragment, PureComponent } from 'react'
-import { FormattedMessage } from 'react-intl'
+import React, { PureComponent } from 'react'
 
 import { ConfigurationStatus } from '../..'
 import { formatStatements } from '../../../../../../utils/conditions'
@@ -16,7 +15,8 @@ interface Props {
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
   pageContext: RenderRuntime['route']['pageContext']
-  extensionStatus: ConfigurationStatus
+  statusFromRuntime: ConfigurationStatus
+  status: ConfigurationStatus
 }
 
 class ConditionControls extends PureComponent<Props> {
@@ -24,7 +24,7 @@ class ConditionControls extends PureComponent<Props> {
     this.props.isSitewide || isUnidentifiedPageContext(this.props.pageContext)
 
   public render() {
-    const { condition, isSitewide, pageContext, extensionStatus } = this.props
+    const { condition, isSitewide, pageContext, status } = this.props
 
     const scope = isSitewide
       ? 'sitewide'
@@ -33,16 +33,14 @@ class ConditionControls extends PureComponent<Props> {
       : 'entity'
 
     return (
-      <Fragment>
-        <FormattedMessage id="admin/pages.editor.components.condition.title">
-          {message => (
-            <div className="mv5 pt5 ph5 bt bw1 b--light-silver flex items-center f4">
-              {message}
-            </div>
-          )}
-        </FormattedMessage>
+      <div className="ph5">
+        <Scheduler
+          status={status}
+          onConditionUpdate={this.handleDateChange}
+          initialValues={this.getDatesInitialValues()}
+        />
 
-        <div className="mv5 ph5">
+        <div className="mv7">
           <ScopeSelector
             isDisabled={this.isScopeDisabled}
             isSitewide={isSitewide}
@@ -52,15 +50,8 @@ class ConditionControls extends PureComponent<Props> {
           />
 
           <Separator />
-
-          {extensionStatus !== ConfigurationStatus.ACTIVE && (
-            <Scheduler
-              onConditionUpdate={this.handleDateChange}
-              initialValues={this.getDatesInitialValues()}
-            />
-          )}
         </div>
-      </Fragment>
+      </div>
     )
   }
 

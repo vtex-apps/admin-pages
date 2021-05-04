@@ -72,7 +72,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
   return (
     <div
       id="sidebar-vtex-editor"
-      className="z-1 h-100 w-100 flex flex-row-reverse"
+      className={'z-1 h-100 w-100 flex flex-row-reverse ' + scrollState}
     >
       <nav
         ref={adminSidebar}

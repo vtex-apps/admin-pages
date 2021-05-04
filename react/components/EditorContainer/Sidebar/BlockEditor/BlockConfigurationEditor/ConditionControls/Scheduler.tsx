@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
 import { withRuntimeContext } from 'vtex.render-runtime'
-import { DatePicker, Toggle } from 'vtex.styleguide'
+import { Checkbox, DatePicker } from 'vtex.styleguide'
 
+import { ConfigurationStatus } from '../..'
 import {
   getFirstTime,
   getLastTime,
@@ -12,13 +13,12 @@ import {
   isLastTime,
   isSameDay,
 } from '../../../../../../utils/date'
-
-import ConditionTitle from './ConditionTitle'
 import Typings from './typings'
 
 interface CustomProps {
   initialValues?: Typings.DateRange
   onConditionUpdate: (dates: Typings.DateRange) => void
+  status: ConfigurationStatus
 }
 
 type Props = CustomProps & InjectedIntlProps & RenderContextProps
@@ -86,14 +86,13 @@ class Scheduler extends Component<Props, State> {
   }
 
   public render() {
-    const { intl, runtime: iframeRuntime } = this.props
+    const { intl, runtime: iframeRuntime, status } = this.props
 
     return (
       <>
-        <ConditionTitle labelId="admin/pages.editor.components.condition.date.title" />
-
-        <Toggle
+        <Checkbox
           checked={this.state.shouldDisplayFrom}
+          disabled={status === ConfigurationStatus.ACTIVE}
           label={intl.formatMessage(messages.toggleStart)}
           onChange={this.handleFromVisibilityToggle}
         />
@@ -120,7 +119,7 @@ class Scheduler extends Component<Props, State> {
 
         <div className="mt6" />
 
-        <Toggle
+        <Checkbox
           checked={this.state.shouldDisplayTo}
           label={intl.formatMessage(messages.toggleEnd)}
           onChange={this.handleToVisibilityToggle}

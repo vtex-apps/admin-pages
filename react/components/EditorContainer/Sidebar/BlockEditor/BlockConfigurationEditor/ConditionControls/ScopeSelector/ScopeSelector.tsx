@@ -3,7 +3,6 @@ import { InjectedIntlProps, injectIntl } from 'react-intl'
 import { RadioGroup } from 'vtex.styleguide'
 
 import ConditionTitle from '../ConditionTitle'
-
 import { getScopeStandardOptions } from './utils'
 
 interface CustomProps {
@@ -46,6 +45,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
             : standardOptions
         }
         value={scope}
+        hideBorder
       />
     </Fragment>
   )

@@ -79,7 +79,7 @@ const BlockEditor = ({
     config => state.contentId === config.contentId
   )
 
-  const extensionStatus =
+  const statusFromRuntime =
     currentContent?.contentId === activeContentId
       ? ConfigurationStatus.ACTIVE
       : ConfigurationStatus.INACTIVE
@@ -89,6 +89,7 @@ const BlockEditor = ({
     handleConditionChange,
     handleConfigurationCreate,
     handleConfigurationOpen,
+    handleConfigurationActivate,
     handleFormBack,
     handleFormChange,
     handleFormSave,
@@ -102,7 +103,7 @@ const BlockEditor = ({
     setState,
     showToast,
     state,
-    extensionStatus,
+    statusFromRuntime,
   })
 
   return (
@@ -114,12 +115,14 @@ const BlockEditor = ({
         unmountOnExit
       >
         <BlockConfigurationEditor
-          status={state?.status}
+          state={state}
+          statusFromRuntime={statusFromRuntime}
           condition={
             (state
               ? state.condition
               : {}) as ExtensionConfiguration['condition']
           }
+          isNew={!currentContent}
           contentSchema={editor.blockData.contentSchema}
           editingContentId={state.contentId}
           data={state.formData as FormDataContainer}
@@ -135,7 +138,6 @@ const BlockEditor = ({
           onSave={handleFormSave}
           showToast={showToast}
           title={editor.blockData.title}
-          extensionStatus={extensionStatus}
         />
       </CSSTransition>
 
@@ -148,6 +150,7 @@ const BlockEditor = ({
             {deleteContent => (
               <BlockConfigurationList
                 deleteContent={deleteContent}
+                onConfigurationActivate={handleConfigurationActivate}
                 editingContentId={state.contentId}
                 iframeRuntime={iframeRuntime}
                 onConfigurationCreate={handleConfigurationCreate}

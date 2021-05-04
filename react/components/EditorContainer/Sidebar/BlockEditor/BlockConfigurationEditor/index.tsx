@@ -7,10 +7,10 @@ import { FormProps } from 'react-jsonschema-form'
 import {
   Button,
   ToastConsumerFunctions,
-  Toggle,
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
   // @ts-ignore
   IconWarning,
+  Checkbox,
 } from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../../EditorContext'
@@ -33,7 +33,7 @@ export enum ConfigurationStatus {
 }
 
 interface Props {
-  status?: string
+  state?: EditingState
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: FormDataContainer
@@ -54,7 +54,7 @@ interface Props {
   onSave: () => void
   showToast: ToastConsumerFunctions['showToast']
   title: ComponentSchema['title']
-  extensionStatus: ConfigurationStatus
+  statusFromRuntime: ConfigurationStatus
 }
 
 const messages = defineMessages({
@@ -63,16 +63,13 @@ const messages = defineMessages({
       'Could not identify {entity}. The configuration will be set to "{template}".',
     id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
-  activationToggleChecked: {
-    id: 'admin/pages.editor.components.status.activationToggle.checked',
-  },
-  activationToggleUnchecked: {
-    id: 'admin/pages.editor.components.status.activationToggle.unchecked',
+  activationLabel: {
+    id: 'admin/pages.editor.components.condition.visibility.activationLabel',
   },
 })
 
 const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
-  status,
+  state,
   condition,
   contentSchema,
   data,
@@ -90,11 +87,9 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   onSave,
   showToast,
   title,
-  extensionStatus,
+  statusFromRuntime,
 }) => {
   const intl = useIntl()
-  const toggleStatus = status ?? extensionStatus
-  const toggleChecked = toggleStatus === ConfigurationStatus.ACTIVE
 
   React.useEffect(() => {
     const { pageContext } = iframeRuntime.route
@@ -176,17 +171,23 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
     return defaultContent && defaultContent.contentId === editingContentId
   }, [editor.blockData, editingContentId])
 
+  const status = state?.status ?? statusFromRuntime
+
+  const hasEndDate = state?.condition?.statements?.some(
+    statement => statement.verb === 'to'
+  )
+
   const getStatusWarningText = () => {
-    if (extensionStatus === ConfigurationStatus.ACTIVE) {
+    if (statusFromRuntime === ConfigurationStatus.ACTIVE) {
       return 'You can only activate content. Choose the one you want to be active and all others will be deactivated.'
-    } else if (condition?.statements.length) {
-      return 'This content will activate automatically on the start date you selected. '
-    } else if (toggleChecked) {
-      return 'If you create this content as active, you will see it in the preview now. Other content will be deactivated.'
+    } else if (state?.status === ConfigurationStatus.ACTIVE) {
+      return 'The current active content will be deactivated.'
     }
 
-    return "If you create this content as inactive, you won't see it in the preview. You will see the currently active content."
+    return
   }
+
+  const statusWarningText = getStatusWarningText()
 
   return (
     <div className="w-100 h-100 absolute flex flex-column">
@@ -199,6 +200,17 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           onListOpen={onListOpen && isRootLevel ? onListOpen : undefined}
           title={componentFormState ? componentFormState.title : title}
         />
+
+        <div className="ma4 mb5">
+          {!isNew && statusFromRuntime !== ConfigurationStatus.ACTIVE && (
+            <p className="pt4 pb4 pl4 pr2 bg-warning--faded lh-copy">
+              <FormattedMessage
+                id="admin/pages.editor.components.status.alert"
+                defaultMessage="This version of the content is not being shown in the preview and to visitors."
+              />
+            </p>
+          )}
+        </div>
 
         <div
           className={classnames(
@@ -239,6 +251,41 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           <div id="form__error-list-template___alert" />
         </div>
 
+        {isContent && !isDefaultContent && (
+          <>
+            <FormattedMessage id="admin/pages.editor.components.condition.title">
+              {message => (
+                <div className="mb5 ph5 pt7 bt bw1 b--light-silver flex items-center f4">
+                  {message}
+                </div>
+              )}
+            </FormattedMessage>
+
+            <div className="ph5 pt5 mb6">
+              <>
+                <Checkbox
+                  checked={status === ConfigurationStatus.ACTIVE || hasEndDate}
+                  id="status"
+                  label={intl.formatMessage(messages.activationLabel)}
+                  disabled={
+                    statusFromRuntime === ConfigurationStatus.ACTIVE ||
+                    condition?.statements.length
+                  }
+                  name="status"
+                  onChange={onStatusChange}
+                  value="status"
+                />
+
+                {statusWarningText && (
+                  <div className="mt3 dib">
+                    <span>{statusWarningText}</span>
+                  </div>
+                )}
+              </>
+            </div>
+          </>
+        )}
+
         {isContent &&
           !isDefaultContent &&
           condition &&
@@ -249,43 +296,10 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               isSitewide={isSitewide}
               onConditionChange={onConditionChange}
               pageContext={iframeRuntime.route.pageContext}
-              extensionStatus={extensionStatus}
+              status={status}
+              statusFromRuntime={statusFromRuntime}
             />
           )}
-
-        {isContent && !isDefaultContent && (
-          <div className="mt9 ph5">
-            <>
-              <div className="f4">
-                <FormattedMessage id="admin/pages.editor.components.status.title"></FormattedMessage>
-              </div>
-
-              <div className="mv5">
-                <div className="dib mb6">
-                  <IconWarning />
-                  <span className="ml3">{getStatusWarningText()}</span>
-                </div>
-
-                <Toggle
-                  label={
-                    toggleChecked ? (
-                      <FormattedMessage id="admin/pages.editor.components.status.activationToggle.checked"></FormattedMessage>
-                    ) : (
-                      <FormattedMessage id="admin/pages.editor.components.status.activationToggle.unchecked"></FormattedMessage>
-                    )
-                  }
-                  semantic
-                  disabled={
-                    extensionStatus === ConfigurationStatus.ACTIVE ||
-                    condition?.statements.length
-                  }
-                  checked={toggleChecked}
-                  onChange={() => onStatusChange()}
-                />
-              </div>
-            </>
-          </div>
-        )}
       </div>
 
       <div
