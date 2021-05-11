@@ -16,6 +16,7 @@ import withStoreSettings, { FormProps } from './components/withStoreSettings'
 import SaveAppSettings from './mutations/SaveAppSettings.graphql'
 import { formatSchema, tryParseJson, removeObjectProperties } from './utils'
 import { CustomWidgetProps } from '../../../form/typings'
+import styles from './styles.css'
 
 interface MutationData {
   message: string
@@ -30,7 +31,7 @@ interface MutationVariables {
 type Props = ChildMutateProps<FormProps, MutationData, MutationVariables>
 
 const CheckboxWidget = (props: CustomWidgetProps) => (
-  <div className="pv4">
+  <div className={`pv4 ${props.disabled ? styles['disabled-toggle'] : ''}`}>
     <Toggle {...props} />
     {props.schema.description && (
       <span className="t-small c-muted-1 pv3 relative">
