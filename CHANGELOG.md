@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Change disabled toggle background.
+
 ## [4.41.0] - 2021-05-03
 
 ### Added
