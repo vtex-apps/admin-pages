@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "Gestion des contenus",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Informations manquantes sur la liaison dans le cadre de la redirection {route}",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Informations inutiles sur la liaison provenant d’une redirection {route}",
+  "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title": "Magasin VTEX",
   "admin/store.storeName.title": "Nom du magasin",
   "admin/store.requiresAuthorization.title": "Active l'activité B2B",

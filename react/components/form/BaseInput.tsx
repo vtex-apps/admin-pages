@@ -17,6 +17,20 @@ interface Props extends CustomWidgetProps {
   }
 }
 
+const ReadOnlyText = (props: CustomWidgetProps) => {
+  const intl = useIntl()
+
+  if (!props.schema.title) {
+    return null
+  }
+
+  return (
+    <div className="pv3 c-on-base t-small mb3">
+      {formatIOMessage({ id: props.schema.title || '', intl })}
+    </div>
+  )
+}
+
 const BaseInput: React.FunctionComponent<Props> = props => {
   const {
     disabled,
@@ -55,6 +69,11 @@ const BaseInput: React.FunctionComponent<Props> = props => {
     },
     [isI18n, onChange]
   )
+
+  if (schemaType === 'text' && schema.format === 'read-only') {
+    return <ReadOnlyText {...props}></ReadOnlyText>
+  }
+
   return (
     <Input
       disabled={disabled || schema.disabled}

@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "Inhoudelijk beheer",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Bindingsinformatie ontbreekt in omleiding {route}",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Onnodige bindende informatie van omleiding {route}",
+  "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title": "VTEX Store",
   "admin/store.storeName.title": "Naam winkel",
   "admin/store.requiresAuthorization.title": "Maakt B2B-gedrag mogelijk",

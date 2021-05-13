@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "コンテンツ管理",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "リダイレクト {route} から消失しているバインド情報",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "リダイレクト {route} からの不要なバインド情報",
+  "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title":"VTEX ストア",
   "admin/store.storeName.title":"ストア名",
   "admin/store.requiresAuthorization.title":"B2B 動作を有効にする",
