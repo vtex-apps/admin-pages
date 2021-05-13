@@ -504,7 +504,7 @@
   "admin/store.requiresAuthorization.title": "Activează comportamentul B2B",
   "admin/store.titleTag.title": "Etichetă titlu prestabilită",
   "admin/store.metaTagDescription.title": "Etichetă descriere meta",
-  "admin/store.metaTagRobots.title": "sEticheta roboţi meta",
+  "admin/store.metaTagRobots.title": "Eticheta roboţi meta",
   "admin/store.metaTagRobots.description": "Valoare implicită: index, follow",
   "admin/store.faviconLinks.title": "Favicon-uri",
   "admin/store.faviconLinks.rel.title": "Relaţie Favicon",
