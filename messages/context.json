@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "admin/appframe.navigation.contentManagement",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data",
+  "admin/store.b2benabled.title": "admin/store.b2benableb.title",
   "admin/store.title": "admin/store.title",
   "admin/store.storeName.title": "admin/store.storeName.title",
   "admin/store.requiresAuthorization.title": "admin/store.requiresAuthorization.title",

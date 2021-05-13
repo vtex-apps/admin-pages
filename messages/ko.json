@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "콘텐츠 관리",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "리디렉션 {route}에서 바인딩 정보가 누락됨",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "리디렉션 {route}의 불필요한 바인딩 정보",
+  "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title": "VTEX 스토어",
   "admin/store.storeName.title": "스토어 이름",
   "admin/store.requiresAuthorization.title": "B2B 동작 활성화",

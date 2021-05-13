@@ -498,6 +498,7 @@
   "admin/appframe.navigation.contentManagement": "Content Management",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Falta información del binding en el redireccionamiento {ruta}",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Información del binding innecesaria de la redirección {ruta}",
+  "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title": "Tienda VTEX",
   "admin/store.storeName.title": "Nombre de la tienda",
   "admin/store.requiresAuthorization.title": "Habilita el comportamiento B2B",
