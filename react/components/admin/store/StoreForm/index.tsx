@@ -29,20 +29,6 @@ interface MutationVariables {
 
 type Props = ChildMutateProps<FormProps, MutationData, MutationVariables>
 
-const ReadOnlyTextWidget = (props: CustomWidgetProps) => {
-  const intl = useIntl()
-
-  if (!props.schema.default) {
-    return null
-  }
-
-  return (
-    <div className="pv3 c-on-base t-small mb3">
-      {formatIOMessage({ id: props.schema.default || '', intl })}
-    </div>
-  )
-}
-
 const CheckboxWidget = (props: CustomWidgetProps) => (
   <div className="pv4">
     <Toggle {...props} />
@@ -57,7 +43,6 @@ const CheckboxWidget = (props: CustomWidgetProps) => (
 const widgets = {
   BaseInput,
   CheckboxWidget,
-  readOnlyText: ReadOnlyTextWidget,
 }
 
 function resolveSchemaForCurrentTab(
