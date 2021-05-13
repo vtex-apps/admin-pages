@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.42.0] - 2021-05-13
+
 ### Changed
 - Add messages for "B2B behavior enabled".
 - Change BaseInput to render "read-only" schema fields.
