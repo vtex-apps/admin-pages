@@ -4,9 +4,9 @@ import {
   ThemeProvider,
   createSystem,
   Box,
-  Button,
   Flex,
   IconNotifications,
+  Anchor,
 } from '@vtex/admin-ui'
 import { useIntl } from 'react-intl'
 import { useRuntime } from 'vtex.render-runtime'
@@ -21,12 +21,7 @@ export function TemporaryAlert() {
     return null
   }
 
-  const handleOnClick = () => {
-    window.top.location.href = window.top.location.href.replace(
-      `${workspace}--`,
-      ''
-    )
-  }
+  const url = window.top.location.href.replace(`${workspace}--`, '')
 
   return (
     <ThemeProvider system={system}>
@@ -47,16 +42,18 @@ export function TemporaryAlert() {
             <Flex
               align="center"
               csx={{
-                marginX: 2,
+                marginLeft: 2,
               }}
             >
-              {formatMessage({ id: 'admin/pages.editor.newadmin.alert' })}
+              <span>
+                {formatMessage({ id: 'admin/pages.editor.newadmin.alert' })}
+                <Anchor href={url} target="_blank">
+                  {formatMessage({
+                    id: 'admin/pages.editor.newadmin.alert.anchor',
+                  })}
+                </Anchor>
+              </span>
             </Flex>
-            <Button onClick={handleOnClick}>
-              {formatMessage({
-                id: 'admin/pages.editor.newadmin.alert.button',
-              })}
-            </Button>
           </Flex>
         </Alert>
       </Box>
