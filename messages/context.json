@@ -553,5 +553,5 @@
   "admin/store.advancedSettings.enableLazyFold.title": "admin/store.advancedSettings.enableLazyFold.title",
   "admin/store.advancedSettings.enableLazyFold.description": "admin/store.advancedSettings.enableLazyFold.description",
   "admin/pages.editor.newadmin.alert": "admin/pages.editor.newadmin.alert",
-  "admin/pages.editor.newadmin.alert.button": "admin/pages.editor.newadmin.alert.button"
+  "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor"
 }
