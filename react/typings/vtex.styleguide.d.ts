@@ -160,6 +160,7 @@ declare module 'vtex.styleguide' {
   }
 
   interface ModalProps {
+    size?: string
     children: ReactNode
     onClose: (event?: Event) => void
     bottomBar?: ReactNode
