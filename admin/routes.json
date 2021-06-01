@@ -63,5 +63,9 @@
   },
   "wrapper": {
     "component": "Wrapper"
+  },
+  "admin.app.cms.media-gallery": {
+    "component": "MediaGalleryWidget",
+    "path": "/admin/app/cms/media-gallery-widget"
   }
 }
