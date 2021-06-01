@@ -3,6 +3,7 @@ import { useRuntime } from 'vtex.render-runtime'
 
 import StoreIframe from './components/EditorContainer/StoreIframe'
 import EditorProvider from './components/EditorProvider'
+import { TemporaryAlert } from './components/TemporaryAlert'
 import { useAdminLoadingContext } from './utils/AdminLoadingContext'
 
 interface Props extends RenderContextProps {
@@ -44,6 +45,7 @@ const PageEditor: React.FC<Props> = props => {
 
   return (
     <div className="h-100 overflow-y-auto bg-light-silver">
+      <TemporaryAlert />
       <EditorProvider isSiteEditor={isSiteEditor}>
         <StoreIframe path={path} />
       </EditorProvider>

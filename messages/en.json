@@ -551,5 +551,7 @@
   "admin/store.advancedSettings.enableLazyFooter.title": "Enable lazy rendering of the page footer",
   "admin/store.advancedSettings.enableLazyFooter.description": "Lazily render the page footer and lazily loads its assets, which helps improving the performance of the first render of the page.",
   "admin/store.advancedSettings.enableLazyFold.title": "Enable lazy loading of assets below-the-fold",
-  "admin/store.advancedSettings.enableLazyFold.description": "Enables lazy loading of the JS files of the components below the `__fold__` block."
+  "admin/store.advancedSettings.enableLazyFold.description": "Enables lazy loading of the JS files of the components below the `__fold__` block.",
+  "admin/pages.editor.newadmin.alert": "Site Editor funciona como un ambiente de prueba en la versión beta del Admin VTEX. Para que los cambios se apliquen en su tienda online, acceda a la versión anterior del Admin.",
+  "admin/pages.editor.newadmin.alert.button": "Ir a versión anterior de Site Editor"
 }
