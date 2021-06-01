@@ -44,13 +44,14 @@ export function TemporaryAlert() {
                 }}
               />
             </Flex>
-            <Box
+            <Flex
+              align="center"
               csx={{
                 marginX: 2,
               }}
             >
               {formatMessage({ id: 'admin/pages.editor.newadmin.alert' })}
-            </Box>
+            </Flex>
             <Button onClick={handleOnClick}>
               {formatMessage({
                 id: 'admin/pages.editor.newadmin.alert.button',
