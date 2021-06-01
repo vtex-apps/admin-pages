@@ -5,12 +5,13 @@ import ImagePreview from '../form/ImageUploader/ImagePreview'
 import { Modal } from 'vtex.styleguide'
 import MediaGalleryWrapper from 'vtex.admin-cms/MediaGallery'
 import styles from './styles.css'
+import { FormattedMessage } from 'react-intl'
 
 const imageMock = {
   url: '',
 }
 
-export default function MediaGalleryWidget() {
+export default function MediaGalleryWidget(props) {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   const options: ActionMenuOption[] = [
@@ -25,36 +26,44 @@ export default function MediaGalleryWidget() {
   ]
 
   return (
-    <div className={styles.widget} style={{ width: '237px', height: '128px' }}>
-      {imageMock.url ? (
-        <ImagePreview imageUrl={imageMock.url}>
-          <ActionMenu
-            variation="primary"
-            menuWidth={200}
-            options={options}
-            buttonSize="small"
-          />
-        </ImagePreview>
-      ) : (
-        <div onClick={() => setIsModalOpen(true)}>
-          <EmptyState />
-        </div>
-      )}
+    <>
+      <FormattedMessage id={props.schema?.title ?? 'Image'}>
+        {text => <span className="w-100 db mb3">{text}</span>}
+      </FormattedMessage>
 
-      <div className="widgetModal">
-        <Modal
-          container={document.querySelector('.widgetModal')}
-          size="large"
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          aria-label="Payments Module"
-          aria-describedby="modal-description"
-        >
-          <div style={{ minHeight: '561px' }}>
-            <MediaGalleryWrapper />
+      <div
+        className={styles.widget}
+        style={{ width: '237px', height: '128px' }}
+      >
+        {imageMock.url ? (
+          <ImagePreview imageUrl={imageMock.url}>
+            <ActionMenu
+              variation="primary"
+              menuWidth={200}
+              options={options}
+              buttonSize="small"
+            />
+          </ImagePreview>
+        ) : (
+          <div onClick={() => setIsModalOpen(true)}>
+            <EmptyState />
           </div>
-        </Modal>
+        )}
+
+        <div className="widgetModal">
+          <Modal
+            size="large"
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            aria-label="Payments Module"
+            aria-describedby="modal-description"
+          >
+            <div style={{ minHeight: '561px' }}>
+              <MediaGalleryWrapper />
+            </div>
+          </Modal>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

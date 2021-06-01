@@ -15,6 +15,7 @@ import RichText from '../../../../form/RichText'
 import TextArea from '../../../../form/TextArea'
 import Toggle from '../../../../form/Toggle'
 import { FormDataContainer } from '../../typings'
+import MediaGalleryWidget from '../../../../MediaGalleryWidget'
 
 export const widgets: Record<string, Widget> = {
   BaseInput,
@@ -24,7 +25,7 @@ export const widgets: Record<string, Widget> = {
   RichText,
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea,
-  'image-uploader': (ImageUploader as unknown) as Widget,
+  'image-uploader': (MediaGalleryWidget as unknown) as Widget,
 }
 
 type Props = FormProps<FormDataContainer>
