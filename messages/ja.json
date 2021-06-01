@@ -551,5 +551,7 @@
   "admin/store.advancedSettings.enableLazyFooter.title":"ページフッターの遅延レンダリングを有効にする",
   "admin/store.advancedSettings.enableLazyFooter.description":"ページフッターのレンダリングやそのアセットの読み込みを遅延させます。こうするとページの最初のレンダリングのパフォーマンスが改善されます。",
   "admin/store.advancedSettings.enableLazyFold.title":"ファーストビュー領域以外のアセットの遅延読み込みを有効にする",
-  "admin/store.advancedSettings.enableLazyFold.description":"`__fold__` ブロックより下にあるコンポーネントの JS ファイルの遅延読み込みを有効にします。"
+  "admin/store.advancedSettings.enableLazyFold.description":"`__fold__` ブロックより下にあるコンポーネントの JS ファイルの遅延読み込みを有効にします。",
+  "admin/pages.editor.newadmin.alert": "Site Editor works as a test environment for the VTEX Admin in Beta version. For applying changes to your online store, ",
+  "admin/pages.editor.newadmin.alert.anchor": "please use the previous Admin environment."
 }
