@@ -1,0 +1,7 @@
+:global(.widgetModal .vtex-styleguide-9-x-scrollBar) {
+  padding: 0 !important;
+}
+
+:global(.widgetModal .vtex-modal__modal) {
+  max-width: 900px !important;
+}
