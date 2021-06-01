@@ -14,6 +14,7 @@ import Radio from '../../../../form/Radio'
 import RichText from '../../../../form/RichText'
 import TextArea from '../../../../form/TextArea'
 import Toggle from '../../../../form/Toggle'
+import MediaGalleryWidget from '../../../../MediaGalleryWidget'
 import { FormDataContainer } from '../../typings'
 import MediaGalleryWidget from '../../../../MediaGalleryWidget'
 
@@ -29,7 +30,6 @@ export const widgets: Record<string, Widget> = {
 }
 
 type Props = FormProps<FormDataContainer>
-
 export default class Form extends React.Component<Props> {
   public shouldComponentUpdate(nextProps: Props) {
     return (
