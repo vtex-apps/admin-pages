@@ -3,7 +3,7 @@ import { ActionMenu, Spinner } from 'vtex.styleguide'
 import EmptyState from '../form/ImageUploader/EmptyState'
 import ImagePreview from '../form/ImageUploader/ImagePreview'
 import { EXPERIMENTAL_Modal } from 'vtex.styleguide'
-import { IconClose } from 'vtex.styleguide'
+import { IconClose, IconOptionsDots } from 'vtex.styleguide'
 import MediaGalleryWrapper from 'vtex.admin-cms/MediaGallery'
 import styles from './styles.css'
 import { FormattedMessage } from 'react-intl'
@@ -27,7 +27,9 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
     },
     {
       label: 'Remove',
-      onClick: () => {},
+      onClick: () => {
+        onChange?.(null)
+      },
     },
   ]
 
@@ -57,6 +59,10 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
               menuWidth={200}
               options={options}
               buttonSize="small"
+              buttonProps={{
+                variation: 'primary',
+                icon: <IconOptionsDots color="currentColor" />,
+              }}
             />
           </ImagePreview>
         ) : (
