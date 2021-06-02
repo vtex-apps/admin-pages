@@ -14,10 +14,10 @@ import { useRuntime } from 'vtex.render-runtime'
 const system = createSystem('admin-pages')
 
 export function TemporaryAlert() {
-  const { workspace } = useRuntime()
+  const { workspace, production } = useRuntime()
   const { formatMessage } = useIntl()
 
-  if (workspace !== 'newadmin') {
+  if (workspace !== 'newadmin' || !production) {
     return null
   }
 
