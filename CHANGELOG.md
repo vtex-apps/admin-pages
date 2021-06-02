@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Temporary warning banner for the newadmin workspaces to let clients know that the module only affects the production store on the master environment.
+- Temporary warning banner for the `newadmin` workspaces to let clients know that the module only affects the production store on the master environment.
 
 ## [4.42.0] - 2021-05-13
 
