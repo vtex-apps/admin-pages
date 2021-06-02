@@ -1,7 +1,15 @@
-:global(.widgetModal .vtex-styleguide-9-x-scrollBar) {
+:global([aria-label='widget-modal'] .vtex-styleguide-9-x-scrollBar) {
+  position: relative;
   padding: 0 !important;
 }
 
-:global(.widgetModal .vtex-modal__modal) {
+:global([aria-label='widget-modal'] .vtex-modal__modal) {
   max-width: 900px !important;
+}
+
+.iconCloseWrapper {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  cursor: pointer;
 }

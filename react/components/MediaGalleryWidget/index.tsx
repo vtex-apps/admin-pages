@@ -2,7 +2,8 @@ import React from 'react'
 import { ActionMenu } from 'vtex.styleguide'
 import EmptyState from '../form/ImageUploader/EmptyState'
 import ImagePreview from '../form/ImageUploader/ImagePreview'
-import { Modal } from 'vtex.styleguide'
+import { EXPERIMENTAL_Modal } from 'vtex.styleguide'
+import { IconClose } from 'vtex.styleguide'
 import MediaGalleryWrapper from 'vtex.admin-cms/MediaGallery'
 import styles from './styles.css'
 import { FormattedMessage } from 'react-intl'
@@ -50,19 +51,24 @@ export default function MediaGalleryWidget(props) {
           </div>
         )}
 
-        <div className="widgetModal">
-          <Modal
-            size="large"
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            aria-label="Payments Module"
-            aria-describedby="modal-description"
-          >
-            <div style={{ minHeight: '561px' }}>
-              <MediaGalleryWrapper />
+        <EXPERIMENTAL_Modal
+          size="large"
+          showCloseIcon={false}
+          showTopBar={false}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          aria-label="widget-modal"
+        >
+          <div style={{ minHeight: '561px' }}>
+            <MediaGalleryWrapper />
+            <div
+              onClick={() => setIsModalOpen(false)}
+              className={styles.iconCloseWrapper}
+            >
+              <IconClose />
             </div>
-          </Modal>
-        </div>
+          </div>
+        </EXPERIMENTAL_Modal>
       </div>
     </>
   )

@@ -1,0 +1,15 @@
+.emptyStateWrapper {
+  padding: 1.75rem 0;
+}
+
+.emptyStateWrapper:hover {
+  border-color: #134cd8;
+}
+
+.emptyStateWrapper:hover > div {
+  color: #134cd8;
+}
+
+.imageUploaderText {
+  max-width: 11.3rem;
+}
