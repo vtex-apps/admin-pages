@@ -7,18 +7,25 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Temporary warning banner for the `newadmin` workspaces to let clients know that the module only affects the production store on the master environment.
+
 ## [4.42.0] - 2021-05-13
 
 ### Changed
+
 - Add messages for "B2B behavior enabled".
 - Change BaseInput to render "read-only" schema fields.
 
 ## [4.41.0] - 2021-05-03
 
 ### Added
+
 - I18n Fr, It, Kr and Nl.
 
 ### Changed
+
 - Crowdin configuration file.
 
 ## [4.40.2] - 2021-04-28

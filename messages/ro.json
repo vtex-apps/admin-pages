@@ -551,5 +551,7 @@
   "admin/store.advancedSettings.enableLazyFooter.title": "Activează redarea lentă a footer-ului paginii",
   "admin/store.advancedSettings.enableLazyFooter.description": "Redă în mod lent footer-ul paginii şi încarcă lent activele sale, ceea ce ajută la îmbunătăţirea performanţei la prima redare a paginii.",
   "admin/store.advancedSettings.enableLazyFold.title": "Activează încărcarea lentă a activelor de dedesubt.",
-  "admin/store.advancedSettings.enableLazyFold.description": "Activează încărcarea lentă a fişierelor JS a componentelor de sub elementul __fold__."
+  "admin/store.advancedSettings.enableLazyFold.description": "Activează încărcarea lentă a fişierelor JS a componentelor de sub elementul __fold__.",
+  "admin/pages.editor.newadmin.alert": "Site Editor works as a test environment for the VTEX Admin in Beta version. For applying changes to your online store, ",
+  "admin/pages.editor.newadmin.alert.anchor": "please use the previous Admin environment."
 }

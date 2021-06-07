@@ -551,5 +551,7 @@
   "admin/store.advancedSettings.enableLazyFooter.title": "Abilita il rendering differito del piè di pagina",
   "admin/store.advancedSettings.enableLazyFooter.description": "Esegui il rendering differito del piè di pagina ed esegui il caricamento differito delle rispettive attività. Ciò migliora le prestazioni del primo rendering della pagina.",
   "admin/store.advancedSettings.enableLazyFold.title": "Abilita il caricamento differito delle risorse \"Below the Fold\"",
-  "admin/store.advancedSettings.enableLazyFold.description": "Abilita il caricamento differito del file JS dei componenti del blocco \"Below the __fold__\"."
+  "admin/store.advancedSettings.enableLazyFold.description": "Abilita il caricamento differito del file JS dei componenti del blocco \"Below the __fold__\".",
+  "admin/pages.editor.newadmin.alert": "Site Editor works as a test environment for the VTEX Admin in Beta version. For applying changes to your online store, ",
+  "admin/pages.editor.newadmin.alert.anchor": "please use the previous Admin environment."
 }
