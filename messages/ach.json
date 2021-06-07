@@ -551,5 +551,7 @@
   "admin/store.advancedSettings.enableLazyFooter.title": "crwdns106298:0crwdne106298:0",
   "admin/store.advancedSettings.enableLazyFooter.description": "crwdns106300:0crwdne106300:0",
   "admin/store.advancedSettings.enableLazyFold.title": "crwdns106302:0crwdne106302:0",
-  "admin/store.advancedSettings.enableLazyFold.description": "crwdns106304:0__fold__crwdne106304:0"
+  "admin/store.advancedSettings.enableLazyFold.description": "crwdns106304:0__fold__crwdne106304:0",
+  "admin/pages.editor.newadmin.alert": "crwdns107488:0crwdne107488:0",
+  "admin/pages.editor.newadmin.alert.anchor": "crwdns107490:0crwdne107490:0"
 }
