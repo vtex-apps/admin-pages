@@ -7967,6 +7967,10 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
+"vtex.admin-cms@https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.34.1+build1623086351/public/@types/vtex.admin-cms":
+  version "0.34.1"
+  resolved "https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.34.1+build1623086351/public/@types/vtex.admin-cms#0ab978bfb51d9b765df626d461763c48955fabae"
+
 vtex.ajv@^6.10.4:
   version "6.10.6"
   resolved "https://registry.yarnpkg.com/vtex.ajv/-/vtex.ajv-6.10.6.tgz#f3529573cd6ad9999a1ae563376a48d87d9c5b9e"
@@ -7976,6 +7980,10 @@ vtex.ajv@^6.10.4:
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
+
+"vtex.apps-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.8.0/public/@types/vtex.apps-graphql":
+  version "2.8.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.8.0/public/@types/vtex.apps-graphql#4fd47b1281c4d36e8abb1cfa4daea83bc739eca1"
 
 "vtex.file-manager-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager-graphql@0.3.0/public/@types/vtex.file-manager-graphql":
   version "0.3.0"
@@ -7988,6 +7996,10 @@ vtex.ajv@^6.10.4:
 "vtex.messages@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.64.0/public/@types/vtex.messages":
   version "1.64.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.64.0/public/@types/vtex.messages#f57bcc82a2420c15eb7a388543ee1925a005fe96"
+
+"vtex.native-types@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types":
+  version "0.7.5"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types#52d8c0b675fcdf2b6b1ca93f6a99a630519f618f"
 
 "vtex.pages-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.108.1/public/@types/vtex.pages-graphql":
   version "2.108.1"
@@ -8009,9 +8021,13 @@ vtex.ajv@^6.10.4:
   version "2.117.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.117.0/public/@types/vtex.store#9f7403d597b8927af64b520f4de62bda34dad3ab"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.142.0/public/@types/vtex.styleguide":
+"vtex.styleguide@https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.styleguide@9.142.0+build1622663321/public/@types/vtex.styleguide":
   version "9.142.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.142.0/public/@types/vtex.styleguide#12d22690aa1896a7516eb4b7bc8923216aed7725"
+  resolved "https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.styleguide@9.142.0+build1622663321/public/@types/vtex.styleguide#bc584b9a6ee7affc5c41587c992a4aab1061a9fe"
+
+"vtex.styles-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql":
+  version "1.18.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql#df2b10b784951030dbd744f96fff99913598d36d"
 
 "vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
   version "0.1.2"

@@ -18,7 +18,7 @@ interface MediaGalleryWidgetProps {
 
 export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false)
-  const [isLoading] = React.useState(false)
+  const [isLoading, setIsLoading] = React.useState(false)
   const { onChange, value } = props
   const options: ActionMenuOption[] = [
     {
@@ -34,7 +34,10 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
   ]
 
   function handleImageSelected(imageUrl: string) {
-    onChange && onChange(imageUrl)
+    onChange?.(imageUrl)
+  }
+
+  function handleCloseModal() {
     setIsModalOpen(false)
   }
 
@@ -80,7 +83,11 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
           aria-label="widget-modal"
         >
           <div style={{ minHeight: '561px' }}>
-            <MediaGalleryWrapper onImageSelected={handleImageSelected} />
+            <MediaGalleryWrapper
+              onImageSelected={handleImageSelected}
+              onImageUploading={setIsLoading}
+              onModalClose={handleCloseModal}
+            />
             <div
               onClick={() => setIsModalOpen(false)}
               className={styles.iconCloseWrapper}
