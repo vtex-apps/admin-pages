@@ -552,6 +552,6 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Rendu différé du pied de page et chargement différé de ses actifs, permettant d'améliorer les performances du premier rendu de la page.",
   "admin/store.advancedSettings.enableLazyFold.title": "Activez le chargement différé des ressources sous la ligne de flottaison (fold)",
   "admin/store.advancedSettings.enableLazyFold.description": "Permet le chargement différé des fichiers JS des composants situés sous le bloc `__fold__`.",
-  "admin/pages.editor.newadmin.alert": "Site Editor works as a test environment for the VTEX Admin in Beta version. For applying changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please use the previous Admin environment."
+  "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
+  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
 }
