@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.43.1] - 2021-06-08
+
 ### Changed
 
 - Shortened the message from the temporary warning banner for the `newadmin` workspaces.
