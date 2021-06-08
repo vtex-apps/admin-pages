@@ -552,6 +552,6 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Lazily render the page footer and lazily loads its assets, which helps improving the performance of the first render of the page.",
   "admin/store.advancedSettings.enableLazyFold.title": "Enable lazy loading of assets below-the-fold",
   "admin/store.advancedSettings.enableLazyFold.description": "Enables lazy loading of the JS files of the components below the `__fold__` block.",
-  "admin/pages.editor.newadmin.alert": "Site Editor works as a test environment for the VTEX Admin in Beta version. For applying changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please use the previous Admin environment."
+  "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
+  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
 }
