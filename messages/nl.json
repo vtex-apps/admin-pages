@@ -222,7 +222,7 @@
   "admin/pages.editor.container.editpath.label": "URL",
   "admin/pages.editor.container.master-workspace-warning.text": "Je bent de live winkel aan het bewerken. De wijzigingen zullen onmiddellijk van kracht zijn.",
   "admin/pages.editor.iframe.confirm-prompt": "Weet je zeker dat je wilt vertrekken?",
-  "admin/pages.editor.image-uploader.empty.button": "Upload",
+  "admin/pages.editor.image-uploader.empty.button": "Sleep een afbeelding of klik om te kiezen",
   "admin/pages.editor.image-uploader.empty.subtext-1": "of",
   "admin/pages.editor.image-uploader.empty.subtext-2": "slepen en neerzetten",
   "admin/pages.editor.image-uploader.empty.subtext-3": "een afbeelding",
@@ -498,7 +498,7 @@
   "admin/appframe.navigation.contentManagement": "Inhoudelijk beheer",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Bindingsinformatie ontbreekt in omleiding {route}",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Onnodige bindende informatie van omleiding {route}",
-  "admin/store.b2benabled.title": "B2B behavior enabled",
+  "admin/store.b2benabled.title": "B2B-gedrag ingeschakeld",
   "admin/store.title": "VTEX Store",
   "admin/store.storeName.title": "Naam winkel",
   "admin/store.requiresAuthorization.title": "Maakt B2B-gedrag mogelijk",
@@ -552,6 +552,6 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Render de voettekst van de pagina op een trage manier en laadt de assets op een trage manier, wat de prestaties van de eerste render van de pagina ten goede komt.",
   "admin/store.advancedSettings.enableLazyFold.title": "Schakel traag laden van activa onder de vouw in",
   "admin/store.advancedSettings.enableLazyFold.description": "Schakel het traag laden in van de JS bestanden van de componenten onder het `__fold__` blok in.",
-  "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
+  "admin/pages.editor.newadmin.alert": "Dit is een testomgeving. Om veranderingen toe te passen op uw online winkel, ",
+  "admin/pages.editor.newadmin.alert.anchor": "ga dan naar de vorige VTEX Admin."
 }
