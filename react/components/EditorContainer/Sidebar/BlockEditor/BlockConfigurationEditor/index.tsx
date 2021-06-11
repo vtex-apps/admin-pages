@@ -251,7 +251,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           <div id="form__error-list-template___alert" />
         </div>
 
-        {isContent && !isDefaultContent && (
+        {isContent && !isDefaultContent && !isArrayFieldOpen && (
           <>
             <FormattedMessage id="admin/pages.editor.components.condition.title">
               {message => (
