@@ -98,6 +98,7 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
                   options={options}
                   buttonSize="small"
                   buttonProps={{
+                    size: 'small',
                     variation: 'primary',
                     icon: <IconOptionsDots color="currentColor" />,
                   }}
@@ -143,13 +144,15 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
           )}
         </>
 
-        <MediaGallery.Modal
-          state={modalState}
-          onImageSelected={handleImageSelected}
-          onImageUploading={handleUploading}
-          onImagePreview={setPreviewUrl}
-          onError={handleError}
-        />
+        {modalState.visible && (
+          <MediaGallery.Modal
+            state={modalState}
+            onImageSelected={handleImageSelected}
+            onImageUploading={handleUploading}
+            onImagePreview={setPreviewUrl}
+            onError={handleError}
+          />
+        )}
       </div>
     </>
   )

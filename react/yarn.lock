@@ -7967,13 +7967,9 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-"vtex.admin-cms@https://vitorflg2--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.34.1+build1624555947/public/@types/vtex.admin-cms":
-  version "0.34.1"
-  resolved "https://vitorflg2--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.34.1+build1624555947/public/@types/vtex.admin-cms#bd30d12357494708e22dd479174c8aec9608cf5c"
-
-"vtex.admin-pages@https://vitorflg2--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-pages@4.42.0+build1624481735/public/@types/vtex.admin-pages":
-  version "4.42.0"
-  resolved "https://vitorflg2--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-pages@4.42.0+build1624481735/public/@types/vtex.admin-pages#03a1404253a6a726b38bedcf467e8d7920f5c530"
+"vtex.admin-cms@https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.37.0+build1625231958/public/@types/vtex.admin-cms":
+  version "0.37.0"
+  resolved "https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.37.0+build1625231958/public/@types/vtex.admin-cms#1a186d5b99bcf8bce2dd36cd31a933aa33ff3276"
 
 vtex.ajv@^6.10.4:
   version "6.10.6"
@@ -8013,21 +8009,21 @@ vtex.ajv@^6.10.4:
   version "1.17.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.17.0/public/@types/vtex.pwa-graphql#7454d27e5ecead06b597de6d7b006ef00afd89cd"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.129.0/public/@types/vtex.render-runtime":
-  version "8.129.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.129.0/public/@types/vtex.render-runtime#76dd55634b06288d8209d5b85ca26b6f6692a889"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.130.0/public/@types/vtex.render-runtime":
+  version "8.130.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.130.0/public/@types/vtex.render-runtime#6958e1017c423c0906eae3500bad70d3fb353a98"
 
 "vtex.rewriter@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.3/public/@types/vtex.rewriter":
   version "1.53.3"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.3/public/@types/vtex.rewriter#46c0251427139b7f13b719f86fb056daf4468534"
 
-"vtex.store@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.119.0/public/@types/vtex.store":
-  version "2.119.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.119.0/public/@types/vtex.store#ddf948f82cf7180e334b0a3d50f9c6ab520760bb"
+"vtex.store@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.120.0/public/@types/vtex.store":
+  version "2.120.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.120.0/public/@types/vtex.store#62930c752742172a6b3e545726feffbade76f3bd"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.143.0/public/@types/vtex.styleguide":
-  version "9.143.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.143.0/public/@types/vtex.styleguide#a25555601abee353ed3e859ffb57e98c9e07e911"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.144.0/public/@types/vtex.styleguide":
+  version "9.144.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.144.0/public/@types/vtex.styleguide#74011eeba8d96b28526598be8ff1b093e10752f5"
 
 "vtex.styles-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql":
   version "1.18.0"
