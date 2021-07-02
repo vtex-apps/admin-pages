@@ -222,7 +222,7 @@
   "admin/pages.editor.container.editpath.label": "URL",
   "admin/pages.editor.container.master-workspace-warning.text": "You are editing the live store. Changes will have immediate effect.",
   "admin/pages.editor.iframe.confirm-prompt": "Are you sure you want to leave?",
-  "admin/pages.editor.image-uploader.empty.button": "Upload",
+  "admin/pages.editor.image-uploader.empty.button": "Drag and drop an image or click to choose",
   "admin/pages.editor.image-uploader.empty.subtext-1": "or",
   "admin/pages.editor.image-uploader.empty.subtext-2": "drag and drop",
   "admin/pages.editor.image-uploader.empty.subtext-3": "an image",

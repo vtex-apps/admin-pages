@@ -33,7 +33,8 @@ const ImagePreview: React.FC<Props> = ({ children, imageUrl }) => {
         className={`w-100 h-100 absolute bottom-0 br2 flex flex-column items-center justify-center ${styles.overlay}`}
       >
         <div
-          className="absolute bg-action-primary br2 flex h2 items-center justify-center mr3 mt3 right-0 top-0 w2 white"
+          style={{ top: '0.5rem', right: '0.5rem' }}
+          className="absolute bg-action-primary br2 flex h2 items-center justify-center w2 white"
           onClick={stopPropagation}
           onKeyDown={stopOnKeyDownPropagation}
           role="button"

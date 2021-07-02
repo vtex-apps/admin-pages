@@ -8,12 +8,12 @@ import Dropdown from '../../../../form/Dropdown'
 import ErrorListTemplate from '../../../../form/ErrorListTemplate'
 import FieldTemplate from '../../../../form/FieldTemplate'
 import I18nInput from '../../../../form/I18nInput'
-import ImageUploader from '../../../../form/ImageUploader'
 import ObjectFieldTemplate from '../../../../form/ObjectFieldTemplate'
 import Radio from '../../../../form/Radio'
 import RichText from '../../../../form/RichText'
 import TextArea from '../../../../form/TextArea'
 import Toggle from '../../../../form/Toggle'
+import MediaGalleryWidget from '../../../../MediaGalleryWidget'
 import { FormDataContainer } from '../../typings'
 
 export const widgets: Record<string, Widget> = {
@@ -24,11 +24,10 @@ export const widgets: Record<string, Widget> = {
   RichText,
   SelectWidget: Dropdown as Widget,
   TextareaWidget: TextArea,
-  'image-uploader': (ImageUploader as unknown) as Widget,
+  'image-uploader': (MediaGalleryWidget as unknown) as Widget,
 }
 
 type Props = FormProps<FormDataContainer>
-
 export default class Form extends React.Component<Props> {
   public shouldComponentUpdate(nextProps: Props) {
     return (

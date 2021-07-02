@@ -8475,6 +8475,10 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
+"vtex.admin-cms@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-cms@0.38.0/public/@types/vtex.admin-cms":
+  version "0.38.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-cms@0.38.0/public/@types/vtex.admin-cms#ea9fb380cf08f6f60a043364d077558135714102"
+
 vtex.ajv@^6.10.4:
   version "6.10.6"
   resolved "https://registry.yarnpkg.com/vtex.ajv/-/vtex.ajv-6.10.6.tgz#f3529573cd6ad9999a1ae563376a48d87d9c5b9e"
@@ -8485,9 +8489,9 @@ vtex.ajv@^6.10.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-"vtex.apps-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.6.3/public/@types/vtex.apps-graphql":
-  version "2.6.3"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.6.3/public/@types/vtex.apps-graphql#cbb2aa02fa3522c663be71b677b8ee10238f5805"
+"vtex.apps-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.8.0/public/@types/vtex.apps-graphql":
+  version "2.8.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.8.0/public/@types/vtex.apps-graphql#4fd47b1281c4d36e8abb1cfa4daea83bc739eca1"
 
 "vtex.file-manager-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager-graphql@0.3.0/public/@types/vtex.file-manager-graphql":
   version "0.3.0"
@@ -8497,45 +8501,45 @@ vtex.ajv@^6.10.4:
   version "0.0.0"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager@0.10.1/public/_types/react#fa7a0347e046eab3dd768998fc9252b2c0dd5aef"
 
-"vtex.messages@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.61.0/public/@types/vtex.messages":
-  version "1.61.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.61.0/public/@types/vtex.messages#9f539aa5e98ad8024b2b92e7218c2ae5a1a59a94"
+"vtex.messages@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.64.0/public/@types/vtex.messages":
+  version "1.64.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.messages@1.64.0/public/@types/vtex.messages#f57bcc82a2420c15eb7a388543ee1925a005fe96"
 
 "vtex.native-types@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types":
   version "0.7.5"
   resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.native-types@0.7.5/public/@types/vtex.native-types#52d8c0b675fcdf2b6b1ca93f6a99a630519f618f"
 
-"vtex.pages-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.106.0/public/@types/vtex.pages-graphql":
-  version "2.106.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.106.0/public/@types/vtex.pages-graphql#846277ed50ea921d76ff7723a6cb50824ab65e4b"
+"vtex.pages-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.108.3/public/@types/vtex.pages-graphql":
+  version "2.108.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pages-graphql@2.108.3/public/@types/vtex.pages-graphql#e3b60c1087d136f2091a318a02c06fadade6de3b"
 
-"vtex.pwa-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.15.7/public/@types/vtex.pwa-graphql":
-  version "1.15.7"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.15.7/public/@types/vtex.pwa-graphql#f01533b0acd2a2d5e0c08fc701796357feb40fa5"
+"vtex.pwa-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.17.0/public/@types/vtex.pwa-graphql":
+  version "1.17.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.pwa-graphql@1.17.0/public/@types/vtex.pwa-graphql#7454d27e5ecead06b597de6d7b006ef00afd89cd"
 
-"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.126.4/public/@types/vtex.render-runtime":
-  version "8.126.4"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.126.4/public/@types/vtex.render-runtime#40d7ad8a7b04c50e61ff84a1089dcf7045efd548"
+"vtex.render-runtime@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.130.0/public/@types/vtex.render-runtime":
+  version "8.130.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.render-runtime@8.130.0/public/@types/vtex.render-runtime#6958e1017c423c0906eae3500bad70d3fb353a98"
 
-"vtex.rewriter@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.0/public/@types/vtex.rewriter":
-  version "1.53.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.0/public/@types/vtex.rewriter#90aa934f19138cf65adb554117183d2dbf5103ef"
+"vtex.rewriter@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.3/public/@types/vtex.rewriter":
+  version "1.53.3"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.rewriter@1.53.3/public/@types/vtex.rewriter#46c0251427139b7f13b719f86fb056daf4468534"
 
-"vtex.store@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.110.0/public/@types/vtex.store":
-  version "2.110.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.110.0/public/@types/vtex.store#b6472e42914bbeaf805b9acf9137fe9302feecb4"
+"vtex.store@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.120.0/public/@types/vtex.store":
+  version "2.120.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.store@2.120.0/public/@types/vtex.store#62930c752742172a6b3e545726feffbade76f3bd"
 
-"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.134.1/public/@types/vtex.styleguide":
-  version "9.134.1"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.134.1/public/@types/vtex.styleguide#7210ed4908f4e6482d2499d71c4cfcc21e3dfd6a"
+"vtex.styleguide@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.144.0/public/@types/vtex.styleguide":
+  version "9.144.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styleguide@9.144.0/public/@types/vtex.styleguide#74011eeba8d96b28526598be8ff1b093e10752f5"
 
-"vtex.styles-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.17.2/public/@types/vtex.styles-graphql":
-  version "1.17.2"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.17.2/public/@types/vtex.styles-graphql#37526a1fc29bc0ce524aa7f794bc02aa376db0c3"
+"vtex.styles-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql":
+  version "1.18.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql#df2b10b784951030dbd744f96fff99913598d36d"
 
-"vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2-beta.0/public/@types/vtex.tenant-graphql":
-  version "0.1.2-beta.0"
-  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2-beta.0/public/@types/vtex.tenant-graphql#ddad69d1a0ad02da406156681f85af38ae7fc170"
+"vtex.tenant-graphql@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql":
+  version "0.1.2"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql#74673fe86baefe74f21a6d2615993ea0ccb5e79e"
 
 w3c-hr-time@^1.0.1:
   version "1.0.1"
