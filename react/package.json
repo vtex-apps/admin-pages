@@ -95,7 +95,7 @@
     "react-dom": "^16.8.1",
     "react-intl": "3.x",
     "typescript": "3.9.7",
-    "vtex.admin-cms": "https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.37.0+build1625231958/public/@types/vtex.admin-cms",
+    "vtex.admin-cms": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-cms@0.38.0/public/@types/vtex.admin-cms",
     "vtex.apps-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.apps-graphql@2.8.0/public/@types/vtex.apps-graphql",
     "vtex.file-manager": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager@0.10.1/public/_types/react",
     "vtex.file-manager-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.file-manager-graphql@0.3.0/public/@types/vtex.file-manager-graphql",

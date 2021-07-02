@@ -7967,9 +7967,9 @@ vfile@^2.0.0:
     unist-util-stringify-position "^1.0.0"
     vfile-message "^1.0.0"
 
-"vtex.admin-cms@https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.37.0+build1625231958/public/@types/vtex.admin-cms":
-  version "0.37.0"
-  resolved "https://pedrocms--storecomponents.myvtex.com/_v/private/typings/linked/v1/vtex.admin-cms@0.37.0+build1625231958/public/@types/vtex.admin-cms#1a186d5b99bcf8bce2dd36cd31a933aa33ff3276"
+"vtex.admin-cms@http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-cms@0.38.0/public/@types/vtex.admin-cms":
+  version "0.38.0"
+  resolved "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.admin-cms@0.38.0/public/@types/vtex.admin-cms#ea9fb380cf08f6f60a043364d077558135714102"
 
 vtex.ajv@^6.10.4:
   version "6.10.6"
