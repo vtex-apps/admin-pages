@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Block selector not working after a binding/locale change(2).
+
 ## [4.44.0] - 2021-07-02
 ### Added
-- Replace the Image Uploader with the CMS Media Management
+
+- Replace the Image Uploader with the CMS Media Management.
 
 ## [4.43.1] - 2021-06-08
 
@@ -50,7 +55,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 
-- Block selector not working after a locale change.
+- Block selector not working after a binding/locale change(1).
 
 ### Added
 

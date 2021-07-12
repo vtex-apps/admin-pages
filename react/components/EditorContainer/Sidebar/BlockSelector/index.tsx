@@ -1,15 +1,14 @@
 import React from 'react'
-import { FormattedMessage, InjectedIntlProps, injectIntl } from 'react-intl'
+import type { InjectedIntlProps } from 'react-intl'
+import { FormattedMessage, injectIntl } from 'react-intl'
 
 import { getIframeRenderComponents } from '../../../../utils/components'
 import { useEditorContext } from '../../../EditorContext'
-
 import {
   getComponents,
   getNormalizedBlocks,
   getTitleByTreePathMap,
 } from './utils'
-
 import BlockList from './BlockList'
 import styles from '../../EditorContainer.css'
 
@@ -37,31 +36,37 @@ const BlockSelector: React.FunctionComponent<Props & InjectedIntlProps> = ({
   const editor = useEditorContext()
 
   const path = React.useRef('')
+  const binding = React.useRef('')
 
   React.useEffect(() => {
-    if (path.current !== iframeRuntime.route.path) {
-      const nextComponents = getComponents(
-        iframeRuntime.extensions,
-        getIframeRenderComponents(),
-        iframeRuntime.page
-      )
-
-      const nextBlocks = getNormalizedBlocks(nextComponents)
-
-      setBlocks(nextBlocks)
-
-      updateHighlightTitleByTreePath(
-        getTitleByTreePathMap(nextComponents, intl)
-      )
-
-      editor.setIsLoading(false)
-      path.current = iframeRuntime.route.path
+    if (
+      path.current === iframeRuntime.route.path &&
+      binding.current === iframeRuntime.binding?.id
+    ) {
+      return
     }
+
+    const nextComponents = getComponents(
+      iframeRuntime.extensions,
+      getIframeRenderComponents(),
+      iframeRuntime.page
+    )
+
+    const nextBlocks = getNormalizedBlocks(nextComponents)
+
+    setBlocks(nextBlocks)
+
+    updateHighlightTitleByTreePath(getTitleByTreePathMap(nextComponents, intl))
+
+    editor.setIsLoading(false)
+    path.current = iframeRuntime.route.path
+    binding.current = iframeRuntime.binding.id
   }, [
     editor,
     iframeRuntime.extensions,
     iframeRuntime.page,
     iframeRuntime.route.path,
+    iframeRuntime.binding?.id,
     intl,
     updateHighlightTitleByTreePath,
   ])
