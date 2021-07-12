@@ -36,6 +36,8 @@ const Sidebar: React.FunctionComponent<Props> = ({
   showToast,
   updateHighlightTitleByTreePath,
 }) => {
+  const [scrollState, setScrollState] = React.useState('overflow-y-auto')
+  const adminSidebar = React.createRef<HTMLElement>()
   const initialEditingState = useInitialEditingState({
     client,
     iframeRuntime,
@@ -57,16 +59,28 @@ const Sidebar: React.FunctionComponent<Props> = ({
 
   const editor = useEditorContext()
 
+  React.useEffect(() => {
+    adminSidebar.current?.scroll(0, 0)
+
+    if (editor.editTreePath && adminSidebar.current?.scrollTop === 0) {
+      setScrollState('overflow-y-hidden vh-100')
+    } else {
+      setScrollState('overflow-x-auto')
+    }
+  }, [editor.editTreePath])
+
   return (
     <div
       id="sidebar-vtex-editor"
       className="z-1 h-100 w-100 flex flex-row-reverse"
     >
       <nav
+        ref={adminSidebar}
         id="admin-sidebar"
         className={
           `transition animated fadeIn b--light-silver bw1 z-2 h-100 pt8 pt0-ns ` +
-          `overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns ${styles['admin-sidebar']}`
+          `overflow-x-hidden w-100 font-display bg-white shadow-solid-x w-18em-ns ${styles['admin-sidebar']} ` +
+          scrollState
         }
       >
         <div className="relative h-100 flex flex-column dark-gray">

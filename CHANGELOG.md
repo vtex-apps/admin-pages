@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Fix the scroll on the sidebar editing panel.
+
 ## [4.44.1] - 2021-07-12
 
 ### Fixed
