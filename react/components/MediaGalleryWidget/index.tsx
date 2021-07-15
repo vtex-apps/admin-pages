@@ -3,7 +3,6 @@ import { ActionMenu, Spinner, IconOptionsDots } from 'vtex.styleguide'
 import MediaGallery from 'vtex.admin-cms/MediaGallery'
 import { FormattedMessage } from 'react-intl'
 import { JSONSchema6 } from 'json-schema'
-// import { useModalState } from '@vtex/admin-ui'
 
 import ImagePreview from '../form/ImageUploader/ImagePreview'
 import EmptyState from '../form/ImageUploader/EmptyState'
@@ -90,20 +89,30 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
               </div>
             </div>
           ) : value ? (
-            <div style={{ height: '8rem' }}>
-              <ImagePreview imageUrl={value}>
-                <ActionMenu
-                  variation="primary"
-                  menuWidth={200}
-                  options={options}
-                  buttonSize="small"
-                  buttonProps={{
-                    size: 'small',
-                    variation: 'primary',
-                    icon: <IconOptionsDots color="currentColor" />,
-                  }}
-                />
-              </ImagePreview>
+            <div
+              {...getRootProps({
+                onClick: e => {
+                  e.stopPropagation()
+                  modalState.setVisible(true)
+                },
+              })}
+            >
+              <input {...getInputProps()} />
+              <div style={{ height: '8rem' }}>
+                <ImagePreview imageUrl={value}>
+                  <ActionMenu
+                    variation="primary"
+                    menuWidth={200}
+                    options={options}
+                    buttonSize="small"
+                    buttonProps={{
+                      size: 'small',
+                      variation: 'primary',
+                      icon: <IconOptionsDots color="currentColor" />,
+                    }}
+                  />
+                </ImagePreview>
+              </div>
 
               {error && (
                 <p className="lh-copy f7 mt3 c-danger">
