@@ -3,7 +3,7 @@
     "alwaysStrict": true,
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": ["es2017", "dom", "es2018.promise", "esnext.asynciterable"],
+    "lib": ["es2019", "dom", "es2018.promise", "esnext.asynciterable"],
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,

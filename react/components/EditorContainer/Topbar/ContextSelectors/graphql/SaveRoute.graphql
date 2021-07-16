@@ -1,0 +1,19 @@
+mutation SaveRoute($route: NewRouteInput) {
+  saveRoute(route: $route) {
+    auth
+    blockId
+    binding
+    context
+    declarer
+    domain
+    interfaceId
+    path
+    routeId
+    uuid
+    metaTags {
+      description
+      keywords
+    }
+    title
+  }
+}

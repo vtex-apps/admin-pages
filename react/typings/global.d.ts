@@ -87,6 +87,7 @@ declare global {
     title: string | null
     uuid?: string
     dataSource?: string
+    conflicts?: Route[]
   }
 
   interface Routes {
@@ -215,7 +216,7 @@ declare global {
     version: string
     culture: Culture
     pages: Routes
-    route: { pageContext: PageContext; path: string; params: {} }
+    route: { id: string, pageContext: PageContext; path: string; params: {} }
     routes: Routes
     extensions: Extensions
     production: boolean

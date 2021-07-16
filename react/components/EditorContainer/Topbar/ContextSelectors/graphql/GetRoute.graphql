@@ -1,0 +1,42 @@
+query GetRoute($routeId: String!) {
+  route(routeId: $routeId, domain: "store") {
+    auth
+    blockId
+    binding
+    context
+    declarer
+    domain
+    interfaceId
+    conflicts {
+      binding
+      blockId
+      interfaceId
+      routeId
+    }
+    pages {
+      pageId
+      condition {
+        id
+        pageContext {
+          id
+          type
+        }
+        allMatches
+        statements {
+          subject
+          verb
+          objectJSON
+        }
+      }
+      template
+    }
+    path
+    routeId
+    title
+    uuid
+    metaTags {
+      description
+      keywords
+    }
+  }
+}

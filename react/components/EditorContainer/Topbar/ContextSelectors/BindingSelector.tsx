@@ -40,21 +40,23 @@ const BindingSelector: React.FC<Props> = ({
   const editor = useEditorContext()
   const intl = useIntl()
 
-  return editor.editTreePath ? (
-    <Tooltip
-      label={intl.formatMessage({
-        defaultMessage: 'The binding cannot be changed while editing a block.',
-        id: 'admin/pages.editor.topbar.context.binding.tooltip',
-      })}
-      position="bottom"
-    >
-      <div className="flex">
-        <Selector />
-      </div>
-    </Tooltip>
-  ) : (
-    <Selector />
-  )
+  return <>
+    {editor.editTreePath ? (
+      <Tooltip
+        label={intl.formatMessage({
+          defaultMessage: 'The binding cannot be changed while editing a block.',
+          id: 'admin/pages.editor.topbar.context.binding.tooltip',
+        })}
+        position="bottom"
+      >
+        <div className="flex">
+          <Selector />
+        </div>
+      </Tooltip>
+    ) : (
+      <Selector />
+    )}
+  </>
 }
 
 export default BindingSelector
