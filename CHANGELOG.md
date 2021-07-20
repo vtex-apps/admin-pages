@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Fixed
+
+- Toast overflows the bottom-right conner, making the app unresponsive in that section.
+
 
 ## [4.44.4] - 2021-07-27
 ### Fixed
