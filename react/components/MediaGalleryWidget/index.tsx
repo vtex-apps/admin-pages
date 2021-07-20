@@ -3,7 +3,6 @@ import { ActionMenu, Spinner, IconOptionsDots } from 'vtex.styleguide'
 import MediaGallery from 'vtex.admin-cms/MediaGallery'
 import { FormattedMessage } from 'react-intl'
 import { JSONSchema6 } from 'json-schema'
-// import { useModalState } from '@vtex/admin-ui'
 
 import ImagePreview from '../form/ImageUploader/ImagePreview'
 import EmptyState from '../form/ImageUploader/EmptyState'
