@@ -185,7 +185,7 @@
   "admin/pages.editor.components.condition.scope.title": "admin/pages.editor.components.condition.scope.title",
   "admin/pages.editor.components.condition.title": "admin/pages.editor.components.condition.title",
   "admin/pages.editor.components.condition.toast.error.page-context": "admin/pages.editor.components.condition.toast.error.page-context",
-  "admin/pages.editor.components.condition.visibility.activationLabel": "admin/pages.editor.components.condition.visibility.activationLabel",
+  "admin/pages.editor.components.condition.visibility.activation": "admin/pages.editor.components.condition.visibility.activation",
   "admin/pages.editor.components.modal.back.button.discard": "admin/pages.editor.components.modal.back.button.discard",
   "admin/pages.editor.components.modal.back.button.save": "admin/pages.editor.components.modal.back.button.save",
   "admin/pages.editor.components.modal.back.text": "admin/pages.editor.components.modal.back.text",

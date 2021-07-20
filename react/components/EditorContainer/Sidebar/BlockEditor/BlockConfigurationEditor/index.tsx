@@ -64,7 +64,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
   activationLabel: {
-    id: 'admin/pages.editor.components.condition.visibility.activationLabel',
+    id: 'admin/pages.editor.components.condition.visibility.activation',
   },
 })
 
@@ -173,7 +173,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
 
   const status = state?.status ?? statusFromRuntime
 
-  const hasEndDate = state?.condition?.statements?.some(
+  const hasOnlyEndDate = state?.condition?.statements?.some(
     statement => statement.verb === 'to'
   )
 
@@ -264,7 +264,9 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
             <div className="ph5 pt5 mb6">
               <>
                 <Checkbox
-                  checked={status === ConfigurationStatus.ACTIVE || hasEndDate}
+                  checked={
+                    status === ConfigurationStatus.ACTIVE || hasOnlyEndDate
+                  }
                   id="status"
                   label={intl.formatMessage(messages.activationLabel)}
                   disabled={

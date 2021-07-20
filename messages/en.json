@@ -184,7 +184,7 @@
   "admin/pages.editor.components.condition.scope.template": "this template",
   "admin/pages.editor.components.condition.scope.title": "Apply to",
   "admin/pages.editor.components.condition.title": "Visibility",
-  "admin/pages.editor.components.condition.visibility.activationLabel": "Activate now",
+  "admin/pages.editor.components.condition.visibility.activation": "Activate now",
   "admin/pages.editor.components.condition.toast.error.page-context": "Could not identify {entity}. The configuration will be set to \"{template}\".",
   "admin/pages.editor.components.modal.back.button.discard": "Discard",
   "admin/pages.editor.components.modal.back.button.save": "Save",

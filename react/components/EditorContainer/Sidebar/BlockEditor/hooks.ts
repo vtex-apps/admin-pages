@@ -151,7 +151,7 @@ export const useFormHandlers: UseFormHandlers = ({
       state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
     const contentStatus = state.status ?? statusFromRuntime
 
-    const hasEndDate = state.condition?.statements?.some(
+    const hasOnlyEndDate = state.condition?.statements?.some(
       statement => statement.verb === 'to'
     )
     const isScheduled = state.condition?.statements.length
@@ -160,7 +160,7 @@ export const useFormHandlers: UseFormHandlers = ({
 
     let newStatus
 
-    if (isActive || hasEndDate || isDefault) {
+    if (isActive || hasOnlyEndDate || isDefault) {
       newStatus = ConfigurationStatus.ACTIVE
     } else if (isScheduled) {
       newStatus = ConfigurationStatus.SCHEDULED
