@@ -81,7 +81,7 @@ const RedirectList: React.FC<Props> = ({
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const [
-    { paginationFrom, paginationTo: statePaginationTo },
+    { paginationFrom, paginationTo },
     setPagination,
   ] = useState({
     paginationFrom: PAGINATION_START,
@@ -91,8 +91,6 @@ const RedirectList: React.FC<Props> = ({
   const [alertState, setAlert] = useState<AlertState | null>(null)
 
   const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
-
-  const paginationTo = statePaginationTo && statePaginationTo - 1
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -163,7 +161,7 @@ const RedirectList: React.FC<Props> = ({
     if (!nextToken && paginationFrom >= dataLength) {
       return
     }
-    const maybeNextPaginationTo = paginationTo + PAGINATION_STEP + 1
+    const maybeNextPaginationTo = paginationTo + PAGINATION_STEP
 
     if (maybeNextPaginationTo > dataLength && nextToken) {
       await fetchMore({
@@ -292,7 +290,7 @@ const RedirectList: React.FC<Props> = ({
                     {redirects.length > 0 && (
                       <Pagination
                         currentItemFrom={paginationFrom + 1}
-                        currentItemTo={paginationTo + 1}
+                        currentItemTo={paginationTo}
                         onNextClick={getNextPageNavigationHandler(
                           redirects.length,
                           fetchMore,
