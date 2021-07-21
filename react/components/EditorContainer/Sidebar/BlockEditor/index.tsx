@@ -7,19 +7,26 @@ import { useEditorContext } from '../../../EditorContext'
 import DeleteContentMutation from '../../mutations/DeleteContent'
 import Transitions from '../Transitions'
 import { EditingState, FormDataContainer } from '../typings'
-
 import BlockConfigurationEditor from './BlockConfigurationEditor'
 import BlockConfigurationList from './BlockConfigurationList'
 import { useFormHandlers } from './hooks'
 import { UseFormHandlersParams } from './typings'
+import { getActiveContentId } from '../../../../utils/components/index'
 
 type Props = Omit<UseFormHandlersParams, 'setState' | 'state'> & {
   initialEditingState?: EditingState
 }
 
+export enum ConfigurationStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  SCHEDULED = 'SCHEDULED',
+}
+
 export interface State extends EditingState {
   mode: 'editingActive' | 'editingInactive' | 'list'
   prevMode?: State['mode']
+  status?: ConfigurationStatus
 }
 
 const BlockEditor = ({
@@ -63,10 +70,26 @@ const BlockEditor = ({
 
   const editor = useEditorContext()
 
+  const activeContentId = getActiveContentId({
+    extensions: iframeRuntime.extensions,
+    treePath: editor.editTreePath,
+  })
+
+  const currentContent = editor.blockData?.configurations?.find(
+    config => state.contentId === config.contentId
+  )
+
+  const statusFromRuntime =
+    currentContent?.contentId === activeContentId
+      ? ConfigurationStatus.ACTIVE
+      : ConfigurationStatus.INACTIVE
+
   const {
+    handleStatusChange,
     handleConditionChange,
     handleConfigurationCreate,
     handleConfigurationOpen,
+    handleConfigurationActivate,
     handleFormBack,
     handleFormChange,
     handleFormSave,
@@ -80,6 +103,7 @@ const BlockEditor = ({
     setState,
     showToast,
     state,
+    statusFromRuntime,
   })
 
   return (
@@ -91,11 +115,14 @@ const BlockEditor = ({
         unmountOnExit
       >
         <BlockConfigurationEditor
+          state={state}
+          statusFromRuntime={statusFromRuntime}
           condition={
             (state
               ? state.condition
               : {}) as ExtensionConfiguration['condition']
           }
+          isNew={!currentContent}
           contentSchema={editor.blockData.contentSchema}
           editingContentId={state.contentId}
           data={state.formData as FormDataContainer}
@@ -105,6 +132,7 @@ const BlockEditor = ({
           onBack={handleFormBack}
           onChange={handleFormChange}
           onConditionChange={handleConditionChange}
+          onStatusChange={handleStatusChange}
           onLabelChange={handleLabelChange}
           onListOpen={handleListOpen}
           onSave={handleFormSave}
@@ -122,6 +150,7 @@ const BlockEditor = ({
             {deleteContent => (
               <BlockConfigurationList
                 deleteContent={deleteContent}
+                onConfigurationActivate={handleConfigurationActivate}
                 editingContentId={state.contentId}
                 iframeRuntime={iframeRuntime}
                 onConfigurationCreate={handleConfigurationCreate}

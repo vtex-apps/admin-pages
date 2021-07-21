@@ -1,6 +1,5 @@
 import EXTENSIONS from '../__fixtures__/extensions'
 import { SidebarComponent } from '../typings'
-
 import COMPONENTS from './__fixtures__/components'
 import { NormalizedBlock } from './typings'
 import {

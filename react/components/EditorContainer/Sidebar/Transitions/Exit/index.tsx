@@ -3,7 +3,6 @@ import { CSSTransition } from 'react-transition-group'
 
 import { COMMON_PROPS } from '../consts'
 import { ExitProps } from '../typings'
-
 import styles from './styles.css'
 
 const Exit: React.FC<ExitProps> = ({ children, condition, to }) => (

@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { NormalizedBlock } from '../../typings'
-
 import ExpandArrow from './ExpandArrow'
 import Item from './Item'
 

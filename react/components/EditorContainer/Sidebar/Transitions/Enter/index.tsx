@@ -3,7 +3,6 @@ import { CSSTransition } from 'react-transition-group'
 
 import { COMMON_PROPS } from '../consts'
 import { EnterProps } from '../typings'
-
 import styles from './styles.css'
 
 const Enter: React.FC<EnterProps> = ({ children, condition, from }) => (

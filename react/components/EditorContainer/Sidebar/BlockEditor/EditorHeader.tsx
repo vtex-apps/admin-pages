@@ -30,7 +30,7 @@ const EditorHeader: React.FC<Props> = ({
   const handleOpenListKeyDown = useKeydownFromClick(onListOpen || noOp)
 
   return (
-    <div className="ph5 pt4 pb2">
+    <div className="ph5 pt4">
       <div className="w-100 flex justify-between">
         <div
           className="flex items-center c-action-primary hover-c-action-primary pointer"
@@ -83,7 +83,7 @@ const EditorHeader: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="w-100 flex flex-grow-1 justify-between items-center mb6">
+      <div className="w-100 flex flex-grow-1 justify-between items-center">
         <h4 className="w-100 ma0 lh-copy f4 fw4 near-black ba b--transparent">
           {title}
         </h4>

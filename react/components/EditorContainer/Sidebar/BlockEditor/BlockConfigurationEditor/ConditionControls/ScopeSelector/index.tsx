@@ -44,6 +44,7 @@ const ScopeSelector: React.FunctionComponent<Props> = ({
         {message => <div className="mb5">{message}</div>}
       </FormattedMessage>
       <RadioGroup
+        hideBorder
         disabled={isDisabled}
         name="scopes"
         onChange={onChange}

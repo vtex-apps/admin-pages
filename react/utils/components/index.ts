@@ -375,5 +375,5 @@ export const getActiveContentId = ({
 }: GetActiveContentIdParams) => {
   const extension = getExtension(treePath, extensions)
 
-  return extension.contentIds[extension.contentIds.length - 1]
+  return extension.contentIds[extension.contentIds.length - 1] || ''
 }

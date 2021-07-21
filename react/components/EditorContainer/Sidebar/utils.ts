@@ -8,7 +8,6 @@ import {
   getIframeImplementation,
   getSchemaPropsOrContentFromRuntime,
 } from '../../../utils/components'
-
 import {
   GetDefaultCondition,
   GetFormData,
