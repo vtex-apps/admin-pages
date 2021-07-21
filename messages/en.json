@@ -172,6 +172,8 @@
   "admin/pages.editor.components.condition.date.title": "Custom date",
   "admin/pages.editor.components.condition.date.toggle.start": "Schedule a start date",
   "admin/pages.editor.components.condition.date.toggle.end": "Schedule an end date",
+  "admin/pages.editor.components.condition.visibility.activation.disabled": "You can't deactivate content. Choose the version you want to activate and this one will be automatically deactivated.",
+  "admin/pages.editor.components.condition.visibility.activation.warning": "The current active content will be deactivated.",
   "admin/pages.editor.components.condition.scope.entity.brand": "this brand",
   "admin/pages.editor.components.condition.scope.entity.category": "this category",
   "admin/pages.editor.components.condition.scope.entity.custom": "this URL",
