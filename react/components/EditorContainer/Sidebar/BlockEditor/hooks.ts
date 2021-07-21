@@ -299,6 +299,10 @@ export const useFormHandlers: UseFormHandlers = ({
           blockId,
           configuration: {
             ...configuration,
+            condition: {
+              ...configuration.condition,
+              statements: [],
+            },
             status: ConfigurationStatus.ACTIVE,
           },
           lang: iframeRuntime.culture.locale,
