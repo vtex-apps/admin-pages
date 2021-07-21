@@ -19,7 +19,7 @@ const stopOnKeyDownPropagation = createKeydownFromClick(stopPropagation)
 const ImagePreview: React.FC<Props> = ({ children, imageUrl }) => {
   const backgroundImageStyle = useMemo(
     () => ({
-      backgroundImage: `url(${imageUrl}?width=474&height=252&aspect=true)`,
+      backgroundImage: `url(${imageUrl}?width=710&height=384&aspect=true)`,
     }),
     [imageUrl]
   )

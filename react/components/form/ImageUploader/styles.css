@@ -1,6 +1,6 @@
 .emptyStateContainer {
-  width: 238px;
-  height: 128px;
+  width: 100%;
+  height: 8rem;
 }
 
 .emptyState {
@@ -12,8 +12,8 @@
 
 .emptyState:hover {
   border-color: #134cd8;
-  width: 14.25rem;
-  height: 112px;
+  width: 12.93rem;
+  height: 7rem;
 }
 
 .emptyState:hover > div {
