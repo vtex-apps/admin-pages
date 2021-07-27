@@ -16,6 +16,9 @@ interface MediaGalleryWidgetProps {
 }
 
 const messages = defineMessages({
+  remove: {
+    id: 'admin/pages.admin.redirects.form.button.remove'
+  },
   fileSizeError: {
     defaultMessage:
       'File exceeds the size limit of 4MB. Please choose a smaller one.',
@@ -63,7 +66,7 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
       },
     },
     {
-      label: 'Remove',
+      label: intl.formatMessage(messages.remove),
       onClick: () => {
         onChange?.(null)
       },

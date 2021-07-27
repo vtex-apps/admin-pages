@@ -10,14 +10,11 @@
   margin: auto;
 }
 
-.emptyState:hover {
+.emptyStateContainer:hover > div {
+  color: #134cd8;
   border-color: #134cd8;
   width: 12.93rem;
   height: 7rem;
-}
-
-.emptyState:hover > div {
-  color: #134cd8;
 }
 
 .imageUploaderText {
