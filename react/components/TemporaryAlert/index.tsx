@@ -3,7 +3,7 @@ import {
   Alert,
   ThemeProvider,
   createSystem,
-  Box,
+  tag,
   Flex,
   IconNotifications,
   Anchor,
@@ -25,7 +25,7 @@ export function TemporaryAlert() {
 
   return (
     <ThemeProvider system={system}>
-      <Box
+      <tag.div
         csx={{
           padding: 4,
         }}
@@ -56,7 +56,7 @@ export function TemporaryAlert() {
             </Flex>
           </Flex>
         </Alert>
-      </Box>
+      </tag.div>
     </ThemeProvider>
   )
 }
