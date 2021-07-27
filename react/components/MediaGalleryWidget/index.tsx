@@ -1,9 +1,8 @@
 import React from 'react'
 import { ActionMenu, Spinner, IconOptionsDots } from 'vtex.styleguide'
 import MediaGallery from 'vtex.admin-cms/MediaGallery'
-import { FormattedMessage } from 'react-intl'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { JSONSchema6 } from 'json-schema'
-// import { useModalState } from '@vtex/admin-ui'
 
 import ImagePreview from '../form/ImageUploader/ImagePreview'
 import EmptyState from '../form/ImageUploader/EmptyState'
@@ -16,7 +15,23 @@ interface MediaGalleryWidgetProps {
   value: string
 }
 
+const messages = defineMessages({
+  remove: {
+    id: 'admin/pages.admin.redirects.form.button.remove'
+  },
+  fileSizeError: {
+    defaultMessage:
+      'File exceeds the size limit of 4MB. Please choose a smaller one.',
+    id: 'admin/pages.editor.image-uploader.error.file-size',
+  },
+  genericError: {
+    defaultMessage: 'Something went wrong. Please try again.',
+    id: 'admin/pages.editor.image-uploader.error.generic',
+  },
+})
+
 export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
+  const intl = useIntl()
   const { onChange, value } = props
   const [isImageUploading, setIsImageUploading] = React.useState(false)
   const modalState = MediaGallery.useModalState({ animated: true })
@@ -29,9 +44,17 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
     modalState,
   })
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop: acceptedFiles => createMedia(acceptedFiles[0]),
+    accept: 'image/*',
+    maxSize: 4 * 10 ** 6,
+    onDrop: acceptedFiles => {
+      if (acceptedFiles?.[0]) {
+        createMedia(acceptedFiles[0])
+      } else {
+        setError(intl.formatMessage(messages.fileSizeError))
+      }
+    },
   })
-  const [error, setError] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
 
   const options: ActionMenuOption[] = [
     {
@@ -39,11 +62,11 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
       onClick: () => {
         modalState.setVisible(true)
 
-        setError(false)
+        setError(null)
       },
     },
     {
-      label: 'Remove',
+      label: intl.formatMessage(messages.remove),
       onClick: () => {
         onChange?.(null)
       },
@@ -52,8 +75,6 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
 
   function handleUploading(isUploading: boolean) {
     setIsImageUploading(isUploading)
-
-    setError(false)
   }
 
   function handleImageSelected(imageUrl: string) {
@@ -69,7 +90,7 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
   )
 
   function handleError() {
-    setError(true)
+    setError(intl.formatMessage(messages.genericError))
   }
 
   return (
@@ -78,7 +99,7 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
         {text => <span className="w-100 db mb3">{text}</span>}
       </FormattedMessage>
 
-      <div style={{ width: '14.8rem' }}>
+      <div className="w-100">
         <>
           {isImageUploading ? (
             <div
@@ -89,27 +110,33 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
                 <Spinner />
               </div>
             </div>
-          ) : value ? (
-            <div style={{ height: '8rem' }}>
-              <ImagePreview imageUrl={value}>
-                <ActionMenu
-                  variation="primary"
-                  menuWidth={200}
-                  options={options}
-                  buttonSize="small"
-                  buttonProps={{
-                    size: 'small',
-                    variation: 'primary',
-                    icon: <IconOptionsDots color="currentColor" />,
-                  }}
-                />
-              </ImagePreview>
+          ) : value && !isDragActive ? (
+            <div
+              {...getRootProps({
+                onClick: e => {
+                  e.stopPropagation()
+                  modalState.setVisible(true)
+                },
+              })}
+            >
+              <input {...getInputProps()} />
+              <div style={{ height: '8rem' }}>
+                <ImagePreview imageUrl={value}>
+                  <ActionMenu
+                    variation="primary"
+                    menuWidth={200}
+                    options={options}
+                    buttonSize="small"
+                    buttonProps={{
+                      size: 'small',
+                      variation: 'primary',
+                      icon: <IconOptionsDots color="currentColor" />,
+                    }}
+                  />
+                </ImagePreview>
+              </div>
 
-              {error && (
-                <p className="lh-copy f7 mt3 c-danger">
-                  Something went wrong. Please choose another file.
-                </p>
-              )}
+              {error && <p className="lh-copy f7 mt3 c-danger">{error}</p>}
             </div>
           ) : (
             <>
@@ -135,11 +162,7 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
                   }
                 />
               </div>
-              {error && (
-                <p className="lh-copy f7 mt3 c-danger">
-                  Something went wrong. Please choose another file.
-                </p>
-              )}
+              {error && <p className="lh-copy f7 mt3 c-danger">{error}</p>}
             </>
           )}
         </>

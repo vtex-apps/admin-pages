@@ -1,6 +1,6 @@
 .emptyStateContainer {
-  width: 238px;
-  height: 128px;
+  width: 100%;
+  height: 8rem;
 }
 
 .emptyState {
@@ -10,14 +10,11 @@
   margin: auto;
 }
 
-.emptyState:hover {
-  border-color: #134cd8;
-  width: 14.25rem;
-  height: 112px;
-}
-
-.emptyState:hover > div {
+.emptyStateContainer:hover > div {
   color: #134cd8;
+  border-color: #134cd8;
+  width: 12.93rem;
+  height: 7rem;
 }
 
 .imageUploaderText {

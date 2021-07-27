@@ -7,11 +7,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Image preview resolution in the uploader widget.
+
+### Fixed
+
+- Drag and drop not working properly.
+
 ## [4.44.2] - 2021-07-12
 
 ### Fixed
 
-- Fix the scroll on the sidebar editing panel.
+- Fix scroll on the sidebar editing panel.
 
 ## [4.44.1] - 2021-07-12
 
@@ -20,6 +28,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Block selector not working after a binding/locale change(2).
 
 ## [4.44.0] - 2021-07-02
+
 ### Added
 
 - Replace the Image Uploader with the CMS Media Management.

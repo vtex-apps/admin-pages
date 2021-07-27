@@ -83,7 +83,7 @@ const Sidebar: React.FunctionComponent<Props> = ({
           scrollState
         }
       >
-        <div className="relative h-100 flex flex-column dark-gray">
+        <div className="relative h-100 flex flex-column dark-gray overflow-y-auto">
           <Modal
             isActionDanger={isActionDanger}
             isActionLoading={editor.getIsLoading()}
