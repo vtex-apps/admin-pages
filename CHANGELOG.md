@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Rework on: Toast overflows the bottom-right conner, making the app unresponsive in that section.
+
 ## [4.44.5] - 2021-07-27
+
 ### Fixed
 
 - Toast overflows the bottom-right conner, making the app unresponsive in that section.
