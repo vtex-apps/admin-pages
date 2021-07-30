@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 
-- Store module under the `Store Settings/Storefront` section on `admin@4.x`.
+- Store module under the `Store Settings/Storefront` sidebar section of the `admin@4.x`.
 
 ## [4.44.6] - 2021-07-30
 
