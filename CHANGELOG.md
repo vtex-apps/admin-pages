@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.44.7] - 2021-08-02
+
 ### Added
 
 - Store module under the `Store Settings/Storefront` sidebar section of the `admin@4.x`.
