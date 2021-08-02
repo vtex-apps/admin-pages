@@ -54,24 +54,31 @@
           "index": 0,
           "operation": "add"
         },
-        "isNew": true,
         "labelId": "admin/pages.admin-menu-button.site-editor",
         "path": "/admin/cms/site-editor"
       },
       {
-        "isNew": true,
         "labelId": "admin/pages.admin-menu-button.pages",
         "path": "/admin/cms/pages"
       },
       {
-        "isNew": true,
         "labelId": "admin/pages.admin-menu-button.styles",
         "path": "/admin/cms/styles"
       },
       {
-        "isNew": true,
         "labelId": "admin/pages.admin.tabs.redirects",
         "path": "/admin/cms/redirects"
+      }
+    ]
+  },
+  {
+    "section": "storeSettings",
+    "subSection": "storeFront",
+    "adminVersion": 4,
+    "subSectionItems": [
+      {
+        "labelId": "admin/pages.admin-menu-button.store",
+        "path": "/admin/cms/store"
       }
     ]
   }
