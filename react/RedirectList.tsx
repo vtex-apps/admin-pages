@@ -234,6 +234,7 @@ const RedirectList: React.FC<Props> = ({
               </>
             )
           }
+          console.log(redirects);
           const next = data?.redirect?.listRedirects.next
           if (next && redirects.length < PAGINATION_STEP) {
             refetch({ limit: REDIRECTS_LIMIT, next })

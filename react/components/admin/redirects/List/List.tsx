@@ -179,6 +179,13 @@ const List: React.FC<Props> = ({
         </div>
       }
       toolbar={{
+        inputSearch: {
+          value: "this.state.searchValue",
+          placeholder: 'Search stuff...',
+          onChange: () =>{},
+          onClear: () =>{},
+          onSubmit: () =>{items=[]},
+        },
         density: {
           buttonLabel: intl.formatMessage(messages.lineDensityLabel),
           highOptionLabel: intl.formatMessage(messages.lineDensityHigh),
