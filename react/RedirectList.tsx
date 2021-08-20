@@ -119,6 +119,11 @@ const RedirectList: React.FC<Props> = ({
     writer.close()
   }
 
+  useEffect(()=>{
+    console.log("Pagination Modificado")
+    console.log(paginationFrom, paginationTo, paginationLength)
+  }, [paginationFrom, paginationTo, paginationLength])
+
   const handleDownload = useCallback(async () => {
     const fileStream = streamSaver.createWriteStream('redirects.csv')
     const writer = fileStream.getWriter()
@@ -193,7 +198,6 @@ const RedirectList: React.FC<Props> = ({
       paginationTo: nextPaginationTo,
       paginationLength: paginationLength,
     }))
-    console.log(paginationFrom, paginationTo, paginationLength)
   }
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
@@ -204,8 +208,7 @@ const RedirectList: React.FC<Props> = ({
       paginationTo: prevState.paginationFrom,
       paginationLength: paginationLength,
     }))
-    console.log(paginationFrom, paginationTo, paginationLength)
-  }, [setPagination])
+  }, [paginationFrom, paginationTo, paginationLength])
 
   return (
     <>
@@ -310,21 +313,22 @@ const RedirectList: React.FC<Props> = ({
                       <Pagination
                         currentItemFrom={paginationFrom + 1}
                         currentItemTo={paginationTo}
-                        onNextClick={getNextPageNavigationHandler(
-                          redirects.length,
+                        onNextClick= {getNextPageNavigationHandler(
+                          filteredRedirectList.length,
                           fetchMore,
                           next
                         )}
-                        textOf=""
+                        textOf="of"
+                        totalItems= {filteredRedirectList.length}
                         onPrevClick={handlePrevPageNavigation}
                         textShowRows={intl.formatMessage(messages.showRows)}
-                        rowsOptions={[5, 10, 50]}
+                        rowsOptions={[10, 30, 50]}
                         onRowsChange={(e: any, value: number) => {
                           console.log(e, value)
                           setPagination({
                             paginationFrom: paginationFrom,
-                            paginationTo: paginationFrom + value,
-                            paginationLength: value,
+                            paginationTo: paginationFrom + Number(value),
+                            paginationLength: Number(value),
                           })
                         }}
                       />

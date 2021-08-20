@@ -24,7 +24,7 @@ interface CustomProps {
   showToast: ToastConsumerFunctions['showToast']
   to: number
   storeBindings: Binding[]
-  onSearch: (e:any) => void
+  onSearch: (e: any) => void
 }
 
 export type Props = CustomProps
@@ -142,7 +142,11 @@ const List: React.FC<Props> = ({
     [navigate]
   )
 
-  const [searchValue, setSearchValue] = useState("Write here")
+  const [searchValue, setSearchValue] = useState('')
+  useEffect(() => {
+    var e = { target: { value: searchValue } }
+    onSearch(e)
+  }, [searchValue])
 
   const handleNewItemOpen = useCallback(() => {
     navigate({ to: `${BASE_URL}/${NEW_REDIRECT_ID}` })
@@ -185,9 +189,11 @@ const List: React.FC<Props> = ({
       toolbar={{
         inputSearch: {
           value: searchValue,
-          placeholder: 'Search stuff...',
-          onChange: (e:any) =>{setSearchValue(e.target.value)},
-          onClear: () =>{},
+          placeholder: 'Search',
+          onChange: (e: any) => {
+            setSearchValue(e.target.value)
+          },
+          onClear: () => {},
           onSubmit: onSearch,
         },
         density: {
