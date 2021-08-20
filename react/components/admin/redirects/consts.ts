@@ -24,7 +24,7 @@ export const getCSVTemplate = (hasMultipleBindings: boolean) =>
 export const NEW_REDIRECT_ID = 'new'
 
 export const PAGINATION_START = 0
-export const PAGINATION_STEP = 10
+export const PAGINATION_STEP = 5
 export const REDIRECTS_LIMIT = 500
 
 export const WRAPPER_PATH = 'redirects'

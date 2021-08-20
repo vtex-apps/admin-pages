@@ -82,12 +82,10 @@ const RedirectList: React.FC<Props> = ({
 
   const [filteredRedirectList, setFilteredRedirectList] = useState<any>([])
 
-  const [
-    { paginationFrom, paginationTo },
-    setPagination,
-  ] = useState({
+  const [{ paginationFrom, paginationTo , paginationLength}, setPagination] = useState({
     paginationFrom: PAGINATION_START,
     paginationTo: PAGINATION_START + PAGINATION_STEP,
+    paginationLength: PAGINATION_STEP,
   })
 
   const [alertState, setAlert] = useState<AlertState | null>(null)
@@ -163,7 +161,7 @@ const RedirectList: React.FC<Props> = ({
     if (!nextToken && paginationFrom >= dataLength) {
       return
     }
-    const maybeNextPaginationTo = paginationTo + PAGINATION_STEP
+    const maybeNextPaginationTo = paginationTo + paginationLength
 
     if (maybeNextPaginationTo > dataLength && nextToken) {
       await fetchMore({
@@ -193,16 +191,20 @@ const RedirectList: React.FC<Props> = ({
           ? prevState.paginationFrom
           : prevState.paginationTo,
       paginationTo: nextPaginationTo,
+      paginationLength: paginationLength,
     }))
+    console.log(paginationFrom, paginationTo, paginationLength)
   }
   const handlePrevPageNavigation = useCallback(() => {
     setPagination(prevState => ({
       paginationFrom:
-        prevState.paginationFrom - PAGINATION_STEP < 0
+        prevState.paginationFrom - paginationLength < 0
           ? 0
-          : prevState.paginationFrom - PAGINATION_STEP,
+          : prevState.paginationFrom - paginationLength,
       paginationTo: prevState.paginationFrom,
+      paginationLength: paginationLength,
     }))
+    console.log(paginationFrom, paginationTo, paginationLength)
   }, [setPagination])
 
   return (
@@ -237,10 +239,10 @@ const RedirectList: React.FC<Props> = ({
             )
           }
           const next = data?.redirect?.listRedirects.next
-          if (next && redirects.length < PAGINATION_STEP) {
+          if (next && redirects.length < paginationLength) {
             refetch({ limit: REDIRECTS_LIMIT, next })
           }
-          useEffect(()=>{
+          useEffect(() => {
             setFilteredRedirectList(redirects)
           }, [redirects])
           return (
@@ -280,7 +282,10 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={filteredRedirectList.slice(paginationFrom, paginationTo)}
+                      items={filteredRedirectList.slice(
+                        paginationFrom,
+                        paginationTo
+                      )}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
@@ -290,9 +295,16 @@ const RedirectList: React.FC<Props> = ({
                       showToast={showToast}
                       openModal={openModal}
                       onHandleDownload={handleDownload}
-                      onSearch = {(e) => {setFilteredRedirectList(redirects.filter((value)=>{
-                        return value.from.includes(e.target.value) || value.to.includes(e.target.value)
-                      }))}}
+                      onSearch={e => {
+                        setFilteredRedirectList(
+                          redirects.filter(value => {
+                            return (
+                              value.from.includes(e.target.value) ||
+                              value.to.includes(e.target.value)
+                            )
+                          })
+                        )
+                      }}
                     />
                     {redirects.length > 0 && (
                       <Pagination
@@ -306,6 +318,15 @@ const RedirectList: React.FC<Props> = ({
                         textOf=""
                         onPrevClick={handlePrevPageNavigation}
                         textShowRows={intl.formatMessage(messages.showRows)}
+                        rowsOptions={[5, 10, 50]}
+                        onRowsChange={(e: any, value: number) => {
+                          console.log(e, value)
+                          setPagination({
+                            paginationFrom: paginationFrom,
+                            paginationTo: paginationFrom + value,
+                            paginationLength: value,
+                          })
+                        }}
                       />
                     )}
                     <UploadModal
