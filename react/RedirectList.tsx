@@ -80,6 +80,8 @@ const RedirectList: React.FC<Props> = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const [filteredRedirectList, setFilteredRedirectList] = useState<any>([])
+
   const [
     { paginationFrom, paginationTo },
     setPagination,
@@ -234,12 +236,13 @@ const RedirectList: React.FC<Props> = ({
               </>
             )
           }
-          console.log(redirects);
           const next = data?.redirect?.listRedirects.next
           if (next && redirects.length < PAGINATION_STEP) {
             refetch({ limit: REDIRECTS_LIMIT, next })
           }
-
+          useEffect(()=>{
+            setFilteredRedirectList(redirects)
+          }, [redirects])
           return (
             <ToastConsumer>
               {({ showToast }) => (
@@ -277,7 +280,7 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={redirects.slice(paginationFrom, paginationTo)}
+                      items={filteredRedirectList.slice(paginationFrom, paginationTo)}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
@@ -287,6 +290,9 @@ const RedirectList: React.FC<Props> = ({
                       showToast={showToast}
                       openModal={openModal}
                       onHandleDownload={handleDownload}
+                      onSearch = {(e) => {setFilteredRedirectList(redirects.filter((value)=>{
+                        return value.from.includes(e.target.value) || value.to.includes(e.target.value)
+                      }))}}
                     />
                     {redirects.length > 0 && (
                       <Pagination
