@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Enable lazy loading of assets below-the-fold",
   "admin/store.advancedSettings.enableLazyFold.description": "Enables lazy loading of the JS files of the components below the `__fold__` block.",
   "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Include Twitter meta tags",
+  "admin/store.twitterUsername.title": "Twitter username",
+  "admin/store.twitterUsername.description": "The username your business uses on Twitter, for example: VTEXcommerce. (Do not include the @ sign)",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Please choose the type for the Twitter Card"
 }
