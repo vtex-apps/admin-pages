@@ -222,7 +222,7 @@
   "admin/pages.editor.container.editpath.label": "URL",
   "admin/pages.editor.container.master-workspace-warning.text": "Vous êtes en train d’éditer le magasin en direct. Les changements prendront effet immédiatement.",
   "admin/pages.editor.iframe.confirm-prompt": "Vous êtes sûr de vouloir partir ?",
-  "admin/pages.editor.image-uploader.empty.button": "Télécharger",
+  "admin/pages.editor.image-uploader.empty.button": "Glissez et déposez une image ou cliquez pour choisir",
   "admin/pages.editor.image-uploader.empty.subtext-1": "ou",
   "admin/pages.editor.image-uploader.empty.subtext-2": "glisser-déposer",
   "admin/pages.editor.image-uploader.empty.subtext-3": "une image",
@@ -498,7 +498,7 @@
   "admin/appframe.navigation.contentManagement": "Gestion des contenus",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Informations manquantes sur la liaison dans le cadre de la redirection {route}",
   "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Informations inutiles sur la liaison provenant d’une redirection {route}",
-  "admin/store.b2benabled.title": "B2B behavior enabled",
+  "admin/store.b2benabled.title": "Comportement B2B activé",
   "admin/store.title": "Magasin VTEX",
   "admin/store.storeName.title": "Nom du magasin",
   "admin/store.requiresAuthorization.title": "Active l'activité B2B",
@@ -552,6 +552,6 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Rendu différé du pied de page et chargement différé de ses actifs, permettant d'améliorer les performances du premier rendu de la page.",
   "admin/store.advancedSettings.enableLazyFold.title": "Activez le chargement différé des ressources sous la ligne de flottaison (fold)",
   "admin/store.advancedSettings.enableLazyFold.description": "Permet le chargement différé des fichiers JS des composants situés sous le bloc `__fold__`.",
-  "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
+  "admin/pages.editor.newadmin.alert": "Il s’agit d’un environnement test. Pour appliquer les modifications à votre magasin en ligne, ",
+  "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin."
 }
