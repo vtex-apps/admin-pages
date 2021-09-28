@@ -45,7 +45,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Fix the number of redirects displayed on cms/redirects
 
-<<<<<<< HEAD
 ## [4.44.3] - 2021-07-27
 
 ### Changed
@@ -56,8 +55,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Drag and drop not working properly.
 
-=======
->>>>>>> a478bd77... fix: quantity of redirects being displayed on list
 ## [4.44.2] - 2021-07-12
 
 ### Fixed
