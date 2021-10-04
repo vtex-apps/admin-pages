@@ -508,7 +508,7 @@
   "admin/store.metaTagRobots.description": "デフォルト値: index, follow",
   "admin/store.faviconLinks.title": "ファビコン",
   "admin/store.faviconLinks.rel.title": "ファビコン関係",
-  "admin/store.faviconLinks.rel.description": "このファビコン関係、例: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
+  "admin/store.faviconLinks.rel.description": "このファビコン関係、例: \\\"icon\\\", \\\"shortcut icon\\\", \\\"apple-touch-icon\\\"",
   "admin/store.faviconLinks.type.title": "ファビコンメディアタイプ",
   "admin/store.faviconLinks.type.description": "(オプション) ファビコンタイプ、例: image/png",
   "admin/store.faviconLinks.sizes.title": "ファビコンのサイズ",

@@ -508,7 +508,7 @@
   "admin/store.metaTagRobots.description": "Valoare implicită: index, follow",
   "admin/store.faviconLinks.title": "Favicon-uri",
   "admin/store.faviconLinks.rel.title": "Relaţie Favicon",
-  "admin/store.faviconLinks.rel.description": "Această relaţie favicon, de exemplu: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
+  "admin/store.faviconLinks.rel.description": "Această relaţie favicon, de exemplu: \\\"icon\\\", \\\"shortcut icon\\\", \\\"apple-touch-icon\\\"",
   "admin/store.faviconLinks.type.title": "Tip Media Favicon",
   "admin/store.faviconLinks.type.description": "(Opţional) Tip Favicon, de ex.: image/png",
   "admin/store.faviconLinks.sizes.title": "Dimensiune Favicon",
