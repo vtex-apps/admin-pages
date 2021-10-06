@@ -556,7 +556,7 @@
   "admin/pages.editor.newadmin.alert.anchor": "por favor acceda al VTEX Admin anterior.",
   "admin/store.includeTwitterMetaTags.title": "Incluir metaetiquetas de Twitter",
   "admin/store.twitterUsername.title": "Nombre de usuario en Twitter",
-  "admin/store.twitterUsername.description": "El nombre de usuario que usa su empresa en Twitter, por ejemplo: VTEXcommerce. (No incluya el signo @)",
+  "admin/store.twitterUsername.description": "El nombre de usuario que usa su empresa en Twitter, por ejemplo: VTEXcommerce.",
   "admin/store.twitterCard.title": "Tarjeta de Twitter",
   "admin/store.twitterCard.description": "POr favor escoja el tipo de la Tarjeta de Twitter"
 }

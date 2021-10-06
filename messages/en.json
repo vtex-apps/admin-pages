@@ -556,7 +556,7 @@
   "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin.",
   "admin/store.includeTwitterMetaTags.title": "Include Twitter meta tags",
   "admin/store.twitterUsername.title": "Twitter username",
-  "admin/store.twitterUsername.description": "The username your business uses on Twitter, for example: VTEXcommerce. (Do not include the @ sign)",
+  "admin/store.twitterUsername.description": "The username your business uses on Twitter, for example: VTEXcommerce.",
   "admin/store.twitterCard.title": "Twitter Card",
   "admin/store.twitterCard.description": "Please choose the type for the Twitter Card"
 }

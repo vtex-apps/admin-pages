@@ -9,6 +9,7 @@ import { Button, ToastContext } from 'vtex.styleguide'
 
 import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
+import Dropdown from '../../../form/Dropdown'
 import Toggle from '../../../form/Toggle'
 import FieldTemplate from '../../../form/FieldTemplate'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
@@ -43,6 +44,7 @@ const CheckboxWidget = (props: CustomWidgetProps) => (
 const widgets = {
   BaseInput,
   CheckboxWidget,
+  Dropdown,
 }
 
 function resolveSchemaForCurrentTab(
