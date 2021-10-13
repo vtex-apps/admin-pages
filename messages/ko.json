@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "폴더 아래쪽 자산의 지연 로드 사용",
   "admin/store.advancedSettings.enableLazyFold.description": "'__fold__' 블록 아래에 있는 구성 요소의 JS 파일을 지연 로드할 수 있습니다.",
   "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Twitter 메타 태그 포함",
+  "admin/store.twitterUsername.title": "Twitter 사용자 이름",
+  "admin/store.twitterUsername.description": "귀하의 비즈니스가 Twitter에서 사용하는 사용자 이름. 예: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter 카드",
+  "admin/store.twitterCard.description": "Twitter 카드의 종류를 선택하세요."
 }

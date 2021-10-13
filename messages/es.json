@@ -554,9 +554,9 @@
   "admin/store.advancedSettings.enableLazyFold.description": "Permite la carga diferida de los archivos JS de los componentes (above the fold)",
   "admin/pages.editor.newadmin.alert": "Este es un ambiente de prueba. Para aplicar los cambios en su tienda online, ",
   "admin/pages.editor.newadmin.alert.anchor": "por favor acceda al VTEX Admin anterior.",
-  "admin/store.includeTwitterMetaTags.title": "Incluir metaetiquetas de Twitter",
-  "admin/store.twitterUsername.title": "Nombre de usuario en Twitter",
-  "admin/store.twitterUsername.description": "El nombre de usuario que usa su empresa en Twitter, por ejemplo: VTEXcommerce.",
-  "admin/store.twitterCard.title": "Tarjeta de Twitter",
-  "admin/store.twitterCard.description": "POr favor escoja el tipo de la Tarjeta de Twitter"
+  "admin/store.includeTwitterMetaTags.title": "Incluir meta tags de Twitter",
+  "admin/store.twitterUsername.title": "Nombre de usuario de Twitter",
+  "admin/store.twitterUsername.description": "El nombre de usuario que su empresa utiliza en Twitter, por ejemplo VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Por favor, elija el tipo de Twitter Card"
 }

@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Schakel traag laden van activa onder de vouw in",
   "admin/store.advancedSettings.enableLazyFold.description": "Schakel het traag laden in van de JS bestanden van de componenten onder het `__fold__` blok in.",
   "admin/pages.editor.newadmin.alert": "This is a test environment. To apply changes to your online store, ",
-  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "please access the previous VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Twitter-metatags opnemen",
+  "admin/store.twitterUsername.title": "Twitter-gebruikersnaam",
+  "admin/store.twitterUsername.description": "De gebruikersnaam die uw bedrijf op Twitter gebruikt, bijvoorbeeld: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter-kaart",
+  "admin/store.twitterCard.description": "Kies het type voor de Twitter-kaart"
 }
