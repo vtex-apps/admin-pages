@@ -11,6 +11,22 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Messages for the `Twitter Meta Tags` app configuration.
 
+## [4.45.1] - 2021-09-28
+
+### Changed
+
+- Examples in favicon types
+
+## [4.45.0] - 2021-09-23
+
+### Added
+
+- I18n Bg and pseudo language to implement in-context tool.
+
+### Changed
+
+- I18n Fr, It, Ja, Ko, Nl and Ro.
+
 ## [4.44.7] - 2021-08-02
 
 ### Added
