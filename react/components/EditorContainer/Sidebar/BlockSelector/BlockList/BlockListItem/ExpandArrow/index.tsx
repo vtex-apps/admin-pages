@@ -3,7 +3,6 @@ import { useKeydownFromClick } from 'keydown-from-click'
 import React from 'react'
 
 import ArrowIcon from '../../../../../../icons/ArrowIcon'
-
 import styles from './styles.css'
 
 interface Props {

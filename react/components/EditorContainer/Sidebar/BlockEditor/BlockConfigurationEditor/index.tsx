@@ -3,7 +3,15 @@ import { JSONSchema6 } from 'json-schema'
 import React, { useMemo } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { FormProps } from 'react-jsonschema-form'
-import { Button, ToastConsumerFunctions } from 'vtex.styleguide'
+// The styleguide is not exporting the warning icon
+import {
+  Button,
+  ToastConsumerFunctions,
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  IconWarning,
+  Checkbox,
+} from 'vtex.styleguide'
 
 import { useEditorContext } from '../../../../EditorContext'
 import EditableText from '../../../EditableText'
@@ -18,7 +26,14 @@ import { useComponentFormStateStack } from './hooks'
 import styles from './styles.css'
 import { getSchemas } from './utils'
 
+export enum ConfigurationStatus {
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE',
+  SCHEDULED = 'SCHEDULED',
+}
+
 interface Props {
+  state?: EditingState
   condition?: ExtensionConfiguration['condition']
   contentSchema?: JSONSchema6
   data: FormDataContainer
@@ -29,6 +44,7 @@ interface Props {
   label?: string | null
   onBack: () => void
   onChange: FormProps<FormDataContainer>['onChange']
+  onStatusChange: () => void
   onConditionChange?: (
     changes: Partial<ExtensionConfiguration['condition']>
   ) => void
@@ -38,6 +54,7 @@ interface Props {
   onSave: () => void
   showToast: ToastConsumerFunctions['showToast']
   title: ComponentSchema['title']
+  statusFromRuntime: ConfigurationStatus
 }
 
 const messages = defineMessages({
@@ -46,9 +63,20 @@ const messages = defineMessages({
       'Could not identify {entity}. The configuration will be set to "{template}".',
     id: 'admin/pages.editor.components.condition.toast.error.page-context',
   },
+  activationLabel: {
+    id: 'admin/pages.editor.components.condition.visibility.activation',
+  },
+  activationDisabledLabel: {
+    id:
+      'admin/pages.editor.components.condition.visibility.activation.disabled',
+  },
+  activationWarningLabel: {
+    id: 'admin/pages.editor.components.condition.visibility.activation.warning',
+  },
 })
 
 const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
+  state,
   condition,
   contentSchema,
   data,
@@ -59,12 +87,14 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
   label,
   onBack,
   onChange,
+  onStatusChange,
   onConditionChange,
   onLabelChange,
   onListOpen,
   onSave,
   showToast,
   title,
+  statusFromRuntime,
 }) => {
   const intl = useIntl()
 
@@ -148,6 +178,24 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
     return defaultContent && defaultContent.contentId === editingContentId
   }, [editor.blockData, editingContentId])
 
+  const status = state?.status ?? statusFromRuntime
+
+  const hasOnlyEndDate = state?.condition?.statements?.some(
+    statement => statement.verb === 'to'
+  )
+
+  const getStatusWarningText = () => {
+    if (statusFromRuntime === ConfigurationStatus.ACTIVE) {
+      return intl.formatMessage(messages.activationDisabledLabel)
+    } else if (state?.status === ConfigurationStatus.ACTIVE) {
+      return intl.formatMessage(messages.activationWarningLabel)
+    }
+
+    return
+  }
+
+  const statusWarningText = getStatusWarningText()
+
   return (
     <div className="w-100 h-100 absolute flex flex-column">
       <div
@@ -159,6 +207,17 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           onListOpen={onListOpen && isRootLevel ? onListOpen : undefined}
           title={componentFormState ? componentFormState.title : title}
         />
+
+        <div className="ma4 mb5">
+          {!isNew && statusFromRuntime !== ConfigurationStatus.ACTIVE && (
+            <p className="pt4 pb4 pl4 pr2 bg-warning--faded lh-copy">
+              <FormattedMessage
+                id="admin/pages.editor.components.status.alert"
+                defaultMessage="This version of the content is not being shown in the preview and to visitors."
+              />
+            </p>
+          )}
+        </div>
 
         <div
           className={classnames(
@@ -199,6 +258,43 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
           <div id="form__error-list-template___alert" />
         </div>
 
+        {isContent && !isDefaultContent && !isArrayFieldOpen && (
+          <>
+            <FormattedMessage id="admin/pages.editor.components.condition.title">
+              {message => (
+                <div className="mb5 ph5 pt7 bt bw1 b--light-silver flex items-center f4">
+                  {message}
+                </div>
+              )}
+            </FormattedMessage>
+
+            <div className="ph5 pt5 mb6">
+              <>
+                <Checkbox
+                  checked={
+                    status === ConfigurationStatus.ACTIVE || hasOnlyEndDate
+                  }
+                  id="status"
+                  label={intl.formatMessage(messages.activationLabel)}
+                  disabled={
+                    statusFromRuntime === ConfigurationStatus.ACTIVE ||
+                    condition?.statements.length
+                  }
+                  name="status"
+                  onChange={onStatusChange}
+                  value="status"
+                />
+
+                {statusWarningText && (
+                  <div className="mt3 dib">
+                    <span>{statusWarningText}</span>
+                  </div>
+                )}
+              </>
+            </div>
+          </>
+        )}
+
         {isContent &&
           !isDefaultContent &&
           condition &&
@@ -209,6 +305,8 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               isSitewide={isSitewide}
               onConditionChange={onConditionChange}
               pageContext={iframeRuntime.route.pageContext}
+              status={status}
+              statusFromRuntime={statusFromRuntime}
             />
           )}
       </div>

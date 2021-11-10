@@ -163,7 +163,7 @@
   "admin/pages.editor.component-list.status.active": "Ativo",
   "admin/pages.editor.component-list.status.inactive": "Inativo",
   "admin/pages.editor.component-list.status.scheduled": "Agendado",
-  "admin/pages.editor.component-list.title": "Configurações",
+  "admin/pages.editor.component-list.title": "Versões",
   "admin/pages.editor.component-list.untitled": "Bloco sem título",
   "admin/pages.editor.components.arrayTemplate.button.add": "Adicionar",
   "admin/pages.editor.components.button.cancel": "Cancelar",
