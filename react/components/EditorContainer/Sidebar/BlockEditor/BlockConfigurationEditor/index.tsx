@@ -66,6 +66,13 @@ const messages = defineMessages({
   activationLabel: {
     id: 'admin/pages.editor.components.condition.visibility.activation',
   },
+  activationDisabledLabel: {
+    id:
+      'admin/pages.editor.components.condition.visibility.activation.disabled',
+  },
+  activationWarningLabel: {
+    id: 'admin/pages.editor.components.condition.visibility.activation.warning',
+  },
 })
 
 const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
@@ -179,9 +186,9 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
 
   const getStatusWarningText = () => {
     if (statusFromRuntime === ConfigurationStatus.ACTIVE) {
-      return 'You can only activate content. Choose the one you want to be active and all others will be deactivated.'
+      return intl.formatMessage(messages.activationDisabledLabel)
     } else if (state?.status === ConfigurationStatus.ACTIVE) {
-      return 'The current active content will be deactivated.'
+      return intl.formatMessage(messages.activationWarningLabel)
     }
 
     return
