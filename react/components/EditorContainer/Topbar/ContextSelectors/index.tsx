@@ -160,11 +160,13 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
         options={localeOptions}
       />
       {shouldShowBindingSelector && bindings && binding && (
-        <BindingCloning
-          bindings={bindings}
-          binding={binding}
-          iframeRuntime={iframeRuntime}
-        />
+        <div className="mh3">
+          <BindingCloning
+            bindings={bindings}
+            binding={binding}
+            iframeRuntime={iframeRuntime}
+          />
+        </div>
       )}
     </>
   )
