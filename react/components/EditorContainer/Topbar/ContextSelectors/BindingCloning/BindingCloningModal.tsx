@@ -1,7 +1,11 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react'
-import { Button, Modal, ToastConsumer } from 'vtex.styleguide'
-import BindingSelector, { BindingSelectorState, BindingSelectorItem } from './BindingSelector'
+import { Button, Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
 import { pick } from 'ramda'
+
+import BindingSelector, {
+  BindingSelectorState,
+  BindingSelectorItem,
+} from './BindingSelector'
 import { withBindingsContext } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
@@ -16,10 +20,10 @@ type MutationArgs<T> = {
 }
 
 interface CopyBindingVariables {
-  from: string,
-  to: string,
-  template: string,
-  context: PageContext,
+  from: string
+  to: string
+  template: string
+  context: PageContext
 }
 
 interface Props {
@@ -32,7 +36,7 @@ interface Props {
   error?: any
   state: BindingSelectorState
   dispatch: (action: any) => any
-  routeInfo: Route,
+  routeInfo: Route
   pageContext: PageContext
   refetch: () => void
 }
@@ -75,7 +79,6 @@ const copyBindingsSanityCheck = (variables: any) => {
   return true
 }
 
-
 const BindingCloningModal: FunctionComponent<Props> = ({
   currentBinding,
   isOpen,
@@ -90,14 +93,14 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   dispatch,
   refetch,
   routeInfo,
-  pageContext
+  pageContext,
 }) => {
   const {
     showOverwriteDialog,
     isOverwriteDialogOpen,
     hideOverwriteDialog,
     onOverwriteCancel,
-    onOverwriteConfirm
+    onOverwriteConfirm,
   } = useOverwriteDialogState()
 
   const checkOverwrites = () => {
@@ -132,42 +135,32 @@ const BindingCloningModal: FunctionComponent<Props> = ({
     }
   }, [wasOpen, isOpen])
 
-  const applyChanges = async () => {
-    const checkedItems = state.filter(item => item.checked)
-    for (const item of checkedItems) {
-      try {
-        await saveItem(item)
-      } catch (error) {
-        // TODO: better error handling
-        return Promise.reject()
-      }
-    }
-
-    return Promise.resolve()
-  }
-
   const saveItem = (item: BindingSelectorItem) =>
+    // eslint-disable-next-line no-async-promise-executor
     new Promise<void>(async (resolve, reject) => {
       if (!item.overwrites) {
         try {
           const saveRouteVariables = {
             route: {
-              ...pick([
-                'auth',
-                'blockId',
-                'context',
-                'declarer',
-                'domain',
-                'interfaceId',
-                'path',
-                'routeId',
-                'pages',
-                'title',
-                'metaTags',
-              ], routeInfo),
+              ...pick(
+                [
+                  'auth',
+                  'blockId',
+                  'context',
+                  'declarer',
+                  'domain',
+                  'interfaceId',
+                  'path',
+                  'routeId',
+                  'pages',
+                  'title',
+                  'metaTags',
+                ],
+                routeInfo
+              ),
               dataSource: 'vtex.rewriter',
               bindingId: item.id,
-            }
+            },
           }
 
           const copyBindingsVariables = {
@@ -186,16 +179,17 @@ const BindingCloningModal: FunctionComponent<Props> = ({
           }
 
           await saveRoute({
-            variables: saveRouteVariables
+            variables: saveRouteVariables,
           })
 
           await copyBindings({
-            variables: copyBindingsVariables
+            variables: copyBindingsVariables,
           })
 
           // TODO: check result of mutations for success or error
           resolve()
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(error)
           reject(error)
         }
@@ -214,94 +208,109 @@ const BindingCloningModal: FunctionComponent<Props> = ({
           }
 
           await copyBindings({
-            variables: copyBindingsVariables
+            variables: copyBindingsVariables,
           })
           // TODO: check result of mutation for success or error
           resolve()
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.log(error)
           reject(error)
         }
       }
     })
 
+  const applyChanges = async () => {
+    const checkedItems = state.filter(item => item.checked)
+    for (const item of checkedItems) {
+      try {
+        await saveItem(item)
+      } catch (error) {
+        // TODO: better error handling
+        return Promise.reject()
+      }
+    }
+
+    return Promise.resolve()
+  }
+
   return (
     <>
       <ToastConsumer>
         {({ showToast }) => (
-          <Modal isOpen={isOpen} onClose={onClose} bottomBar={(
-            <div className="flex justify-end">
-              <span className="mr4">
-                {/* TODO: i18n */}
-                <Button onClick={() => onClose()} variation="secondary">
-                  Cancel
+          <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            bottomBar={
+              <div className="flex justify-end">
+                <span className="mr4">
+                  {/* TODO: i18n */}
+                  <Button onClick={() => onClose()} variation="secondary">
+                    Cancel
+                  </Button>
+                </span>
+                <Button
+                  onClick={() => {
+                    checkOverwrites()
+                      .then(() => {
+                        // TODO: i18n. also better messages
+                        showToast({ message: 'Saving...', duration: Infinity })
+                        applyChanges()
+                          .then(() => {
+                            // See comment below on the catch block
+                            setTimeout(() => {
+                              showToast('Done!')
+                            }, 500)
+                          })
+                          .catch(() => {
+                            // There is a bug with the Toast component, where
+                            // if you call two toasts on rapid succession,
+                            // the second one will be ignored. This timeout
+                            // gets around this issue, which happens if the error
+                            // is immediate
+                            setTimeout(() => {
+                              showToast(
+                                'An error has occourred. Please try again'
+                              )
+                            }, 500)
+                          })
+                        onClose()
+                      })
+                      .catch(() => {
+                        //  not an error, the user has just refused to overwrite
+                      })
+                  }}
+                >
+                  Confirm
                 </Button>
-              </span>
-              <Button onClick={() => {
-                checkOverwrites().then(() => {
-                  // TODO: i18n. also better messages
-                  showToast({ message: 'Saving...', duration: Infinity })
-                  applyChanges()
-                    .then(() => {
-                      // See comment below on the catch block
-                      setTimeout(() => {
-                        showToast('Done!')
-                      }, 500)
-                    })
-                    .catch(() => {
-                      // There is a bug with the Toast component, where
-                      // if you call two toasts on rapid succession,
-                      // the second one will be ignored. This timeout
-                      // gets around this issue, which happens if the error
-                      // is immediate
-                      setTimeout(() => {
-                        showToast('An error has occourred. Please try again')
-                      }, 500)
-                    })
-                  onClose()
-                }).catch(() => {
-                  //  not an error, the user has just refused to overwrite
-                })
-              }}>Confirm</Button>
-              {/* TODO: i18n */}
-            </div>
-          )}>
-            {(() => {
-              if (loading) {
-                // TODO: better spinner
-                return (
-                  <div>
-                    <BetaAlert />
-                    <div>Loading...</div>
-                  </div>
-                )
-              }
-
-              // TODO: better error handling
-              if (error) {
-                return (
-                  <div>
-                    <BetaAlert />
-                    <div>Error: {JSON.stringify(error)}</div>
-                  </div>
-                )
-              }
-
-              // TODO: i18n
-              return (
-                <div className="mb6">
-                  <h3>Duplicate to other bindings</h3>
-                  <BetaAlert />
+                {/* TODO: i18n */}
+              </div>
+            }
+          >
+            <div className="mb6">
+              <h3>Clone page to other bindings</h3>
+              <BetaAlert />
+              {loading ? (
+                <div className="tc min-h-large-l">
+                  <Spinner color="currentColor" />
+                </div>
+              ) : error ? (
+                <div>Error: {JSON.stringify(error)}</div>
+              ) : (
+                <>
                   <div className="f5 mb5">
-                  Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.
+                    Please choose to which bindings the content will be
+                    duplicated. If the page doesn&apos;t exist in a binding, it
+                    will be created and metadata (such as SEO information) will
+                    also be copied.
                   </div>
                   <BindingSelector
                     reducer={[state, dispatch]}
                     pathId={routeInfo?.path}
                   />
-                </div>
-              )
-            })()}
+                </>
+              )}
+            </div>
           </Modal>
         )}
       </ToastConsumer>

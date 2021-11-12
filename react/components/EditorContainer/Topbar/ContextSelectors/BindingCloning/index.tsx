@@ -34,7 +34,7 @@ const BindingCloning: FunctionComponent<Props> = ({
 
   return (
     <>
-      <Tooltip label="Duplicate to other bindings" position="bottom">
+      <Tooltip label="Clone content to other bindings" position="bottom">
         <button
           style={editor.mode === 'disabled' ? { cursor: 'wait' } : {}}
           className={`w2 h2 pa3 bg-white br2 b--transparent outline-0 pointer flex justify-center items-center ${
