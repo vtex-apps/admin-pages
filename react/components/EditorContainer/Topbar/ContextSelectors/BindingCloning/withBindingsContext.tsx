@@ -9,6 +9,7 @@ import {
 import SaveRouteMutation from '../graphql/SaveRoute.graphql'
 import CopyBindingsMutation from '../graphql/CopyBindings.graphql'
 import { Binding } from '../typings'
+import { createInitialCloningState } from './utils/initialReducerState'
 
 const withBindingsQueries = compose(
   graphql(GetRouteQuery, {
@@ -40,47 +41,11 @@ const BindingFormatter = ({
   refetch: RefetchQueriesProviderFn
   children: (...args: any) => ReactNode
 }) => {
-  const formattedBindings = bindings.map((binding: any) => ({
-    label: binding.canonicalBaseAddress,
-    id: binding.id,
-    supportedLocales: binding.supportedLocales,
-    checked: false,
-    overwrites: false,
-    isCurrent: currentBinding.id === binding.id,
-  }))
+  const initialState = bindings.map(binding =>
+    createInitialCloningState(binding, currentBinding, routeInfo)
+  )
 
-  // Mark items as conflicting or not--that is, if saving on a
-  // binding will overwrite a page present there or not
-  const formattedState = formattedBindings.map((item: any) => {
-    if (item.isCurrent) {
-      return item
-    }
-
-    // If the page has undefined binding, it is present on all bindings
-    if (!routeInfo.binding) {
-      return {
-        ...item,
-        overwrites: true,
-      }
-    }
-
-    if (!routeInfo.conflicts) {
-      return item
-    }
-
-    if (
-      routeInfo.conflicts.find((conflict: any) => item.id === conflict.binding)
-    ) {
-      return {
-        ...item,
-        overwrites: true,
-      }
-    }
-
-    return item
-  })
-
-  const [state, dispatch] = useBindingSelectorReducer(formattedState)
+  const [state, dispatch] = useBindingSelectorReducer(initialState)
 
   return children({
     state,
