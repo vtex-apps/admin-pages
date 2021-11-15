@@ -1,58 +1,26 @@
 import React, { FunctionComponent, ReactNode } from 'react'
 import { compose, graphql, RefetchQueriesProviderFn } from 'react-apollo'
+
 import GetRouteQuery from '../graphql/GetRoute.graphql'
-import { BindingSelectorItem, useBindingSelectorReducer } from './BindingSelector'
+import {
+  BindingSelectorItem,
+  useBindingSelectorReducer,
+} from './BindingSelector'
 import SaveRouteMutation from '../graphql/SaveRoute.graphql'
 import CopyBindingsMutation from '../graphql/CopyBindings.graphql'
 import { Binding } from '../typings'
 
 const withBindingsQueries = compose(
   graphql(GetRouteQuery, {
-    name: "routeInfoQuery",
-    options: ({ routeId } : { routeId: string }) => ({
+    name: 'routeInfoQuery',
+    options: ({ routeId }: { routeId: string }) => ({
       notifyOnNetworkStatusChange: true,
-      variables: { routeId }
+      variables: { routeId },
     }),
   }),
-  graphql(SaveRouteMutation, { name: "saveRoute" }),
-  graphql(CopyBindingsMutation, { name: "copyBindings" })
+  graphql(SaveRouteMutation, { name: 'saveRoute' }),
+  graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
-
-// TODO: use the proper React context API
-// It was kept this way due to a bug that was
-// introduced when switching to the Context API,
-// which caused the modal to blink.
-const BindingsContext = withBindingsQueries(({
-  bindings,
-  routeInfoQuery,
-  currentBinding,
-  children,
-  ...props
-} : {
-  bindings: Binding[]
-  routeInfoQuery: any
-  currentBinding: Binding
-  children: (...args: any) => ReactNode
-}) => {
-  const { loading, error, route, refetch } = routeInfoQuery
-
-  if (loading) {
-    return children({ loading: true })
-  }
-
-  if (error || !route) {
-    return children({ error: error ?? {} })
-  }
-
-  return BindingFormatter({
-    children,
-    bindings,
-    currentBinding,
-    routeInfo: route,
-    refetch,
-    ...props,
-  })
-})
 
 // TODO: use the proper React context API
 // It was kept this way due to a bug that was
@@ -69,7 +37,7 @@ const BindingFormatter = ({
   bindings: Binding[]
   currentBinding: Binding
   routeInfo: Route
-  refetch: RefetchQueriesProviderFn,
+  refetch: RefetchQueriesProviderFn
   children: (...args: any) => ReactNode
 }) => {
   const formattedBindings = bindings.map((binding: any) => ({
@@ -100,8 +68,8 @@ const BindingFormatter = ({
       return item
     }
 
-    if (routeInfo.conflicts.find(
-      (conflict: any) => item.id === conflict.binding)
+    if (
+      routeInfo.conflicts.find((conflict: any) => item.id === conflict.binding)
     ) {
       return {
         ...item,
@@ -134,18 +102,55 @@ interface BindingsContext {
   pageContext: PageContext
 }
 
+// TODO: use the proper React context API
+// It was kept this way due to a bug that was
+// introduced when switching to the Context API,
+// which caused the modal to blink.
+const BindingsContext = withBindingsQueries(
+  ({
+    bindings,
+    routeInfoQuery,
+    currentBinding,
+    children,
+    ...props
+  }: {
+    bindings: Binding[]
+    routeInfoQuery: any
+    currentBinding: Binding
+    children: (...args: any) => ReactNode
+  }) => {
+    const { loading, error, route, refetch } = routeInfoQuery
+
+    if (loading) {
+      return children({ loading: true })
+    }
+
+    if (error || !route) {
+      return children({ error: error ?? {} })
+    }
+
+    return BindingFormatter({
+      children,
+      bindings,
+      currentBinding,
+      routeInfo: route,
+      refetch,
+      ...props,
+    })
+  }
+)
+
 // re. the dangling comma after T https://stackoverflow.com/a/56989122
 const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
   bindings,
   iframeRuntime,
   currentBinding,
   ...props
-} : {
+}: {
   bindings: Binding[]
   currentBinding: Binding
   iframeRuntime: RenderContext
-} &
-  Omit<T, keyof BindingsContext>) => {
+} & Omit<T, keyof BindingsContext>) => {
   const route = iframeRuntime?.route
   const { id: routeId, pageContext } = route ?? {}
 
