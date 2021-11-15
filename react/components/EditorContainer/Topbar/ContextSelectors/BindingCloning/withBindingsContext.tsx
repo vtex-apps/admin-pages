@@ -1,5 +1,12 @@
-import React, { FunctionComponent, ReactNode } from 'react'
+import React, {
+  FunctionComponent,
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+} from 'react'
 import { compose, graphql, RefetchQueriesProviderFn } from 'react-apollo'
+// import { useQuery } from '@apollo/react-hooks'
 
 import GetRouteQuery from '../graphql/GetRoute.graphql'
 import {
@@ -22,6 +29,18 @@ const withBindingsQueries = compose(
   graphql(SaveRouteMutation, { name: 'saveRoute' }),
   graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
+
+const CloneContentContext = createContext({})
+
+const CloneContentProvider: FC = ({ children }) => {
+  return (
+    <CloneContentContext.Provider value={{}}>
+      {children}
+    </CloneContentContext.Provider>
+  )
+}
+
+const useCloneContent = () => useContext(CloneContentContext)
 
 // TODO: use the proper React context API
 // It was kept this way due to a bug that was
@@ -133,4 +152,10 @@ const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
   )
 }
 
-export { withBindingsData as withBindingsContext }
+const ProviderWithQueries = withBindingsQueries(CloneContentProvider)
+
+export {
+  withBindingsData as withBindingsContext,
+  ProviderWithQueries as CloneContentProvider,
+  useCloneContent,
+}

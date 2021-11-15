@@ -7,6 +7,7 @@ import { useHover } from '../../hooks'
 import CopyContent from '../../icons/CopyContent'
 import { Binding } from '../typings'
 import BindingCloningModal from './BindingCloningModal'
+import { CloneContentProvider } from './withBindingsContext'
 
 interface Props {
   bindings: Binding[]
@@ -50,17 +51,19 @@ const BindingCloning: FunctionComponent<Props> = ({
           <CopyContent />
         </button>
       </Tooltip>
-      <BindingCloningModal
-        iframeRuntime={iframeRuntime}
-        isOpen={isModalOpen}
-        onClose={() => {
-          setModalOpen(false)
-        }}
-        bindings={bindings}
-        currentBinding={binding}
-        // The key guarantees the component will be updated on route or binding change
-        key={`${route}${bindingId}`}
-      />
+      <CloneContentProvider>
+        <BindingCloningModal
+          iframeRuntime={iframeRuntime}
+          isOpen={isModalOpen}
+          onClose={() => {
+            setModalOpen(false)
+          }}
+          bindings={bindings}
+          currentBinding={binding}
+          // The key guarantees the component will be updated on route or binding change
+          key={`${route}${bindingId}`}
+        />
+      </CloneContentProvider>
     </>
   )
 }
