@@ -4,6 +4,8 @@ import React, {
   ReactNode,
   createContext,
   useContext,
+  useEffect,
+  Dispatch,
 } from 'react'
 import { compose, graphql, QueryResult } from 'react-apollo'
 import {
@@ -15,7 +17,10 @@ import {
 import GetRouteQuery from '../graphql/GetRoute.graphql'
 import {
   BindingSelectorItem,
+  BindingSelectorState,
+  setInitialBindingState,
   useBindingSelectorReducer,
+  BindingSelectorAction,
 } from './BindingSelector'
 import SaveRouteMutation from '../graphql/SaveRoute.graphql'
 import CopyBindingsMutation from '../graphql/CopyBindings.graphql'
@@ -40,11 +45,14 @@ interface CloneContentContextValue {
     loading: boolean
     error?: ApolloError
     routeInfo?: Route
+    bindingSelector: BindingSelectorState
+    currentBinding: Binding
   }
   actions: {
     refetchRouteInfo: (
       variables?: OperationVariables
     ) => Promise<ApolloQueryResult<any>>
+    dispatchBindingSelector: Dispatch<BindingSelectorAction>
   }
 }
 
@@ -58,21 +66,40 @@ interface WithBindingsQueriesProps {
 
 interface CloneContentProps {
   routeId: string
+  bindings: Binding[]
+  currentBinding: Binding
 }
 
 const CloneContentProvider: FC<CloneContentProps &
-  WithBindingsQueriesProps> = ({ children, routeInfoQuery }) => {
+  WithBindingsQueriesProps> = ({
+  children,
+  routeInfoQuery,
+  bindings,
+  currentBinding,
+}) => {
+  const [bindingSelector, dispatchBindingSelector] = useBindingSelectorReducer()
+
   const {
     route: routeInfo,
     loading,
     error,
     refetch: refetchRouteInfo,
   } = routeInfoQuery
+
+  useEffect(() => {
+    if (routeInfo) {
+      const initialState = bindings.map(binding =>
+        createInitialCloningState(binding, currentBinding, routeInfo)
+      )
+      dispatchBindingSelector(setInitialBindingState(initialState))
+    }
+  }, [bindings, currentBinding, dispatchBindingSelector, routeInfo])
+
   return (
     <CloneContentContext.Provider
       value={{
-        data: { loading, error, routeInfo },
-        actions: { refetchRouteInfo },
+        data: { loading, error, routeInfo, bindingSelector, currentBinding },
+        actions: { refetchRouteInfo, dispatchBindingSelector },
       }}
     >
       {children}
@@ -88,27 +115,26 @@ const useCloneContent = () => useContext(CloneContentContext)
 // which caused the modal to blink.
 const BindingFormatter = ({
   children,
-  bindings,
-  currentBinding,
-  routeInfo,
+  // bindings,
+  // currentBinding,
+  // routeInfo,
   ...props
 }: {
-  bindings: Binding[]
-  currentBinding: Binding
-  routeInfo: Route
+  // bindings: Binding[]
+  // currentBinding: Binding
+  // routeInfo: Route
   children: (...args: any) => ReactNode
 }) => {
-  const initialState = bindings.map(binding =>
-    createInitialCloningState(binding, currentBinding, routeInfo)
-  )
+  // const initialState = bindings.map(binding =>
+  //   createInitialCloningState(binding, currentBinding, routeInfo)
+  // )
 
-  const [state, dispatch] = useBindingSelectorReducer(initialState)
+  // const [state, dispatch] = useBindingSelectorReducer(initialState)
 
   return children({
-    state,
-    dispatch,
-    currentBinding,
-    routeInfo,
+    // state,
+    // dispatch,
+    // currentBinding,
     ...props,
   })
 }
@@ -144,9 +170,9 @@ const BindingsContext = withBindingsQueries(
 
     return BindingFormatter({
       children,
-      bindings,
-      currentBinding,
-      routeInfo: route,
+      // bindings,
+      // currentBinding,
+      // routeInfo: route,
       ...props,
     })
   }

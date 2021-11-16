@@ -13,7 +13,7 @@ export interface BindingSelectorItem {
 
 export type BindingSelectorState = BindingSelectorItem[]
 
-type BindingSelectorAction =
+export type BindingSelectorAction =
   | {
       type: 'set'
       payload: {
@@ -27,6 +27,10 @@ type BindingSelectorAction =
     }
   | {
       type: 'check-all' | 'uncheck-all'
+    }
+  | {
+      type: 'set-initial'
+      payload: BindingSelectorItem[]
     }
 
 const reducer = (
@@ -58,7 +62,6 @@ const reducer = (
             checked: value,
           }
         }
-
         return item
       })
     }
@@ -72,15 +75,23 @@ const reducer = (
         ...item,
         checked: false,
       }))
+    case 'set-initial': {
+      return action.payload
+    }
     default:
       return state
   }
 }
 
+export const setInitialBindingState = (bindings: BindingSelectorItem[]) => ({
+  type: 'set-initial' as const,
+  payload: bindings,
+})
+
 type BindingSelectorReducer = typeof reducer
 
-export const useBindingSelectorReducer = (bindings: BindingSelectorItem[]) => {
-  return useReducer<BindingSelectorReducer>(reducer, bindings)
+export const useBindingSelectorReducer = () => {
+  return useReducer<BindingSelectorReducer>(reducer, [])
 }
 
 interface Props {
