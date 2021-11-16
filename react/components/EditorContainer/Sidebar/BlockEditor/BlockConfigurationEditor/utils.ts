@@ -8,7 +8,6 @@ import {
   getExtension,
   getIframeImplementation,
 } from '../../../../../utils/components'
-
 import { GetSchemasArgs } from './typings'
 
 /**

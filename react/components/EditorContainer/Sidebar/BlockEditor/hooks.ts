@@ -2,6 +2,7 @@ import { equals, path } from 'ramda'
 import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
 
+import { ConfigurationStatus } from '.'
 import {
   getActiveContentId,
   getSchemaPropsOrContent,
@@ -63,10 +64,27 @@ export const useFormHandlers: UseFormHandlers = ({
   setState,
   showToast,
   state,
+  statusFromRuntime,
 }) => {
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
+
+  const handleStatusChange = () => {
+    const status = state.status ?? statusFromRuntime
+
+    setState({
+      ...state,
+      status:
+        status === ConfigurationStatus.ACTIVE
+          ? ConfigurationStatus.INACTIVE
+          : ConfigurationStatus.ACTIVE,
+    })
+
+    if (!formMeta.getWasModified()) {
+      formMeta.setWasModified(true)
+    }
+  }
 
   const handleConditionChange = useCallback(
     (changes: Partial<typeof state['condition']>) => {
@@ -129,16 +147,34 @@ export const useFormHandlers: UseFormHandlers = ({
       propsOrContent: state.formData,
       schema: editor.blockData.componentSchema,
     })
-
     const contentId =
       state.contentId === NEW_CONFIGURATION_ID ? null : state.contentId
+    const contentStatus = state.status ?? statusFromRuntime
 
-    const configuration = {
+    const hasOnlyEndDate = state.condition?.statements?.some(
+      statement => statement.verb === 'to'
+    )
+    const isScheduled = state.condition?.statements.length
+    const isActive = contentStatus === ConfigurationStatus.ACTIVE
+    const isDefault = state.origin
+
+    let newStatus
+
+    if (isActive || hasOnlyEndDate || isDefault) {
+      newStatus = ConfigurationStatus.ACTIVE
+    } else if (isScheduled) {
+      newStatus = ConfigurationStatus.SCHEDULED
+    } else {
+      newStatus = ConfigurationStatus.INACTIVE
+    }
+
+    const newConfiguration = {
+      status: newStatus,
       condition: state.condition,
       contentId,
       contentJSON: JSON.stringify(content),
       label: state.label || null,
-      origin: state.origin || null,
+      origin: isDefault || null,
     }
 
     const blockId = path<string>(
@@ -155,7 +191,7 @@ export const useFormHandlers: UseFormHandlers = ({
         variables: {
           bindingId: iframeRuntime.binding?.id,
           blockId,
-          configuration,
+          configuration: newConfiguration,
           lang: iframeRuntime.culture.locale,
           template: editor.blockData.template,
           treePath: editor.blockData.serverTreePath,
@@ -185,18 +221,20 @@ export const useFormHandlers: UseFormHandlers = ({
     }
   }, [
     editor,
+    state.formData,
+    state.contentId,
+    state.status,
+    state.condition,
+    state.origin,
+    state.label,
+    statusFromRuntime,
+    iframeRuntime,
+    saveContent,
     formMeta,
     handleFormClose,
-    iframeRuntime,
-    intl,
     modal,
-    saveContent,
     showToast,
-    state.condition,
-    state.contentId,
-    state.formData,
-    state.label,
-    state.origin,
+    intl,
   ])
 
   const handleFormBack = useCallback(() => {
@@ -241,6 +279,60 @@ export const useFormHandlers: UseFormHandlers = ({
     modal,
     state.content,
   ])
+
+  const handleConfigurationActivate = async (
+    configuration: ExtensionConfiguration
+  ) => {
+    const blockId = path<string>(
+      ['extensions', editor.editTreePath || '', 'blockId'],
+      iframeRuntime
+    )
+
+    let error: Error | undefined
+
+    try {
+      editor.setIsLoading(true)
+
+      await saveContent({
+        variables: {
+          bindingId: iframeRuntime.binding?.id,
+          blockId,
+          configuration: {
+            ...configuration,
+            condition: {
+              ...configuration.condition,
+              statements: [],
+            },
+            status: ConfigurationStatus.ACTIVE,
+          },
+          lang: iframeRuntime.culture.locale,
+          template: editor.blockData.template,
+          treePath: editor.blockData.serverTreePath,
+        },
+      })
+    } catch (err) {
+      console.error(err)
+
+      error = err
+
+      editor.setIsLoading(false)
+    } finally {
+      if (modal.getIsOpen()) {
+        modal.close()
+      }
+
+      await iframeRuntime.updateRuntime()
+
+      showToast({
+        horizontalPosition: 'right',
+        message: intl.formatMessage(
+          error ? messages.saveError : messages.saveSuccess
+        ),
+      })
+
+      editor.setIsLoading(false)
+    }
+  }
 
   const handleConfigurationOpen = useCallback(
     async (configuration: ExtensionConfiguration) => {
@@ -376,9 +468,11 @@ export const useFormHandlers: UseFormHandlers = ({
   }, [editor, formMeta, iframeRuntime, intl, modal, setState, state.content])
 
   return {
+    handleStatusChange,
     handleConditionChange,
     handleConfigurationCreate,
     handleConfigurationOpen,
+    handleConfigurationActivate,
     handleFormBack,
     handleFormChange,
     handleFormSave,

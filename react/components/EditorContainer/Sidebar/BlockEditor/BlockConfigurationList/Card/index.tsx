@@ -19,8 +19,11 @@ interface Props {
   isDefaultContent?: boolean
   isDisabled?: boolean
   isEditing: boolean
-  onClick: (configuration: ExtensionConfiguration) => void
+  onConfigurationOpen: (configuration: ExtensionConfiguration) => void
   onDelete: (configuration: ExtensionConfiguration) => void
+  onConfigurationActivate: (
+    configuration: ExtensionConfiguration
+  ) => Promise<void>
 }
 
 function stopPropagation(e: Pick<Event, 'preventDefault' | 'stopPropagation'>) {
@@ -36,6 +39,10 @@ const messages = defineMessages({
   delete: {
     defaultMessage: 'Delete',
     id: 'admin/pages.editor.component-list.action-menu.delete',
+  },
+  activate: {
+    defaultMessage: 'Activate',
+    id: 'admin/pages.editor.component-list.action-menu.activate',
   },
   reset: {
     defaultMessage: 'Reset',
@@ -73,15 +80,16 @@ const Card = ({
   isDefaultContent = false,
   isDisabled = false,
   isEditing = false,
-  onClick,
+  onConfigurationOpen,
   onDelete,
+  onConfigurationActivate,
 }: Props) => {
   const intl = useIntl()
   const editor = useEditorContext()
 
   const handleMainClick = React.useCallback(() => {
-    onClick(configuration)
-  }, [configuration, onClick])
+    onConfigurationOpen(configuration)
+  }, [configuration, onConfigurationOpen])
 
   const handleMainKeyDown = useKeydownFromClick(handleMainClick)
 
@@ -139,6 +147,13 @@ const Card = ({
   const menuOptions = React.useMemo(
     () => [
       {
+        label: intl.formatMessage(messages.activate),
+        onClick: async () => {
+          await onConfigurationActivate(configuration)
+        },
+        disabled: isActive,
+      },
+      {
         isDangerous: true,
         label: intl.formatMessage(
           isDefaultContent ? messages.reset : messages.delete
@@ -146,7 +161,14 @@ const Card = ({
         onClick: () => onDelete(configuration),
       },
     ],
-    [configuration, intl, isDefaultContent, onDelete]
+    [
+      configuration,
+      intl,
+      isActive,
+      isDefaultContent,
+      onConfigurationActivate,
+      onDelete,
+    ]
   )
 
   return (

@@ -3,7 +3,6 @@ import throttle from 'lodash/throttle'
 import { updateExtensionFromForm } from '../../../../utils/components'
 import { NEW_CONFIGURATION_ID } from '../consts'
 import { getDefaultCondition } from '../utils'
-
 import { GetDefaultConfiguration, GetConfigurationType } from './typings'
 
 export const getDefaultConfiguration: GetDefaultConfiguration = ({

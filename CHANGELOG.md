@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Messages for the `Twitter Meta Tags` app configuration.
 
+## [4.46.0] - 2021-11-10
+
+### Added
+
+- Status toggle for content configurations.
+
 ## [4.45.1] - 2021-09-28
 
 ### Changed
