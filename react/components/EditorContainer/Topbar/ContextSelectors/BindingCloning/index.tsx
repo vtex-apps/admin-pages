@@ -33,7 +33,7 @@ const BindingCloning: FunctionComponent<Props> = ({
   const bindingId = binding?.id ?? ''
 
   const routeInfo = iframeRuntime?.route
-  const { id: routeId, path: routePath = '' } = routeInfo ?? {}
+  const { id: routeId, path: routePath = '', pageContext } = routeInfo ?? {}
 
   return (
     <>
@@ -57,15 +57,14 @@ const BindingCloning: FunctionComponent<Props> = ({
         routeId={routeId}
         bindings={bindings}
         currentBinding={binding}
+        pageContext={pageContext}
       >
         <BindingCloningModal
-          iframeRuntime={iframeRuntime}
+          // iframeRuntime={iframeRuntime}
           isOpen={isModalOpen}
           onClose={() => {
             setModalOpen(false)
           }}
-          bindings={bindings}
-          currentBinding={binding}
           // The key guarantees the component will be updated on route or binding change
           key={`${routePath}${bindingId}`}
         />

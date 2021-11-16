@@ -9,35 +9,35 @@ import BindingSelector, {
 import { useCloneContent, withBindingsContext } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
-import { Binding } from '../typings'
+// import { Binding } from '../typings'
 
-interface SaveRouteVariables {
-  route: Route
-}
+// interface SaveRouteVariables {
+//   route: Route
+// }
 
-type MutationArgs<T> = {
-  variables: T
-}
+// type MutationArgs<T> = {
+//   variables: T
+// }
 
-interface CopyBindingVariables {
-  from: string
-  to: string
-  template: string
-  context: PageContext
-}
+// interface CopyBindingVariables {
+//   from: string
+//   to: string
+//   template: string
+//   context: PageContext
+// }
 
 interface Props {
-  currentBinding: Binding
+  // currentBinding: Binding
   isOpen?: boolean
   onClose: () => void
-  saveRoute: (args: MutationArgs<SaveRouteVariables>) => any
-  copyBindings: (args: MutationArgs<CopyBindingVariables>) => any
+  // saveRoute: (args: MutationArgs<SaveRouteVariables>) => any
+  // copyBindings: (args: MutationArgs<CopyBindingVariables>) => any
   // loading?: boolean
   // error?: any
   // state: BindingSelectorState
   // dispatch: (action: any) => any
   // routeInfo: Route
-  pageContext: PageContext
+  // pageContext: PageContext
   // refetch: () => void
 }
 
@@ -83,8 +83,8 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   // currentBinding,
   isOpen,
   onClose,
-  saveRoute,
-  copyBindings,
+  // saveRoute,
+  // copyBindings,
   // TODO: make data come from a proper React context
   // instead of via props.
   // loading,
@@ -93,7 +93,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   // dispatch,
   // refetch,
   // routeInfo,
-  pageContext,
+  // pageContext,
 }) => {
   const {
     showOverwriteDialog,
@@ -105,9 +105,21 @@ const BindingCloningModal: FunctionComponent<Props> = ({
 
   const { data, actions } = useCloneContent()
 
-  const { loading, error, routeInfo, bindingSelector, currentBinding } = data
+  const {
+    loading,
+    error,
+    routeInfo,
+    bindingSelector,
+    currentBinding,
+    pageContext,
+  } = data
 
-  const { refetchRouteInfo, dispatchBindingSelector } = actions
+  const {
+    refetchRouteInfo,
+    dispatchBindingSelector,
+    saveRoute,
+    copyBindings,
+  } = actions
 
   const checkOverwrites = () => {
     return new Promise<void>((resolve, reject) => {
