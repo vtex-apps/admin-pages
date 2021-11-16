@@ -3,7 +3,7 @@ import { Button, Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
 import { pick } from 'ramda'
 
 import BindingSelector, {
-  BindingSelectorState,
+  // BindingSelectorState,
   BindingSelectorItem,
 } from './BindingSelector'
 import { useCloneContent, withBindingsContext } from './withBindingsContext'
@@ -34,8 +34,8 @@ interface Props {
   copyBindings: (args: MutationArgs<CopyBindingVariables>) => any
   // loading?: boolean
   // error?: any
-  state: BindingSelectorState
-  dispatch: (action: any) => any
+  // state: BindingSelectorState
+  // dispatch: (action: any) => any
   // routeInfo: Route
   pageContext: PageContext
   // refetch: () => void
@@ -80,7 +80,7 @@ const copyBindingsSanityCheck = (variables: any) => {
 }
 
 const BindingCloningModal: FunctionComponent<Props> = ({
-  currentBinding,
+  // currentBinding,
   isOpen,
   onClose,
   saveRoute,
@@ -89,8 +89,8 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   // instead of via props.
   // loading,
   // error,
-  state,
-  dispatch,
+  // state,
+  // dispatch,
   // refetch,
   // routeInfo,
   pageContext,
@@ -105,13 +105,13 @@ const BindingCloningModal: FunctionComponent<Props> = ({
 
   const { data, actions } = useCloneContent()
 
-  const { loading, error, routeInfo } = data
+  const { loading, error, routeInfo, bindingSelector, currentBinding } = data
 
-  const { refetchRouteInfo } = actions
+  const { refetchRouteInfo, dispatchBindingSelector } = actions
 
   const checkOverwrites = () => {
     return new Promise<void>((resolve, reject) => {
-      const checkedItems = state.filter(item => item.checked)
+      const checkedItems = bindingSelector.filter(item => item.checked)
       const willOverwrite = checkedItems.some(item => item.overwrites)
 
       if (!willOverwrite) {
@@ -132,7 +132,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   useEffect(() => {
     if (!wasOpen.current && isOpen) {
       refetchRouteInfo()
-      dispatch({ type: 'uncheck-all' })
+      dispatchBindingSelector({ type: 'uncheck-all' })
       wasOpen.current = false
     }
 
@@ -229,7 +229,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
     })
 
   const applyChanges = async () => {
-    const checkedItems = state.filter(item => item.checked)
+    const checkedItems = bindingSelector.filter(item => item.checked)
     for (const item of checkedItems) {
       try {
         await saveItem(item)
@@ -313,7 +313,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
                     also be copied.
                   </div>
                   <BindingSelector
-                    reducer={[state, dispatch]}
+                    reducer={[bindingSelector, dispatchBindingSelector]}
                     // TODO: better handling when !routeInfo
                     pathId={routeInfo?.path ?? ''}
                   />
@@ -324,7 +324,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
         )}
       </ToastConsumer>
       <OverwriteDialog
-        state={state}
+        state={bindingSelector}
         // TODO: better handling when !routeInfo
         pathId={routeInfo?.path ?? ''}
         isOpen={isOverwriteDialogOpen}

@@ -53,7 +53,11 @@ const BindingCloning: FunctionComponent<Props> = ({
           <CopyContent />
         </button>
       </Tooltip>
-      <CloneContentProvider routeId={routeId}>
+      <CloneContentProvider
+        routeId={routeId}
+        bindings={bindings}
+        currentBinding={binding}
+      >
         <BindingCloningModal
           iframeRuntime={iframeRuntime}
           isOpen={isModalOpen}
