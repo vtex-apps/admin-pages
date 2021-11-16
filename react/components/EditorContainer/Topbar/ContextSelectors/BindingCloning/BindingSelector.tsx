@@ -1,7 +1,4 @@
 import React, { FunctionComponent, useReducer } from 'react'
-// TODO: IconWarning is not exported from vtex.styleguide?
-// Need to investigate. Meanwhile, ts-ignore
-// @ts-ignore
 import { Checkbox, IconWarning } from 'vtex.styleguide'
 
 export interface BindingSelectorItem {
@@ -16,22 +13,26 @@ export interface BindingSelectorItem {
 
 export type BindingSelectorState = BindingSelectorItem[]
 
-type BindingSelectorAction = {
-  type: 'set'
-  payload: {
-    id: string
-    value: boolean
-  }
-} | {
-  type: 'toggle'
-  payload: { id: string }
-} | {
-  type: 'check-all' | 'uncheck-all'
-}
+type BindingSelectorAction =
+  | {
+      type: 'set'
+      payload: {
+        id: string
+        value: boolean
+      }
+    }
+  | {
+      type: 'toggle'
+      payload: { id: string }
+    }
+  | {
+      type: 'check-all' | 'uncheck-all'
+    }
 
-type BindingSelectorReducer = typeof reducer
-
-const reducer = (state: BindingSelectorState, action: BindingSelectorAction) => {
+const reducer = (
+  state: BindingSelectorState,
+  action: BindingSelectorAction
+) => {
   switch (action.type) {
     case 'toggle': {
       const { id } = action.payload
@@ -76,18 +77,22 @@ const reducer = (state: BindingSelectorState, action: BindingSelectorAction) => 
   }
 }
 
+type BindingSelectorReducer = typeof reducer
+
 export const useBindingSelectorReducer = (bindings: BindingSelectorItem[]) => {
   return useReducer<BindingSelectorReducer>(reducer, bindings)
 }
 
 interface Props {
-  reducer: [ BindingSelectorState, React.Dispatch<BindingSelectorAction>]
+  reducer: [BindingSelectorState, React.Dispatch<BindingSelectorAction>]
   pathId: string
 }
 
 const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
-  const [ state, dispatch ] = reducer
-  const areAllSelected = state.every(item => item.checked || item.disabled || item.isCurrent)
+  const [state, dispatch] = reducer
+  const areAllSelected = state.every(
+    item => item.checked || item.disabled || item.isCurrent
+  )
   const areSomeSelected = state.some(item => item.checked)
 
   return (
@@ -107,20 +112,29 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
       </div>
       <ul className="list pa0 ma0 pl6">
         {state.map(item => (
-          <li className="mb5">
+          <li className="mb5" key={item.id}>
             <div>
               <Checkbox
                 id={item.id}
-                onChange={() => dispatch({
-                  type: 'toggle',
-                  payload: {
-                    id: item.id
-                  }
-                })}
-                label={(<>
-                  {item.label}<span className="c-muted-2">{pathId}</span>
-                  {item.overwrites && !item.isCurrent && <div className="f6 c-muted-1 dib ml4"><IconWarning /> Page already exists</div>}
-                </>)}
+                onChange={() =>
+                  dispatch({
+                    type: 'toggle',
+                    payload: {
+                      id: item.id,
+                    },
+                  })
+                }
+                label={
+                  <>
+                    {item.label}
+                    <span className="c-muted-2">{pathId}</span>
+                    {item.overwrites && !item.isCurrent && (
+                      <div className="f6 c-muted-1 dib ml4">
+                        <IconWarning /> Page already exists
+                      </div>
+                    )}
+                  </>
+                }
                 checked={item.checked}
                 disabled={item.disabled || item.isCurrent}
               />
@@ -128,8 +142,9 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
             {item.supportedLocales && item.supportedLocales.length > 1 && (
               <ul className="list pa0 ma0 mt2 ml6 f6 c-muted-1">
                 {item.supportedLocales.map((locale, i, arr) => (
-                  <li className="dib">
-                    {locale}{(i<arr.length-1) && <span>,{' '}</span>}
+                  <li className="dib" key={locale}>
+                    {locale}
+                    {i < arr.length - 1 && <span>, </span>}
                   </li>
                 ))}
               </ul>
