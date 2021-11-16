@@ -205,6 +205,7 @@ declare module 'vtex.styleguide' {
   export const IconUnderline: ComponentType<Record<string, unknown>>
   export const IconUnorderedList: ComponentType<Record<string, unknown>>
   export const IconUpload: ComponentType<Record<string, unknown>>
+  export const IconWarning: ComponentType<Record<string, unknown>>
   export const Input: ComponentType<Record<string, unknown>>
   export const Modal: ComponentType<ModalProps>
   export const PageHeader: ComponentType<Record<string, unknown>>
