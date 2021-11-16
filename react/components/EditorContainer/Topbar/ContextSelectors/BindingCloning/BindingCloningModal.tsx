@@ -6,7 +6,7 @@ import BindingSelector, {
   BindingSelectorState,
   BindingSelectorItem,
 } from './BindingSelector'
-import { withBindingsContext } from './withBindingsContext'
+import { useCloneContent, withBindingsContext } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
 import { Binding } from '../typings'
@@ -32,13 +32,13 @@ interface Props {
   onClose: () => void
   saveRoute: (args: MutationArgs<SaveRouteVariables>) => any
   copyBindings: (args: MutationArgs<CopyBindingVariables>) => any
-  loading?: boolean
-  error?: any
+  // loading?: boolean
+  // error?: any
   state: BindingSelectorState
   dispatch: (action: any) => any
-  routeInfo: Route
+  // routeInfo: Route
   pageContext: PageContext
-  refetch: () => void
+  // refetch: () => void
 }
 
 const saveRouteSanityCheck = (variables: any) => {
@@ -87,12 +87,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   copyBindings,
   // TODO: make data come from a proper React context
   // instead of via props.
-  loading,
-  error,
+  // loading,
+  // error,
   state,
   dispatch,
-  refetch,
-  routeInfo,
+  // refetch,
+  // routeInfo,
   pageContext,
 }) => {
   const {
@@ -102,6 +102,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({
     onOverwriteCancel,
     onOverwriteConfirm,
   } = useOverwriteDialogState()
+
+  const { data, actions } = useCloneContent()
+
+  const { loading, error, routeInfo } = data
+
+  const { refetchRouteInfo } = actions
 
   const checkOverwrites = () => {
     return new Promise<void>((resolve, reject) => {
@@ -125,7 +131,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   const wasOpen = useRef(true)
   useEffect(() => {
     if (!wasOpen.current && isOpen) {
-      refetch()
+      refetchRouteInfo()
       dispatch({ type: 'uncheck-all' })
       wasOpen.current = false
     }
@@ -138,6 +144,8 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   const saveItem = (item: BindingSelectorItem) =>
     // eslint-disable-next-line no-async-promise-executor
     new Promise<void>(async (resolve, reject) => {
+      // TODO: better handling !routeInfo
+      if (!routeInfo) return
       if (!item.overwrites) {
         try {
           const saveRouteVariables = {
@@ -306,7 +314,8 @@ const BindingCloningModal: FunctionComponent<Props> = ({
                   </div>
                   <BindingSelector
                     reducer={[state, dispatch]}
-                    pathId={routeInfo?.path}
+                    // TODO: better handling when !routeInfo
+                    pathId={routeInfo?.path ?? ''}
                   />
                 </>
               )}
@@ -316,7 +325,8 @@ const BindingCloningModal: FunctionComponent<Props> = ({
       </ToastConsumer>
       <OverwriteDialog
         state={state}
-        pathId={routeInfo?.path}
+        // TODO: better handling when !routeInfo
+        pathId={routeInfo?.path ?? ''}
         isOpen={isOverwriteDialogOpen}
         onClose={hideOverwriteDialog}
         onConfirm={onOverwriteConfirm}
