@@ -5,8 +5,12 @@ import React, {
   createContext,
   useContext,
 } from 'react'
-import { compose, graphql, RefetchQueriesProviderFn } from 'react-apollo'
-// import { useQuery } from '@apollo/react-hooks'
+import { compose, graphql, QueryResult } from 'react-apollo'
+import {
+  ApolloError,
+  ApolloQueryResult,
+  OperationVariables,
+} from 'apollo-client'
 
 import GetRouteQuery from '../graphql/GetRoute.graphql'
 import {
@@ -19,9 +23,9 @@ import { Binding } from '../typings'
 import { createInitialCloningState } from './utils/initialReducerState'
 
 const withBindingsQueries = compose(
-  graphql(GetRouteQuery, {
+  graphql<{ routeId: string }, {}>(GetRouteQuery, {
     name: 'routeInfoQuery',
-    options: ({ routeId }: { routeId: string }) => ({
+    options: ({ routeId }) => ({
       notifyOnNetworkStatusChange: true,
       variables: { routeId },
     }),
@@ -30,11 +34,47 @@ const withBindingsQueries = compose(
   graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
 
-const CloneContentContext = createContext({})
+// type TODO = any
+interface CloneContentContextValue {
+  data: {
+    loading: boolean
+    error?: ApolloError
+    routeInfo?: Route
+  }
+  actions: {
+    refetchRouteInfo: (
+      variables?: OperationVariables
+    ) => Promise<ApolloQueryResult<any>>
+  }
+}
 
-const CloneContentProvider: FC = ({ children }) => {
+const CloneContentContext = createContext<CloneContentContextValue>(
+  {} as CloneContentContextValue
+)
+
+interface WithBindingsQueriesProps {
+  routeInfoQuery: QueryResult & { route?: Route }
+}
+
+interface CloneContentProps {
+  routeId: string
+}
+
+const CloneContentProvider: FC<CloneContentProps &
+  WithBindingsQueriesProps> = ({ children, routeInfoQuery }) => {
+  const {
+    route: routeInfo,
+    loading,
+    error,
+    refetch: refetchRouteInfo,
+  } = routeInfoQuery
   return (
-    <CloneContentContext.Provider value={{}}>
+    <CloneContentContext.Provider
+      value={{
+        data: { loading, error, routeInfo },
+        actions: { refetchRouteInfo },
+      }}
+    >
       {children}
     </CloneContentContext.Provider>
   )
@@ -51,13 +91,11 @@ const BindingFormatter = ({
   bindings,
   currentBinding,
   routeInfo,
-  refetch,
   ...props
 }: {
   bindings: Binding[]
   currentBinding: Binding
   routeInfo: Route
-  refetch: RefetchQueriesProviderFn
   children: (...args: any) => ReactNode
 }) => {
   const initialState = bindings.map(binding =>
@@ -69,7 +107,6 @@ const BindingFormatter = ({
   return children({
     state,
     dispatch,
-    refetch,
     currentBinding,
     routeInfo,
     ...props,
@@ -79,9 +116,7 @@ const BindingFormatter = ({
 interface BindingsContext {
   saveRoute: () => any
   copyBindings: () => any
-  refetch: () => any
   dispatch: () => any
-  routeInfo: Route
   state: BindingSelectorItem[]
   pageContext: PageContext
 }
@@ -103,22 +138,15 @@ const BindingsContext = withBindingsQueries(
     currentBinding: Binding
     children: (...args: any) => ReactNode
   }) => {
-    const { loading, error, route, refetch } = routeInfoQuery
+    const { route } = routeInfoQuery
 
-    if (loading) {
-      return children({ loading: true })
-    }
-
-    if (error || !route) {
-      return children({ error: error ?? {} })
-    }
+    if (!route) return children({ ...props })
 
     return BindingFormatter({
       children,
       bindings,
       currentBinding,
       routeInfo: route,
-      refetch,
       ...props,
     })
   }
@@ -152,7 +180,9 @@ const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
   )
 }
 
-const ProviderWithQueries = withBindingsQueries(CloneContentProvider)
+const ProviderWithQueries: FC<CloneContentProps> = withBindingsQueries(
+  CloneContentProvider
+)
 
 export {
   withBindingsData as withBindingsContext,
