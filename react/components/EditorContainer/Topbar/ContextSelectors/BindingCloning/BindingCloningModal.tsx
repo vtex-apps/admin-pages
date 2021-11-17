@@ -2,43 +2,14 @@ import React, { FunctionComponent, useEffect, useRef } from 'react'
 import { Button, Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
 import { pick } from 'ramda'
 
-import BindingSelector, {
-  // BindingSelectorState,
-  BindingSelectorItem,
-} from './BindingSelector'
-import { useCloneContent, withBindingsContext } from './withBindingsContext'
+import BindingSelector, { BindingSelectorItem } from './BindingSelector'
+import { useCloneContent } from './withBindingsContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
-// import { Binding } from '../typings'
-
-// interface SaveRouteVariables {
-//   route: Route
-// }
-
-// type MutationArgs<T> = {
-//   variables: T
-// }
-
-// interface CopyBindingVariables {
-//   from: string
-//   to: string
-//   template: string
-//   context: PageContext
-// }
 
 interface Props {
-  // currentBinding: Binding
   isOpen?: boolean
   onClose: () => void
-  // saveRoute: (args: MutationArgs<SaveRouteVariables>) => any
-  // copyBindings: (args: MutationArgs<CopyBindingVariables>) => any
-  // loading?: boolean
-  // error?: any
-  // state: BindingSelectorState
-  // dispatch: (action: any) => any
-  // routeInfo: Route
-  // pageContext: PageContext
-  // refetch: () => void
 }
 
 const saveRouteSanityCheck = (variables: any) => {
@@ -79,22 +50,7 @@ const copyBindingsSanityCheck = (variables: any) => {
   return true
 }
 
-const BindingCloningModal: FunctionComponent<Props> = ({
-  // currentBinding,
-  isOpen,
-  onClose,
-  // saveRoute,
-  // copyBindings,
-  // TODO: make data come from a proper React context
-  // instead of via props.
-  // loading,
-  // error,
-  // state,
-  // dispatch,
-  // refetch,
-  // routeInfo,
-  // pageContext,
-}) => {
+const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
   const {
     showOverwriteDialog,
     isOverwriteDialogOpen,
@@ -348,4 +304,4 @@ const BindingCloningModal: FunctionComponent<Props> = ({
   )
 }
 
-export default withBindingsContext<Props>(BindingCloningModal)
+export default BindingCloningModal

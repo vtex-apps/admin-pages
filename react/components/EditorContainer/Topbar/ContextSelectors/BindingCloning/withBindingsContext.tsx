@@ -1,7 +1,5 @@
 import React, {
-  FunctionComponent,
   FC,
-  ReactNode,
   createContext,
   useContext,
   useEffect,
@@ -16,7 +14,6 @@ import {
 
 import GetRouteQuery from '../graphql/GetRoute.graphql'
 import {
-  // BindingSelectorItem,
   BindingSelectorState,
   setInitialBindingState,
   useBindingSelectorReducer,
@@ -39,7 +36,7 @@ const withBindingsQueries = compose(
   graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
 
-// type TODO = any
+type TODO = any
 interface CloneContentContextValue {
   data: {
     loading: boolean
@@ -52,7 +49,7 @@ interface CloneContentContextValue {
   actions: {
     refetchRouteInfo: (
       variables?: OperationVariables
-    ) => Promise<ApolloQueryResult<any>>
+    ) => Promise<ApolloQueryResult<TODO>>
     dispatchBindingSelector: Dispatch<BindingSelectorAction>
     saveRoute: (args: MutationArgs<SaveRouteVariables>) => void
     copyBindings: (args: MutationArgs<CopyBindingVariables>) => void
@@ -89,6 +86,7 @@ interface CloneContentProps {
   bindings: Binding[]
   currentBinding: Binding
   pageContext: PageContext
+  iframeBinding: RenderContext['binding']
 }
 
 const CloneContentProvider: FC<CloneContentProps &
@@ -100,11 +98,12 @@ const CloneContentProvider: FC<CloneContentProps &
   pageContext,
   saveRoute,
   copyBindings,
+  iframeBinding,
 }) => {
   const [bindingSelector, dispatchBindingSelector] = useBindingSelectorReducer()
   const {
     route: routeInfo,
-    loading,
+    loading: routeInfoLoading,
     error,
     refetch: refetchRouteInfo,
   } = routeInfoQuery
@@ -117,6 +116,10 @@ const CloneContentProvider: FC<CloneContentProps &
       dispatchBindingSelector(setInitialBindingState(initialState))
     }
   }, [bindings, currentBinding, dispatchBindingSelector, routeInfo])
+
+  const loading =
+    routeInfoLoading ||
+    (currentBinding && currentBinding.id !== iframeBinding?.id)
 
   return (
     <CloneContentContext.Provider
@@ -144,104 +147,8 @@ const CloneContentProvider: FC<CloneContentProps &
 
 const useCloneContent = () => useContext(CloneContentContext)
 
-// TODO: use the proper React context API
-// It was kept this way due to a bug that was
-// introduced when switching to the Context API,
-// which caused the modal to blink.
-const BindingFormatter = ({
-  children,
-  // bindings,
-  // currentBinding,
-  // routeInfo,
-  ...props
-}: {
-  // bindings: Binding[]
-  // currentBinding: Binding
-  // routeInfo: Route
-  children: (...args: any) => ReactNode
-}) => {
-  // const initialState = bindings.map(binding =>
-  //   createInitialCloningState(binding, currentBinding, routeInfo)
-  // )
-
-  // const [state, dispatch] = useBindingSelectorReducer(initialState)
-
-  return children({
-    // state,
-    // dispatch,
-    // currentBinding,
-    ...props,
-  })
-}
-
-interface BindingsContext {
-  saveRoute: () => any
-  copyBindings: () => any
-  // dispatch: () => any
-  // state: BindingSelectorItem[]
-  // pageContext: PageContext
-}
-
-// TODO: use the proper React context API
-// It was kept this way due to a bug that was
-// introduced when switching to the Context API,
-// which caused the modal to blink.
-const BindingsContext = withBindingsQueries(
-  ({
-    // bindings,
-    routeInfoQuery,
-    // currentBinding,
-    children,
-    ...props
-  }: {
-    // bindings: Binding[]
-    routeInfoQuery: any
-    // currentBinding: Binding
-    children: (...args: any) => ReactNode
-  }) => {
-    const { route } = routeInfoQuery
-
-    if (!route) return children({ ...props })
-
-    return BindingFormatter({
-      children,
-      // bindings,
-      // currentBinding,
-      // routeInfo: route,
-      ...props,
-    })
-  }
-)
-
-// re. the dangling comma after T https://stackoverflow.com/a/56989122
-const withBindingsData = <T,>(Component: FunctionComponent<T>) => ({
-  // bindings,
-  // iframeRuntime,
-  // currentBinding,
-  ...props
-}: {
-  // bindings: Binding[]
-  // currentBinding: Binding
-  // iframeRuntime: RenderContext
-} & Omit<T, keyof BindingsContext>) => {
-  return (
-    <BindingsContext
-    // currentBinding={currentBinding}
-    // bindings={bindings}
-    // routeId={routeId}
-    // key={routeId}
-    >
-      {(result: any) => <Component {...{ ...result, ...props }} />}
-    </BindingsContext>
-  )
-}
-
 const ProviderWithQueries: FC<CloneContentProps> = withBindingsQueries(
   CloneContentProvider
 )
 
-export {
-  withBindingsData as withBindingsContext,
-  ProviderWithQueries as CloneContentProvider,
-  useCloneContent,
-}
+export { ProviderWithQueries as CloneContentProvider, useCloneContent }
