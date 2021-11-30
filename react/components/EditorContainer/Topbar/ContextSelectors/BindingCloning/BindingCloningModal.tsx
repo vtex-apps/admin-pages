@@ -3,7 +3,7 @@ import { Button, Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
 import { pick } from 'ramda'
 
 import BindingSelector, { BindingSelectorItem } from './BindingSelector'
-import { useCloneContent } from './withBindingsContext'
+import { useCloneContent } from './CloneContentContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
 

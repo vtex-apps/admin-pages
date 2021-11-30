@@ -7,7 +7,7 @@ import { useHover } from '../../hooks'
 import CopyContent from '../../icons/CopyContent'
 import { Binding } from '../typings'
 import BindingCloningModal from './BindingCloningModal'
-import { CloneContentProvider } from './withBindingsContext'
+import { CloneContentProvider } from './CloneContentContext'
 
 interface Props {
   bindings: Binding[]
