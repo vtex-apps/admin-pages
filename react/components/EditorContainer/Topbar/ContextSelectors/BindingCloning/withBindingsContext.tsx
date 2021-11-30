@@ -117,6 +117,15 @@ const CloneContentProvider: FC<CloneContentProps &
     }
   }, [bindings, currentBinding, dispatchBindingSelector, routeInfo])
 
+  /**
+   * This check currentBinding.id !== iframeBinding?.id is needed to avoid the blinking
+   * in the modal when user changes the binding.
+   * The blinking is happening because there is a race condition on ContextSelectors/index.ts
+   * When handleBindingChange is called, it sets the target binding as binding in the state.
+   * However, when the useEffect in that file runs next time, it sets bindings to the old one,
+   * coming from iframeBinding, which seems to be beeing update afterwards. Then, when iframeBinding
+   * updates, the setBinding is called called, now with the target binding causing the blinking.
+   */
   const loading =
     routeInfoLoading ||
     (currentBinding && currentBinding.id !== iframeBinding?.id)
