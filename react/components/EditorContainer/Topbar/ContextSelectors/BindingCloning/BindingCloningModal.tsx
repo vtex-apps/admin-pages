@@ -107,7 +107,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     if (wasOpen.current && isOpen) {
       wasOpen.current = false
     }
-  }, [wasOpen, isOpen])
+  }, [wasOpen, isOpen, refetchRouteInfo, dispatchBindingSelector])
 
   const saveItem = (item: BindingSelectorItem) =>
     // eslint-disable-next-line no-async-promise-executor
