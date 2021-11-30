@@ -36,7 +36,6 @@ const withBindingsQueries = compose(
   graphql(CopyBindingsMutation, { name: 'copyBindings' })
 )
 
-type TODO = any
 interface CloneContentContextValue {
   data: {
     loading: boolean
@@ -49,7 +48,7 @@ interface CloneContentContextValue {
   actions: {
     refetchRouteInfo: (
       variables?: OperationVariables
-    ) => Promise<ApolloQueryResult<TODO>>
+    ) => Promise<ApolloQueryResult<Route>>
     dispatchBindingSelector: Dispatch<BindingSelectorAction>
     saveRoute: (args: MutationArgs<SaveRouteVariables>) => void
     copyBindings: (args: MutationArgs<CopyBindingVariables>) => void
