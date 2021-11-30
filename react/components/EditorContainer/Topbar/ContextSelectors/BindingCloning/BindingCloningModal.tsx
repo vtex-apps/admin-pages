@@ -1,5 +1,11 @@
 import React, { FunctionComponent, useEffect, useRef } from 'react'
-import { Button, Modal, Spinner, ToastConsumer } from 'vtex.styleguide'
+import {
+  Button,
+  Modal,
+  ShowToastFunction,
+  Spinner,
+  ToastConsumer,
+} from 'vtex.styleguide'
 import { pick } from 'ramda'
 
 import BindingSelector, { BindingSelectorItem } from './BindingSelector'
@@ -50,7 +56,11 @@ const copyBindingsSanityCheck = (variables: any) => {
   return true
 }
 
+type SubmitStatus = 'IDLE' | 'SUBMITTING'
+
 const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
+  const [submitStatus, setSubmitStatus] = React.useState<SubmitStatus>('IDLE')
+
   const {
     showOverwriteDialog,
     isOverwriteDialogOpen,
@@ -210,52 +220,64 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     return Promise.resolve()
   }
 
+  const handleClose = () => {
+    setSubmitStatus('IDLE')
+    onClose()
+  }
+
+  const handleConfirmCopyContent = async ({
+    showToast,
+  }: {
+    showToast: ShowToastFunction
+  }) => {
+    if (submitStatus === 'SUBMITTING') {
+      return
+    }
+
+    setSubmitStatus('SUBMITTING')
+
+    try {
+      // It doesn't throw an error. User just refused to overwrite
+      await checkOverwrites()
+      showToast({ message: 'Saving...', duration: Infinity })
+      try {
+        await applyChanges()
+        setTimeout(() => {
+          showToast('Done!')
+        }, 500)
+      } catch {
+        // There is a bug with the Toast component, where
+        // if you call two toasts on rapid succession,
+        // the second one will be ignored. This timeout
+        // gets around this issue, which happens if the error
+        // is immediate
+        setTimeout(() => {
+          showToast('An error has occourred. Please try again')
+        }, 500)
+      }
+    } finally {
+      handleClose()
+    }
+  }
+
   return (
     <>
       <ToastConsumer>
         {({ showToast }) => (
           <Modal
             isOpen={isOpen}
-            onClose={onClose}
+            onClose={handleClose}
             bottomBar={
               <div className="flex justify-end">
                 <span className="mr4">
                   {/* TODO: i18n */}
-                  <Button onClick={() => onClose()} variation="secondary">
+                  <Button onClick={handleClose} variation="secondary">
                     Cancel
                   </Button>
                 </span>
                 <Button
-                  onClick={() => {
-                    checkOverwrites()
-                      .then(() => {
-                        // TODO: i18n. also better messages
-                        showToast({ message: 'Saving...', duration: Infinity })
-                        applyChanges()
-                          .then(() => {
-                            // See comment below on the catch block
-                            setTimeout(() => {
-                              showToast('Done!')
-                            }, 500)
-                          })
-                          .catch(() => {
-                            // There is a bug with the Toast component, where
-                            // if you call two toasts on rapid succession,
-                            // the second one will be ignored. This timeout
-                            // gets around this issue, which happens if the error
-                            // is immediate
-                            setTimeout(() => {
-                              showToast(
-                                'An error has occourred. Please try again'
-                              )
-                            }, 500)
-                          })
-                        onClose()
-                      })
-                      .catch(() => {
-                        //  not an error, the user has just refused to overwrite
-                      })
-                  }}
+                  disabled={submitStatus === 'SUBMITTING'}
+                  onClick={() => handleConfirmCopyContent({ showToast })}
                 >
                   Confirm
                 </Button>
