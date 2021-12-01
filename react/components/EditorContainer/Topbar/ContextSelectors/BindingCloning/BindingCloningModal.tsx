@@ -119,92 +119,68 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     }
   }, [wasOpen, isOpen, refetchRouteInfo, dispatchBindingSelector])
 
-  const saveItem = (item: BindingSelectorItem) =>
-    // eslint-disable-next-line no-async-promise-executor
-    new Promise<void>(async (resolve, reject) => {
-      // TODO: better handling !routeInfo
-      if (!routeInfo) return
+  const saveItem = async (item: BindingSelectorItem) => {
+    // TODO: better handling !routeInfo
+    if (!routeInfo) return
+
+    const copyBindingsVariables = {
+      from: currentBinding.id,
+      to: item.id,
+      template: routeInfo?.blockId,
+      context: pageContext,
+    }
+
+    if (!copyBindingsSanityCheck(copyBindingsVariables)) {
+      throw new Error()
+    }
+
+    try {
       if (!item.overwrites) {
-        try {
-          const saveRouteVariables = {
-            route: {
-              ...pick(
-                [
-                  'auth',
-                  'blockId',
-                  'context',
-                  'declarer',
-                  'domain',
-                  'interfaceId',
-                  'path',
-                  'routeId',
-                  'pages',
-                  'title',
-                  'metaTags',
-                ],
-                routeInfo
-              ),
-              dataSource: 'vtex.rewriter',
-              bindingId: item.id,
-            },
-          }
-
-          const copyBindingsVariables = {
-            from: currentBinding.id,
-            to: item.id,
-            template: routeInfo?.blockId,
-            context: pageContext,
-          }
-
-          if (
-            !saveRouteSanityCheck(saveRouteVariables) ||
-            !copyBindingsSanityCheck(copyBindingsVariables)
-          ) {
-            reject()
-            return
-          }
-
-          await saveRoute({
-            variables: saveRouteVariables,
-          })
-
-          await copyBindings({
-            variables: copyBindingsVariables,
-          })
-
-          // TODO: check result of mutations for success or error
-          resolve()
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(error)
-          reject(error)
+        const saveRouteVariables = {
+          route: {
+            ...pick(
+              [
+                'auth',
+                'blockId',
+                'context',
+                'declarer',
+                'domain',
+                'interfaceId',
+                'path',
+                'routeId',
+                'pages',
+                'title',
+                'metaTags',
+              ],
+              routeInfo
+            ),
+            dataSource: 'vtex.rewriter',
+            bindingId: item.id,
+          },
         }
-      } else {
-        try {
-          const copyBindingsVariables = {
-            from: currentBinding.id,
-            to: item.id,
-            template: routeInfo?.blockId,
-            context: pageContext,
-          }
 
-          if (!copyBindingsSanityCheck(copyBindingsVariables)) {
-            reject()
-            return
-          }
+        if (!saveRouteSanityCheck(saveRouteVariables)) {
+          throw new Error()
+        }
 
-          await copyBindings({
-            variables: copyBindingsVariables,
-          })
-          // TODO: check result of mutation for success or error
-          resolve()
-        } catch (error) {
-          // eslint-disable-next-line no-console
-          console.log(error)
-          reject(error)
+        const { error: errorSavingRoute } = await saveRoute({
+          variables: saveRouteVariables,
+        })
+        if (errorSavingRoute) {
+          throw new Error()
         }
       }
-    })
+      const { error: errorCopyingBindings } = await copyBindings({
+        variables: copyBindingsVariables,
+      })
+      if (errorCopyingBindings) {
+        throw new Error()
+      }
+    } catch (error) {
+      console.error(error)
+      throw error
+    }
+  }
 
   const applyChanges = async () => {
     const checkedItems = bindingSelector.filter(item => item.checked)
@@ -212,12 +188,10 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
       try {
         await saveItem(item)
       } catch (error) {
-        // TODO: better error handling
-        return Promise.reject()
+        console.error(error)
+        throw error
       }
     }
-
-    return Promise.resolve()
   }
 
   const handleClose = () => {
