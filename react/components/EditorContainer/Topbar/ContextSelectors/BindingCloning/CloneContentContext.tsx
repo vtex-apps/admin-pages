@@ -50,8 +50,12 @@ interface CloneContentContextValue {
       variables?: OperationVariables
     ) => Promise<ApolloQueryResult<Route>>
     dispatchBindingSelector: Dispatch<BindingSelectorAction>
-    saveRoute: (args: MutationArgs<SaveRouteVariables>) => void
-    copyBindings: (args: MutationArgs<CopyBindingVariables>) => void
+    saveRoute: (
+      args: MutationArgs<SaveRouteVariables>
+    ) => Promise<QueryResult<unknown>>
+    copyBindings: (
+      args: MutationArgs<CopyBindingVariables>
+    ) => Promise<QueryResult<unknown>>
   }
 }
 
@@ -76,8 +80,12 @@ interface CopyBindingVariables {
 
 interface WithBindingsQueriesProps {
   routeInfoQuery: QueryResult & { route?: Route }
-  saveRoute: (args: MutationArgs<SaveRouteVariables>) => void
-  copyBindings: (args: MutationArgs<CopyBindingVariables>) => void
+  saveRoute: (
+    args: MutationArgs<SaveRouteVariables>
+  ) => Promise<QueryResult<unknown>>
+  copyBindings: (
+    args: MutationArgs<CopyBindingVariables>
+  ) => Promise<QueryResult<unknown>>
 }
 
 interface CloneContentProps {
