@@ -555,5 +555,7 @@
   "admin/store.advancedSettings.enableLazyFold.title": "admin/store.advancedSettings.enableLazyFold.title",
   "admin/store.advancedSettings.enableLazyFold.description": "admin/store.advancedSettings.enableLazyFold.description",
   "admin/pages.editor.newadmin.alert": "admin/pages.editor.newadmin.alert",
-  "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor"
+  "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "enablePageNumberTitle",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "enablePageNumberTitle"
 }
