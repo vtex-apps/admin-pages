@@ -54,6 +54,7 @@ function resolveSchemaForCurrentTab(
     ?.advancedSettings as JSONSchema6) ?? {
     properties: {},
   }
+  console.log('advancedSettingsSchema', advancedSettingsSchema)
 
   switch (tab) {
     case 'general':
