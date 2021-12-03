@@ -559,5 +559,7 @@
   "admin/store.advancedSettings.enablePageNumberTitle.title": "enablePageNumberTitle",
   "admin/store.advancedSettings.enablePageNumberTitle.description": "enablePageNumberTitle",
   "admin/store.advancedSettings.canonicalWithUrlParams.title": "canonicalWithUrlParams",
-  "admin/store.advancedSettings.canonicalWithUrlParams.description": "canonicalWithUrlParams"
+  "admin/store.advancedSettings.canonicalWithUrlParams.description": "canonicalWithUrlParams",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "removeStoreNameTitle",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "enable Store Name Title"
 }
