@@ -101,30 +101,47 @@ interface Props {
 
 const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
   const [state, dispatch] = reducer
+
   const areAllSelected = state.every(
     item => item.checked || item.disabled || item.isCurrent
   )
   const areSomeSelected = state.some(item => item.checked)
 
   return (
-    <>
-      <div className="mb5">
-        <Checkbox
-          id="checkAll"
-          label="All bindings and locations"
-          onChange={() => {
-            dispatch({
-              type: areAllSelected ? 'uncheck-all' : 'check-all',
-            })
-          }}
-          checked={areAllSelected}
-          partial={areSomeSelected}
-        />
-      </div>
-      <ul className="list pa0 ma0 pl6">
+    <table className="w-100">
+      <thead className="w-100 ph4 truncate overflow-x-hidden c-muted-2 f6">
+        <tr className="w-100 truncate overflow-x-hidden">
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+            <Checkbox
+              id="checkAll"
+              onChange={() => {
+                dispatch({
+                  type: areAllSelected ? 'uncheck-all' : 'check-all',
+                })
+              }}
+              checked={areAllSelected}
+              partial={areSomeSelected}
+            />
+          </th>
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+            Binding
+          </th>
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+            <span className="flex items-center">
+              <IconWarning /> <p className="ml3-s">Warning</p>
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
         {state.map(item => (
-          <li className="mb5" key={item.id}>
-            <div>
+          <tr
+            className={`w-100 truncate overflow-x-hidden ${
+              item.checked ? 'bg-washed-blue' : ''
+            }`}
+            key={item.id}
+          >
+            <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
               <Checkbox
                 id={item.id}
                 onChange={() =>
@@ -135,35 +152,27 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
                     },
                   })
                 }
-                label={
-                  <>
-                    {item.label}
-                    <span className="c-muted-2">{pathId}</span>
-                    {item.overwrites && !item.isCurrent && (
-                      <div className="f6 c-muted-1 dib ml4">
-                        <IconWarning /> Page already exists
-                      </div>
-                    )}
-                  </>
-                }
                 checked={item.checked}
                 disabled={item.disabled || item.isCurrent}
               />
-            </div>
-            {item.supportedLocales && item.supportedLocales.length > 1 && (
-              <ul className="list pa0 ma0 mt2 ml6 f6 c-muted-1">
-                {item.supportedLocales.map((locale, i, arr) => (
-                  <li className="dib" key={locale}>
-                    {locale}
-                    {i < arr.length - 1 && <span>, </span>}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
+            </td>
+            <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
+              <>
+                {item.label}
+                <span className="c-muted-2">{pathId}</span>
+              </>
+            </td>
+            <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
+              {item.overwrites && !item.isCurrent && (
+                <div className="f6 c-muted-1 dib ml4">
+                  <p>Page already exists</p>
+                </div>
+              )}
+            </td>
+          </tr>
         ))}
-      </ul>
-    </>
+      </tbody>
+    </table>
   )
 }
 
