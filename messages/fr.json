@@ -553,5 +553,11 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Activez le chargement différé des ressources sous la ligne de flottaison (fold)",
   "admin/store.advancedSettings.enableLazyFold.description": "Permet le chargement différé des fichiers JS des composants situés sous le bloc `__fold__`.",
   "admin/pages.editor.newadmin.alert": "Il s’agit d’un environnement test. Pour appliquer les modifications à votre magasin en ligne, ",
-  "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin.",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number title",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
+  "admin/store.advancedSettings.canonicalWithUrlParams.title": "Canonical url with url Params",
+  "admin/store.advancedSettings.canonicalWithUrlParams.description": "The canonical URL should include query parameters",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name title",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove base title at the end of Product and Category meta titles"
 }
