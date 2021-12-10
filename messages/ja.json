@@ -554,10 +554,10 @@
   "admin/store.advancedSettings.enableLazyFold.description": "`__fold__` ブロックより下にあるコンポーネントの JS ファイルの遅延読み込みを有効にします。",
   "admin/pages.editor.newadmin.alert": "これはテスト環境です。オンラインストアに変更を適用するには、 ",
   "admin/pages.editor.newadmin.alert.anchor": "以前のVTEX管理者環境にアクセスしてください。",
-  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number title",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number in meta title",
   "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
-  "admin/store.advancedSettings.canonicalWithUrlParams.title": "Canonical url with url Params",
-  "admin/store.advancedSettings.canonicalWithUrlParams.description": "The canonical URL should include query parameters",
-  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove base title at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
 }
