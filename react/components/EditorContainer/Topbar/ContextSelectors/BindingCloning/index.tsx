@@ -35,6 +35,7 @@ const BindingCloning: FunctionComponent<Props> = ({
 
   return (
     <>
+      {/* TODO: i18n */}
       <Tooltip label="Clone content to other bindings" position="bottom">
         <button
           style={editor.mode === 'disabled' ? { cursor: 'wait' } : {}}

@@ -126,11 +126,13 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             Binding
           </th>
+          {/* TODO: i18n */}
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             Supported Locales
           </th>
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <span className="flex items-center">
+              {/* TODO: i18n */}
               <IconWarning /> <p className="ml3-s">Warning</p>
             </span>
           </th>
@@ -173,6 +175,7 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
             <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
               {item.overwrites && !item.isCurrent && (
                 <div className="f6 c-muted-1 dib ml4">
+                  {/* TODO: i18n */}
                   <p>Page already exists</p>
                 </div>
               )}
