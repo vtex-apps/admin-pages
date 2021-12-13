@@ -71,37 +71,39 @@ const OverwriteDialog: FunctionComponent<Props> = ({
       }
     >
       <div className="mb6">
-        <h2>Existing content will be overwritten</h2>
-        {overwrittenContent.length > 1 ? (
-          <div>
-            Existing content in these bindings will be permanently deleted:
-          </div>
-        ) : (
-          <div>
-            Existing content in this binding will be permanently deleted:
-          </div>
-        )}
-        <ul>
-          {overwrittenContent.map(item => (
-            <li className="mb4" key={item.id}>
-              <div>
-                {item.label}
-                <span className="c-muted-2">{pathId}</span>
-              </div>
-              {item.supportedLocales && item.supportedLocales.length > 1 && (
-                <ul className="list pa0 ma0 mt2 ml6 f6 c-muted-1">
-                  {item.supportedLocales.map((locale, i, arr) => (
-                    <li className="dib" key={locale}>
-                      {locale}
-                      {i < arr.length - 1 && <span>, </span>}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </li>
-          ))}
-        </ul>
-        <div>Are you sure you want to duplicate the content to them?</div>
+        <div className="mb6">
+          <h2 className="mb4">Existing content will be overwritten</h2>
+          {overwrittenContent.length > 1 ? (
+            <p>
+              Existing content in these bindings will be permanently deleted:
+            </p>
+          ) : (
+            <p>Existing content in this binding will be permanently deleted:</p>
+          )}
+        </div>
+        <div className="mb6 ml6">
+          <ul>
+            {overwrittenContent.map(item => (
+              <li className="mb4" key={item.id}>
+                <div>
+                  {item.label}
+                  <span className="c-muted-2">{pathId}</span>
+                </div>
+                {item.supportedLocales && item.supportedLocales.length > 0 && (
+                  <ul className="list pa0 ma0 mt2 ml6 f6 c-muted-1">
+                    {item.supportedLocales.map((locale, i, arr) => (
+                      <li className="dib" key={locale}>
+                        {locale}
+                        {i < arr.length - 1 && <span>, </span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <p>Are you sure you want to duplicate the content to them?</p>
       </div>
     </Modal>
   )
