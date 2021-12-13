@@ -127,6 +127,9 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
             Binding
           </th>
           <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
+            Supported Locales
+          </th>
+          <th className="v-mid pv0 tl bb b--muted-4 normal bg-base bt ph3 z1 pv3-s">
             <span className="flex items-center">
               <IconWarning /> <p className="ml3-s">Warning</p>
             </span>
@@ -161,6 +164,11 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
                 {item.label}
                 <span className="c-muted-2">{pathId}</span>
               </>
+            </td>
+            <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
+              {item.supportedLocales && item.supportedLocales.length > 1 ? (
+                <p>{item.supportedLocales.join(', ')}</p>
+              ) : null}
             </td>
             <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
               {item.overwrites && !item.isCurrent && (
