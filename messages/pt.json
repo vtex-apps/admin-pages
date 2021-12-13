@@ -554,10 +554,10 @@
   "admin/store.advancedSettings.enableLazyFold.description": "Permite o carregamento de forma Lazy dos arquivos JS dos componentes (above the fold)",
   "admin/pages.editor.newadmin.alert": "Este é um ambiente teste. Para aplicar mudanças na sua loja online, ",
   "admin/pages.editor.newadmin.alert.anchor": "por favor acesse o Admin VTEX anterior.",
-  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number in meta title",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
-  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Habilitar o número da página no meta título",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Adicione um # {Número} ao final do título para evitar o problema de duplicação do título",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canônico sem parâmetros de url",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remova o parâmetro do mapa do URL canônico. Pode causar problemas ao acessar uma página com facetas selecionadas. Teste com cuidado depois de ligá-lo",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remover o nome da loja do título",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remova o nome da loja no final dos metatítulos de produto e categoria"
 }

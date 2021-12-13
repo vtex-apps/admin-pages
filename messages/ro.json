@@ -555,9 +555,9 @@
   "admin/pages.editor.newadmin.alert": "Acesta este un mediu de test. Pentru a aplica modificări magazinului tău online, ",
   "admin/pages.editor.newadmin.alert.anchor": "te rugăm să accesezi versiunea anterioară a VTEX Admin.",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Activați titlul numărului de pagină",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
-  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Adăugați un #{Număr} la sfârșitul titlului pentru a evita problema de duplicare a titlului",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Adresă URL canonică fără parametri URL",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Eliminați parametrul hărții din adresa URL canonică. Poate cauza probleme atunci când accesați o pagină cu fațete selectate. Testați cu precauție după ce îl porniți",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Eliminați numele magazinului din titlu",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Eliminați numele magazinului la sfârșitul metatitlurilor de produse și categorii"
 }

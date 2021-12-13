@@ -554,10 +554,10 @@
   "admin/store.advancedSettings.enableLazyFold.description": "`__fold__` ブロックより下にあるコンポーネントの JS ファイルの遅延読み込みを有効にします。",
   "admin/pages.editor.newadmin.alert": "これはテスト環境です。オンラインストアに変更を適用するには、 ",
   "admin/pages.editor.newadmin.alert.anchor": "以前のVTEX管理者環境にアクセスしてください。",
-  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number in meta title",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
-  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "メタタイトルでページ番号を有効にする",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "タイトルの重複の問題を回避するために、タイトルの最後に＃{番号}を追加します",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URLパラメータのない正規URL",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "正規URLからマップパラメータを削除します。ファセットが選択されているページに移動すると、問題が発生する可能性があります。電源を入れた後は注意してテストしてください",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "タイトルからストア名を削除",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "製品とカテゴリのメタタイトルの最後にあるストア名を削除します"
 }

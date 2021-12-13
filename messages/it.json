@@ -557,10 +557,10 @@
   "admin/store.advancedSettings.enableLazyFold.description": "Abilita il caricamento differito del file JS dei componenti del blocco \"Below the __fold__\".",
   "admin/pages.editor.newadmin.alert": "Questo è un ambiente di prova. Per applicare le modifiche al tuo negozio online, ",
   "admin/pages.editor.newadmin.alert.anchor": "si prega di accedere al precedente Admin.",
-  "admin/store.advancedSettings.enablePageNumberTitle.title": "Enable page number in meta title",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Add a #{Number} to the end of the title to avoid the title duplication issue",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
-  "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Abilita il numero di pagina nel meta title",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Aggiungi un #{Numero} alla fine del titolo per evitare il problema della duplicazione del titolo",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canonico senza parametri URL",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Rimuovi il parametro della mappa dall'URL canonico. Può causare problemi quando si accede a una pagina con i facet selezionati. Testare con cautela dopo averlo acceso",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Rimuovi il nome del negozio dal titolo",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Rimuovi il nome del negozio alla fine dei meta titoli del prodotto e della categoria"
 }
