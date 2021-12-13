@@ -48,6 +48,7 @@ const OverwriteDialog: FunctionComponent<Props> = ({
       bottomBar={
         <div className="flex justify-end">
           <span className="mr4">
+            {/* TODO: i18n */}
             <Button
               variation="secondary"
               onClick={() => {
@@ -58,6 +59,7 @@ const OverwriteDialog: FunctionComponent<Props> = ({
               Go back
             </Button>
           </span>
+          {/* TODO: i18n */}
           <Button
             variation="danger"
             onClick={() => {
@@ -72,7 +74,9 @@ const OverwriteDialog: FunctionComponent<Props> = ({
     >
       <div className="mb6">
         <div className="mb6">
+          {/* TODO: i18n */}
           <h2 className="mb4">Existing content will be overwritten</h2>
+          {/* TODO: i18n */}
           {overwrittenContent.length > 1 ? (
             <p>
               Existing content in these bindings will be permanently deleted:
@@ -103,6 +107,7 @@ const OverwriteDialog: FunctionComponent<Props> = ({
             ))}
           </ul>
         </div>
+        {/* TODO: i18n */}
         <p>Are you sure you want to duplicate the content to them?</p>
       </div>
     </Modal>

@@ -214,10 +214,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     try {
       // It doesn't throw an error. User just refused to overwrite
       await checkOverwrites()
+      /* TODO: i18n */
       showToast({ message: 'Saving...', duration: Infinity })
       try {
         await applyChanges()
         setTimeout(() => {
+          /* TODO: i18n */
           showToast('Done!')
         }, 500)
       } catch {
@@ -227,6 +229,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
         // gets around this issue, which happens if the error
         // is immediate
         setTimeout(() => {
+          /* TODO: i18n */
           showToast('An error has occourred. Please try again')
         }, 500)
       }
@@ -261,6 +264,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
             }
           >
             <div className="mb6">
+              {/* TODO: i18n */}
               <h3>Clone page to other bindings</h3>
               <BetaAlert />
               {loading ? (
@@ -269,6 +273,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                 </div>
               ) : error ? (
                 <EmptyState title="Error fetching routes information">
+                  {/* TODO: i18n */}
                   <p>
                     There was an error fetching the routes information. Please
                     try closing and reopening the modal.
@@ -276,6 +281,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                 </EmptyState>
               ) : (
                 <>
+                  {/* TODO: i18n */}
                   <div className="f5 mb5">
                     Please choose to which bindings the content will be
                     duplicated. If the page doesn&apos;t exist in a binding, it
