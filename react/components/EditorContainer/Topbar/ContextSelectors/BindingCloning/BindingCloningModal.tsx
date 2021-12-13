@@ -5,6 +5,7 @@ import {
   ShowToastFunction,
   Spinner,
   ToastConsumer,
+  EmptyState,
 } from 'vtex.styleguide'
 import { pick } from 'ramda'
 
@@ -267,7 +268,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                   <Spinner color="currentColor" />
                 </div>
               ) : error ? (
-                <div>Error: {JSON.stringify(error)}</div>
+                <EmptyState title="Error fetching routes information">
+                  <p>
+                    There was an error fetching the routes information. Please
+                    try closing and reopening the modal.
+                  </p>
+                </EmptyState>
               ) : (
                 <>
                   <div className="f5 mb5">
