@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Activează încărcarea lentă (lazy) a activelor below-the-fold",
   "admin/store.advancedSettings.enableLazyFold.description": "Activează încărcarea lentă (lazy) a fişierelor JS a componentelor de sub elementul __fold__.",
   "admin/pages.editor.newadmin.alert": "Acesta este un mediu de test. Pentru a aplica modificări magazinului tău online, ",
-  "admin/pages.editor.newadmin.alert.anchor": "te rugăm să accesezi versiunea anterioară a VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "te rugăm să accesezi versiunea anterioară a VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Include meta tag-uri Twitter",
+  "admin/store.twitterUsername.title": "Nume de utilizator Twitter",
+  "admin/store.twitterUsername.description": "Numele de utilizator pe care îl folosește business-ul tău pe Twitter, de exemplu: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Te rugăm să alegi tipul pentru Cardul Twitter"
 }

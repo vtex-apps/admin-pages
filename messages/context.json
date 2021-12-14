@@ -555,5 +555,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "admin/store.advancedSettings.enableLazyFold.title",
   "admin/store.advancedSettings.enableLazyFold.description": "admin/store.advancedSettings.enableLazyFold.description",
   "admin/pages.editor.newadmin.alert": "admin/pages.editor.newadmin.alert",
-  "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor"
+  "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor",
+  "admin/store.includeTwitterMetaTags.title": "admin/store.includeTwitterMetaTags.title",
+  "admin/store.twitterUsername.title": "admin/store.twitterUsername.title",
+  "admin/store.twitterUsername.description": "admin/store.twitterUsername.description",
+  "admin/store.twitterCard.title": "admin/store.twitterCard.title",
+  "admin/store.twitterCard.description": "admin/store.twitterCard.description"
 }

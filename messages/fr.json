@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Activez le chargement différé des ressources sous la ligne de flottaison (fold)",
   "admin/store.advancedSettings.enableLazyFold.description": "Permet le chargement différé des fichiers JS des composants situés sous le bloc `__fold__`.",
   "admin/pages.editor.newadmin.alert": "Il s’agit d’un environnement test. Pour appliquer les modifications à votre magasin en ligne, ",
-  "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Inclure les balises méta Twitter",
+  "admin/store.twitterUsername.title": "Nom d'utilisateur Twitter",
+  "admin/store.twitterUsername.description": "Le nom d'utilisateur que votre entreprise utilise sur Twitter, par exemple : VTEXcommerce.",
+  "admin/store.twitterCard.title": "Carte Twitter",
+  "admin/store.twitterCard.description": "Veuillez choisir le type de la Twitter Card"
 }

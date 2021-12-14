@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Messages for the `Twitter Meta Tags` app configuration.
+
 ## [4.46.0] - 2021-11-10
 
 ### Added

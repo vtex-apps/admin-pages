@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Habilitar o carregamento de forma Lazy de ativos abaixo da dobra",
   "admin/store.advancedSettings.enableLazyFold.description": "Permite o carregamento de forma Lazy dos arquivos JS dos componentes (above the fold)",
   "admin/pages.editor.newadmin.alert": "Este é um ambiente teste. Para aplicar mudanças na sua loja online, ",
-  "admin/pages.editor.newadmin.alert.anchor": "por favor acesse o Admin VTEX anterior."
+  "admin/pages.editor.newadmin.alert.anchor": "por favor acesse o Admin VTEX anterior.",
+  "admin/store.includeTwitterMetaTags.title": "Incluir meta tags do Twitter",
+  "admin/store.twitterUsername.title": "Nome de usuário no Twitter",
+  "admin/store.twitterUsername.description": "O nome de usuário que sua empresa usa no Twitter, por exemplo: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Por favor, escolha o tipo de Twitter Card"
 }

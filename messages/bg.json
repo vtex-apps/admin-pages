@@ -553,5 +553,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Активиране на бавно зареждане на активите под ръба на първия екран",
   "admin/store.advancedSettings.enableLazyFold.description": "Активира бавно зареждане на JS файлове на компонентите под блок „__fold__“.",
   "admin/pages.editor.newadmin.alert": "Това е тестова среда. За да приложите промените в своя онлайн магазин, ",
-  "admin/pages.editor.newadmin.alert.anchor": "моля, осъществете достъп до предходния VTEX Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "моля, осъществете достъп до предходния VTEX Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Включете мета тагове за Twitter",
+  "admin/store.twitterUsername.title": "Потребителско име за Twitter",
+  "admin/store.twitterUsername.description": "Потребителското име, което фирмата ви използва в Twitter, например: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Моля, изберете вида Twitter Card"
 }

@@ -556,5 +556,10 @@
   "admin/store.advancedSettings.enableLazyFold.title": "Abilita il caricamento differito delle risorse \"Below the Fold\"",
   "admin/store.advancedSettings.enableLazyFold.description": "Abilita il caricamento differito del file JS dei componenti del blocco \"Below the __fold__\".",
   "admin/pages.editor.newadmin.alert": "Questo è un ambiente di prova. Per applicare le modifiche al tuo negozio online, ",
-  "admin/pages.editor.newadmin.alert.anchor": "si prega di accedere al precedente Admin."
+  "admin/pages.editor.newadmin.alert.anchor": "si prega di accedere al precedente Admin.",
+  "admin/store.includeTwitterMetaTags.title": "Includi meta tag di Twitter",
+  "admin/store.twitterUsername.title": "Nome utente su Twitter",
+  "admin/store.twitterUsername.description": "Il nome utente che la tua azienda utilizza su Twitter, ad esempio: VTEXcommerce.",
+  "admin/store.twitterCard.title": "Twitter Card",
+  "admin/store.twitterCard.description": "Si prega di scegliere il tipo di Twitter Card"
 }
