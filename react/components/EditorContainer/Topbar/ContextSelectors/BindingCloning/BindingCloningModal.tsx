@@ -121,7 +121,6 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
   }, [wasOpen, isOpen, refetchRouteInfo, dispatchBindingSelector])
 
   const saveItem = async (item: BindingSelectorItem) => {
-    // TODO: better handling !routeInfo
     if (!routeInfo) return
 
     const copyBindingsVariables = {
@@ -271,7 +270,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                 <div className="tc min-h-large-l">
                   <Spinner color="currentColor" />
                 </div>
-              ) : error ? (
+              ) : error || !routeInfo ? (
                 <EmptyState title="Error fetching routes information">
                   {/* TODO: i18n */}
                   <p>
@@ -290,8 +289,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                   </div>
                   <BindingSelector
                     reducer={[bindingSelector, dispatchBindingSelector]}
-                    // TODO: better handling when !routeInfo
-                    pathId={routeInfo?.path ?? ''}
+                    pathId={routeInfo.path}
                   />
                 </>
               )}
@@ -301,7 +299,6 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
       </ToastConsumer>
       <OverwriteDialog
         state={bindingSelector}
-        // TODO: better handling when !routeInfo
         pathId={routeInfo?.path ?? ''}
         isOpen={isOverwriteDialogOpen}
         onClose={hideOverwriteDialog}
