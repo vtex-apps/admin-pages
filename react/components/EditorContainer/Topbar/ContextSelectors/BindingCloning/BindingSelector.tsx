@@ -162,10 +162,10 @@ const BindingSelector: FunctionComponent<Props> = ({ reducer, pathId }) => {
               />
             </td>
             <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
-              <>
+              <label htmlFor={item.id}>
                 {item.label}
                 <span className="c-muted-2">{pathId}</span>
-              </>
+              </label>
             </td>
             <td className="v-mid pv0 tl bb b--muted-4 ph3 z1 pv4-s">
               {item.supportedLocales && item.supportedLocales.length > 1 ? (
