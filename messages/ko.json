@@ -508,7 +508,7 @@
   "admin/store.metaTagRobots.description": "기본값: 인덱스, 팔로우",
   "admin/store.faviconLinks.title": "파비콘",
   "admin/store.faviconLinks.rel.title": "파비콘 관계",
-  "admin/store.faviconLinks.rel.description": "이 파비콘 관계, 예: \\\"icon\\\", \\\"shortcut icon\\\", \\\"apple-touch-icon\\\"",
+  "admin/store.faviconLinks.rel.description": "이 파비콘 관계, 예: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
   "admin/store.faviconLinks.type.title": "파비콘 미디어 유형",
   "admin/store.faviconLinks.type.description": "(선택사항) 파비콘 유형, 예: image/png",
   "admin/store.faviconLinks.sizes.title": "파비콘 크기",
