@@ -7,6 +7,7 @@ import {
   ToastConsumer,
   EmptyState,
 } from 'vtex.styleguide'
+import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { pick } from 'ramda'
 
 import BindingSelector, { BindingSelectorItem } from './BindingSelector'
@@ -59,8 +60,21 @@ const copyBindingsSanityCheck = (variables: any) => {
 
 type SubmitStatus = 'IDLE' | 'SUBMITTING'
 
+const toastMessages = defineMessages({
+  saving: {
+    id: 'admin/pages.editor.copy-page.modal.toast.saving',
+  },
+  success: {
+    id: 'admin/pages.editor.copy-page.modal.toast.success',
+  },
+  error: {
+    id: 'admin/pages.editor.copy-page.modal.toast.error',
+  },
+})
+
 const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
   const [submitStatus, setSubmitStatus] = React.useState<SubmitStatus>('IDLE')
+  const intl = useIntl()
 
   const {
     showOverwriteDialog,
@@ -213,13 +227,15 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     try {
       // It doesn't throw an error. User just refused to overwrite
       await checkOverwrites()
-      /* TODO: i18n */
-      showToast({ message: 'Saving...', duration: Infinity })
+
+      showToast({
+        message: intl.formatMessage(toastMessages.saving),
+        duration: Infinity,
+      })
       try {
         await applyChanges()
         setTimeout(() => {
-          /* TODO: i18n */
-          showToast('Done!')
+          showToast(intl.formatMessage(toastMessages.success))
         }, 500)
       } catch {
         // There is a bug with the Toast component, where
@@ -228,8 +244,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
         // gets around this issue, which happens if the error
         // is immediate
         setTimeout(() => {
-          /* TODO: i18n */
-          showToast('An error has occourred. Please try again')
+          showToast(intl.formatMessage(toastMessages.error))
         }, 500)
       }
     } finally {
@@ -247,45 +262,42 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
             bottomBar={
               <div className="flex justify-end">
                 <span className="mr4">
-                  {/* TODO: i18n */}
                   <Button onClick={handleClose} variation="secondary">
-                    Cancel
+                    <FormattedMessage id="admin/pages.editor.components.button.cancel" />
                   </Button>
                 </span>
                 <Button
                   disabled={submitStatus === 'SUBMITTING'}
                   onClick={() => handleConfirmCopyContent({ showToast })}
                 >
-                  Confirm
+                  <FormattedMessage id="admin/pages.editor.components.button.save" />
                 </Button>
-                {/* TODO: i18n */}
               </div>
             }
           >
             <div className="mb6">
-              {/* TODO: i18n */}
-              <h3>Clone page to other bindings</h3>
+              <h3>
+                <FormattedMessage id="admin/pages.editor.copy-page.modal.header" />
+              </h3>
               <BetaAlert />
               {loading ? (
                 <div className="tc min-h-large-l">
                   <Spinner color="currentColor" />
                 </div>
               ) : error || !routeInfo ? (
-                <EmptyState title="Error fetching routes information">
-                  {/* TODO: i18n */}
+                <EmptyState
+                  title={
+                    <FormattedMessage id="admin/pages.editor.copy-page.modal.error.title" />
+                  }
+                >
                   <p>
-                    There was an error fetching the routes information. Please
-                    try closing and reopening the modal.
+                    <FormattedMessage id="admin/pages.editor.copy-page.modal.error.body" />
                   </p>
                 </EmptyState>
               ) : (
                 <>
-                  {/* TODO: i18n */}
                   <div className="f5 mb5">
-                    Please choose to which bindings the content will be
-                    duplicated. If the page doesn&apos;t exist in a binding, it
-                    will be created and metadata (such as SEO information) will
-                    also be copied.
+                    <FormattedMessage id="admin/pages.editor.copy-page.modal.subheader" />
                   </div>
                   <BindingSelector
                     reducer={[bindingSelector, dispatchBindingSelector]}

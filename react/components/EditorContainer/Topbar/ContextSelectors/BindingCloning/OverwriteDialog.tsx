@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useState } from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Button, Modal } from 'vtex.styleguide'
 
 import { BindingSelectorState } from './BindingSelector'
@@ -40,7 +41,6 @@ const OverwriteDialog: FunctionComponent<Props> = ({
   const overwrittenContent =
     state?.filter(item => item.overwrites && item.checked) ?? []
 
-  // TODO: i18n text
   return (
     <Modal
       isOpen={isOpen}
@@ -48,7 +48,6 @@ const OverwriteDialog: FunctionComponent<Props> = ({
       bottomBar={
         <div className="flex justify-end">
           <span className="mr4">
-            {/* TODO: i18n */}
             <Button
               variation="secondary"
               onClick={() => {
@@ -56,10 +55,9 @@ const OverwriteDialog: FunctionComponent<Props> = ({
                 onClose()
               }}
             >
-              Go back
+              <FormattedMessage id="admin/pages.editor.components.button.go-back" />
             </Button>
           </span>
-          {/* TODO: i18n */}
           <Button
             variation="danger"
             onClick={() => {
@@ -67,22 +65,20 @@ const OverwriteDialog: FunctionComponent<Props> = ({
               onClose()
             }}
           >
-            Overwrite
+            <FormattedMessage id="admin/pages.editor.components.button.overwrite" />
           </Button>
         </div>
       }
     >
       <div className="mb6">
         <div className="mb6">
-          {/* TODO: i18n */}
-          <h2 className="mb4">Existing content will be overwritten</h2>
-          {/* TODO: i18n */}
+          <h2 className="mb4">
+            <FormattedMessage id="admin/pages.editor.copy-page.overwritedialog.header" />
+          </h2>
           {overwrittenContent.length > 1 ? (
-            <p>
-              Existing content in these bindings will be permanently deleted:
-            </p>
+            <FormattedMessage id="admin/pages.editor.copy-page.overwritedialog.subheader.singular" />
           ) : (
-            <p>Existing content in this binding will be permanently deleted:</p>
+            <FormattedMessage id="admin/pages.editor.copy-page.overwritedialog.subheader.plural" />
           )}
         </div>
         <div className="mb6 ml6">
@@ -107,8 +103,7 @@ const OverwriteDialog: FunctionComponent<Props> = ({
             ))}
           </ul>
         </div>
-        {/* TODO: i18n */}
-        <p>Are you sure you want to duplicate the content to them?</p>
+        <FormattedMessage id="admin/pages.editor.copy-page.overwritedialog.confirmation" />
       </div>
     </Modal>
   )
