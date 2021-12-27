@@ -569,5 +569,22 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL 매개변수가 없는 표준 URL",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "표준 URL에서 지도 매개변수를 제거합니다. 패싯이 선택된 페이지로 이동할 때 문제가 발생할 수 있습니다. 설정 후 주의해서 테스트하십시오.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "제목에서 스토어 이름 제거",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "제품 및 카테고리 메타 제목 끝에 있는 스토어 이름 제거"
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "제품 및 카테고리 메타 제목 끝에 있는 스토어 이름 제거",
+  "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
+  "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
+  "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",
+  "admin/pages.editor.copy-page.modal.error.body": "There was an error fetching the routes information. Please try closing and reopening the modal.",
+  "admin/pages.editor.copy-page.modal.table-header.supported-locales": "Supported Locales",
+  "admin/pages.editor.copy-page.modal.table-header.warning": "Warning",
+  "admin/pages.editor.copy-page.modal.warning.page-exists": "Page already exists",
+  "admin/pages.editor.topbar.button.copy-page.tooltip": "Clone page to other bindings",
+  "admin/pages.editor.components.button.go-back": "Go back",
+  "admin/pages.editor.components.button.overwrite": "Overwrite",
+  "admin/pages.editor.copy-page.overwritedialog.header": "Existing content will be overwritten",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.singular": "Existing content in these bindings will be permanently deleted:",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.plural": "Existing content in this binding will be permanently deleted:",
+  "admin/pages.editor.copy-page.overwritedialog.confirmation": "Are you sure you want to duplicate the content to them?",
+  "admin/pages.editor.copy-page.modal.toast.saving": "Saving...",
+  "admin/pages.editor.copy-page.modal.toast.success": "Done!",
+  "admin/pages.editor.copy-page.modal.toast.error": "An error has occourred. Please try again"
 }
