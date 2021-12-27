@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import { useKeydownFromClick } from 'keydown-from-click'
 import { Tooltip } from 'vtex.styleguide'
+import { FormattedMessage } from 'react-intl'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useHover } from '../../hooks'
@@ -35,8 +36,12 @@ const BindingCloning: FunctionComponent<Props> = ({
 
   return (
     <>
-      {/* TODO: i18n */}
-      <Tooltip label="Clone content to other bindings" position="bottom">
+      <Tooltip
+        label={
+          <FormattedMessage id="admin/pages.editor.topbar.button.copy-page.tooltip" />
+        }
+        position="bottom"
+      >
         <button
           style={editor.mode === 'disabled' ? { cursor: 'wait' } : {}}
           className={`w2 h2 pa3 bg-white br2 b--transparent outline-0 pointer flex justify-center items-center ${

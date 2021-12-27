@@ -560,5 +560,22 @@
   "admin/store.twitterUsername.title": "admin/store.twitterUsername.title",
   "admin/store.twitterUsername.description": "admin/store.twitterUsername.description",
   "admin/store.twitterCard.title": "admin/store.twitterCard.title",
-  "admin/store.twitterCard.description": "admin/store.twitterCard.description"
+  "admin/store.twitterCard.description": "admin/store.twitterCard.description",
+  "admin/pages.editor.copy-page.modal.header": "admin/pages.editor.copy-page.modal.header",
+  "admin/pages.editor.copy-page.modal.subheader": "admin/pages.editor.copy-page.modal.subheader",
+  "admin/pages.editor.copy-page.modal.error.title": "admin/pages.editor.copy-page.modal.error.title",
+  "admin/pages.editor.copy-page.modal.error.body": "admin/pages.editor.copy-page.modal.error.body",
+  "admin/pages.editor.copy-page.modal.table-header.supported-locales": "admin/pages.editor.copy-page.modal.table-header.supported-locales",
+  "admin/pages.editor.copy-page.modal.table-header.warning": "admin/pages.editor.copy-page.modal.table-header.warning",
+  "admin/pages.editor.copy-page.modal.warning.page-exists": "admin/pages.editor.copy-page.modal.warning.page-exists",
+  "admin/pages.editor.topbar.button.copy-page.tooltip": "admin/pages.editor.topbar.button.copy-page.tooltip",
+  "admin/pages.editor.components.button.go-back": "admin/pages.editor.components.button.go-back",
+  "admin/pages.editor.components.button.overwrite": "admin/pages.editor.components.button.overwrite",
+  "admin/pages.editor.copy-page.overwritedialog.header": "admin/pages.editor.copy-page.overwritedialog.header",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.singular": "admin/pages.editor.copy-page.overwritedialog.subheader.singular",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.plural": "admin/pages.editor.copy-page.overwritedialog.subheader.plural",
+  "admin/pages.editor.copy-page.overwritedialog.confirmation": "admin/pages.editor.copy-page.overwritedialog.confirmation",
+  "admin/pages.editor.copy-page.modal.toast.saving": "admin/pages.editor.copy-page.modal.toast.saving",
+  "admin/pages.editor.copy-page.modal.toast.success": "admin/pages.editor.copy-page.modal.toast.success",
+  "admin/pages.editor.copy-page.modal.toast.error": "admin/pages.editor.copy-page.modal.toast.error"
 }
