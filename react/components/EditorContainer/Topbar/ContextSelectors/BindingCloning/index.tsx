@@ -1,7 +1,8 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { FC, FunctionComponent, useState } from 'react'
 import { useKeydownFromClick } from 'keydown-from-click'
 import { Tooltip } from 'vtex.styleguide'
 import { FormattedMessage } from 'react-intl'
+import { compose, graphql } from 'react-apollo'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useHover } from '../../hooks'
@@ -9,12 +10,41 @@ import CopyContent from '../../icons/CopyContent'
 import { Binding } from '../typings'
 import BindingCloningModal from './BindingCloningModal'
 import { CloneContentProvider } from './CloneContentContext'
+import APP_SETTINGS from '../graphql/appSettings.graphql'
 
 interface Props {
   bindings: Binding[]
   binding: Binding
   iframeRuntime: RenderContext
 }
+
+const withSettings = compose(
+  graphql(APP_SETTINGS, {
+    options: () => {
+      const [appName, version] = (process.env.VTEX_APP_ID as string).split('@')
+      return {
+        variables: {
+          appName,
+          version,
+        },
+      }
+    },
+  })
+)
+
+const FeatureFlagComponent: FC<{ data: { appSettings?: AppSettings } }> = ({
+  children,
+  data,
+}) => {
+  const { message } = data.appSettings ?? {}
+  const settingsParsed = message && (JSON.parse(message) as SettingsParsed)
+  const enableFeature =
+    settingsParsed && Boolean(settingsParsed.copyContentBinding)
+
+  return <>{enableFeature ? children : null}</>
+}
+
+const FeatureFlag = withSettings(FeatureFlagComponent)
 
 const BindingCloning: FunctionComponent<Props> = ({
   bindings,
@@ -35,7 +65,7 @@ const BindingCloning: FunctionComponent<Props> = ({
   const { id: routeId, pageContext } = route ?? {}
 
   return (
-    <>
+    <FeatureFlag>
       <Tooltip
         label={
           <FormattedMessage id="admin/pages.editor.topbar.button.copy-page.tooltip" />
@@ -71,7 +101,7 @@ const BindingCloning: FunctionComponent<Props> = ({
           }}
         />
       </CloneContentProvider>
-    </>
+    </FeatureFlag>
   )
 }
 

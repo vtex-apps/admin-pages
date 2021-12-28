@@ -337,4 +337,12 @@ declare global {
     blockId: string
     extensionPointId: string
   }
+
+  interface AppSettings {
+    message: string
+  }
+
+  interface SettingsParsed {
+    copyContentBinding?: boolean
+  }
 }
