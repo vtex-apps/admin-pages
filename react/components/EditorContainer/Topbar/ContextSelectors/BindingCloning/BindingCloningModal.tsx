@@ -11,7 +11,11 @@ import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { pick } from 'ramda'
 
 import BindingSelector, { BindingSelectorItem } from './BindingSelector'
-import { useCloneContent } from './CloneContentContext'
+import {
+  CopyBindingVariables,
+  SaveRouteVariables,
+  useCloneContent,
+} from './CloneContentContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
 import BetaAlert from './BetaAlert'
 
@@ -20,7 +24,7 @@ interface Props {
   onClose: () => void
 }
 
-const saveRouteSanityCheck = (variables: any) => {
+const saveRouteSanityCheck = (variables: SaveRouteVariables) => {
   const route = variables?.route
 
   if (
@@ -39,7 +43,7 @@ const saveRouteSanityCheck = (variables: any) => {
   return true
 }
 
-const copyBindingsSanityCheck = (variables: any) => {
+const copyBindingsSanityCheck = (variables: CopyBindingVariables) => {
   if (
     !variables ||
     // If any of these values is empty, it might cause the
@@ -140,7 +144,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     const copyBindingsVariables = {
       from: currentBinding.id,
       to: item.id,
-      template: routeInfo?.blockId,
+      template: routeInfo.blockId,
       context: pageContext,
     }
 
