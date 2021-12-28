@@ -18,6 +18,7 @@ import {
   setInitialBindingState,
   useBindingSelectorReducer,
   BindingSelectorAction,
+  BindingSelectorItem,
 } from './BindingSelector'
 import SaveRouteMutation from '../graphql/SaveRoute.graphql'
 import CopyBindingsMutation from '../graphql/CopyBindings.graphql'
@@ -63,7 +64,7 @@ const CloneContentContext = createContext<CloneContentContextValue>(
   {} as CloneContentContextValue
 )
 
-interface SaveRouteVariables {
+export interface SaveRouteVariables {
   route: Route
 }
 
@@ -71,10 +72,10 @@ type MutationArgs<T> = {
   variables: T
 }
 
-interface CopyBindingVariables {
-  from: string
-  to: string
-  template: string
+export interface CopyBindingVariables {
+  from: Binding['id']
+  to: BindingSelectorItem['id']
+  template: Route['blockId']
   context: PageContext
 }
 
