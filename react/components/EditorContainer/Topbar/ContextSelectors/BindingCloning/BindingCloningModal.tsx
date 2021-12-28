@@ -17,7 +17,6 @@ import {
   useCloneContent,
 } from './CloneContentContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
-import BetaAlert from './BetaAlert'
 
 interface Props {
   isOpen?: boolean
@@ -283,7 +282,6 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
               <h3>
                 <FormattedMessage id="admin/pages.editor.copy-page.modal.header" />
               </h3>
-              <BetaAlert />
               {loading ? (
                 <div className="tc min-h-large-l">
                   <Spinner color="currentColor" />
