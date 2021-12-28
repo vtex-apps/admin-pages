@@ -30,7 +30,18 @@
   "registries": [
     "smartcheckout"
   ],
-  "settingsSchema": {},
+  "settingsSchema": {
+    "title": "VTEX Pages Admin",
+    "type": "object",
+    "properties": {
+      "copyContentBinding": {
+        "type": "boolean",
+        "title": "Copy Content Binding",
+        "description": "Enables feature to copy pages from one binding to another",
+        "default": false
+      }
+    }
+  },
   "scripts": {
     "postreleasy": "vtex publish -r vtex --verbose"
   },
