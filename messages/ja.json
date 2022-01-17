@@ -560,7 +560,7 @@
   "admin/store.twitterCard.title": "Twitter カード",
   "admin/store.twitterCard.description": "Twitter カードの種類を選んでください",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "メタタイトルでページ番号を有効にする",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "タイトルの重複の問題を回避するために、タイトルの最後に＃{番号}を追加します",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "重複の問題を回避するために、タイトルの最後に#{番号} を追加します",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URLパラメータのない正規URL",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "正規URLからマップパラメータを削除します。ファセットが選択されているページに移動すると、問題が発生する可能性があります。電源を入れた後は注意してテストしてください",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "タイトルからストア名を削除",
