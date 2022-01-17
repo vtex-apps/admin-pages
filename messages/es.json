@@ -565,7 +565,7 @@
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Activar el número de página en el metatítulo",
   "admin/store.advancedSettings.enablePageNumberTitle.description": "Agregar un #{Número} al final del título para evitar el problema de la duplicación del título",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canónica sin parámetros de URL",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Elimina el parámetro de mapa de la URL canónica. Puede causar problemas al acceder a una página con facetas seleccionadas. Pruebe con precaución después de activar",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Elimina el parámetro de mapa de la URL canónica. Puede causar problemas al acceder a una página con facetas seleccionadas. Prueba con precaución después de la activación.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Eliminar el nombre de la tienda del título",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Eliminar el nombre de la tienda al final de los metatítulos de productos y categorías"
 }
