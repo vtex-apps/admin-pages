@@ -561,8 +561,8 @@
   "admin/store.twitterCard.description": "Моля, изберете вида Twitter Card",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Активирайте номера на страницата в мета заглавието",
   "admin/store.advancedSettings.enablePageNumberTitle.description": "Добавете #{номер} в края на заглавието, за да избегнете проблема с дублирането на заглавието",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Каноничен url без url параметри",
-  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Премахнете параметъра на картата от каноничния URL адрес. Може да причини проблеми, когато отидете на страница с избрани аспекти. Тествайте внимателно, след като го включите",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Редовен URL адрес без URL параметри",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Премахнете параметъра на картата от редовния URL адрес. Може да причини проблеми, когато отидете на страница с избрани аспекти. Тествайте внимателно, след като го включите",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Премахнете името на магазина от заглавието",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Премахнете името на магазина в края на мета заглавията на продукти и категории"
 }
