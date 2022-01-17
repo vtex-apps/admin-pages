@@ -564,5 +564,5 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canonique sans paramètres d'URL",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Supprimer le paramètre de carte de l’URL canonique. Peut causer des problèmes lors de l’accès à une page avec des facettes sélectionnées. À tester avec précaution après l’avoir activé",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Supprimer le nom du magasin du titre",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Supprimer le nom du magasin à la fin des méta-titres des produits et des catégories"
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Supprimer le nom du magasin à la fin des balises meta title des produits et des catégories"
 }
