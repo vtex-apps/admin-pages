@@ -558,5 +558,11 @@
   "admin/store.twitterUsername.title": "Nume de utilizator Twitter",
   "admin/store.twitterUsername.description": "Numele de utilizator pe care îl folosește business-ul tău pe Twitter, de exemplu: VTEXcommerce.",
   "admin/store.twitterCard.title": "Twitter Card",
-  "admin/store.twitterCard.description": "Te rugăm să alegi tipul pentru Cardul Twitter"
+  "admin/store.twitterCard.description": "Te rugăm să alegi tipul pentru Cardul Twitter",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Activează numărul de pagină în titlul meta",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Adaugă un #{Număr} la sfârșitul titlului pentru a evita problema de duplicare a titlului",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Adresă URL canonică fără parametri URL",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Elimină parametrul hărții din adresa URL canonică. Este posibil să cauzeze probleme atunci când accesezi o pagină cu fațete selectate. Testează cu precauție după ce îl pornești",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Elimină numele magazinului din titlu",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Elimină numele magazinului de la finalul metatitlurilor de produse și categorii"
 }

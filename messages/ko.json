@@ -558,5 +558,11 @@
   "admin/store.twitterUsername.title": "Twitter 사용자 이름",
   "admin/store.twitterUsername.description": "귀하의 비즈니스가 Twitter에서 사용하는 사용자 이름. 예: VTEXcommerce.",
   "admin/store.twitterCard.title": "Twitter 카드",
-  "admin/store.twitterCard.description": "Twitter 카드의 종류를 선택하세요."
+  "admin/store.twitterCard.description": "Twitter 카드의 종류를 선택하세요.",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "메타 제목에서 페이지 번호 활성화",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "제목 중복 문제를 방지하려면 제목 끝에 #{숫자}를 추가하세요.",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL 매개변수가 없는 표준 URL",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "표준 URL에서 지도 매개변수를 제거합니다. 패싯이 선택된 페이지로 이동할 때 문제가 발생할 수 있습니다. 설정 후 주의해서 테스트하십시오.",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "제목에서 스토어 이름 제거",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "제품 및 카테고리 메타 제목 끝에 있는 스토어 이름 제거"
 }

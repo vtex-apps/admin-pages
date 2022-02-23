@@ -558,5 +558,11 @@
   "admin/store.twitterUsername.title": "Twitter-gebruikersnaam",
   "admin/store.twitterUsername.description": "De gebruikersnaam die uw bedrijf op Twitter gebruikt, bijvoorbeeld: VTEXcommerce.",
   "admin/store.twitterCard.title": "Twitter-kaart",
-  "admin/store.twitterCard.description": "Kies het type voor de Twitter-kaart"
+  "admin/store.twitterCard.description": "Kies het type voor de Twitter-kaart",
+  "admin/store.advancedSettings.enablePageNumberTitle.title": "Paginanummer in metatitel inschakelen",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Voeg een #{Nummer} toe aan het einde van de titel om het probleem van titelduplicatie te voorkomen",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonieke url zonder url-parameters",
+  "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Verwijder de kaartparameter uit de canonieke URL. Kan problemen veroorzaken bij het bezoeken van een pagina met geselecteerde facetten. Test voorzichtig na het inschakelen",
+  "admin/store.advancedSettings.removeStoreNameTitle.title": "Verwijder winkelnaam uit titel",
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Verwijder winkelnaam aan het einde van Product- en Categorie-metatitels"
 }
