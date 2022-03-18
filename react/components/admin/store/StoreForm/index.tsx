@@ -7,15 +7,15 @@ import Form, { UiSchema } from 'react-jsonschema-form'
 import { formatIOMessage } from 'vtex.native-types'
 import { Button, ToastContext } from 'vtex.styleguide'
 
-import ArrayFieldTemplate from '../../../form/ArrayFieldTemplate'
 import BaseInput from '../../../form/BaseInput'
 import Toggle from '../../../form/Toggle'
 import FieldTemplate from '../../../form/FieldTemplate'
 import ObjectFieldTemplate from '../../../form/ObjectFieldTemplate'
 import withStoreSettings, { FormProps } from './components/withStoreSettings'
 import SaveAppSettings from './mutations/SaveAppSettings.graphql'
-import { formatSchema, tryParseJson, removeObjectProperties } from './utils'
+import { formatSchema, tryParseJson } from './utils'
 import { CustomWidgetProps } from '../../../form/typings'
+import StoreFormArrayFieldTemplate from '../../../form/ArrayFieldTemplate/StoreFormArrayFieldTemplate'
 
 interface MutationData {
   message: string
@@ -45,28 +45,51 @@ const widgets = {
   CheckboxWidget,
 }
 
+
+function removeProp(obj: Record<string, any>, propToDelete: string) {
+  for (const property in obj) {
+    if (obj.hasOwnProperty(property)) {
+      if (property === propToDelete) {
+        delete obj[property]
+      } else {
+        if (typeof obj[property] == "object") {
+          if (Array.isArray(obj[property])) {
+            obj[property].forEach((val: any) => removeProp(val, propToDelete))
+          } else {
+            removeProp(obj[property], propToDelete)
+          }
+        }
+      }
+    }
+  }
+}
+
 function resolveSchemaForCurrentTab(
   tab: string | undefined,
   schema: JSONSchema6,
-  intl: IntlShape
+  intl: IntlShape,
+  formData: any
 ) {
-  const advancedSettingsSchema = (schema.properties
-    ?.advancedSettings as JSONSchema6) ?? {
-    properties: {},
-  }
+  const advancedSettingsSchema = (schema.dependencies?.bindingBounded as any)?.oneOf?.[0].properties.advancedSettings
 
   switch (tab) {
     case 'general':
+      if (!formData.bindingBounded && schema.dependencies) {
+        removeProp(schema.dependencies, 'advancedSettings')
+      }
       return assoc<JSONSchema6>(
         'properties',
         formatSchema({
           schema: schema.properties || {},
           intl,
-          ignore: ['title', 'advancedSettings'],
+          ignore: ['title'],
         }),
-        schema
+        schema,
       )
     case 'advanced':
+      if (formData.bindingBounded) {
+        return {} as JSONSchema6
+      }
       return assoc<JSONSchema6>(
         'properties',
         formatSchema({
@@ -80,17 +103,39 @@ function resolveSchemaForCurrentTab(
       return assoc<JSONSchema6>(
         'properties',
         formatSchema({
-          schema: removeObjectProperties(schema, ['title']).properties || {},
+          schema: schema.properties || {},
           intl,
+          ignore: ['title'],
         }),
         schema
       )
   }
 }
 
+const removeAdvancedSetting = (formData: Record<string, any>) => {
+  const { advancedSettings, ...rest } = formData
+  return {
+    ...rest,
+    ...(advancedSettings ?? {})
+  }
+}
+
+const spreadAdvancedSettings = (formData: Record<string, any>) => {
+  if (!formData) {
+    return formData
+  }
+
+  const cleanFirstLevel = removeAdvancedSetting(formData)
+  const hasSettingsProp = formData.bindingBounded
+  const settings = hasSettingsProp ? cleanFirstLevel.settings : undefined
+  const cleanSettings = settings && Array.isArray(settings) ?
+    settings.map((setting: any) => removeAdvancedSetting(setting)) : settings
+  return { ...cleanFirstLevel, settings: cleanSettings }
+}
+
 const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
   const intl = useIntl()
-  const [formData, setFormData] = useState(tryParseJson(store.settings))
+  const [formData, setFormData] = useState(() => tryParseJson(store.settings))
 
   const [submitting, setSubmitting] = useState(false)
 
@@ -101,7 +146,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
       const { slug: app, version } = store
 
       mutate({
-        variables: { app, version, settings: JSON.stringify(formData) },
+        variables: { app, version, settings: JSON.stringify(spreadAdvancedSettings(formData as any)) },
       })
         .then(() =>
           showToast(
@@ -128,7 +173,7 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
   const uiSchema = tryParseJson<UiSchema>(settingsUiSchema)
 
   const schemas = {
-    schema: resolveSchemaForCurrentTab(tab, schema, intl),
+    schema: resolveSchemaForCurrentTab(tab, schema, intl, formData),
     title: formatIOMessage({ id: schema.title || '', intl }),
     ...(uiSchema && { uiSchema }),
   }
@@ -150,11 +195,11 @@ const StoreForm: React.FunctionComponent<Props> = ({ store, mutate, tab }) => {
         onChange={({ formData: newFormData }) => setFormData(newFormData)}
         showErrorList={false}
         FieldTemplate={FieldTemplate}
-        ArrayFieldTemplate={ArrayFieldTemplate}
+        ArrayFieldTemplate={StoreFormArrayFieldTemplate}
         ObjectFieldTemplate={ObjectFieldTemplate}
         widgets={widgets}
       >
-        <div className="w-100 tr">
+        <div className="w-100 tr pv3">
           <Button
             size="small"
             type="submit"

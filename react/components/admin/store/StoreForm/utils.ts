@@ -1,4 +1,4 @@
-import { JSONSchema6, JSONSchema6Definition } from 'json-schema'
+import { JSONSchema6Definition } from 'json-schema'
 import { IntlShape } from 'react-intl'
 import { formatIOMessage } from 'vtex.native-types'
 
@@ -39,7 +39,7 @@ export const formatSchema = ({
     ? removeObjectProperties(schema, ignore)
     : schema
 
-  return Object.entries(filteredSchema).reduce<JSONSchema6>(
+  return Object.entries(filteredSchema).reduce<Record<string, any>>(
     (acc, [currKey, currValue]) => {
       let formattedValue: unknown
 
@@ -55,10 +55,8 @@ export const formatSchema = ({
         formattedValue = currValue
       }
 
-      return {
-        ...acc,
-        [currKey]: formattedValue,
-      }
+      acc[currKey] = formattedValue
+      return acc
     },
     filteredSchema
   )

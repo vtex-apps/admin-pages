@@ -1,4 +1,3 @@
-import { JSONSchema6 } from 'json-schema'
 import React, { Component, Fragment } from 'react'
 import {
   injectIntl,
@@ -14,12 +13,11 @@ import {
 import AddButton from './AddButton'
 import ArrayList from './ArrayList'
 import styles from './styles.css'
+import { ItemEditStyles } from './ItemForm'
 
-interface Props extends ComponentWithIntlProps {
-  canAdd: boolean
-  items?: ArrayFieldTemplateProps['items']
-  onAddClick?: (event: Event) => void
-  schema: JSONSchema6
+interface ConfigProps {
+  itemEditStyle?: ItemEditStyles
+  itemTitleKey?: string
 }
 
 interface State {
@@ -39,13 +37,13 @@ function getHelperDimensions({ node }: SortStart): Dimensions {
   }
 }
 
-class ArrayFieldTemplate extends Component<
-  Props & ArrayFieldTemplateProps,
-  State
-> {
+type Props = ArrayFieldTemplateProps & ComponentWithIntlProps & ConfigProps
+export type OverloadbleProps = ArrayFieldTemplateProps & ConfigProps
+
+class ArrayFieldTemplate extends Component<Props, State> {
   private stackDepth: number
 
-  public constructor(props: Props & ArrayFieldTemplateProps) {
+  public constructor(props: Props) {
     super(props)
 
     this.state = {
@@ -59,7 +57,7 @@ class ArrayFieldTemplate extends Component<
   }
 
   public render() {
-    const { canAdd, intl, items, schema, title } = this.props
+    const { canAdd, intl, items, schema, title, itemEditStyle, itemTitleKey } = this.props
     const { openItem, sorting } = this.state
 
     return (
@@ -84,6 +82,8 @@ class ArrayFieldTemplate extends Component<
           schema={schema}
           sorting={sorting}
           useDragHandle
+          itemEditStyle={itemEditStyle}
+          itemTitleKey={itemTitleKey}
         >
           {canAdd ? <AddButton onClick={this.handleAddItem} /> : null}
         </ArrayList>
@@ -167,7 +167,7 @@ class ArrayFieldTemplate extends Component<
 
 const ArrayFieldTemplateWithIntl = injectIntl(ArrayFieldTemplate)
 
-const StatelessArrayFieldTemplate: React.FunctionComponent<ArrayFieldTemplateProps> = props => {
+const StatelessArrayFieldTemplate: React.FunctionComponent<OverloadbleProps> = props => {
   return <ArrayFieldTemplateWithIntl {...props} />
 }
 

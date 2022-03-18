@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { JSONSchema6 } from 'json-schema'
 import { path } from 'ramda'
 import React, { useCallback, useMemo } from 'react'
-import { defineMessages, InjectedIntlProps, injectIntl } from 'react-intl'
+import { defineMessages, injectIntl, WrappedComponentProps as ComponentWithIntlProps } from 'react-intl'
 import { ArrayFieldTemplateProps } from 'react-jsonschema-form'
 import { SortableElement, SortableElementProps } from 'react-sortable-hoc'
 
@@ -31,6 +31,7 @@ interface CustomProps {
   ) => void
   showDragHandle: boolean
   schema: JSONSchema6
+  itemTitleKey?: string
 }
 
 type PropsFromItemTemplateProps = Pick<
@@ -40,7 +41,7 @@ type PropsFromItemTemplateProps = Pick<
 type Props = CustomProps &
   SortableElementProps &
   PropsFromItemTemplateProps &
-  InjectedIntlProps
+  ComponentWithIntlProps
 
 const messages = defineMessages({
   defaultTitle: {
@@ -82,6 +83,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
     onDropIndexClick,
     schema,
     showDragHandle,
+    itemTitleKey
   } = props
 
   const componentSchema = React.useMemo(() => getComponentSchema(schema), [
@@ -167,6 +169,7 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
   }, [handleItemClick, onDropIndexClick, formIndex, hasRemove, intl])
 
   const title =
+    (itemTitleKey && children.props.formData?.[itemTitleKey]) ||
     children.props.formData.__editorItemTitle ||
     path(['items', 'properties', '__editorItemTitle', 'default'], schema)
 
@@ -181,11 +184,9 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
       )}
     >
       <div
-        className={`${
-          templateStyles['accordion-label']
-        } bg-white flex items-center justify-center overflow-hidden relative outline-0 ${
-          hasImageUploader ? 'h4' : 'h3'
-        }`}
+        className={`${templateStyles['accordion-label']
+          } bg-white flex items-center justify-center overflow-hidden relative outline-0 ${hasImageUploader ? 'h4' : 'h3'
+          }`}
         onClick={handleItemClick}
         onKeyDown={handleItemKeyDown}
         role="treeitem"
@@ -213,17 +214,17 @@ const ArrayFieldTemplateItem: React.FC<Props> = props => {
                   src={imagePreview}
                 />
               ) : (
-                <NoImagePlaceholder />
-              )}
+                  <NoImagePlaceholder />
+                )}
               <PreviewOverlay />
             </>
           ) : (
-            <span className={`f6 ${templateStyles['accordion-label-title']}`}>
-              {intl.formatMessage(
-                title ? { id: title } : messages.defaultTitle
-              )}
-            </span>
-          )}
+              <span className={`f6 ${templateStyles['accordion-label-title']}`}>
+                {intl.formatMessage(
+                  title ? { id: title } : messages.defaultTitle
+                )}
+              </span>
+            )}
           <div
             className={`absolute top-0 right-0 mr3 mt3 ${itemStyles['action-menu-container']}`}
             onClick={stopPropagation}

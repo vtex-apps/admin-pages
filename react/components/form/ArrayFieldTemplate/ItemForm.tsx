@@ -1,17 +1,18 @@
 import classnames from 'classnames'
 import React from 'react'
 import { defineMessages, useIntl } from 'react-intl'
-import { CSSTransition } from 'react-transition-group'
 import { Button } from 'vtex.styleguide'
 
 import styles from './styles.css'
-import transitionStyles from './ItemTransitions.css'
 
+export enum ItemEditStyles {
+  MODAL = 'MODAL',
+  SIDEMENU = 'SIDEMENU'
+}
 interface Props {
   children: React.ReactElement
-  currentDepth: number
   onClose: () => void
-  stackDepth: number
+  itemEditStyle?: ItemEditStyles
 }
 
 const messages = defineMessages({
@@ -23,37 +24,23 @@ const messages = defineMessages({
 
 const ItemForm: React.FC<Props> = ({
   children,
-  currentDepth,
   onClose,
-  stackDepth,
+  itemEditStyle = ItemEditStyles.SIDEMENU,
 }) => {
   const intl = useIntl()
   return (
-    <CSSTransition
-      in={stackDepth < currentDepth}
-      classNames={{
-        enter: transitionStyles['item-depth-enter'],
-        enterActive: transitionStyles['item-depth-enter-active'],
-        enterDone: transitionStyles['item-depth-enter-done'],
-        exit: transitionStyles['item-depth-exit'],
-        exitActive: transitionStyles['item-depth-exit-active'],
-        exitDone: transitionStyles['item-depth-exit-done'],
-      }}
-      timeout={150}
+    <div
+      className={classnames(`${styles['accordion-item']} bg-white bb b--light-silver`, {
+        'absolute left-0 top-0 ph6 w-100 z-1': itemEditStyle === ItemEditStyles.SIDEMENU,
+      })}
     >
-      <div
-        className={classnames(
-          `${styles['accordion-item']} bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
-        )}
-      >
-        {children}
-        <div className="mb5">
-          <Button type="button" variation="primary" onClick={onClose}>
-            {intl.formatMessage(messages.apply)}
-          </Button>
-        </div>
+      {children}
+      <div className="mb5">
+        <Button type="button" variation="primary" onClick={onClose}>
+          {intl.formatMessage(messages.apply)}
+        </Button>
       </div>
-    </CSSTransition>
+    </div>
   )
 }
 
