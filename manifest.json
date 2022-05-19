@@ -23,13 +23,11 @@
     "vtex.messages": "1.x",
     "vtex.rewriter": "1.x",
     "vtex.tenant-graphql": "0.x",
-    "vtex.admin-cms": "0.x"
+    "vtex.admin-cms": "1.x"
   },
   "mustUpdateAt": "2018-09-05",
   "categories": [],
-  "registries": [
-    "smartcheckout"
-  ],
+  "registries": ["smartcheckout"],
   "settingsSchema": {},
   "scripts": {
     "postreleasy": "vtex publish -r vtex --verbose"
