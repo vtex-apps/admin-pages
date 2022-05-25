@@ -190,6 +190,7 @@ export const useFormHandlers: UseFormHandlers = ({
       await saveContent({
         variables: {
           bindingId: iframeRuntime.binding?.id,
+          route: iframeRuntime.route,
           blockId,
           configuration: newConfiguration,
           lang: iframeRuntime.culture.locale,

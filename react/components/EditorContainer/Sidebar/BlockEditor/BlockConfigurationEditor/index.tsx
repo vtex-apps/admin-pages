@@ -184,6 +184,11 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
     statement => statement.verb === 'to'
   )
 
+  const isSubcategoryPage = !!(
+    iframeRuntime.route.pageContext?.id === 'search' &&
+    iframeRuntime.route.pageContext?.type === 'subcategory'
+  )
+
   const getStatusWarningText = () => {
     if (statusFromRuntime === ConfigurationStatus.ACTIVE) {
       return intl.formatMessage(messages.activationDisabledLabel)
@@ -214,6 +219,15 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               <FormattedMessage
                 id="admin/pages.editor.components.status.alert"
                 defaultMessage="This version of the content is not being shown in the preview and to visitors."
+              />
+            </p>
+          )}
+
+          {isSubcategoryPage && (
+            <p className="pt4 pb4 pl4 pr2 bg-warning--faded lh-copy">
+              <FormattedMessage
+                id="admin/pages.editor.components.editable.alert"
+                defaultMessage="You can’t edit this content. All content in this page is inherited from its parent level."
               />
             </p>
           )}
@@ -248,6 +262,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               popComponentFormState,
               pushComponentFormState,
             }}
+            isSubcategoryPage={isSubcategoryPage}
             formData={data}
             onChange={onChange}
             onSubmit={onSave}

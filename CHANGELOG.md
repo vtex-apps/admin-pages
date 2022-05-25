@@ -7,13 +7,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+- Disable editor changes in subcategory pages.
+
 ## [4.47.1] - 2022-05-19
 
 ### Changed
 - Upgrade the dependency `admin-cms` to 1.x.
 
 ## [4.47.0] - 2022-02-23
+
 ### Added
+
 - I18n for new settings
 
 ## [4.46.3] - 2021-12-21
