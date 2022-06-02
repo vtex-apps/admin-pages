@@ -262,7 +262,6 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
               popComponentFormState,
               pushComponentFormState,
             }}
-            isSubcategoryPage={isSubcategoryPage}
             formData={data}
             onChange={onChange}
             onSubmit={onSave}

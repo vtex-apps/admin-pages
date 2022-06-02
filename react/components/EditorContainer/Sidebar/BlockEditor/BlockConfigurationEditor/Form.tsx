@@ -27,11 +27,7 @@ export const widgets: Record<string, Widget> = {
   'image-uploader': (MediaGalleryWidget as unknown) as Widget,
 }
 
-type CustomProps = {
-  isSubcategoryPage: boolean
-}
-
-type Props = FormProps<FormDataContainer> & CustomProps
+type Props = FormProps<FormDataContainer>
 export default class Form extends React.Component<Props> {
   public shouldComponentUpdate(nextProps: Props) {
     return (
@@ -43,7 +39,6 @@ export default class Form extends React.Component<Props> {
   public render() {
     return (
       <JsonSchemaForm
-        disabled={this.props.isSubcategoryPage}
         schema={this.props.schema}
         formData={this.props.formData}
         onChange={this.props.onChange}
