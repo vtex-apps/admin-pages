@@ -227,7 +227,7 @@ const BlockConfigurationEditor: React.FunctionComponent<Props> = ({
             <p className="pt4 pb4 pl4 pr2 bg-warning--faded lh-copy">
               <FormattedMessage
                 id="admin/pages.editor.components.editable.alert"
-                defaultMessage="You can’t edit this content. All content in this page is inherited from its parent level."
+                defaultMessage="Editing this page will reflect on every subcategory page. If you want to have the content inherited from its parent(category) level, reset it."
               />
             </p>
           )}
