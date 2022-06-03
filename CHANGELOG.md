@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.47.2] - 2022-06-03
+
 ### Changed
 - Disable editor changes in subcategory pages.
 
