@@ -513,7 +513,7 @@
   "admin/store.metaTagRobots.description": "Standaardwaarde: index, volgen",
   "admin/store.faviconLinks.title": "Favicons",
   "admin/store.faviconLinks.rel.title": "Favicon-relatie",
-  "admin/store.faviconLinks.rel.description": "Deze favicon-relatie, bijv.: \\\"icon\\\", \\\"shortcut icon\\\", \\\"apple-touch-icon\\\"",
+  "admin/store.faviconLinks.rel.description": "Deze favicon-relatie, bijv.: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
   "admin/store.faviconLinks.type.title": "Favicon-mediatype",
   "admin/store.faviconLinks.type.description": "(Optioneel) Favicon-type, bijv.: image/png",
   "admin/store.faviconLinks.sizes.title": "Favicon grootte",
