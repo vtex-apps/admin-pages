@@ -1,6 +1,5 @@
 mutation saveContent(
   $bindingId: String
-  $route: JSONObject
   $blockId: String
   $configuration: ContentConfigurationInput
   $template: String
@@ -9,7 +8,6 @@ mutation saveContent(
 ) {
   saveContent(
     bindingId: $bindingId
-    route: $route
     blockId: $blockId
     configuration: $configuration
     template: $template
