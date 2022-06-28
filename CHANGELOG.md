@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Revert v4.47.1
+
 ## [4.48.0] - 2022-06-27
 
 ### Added
@@ -16,6 +20,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 
 - Bulgarian, English, Spanish, French, Italian, Japanese, Korean, Dutch, Portuguese and Romanian translations.
+
+## [4.47.2] - 2022-06-03
+
+### Changed
+
+- Disable editor changes in subcategory pages.
 
 ## [4.47.1] - 2022-05-19
 
