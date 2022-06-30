@@ -9,6 +9,7 @@ import TenantInfoQuery from './graphql/TenantInfo.graphql'
 import LocaleSelector from './LocaleSelector'
 import { QueryStateReducer, TenantInfoData } from './typings'
 import { useBinding } from './hooks/useBinding'
+import BindingCloning from './BindingCloning'
 
 interface Props {
   iframeRuntime: RenderContext
@@ -158,6 +159,15 @@ const ContextSelectors: React.FC<WithApolloClient<Props>> = ({
         isDisabled={!!editor.editTreePath}
         options={localeOptions}
       />
+      {shouldShowBindingSelector && bindings && binding && (
+        <div className="mh3">
+          <BindingCloning
+            bindings={bindings}
+            binding={binding}
+            iframeRuntime={iframeRuntime}
+          />
+        </div>
+      )}
     </>
   )
 }

@@ -566,5 +566,22 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Canonical url without url params",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical url. May cause issues when going to a page with facets selected. Test with caution after turning it on",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles"
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles",
+  "admin/pages.editor.copy-page.modal.header": "admin/pages.editor.copy-page.modal.header",
+  "admin/pages.editor.copy-page.modal.subheader": "admin/pages.editor.copy-page.modal.subheader",
+  "admin/pages.editor.copy-page.modal.error.title": "admin/pages.editor.copy-page.modal.error.title",
+  "admin/pages.editor.copy-page.modal.error.body": "admin/pages.editor.copy-page.modal.error.body",
+  "admin/pages.editor.copy-page.modal.table-header.supported-locales": "admin/pages.editor.copy-page.modal.table-header.supported-locales",
+  "admin/pages.editor.copy-page.modal.table-header.warning": "admin/pages.editor.copy-page.modal.table-header.warning",
+  "admin/pages.editor.copy-page.modal.warning.page-exists": "admin/pages.editor.copy-page.modal.warning.page-exists",
+  "admin/pages.editor.topbar.button.copy-page.tooltip": "admin/pages.editor.topbar.button.copy-page.tooltip",
+  "admin/pages.editor.components.button.go-back": "admin/pages.editor.components.button.go-back",
+  "admin/pages.editor.components.button.overwrite": "admin/pages.editor.components.button.overwrite",
+  "admin/pages.editor.copy-page.overwritedialog.header": "admin/pages.editor.copy-page.overwritedialog.header",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.singular": "admin/pages.editor.copy-page.overwritedialog.subheader.singular",
+  "admin/pages.editor.copy-page.overwritedialog.subheader.plural": "admin/pages.editor.copy-page.overwritedialog.subheader.plural",
+  "admin/pages.editor.copy-page.overwritedialog.confirmation": "admin/pages.editor.copy-page.overwritedialog.confirmation",
+  "admin/pages.editor.copy-page.modal.toast.saving": "admin/pages.editor.copy-page.modal.toast.saving",
+  "admin/pages.editor.copy-page.modal.toast.success": "admin/pages.editor.copy-page.modal.toast.success",
+  "admin/pages.editor.copy-page.modal.toast.error": "admin/pages.editor.copy-page.modal.toast.error"
 }
