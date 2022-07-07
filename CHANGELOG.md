@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.49.1] - 2022-07-07
+
 ### Added
 - New messages to reflect change in hardcoded strings in builder hub
 
