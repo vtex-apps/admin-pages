@@ -585,5 +585,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "Are you sure you want to duplicate the content to them?",
   "admin/pages.editor.copy-page.modal.toast.saving": "Saving...",
   "admin/pages.editor.copy-page.modal.toast.success": "Done!",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occourred. Please try again"
+  "admin/pages.editor.copy-page.modal.toast.error": "An error has occourred. Please try again",
+  "admin/actions.enable-binding": "Enable configuration by binding",
+  "admin/actions.binding-configurations": "Binding configurations"
 }
