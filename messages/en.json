@@ -569,6 +569,8 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remove map parameter from canonical URL. This may cause issues when going to a page with facets selected. Test with caution after turning it on.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Remove store name from title",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove store name at the end of Product and Category meta titles",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "Enable use of custom Currency Symbol",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "Uses the \"Currency Symbol\" field defined in the Trade Policy",
   "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
   "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
   "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",

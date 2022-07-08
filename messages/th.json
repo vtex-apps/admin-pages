@@ -568,5 +568,7 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL มาตรฐานที่ไม่มี URL Params",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "ลบพารามิเตอร์  Map ออกจาก URL มาตรฐาน อาจเกิดปัญหาเมื่อไปยังหน้าเพจด้วยแฟเซ็ตที่เลือก โปรดทดสอบด้วยความระมัดระวังหลังเปิดใช้",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "ลบชื่อร้านค้าออกจากคำเรียก",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "ลบชื่อร้านค้าออกจากตอนท้ายของชื่อผลิตภัณฑ์และชื่อ Meta -ของหมวดหมู่"
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "ลบชื่อร้านค้าออกจากตอนท้ายของชื่อผลิตภัณฑ์และชื่อ Meta -ของหมวดหมู่",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "เปิดใช้งานการใช้สัญลักษณ์สกุลเงินที่กำหนดเอง",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "ใช้ฟิลด์ \"สัญลักษณ์สกุลเงิน\" ที่กำหนดไว้ในนโยบายการค้า"
 }
