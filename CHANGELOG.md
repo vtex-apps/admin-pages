@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Thai and context messages to fix hardcoded strings.
+
 ## [4.49.1] - 2022-07-07
 
 ### Added
