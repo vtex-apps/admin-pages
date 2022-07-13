@@ -583,5 +583,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "admin/pages.editor.copy-page.overwritedialog.confirmation",
   "admin/pages.editor.copy-page.modal.toast.saving": "admin/pages.editor.copy-page.modal.toast.saving",
   "admin/pages.editor.copy-page.modal.toast.success": "admin/pages.editor.copy-page.modal.toast.success",
-  "admin/pages.editor.copy-page.modal.toast.error": "admin/pages.editor.copy-page.modal.toast.error"
+  "admin/pages.editor.copy-page.modal.toast.error": "admin/pages.editor.copy-page.modal.toast.error",
+  "admin/actions.enable-binding": "admin/actions.enable-binding",
+  "admin/actions.binding-configurations": "admin/actions.binding-configurations"
 }
