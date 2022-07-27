@@ -166,6 +166,7 @@
   "admin/pages.editor.component-list.title": "Versions",
   "admin/pages.editor.component-list.untitled": "Untitled Block",
   "admin/pages.editor.components.status.alert": "This version of the content is not being shown in the preview and to visitors.",
+  "admin/pages.editor.components.editable.alert": "Editing this page will reflect on every subcategory page. If you want to have the content inherited from its parent(category) level, reset it.",
   "admin/pages.editor.components.arrayTemplate.button.add": "Add",
   "admin/pages.editor.components.button.cancel": "Cancel",
   "admin/pages.editor.components.button.save": "Save",
