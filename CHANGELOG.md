@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Fix
-- Comma missing in thai message
+-  Missing comma in thai's message
 ## [4.49.4] - 2022-08-03
 ### Added
 - New messages to enableCustomCurrencySymbol feature on store settings
