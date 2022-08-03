@@ -569,5 +569,7 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "الرابط المقابل بدون روابط المعالم",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "قم بإزالة معامل الخريطة من الرابط الكانوني. قد يسبب مشكلات عند الذهاب إلى صفحة ذات جوانب محددة. اختبر بحذر بعد تشغيله",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "إزالة اسم المتجر من العنوان",
-  "admin/store.advancedSettings.removeStoreNameTitle.description": "إزالة اسم المتجر في نهاية عنوان المنتج والفئة الوصفية"
+  "admin/store.advancedSettings.removeStoreNameTitle.description": "إزالة اسم المتجر في نهاية عنوان المنتج والفئة الوصفية",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "يستخدم حقل \"رمز العملة\" المحدد في سياسة التجارة",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "يستخدم حقل 'رمز العملة' المحدد في سياسة التجارة"
 }

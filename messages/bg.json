@@ -570,6 +570,8 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Премахнете параметъра на картата от редовния URL адрес. Може да причини проблеми, когато отидете на страница с избрани аспекти. Тествайте внимателно, след като го включите",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Премахнете името на магазина от заглавието",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Премахнете името на магазина в края на мета заглавията на продукти и категории",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "Активиране на персонализиран символ за валута",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "Използва полето \"Символ за валута\", дефинирано в търговската политика",
   "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
   "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
   "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",

@@ -570,6 +570,8 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Elimină parametrul hărții din adresa URL canonică. Este posibil să cauzeze probleme atunci când accesezi o pagină cu fațete selectate. Testează cu precauție după ce îl pornești",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Elimină numele magazinului din titlu",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Elimină numele magazinului de la finalul metatitlurilor de produse și categorii",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "Activează simbolul monedei personalizate",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "Folosește câmpul \"simbol monedă\" definit în politica comercială",
   "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
   "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
   "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",

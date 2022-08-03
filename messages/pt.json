@@ -570,6 +570,8 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remova o parâmetro do mapa do URL canônico. Isso pode causar problemas ao acessar uma página com facetas selecionadas. Teste com cuidado depois de ativá-lo.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Remover o nome da loja do título",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "Remove o nome da loja do final dos metatítulos Produto e Categoria",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "Habilitar o uso de símbolo da moeda personalizado",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "Utiliza o campo \"Símbolo da moeda\" definido na política comercial",
   "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
   "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
   "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",
