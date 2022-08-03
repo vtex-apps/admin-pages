@@ -9,20 +9,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - New messages to enableCustomCurrencySymbol feature on store settings
 
+## [4.49.3] - 2022-07-27
+
+### Added
+
+- Warn about changes behavior on subcategory page.
+
+## [4.49.2] - 2022-07-13
+
+### Fixed
+
+- Thai and context messages to fix hardcoded strings.
+
 ## [4.49.1] - 2022-07-07
 
 ### Added
+
 - New messages to reflect change in hardcoded strings in builder hub
 
 ## [4.49.0] - 2022-06-30
+
 ### Added
+
 - "Duplicate to other bindings" button on the topbar.
 
 ## [4.48.1] - 2022-06-28
 
 ### Fixed
 
-- Revert v4.47.1
+- Revert v4.47.2
 
 ## [4.48.0] - 2022-06-27
 

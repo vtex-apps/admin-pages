@@ -2,7 +2,7 @@
 src
 
 .gitignore
-CHANGELOG.md
+./CHANGELOG.md
 README.md
 
 **/.DS_Store
