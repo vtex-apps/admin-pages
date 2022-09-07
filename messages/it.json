@@ -513,7 +513,7 @@
   "admin/store.metaTagRobots.description": "Valori predefiniti: index, follow",
   "admin/store.faviconLinks.title": "Favicon",
   "admin/store.faviconLinks.rel.title": "Relazione del favicon",
-  "admin/store.faviconLinks.rel.description": "Questa relazione favicon, ad esempio: \\\"icon\\\", \\\"shortcut icon\\\", \\\"apple-touch-icon\\\"",
+  "admin/store.faviconLinks.rel.description": "Questa relazione favicon, ad esempio: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
   "admin/store.faviconLinks.type.title": "Tipo di favicon",
   "admin/store.faviconLinks.type.description": "(Opzionale) Tipo di favicon, ad esempio: image/png",
   "admin/store.faviconLinks.sizes.title": "Dimensione del favicon",
