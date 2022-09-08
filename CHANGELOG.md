@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- English, Spanish, Italian and Portuguese translations.
+
 ## [4.49.5] - 2022-08-03
 ### Fix
 -  Missing comma in thai's message
