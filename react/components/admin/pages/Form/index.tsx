@@ -274,6 +274,7 @@ class FormContainer extends Component<Props, State> {
         interfaceId,
         metaTagDescription,
         metaTagKeywords,
+        metaTagRobots,
         pages,
         path,
         routeId,
@@ -292,10 +293,11 @@ class FormContainer extends Component<Props, State> {
           }
 
       const metaTags =
-        metaTagDescription || metaTagKeywords
+        metaTagDescription || metaTagKeywords || metaTagRobots
           ? {
               description: metaTagDescription,
               keywords: metaTagKeywords?.map(({ value }) => value),
+              robots: metaTagRobots
             }
           : undefined
 

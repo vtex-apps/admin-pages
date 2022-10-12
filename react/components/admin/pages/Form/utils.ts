@@ -149,6 +149,7 @@ export const formatToFormData = (route: Route): RouteFormData => {
       ['metaTags', 'keywords'],
       route
     ).map(keyword => ({ label: keyword, value: keyword })),
+    metaTagRobots: pathOr('', ['metaTags', 'robots'], route),
     pages: route.pages.map((page, index) => ({
       ...page,
       condition: {

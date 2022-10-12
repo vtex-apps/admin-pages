@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Add
+- Robots to be editable in page's form
+
 ## [4.49.7] - 2022-09-29
 
 ### Fixed

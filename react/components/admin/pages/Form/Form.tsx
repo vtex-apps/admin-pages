@@ -95,6 +95,14 @@ const messages = defineMessages({
     defaultMessage: 'Keywords',
     id: 'admin/pages.admin.pages.form.field.meta.keywords',
   },
+  seoRobots: {
+    defaultMessage: 'Robots',
+    id: 'admin/pages.admin.pages.form.field.meta.robots',
+  },
+  seoRobotsHelp: {
+    defaultMessage: 'Robots',
+    id: 'admin/store.metaTagRobots.description',
+  },
   bindingSelectorTitle: {
     defaultMessage: 'Binding',
     id: 'admin/pages.admin.pages.form.binding-selector.title',
@@ -219,6 +227,15 @@ const Form: React.FunctionComponent<Props> = ({
           />
         </>
       )}
+      <FormFieldSeparator />
+      <Input
+        disabled={!!data.context}
+        label={intl.formatMessage(messages.seoRobots)}
+        onChange={detailChangeHandlerGetter('metaTagRobots')}
+        required
+        value={data.metaTagRobots}
+        helpText={intl.formatMessage(messages.seoRobotsHelp)}
+      />
       <FormFieldSeparator />
       <SeparatorWithLine />
       <ConditionalTemplateSection
