@@ -11,6 +11,30 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Use Media Gallery Provider.
 
+## [4.49.7] - 2022-09-29
+
+### Fixed
+
+- English and Italian translations.
+
+## [4.49.6] - 2022-09-08
+
+### Fixed
+
+- English, Spanish, Italian and Portuguese translations.
+
+## [4.49.5] - 2022-08-03
+
+### Fix
+
+- Missing comma in thai's message
+
+## [4.49.4] - 2022-08-03
+
+### Added
+
+- New messages to enableCustomCurrencySymbol feature on store settings
+
 ## [4.49.3] - 2022-07-27
 
 ### Added

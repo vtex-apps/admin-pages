@@ -570,6 +570,8 @@
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "표준 URL에서 지도 매개변수를 제거합니다. 패싯이 선택된 페이지로 이동할 때 문제가 발생할 수 있습니다. 설정 후 주의해서 테스트하십시오.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "제목에서 스토어 이름 제거",
   "admin/store.advancedSettings.removeStoreNameTitle.description": "제품 및 카테고리 메타 제목 끝에 있는 스토어 이름 제거",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.title": "사용자 정의 통화 기호 사용",
+  "admin/store.advancedSettings.enableCustomCurrencySymbol.description": "거래 정책에 정의된 \"통화 기호\" 필드를 사용합니다.",
   "admin/pages.editor.copy-page.modal.header": "Clone page to other bindings",
   "admin/pages.editor.copy-page.modal.subheader": "Please choose to which bindings the content will be duplicated. If the page doesn't exist in a binding, it will be created and metadata (such as SEO information) will also be copied.",
   "admin/pages.editor.copy-page.modal.error.title": "Error fetching routes information",
