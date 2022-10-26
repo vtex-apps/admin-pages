@@ -3,10 +3,10 @@ import { ActionMenu, Spinner, IconOptionsDots } from 'vtex.styleguide'
 import MediaGallery from 'vtex.admin-cms/MediaGallery'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { JSONSchema6 } from 'json-schema'
+import { useDropzone } from 'react-dropzone'
 
 import ImagePreview from '../form/ImageUploader/ImagePreview'
 import EmptyState from '../form/ImageUploader/EmptyState'
-import { useDropzone } from 'react-dropzone'
 
 interface MediaGalleryWidgetProps {
   disabled?: boolean
@@ -17,7 +17,7 @@ interface MediaGalleryWidgetProps {
 
 const messages = defineMessages({
   remove: {
-    id: 'admin/pages.admin.redirects.form.button.remove'
+    id: 'admin/pages.admin.redirects.form.button.remove',
   },
   fileSizeError: {
     defaultMessage:
@@ -29,8 +29,7 @@ const messages = defineMessages({
     id: 'admin/pages.editor.image-uploader.error.generic',
   },
 })
-
-export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
+function Widget(props: MediaGalleryWidgetProps) {
   const intl = useIntl()
   const { onChange, value } = props
   const [isImageUploading, setIsImageUploading] = React.useState(false)
@@ -178,5 +177,13 @@ export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
         )}
       </div>
     </>
+  )
+}
+
+export default function MediaGalleryWidget(props: MediaGalleryWidgetProps) {
+  return (
+    <MediaGallery.MediaGalleryProvider>
+      <Widget {...props} />
+    </MediaGallery.MediaGalleryProvider>
   )
 }
