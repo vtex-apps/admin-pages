@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "Страници",
   "admin/pages.admin.tabs.redirects": "Пренасочвания",
   "admin/pages.editor.component-list.action-menu.delete": "Изтриване",
+  "admin/pages.editor.component-list.action-menu.activate": "Активиране",
   "admin/pages.editor.component-list.action-menu.reset": "Нулиране",
   "admin/pages.editor.component-list.action-menu.tooltip": "Тази карта в момента се редактира.",
   "admin/pages.editor.component-list.back": "Назад",

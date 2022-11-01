@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "الصفحات",
   "admin/pages.admin.tabs.redirects": "إعادات التوجيه",
   "admin/pages.editor.component-list.action-menu.delete": "حذف",
+  "admin/pages.editor.component-list.action-menu.activate": "Activate",
   "admin/pages.editor.component-list.action-menu.reset": "إعادة التعيين",
   "admin/pages.editor.component-list.action-menu.tooltip": "يتم حاليًا تحرير هذه البطاقة.",
   "admin/pages.editor.component-list.back": "عودة",

@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "admin/pages.admin.tabs.pages",
   "admin/pages.admin.tabs.redirects": "admin/pages.admin.tabs.redirects",
   "admin/pages.editor.component-list.action-menu.delete": "admin/pages.editor.component-list.action-menu.delete",
+  "admin/pages.editor.component-list.action-menu.activate": "admin/pages.editor.component-list.action-menu.activate",
   "admin/pages.editor.component-list.action-menu.reset": "admin/pages.editor.component-list.action-menu.reset",
   "admin/pages.editor.component-list.action-menu.tooltip": "admin/pages.editor.component-list.action-menu.tooltip",
   "admin/pages.editor.component-list.back": "admin/pages.editor.component-list.back",

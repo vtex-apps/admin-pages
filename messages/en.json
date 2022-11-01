@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "Pages",
   "admin/pages.admin.tabs.redirects": "Redirects",
   "admin/pages.editor.component-list.action-menu.delete": "Delete",
+  "admin/pages.editor.component-list.action-menu.activate": "Activate",
   "admin/pages.editor.component-list.action-menu.reset": "Reset",
   "admin/pages.editor.component-list.action-menu.tooltip": "This card is currently being edited.",
   "admin/pages.editor.component-list.back": "Back",

@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "Pagini",
   "admin/pages.admin.tabs.redirects": "Redirecționări",
   "admin/pages.editor.component-list.action-menu.delete": "Ștergere",
+  "admin/pages.editor.component-list.action-menu.activate": "Activează",
   "admin/pages.editor.component-list.action-menu.reset": "Resetează",
   "admin/pages.editor.component-list.action-menu.tooltip": "Acest card este în prezent editat.",
   "admin/pages.editor.component-list.back": "Înapoi",
