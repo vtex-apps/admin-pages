@@ -591,5 +591,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "Done!",
   "admin/pages.editor.copy-page.modal.toast.error": "An error occurred. Please try again",
   "admin/actions.enable-binding": "Enable configuration by binding",
-  "admin/actions.binding-configurations": "Binding Settings"
+  "admin/actions.binding-configurations": "Binding Settings",
+  "admin/actions.binding-id": "Binding ID",
+  "admin/actions.binding-description": "Enter the binding ID"
 }
