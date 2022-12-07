@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "페이지",
   "admin/pages.admin.tabs.redirects": "리디렉션",
   "admin/pages.editor.component-list.action-menu.delete": "삭제",
+  "admin/pages.editor.component-list.action-menu.activate": "활성화",
   "admin/pages.editor.component-list.action-menu.reset": "재설정",
   "admin/pages.editor.component-list.action-menu.tooltip": "이 카드는 현재 편집 중입니다.",
   "admin/pages.editor.component-list.back": "뒤로 가기",

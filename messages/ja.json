@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "ページ",
   "admin/pages.admin.tabs.redirects": "リダイレクト",
   "admin/pages.editor.component-list.action-menu.delete": "削除",
+  "admin/pages.editor.component-list.action-menu.activate": "アクティブ化",
   "admin/pages.editor.component-list.action-menu.reset": "リセットする",
   "admin/pages.editor.component-list.action-menu.tooltip": "このカードは現在編集中です。",
   "admin/pages.editor.component-list.back": "戻る",

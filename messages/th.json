@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "หน้า",
   "admin/pages.admin.tabs.redirects": "การเปลี่ยนเส้นทาง",
   "admin/pages.editor.component-list.action-menu.delete": "ลบ",
+  "admin/pages.editor.component-list.action-menu.activate": "เปิดใช้",
   "admin/pages.editor.component-list.action-menu.reset": "รีเซ็ต",
   "admin/pages.editor.component-list.action-menu.tooltip": "การ์ดนี้กำลังถูกแก้ไข",
   "admin/pages.editor.component-list.back": "กลับ",

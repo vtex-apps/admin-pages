@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "Pagina's",
   "admin/pages.admin.tabs.redirects": "Omleidingen",
   "admin/pages.editor.component-list.action-menu.delete": "Verwijderen",
+  "admin/pages.editor.component-list.action-menu.activate": "Activeer",
   "admin/pages.editor.component-list.action-menu.reset": "Reset",
   "admin/pages.editor.component-list.action-menu.tooltip": "Deze kaart wordt momenteel bewerkt.",
   "admin/pages.editor.component-list.back": "Terug",

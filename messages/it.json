@@ -157,6 +157,7 @@
   "admin/pages.admin.tabs.pages": "Pagine",
   "admin/pages.admin.tabs.redirects": "Reindirizzamenti",
   "admin/pages.editor.component-list.action-menu.delete": "Elimina",
+  "admin/pages.editor.component-list.action-menu.activate": "Attiva",
   "admin/pages.editor.component-list.action-menu.reset": "Ripristina",
   "admin/pages.editor.component-list.action-menu.tooltip": "Questa scheda è attualmente in fase di modifica.",
   "admin/pages.editor.component-list.back": "Indietro",
