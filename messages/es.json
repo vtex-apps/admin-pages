@@ -591,5 +591,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "¡Listo!",
   "admin/pages.editor.copy-page.modal.toast.error": "Se produjo un error. Por favor, vuelve a intentarlo.",
   "admin/actions.enable-binding": "Activar la configuración por vinculación",
-  "admin/actions.binding-configurations": "Configuración de vinculación"
+  "admin/actions.binding-configurations": "Configuración de vinculación",
+  "admin/actions.binding-id": "ID de vínculo",
+  "admin/actions.binding-description": "Introduce el ID de vínculo"
 }

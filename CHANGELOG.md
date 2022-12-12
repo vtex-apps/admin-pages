@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Bulgarian, French, Italian, Portuguese, Korean, Japanese, Romanian, Dutch, Spanish and Thai translations and add English messages for previously hardcoded strings rendering in other apps.
+
 ## [4.49.9] - 2022-12-07
 
 ### Fixed

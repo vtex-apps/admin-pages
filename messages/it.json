@@ -591,5 +591,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "Fatto!",
   "admin/pages.editor.copy-page.modal.toast.error": "Si è verificato un errore. Si prega di riprovare",
   "admin/actions.enable-binding": "Abilita configurazione per associazione",
-  "admin/actions.binding-configurations": "Configurazioni di associazione"
+  "admin/actions.binding-configurations": "Configurazioni di associazione",
+  "admin/actions.binding-id": "ID collegamento",
+  "admin/actions.binding-description": "Inserisci l'ID collegamento"
 }

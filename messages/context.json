@@ -589,5 +589,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "admin/pages.editor.copy-page.modal.toast.success",
   "admin/pages.editor.copy-page.modal.toast.error": "admin/pages.editor.copy-page.modal.toast.error",
   "admin/actions.enable-binding": "admin/actions.enable-binding",
-  "admin/actions.binding-configurations": "admin/actions.binding-configurations"
+  "admin/actions.binding-configurations": "admin/actions.binding-configurations",
+  "admin/actions.binding-id": "admin/actions.binding-id",
+  "admin/actions.binding-description": "admin/actions.binding-description"
 }
