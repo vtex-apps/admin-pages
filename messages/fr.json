@@ -589,7 +589,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "Êtes-vous sûr de vouloir dupliquer cette version ?",
   "admin/pages.editor.copy-page.modal.toast.saving": "Sauvegarde en cours...",
   "admin/pages.editor.copy-page.modal.toast.success": "Terminé !",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occurred. Please try again",
+  "admin/pages.editor.copy-page.modal.toast.error": "Une erreur est survenue, veuillez réessayer",
   "admin/actions.enable-binding": "Permettre la configuration par liaison",
   "admin/actions.binding-configurations": "Configurations de liaison",
   "admin/actions.binding-id": "ID de liaison",

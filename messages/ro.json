@@ -589,7 +589,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "Sigur vrei să dublezi acest conținut pentru ele?",
   "admin/pages.editor.copy-page.modal.toast.saving": "Se salvează...",
   "admin/pages.editor.copy-page.modal.toast.success": "Terminat!",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occurred. Please try again",
+  "admin/pages.editor.copy-page.modal.toast.error": "A apărut o eroare. Te rugăm să încerci din nou",
   "admin/actions.enable-binding": "Activează configurația prin legătură",
   "admin/actions.binding-configurations": "Configurații ale legăturii",
   "admin/actions.binding-id": "ID de legătură",
