@@ -589,7 +589,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "Наистина ли искате да дублирате съдържанието в тях?",
   "admin/pages.editor.copy-page.modal.toast.saving": "Запазване...",
   "admin/pages.editor.copy-page.modal.toast.success": "Готово!",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occurred. Please try again",
+  "admin/pages.editor.copy-page.modal.toast.error": "Възникна грешка. Моля, опитайте отново",
   "admin/actions.enable-binding": "Активиране на конфигурацията чрез обвързване",
   "admin/actions.binding-configurations": "Обвързващи конфигурации",
   "admin/actions.binding-id": "ID за обвързване",

@@ -589,7 +589,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "콘텐츠를 복제하시겠습니까?",
   "admin/pages.editor.copy-page.modal.toast.saving": "저장 중...",
   "admin/pages.editor.copy-page.modal.toast.success": "완료!",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occurred. Please try again",
+  "admin/pages.editor.copy-page.modal.toast.error": "오류가 발생했습니다. 다시 시도하세요",
   "admin/actions.enable-binding": "바인딩하여 구성 활성화",
   "admin/actions.binding-configurations": "바인딩 구성",
   "admin/actions.binding-id": "바인딩 ID",

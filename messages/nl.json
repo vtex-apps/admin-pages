@@ -589,7 +589,7 @@
   "admin/pages.editor.copy-page.overwritedialog.confirmation": "Weet u zeker dat u de inhoud naar hen wilt dupliceren?",
   "admin/pages.editor.copy-page.modal.toast.saving": "Opslaan...",
   "admin/pages.editor.copy-page.modal.toast.success": "Klaar!",
-  "admin/pages.editor.copy-page.modal.toast.error": "An error has occurred. Please try again",
+  "admin/pages.editor.copy-page.modal.toast.error": "Er is een fout opgetreden. Probeer het opnieuw",
   "admin/actions.enable-binding": "Configuratie inschakelen door binding",
   "admin/actions.binding-configurations": "Bindende configuraties",
   "admin/actions.binding-id": "Bindende ID",
