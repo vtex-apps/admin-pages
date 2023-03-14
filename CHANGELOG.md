@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 ### Fix
--  Displayed message at UI in redirects type
+-  Displayed message at UI in redirects type was wrong
 
 ## [4.49.5] - 2022-08-03
 ### Fix
