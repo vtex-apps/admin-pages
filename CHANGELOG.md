@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - German translation.
 
+### Fixed
+- Spanish and Thai translation.
+
 ## [4.49.12] - 2023-03-14
 ### Fix
 -  Displayed message at UI in redirects type was wrong

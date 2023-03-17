@@ -566,7 +566,7 @@
   "admin/store.twitterCard.title": "Twitter-Karte",
   "admin/store.twitterCard.description": "Bitte wählen Sie den Typ für die Twitter-Karte",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Seitenzahl im Metatitel aktivieren",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Fügen Sie eine #{Number} am Ende des Titels hinzu, um das Problem der Titelverdopplung zu vermeiden",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Fügen Sie eine #{Nummer} am Ende des Titels hinzu, um das Problem der Titelverdopplung zu vermeiden",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "Kanonische URL ohne URL-Parameter",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Entfernen Sie den map-Parameter aus der kanonischen URL. Dies kann zu Problemen führen, wenn eine Seite mit ausgewählten Facetten aufgerufen wird. Testen Sie dies mit Vorsicht, nachdem Sie die Funktion aktiviert haben.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Shopname aus Titel entfernen",

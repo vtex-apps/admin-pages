@@ -566,7 +566,7 @@
   "admin/store.twitterCard.title": "การ์ด Twitter",
   "admin/store.twitterCard.description": "โปรดเลือกประเภทสำหรับการ์ด Twitter",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "เปิดใช้งานเลขที่หน้าเพจในชื่อ Meta",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "เพิ่ม #{Number} ไปที่ตอนท้ายชื่อเพื่อไม่ให้มีปัญหาชื่อซ้ำกัน",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "เพิ่ม #{เลขที่} ไปที่ตอนท้ายชื่อเพื่อไม่ให้มีปัญหาชื่อซ้ำกัน",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL มาตรฐานที่ไม่มี URL Params",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "ลบพารามิเตอร์  Map ออกจาก URL มาตรฐาน อาจเกิดปัญหาเมื่อไปยังหน้าเพจด้วยแฟเซ็ตที่เลือก โปรดทดสอบด้วยความระมัดระวังหลังเปิดใช้",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "ลบชื่อร้านค้าออกจากคำเรียก",
