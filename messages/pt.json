@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Voltar",
   "admin/pages.admin.redirects.form.button.cancel": "Cancelar",
   "admin/pages.admin.redirects.form.button.remove": "Excluir",
+  "admin/pages.admin.redirects.form.button.replace": "Substituir",
   "admin/pages.admin.redirects.form.button.save": "Salvar",
   "admin/pages.admin.redirects.form.datePicker.title": "Data de término",
   "admin/pages.admin.redirects.form.delete.error": "Erro ao excluir redirecionamento.",

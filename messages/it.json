@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Indietro",
   "admin/pages.admin.redirects.form.button.cancel": "Annulla",
   "admin/pages.admin.redirects.form.button.remove": "Rimuovi",
+  "admin/pages.admin.redirects.form.button.replace": "Sostituire",
   "admin/pages.admin.redirects.form.button.save": "Salva",
   "admin/pages.admin.redirects.form.datePicker.title": "Data di fine",
   "admin/pages.admin.redirects.form.delete.error": "Errore: impossibile eliminare il reindirizzamento.",

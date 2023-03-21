@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Atrás",
   "admin/pages.admin.redirects.form.button.cancel": "Cancelar",
   "admin/pages.admin.redirects.form.button.remove": "Remover",
+  "admin/pages.admin.redirects.form.button.replace": "Reemplazar",
   "admin/pages.admin.redirects.form.button.save": "Guardar",
   "admin/pages.admin.redirects.form.datePicker.title": "Fecha de fin",
   "admin/pages.admin.redirects.form.delete.error": "Error al eliminar la redirección.",
