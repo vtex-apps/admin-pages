@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - German translation.
 
+### Fixed
+- Spanish and Thai translation.
+- I18n for color picker label.
+
+## [4.49.12] - 2023-03-14
+### Fix
+-  Displayed message at UI in redirects type was wrong
+
 ## [4.49.11] - 2022-12-19
 
 ### Fixed

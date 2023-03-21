@@ -567,7 +567,7 @@
   "admin/store.twitterCard.title": "Twitter card",
   "admin/store.twitterCard.description": "Por favor, elige el tipo de Twitter card",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Activar número de página en el metatítulo",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Agrega un #{Number} al final del título para evitar el problema de la duplicación de títulos",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Agrega un #{Número} al final del título para evitar el problema de la duplicación de títulos",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canónica sin parámetros de URL",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remueve el parámetro de mapa de la URL canónica. Esto puede causar problemas al acceder a una página con facetas seleccionadas. Prueba con precaución después de activarlo.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Remover el nombre de la tienda del título",
