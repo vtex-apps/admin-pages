@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - I18n for color picker label.
 - I18n issue in Media Gallery Widget component.
 
+## [4.49.13] - 2023-03-27
+### Changed
+- `apps-graphql` version
+
 ## [4.49.12] - 2023-03-14
 ### Fix
 -  Displayed message at UI in redirects type was wrong
