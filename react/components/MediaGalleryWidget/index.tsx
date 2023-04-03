@@ -19,6 +19,9 @@ const messages = defineMessages({
   remove: {
     id: 'admin/pages.admin.redirects.form.button.remove',
   },
+  replace: {
+    id: 'admin/pages.admin.redirects.form.button.replace',
+  },
   fileSizeError: {
     defaultMessage:
       'File exceeds the size limit of 4MB. Please choose a smaller one.',
@@ -57,7 +60,7 @@ function Widget(props: MediaGalleryWidgetProps) {
 
   const options: ActionMenuOption[] = [
     {
-      label: 'Replace',
+      label: intl.formatMessage(messages.replace),
       onClick: () => {
         modalState.setVisible(true)
 

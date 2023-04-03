@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- German translation.
+
+### Fixed
+- English, French, Italian, Portuguese, Spanish and Thai translation.
+- I18n for color picker label.
+- I18n issue in Media Gallery Widget component.
+
 ## [4.49.13] - 2023-03-27
 ### Changed
 - `apps-graphql` version

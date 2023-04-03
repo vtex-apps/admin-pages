@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Retour",
   "admin/pages.admin.redirects.form.button.cancel": "Annuler",
   "admin/pages.admin.redirects.form.button.remove": "Retirer",
+  "admin/pages.admin.redirects.form.button.replace": "Remplacer",
   "admin/pages.admin.redirects.form.button.save": "Sauvegarder",
   "admin/pages.admin.redirects.form.datePicker.title": "Date de fin",
   "admin/pages.admin.redirects.form.delete.error": "Erreur : la redirection n’a pas pu être supprimée.",
