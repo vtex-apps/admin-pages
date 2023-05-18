@@ -61,6 +61,7 @@
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-and": "admin/pages.admin.pages.form.templates.simple.conditions.operator-and",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-any": "admin/pages.admin.pages.form.templates.simple.conditions.operator-any",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-or": "admin/pages.admin.pages.form.templates.simple.conditions.operator-or",
+  "admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options": "admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options",
   "admin/pages.admin.pages.form.templates.title": "admin/pages.admin.pages.form.templates.title",
   "admin/pages.admin.pages.form.title.new": "admin/pages.admin.pages.form.title.new",
   "admin/pages.admin.pages.list.button.create": "admin/pages.admin.pages.list.button.create",

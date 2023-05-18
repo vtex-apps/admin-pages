@@ -61,6 +61,7 @@
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-and": "e",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-any": "qualquer uma das",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-or": "ou",
+  "admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options": "Sem opções",
   "admin/pages.admin.pages.form.templates.title": "Templates",
   "admin/pages.admin.pages.form.title.new": "Nova página",
   "admin/pages.admin.pages.list.button.create": "Criar página",
