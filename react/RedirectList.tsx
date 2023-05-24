@@ -80,10 +80,7 @@ const RedirectList: React.FC<Props> = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [
-    { paginationFrom, paginationTo },
-    setPagination,
-  ] = useState({
+  const [{ paginationFrom, paginationTo }, setPagination] = useState({
     paginationFrom: PAGINATION_START,
     paginationTo: PAGINATION_START + PAGINATION_STEP,
   })
@@ -91,6 +88,8 @@ const RedirectList: React.FC<Props> = ({
   const [alertState, setAlert] = useState<AlertState | null>(null)
 
   const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
+
+  const [redirectList, setRedirectList] = useState<Redirect[]>([])
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -219,6 +218,20 @@ const RedirectList: React.FC<Props> = ({
           const redirects = data?.redirect?.listRedirects.routes || []
           const hasRedirects = redirects.length > 0
 
+          const handleInputSearchChange = (
+            e: React.ChangeEvent<HTMLInputElement>
+          ) => {
+            const filteredRedirects = redirects.filter(item =>
+              item.from.includes(e.target.value)
+            )
+
+            const next = data?.redirect?.listRedirects.next
+            if (!filteredRedirects.length && next) {
+              refetch({ limit: REDIRECTS_LIMIT, next })
+            }
+            setRedirectList(filteredRedirects)
+          }
+
           if (error) {
             return (
               <>
@@ -276,7 +289,10 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={redirects.slice(paginationFrom, paginationTo)}
+                      items={(redirectList.length
+                        ? redirectList
+                        : redirects
+                      ).slice(paginationFrom, paginationTo)}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
@@ -286,6 +302,7 @@ const RedirectList: React.FC<Props> = ({
                       showToast={showToast}
                       openModal={openModal}
                       onHandleDownload={handleDownload}
+                      onHandleInputSearchChange={handleInputSearchChange}
                     />
                     {redirects.length > 0 && (
                       <Pagination
