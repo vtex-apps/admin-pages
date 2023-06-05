@@ -25,11 +25,12 @@ import {
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = CustomProps & WithApolloClient<TargetPathContextProps>
-
 interface CustomProps {
   hasMultipleBindings: boolean
 }
+
+type Props = CustomProps & WithApolloClient<TargetPathContextProps>
+
 interface RedirectListQueryResult {
   redirect: {
     listRedirects: {
@@ -141,7 +142,7 @@ const RedirectList: React.FC<Props> = ({
         const bindingString = hasMultipleBindings ? `${binding || ''};` : ''
         writer.write(
           textEncoder.encode(
-            `${from};${to};${type};${bindingString}${endDate || ''}\n`
+            `${from};${to};${type};${bindingString}${endDate ?? ''}\n`
           )
         )
       })
@@ -215,14 +216,14 @@ const RedirectList: React.FC<Props> = ({
         }}
       >
         {({ data, fetchMore, loading, refetch, error }) => {
-          const redirects = data?.redirect?.listRedirects.routes || []
+          const redirects = data?.redirect?.listRedirects.routes ?? []
           const hasRedirects = redirects.length > 0
 
           const handleInputSearchChange = (
             e: React.ChangeEvent<HTMLInputElement>
           ) => {
             const filteredRedirects = redirects.filter(item =>
-              item.from.includes(e.target.value)
+              item.from.toLowerCase().includes(e.target.value.toLowerCase())
             )
 
             const next = data?.redirect?.listRedirects.next
