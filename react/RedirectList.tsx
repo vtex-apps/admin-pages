@@ -25,11 +25,12 @@ import {
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = CustomProps & WithApolloClient<TargetPathContextProps>
-
 interface CustomProps {
   hasMultipleBindings: boolean
 }
+
+type Props = CustomProps & WithApolloClient<TargetPathContextProps>
+
 interface RedirectListQueryResult {
   redirect: {
     listRedirects: {
@@ -80,10 +81,7 @@ const RedirectList: React.FC<Props> = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [
-    { paginationFrom, paginationTo },
-    setPagination,
-  ] = useState({
+  const [{ paginationFrom, paginationTo }, setPagination] = useState({
     paginationFrom: PAGINATION_START,
     paginationTo: PAGINATION_START + PAGINATION_STEP,
   })
@@ -91,6 +89,8 @@ const RedirectList: React.FC<Props> = ({
   const [alertState, setAlert] = useState<AlertState | null>(null)
 
   const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
+
+  const [redirectList, setRedirectList] = useState<Redirect[]>([])
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -142,7 +142,7 @@ const RedirectList: React.FC<Props> = ({
         const bindingString = hasMultipleBindings ? `${binding || ''};` : ''
         writer.write(
           textEncoder.encode(
-            `${from};${to};${type};${bindingString}${endDate || ''}\n`
+            `${from};${to};${type};${bindingString}${endDate ?? ''}\n`
           )
         )
       })
@@ -216,8 +216,22 @@ const RedirectList: React.FC<Props> = ({
         }}
       >
         {({ data, fetchMore, loading, refetch, error }) => {
-          const redirects = data?.redirect?.listRedirects.routes || []
+          const redirects = data?.redirect?.listRedirects.routes ?? []
           const hasRedirects = redirects.length > 0
+
+          const handleInputSearchChange = (
+            e: React.ChangeEvent<HTMLInputElement>
+          ) => {
+            const filteredRedirects = redirects.filter(item =>
+              item.from.toLowerCase().includes(e.target.value.toLowerCase())
+            )
+
+            const next = data?.redirect?.listRedirects.next
+            if (!filteredRedirects.length && next) {
+              refetch({ limit: REDIRECTS_LIMIT, next })
+            }
+            setRedirectList(filteredRedirects)
+          }
 
           if (error) {
             return (
@@ -276,7 +290,10 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={redirects.slice(paginationFrom, paginationTo)}
+                      items={(redirectList.length
+                        ? redirectList
+                        : redirects
+                      ).slice(paginationFrom, paginationTo)}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
@@ -286,6 +303,7 @@ const RedirectList: React.FC<Props> = ({
                       showToast={showToast}
                       openModal={openModal}
                       onHandleDownload={handleDownload}
+                      onHandleInputSearchChange={handleInputSearchChange}
                     />
                     {redirects.length > 0 && (
                       <Pagination
