@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+
 ### Fixed
 - Fix exhibition of the end date of temporary redirects.
+
+## [4.51.0] - 2023-06-14 - 2023-06-05
+### Added
+- Redirects searcher
 
 ## [4.50.0] - 2023-04-03
 
