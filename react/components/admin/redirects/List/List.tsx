@@ -89,8 +89,8 @@ function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
       },
       ...bindingProperty,
       endDate: {
-        cellRenderer: function EndDate(cell: { cellData: CellData }) {
-          cell.cellData ? (
+        cellRenderer: function EndDate(cell: { cellData: string }) {
+          return cell.cellData ? (
             <span className="ph4">
               {getFormattedLocalizedDate(cell.cellData, locale)}
             </span>
