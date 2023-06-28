@@ -226,6 +226,13 @@ const RedirectList: React.FC<Props> = ({
               item.from.toLowerCase().includes(e.target.value.toLowerCase())
             )
 
+            if (paginationFrom > PAGINATION_START) {
+              setPagination({
+                paginationFrom: PAGINATION_START,
+                paginationTo: PAGINATION_START + PAGINATION_STEP,
+              })
+            }
+
             const next = data?.redirect?.listRedirects.next
             if (!filteredRedirects.length && next) {
               refetch({ limit: REDIRECTS_LIMIT, next })
