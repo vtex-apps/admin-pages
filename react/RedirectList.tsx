@@ -91,6 +91,7 @@ const RedirectList: React.FC<Props> = ({
   const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
 
   const [redirectList, setRedirectList] = useState<Redirect[]>([])
+  const [filtered, setFiltered] = useState<boolean>(false)
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -219,18 +220,41 @@ const RedirectList: React.FC<Props> = ({
           const redirects = data?.redirect?.listRedirects.routes ?? []
           const hasRedirects = redirects.length > 0
 
-          const handleInputSearchChange = (
-            e: React.ChangeEvent<HTMLInputElement>
+          const handleInputSearchChange = async (
+            e: React.ChangeEvent<HTMLInputElement>,
+            innerData: RedirectListQueryResult | undefined = undefined
           ) => {
-            const filteredRedirects = redirects.filter(item =>
-              item.from.toLowerCase().includes(e.target.value.toLowerCase())
-            )
+            e.persist()
 
-            const next = data?.redirect?.listRedirects.next
-            if (!filteredRedirects.length && next) {
-              refetch({ limit: REDIRECTS_LIMIT, next })
+            const term = e.target.value.toLowerCase()
+            const innerRedirects = innerData?.redirect?.listRedirects.routes
+            const filteredRedirects = (innerRedirects?.length
+              ? innerRedirects
+              : redirects
+            ).filter(item => item.from.toLowerCase().includes(term))
+
+            if (paginationFrom > PAGINATION_START) {
+              setPagination({
+                paginationFrom: PAGINATION_START,
+                paginationTo: PAGINATION_START + PAGINATION_STEP,
+              })
             }
-            setRedirectList(filteredRedirects)
+
+            const innerNext = innerData?.redirect?.listRedirects.next
+            const next = innerNext ?? data?.redirect?.listRedirects.next
+
+            if (!filteredRedirects.length && next) {
+              const { data } = await refetch({ limit: REDIRECTS_LIMIT, next })
+              handleInputSearchChange(e, data)
+            } else {
+              setRedirectList(filteredRedirects)
+            }
+
+            if (term.length) {
+              setFiltered(true)
+            } else {
+              setFiltered(false)
+            }
           }
 
           if (error) {
@@ -290,10 +314,10 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={(redirectList.length
-                        ? redirectList
-                        : redirects
-                      ).slice(paginationFrom, paginationTo)}
+                      items={(filtered ? redirectList : redirects).slice(
+                        paginationFrom,
+                        paginationTo
+                      )}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
