@@ -538,8 +538,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "Permite optimizările CSS care pot îmbunătăţi performanţa şi scorul Lighthouse. Afectează doar paginile de produse. Poate cauza inconsistenţe de stil. Testează cu atenţie după activare.",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "Permite concatenarea CSS",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "Concatenează CSS-ul unei pagini într-un singur fişier pentru o descărcare rapidă.",
-  "admin/store.advancedSettings.enablePrefetch.title": "Activează preîncărcarea",
-  "admin/store.advancedSettings.enablePrefetch.description": "Preîncarcă paginile la trecerea mouse-ului peste ele pentru o navigare mai rapidă.",
   "admin/store.advancedSettings.enableLazyRuntime.title": "Activează Lazy Runtime",
   "admin/store.advancedSettings.enableLazyRuntime.description": "Încarcă lent metadata paginilor.",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "Activează redarea lentă (lazy) a articolelor submeniului",

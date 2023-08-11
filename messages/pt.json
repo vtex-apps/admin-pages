@@ -539,8 +539,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "Permite otimizações CSS que podem melhorar o desempenho e a pontuação do Lighthouse. Afeta apenas as páginas do produto. Pode causar inconsistências de estilo, teste com cautela depois de ativá-lo.",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "Habilitar concatenação do CSS",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "Concatena o CSS de uma página em um único arquivo para download mais rápido.",
-  "admin/store.advancedSettings.enablePrefetch.title": "Habilitar pré-carregamento",
-  "admin/store.advancedSettings.enablePrefetch.description": "Pré-carrega as páginas ao passar o mouse por cima para uma navegação mais rápida.",
   "admin/store.advancedSettings.enableLazyRuntime.title": "Habilitar execução com carregamento lento",
   "admin/store.advancedSettings.enableLazyRuntime.description": "Carrega de forma lenta os metadados da página.",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "Habilitar de forma lenta os itens de submenu",

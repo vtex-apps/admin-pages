@@ -538,8 +538,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "성능과 Lighthouse 점수를 개선할 수 있는 CSS 최적화를 활성화합니다. 제품 페이지에만 영향을 미칩니다. 스타일이 일치하지 않을 수 있으므로, 전원을 켠 후 주의하여 테스트합니다.",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "CSS 연결 활성화",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "페이지의 CSS를 단일 파일에 연결하여 다운로드 속도를 높입니다.",
-  "admin/store.advancedSettings.enablePrefetch.title": "프리페치 활성화",
-  "admin/store.advancedSettings.enablePrefetch.description": "더 빠른 탐색을 위해 마우스가 위치하면 페이지를 프리페치합니다.",
   "admin/store.advancedSettings.enableLazyRuntime.title": "지연 런타임 활성화",
   "admin/store.advancedSettings.enableLazyRuntime.description": "페이지의 메타데이터를 지연 로드합니다.",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "하위 메뉴 항목의 지연 렌더링을 활성화합니다.",

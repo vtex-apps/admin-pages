@@ -539,8 +539,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "Active les optimisations CSS qui peuvent améliorer les performances et le score Lighthouse. N'affecte que les pages produits. Peut provoquer des incohérences de style, à tester avec précaution après l'avoir activé.",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "Active la concaténation CSS",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "Concatène le CSS d’une page dans un seul fichier pour un téléchargement plus rapide.",
-  "admin/store.advancedSettings.enablePrefetch.title": "Active la prérécupération",
-  "admin/store.advancedSettings.enablePrefetch.description": "Prérécupère des pages au survol de la souris pour une navigation plus rapide.",
   "admin/store.advancedSettings.enableLazyRuntime.title": "Active le Lazy Runtime (exécution tardive)",
   "admin/store.advancedSettings.enableLazyRuntime.description": "Charge tardivement les métadonnées de la page.",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "Active le rendu tardif des éléments de sous-menu",

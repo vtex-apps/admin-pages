@@ -538,8 +538,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "Schakelt CSS-optimalisaties in die de prestatie en de Lighthouse-score kunnen verbeteren. Heeft alleen invloed op de productpagina. Kan stijlinconsistenties veroorzaken, test met voorzichtigheid na het inschakelen.",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "Schakelt CSS-aaneenschakeling in",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "Voegt de CSS van een pagina samen in één bestand voor snellere download.",
-  "admin/store.advancedSettings.enablePrefetch.title": "Schakelt Prefetch in",
-  "admin/store.advancedSettings.enablePrefetch.description": "Prefetches pagina's op muisbeweging voor snellere navigatie.",
   "admin/store.advancedSettings.enableLazyRuntime.title": "Maakt langzame runtime mogelijk",
   "admin/store.advancedSettings.enableLazyRuntime.description": "Laadt langzaam de metadata van de pagina.",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "Maakt langzame rendering van submenu-items mogelijk",

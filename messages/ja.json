@@ -538,8 +538,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "パフォーマンスと Lighthouse スコアを改善する CSS 最適化を有効にします。影響を受けるのは製品ページだけです。スタイルが乱れることがあるので、オンにした後は慎重にテストしてください。",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "CSS 連結を有効にする",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "ページの CSS を連結して1つのファイルにし、早くダウンロードできるようにします。",
-  "admin/store.advancedSettings.enablePrefetch.title": "プリフェッチを有効にする",
-  "admin/store.advancedSettings.enablePrefetch.description": "ナビゲーションを早くするため、マウスオーバーでページをプリフェッチします。",
   "admin/store.advancedSettings.enableLazyRuntime.title": "遅延ランタイムを有効にする",
   "admin/store.advancedSettings.enableLazyRuntime.description": "ページのメタデータを後から読み込みます。",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "サブメニュー項目の遅延レンダリングを有効にする",

@@ -538,8 +538,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "เปิดใช้งานการออพติไมซ์ CSS ซึ่งสามารถเพิ่มความเร็วและคะแนน Lighthouse โดยจะมีผลต่อหน้าผลิตภัณฑ์เท่านั้น อาจทำให้สไตล์ไม่สม่ำเสมอ โปรดทดสอบด้วยความระมัดระวังหลังจากเปิดใช้",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "เปิดใช้งานการเรียง CSS",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "เรียง CSS ของหน้าเพจในไฟล์เดียวเพื่อการดาวน์โหลดที่เร็วขึ้น",
-  "admin/store.advancedSettings.enablePrefetch.title": "เปิดใช้งานการดึงข้อมูลล่วงหน้า",
-  "admin/store.advancedSettings.enablePrefetch.description": "ดึงข้อมูลเพจล่วงหน้าขณะโฮเวอร์เมาส์เพื่อการนำทางที่เร็วขึ้น",
   "admin/store.advancedSettings.enableLazyRuntime.title": "เปิดใช้งาน Lazy Runtime",
   "admin/store.advancedSettings.enableLazyRuntime.description": "ใช้ Lazy Load กับ Metadata ของหน้าเพจ",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "เปิดใช้งานการแสดงแบบหน่วงเวลา (Lazy) สำหรับรายการในเมนูย่อย",

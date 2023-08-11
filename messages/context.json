@@ -536,8 +536,6 @@
   "admin/store.advancedSettings.enableCriticalCSSOnProduct.description": "admin/store.advancedSettings.enableCriticalCSSOnProduct.description",
   "admin/store.advancedSettings.enableCSSConcatenation.title": "admin/store.advancedSettings.enableCSSConcatenation.title",
   "admin/store.advancedSettings.enableCSSConcatenation.description": "admin/store.advancedSettings.enableCSSConcatenation.description",
-  "admin/store.advancedSettings.enablePrefetch.title": "admin/store.advancedSettings.enablePrefetch.title",
-  "admin/store.advancedSettings.enablePrefetch.description": "admin/store.advancedSettings.enablePrefetch.description",
   "admin/store.advancedSettings.enableLazyRuntime.title": "admin/store.advancedSettings.enableLazyRuntime.title",
   "admin/store.advancedSettings.enableLazyRuntime.description": "admin/store.advancedSettings.enableLazyRuntime.description",
   "admin/store.advancedSettings.enableMenuRenderingOptimization.title": "admin/store.advancedSettings.enableMenuRenderingOptimization.title",
