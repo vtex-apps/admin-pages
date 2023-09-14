@@ -65,4 +65,9 @@ export const messages = defineMessages({
     id:
       'admin/pages.admin.pages.form.templates.simple.conditions.category-placeholder',
   },
+  emptyConditionsOptions: {
+    defaultMessage: 'No options',
+    id:
+      'admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options',
+  },
 })
