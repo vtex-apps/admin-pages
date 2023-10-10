@@ -187,6 +187,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
             disabled={submitting}
             color={{ hex: manifest.theme_color }}
             colorHistory={colorHistory}
+            label={intl.formatMessage({
+              id: 'admin/pages.admin.pages.form.templates.field.default',
+            })}
             onChange={(color: { hex: string }) => {
               setManifest({ ...manifest, ['theme_color']: color.hex })
               setColorHistory([...colorHistory, color.hex])
@@ -204,6 +207,9 @@ const PWAForm: React.FunctionComponent<Props> = ({
               disabled={submitting}
               color={{ hex: manifest.background_color }}
               colorHistory={colorHistory}
+              label={intl.formatMessage({
+                id: 'admin/pages.admin.pages.form.templates.field.default',
+              })}
               onChange={(color: { hex: string }) => {
                 setManifest({ ...manifest, ['background_color']: color.hex })
                 setColorHistory([...colorHistory, color.hex])

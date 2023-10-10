@@ -81,6 +81,7 @@
   "admin/pages.admin.redirects.form.button.back": "Back",
   "admin/pages.admin.redirects.form.button.cancel": "Cancel",
   "admin/pages.admin.redirects.form.button.remove": "Remove",
+  "admin/pages.admin.redirects.form.button.replace": "Replace",
   "admin/pages.admin.redirects.form.button.save": "Save",
   "admin/pages.admin.redirects.form.datePicker.title": "End date",
   "admin/pages.admin.redirects.form.delete.error": "Error: Redirect could not be deleted.",
@@ -158,6 +159,7 @@
   "admin/pages.admin.tabs.pages": "Pages",
   "admin/pages.admin.tabs.redirects": "Redirects",
   "admin/pages.editor.component-list.action-menu.delete": "Delete",
+  "admin/pages.editor.component-list.action-menu.activate": "Activate",
   "admin/pages.editor.component-list.action-menu.reset": "Reset",
   "admin/pages.editor.component-list.action-menu.tooltip": "This card is currently being edited.",
   "admin/pages.editor.component-list.back": "Back",
@@ -591,5 +593,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "Done!",
   "admin/pages.editor.copy-page.modal.toast.error": "An error occurred. Please try again",
   "admin/actions.enable-binding": "Enable configuration by binding",
-  "admin/actions.binding-configurations": "Binding Settings"
+  "admin/actions.binding-configurations": "Binding Settings",
+  "admin/actions.binding-id": "Binding ID",
+  "admin/actions.binding-description": "Enter the binding ID"
 }

@@ -10,21 +10,81 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Add
 - Robots to be editable in page's form
 
+## [4.51.2] - 2023-07-10
+
+## [4.51.1] - 2023-06-21
+
+
+### Fixed
+- Fix exhibition of the end date of temporary redirects.
+
+## [4.51.0] - 2023-06-14 - 2023-06-05
+### Added
+- Redirects searcher
+
+## [4.50.0] - 2023-04-03
+
+### Added
+- German translation.
+
+### Fixed
+- English, French, Italian, Portuguese, Spanish and Thai translation.
+- I18n for color picker label.
+- I18n issue in Media Gallery Widget component.
+
+## [4.49.13] - 2023-03-27
+### Changed
+- `apps-graphql` version
+
+## [4.49.12] - 2023-03-14
+### Fix
+-  Displayed message at UI in redirects type was wrong
+
+## [4.49.11] - 2022-12-19
+
+### Fixed
+
+- Bulgarian, French, Korean, Romanian, Dutch and Thai translations.
+
+## [4.49.10] - 2022-12-12
+
+### Fixed
+
+- Bulgarian, French, Italian, Portuguese, Korean, Japanese, Romanian, Dutch, Spanish and Thai translations and add English messages for previously hardcoded strings rendering in other apps.
+
+## [4.49.9] - 2022-12-07
+
+### Fixed
+- Missing messages in all languages.
+
+## [4.49.8] - 2022-11-01
+
+### Fixed
+
+- Use Media Gallery Provider.
+
 ## [4.49.7] - 2022-09-29
 
 ### Fixed
+
 - English and Italian translations.
 
 ## [4.49.6] - 2022-09-08
 
 ### Fixed
+
 - English, Spanish, Italian and Portuguese translations.
 
 ## [4.49.5] - 2022-08-03
+
 ### Fix
--  Missing comma in thai's message
+
+- Missing comma in thai's message
+
 ## [4.49.4] - 2022-08-03
+
 ### Added
+
 - New messages to enableCustomCurrencySymbol feature on store settings
 
 ## [4.49.3] - 2022-07-27

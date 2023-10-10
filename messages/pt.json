@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Voltar",
   "admin/pages.admin.redirects.form.button.cancel": "Cancelar",
   "admin/pages.admin.redirects.form.button.remove": "Excluir",
+  "admin/pages.admin.redirects.form.button.replace": "Substituir",
   "admin/pages.admin.redirects.form.button.save": "Salvar",
   "admin/pages.admin.redirects.form.datePicker.title": "Data de término",
   "admin/pages.admin.redirects.form.delete.error": "Erro ao excluir redirecionamento.",
@@ -157,6 +158,7 @@
   "admin/pages.admin.tabs.pages": "Páginas",
   "admin/pages.admin.tabs.redirects": "Redirecionamentos",
   "admin/pages.editor.component-list.action-menu.delete": "Excluir",
+  "admin/pages.editor.component-list.action-menu.activate": "Ativar",
   "admin/pages.editor.component-list.action-menu.reset": "Restaurar",
   "admin/pages.editor.component-list.action-menu.tooltip": "Este card está sendo editado agora.",
   "admin/pages.editor.component-list.back": "Voltar",
@@ -590,5 +592,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "Pronto!",
   "admin/pages.editor.copy-page.modal.toast.error": "Ocorreu um erro. Por favor, tente novamente.",
   "admin/actions.enable-binding": "Habilitar configuração por vínculo",
-  "admin/actions.binding-configurations": "Configurações de vínculos"
+  "admin/actions.binding-configurations": "Configurações de vínculos",
+  "admin/actions.binding-id": "ID de vínculo",
+  "admin/actions.binding-description": "Insira o ID de vínculo"
 }

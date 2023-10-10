@@ -19,6 +19,7 @@ interface CustomProps {
   items: Redirect[]
   loading: boolean
   onHandleDownload: () => void
+  onHandleInputSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   openModal: () => void
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
@@ -32,6 +33,11 @@ interface Schema {
   properties: object
 }
 
+enum CellData {
+  TEMPORARY = 'TEMPORARY',
+  PERMANENT = 'PERMANENT',
+}
+
 const getBindingAddress = (bindingId: string, storeBindings: Binding[]) =>
   storeBindings.find(({ id }) => id === bindingId)?.canonicalBaseAddress
 
@@ -42,7 +48,7 @@ function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
           binding: {
             title: intl.formatMessage(messages.tableBinding),
             type: 'string',
-            cellRenderer: function Binding(cell: { cellData: string }) {
+            cellRenderer: function Binding(cell: { cellData: CellData }) {
               const address = getBindingAddress(cell.cellData, storeBindings)
               return <span className="ph4">{address}</span>
             },
@@ -63,13 +69,13 @@ function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
       type: {
         title: intl.formatMessage(messages.tableType),
         type: 'string',
-        cellRenderer: function Type(cell: { cellData: string }) {
-          return cell.cellData && cell.cellData === 'temporary' ? (
+        cellRenderer: function Type(cell: { cellData: CellData }) {
+          return cell.cellData && cell.cellData === CellData.TEMPORARY ? (
             <FormattedMessage
               id="admin/pages.admin.redirects.table.type.temporary"
               defaultMessage="Temporary (302)"
             >
-              {text => <span className="ph4">{text}</span>}
+              {text => <span className="ph4 silver">{text}</span>}
             </FormattedMessage>
           ) : (
             <FormattedMessage
@@ -84,7 +90,7 @@ function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
       ...bindingProperty,
       endDate: {
         cellRenderer: function EndDate(cell: { cellData: string }) {
-          cell.cellData ? (
+          return cell.cellData ? (
             <span className="ph4">
               {getFormattedLocalizedDate(cell.cellData, locale)}
             </span>
@@ -109,6 +115,7 @@ const List: React.FC<Props> = ({
   items,
   loading,
   onHandleDownload,
+  onHandleInputSearchChange,
   openModal,
   storeBindings,
 }) => {
@@ -179,6 +186,9 @@ const List: React.FC<Props> = ({
         </div>
       }
       toolbar={{
+        inputSearch: {
+          onChange: onHandleInputSearchChange,
+        },
         density: {
           buttonLabel: intl.formatMessage(messages.lineDensityLabel),
           highOptionLabel: intl.formatMessage(messages.lineDensityHigh),

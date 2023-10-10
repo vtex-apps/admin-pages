@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Indietro",
   "admin/pages.admin.redirects.form.button.cancel": "Annulla",
   "admin/pages.admin.redirects.form.button.remove": "Rimuovi",
+  "admin/pages.admin.redirects.form.button.replace": "Sostituire",
   "admin/pages.admin.redirects.form.button.save": "Salva",
   "admin/pages.admin.redirects.form.datePicker.title": "Data di fine",
   "admin/pages.admin.redirects.form.delete.error": "Errore: impossibile eliminare il reindirizzamento.",
@@ -157,6 +158,7 @@
   "admin/pages.admin.tabs.pages": "Pagine",
   "admin/pages.admin.tabs.redirects": "Reindirizzamenti",
   "admin/pages.editor.component-list.action-menu.delete": "Elimina",
+  "admin/pages.editor.component-list.action-menu.activate": "Attiva",
   "admin/pages.editor.component-list.action-menu.reset": "Ripristina",
   "admin/pages.editor.component-list.action-menu.tooltip": "Questa scheda è attualmente in fase di modifica.",
   "admin/pages.editor.component-list.back": "Indietro",
@@ -590,5 +592,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "Fatto!",
   "admin/pages.editor.copy-page.modal.toast.error": "Si è verificato un errore. Si prega di riprovare",
   "admin/actions.enable-binding": "Abilita configurazione per associazione",
-  "admin/actions.binding-configurations": "Configurazioni di associazione"
+  "admin/actions.binding-configurations": "Configurazioni di associazione",
+  "admin/actions.binding-id": "ID collegamento",
+  "admin/actions.binding-description": "Inserisci l'ID collegamento"
 }

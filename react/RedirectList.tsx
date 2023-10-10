@@ -25,11 +25,12 @@ import {
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
 
-type Props = CustomProps & WithApolloClient<TargetPathContextProps>
-
 interface CustomProps {
   hasMultipleBindings: boolean
 }
+
+type Props = CustomProps & WithApolloClient<TargetPathContextProps>
+
 interface RedirectListQueryResult {
   redirect: {
     listRedirects: {
@@ -80,10 +81,7 @@ const RedirectList: React.FC<Props> = ({
 
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const [
-    { paginationFrom, paginationTo },
-    setPagination,
-  ] = useState({
+  const [{ paginationFrom, paginationTo }, setPagination] = useState({
     paginationFrom: PAGINATION_START,
     paginationTo: PAGINATION_START + PAGINATION_STEP,
   })
@@ -91,6 +89,9 @@ const RedirectList: React.FC<Props> = ({
   const [alertState, setAlert] = useState<AlertState | null>(null)
 
   const [isImportErrorModalOpen, setIsImportErrorModalOpen] = useState(false)
+
+  const [redirectList, setRedirectList] = useState<Redirect[]>([])
+  const [filtered, setFiltered] = useState<boolean>(false)
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -142,7 +143,7 @@ const RedirectList: React.FC<Props> = ({
         const bindingString = hasMultipleBindings ? `${binding || ''};` : ''
         writer.write(
           textEncoder.encode(
-            `${from};${to};${type};${bindingString}${endDate || ''}\n`
+            `${from};${to};${type};${bindingString}${endDate ?? ''}\n`
           )
         )
       })
@@ -216,8 +217,45 @@ const RedirectList: React.FC<Props> = ({
         }}
       >
         {({ data, fetchMore, loading, refetch, error }) => {
-          const redirects = data?.redirect?.listRedirects.routes || []
+          const redirects = data?.redirect?.listRedirects.routes ?? []
           const hasRedirects = redirects.length > 0
+
+          const handleInputSearchChange = async (
+            e: React.ChangeEvent<HTMLInputElement>,
+            innerData: RedirectListQueryResult | undefined = undefined
+          ) => {
+            e.persist()
+
+            const term = e.target.value.toLowerCase()
+            const innerRedirects = innerData?.redirect?.listRedirects.routes
+            const filteredRedirects = (innerRedirects?.length
+              ? innerRedirects
+              : redirects
+            ).filter(item => item.from.toLowerCase().includes(term))
+
+            if (paginationFrom > PAGINATION_START) {
+              setPagination({
+                paginationFrom: PAGINATION_START,
+                paginationTo: PAGINATION_START + PAGINATION_STEP,
+              })
+            }
+
+            const innerNext = innerData?.redirect?.listRedirects.next
+            const next = innerNext ?? data?.redirect?.listRedirects.next
+
+            if (!filteredRedirects.length && next) {
+              const { data } = await refetch({ limit: REDIRECTS_LIMIT, next })
+              handleInputSearchChange(e, data)
+            } else {
+              setRedirectList(filteredRedirects)
+            }
+
+            if (term.length) {
+              setFiltered(true)
+            } else {
+              setFiltered(false)
+            }
+          }
 
           if (error) {
             return (
@@ -276,7 +314,10 @@ const RedirectList: React.FC<Props> = ({
                     <List
                       loading={loading}
                       from={paginationFrom}
-                      items={redirects.slice(paginationFrom, paginationTo)}
+                      items={(filtered ? redirectList : redirects).slice(
+                        paginationFrom,
+                        paginationTo
+                      )}
                       refetch={() => {
                         refetch({
                           limit: REDIRECTS_LIMIT,
@@ -286,6 +327,7 @@ const RedirectList: React.FC<Props> = ({
                       showToast={showToast}
                       openModal={openModal}
                       onHandleDownload={handleDownload}
+                      onHandleInputSearchChange={handleInputSearchChange}
                     />
                     {redirects.length > 0 && (
                       <Pagination

@@ -3,7 +3,12 @@
     "alwaysStrict": true,
     "esModuleInterop": true,
     "jsx": "preserve",
-    "lib": ["es2019", "dom", "es2018.promise", "esnext.asynciterable"],
+    "lib": [
+      "es2019",
+      "dom",
+      "es2018.promise",
+      "esnext.asynciterable"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noImplicitAny": true,
@@ -18,7 +23,11 @@
     "strictPropertyInitialization": true,
     "target": "es2017"
   },
-  "include": ["./typings/*.d.ts", "./**/*.tsx", "./**/*.ts"],
+  "include": [
+    "./typings/*.d.ts",
+    "./**/*.tsx",
+    "./**/*.ts"
+  ],
   "typeAcquisition": {
     "enable": false
   }

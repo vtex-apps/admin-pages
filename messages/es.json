@@ -80,6 +80,7 @@
   "admin/pages.admin.redirects.form.button.back": "Atrás",
   "admin/pages.admin.redirects.form.button.cancel": "Cancelar",
   "admin/pages.admin.redirects.form.button.remove": "Remover",
+  "admin/pages.admin.redirects.form.button.replace": "Reemplazar",
   "admin/pages.admin.redirects.form.button.save": "Guardar",
   "admin/pages.admin.redirects.form.datePicker.title": "Fecha de fin",
   "admin/pages.admin.redirects.form.delete.error": "Error al eliminar la redirección.",
@@ -157,6 +158,7 @@
   "admin/pages.admin.tabs.pages": "Páginas",
   "admin/pages.admin.tabs.redirects": "Redirecciones",
   "admin/pages.editor.component-list.action-menu.delete": "Eliminar",
+  "admin/pages.editor.component-list.action-menu.activate": "Activar",
   "admin/pages.editor.component-list.action-menu.reset": "Restablecer",
   "admin/pages.editor.component-list.action-menu.tooltip": "Esta tarjeta está siendo editada.",
   "admin/pages.editor.component-list.back": "Atrás",
@@ -565,7 +567,7 @@
   "admin/store.twitterCard.title": "Twitter card",
   "admin/store.twitterCard.description": "Por favor, elige el tipo de Twitter card",
   "admin/store.advancedSettings.enablePageNumberTitle.title": "Activar número de página en el metatítulo",
-  "admin/store.advancedSettings.enablePageNumberTitle.description": "Agrega un #{Number} al final del título para evitar el problema de la duplicación de títulos",
+  "admin/store.advancedSettings.enablePageNumberTitle.description": "Agrega un #{Número} al final del título para evitar el problema de la duplicación de títulos",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.title": "URL canónica sin parámetros de URL",
   "admin/store.advancedSettings.canonicalWithoutUrlParams.description": "Remueve el parámetro de mapa de la URL canónica. Esto puede causar problemas al acceder a una página con facetas seleccionadas. Prueba con precaución después de activarlo.",
   "admin/store.advancedSettings.removeStoreNameTitle.title": "Remover el nombre de la tienda del título",
@@ -590,5 +592,7 @@
   "admin/pages.editor.copy-page.modal.toast.success": "¡Listo!",
   "admin/pages.editor.copy-page.modal.toast.error": "Se produjo un error. Por favor, vuelve a intentarlo.",
   "admin/actions.enable-binding": "Activar la configuración por vinculación",
-  "admin/actions.binding-configurations": "Configuración de vinculación"
+  "admin/actions.binding-configurations": "Configuración de vinculación",
+  "admin/actions.binding-id": "ID de vínculo",
+  "admin/actions.binding-description": "Introduce el ID de vínculo"
 }
