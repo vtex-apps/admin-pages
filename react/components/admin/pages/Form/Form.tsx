@@ -225,18 +225,16 @@ const Form: React.FunctionComponent<Props> = ({
             placeholder=""
             value={data.metaTagKeywords}
           />
+          <FormFieldSeparator />
+          <Input
+            disabled={!!data.context}
+            label={intl.formatMessage(messages.seoRobots)}
+            onChange={detailChangeHandlerGetter('metaTagRobots')}
+            value={data.metaTagRobots}
+            helpText={intl.formatMessage(messages.seoRobotsHelp)}
+          />          
         </>
-      )}
-      <FormFieldSeparator />
-      <Input
-        disabled={!!data.context}
-        label={intl.formatMessage(messages.seoRobots)}
-        onChange={detailChangeHandlerGetter('metaTagRobots')}
-        required
-        value={data.metaTagRobots}
-        helpText={intl.formatMessage(messages.seoRobotsHelp)}
-      />
-      <FormFieldSeparator />
+      )}      
       <SeparatorWithLine />
       <ConditionalTemplateSection
         intl={intl}
