@@ -97,7 +97,7 @@ const messages = defineMessages({
   },
   seoRobots: {
     defaultMessage: 'Robots',
-    id: 'admin/pages.admin.pages.form.field.meta.robots',
+    id: 'admin/store.metaTagRobots.title',
   },
   seoRobotsHelp: {
     defaultMessage: 'Robots',
