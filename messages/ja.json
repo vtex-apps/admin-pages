@@ -558,6 +558,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "ページフッターのレンダリングやそのアセットの読み込みを遅延させます。こうするとページの最初のレンダリングのパフォーマンスが改善されます。",
   "admin/store.advancedSettings.enableLazyFold.title": "ファーストビュー領域以外のアセットの遅延読み込みを有効にする",
   "admin/store.advancedSettings.enableLazyFold.description": "`__fold__` ブロックより下にあるコンポーネントの JS ファイルの遅延読み込みを有効にします。",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] 検索結果でスポンサー付き商品を取得する",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "このストアに VTEX 広告が設定されている場合、このオプションは検索結果でスポンサー付き製品を取得します。",
   "admin/pages.editor.newadmin.alert": "これはテスト環境です。オンラインストアに変更を適用するには、 ",
   "admin/pages.editor.newadmin.alert.anchor": "以前のVTEX管理者環境にアクセスしてください。",
   "admin/store.includeTwitterMetaTags.title": "Twitter メタタグを含む",

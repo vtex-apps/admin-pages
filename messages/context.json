@@ -556,6 +556,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "admin/store.advancedSettings.enableLazyFooter.description",
   "admin/store.advancedSettings.enableLazyFold.title": "admin/store.advancedSettings.enableLazyFold.title",
   "admin/store.advancedSettings.enableLazyFold.description": "admin/store.advancedSettings.enableLazyFold.description",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description",
   "admin/pages.editor.newadmin.alert": "admin/pages.editor.newadmin.alert",
   "admin/pages.editor.newadmin.alert.anchor": "admin/pages.editor.newadmin.alert.anchor",
   "admin/store.includeTwitterMetaTags.title": "admin/store.includeTwitterMetaTags.title",

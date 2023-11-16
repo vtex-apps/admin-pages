@@ -558,6 +558,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Render de voettekst van de pagina op een trage manier en laadt de assets op een trage manier, wat de prestaties van de eerste render van de pagina ten goede komt.",
   "admin/store.advancedSettings.enableLazyFold.title": "Schakel traag laden van activa onder de vouw in",
   "admin/store.advancedSettings.enableLazyFold.description": "Schakel het traag laden in van de JS bestanden van de componenten onder het `__fold__` blok in.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Haal gesponsorde producten op in de zoekresultaten",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Als deze winkel VTEX-advertenties heeft geconfigureerd, haalt deze optie gesponsorde producten op in de zoekresultaten.",
   "admin/pages.editor.newadmin.alert": "Dit is een testomgeving. Om veranderingen toe te passen op uw online winkel, ",
   "admin/pages.editor.newadmin.alert.anchor": "ga dan naar de vorige VTEX Admin.",
   "admin/store.includeTwitterMetaTags.title": "Twitter-metatags opnemen",
