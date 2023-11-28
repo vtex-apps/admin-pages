@@ -559,6 +559,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Rendu différé du pied de page et chargement différé de ses actifs, permettant d'améliorer les performances du premier rendu de la page.",
   "admin/store.advancedSettings.enableLazyFold.title": "Activez le chargement différé des ressources sous la ligne de flottaison (fold)",
   "admin/store.advancedSettings.enableLazyFold.description": "Permet le chargement différé des fichiers JS des composants situés sous le bloc `__fold__`.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Récupérez les produits sponsorisés dans les résultats de recherche.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Si ce magasin a configuré VTEX Ads, cette option récupérera les produits sponsorisés dans les résultats de recherche.",
   "admin/pages.editor.newadmin.alert": "Il s’agit d’un environnement test. Pour appliquer les modifications à votre magasin en ligne, ",
   "admin/pages.editor.newadmin.alert.anchor": "veuillez accéder à la version précédente de VTEX Admin.",
   "admin/store.includeTwitterMetaTags.title": "Inclure les balises méta Twitter",
