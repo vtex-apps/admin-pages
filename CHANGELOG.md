@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.52.0] - 2023-11-28
+
 ### Added
 
 - Translations for the `fetchSponsoredProductsOnSearch` advanced setting.
