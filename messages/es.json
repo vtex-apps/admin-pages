@@ -559,6 +559,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Renderiza de forma lenta el pie de página y la carga de sus activos, lo que ayuda a mejorar el rendimiento de la primera renderización de la página.",
   "admin/store.advancedSettings.enableLazyFold.title": "Habilitar la carga lazy de los activos en la mitad inferior de la página",
   "admin/store.advancedSettings.enableLazyFold.description": "Habilita la carga lazy de los archivos JS de los componentes del bloque debajo del border `__fold__`.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Obtenga productos patrocinados en los resultados de búsqueda.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Si esta tienda tiene configurado VTEX Ads, esta opción buscará productos patrocinados en los resultados de búsqueda.",
   "admin/pages.editor.newadmin.alert": "Este es un entorno de prueba. Para aplicar cambios a tu tienda online, ",
   "admin/pages.editor.newadmin.alert.anchor": "por favor accede al Admin VTEX anterior.",
   "admin/store.includeTwitterMetaTags.title": "Incluir meta tags de Twitter",

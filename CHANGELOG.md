@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Add
 - Robots to be editable in page's form
 
+
+## [4.52.0] - 2023-11-28
+
+### Added
+
+- Translations for the `fetchSponsoredProductsOnSearch` advanced setting.
+
+
 ## [4.51.2] - 2023-07-10
 
 ## [4.51.1] - 2023-06-21

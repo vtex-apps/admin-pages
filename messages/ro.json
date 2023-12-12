@@ -558,6 +558,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Redă în mod lent footer-ul paginii şi încarcă lent activele sale, ceea ce ajută la îmbunătăţirea performanţei la prima redare a paginii.",
   "admin/store.advancedSettings.enableLazyFold.title": "Activează încărcarea lentă (lazy) a activelor below-the-fold",
   "admin/store.advancedSettings.enableLazyFold.description": "Activează încărcarea lentă (lazy) a fişierelor JS a componentelor de sub elementul __fold__.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Preluați produse sponsorizate din rezultatele căutării",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Dacă acest magazin are reclame VTEX configurate, această opțiune va prelua produse sponsorizate în rezultatele căutării.",
   "admin/pages.editor.newadmin.alert": "Acesta este un mediu de test. Pentru a aplica modificări magazinului tău online, ",
   "admin/pages.editor.newadmin.alert.anchor": "te rugăm să accesezi versiunea anterioară a VTEX Admin.",
   "admin/store.includeTwitterMetaTags.title": "Include meta tag-uri Twitter",
