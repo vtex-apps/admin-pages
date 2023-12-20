@@ -146,6 +146,7 @@ class FormContainer extends React.PureComponent<Props, State> {
         interfaceId,
         metaTagDescription,
         metaTagKeywords,
+        metaTagRobots,
         pageContent,
         pages,
         path,
@@ -169,6 +170,7 @@ class FormContainer extends React.PureComponent<Props, State> {
                 metaTags: {
                   description: metaTagDescription,
                   keywords: (metaTagKeywords || []).map(({ value }) => value),
+                  robots: metaTagRobots
                 },
                 pages: pages.map(page => {
                   return {

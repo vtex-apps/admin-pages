@@ -13,6 +13,7 @@ mutation SaveRoute($route: NewRouteInput) {
     metaTags {
       description
       keywords
+      robots
     }
     pages {
       condition {
