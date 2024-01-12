@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Add
 - Robots to be editable in page's form
 
+### Fixed
+- Translations for Bulgarian, Spanish, French, Korean, Dutch and Thai.
+
 
 ## [4.52.0] - 2023-11-28
 

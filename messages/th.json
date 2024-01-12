@@ -511,7 +511,7 @@
   "admin/store.titleTag.title": "ค่าเริ่มต้นแท็กคำเรียก",
   "admin/store.metaTagDescription.title": "แท็กคำธิบาย Meta",
   "admin/store.metaTagRobots.title": "แท็กหุ่นยนต์ Meta",
-  "admin/store.metaTagRobots.description": "ค่าเริ่มต้น: ดัชนี, ติดตาม",
+  "admin/store.metaTagRobots.description": "ค่าเริ่มต้น: index, follow",
   "admin/store.faviconLinks.title": "Favicon",
   "admin/store.faviconLinks.rel.title": "ความสัมพันธ์ Favicon",
   "admin/store.faviconLinks.rel.description": "ความสัมพันธ์ Favicon นี้ ตย.: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",

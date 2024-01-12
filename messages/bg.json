@@ -511,7 +511,7 @@
   "admin/store.titleTag.title": "Етикет със заглавие по подразбиране",
   "admin/store.metaTagDescription.title": "Етикет с мета описание",
   "admin/store.metaTagRobots.title": "Етикет с мета роботи",
-  "admin/store.metaTagRobots.description": "Стойност по подразбиране: индекс, следва",
+  "admin/store.metaTagRobots.description": "Стойност по подразбиране: index, follow",
   "admin/store.faviconLinks.title": "Favicons",
   "admin/store.faviconLinks.rel.title": "Връзка с Favicon",
   "admin/store.faviconLinks.rel.description": "Тази връзка с favicon, напр. \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
