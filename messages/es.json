@@ -512,7 +512,7 @@
   "admin/store.titleTag.title": "Tag de título estándar",
   "admin/store.metaTagDescription.title": "Tag de meta descripción",
   "admin/store.metaTagRobots.title": "Tag de robots meta",
-  "admin/store.metaTagRobots.description": "Valor estándar: índice, seguir",
+  "admin/store.metaTagRobots.description": "Valor estándar: index, follow",
   "admin/store.faviconLinks.title": "Faviconos",
   "admin/store.faviconLinks.rel.title": "Relación del favicon",
   "admin/store.faviconLinks.rel.description": "Esta relación de favicono, por ej.: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",

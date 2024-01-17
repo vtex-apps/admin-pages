@@ -512,7 +512,7 @@
   "admin/store.titleTag.title": "Titre de balise par défaut",
   "admin/store.metaTagDescription.title": "Description de balise meta",
   "admin/store.metaTagRobots.title": "Balise meta robots",
-  "admin/store.metaTagRobots.description": "Valeur par défaut : index, suivre",
+  "admin/store.metaTagRobots.description": "Valeur par défaut : index, follow",
   "admin/store.faviconLinks.title": "Favicons",
   "admin/store.faviconLinks.rel.title": "Relation entre favicon",
   "admin/store.faviconLinks.rel.description": "Cette relation favicon, ex : \"icon\", \"shortcut icon\", \"apple-touch-icon\"",

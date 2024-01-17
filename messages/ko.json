@@ -511,7 +511,7 @@
   "admin/store.titleTag.title": "기본 제목 태그",
   "admin/store.metaTagDescription.title": "메타 설명 태그",
   "admin/store.metaTagRobots.title": "메타 로봇 태그",
-  "admin/store.metaTagRobots.description": "기본값: 인덱스, 팔로우",
+  "admin/store.metaTagRobots.description": "기본값: index, follow",
   "admin/store.faviconLinks.title": "파비콘",
   "admin/store.faviconLinks.rel.title": "파비콘 관계",
   "admin/store.faviconLinks.rel.description": "이 파비콘 관계, 예: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",

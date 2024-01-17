@@ -511,7 +511,7 @@
   "admin/store.titleTag.title": "Standaard titeltag",
   "admin/store.metaTagDescription.title": "Meta omschrijvingtag",
   "admin/store.metaTagRobots.title": "Meta robots-tag",
-  "admin/store.metaTagRobots.description": "Standaardwaarde: index, volgen",
+  "admin/store.metaTagRobots.description": "Standaardwaarde: index, follow",
   "admin/store.faviconLinks.title": "Favicons",
   "admin/store.faviconLinks.rel.title": "Favicon-relatie",
   "admin/store.faviconLinks.rel.description": "Deze favicon-relatie, bijv.: \"icon\", \"shortcut icon\", \"apple-touch-icon\"",
