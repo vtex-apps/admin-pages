@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Not allow user to change the path of existing route
+
 ## [4.53.1] - 2024-01-17
 
 ## [4.53.0] - 2023-12-20
