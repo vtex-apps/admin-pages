@@ -111,5 +111,5 @@
     "vtex.styles-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.styles-graphql@1.18.0/public/@types/vtex.styles-graphql",
     "vtex.tenant-graphql": "http://vtex.vtexassets.com/_v/public/typings/v1/vtex.tenant-graphql@0.1.2/public/@types/vtex.tenant-graphql"
   },
-  "version": "4.54.0"
+  "version": "4.54.1"
 }
