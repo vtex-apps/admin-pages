@@ -1,4 +1,5 @@
 import {
+  List,
   filter,
   has,
   keys,
@@ -8,61 +9,61 @@ import {
   pick,
   pickBy,
   reduce,
-} from 'ramda'
-import React, { Component, Fragment } from 'react'
-import { compose, graphql } from 'react-apollo'
-import { injectIntl } from 'react-intl'
-import { RenderComponent } from 'render'
-import { IconArrowBack, Spinner } from 'vtex.styleguide'
+} from "ramda";
+import React, { Component, Fragment } from "react";
+import { compose, graphql } from "react-apollo";
+import { injectIntl } from "react-intl";
+import { RenderComponent } from "render";
+import { IconArrowBack, Spinner } from "vtex.styleguide";
 
-import AvailableComponents from '../../queries/AvailableComponents.graphql'
-import DeleteConfiguration from '../../queries/DeleteConfiguration.graphql'
-import ExtensionConfigurations from '../../queries/ExtensionConfigurations.graphql'
-import SaveExtension from '../../queries/SaveExtension.graphql'
-import { getIframeImplementation } from '../../utils/components'
-import ConditionsSelector from '../ConditionsSelector'
-import Modal from '../Modal'
-import ModeSwitcher from '../ModeSwitcher'
+import AvailableComponents from "../../queries/AvailableComponents.graphql";
+import DeleteConfiguration from "../../queries/DeleteConfiguration.graphql";
+import ExtensionConfigurations from "../../queries/ExtensionConfigurations.graphql";
+import SaveExtension from "../../queries/SaveExtension.graphql";
+import { getIframeImplementation } from "../../utils/components";
+import ConditionsSelector from "../ConditionsSelector";
+import Modal from "../Modal";
+import ModeSwitcher from "../ModeSwitcher";
 
-import ConfigurationsList from './ConfigurationsList'
-import Form from './Form'
-import LabelEditor from './LabelEditor'
-import SaveButton from './SaveButton'
+import ConfigurationsList from "./ConfigurationsList";
+import Form from "./Form";
+import LabelEditor from "./LabelEditor";
+import SaveButton from "./SaveButton";
 
-const NEW_CONFIGURATION_ID = 'new'
+const NEW_CONFIGURATION_ID = "new";
 
 const defaultUiSchema = {
-  classNames: 'editor-form',
-}
+  classNames: "editor-form",
+};
 
-const MODES: ComponentEditorMode[] = ['content', 'layout']
+const MODES: ComponentEditorMode[] = ["content", "layout"];
 
 interface ExtensionConfigurationsQuery {
-  error: object
-  extensionConfigurations: ExtensionConfiguration[]
-  loading: boolean
-  refetch: (variables?: object) => void
+  error: object;
+  extensionConfigurations: ExtensionConfiguration[];
+  loading: boolean;
+  refetch: (variables?: object) => void;
 }
 
 interface ComponentEditorProps extends RenderContextProps, EditorContextProps {
-  availableComponents: any
-  deleteConfiguration: any
-  extensionConfigurations: ExtensionConfigurationsQuery
-  intl: ReactIntl.InjectedIntl
-  saveExtension: any
+  availableComponents: any;
+  deleteConfiguration: any;
+  extensionConfigurations: ExtensionConfigurationsQuery;
+  intl: ReactIntl.InjectedIntl;
+  saveExtension: any;
 }
 
 interface ComponentEditorState {
-  conditions: string[]
-  configuration?: AdaptedExtensionConfiguration
-  isDeleteModalOpen: boolean
-  isEditMode: boolean
-  isLoading: boolean
-  isModalOpen: boolean
-  mode: ComponentEditorMode
-  newLabel?: string
-  wasModified: boolean
-  deletedConfigurationId: string
+  conditions: string[];
+  configuration?: AdaptedExtensionConfiguration;
+  isDeleteModalOpen: boolean;
+  isEditMode: boolean;
+  isLoading: boolean;
+  isModalOpen: boolean;
+  mode: ComponentEditorMode;
+  newLabel?: string;
+  wasModified: boolean;
+  deletedConfigurationId: string;
 }
 
 class ComponentEditor extends Component<
@@ -70,44 +71,44 @@ class ComponentEditor extends Component<
   ComponentEditorState
 > {
   // tslint:disable-next-line
-  private _isMounted: boolean = false
+  private _isMounted: boolean = false;
 
   constructor(props: ComponentEditorProps) {
-    super(props)
+    super(props);
 
     this.state = {
       conditions: [],
-      deletedConfigurationId: '',
+      deletedConfigurationId: "",
       isDeleteModalOpen: false,
       isEditMode: false,
       isLoading: false,
       isModalOpen: false,
-      mode: 'content',
+      mode: "content",
       wasModified: false,
-    }
+    };
   }
 
   public componentDidMount() {
-    this._isMounted = true
+    this._isMounted = true;
 
-    this.handleConfigurationDefaultState()
+    this.handleConfigurationDefaultState();
   }
 
   public componentDidUpdate() {
-    this.handleConfigurationDefaultState()
+    this.handleConfigurationDefaultState();
   }
 
   public componentWillUnmount() {
-    this._isMounted = false
+    this._isMounted = false;
   }
 
   public getSchemaProps = (
     component: RenderComponent<any, any> | null,
     props: any,
-    runtime: RenderContext,
+    runtime: RenderContext
   ) => {
     if (!component) {
-      return null
+      return null;
     }
 
     /**
@@ -122,18 +123,21 @@ class ComponentEditor extends Component<
         (nextProps, key: string) =>
           merge(nextProps, {
             [key]:
-              properties[key].type === 'object'
+              properties[key].type === "object"
                 ? getPropsFromSchema(properties[key].properties, prevProps[key])
                 : prevProps[key],
           }),
         {},
-        filter(v => prevProps[v] !== undefined, keys(properties)),
-      )
+        filter(
+          (v) => prevProps[v] !== undefined,
+          keys(properties) as List<string>
+        )
+      );
 
-    const componentSchema = this.getComponentSchema(component, props, runtime)
+    const componentSchema = this.getComponentSchema(component, props, runtime);
 
-    return getPropsFromSchema(componentSchema.properties, props)
-  }
+    return getPropsFromSchema(componentSchema.properties, props);
+  };
 
   /**
    * It receives a component implementation and decide which type of schema
@@ -146,15 +150,15 @@ class ComponentEditor extends Component<
   public getComponentSchema = (
     component: RenderComponent<any, any> | null,
     props: any,
-    runtime: RenderContext,
+    runtime: RenderContext
   ): ComponentSchema => {
     const componentSchema: ComponentSchema = (component &&
       (component.schema ||
         (component.getSchema &&
           component.getSchema(props, { routes: runtime.pages })))) || {
       properties: {},
-      type: 'object',
-    }
+      type: "object",
+    };
 
     /**
      * Traverse the schema properties searching for the title, description and enum
@@ -163,36 +167,36 @@ class ComponentEditor extends Component<
      * @param {object} schema Schema to be translated
      * @return {object} Schema with title, description and enumNames properties translated
      */
-    const traverseAndTranslate: (
-      schema: ComponentSchema,
-    ) => ComponentSchema = schema => {
+    const traverseAndTranslate: (schema: ComponentSchema) => ComponentSchema = (
+      schema
+    ) => {
       const translate: (
-        value: string | { id: string; values?: { [key: string]: string } },
-      ) => string = value =>
-        typeof value === 'string'
+        value: string | { id: string; values?: { [key: string]: string } }
+      ) => string = (value) =>
+        typeof value === "string"
           ? this.props.intl.formatMessage({ id: value })
-          : this.props.intl.formatMessage({ id: value.id }, value.values || {})
+          : this.props.intl.formatMessage({ id: value.id }, value.values || {});
 
       const translatedSchema: ComponentSchema = map(
         (value: any): any =>
           Array.isArray(value) ? map(translate, value) : translate(value),
-        pick(['title', 'description', 'enumNames'], schema) as object,
-      )
+        pick(["title", "description", "enumNames"], schema) as object
+      );
 
-      if (has('widget', schema)) {
+      if (has("widget", schema)) {
         translatedSchema.widget = merge(
           schema.widget,
           map(
             translate,
             pick(
-              ['ui:help', 'ui:title', 'ui:description', 'ui:placeholder'],
-              schema.widget,
-            ),
-          ),
-        )
+              ["ui:help", "ui:title", "ui:description", "ui:placeholder"],
+              schema.widget
+            )
+          )
+        );
       }
 
-      if (schema.type === 'object') {
+      if (schema.type === "object") {
         translatedSchema.properties = reduce(
           (properties, key) =>
             merge(properties, {
@@ -200,32 +204,32 @@ class ComponentEditor extends Component<
               [key]: traverseAndTranslate(schema.properties[key]),
             }),
           {},
-          keys(schema.properties),
-        )
+          keys(schema.properties)
+        );
       }
 
-      if (schema.type === 'array') {
-        translatedSchema.items = traverseAndTranslate(schema.items)
+      if (schema.type === "array") {
+        translatedSchema.items = traverseAndTranslate(schema.items);
 
         if (!schema.minItems || schema.minItems < 1) {
-          translatedSchema.minItems = 1
+          translatedSchema.minItems = 1;
         }
 
         translatedSchema.items.properties = {
           __editorItemTitle: {
             default: translatedSchema.items.title,
-            title: 'Item title',
-            type: 'string',
+            title: "Item title",
+            type: "string",
           },
           ...translatedSchema.items.properties,
-        }
+        };
       }
 
-      return merge(schema, translatedSchema)
-    }
+      return merge(schema, translatedSchema);
+    };
 
-    return traverseAndTranslate(componentSchema)
-  }
+    return traverseAndTranslate(componentSchema);
+  };
 
   /**
    * Generates an `UiSchema` following the `Component Schema` definition of `widgets`.
@@ -238,7 +242,7 @@ class ComponentEditor extends Component<
    */
   public getUiSchema = (
     componentUiSchema: UISchema,
-    componentSchema: ComponentSchema,
+    componentSchema: ComponentSchema
   ): UISchema => {
     /**
      * It goes deep into the schema tree to find widget definitions, generating
@@ -258,69 +262,75 @@ class ComponentEditor extends Component<
      */
     const getDeepUiSchema = (properties: any): UISchema => {
       const deepProperties = pickBy(
-        property => has('properties', property),
-        properties,
-      )
+        (property) => has("properties", property),
+        properties
+      );
       const itemsProperties = pickBy(
-        property => has('properties', property),
-        properties.items,
-      )
+        (property) => has("properties", property),
+        properties.items
+      );
 
       return {
         ...map(
           (value: ComponentSchema) => value.widget,
-          pickBy(property => has('widget', property), properties),
+          pickBy((property) => has("widget", property), properties)
         ),
         ...(deepProperties &&
           map(
-            property => getDeepUiSchema(property.properties),
-            deepProperties,
+            (property) => getDeepUiSchema(property.properties),
+            deepProperties
           )),
         ...(itemsProperties &&
-          map(item => getDeepUiSchema(item), itemsProperties)),
-      }
-    }
+          map((item) => getDeepUiSchema(item), itemsProperties)),
+      };
+    };
 
     const uiSchema = {
-      ...map(value => value.widget, pickBy(
-        property => has('widget', property),
-        componentSchema.properties as ComponentSchemaProperties,
-      ) as { widget: any }),
-      ...map(property => getDeepUiSchema(property.properties), pickBy(
-        property => has('properties', property),
-        componentSchema.properties as ComponentSchemaProperties,
-      ) as ComponentSchemaProperties),
       ...map(
-        property => getDeepUiSchema(property),
+        (value) => value.widget,
         pickBy(
-          property => has('items', property),
-          componentSchema.properties as ComponentSchemaProperties,
-        ),
+          (property) => has("widget", property),
+          componentSchema.properties as ComponentSchemaProperties
+        ) as { widget: any }
       ),
-    }
-    return mergeDeepLeft(uiSchema, componentUiSchema || {})
-  }
+      ...map(
+        (property) => getDeepUiSchema(property.properties),
+        pickBy(
+          (property) => has("properties", property),
+          componentSchema.properties as ComponentSchemaProperties
+        ) as ComponentSchemaProperties
+      ),
+      ...map(
+        (property) => getDeepUiSchema(property),
+        pickBy(
+          (property) => has("items", property),
+          componentSchema.properties as ComponentSchemaProperties
+        )
+      ),
+    };
+    return mergeDeepLeft(uiSchema, componentUiSchema || {});
+  };
 
   public render() {
-    const { intl } = this.props
+    const { intl } = this.props;
 
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
+    const extensionConfigurationsQuery = this.props.extensionConfigurations;
 
-    const { component, props } = this.getExtension()
-    const componentImplementation = getIframeImplementation(component)
+    const { component, props } = this.getExtension();
+    const componentImplementation = getIframeImplementation(component);
 
-    const selectedComponent = component || null
+    const selectedComponent = component || null;
 
     const componentSchema = this.getComponentSchema(
       componentImplementation,
       props,
-      this.props.runtime,
-    )
+      this.props.runtime
+    );
 
     const componentUiSchema =
       componentImplementation && componentImplementation.uiSchema
         ? componentImplementation.uiSchema
-        : null
+        : null;
 
     const schema = {
       ...componentSchema,
@@ -328,23 +338,23 @@ class ComponentEditor extends Component<
         ...componentSchema.properties,
       },
       title: undefined,
-    }
+    };
 
     const uiSchema = {
       ...defaultUiSchema,
       ...this.getUiSchema(componentUiSchema, componentSchema),
-    }
+    };
 
     const extensionProps = {
       component: selectedComponent,
       ...props,
-    }
+    };
 
     const shouldRenderSaveButton =
       this.state.isEditMode &&
       (this.state.wasModified ||
         (this.state.configuration &&
-          this.state.configuration.configurationId === NEW_CONFIGURATION_ID))
+          this.state.configuration.configurationId === NEW_CONFIGURATION_ID));
 
     return (
       <div className="w-100 dark-gray">
@@ -365,27 +375,27 @@ class ComponentEditor extends Component<
           textButtonAction={
             this.state.isDeleteModalOpen
               ? intl.formatMessage({
-                  id: 'pages.editor.components.button.delete',
+                  id: "pages.editor.components.button.delete",
                 })
               : intl.formatMessage({
-                  id: 'pages.editor.components.button.save',
+                  id: "pages.editor.components.button.save",
                 })
           }
           textButtonCancel={
             this.state.isDeleteModalOpen
               ? intl.formatMessage({
-                  id: 'pages.editor.components.button.cancel',
+                  id: "pages.editor.components.button.cancel",
                 })
               : intl.formatMessage({
-                  id: 'pages.editor.components.button.discard',
+                  id: "pages.editor.components.button.discard",
                 })
           }
           textMessage={
             this.state.isDeleteModalOpen
               ? intl.formatMessage({
-                  id: 'pages.editor.components.modal.deleteText',
+                  id: "pages.editor.components.modal.deleteText",
                 })
-              : intl.formatMessage({ id: 'pages.editor.components.modal.text' })
+              : intl.formatMessage({ id: "pages.editor.components.modal.text" })
           }
         />
 
@@ -429,13 +439,13 @@ class ComponentEditor extends Component<
           <ConfigurationsList
             activeConfiguration={this.state.configuration}
             configurations={extensionConfigurationsQuery.extensionConfigurations.map(
-              configuration => ({
+              (configuration) => ({
                 ...configuration,
                 scope: this.getEncodedScope(
                   configuration.scope,
-                  configuration.routeId,
+                  configuration.routeId
                 ),
-              }),
+              })
             )}
             isDisabledChecker={this.isConfigurationDisabled}
             onCreate={this.handleConfigurationCreation}
@@ -448,57 +458,60 @@ class ComponentEditor extends Component<
           this.renderConfigurationEditor(schema, uiSchema, extensionProps)
         )}
       </div>
-    )
+    );
   }
 
   private getDecodedRouteId = (scope: ConfigurationScope, routeId: string) =>
-    scope === 'site' ? 'store' : routeId
+    scope === "site" ? "store" : routeId;
 
   private getDecodedScope = (scope: ConfigurationScope) =>
-    scope === 'site' ? 'route' : scope
+    scope === "site" ? "route" : scope;
 
   private getEncodedScope = (
     scope: ServerConfigurationScope | ConfigurationScope,
-    routeId: string,
-  ) => (scope === 'route' && routeId === 'store' ? 'site' : scope)
+    routeId: string
+  ) => (scope === "route" && routeId === "store" ? "site" : scope);
 
   private getDefaultConfiguration = (): ExtensionConfiguration => {
     const {
       runtime,
       editor: { iframeWindow },
-    } = this.props
+    } = this.props;
 
     return {
       allMatches: true,
       conditions: [],
       configurationId: NEW_CONFIGURATION_ID,
       device: runtime.device,
-      propsJSON: '{}',
+      propsJSON: "{}",
       routeId: runtime.page,
-      scope: 'route',
+      scope: "route",
       url: iframeWindow.location.pathname,
-    }
-  }
+    };
+  };
 
   private getExtension = (): Extension => {
     const {
       editor: { editTreePath },
       runtime: { extensions },
-    } = this.props
-    const { component = null, configurationsIds = [], props = {} } =
-      extensions[editTreePath as string] || {}
+    } = this.props;
+    const {
+      component = null,
+      configurationsIds = [],
+      props = {},
+    } = extensions[editTreePath as string] || {};
 
-    return { component, configurationsIds, props: props || {} }
-  }
+    return { component, configurationsIds, props: props || {} };
+  };
 
   private handleConditionsChange = (newConditions: string[]) => {
-    this.setState({ conditions: newConditions, wasModified: true })
-  }
+    this.setState({ conditions: newConditions, wasModified: true });
+  };
 
   private handleConfigurationChange = (
-    newConfiguration: ExtensionConfiguration,
+    newConfiguration: ExtensionConfiguration
   ) => {
-    const { editor, runtime } = this.props
+    const { editor, runtime } = this.props;
 
     this.setState(
       {
@@ -507,7 +520,7 @@ class ComponentEditor extends Component<
           ...newConfiguration,
           scope: this.getEncodedScope(
             newConfiguration.scope,
-            newConfiguration.routeId,
+            newConfiguration.routeId
           ),
         },
       },
@@ -515,39 +528,40 @@ class ComponentEditor extends Component<
         runtime.updateExtension(editor.editTreePath!, {
           component: this.getExtension().component,
           props: JSON.parse(newConfiguration.propsJSON),
-        })
-      },
-    )
-  }
+        });
+      }
+    );
+  };
 
   private handleConfigurationClose = () => {
-    const { extensionConfigurations: extensionConfigurationsQuery } = this.props
+    const { extensionConfigurations: extensionConfigurationsQuery } =
+      this.props;
 
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
+    const configurations = extensionConfigurationsQuery.extensionConfigurations;
 
     if (this.state.wasModified) {
-      this.handleModalOpen()
+      this.handleModalOpen();
     } else {
       this.setState({ isEditMode: false, newLabel: undefined }, () => {
         if (
           configurations.length > 0 &&
           !this.isConfigurationDisabled(configurations[0])
         ) {
-          this.handleConfigurationChange(configurations[0])
+          this.handleConfigurationChange(configurations[0]);
         } else {
-          this.handleQuit()
+          this.handleQuit();
         }
-      })
+      });
     }
-  }
+  };
 
   private handleConfigurationCreation = () => {
-    this.handleConfigurationOpen(this.getDefaultConfiguration())
-  }
+    this.handleConfigurationOpen(this.getDefaultConfiguration());
+  };
 
   private handleConfigurationDefaultState = () => {
-    const extensionConfigurationsQuery = this.props.extensionConfigurations
-    const configurations = extensionConfigurationsQuery.extensionConfigurations
+    const extensionConfigurationsQuery = this.props.extensionConfigurations;
+    const configurations = extensionConfigurationsQuery.extensionConfigurations;
     if (
       !this.state.configuration &&
       !extensionConfigurationsQuery.loading &&
@@ -558,32 +572,32 @@ class ComponentEditor extends Component<
         configurations.length > 0 &&
         !this.isConfigurationDisabled(configurations[0])
       ) {
-        this.handleConfigurationChange(configurations[0])
+        this.handleConfigurationChange(configurations[0]);
       } else {
-        this.handleConfigurationCreation()
+        this.handleConfigurationCreation();
       }
     }
-  }
+  };
 
   private handleConfigurationDiscard = () => {
     this.setState({ wasModified: false }, () => {
-      this.handleModalResolution()
-    })
-  }
+      this.handleModalResolution();
+    });
+  };
 
   private handleConfigurationLabelChange = (event: Event) => {
     if (event.target instanceof HTMLInputElement) {
-      this.setState({ newLabel: event.target.value, wasModified: true })
+      this.setState({ newLabel: event.target.value, wasModified: true });
     }
-  }
+  };
 
   private handleConfigurationDelete = async () => {
-    const configurationId = this.state.deletedConfigurationId
-    const { deleteConfiguration, editor, runtime } = this.props
+    const configurationId = this.state.deletedConfigurationId;
+    const { deleteConfiguration, editor, runtime } = this.props;
 
     this.setState({
       isLoading: true,
-    })
+    });
 
     try {
       await deleteConfiguration({
@@ -592,58 +606,58 @@ class ComponentEditor extends Component<
           routeId: runtime.page,
           treePath: editor.editTreePath,
         },
-      })
+      });
 
-      const extensionConfigurationsQuery = this.props.extensionConfigurations
+      const extensionConfigurationsQuery = this.props.extensionConfigurations;
 
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
           runtime.extensions[editor.editTreePath as string].configurationsIds,
         treePath: editor.editTreePath,
-      })
+      });
 
       this.setState(
         {
           isLoading: false,
         },
         () => {
-          this.handleModalClose()
-        },
-      )
+          this.handleModalClose();
+        }
+      );
 
-      this.setState({ isDeleteModalOpen: false })
+      this.setState({ isDeleteModalOpen: false });
       if (
         this.props.extensionConfigurations.extensionConfigurations.length === 0
       ) {
-        this.setState({ isEditMode: true })
+        this.setState({ isEditMode: true });
       } else {
         this.handleConfigurationChange(
-          this.props.extensionConfigurations.extensionConfigurations[0],
-        )
+          this.props.extensionConfigurations.extensionConfigurations[0]
+        );
       }
 
-      runtime.updateRuntime()
+      runtime.updateRuntime();
     } catch (err) {
-      alert('Something went wrong. Please try again.')
+      alert("Something went wrong. Please try again.");
       this.setState({
         isLoading: false,
-      })
-      console.log(err)
+      });
+      console.log(err);
     }
-  }
+  };
 
   private handleConfigurationOpen = (configuration: ExtensionConfiguration) => {
-    const { configuration: currConfiguration } = this.state
+    const { configuration: currConfiguration } = this.state;
 
     if (
       !currConfiguration ||
       currConfiguration.configurationId !== configuration.configurationId
     ) {
-      this.handleConfigurationChange(configuration)
+      this.handleConfigurationChange(configuration);
     }
 
-    this.setState({ isEditMode: true })
-  }
+    this.setState({ isEditMode: true });
+  };
 
   private handleConfigurationSave = async () => {
     const {
@@ -651,30 +665,30 @@ class ComponentEditor extends Component<
       editor: { iframeWindow },
       runtime,
       saveExtension,
-    } = this.props
-    const { conditions, configuration } = this.state
+    } = this.props;
+    const { conditions, configuration } = this.state;
 
-    const { allMatches, device } = configuration!
+    const { allMatches, device } = configuration!;
 
     const configurationId =
       configuration!.configurationId === NEW_CONFIGURATION_ID
         ? undefined
-        : configuration!.configurationId
+        : configuration!.configurationId;
 
-    const { component, props = {} } = this.getExtension()
+    const { component, props = {} } = this.getExtension();
 
     const componentImplementation = component
       ? getIframeImplementation(component)
-      : null
+      : null;
     const pickedProps = this.getSchemaProps(
       componentImplementation,
       props,
-      runtime,
-    )
+      runtime
+    );
 
     this.setState({
       isLoading: true,
-    })
+    });
 
     try {
       await saveExtension({
@@ -693,9 +707,9 @@ class ComponentEditor extends Component<
           routeId: this.getDecodedRouteId(configuration!.scope, runtime.page),
           scope: this.getDecodedScope(configuration!.scope),
         },
-      })
+      });
 
-      const extensionConfigurationsQuery = this.props.extensionConfigurations
+      const extensionConfigurationsQuery = this.props.extensionConfigurations;
 
       await extensionConfigurationsQuery.refetch({
         configurationsIds:
@@ -703,7 +717,7 @@ class ComponentEditor extends Component<
         routeId: runtime.page,
         treePath: editor.editTreePath,
         url: iframeWindow.location.pathname,
-      })
+      });
 
       this.setState(
         {
@@ -712,12 +726,12 @@ class ComponentEditor extends Component<
         },
         () => {
           if (this.state.isModalOpen) {
-            this.handleModalResolution()
+            this.handleModalResolution();
           } else {
-            this.handleConfigurationClose()
+            this.handleConfigurationClose();
           }
-        },
-      )
+        }
+      );
     } catch (err) {
       this.setState(
         {
@@ -725,44 +739,44 @@ class ComponentEditor extends Component<
         },
         () => {
           if (this.state.isModalOpen) {
-            this.handleModalClose()
+            this.handleModalClose();
           }
 
-          alert('Something went wrong. Please try again.')
+          alert("Something went wrong. Please try again.");
 
-          console.log(err)
-        },
-      )
+          console.log(err);
+        }
+      );
     }
-  }
+  };
 
   private handleConfigurationSelection = (
-    newConfiguration: ExtensionConfiguration,
+    newConfiguration: ExtensionConfiguration
   ) => {
-    const { configuration: currConfiguration } = this.state
+    const { configuration: currConfiguration } = this.state;
 
     if (
       !currConfiguration ||
       newConfiguration.configurationId !== currConfiguration.configurationId
     ) {
-      this.handleConfigurationChange(newConfiguration)
+      this.handleConfigurationChange(newConfiguration);
     }
-  }
+  };
 
   private handleFormChange = (event: any) => {
     const {
       runtime: { updateExtension, updateComponentAssets },
       runtime,
       editor: { editTreePath },
-    } = this.props
-    const { component: enumComponent } = event.formData
+    } = this.props;
+    const { component: enumComponent } = event.formData;
     const component =
-      enumComponent && enumComponent !== '' ? enumComponent : null
+      enumComponent && enumComponent !== "" ? enumComponent : null;
     const componentImplementation =
-      component && getIframeImplementation(component)
+      component && getIframeImplementation(component);
 
     if (!this.state.wasModified) {
-      this.setState({ wasModified: true })
+      this.setState({ wasModified: true });
     }
 
     if (component && !componentImplementation) {
@@ -771,118 +785,118 @@ class ComponentEditor extends Component<
           acc[currComponent.name] = {
             assets: currComponent.assets,
             dependencies: currComponent.dependencies,
-          }
-          return acc
+          };
+          return acc;
         },
         {},
-        this.props.availableComponents.availableComponents,
-      )
+        this.props.availableComponents.availableComponents
+      );
 
-      updateComponentAssets(allComponents)
+      updateComponentAssets(allComponents);
     }
 
     const props = this.getSchemaProps(
       componentImplementation,
       event.formData,
-      runtime,
-    )
+      runtime
+    );
 
     updateExtension(editTreePath as string, {
       component,
       props,
-    })
-  }
+    });
+  };
 
   private handleModalClose = () => {
-    this.setState({ isModalOpen: false })
-  }
+    this.setState({ isModalOpen: false });
+  };
 
   private handleDeleteModalOpen = (
-    configurationId: ExtensionConfiguration['configurationId'],
+    configurationId: ExtensionConfiguration["configurationId"]
   ) => {
     this.setState({
       deletedConfigurationId: configurationId,
       isDeleteModalOpen: true,
       isModalOpen: true,
-    })
-  }
+    });
+  };
 
   private handleModalOpen = () => {
-    this.setState({ isModalOpen: true })
-  }
+    this.setState({ isModalOpen: true });
+  };
 
   private handleModalResolution = () => {
-    this.handleModalClose()
-    this.handleConfigurationClose()
-  }
+    this.handleModalClose();
+    this.handleConfigurationClose();
+  };
 
   private handleModeSwitch = (newMode: ComponentEditorMode) => {
     if (newMode !== this.state.mode) {
-      this.setState({ mode: newMode })
+      this.setState({ mode: newMode });
     }
-  }
+  };
 
   private handleQuit = (event?: any) => {
-    const { editor, runtime } = this.props
+    const { editor, runtime } = this.props;
 
     if (event) {
-      event.stopPropagation()
+      event.stopPropagation();
     }
 
     runtime.updateRuntime({
       conditions: editor.activeConditions,
       scope: editor.scope,
-    })
+    });
 
-    editor.editExtensionPoint(null)
-  }
+    editor.editExtensionPoint(null);
+  };
 
   private handleScopeChange = (
     e: React.ChangeEvent<HTMLSelectElement>,
-    newScope: ConfigurationScope,
+    newScope: ConfigurationScope
   ) => {
     if (
       this.state.configuration &&
       newScope !== this.state.configuration.scope
     ) {
-      this.setState(prevState => ({
+      this.setState((prevState) => ({
         ...prevState,
-        conditions: newScope === 'site' ? [] : prevState.conditions,
+        conditions: newScope === "site" ? [] : prevState.conditions,
         configuration: { ...prevState.configuration!, scope: newScope },
         wasModified: true,
-      }))
+      }));
     }
-  }
+  };
 
   private isConfigurationDisabled = (configuration: ExtensionConfiguration) => {
-    const { iframeWindow } = this.props.editor
+    const { iframeWindow } = this.props.editor;
     return (
-      configuration.scope === 'url' &&
+      configuration.scope === "url" &&
       configuration.url !== iframeWindow.location.pathname
-    )
-  }
+    );
+  };
 
   private renderConfigurationEditor(
     schema: object,
     uiSchema: object,
-    extensionProps: object,
+    extensionProps: object
   ): JSX.Element {
     const {
       editor,
       editor: { iframeWindow },
       runtime,
-    } = this.props
-    const { configuration } = this.state
+    } = this.props;
+    const { configuration } = this.state;
 
-    const mobile = iframeWindow.innerWidth < 600
-    const animation = mobile ? 'slideInUp' : 'fadeIn'
+    const mobile = iframeWindow.innerWidth < 600;
+    const animation = mobile ? "slideInUp" : "fadeIn";
 
     const props = configuration
       ? {
           ...(configuration.propsJSON && JSON.parse(configuration.propsJSON)),
           ...extensionProps,
         }
-      : extensionProps
+      : extensionProps;
 
     return (
       <Fragment>
@@ -908,9 +922,9 @@ class ComponentEditor extends Component<
         </div>
         <div
           className={`bg-white flex flex-column justify-between size-editor w-100 pb3 animated ${animation} ${
-            this._isMounted ? '' : 'fadeIn'
+            this._isMounted ? "" : "fadeIn"
           }`}
-          style={{ animationDuration: '0.2s' }}
+          style={{ animationDuration: "0.2s" }}
         >
           <ModeSwitcher
             activeMode={this.state.mode}
@@ -923,21 +937,21 @@ class ComponentEditor extends Component<
             onChange={this.handleFormChange}
             onSubmit={this.handleConfigurationSave}
             uiSchema={uiSchema}
-            formContext={{ isLayoutMode: this.state.mode === 'layout' }}
+            formContext={{ isLayoutMode: this.state.mode === "layout" }}
           />
           <div id="form__error-list-template___alert" />
         </div>
       </Fragment>
-    )
+    );
   }
 }
 
 export default compose(
   injectIntl,
-  graphql(SaveExtension, { name: 'saveExtension' }),
-  graphql(DeleteConfiguration, { name: 'deleteConfiguration' }),
+  graphql(SaveExtension, { name: "saveExtension" }),
+  graphql(DeleteConfiguration, { name: "deleteConfiguration" }),
   graphql(AvailableComponents, {
-    name: 'availableComponents',
+    name: "availableComponents",
     options: (props: ComponentEditorProps) => ({
       variables: {
         extensionName: props.editor.editTreePath,
@@ -947,7 +961,7 @@ export default compose(
     }),
   }),
   graphql(ExtensionConfigurations, {
-    name: 'extensionConfigurations',
+    name: "extensionConfigurations",
     options: ({
       editor: { editTreePath, iframeWindow },
       runtime: { extensions, page },
@@ -959,5 +973,5 @@ export default compose(
         url: iframeWindow.location.pathname,
       },
     }),
-  }),
-)(ComponentEditor)
+  })
+)(ComponentEditor);

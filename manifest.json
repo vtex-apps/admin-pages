@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "vtex.admin": "1.x",
-    "vtex.apps-graphql": "2.x",
+    "vtex.apps-graphql": "3.x",
     "vtex.file-manager-graphql": "0.x",
     "vtex.file-manager": "0.x",
     "vtex.pages-graphql": "1.x",
