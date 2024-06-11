@@ -17,6 +17,10 @@ import {
   useCloneContent,
 } from './CloneContentContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
+import { createEventObject } from '../../../../../utils/auditEvents'
+import SendEventToAuditMutation, {
+  SendEventToAuditMutationFn,
+} from '../../../mutations/SendEventToAudit'
 
 interface Props {
   isOpen?: boolean
@@ -218,8 +222,10 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
 
   const handleConfirmCopyContent = async ({
     showToast,
+    sendEventToAudit,
   }: {
     showToast: ShowToastFunction
+    sendEventToAudit: SendEventToAuditMutationFn
   }) => {
     if (submitStatus === 'SUBMITTING') {
       return
@@ -237,6 +243,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
       })
       try {
         await applyChanges()
+
+        const event = createEventObject('copy binding content', 'binding')
+        await sendEventToAudit({
+          variables: { input: event },
+        })
+
         setTimeout(() => {
           showToast(intl.formatMessage(toastMessages.success))
         }, 500)
@@ -269,12 +281,21 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
                     <FormattedMessage id="admin/pages.editor.components.button.cancel" />
                   </Button>
                 </span>
-                <Button
-                  disabled={submitStatus === 'SUBMITTING'}
-                  onClick={() => handleConfirmCopyContent({ showToast })}
-                >
-                  <FormattedMessage id="admin/pages.editor.components.button.save" />
-                </Button>
+                <SendEventToAuditMutation>
+                  {sendEventToAudit => (
+                    <Button
+                      disabled={submitStatus === 'SUBMITTING'}
+                      onClick={() =>
+                        handleConfirmCopyContent({
+                          showToast,
+                          sendEventToAudit,
+                        })
+                      }
+                    >
+                      <FormattedMessage id="admin/pages.editor.components.button.save" />
+                    </Button>
+                  )}
+                </SendEventToAuditMutation>
               </div>
             }
           >
