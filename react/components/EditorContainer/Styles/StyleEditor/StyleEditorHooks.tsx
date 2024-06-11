@@ -7,6 +7,8 @@ import { RenameStyleFunction } from './mutations/RenameStyle'
 import { UpdateStyleFunction } from './mutations/UpdateStyle'
 import GenerateStyleSheetQuery from './queries/GenerateStyleSheet'
 import StyleEditorRouter from './StyleEditorRouter'
+import { createEventObject } from '../../../../utils/auditEvents'
+import { SendEventToAuditMutationFn } from '../../mutations/SendEventToAudit'
 
 interface Props {
   style: Style
@@ -15,6 +17,7 @@ interface Props {
   setStyleAsset: (asset: StyleAssetInfo) => void
   showToast: ShowToastFunction
   stopEditing: () => void
+  sendEventToAudit: SendEventToAuditMutationFn
 }
 
 type ConfigReducer = (
@@ -40,6 +43,7 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
   updateStyle,
   showToast,
   stopEditing,
+  sendEventToAudit,
 }) => {
   const intl = useIntl()
   const nameState = useState<string>(style.name)
@@ -73,6 +77,12 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
         type: 'path',
         value: path,
       })
+
+      const event = createEventObject('edit style', 'binding', style.id)
+      await sendEventToAudit({
+        variables: { input: event },
+      })
+
       showToast({
         horizontalPosition: 'left',
         message: intl.formatMessage({
