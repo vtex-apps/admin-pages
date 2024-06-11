@@ -32,6 +32,7 @@ const messages = defineMessages({
 
 const BlockConfigurationList: React.FC<Props> = ({
   deleteContent,
+  sendEventToAudit,
   editingContentId,
   iframeRuntime,
   intl,
@@ -56,6 +57,7 @@ const BlockConfigurationList: React.FC<Props> = ({
   const { handleConfirmConfigurationDelete } = useListHandlers({
     activeContentId,
     deleteContent,
+    sendEventToAudit,
     iframeRuntime,
     intl,
     showToast,

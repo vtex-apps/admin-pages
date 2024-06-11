@@ -7,6 +7,7 @@ import { getConfigurationType, getIsDefaultContent } from '../utils'
 import { ConfigurationType } from '../typings'
 import { UseListHandlers } from './typings'
 import { getDeleteStoreUpdater } from './utils'
+import { createEventObject } from '../../../../../utils/auditEvents'
 
 const messages = defineMessages({
   cancel: {
@@ -69,6 +70,7 @@ const messages = defineMessages({
 export const useListHandlers: UseListHandlers = ({
   activeContentId,
   deleteContent,
+  sendEventToAudit,
   iframeRuntime,
   intl,
   showToast,
@@ -112,6 +114,15 @@ export const useListHandlers: UseListHandlers = ({
           })
 
           await iframeRuntime.updateRuntime()
+
+          const event = createEventObject(
+            `${action} content block version`,
+            'content',
+            contentId
+          )
+          await sendEventToAudit({
+            variables: { input: event },
+          })
 
           editor.editExtensionPoint(null)
         } catch (error) {
