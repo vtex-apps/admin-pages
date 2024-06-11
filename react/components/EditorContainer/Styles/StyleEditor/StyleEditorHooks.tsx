@@ -78,7 +78,7 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
         value: path,
       })
 
-      const event = createEventObject('edit style', 'binding', style.id)
+      const event = createEventObject('edit style', 'style', style.id)
       await sendEventToAudit({
         variables: { input: event },
       })
