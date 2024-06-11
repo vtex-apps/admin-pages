@@ -19,6 +19,7 @@ import {
   omitUndefined,
   throttledUpdateExtensionFromForm,
 } from './utils'
+import { createEventObject } from '../../../../utils/auditEvents'
 
 const messages = defineMessages({
   cancel: {
@@ -61,6 +62,7 @@ export const useFormHandlers: UseFormHandlers = ({
   iframeRuntime,
   intl,
   saveContent,
+  sendEventToAudit,
   setState,
   showToast,
   state,
@@ -199,6 +201,22 @@ export const useFormHandlers: UseFormHandlers = ({
       })
 
       formMeta.setWasModified(false)
+
+      if (newConfiguration.status === ConfigurationStatus.SCHEDULED) {
+        const event = createEventObject('schedule change', 'content', contentId)
+        await sendEventToAudit({
+          variables: { input: event },
+        })
+      }
+
+      const event = createEventObject(
+        'edit content block',
+        'content',
+        contentId
+      )
+      await sendEventToAudit({
+        variables: { input: event },
+      })
 
       handleFormClose()
     } catch (err) {
