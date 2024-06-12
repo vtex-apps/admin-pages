@@ -248,6 +248,7 @@ export const useFormHandlers: UseFormHandlers = ({
     statusFromRuntime,
     iframeRuntime,
     saveContent,
+    sendEventToAudit,
     formMeta,
     handleFormClose,
     modal,
@@ -327,6 +328,15 @@ export const useFormHandlers: UseFormHandlers = ({
           template: editor.blockData.template,
           treePath: editor.blockData.serverTreePath,
         },
+      })
+
+      const event = createEventObject(
+        'activate content block version',
+        'content',
+        blockId
+      )
+      await sendEventToAudit({
+        variables: { input: event },
       })
     } catch (err) {
       console.error(err)
