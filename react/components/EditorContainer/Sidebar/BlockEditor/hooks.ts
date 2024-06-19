@@ -203,14 +203,14 @@ export const useFormHandlers: UseFormHandlers = ({
       formMeta.setWasModified(false)
 
       if (newConfiguration.status === ConfigurationStatus.SCHEDULED) {
-        const event = createEventObject('schedule change', 'content', contentId)
+        const event = createEventObject('Schedule change', 'content', contentId)
         await sendEventToAudit({
           variables: { input: event },
         })
       }
 
       const event = createEventObject(
-        'edit content block',
+        'Edit content block',
         'content',
         contentId
       )
@@ -331,7 +331,7 @@ export const useFormHandlers: UseFormHandlers = ({
       })
 
       const event = createEventObject(
-        'activate content block version',
+        'Activate content block version',
         'content',
         blockId
       )

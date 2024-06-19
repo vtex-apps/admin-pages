@@ -244,7 +244,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
       try {
         await applyChanges()
 
-        const event = createEventObject('copy binding content', 'binding')
+        const event = createEventObject('Copy binding content', 'binding')
         await sendEventToAudit({
           variables: { input: event },
         })

@@ -138,7 +138,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 ),
                               })
                               const event = createEventObject(
-                                'create new style',
+                                'Create new style',
                                 'style'
                               )
                               sendEventToAudit({
@@ -178,7 +178,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     ),
                                   })
                                   const event = createEventObject(
-                                    'select main style',
+                                    'Select main style',
                                     'style',
                                     id
                                   )
@@ -219,7 +219,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     ),
                                   })
                                   const event = createEventObject(
-                                    'delete style',
+                                    'Delete style',
                                     'style',
                                     id
                                   )
@@ -257,7 +257,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     ),
                                   })
                                   const event = createEventObject(
-                                    'create new style',
+                                    'Create new style',
                                     'style'
                                   )
                                   await sendEventToAudit({

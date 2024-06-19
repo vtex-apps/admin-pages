@@ -116,7 +116,9 @@ export const useListHandlers: UseListHandlers = ({
           await iframeRuntime.updateRuntime()
 
           const event = createEventObject(
-            `${action} content block version`,
+            action === 'reset'
+              ? 'Reset content block version'
+              : 'Delete content block version',
             'content',
             contentId
           )
