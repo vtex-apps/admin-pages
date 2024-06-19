@@ -7,6 +7,7 @@ import { ToastConsumer } from 'vtex.styleguide'
 import RenameStyleMutation from './mutations/RenameStyle'
 import UpdateStyleMutation from './mutations/UpdateStyle'
 import StyleEditorHooks from './StyleEditorHooks'
+import SendEventToAuditMutation from '../../mutations/SendEventToAudit'
 
 interface Props {
   intl: IntlShape
@@ -22,18 +23,23 @@ const StyleEditor: React.FunctionComponent<Props> = props => {
         {renameStyle => (
           <UpdateStyleMutation>
             {updateStyle => (
-              <ToastConsumer>
-                {({ showToast }) => (
-                  <StyleEditorHooks
-                    {...{
-                      ...props,
-                      renameStyle,
-                      showToast,
-                      updateStyle,
-                    }}
-                  />
+              <SendEventToAuditMutation>
+                {sendEventToAudit => (
+                  <ToastConsumer>
+                    {({ showToast }) => (
+                      <StyleEditorHooks
+                        {...{
+                          ...props,
+                          renameStyle,
+                          showToast,
+                          updateStyle,
+                          sendEventToAudit,
+                        }}
+                      />
+                    )}
+                  </ToastConsumer>
                 )}
-              </ToastConsumer>
+              </SendEventToAuditMutation>
             )}
           </UpdateStyleMutation>
         )}

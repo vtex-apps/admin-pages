@@ -5,6 +5,7 @@ import {
   DeleteContentData,
   DeleteContentMutationFn,
 } from '../../../mutations/DeleteContent'
+import { SendEventToAuditMutationFn } from '../../../mutations/SendEventToAudit'
 
 interface GetDeleteStoreUpdaterParams
   extends Pick<BlockData, 'serverTreePath' | 'template'> {
@@ -21,6 +22,7 @@ export type GetDeleteStoreUpdater = (
 export interface UseListHandlersParams {
   activeContentId: ExtensionConfiguration['contentId']
   deleteContent: DeleteContentMutationFn
+  sendEventToAudit: SendEventToAuditMutationFn
   iframeRuntime: RenderContext
   intl: ReactIntl.InjectedIntl
   showToast: ToastConsumerFunctions['showToast']

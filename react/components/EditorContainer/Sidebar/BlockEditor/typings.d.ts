@@ -5,6 +5,7 @@ import { ToastConsumerFunctions } from 'vtex.styleguide'
 
 import { GetDefaultConditionParams } from '../typings'
 import { ConfigurationStatus, State as FormState } from './index'
+import { SendEventToAuditMutationFn } from '../../mutations/SendEventToAudit'
 
 export type GetDefaultConfiguration = (
   params: GetDefaultConditionParams
@@ -30,6 +31,7 @@ export interface UseFormHandlersParams {
   iframeRuntime: RenderContext
   intl: InjectedIntl
   saveContent: MutationFn<SaveContentData, SaveContentVariables>
+  sendEventToAudit: SendEventToAuditMutationFn
   setState: React.Dispatch<Partial<FormState>>
   showToast: ToastConsumerFunctions['showToast']
   state: FormState

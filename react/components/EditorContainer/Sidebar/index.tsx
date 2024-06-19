@@ -15,6 +15,7 @@ import useInitialEditingState from './hooks'
 import { useModalContext } from './ModalContext'
 import styles from './styles.css'
 import Transitions from './Transitions'
+import SendEventToAuditMutation from '../mutations/SendEventToAudit'
 
 interface CustomProps {
   highlightHandler: (treePath: string | null) => void
@@ -126,12 +127,17 @@ const Sidebar: React.FunctionComponent<Props> = ({
               <Transitions.Enter condition={!!initialEditingState} from="right">
                 <SaveContentMutation>
                   {saveContent => (
-                    <BlockEditor
-                      iframeRuntime={iframeRuntime}
-                      initialEditingState={initialEditingState}
-                      saveContent={saveContent}
-                      showToast={showToast}
-                    />
+                    <SendEventToAuditMutation>
+                      {sendEventToAudit => (
+                        <BlockEditor
+                          iframeRuntime={iframeRuntime}
+                          initialEditingState={initialEditingState}
+                          saveContent={saveContent}
+                          sendEventToAudit={sendEventToAudit}
+                          showToast={showToast}
+                        />
+                      )}
+                    </SendEventToAuditMutation>
                   )}
                 </SaveContentMutation>
               </Transitions.Enter>
