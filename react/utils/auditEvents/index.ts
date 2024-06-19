@@ -11,7 +11,7 @@ export const createEventObject = (
     mainAccountName: (window as any).__RUNTIME__.account,
     accountName: (window as any).__RUNTIME__.account,
     subjectId: subjectId ? subjectId : '',
-    application: 'cms',
+    application: 'site-editor',
     workspace: (window as any).__RUNTIME__.workspace,
     operation,
     meta: {
