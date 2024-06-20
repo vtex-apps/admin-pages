@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Add the LMProductId to the navigation.json file.
+
 ## [4.54.1] - 2024-04-24
 
 ### Fixed

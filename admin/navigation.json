@@ -1,6 +1,7 @@
 [
   {
     "section": "storeSetup",
+    "LMProductId": "38",
     "subSection": "cms",
     "subSectionItems": [
       {
@@ -27,6 +28,7 @@
   },
   {
     "section": "gocommerce",
+    "LMProductId": "38",
     "subSection": "onlinestore",
     "subSectionItems": [
       {
@@ -45,6 +47,7 @@
   },
   {
     "section": "storeFront",
+    "LMProductId": "38",
     "adminVersion": 4,
     "subSection": "contentManagement",
     "titleId": "admin/appframe.navigation.contentManagement",
@@ -73,6 +76,7 @@
   },
   {
     "section": "storeSettings",
+    "LMProductId": "38",
     "subSection": "storeFront",
     "adminVersion": 4,
     "subSectionItems": [
