@@ -99,6 +99,9 @@ class SelectConditions extends React.Component<Props> {
           subjectPlaceholder={this.props.intl.formatMessage(
             messages.subjectPlaceholder
           )}
+          noOptionsMessage={this.props.intl.formatMessage(
+            messages.emptyConditionsOptions
+          )}
           statements={this.props.condition.statements}
           operator={this.props.operator}
           onChangeOperator={this.handleToggleOperator}
