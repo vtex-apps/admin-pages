@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Integrate Site Editor with Audit App.
 
+## [4.55.1] - 2024-08-05
+
+### Fixed
+
+- Fix processedRedirects value atribution.
+
+## [4.55.0] - 2024-07-15
+
+### Added
+
+- Add the LMProductId to the navigation.json file.
+
 ## [4.54.1] - 2024-04-24
 
 ### Fixed

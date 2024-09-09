@@ -136,7 +136,7 @@ const UploadModal: React.FunctionComponent<Props &
           mutation,
           shouldUploadRef,
           updateProgress: processed => {
-            setProcessedRedirect(current => current + processed)
+            setProcessedRedirect(processed)
           },
         })
 
