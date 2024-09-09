@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.56.0] - 2024-09-09
+
 ### Added
 
 - Integrate Site Editor with Audit App.
