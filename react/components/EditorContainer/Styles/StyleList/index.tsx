@@ -2,6 +2,7 @@ import { find, zip } from 'ramda'
 import React, { useState } from 'react'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { ButtonWithIcon, Spinner, ToastConsumer } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
 
 import Operations from './Operations'
 import CreateNewIcon from './icons/CreateNewIcon'
@@ -85,6 +86,7 @@ const StyleList: React.FunctionComponent<Props> = ({
 }) => {
   const intl = useIntl()
   const [isCreatingStyle, setIsCreatingStyle] = useState(false)
+  const { account, workspace } = useRuntime()
 
   return (
     <Operations>
@@ -139,7 +141,9 @@ const StyleList: React.FunctionComponent<Props> = ({
                               })
                               const event = createEventObject(
                                 'Create new style',
-                                'style'
+                                'style',
+                                account,
+                                workspace
                               )
                               sendEventToAudit({
                                 variables: { input: event },
@@ -180,6 +184,8 @@ const StyleList: React.FunctionComponent<Props> = ({
                                   const event = createEventObject(
                                     'Select main style',
                                     'style',
+                                    account,
+                                    workspace,
                                     id
                                   )
                                   await sendEventToAudit({
@@ -221,6 +227,8 @@ const StyleList: React.FunctionComponent<Props> = ({
                                   const event = createEventObject(
                                     'Delete style',
                                     'style',
+                                    account,
+                                    workspace,
                                     id
                                   )
                                   await sendEventToAudit({
@@ -258,7 +266,9 @@ const StyleList: React.FunctionComponent<Props> = ({
                                   })
                                   const event = createEventObject(
                                     'Create new style',
-                                    'style'
+                                    'style',
+                                    account,
+                                    workspace
                                   )
                                   await sendEventToAudit({
                                     variables: { input: event },

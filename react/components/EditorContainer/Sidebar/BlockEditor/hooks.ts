@@ -1,6 +1,7 @@
 import { equals, path } from 'ramda'
 import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { ConfigurationStatus } from '.'
 import {
@@ -71,6 +72,7 @@ export const useFormHandlers: UseFormHandlers = ({
   const editor = useEditorContext()
   const formMeta = useFormMetaContext()
   const modal = useModalContext()
+  const { account, workspace } = useRuntime()
 
   const handleStatusChange = () => {
     const status = state.status ?? statusFromRuntime
@@ -203,7 +205,13 @@ export const useFormHandlers: UseFormHandlers = ({
       formMeta.setWasModified(false)
 
       if (newConfiguration.status === ConfigurationStatus.SCHEDULED) {
-        const event = createEventObject('Schedule change', 'content', contentId)
+        const event = createEventObject(
+          'Schedule change',
+          'content',
+          account,
+          workspace,
+          contentId
+        )
         await sendEventToAudit({
           variables: { input: event },
         })
@@ -212,6 +220,8 @@ export const useFormHandlers: UseFormHandlers = ({
       const event = createEventObject(
         'Edit content block',
         'content',
+        account,
+        workspace,
         contentId
       )
       await sendEventToAudit({
@@ -333,6 +343,8 @@ export const useFormHandlers: UseFormHandlers = ({
       const event = createEventObject(
         'Activate content block version',
         'content',
+        account,
+        workspace,
         blockId
       )
       await sendEventToAudit({

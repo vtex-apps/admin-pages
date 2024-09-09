@@ -9,6 +9,7 @@ import {
 } from 'vtex.styleguide'
 import { defineMessages, FormattedMessage, useIntl } from 'react-intl'
 import { pick } from 'ramda'
+import { useRuntime } from 'vtex.render-runtime'
 
 import BindingSelector, { BindingSelectorItem } from './BindingSelector'
 import {
@@ -108,6 +109,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
     saveRoute,
     copyBindings,
   } = actions
+  const { account, workspace } = useRuntime()
 
   const checkOverwrites = () => {
     return new Promise<void>((resolve, reject) => {
@@ -244,7 +246,12 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
       try {
         await applyChanges()
 
-        const event = createEventObject('Copy binding content', 'binding')
+        const event = createEventObject(
+          'Copy binding content',
+          'binding',
+          account,
+          workspace
+        )
         await sendEventToAudit({
           variables: { input: event },
         })

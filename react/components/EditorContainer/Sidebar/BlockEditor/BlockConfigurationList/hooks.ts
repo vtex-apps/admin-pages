@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useModalContext } from '../../ModalContext'
@@ -78,6 +79,7 @@ export const useListHandlers: UseListHandlers = ({
   const editor = useEditorContext()
 
   const modal = useModalContext()
+  const { account, workspace } = useRuntime()
 
   const handleConfigurationDelete = useCallback(
     async (configuration: ExtensionConfiguration) => {
@@ -120,6 +122,8 @@ export const useListHandlers: UseListHandlers = ({
               ? 'Reset content block version'
               : 'Delete content block version',
             'content',
+            account,
+            workspace,
             contentId
           )
           await sendEventToAudit({

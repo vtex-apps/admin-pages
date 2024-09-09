@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [4.55.0] - 2024-06-11
+### Added
+
+- Integrate Site Editor with Audit App.
 
 ## [4.54.1] - 2024-04-24
 
@@ -26,11 +28,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [4.53.0] - 2023-12-20
 
 ### Add
+
 - Robots to be editable in page's form
 
 ### Fixed
-- Translations for Bulgarian, Spanish, French, Korean, Dutch and Thai.
 
+- Translations for Bulgarian, Spanish, French, Korean, Dutch and Thai.
 
 ## [4.52.0] - 2023-11-28
 
@@ -38,36 +41,43 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Translations for the `fetchSponsoredProductsOnSearch` advanced setting.
 
-
 ## [4.51.2] - 2023-07-10
 
 ## [4.51.1] - 2023-06-21
 
-
 ### Fixed
+
 - Fix exhibition of the end date of temporary redirects.
 
 ## [4.51.0] - 2023-06-14 - 2023-06-05
+
 ### Added
+
 - Redirects searcher
 
 ## [4.50.0] - 2023-04-03
 
 ### Added
+
 - German translation.
 
 ### Fixed
+
 - English, French, Italian, Portuguese, Spanish and Thai translation.
 - I18n for color picker label.
 - I18n issue in Media Gallery Widget component.
 
 ## [4.49.13] - 2023-03-27
+
 ### Changed
+
 - `apps-graphql` version
 
 ## [4.49.12] - 2023-03-14
+
 ### Fix
--  Displayed message at UI in redirects type was wrong
+
+- Displayed message at UI in redirects type was wrong
 
 ## [4.49.11] - 2022-12-19
 
@@ -84,6 +94,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [4.49.9] - 2022-12-07
 
 ### Fixed
+
 - Missing messages in all languages.
 
 ## [4.49.8] - 2022-11-01

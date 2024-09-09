@@ -11,7 +11,7 @@ interface MetaData {
   entityBeforeAction: string
   entityAfterAction: string
   remoteIpAddress: string
-  fowardFromVtexUserAgent: string
+  forwardFromVtexUserAgent: string
 }
 
 interface SendEventToAuditInput {
