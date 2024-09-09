@@ -34,6 +34,7 @@ const BlockEditor = ({
   initialEditingState,
   intl,
   saveContent,
+  sendEventToAudit,
   showToast,
 }: Props) => {
   const [state, setState] = React.useReducer<
@@ -100,6 +101,7 @@ const BlockEditor = ({
     iframeRuntime,
     intl,
     saveContent,
+    sendEventToAudit,
     setState,
     showToast,
     state,
@@ -150,6 +152,7 @@ const BlockEditor = ({
             {deleteContent => (
               <BlockConfigurationList
                 deleteContent={deleteContent}
+                sendEventToAudit={sendEventToAudit}
                 onConfigurationActivate={handleConfigurationActivate}
                 editingContentId={state.contentId}
                 iframeRuntime={iframeRuntime}

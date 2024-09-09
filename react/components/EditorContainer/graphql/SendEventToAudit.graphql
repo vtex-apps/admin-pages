@@ -1,0 +1,19 @@
+mutation SendEventToAudit($input: SendToAuditInput!) {
+  sendEventToAudit(input: $input) {
+    id
+    mainAccountName
+    date
+    application
+    accountName
+    subjectId
+    workspace
+    operation
+    meta {
+      entityName
+      entityBeforeAction
+      entityAfterAction
+      remoteIpAddress
+      fowardFromVtexUserAgent
+    }
+  }
+}

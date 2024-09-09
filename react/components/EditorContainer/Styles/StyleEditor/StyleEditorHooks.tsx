@@ -73,6 +73,7 @@ const StyleEditorStates: React.FunctionComponent<Props> = ({
         type: 'path',
         value: path,
       })
+
       showToast({
         horizontalPosition: 'left',
         message: intl.formatMessage({

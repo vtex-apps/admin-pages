@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { defineMessages } from 'react-intl'
+import { useRuntime } from 'vtex.render-runtime'
 
 import { useEditorContext } from '../../../../EditorContext'
 import { useModalContext } from '../../ModalContext'
@@ -7,6 +8,7 @@ import { getConfigurationType, getIsDefaultContent } from '../utils'
 import { ConfigurationType } from '../typings'
 import { UseListHandlers } from './typings'
 import { getDeleteStoreUpdater } from './utils'
+import { createEventObject } from '../../../../../utils/auditEvents'
 
 const messages = defineMessages({
   cancel: {
@@ -69,6 +71,7 @@ const messages = defineMessages({
 export const useListHandlers: UseListHandlers = ({
   activeContentId,
   deleteContent,
+  sendEventToAudit,
   iframeRuntime,
   intl,
   showToast,
@@ -76,6 +79,7 @@ export const useListHandlers: UseListHandlers = ({
   const editor = useEditorContext()
 
   const modal = useModalContext()
+  const { account, workspace } = useRuntime()
 
   const handleConfigurationDelete = useCallback(
     async (configuration: ExtensionConfiguration) => {
@@ -112,6 +116,19 @@ export const useListHandlers: UseListHandlers = ({
           })
 
           await iframeRuntime.updateRuntime()
+
+          const event = createEventObject(
+            action === 'reset'
+              ? 'Reset content block version'
+              : 'Delete content block version',
+            'content',
+            account,
+            workspace,
+            contentId
+          )
+          await sendEventToAudit({
+            variables: { input: event },
+          })
 
           editor.editExtensionPoint(null)
         } catch (error) {
