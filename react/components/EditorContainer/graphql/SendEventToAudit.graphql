@@ -13,7 +13,7 @@ mutation SendEventToAudit($input: SendToAuditInput!) {
       entityBeforeAction
       entityAfterAction
       remoteIpAddress
-      fowardFromVtexUserAgent
+      forwardFromVtexUserAgent
     }
   }
 }
