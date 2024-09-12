@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Modal in admin/cms/store pages
+
 ## [4.56.0] - 2024-09-09
 
 ### Added
