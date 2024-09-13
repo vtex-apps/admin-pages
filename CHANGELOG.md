@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Empty message in pages condition template
+
 ## [4.50.0] - 2023-04-03
 
 ### Added
