@@ -101,6 +101,7 @@ declare module 'vtex.styleguide' {
     statements?: ConditionsStatement[]
     options: Record<string, ConditionsOptions>
     subjectPlaceholder: string
+    emptyConditionsOptions: string
     isFullWidth?: boolean
     onChangeStatements?: (s: ConditionsStatement[]) => void
     onChangeOperator?: (o: { operator: ConditionsOperator }) => void
