@@ -37,6 +37,7 @@ query GetRoute($routeId: String!) {
     metaTags {
       description
       keywords
+      robots
     }
   }
 }

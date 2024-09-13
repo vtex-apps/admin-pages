@@ -19,6 +19,7 @@ import {
   ConditionalTemplateSection,
   ConditionalTemplateSectionProps,
 } from './ConditionalTemplateSection'
+import { isNewRoute } from '../utils'
 import { DropdownChangeInput } from '../../../../utils/bindings/typings'
 import { getBindingSelectorOptions } from '../../../../utils/bindings'
 
@@ -95,6 +96,14 @@ const messages = defineMessages({
     defaultMessage: 'Keywords',
     id: 'admin/pages.admin.pages.form.field.meta.keywords',
   },
+  seoRobots: {
+    defaultMessage: 'Robots',
+    id: 'admin/store.metaTagRobots.title',
+  },
+  seoRobotsHelp: {
+    defaultMessage: 'Robots',
+    id: 'admin/store.metaTagRobots.description',
+  },
   bindingSelectorTitle: {
     defaultMessage: 'Binding',
     id: 'admin/pages.admin.pages.form.binding-selector.title',
@@ -137,6 +146,7 @@ const Form: React.FunctionComponent<Props> = ({
 }) => {
   const intl = useIntl()
   const path = data.path || ''
+  const shouldDisablePathChange = !isNewRoute(data)
 
   const bindingOptions = useMemo(
     () => getBindingSelectorOptions(storeBindings),
@@ -170,7 +180,7 @@ const Form: React.FunctionComponent<Props> = ({
       />
       <FormFieldSeparator />
       <Input
-        disabled={!isInfoEditable}
+        disabled={shouldDisablePathChange}
         label={intl.formatMessage(messages.fieldPath)}
         onChange={detailChangeHandlerGetter('path')}
         placeholder={intl.formatMessage(messages.pathHint)}
@@ -217,9 +227,16 @@ const Form: React.FunctionComponent<Props> = ({
             placeholder=""
             value={data.metaTagKeywords}
           />
+          <FormFieldSeparator />
+          <Input
+            disabled={!!data.context}
+            label={intl.formatMessage(messages.seoRobots)}
+            onChange={detailChangeHandlerGetter('metaTagRobots')}
+            value={data.metaTagRobots}
+            helpText={intl.formatMessage(messages.seoRobotsHelp)}
+          />
         </>
       )}
-      <FormFieldSeparator />
       <SeparatorWithLine />
       <ConditionalTemplateSection
         intl={intl}

@@ -559,6 +559,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Esegue il rendering tardivo del piè di pagina e il caricamento tardivo delle rispettive risorse. Ciò migliora le prestazioni del primo rendering della pagina.",
   "admin/store.advancedSettings.enableLazyFold.title": "Abilita caricamento tardivo delle risorse \"below the fold\"",
   "admin/store.advancedSettings.enableLazyFold.description": "Abilita il caricamento tardivo dei file JS dei componenti \"below the `__fold__`\".",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Richiedi prodotti sponsorizzati nei risultati di ricerca.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Se in questo negozio sono configurati gli annunci VTEX, questa opzione richiederà i prodotti sponsorizzati nei risultati di ricerca.",
   "admin/pages.editor.newadmin.alert": "Questo è un ambiente di prova. Per applicare le modifiche al tuo negozio online, ",
   "admin/pages.editor.newadmin.alert.anchor": "si prega di accedere al precedente Admin.",
   "admin/store.includeTwitterMetaTags.title": "Includi meta tag di Twitter",

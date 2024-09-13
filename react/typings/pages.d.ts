@@ -31,6 +31,7 @@ declare module 'pages' {
   type RouteFormData = Omit<Route, 'pages' | 'metaTags'> & {
     pages: PagesFormData[]
     metaTagDescription?: string
+    metaTagRobots?: string
     metaTagKeywords?: KeywordsFormData[]
   }
 }

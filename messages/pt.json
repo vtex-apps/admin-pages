@@ -560,6 +560,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Renderiza de forma lenta o rodapé da página e o carregamento de seus ativos, o que ajuda a melhorar o desempenho da primeira renderização da página.",
   "admin/store.advancedSettings.enableLazyFold.title": "Habilitar o carregamento de forma lenta de ativos abaixo da dobra",
   "admin/store.advancedSettings.enableLazyFold.description": "Permite o carregamento de forma lenta dos arquivos JS dos componentes abaixo do bloco `__fold__`.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Exibir produtos patrocinados nos resultados da busca",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Caso esta loja seja parte do piloto do RMN, esta opção ativa a requisição por produtos patrocinados na página de busca. Em caso de dúvidas, contacte: rmn@vtex.com",
   "admin/pages.editor.newadmin.alert": "Este é um ambiente de teste. Para aplicar mudanças à sua loja online, ",
   "admin/pages.editor.newadmin.alert.anchor": "acesse a versão anterior do VTEX Admin.",
   "admin/store.includeTwitterMetaTags.title": "Incluir metatags do Twitter",

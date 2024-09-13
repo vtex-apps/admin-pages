@@ -19,6 +19,7 @@ interface CustomProps {
   items: Redirect[]
   loading: boolean
   onHandleDownload: () => void
+  onHandleInputSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   openModal: () => void
   refetch: () => void
   showToast: ToastConsumerFunctions['showToast']
@@ -33,8 +34,8 @@ interface Schema {
 }
 
 enum CellData {
-  TEMPORARY = "TEMPORARY",
-  PERMANENT = "PERMANENT"
+  TEMPORARY = 'TEMPORARY',
+  PERMANENT = 'PERMANENT',
 }
 
 const getBindingAddress = (bindingId: string, storeBindings: Binding[]) =>
@@ -88,8 +89,8 @@ function getSchema(intl: IntlShape, locale: string, storeBindings: Binding[]) {
       },
       ...bindingProperty,
       endDate: {
-        cellRenderer: function EndDate(cell: { cellData: CellData }) {
-          cell.cellData ? (
+        cellRenderer: function EndDate(cell: { cellData: string }) {
+          return cell.cellData ? (
             <span className="ph4">
               {getFormattedLocalizedDate(cell.cellData, locale)}
             </span>
@@ -114,6 +115,7 @@ const List: React.FC<Props> = ({
   items,
   loading,
   onHandleDownload,
+  onHandleInputSearchChange,
   openModal,
   storeBindings,
 }) => {
@@ -184,6 +186,9 @@ const List: React.FC<Props> = ({
         </div>
       }
       toolbar={{
+        inputSearch: {
+          onChange: onHandleInputSearchChange,
+        },
         density: {
           buttonLabel: intl.formatMessage(messages.lineDensityLabel),
           highOptionLabel: intl.formatMessage(messages.lineDensityHigh),

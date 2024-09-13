@@ -65,6 +65,7 @@ declare global {
   interface PageMetaTags {
     description?: string
     keywords?: string[]
+    robots?: string
   }
 
   interface Page {

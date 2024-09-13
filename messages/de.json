@@ -559,6 +559,8 @@
   "admin/store.advancedSettings.enableLazyFooter.description": "Rendert die Fußzeile verzögert und lädt Assets verzögert, wodurch die Leistung beim ersten Rendern der Seite verbessert wird.",
   "admin/store.advancedSettings.enableLazyFold.title": "Verzögertes Laden von Assets unter dem Umbruch aktivieren",
   "admin/store.advancedSettings.enableLazyFold.description": "Aktiviert das verzögerte Laden der JS-Dateien der Komponenten unter dem `__fold__` Block.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.title": "[BETA] Gesponserte Produkte in den Suchergebnissen abrufen.",
+  "admin/store.advancedSettings.fetchSponsoredProductsOnSearch.description": "Wenn für diesen Shop VTEX-Anzeigen konfiguriert sind, werden mit dieser Option gesponserte Produkte in den Suchergebnissen angezeigt.",
   "admin/pages.editor.newadmin.alert": "Dies ist eine Testumgebung. Um Änderungen an Ihrem Online-Shop anzuwenden, ",
   "admin/pages.editor.newadmin.alert.anchor": "rufen Sie bitte den vorherigen VTEX Admin ab.",
   "admin/store.includeTwitterMetaTags.title": "Twitter-Meta-Tags einbeziehen",

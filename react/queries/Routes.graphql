@@ -13,6 +13,7 @@ query Routes($domain: String, $bindingId: String) {
     metaTags {
       description
       keywords
+      robots
     }
     pages {
       condition {

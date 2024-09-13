@@ -7,14 +7,8 @@ export const getFirstTime = (date: Date) =>
 
 export const getFormattedLocalizedDate = (date: string, locale: string) =>
   moment(date)
-    .toDate()
-    .toLocaleDateString(locale, {
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    })
+    .locale(locale)
+    .format("lll")
 
 export const getLastTime = (date: Date) => {
   const dateClone = new Date(date)
