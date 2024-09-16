@@ -21,17 +21,18 @@ const ActionMenu: React.FunctionComponent<Props> = ({
   options,
   variation = 'tertiary',
 }) => (
-  <StyleguideActionMenu
-    buttonProps={{
-      icon,
-      size: buttonSize,
-      type: 'button',
-      variation,
-    }}
-    hideCaretIcon
-    menuWidth={menuWidth}
-    options={options}
-  />
-)
+    <StyleguideActionMenu
+      buttonProps={{
+        icon,
+        size: buttonSize,
+        type: 'button',
+        variation,
+      }}
+      hideCaretIcon
+      menuWidth={menuWidth}
+      options={options}
+      zIndex="max"
+    />
+  )
 
 export default ActionMenu
