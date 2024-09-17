@@ -25,6 +25,7 @@ import Loader from './components/Loader'
 import Redirect from './queries/Redirect.graphql'
 import TenantInfoQuery from './queries/TenantInfo.graphql'
 import { getStoreBindings } from './utils/bindings'
+import { parseRedirectQueryString } from './components/admin/redirects/utils'
 
 interface CustomProps {
   params: {
@@ -94,14 +95,14 @@ class RedirectForm extends Component<Props, State> {
     if (!formData) {
       try {
         const rawQuerystring = history?.location?.search ?? ''
-        const querystring = queryString.parse(rawQuerystring)
-        const { binding, ...rest } = querystring
-        const restQuerystring = queryString.stringify(rest)
+        const { binding, q } = queryString.parse(rawQuerystring)
+        const restQueryString =
+          typeof q === 'string' && parseRedirectQueryString(q)
         const response = await client.query<RedirectQuery>({
           query: Redirect,
           variables: {
             path: `/${params.path}${
-              restQuerystring ? '?' + restQuerystring : ''
+              restQueryString ? '?' + restQueryString : ''
             }`,
             binding: binding,
           },
