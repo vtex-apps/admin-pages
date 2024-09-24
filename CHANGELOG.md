@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+- Modal style in cms/store and not affecting site editor
+
 ## [4.56.3] - 2024-09-23
 
+### Fixed
 - Modal in admin/cms/store pages
 
 ## [4.56.2] - 2024-09-18
