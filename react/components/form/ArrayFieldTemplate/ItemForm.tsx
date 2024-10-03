@@ -3,6 +3,7 @@ import React from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 import { CSSTransition } from 'react-transition-group'
 import { Button } from 'vtex.styleguide'
+import { useRuntime } from 'vtex.render-runtime'
 
 import styles from './styles.css'
 import transitionStyles from './ItemTransitions.css'
@@ -27,7 +28,11 @@ const ItemForm: React.FC<Props> = ({
   onClose,
   stackDepth,
 }) => {
-  const intl = useIntl()
+  const intl = useIntl()  
+  const { route } = useRuntime()
+
+  const isStoreSettingsPage = route.path.includes("cms/store")  
+
   return (
     <CSSTransition
       in={stackDepth < currentDepth}
@@ -43,7 +48,9 @@ const ItemForm: React.FC<Props> = ({
     >
       <div
         className={classnames(
-          `${styles['accordion-item']} bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
+          `${styles['accordion-item']} 
+          ${isStoreSettingsPage && styles['accordion-item-settings']} 
+          bg-white bb b--light-silver absolute left-0 top-0 ph6 w-100 z-1`
         )}
       >
         {children}

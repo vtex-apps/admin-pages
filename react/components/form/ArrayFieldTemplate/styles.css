@@ -2,6 +2,11 @@
   background-color: white;
 }
 
+.accordion-item-settings {
+  padding: 2rem;
+  transform: translateX(0rem) !important;  
+}
+
 .accordion-list-container--sorting .accordion-item {
   pointer-events: none;
 }

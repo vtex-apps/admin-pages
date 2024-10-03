@@ -8,7 +8,7 @@
 }
 
 .item-enter-done {
-  padding: 2rem;
+  transform: translateX(18rem);
 }
 
 .item-exit {
