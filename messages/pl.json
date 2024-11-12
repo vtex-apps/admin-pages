@@ -529,7 +529,7 @@
   "admin/store.advancedSettings.title": "Ustawienia zaawansowane sklepu",
   "admin/store.advancedSettings.enableOrderFormOptimization.title": "optymalizacja orderForm",
   "admin/store.advancedSettings.enableOrderFormOptimization.description": "Wyłącza starego dostawcę orderForm. Więcej informacji: https://vtex.io/docs/recipes/store-management/enabling-order-form-optimization.",
-  "admin/store.advancedSettings.enableServiceWorker.title": "Service Worker",
+  "admin/store.advancedSettings.enableServiceWorker.title": "Pracownik serwisu",
   "admin/store.advancedSettings.enableServiceWorker.description": "Zarejestruj domyślnego Service Worker dostarczonego przez VTEX.",
   "admin/store.advancedSettings.enableCriticalCSS.title": "Krytyczna optymalizacja CSS",
   "admin/store.advancedSettings.enableCriticalCSS.description": "Włącza optymalizacje CSS, które poprawiają wydajność i wynik Lighthouse. Wpływa tylko na stronę główną. Może spowodować niezgodności w stylu. Przetestuj po włączeniu.",
