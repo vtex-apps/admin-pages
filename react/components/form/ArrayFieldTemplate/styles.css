@@ -7,6 +7,10 @@
   transform: translateX(0rem) !important;  
 }
 
+.accordion-item-settings .form-group .field {
+  margin: 3rem 0;
+}
+
 .accordion-list-container--sorting .accordion-item {
   pointer-events: none;
 }
