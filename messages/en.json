@@ -71,7 +71,7 @@
   "admin/pages.admin.pages.list.section.productCollections": "Product Collections",
   "admin/pages.admin.pages.list.section.standard": "Default",
   "admin/pages.admin.redirects.bulk.failed.button": "See Errors",
-  "admin/pages.admin.redirects.bulk.failed": "We couldn't process all {lines} lines from file {fileName}. Please try again.",
+  "admin/pages.admin.redirects.bulk.failed": "We couldn't process {lines, plural, one {the line} other {all # lines}} from file {fileName}.",
   "admin/pages.admin.redirects.bulk.partial": "Importing file {fileName} was partially successful: {success} successful, {failed} failed.",
   "admin/pages.admin.redirects.bulk.success": "Done. {lines} lines were successfully processed from file \"{fileName}\"",
   "admin/pages.admin.redirects.button.create": "New Redirect",
