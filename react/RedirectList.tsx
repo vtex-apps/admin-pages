@@ -241,22 +241,18 @@ const RedirectList: React.FC<Props> = ({
               })
             }
 
-            const fullTextSearchPromise = (async () => {
-              if (term.length) {
-                const { data: fullTextData } = await client.query({
-                  query: RedirectWithoutBinding,
-                  variables: {
-                    path: term,
-                  },
-                })
-                if (fullTextData?.redirect?.get) {
-                  return [fullTextData.redirect.get]
-                }
+            let result: Redirect[] = []
+            if (term.length) {
+              const { data } = await client.query({
+                query: RedirectWithoutBinding,
+                variables: {
+                  path: term,
+                },
+              })
+              if (data?.redirect?.get) {
+                result = [data.redirect.get]
               }
-              return []
-            })()
-
-            const result = await fullTextSearchPromise
+            }
 
             const combinedResults = [...filteredRedirects, ...result]
 
