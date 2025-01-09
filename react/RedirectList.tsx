@@ -241,18 +241,6 @@ const RedirectList: React.FC<Props> = ({
               })
             }
 
-            const innerNext = innerData?.redirect?.listRedirects.next
-            const next = innerNext ?? data?.redirect?.listRedirects.next
-
-            const listRedirectsPromise = (async () => {
-              if (!filteredRedirects.length && next) {
-                const { data } = await refetch({ limit: REDIRECTS_LIMIT, next })
-                return data.redirect.listRedirects.routes
-              } else {
-                return filteredRedirects
-              }
-            })()
-
             const fullTextSearchPromise = (async () => {
               if (term.length) {
                 const { data: fullTextData } = await client.query({
@@ -268,11 +256,11 @@ const RedirectList: React.FC<Props> = ({
               return []
             })()
 
-            const result = await Promise.race([
-              listRedirectsPromise,
-              fullTextSearchPromise,
-            ])
-            setRedirectList(result)
+            const result = await fullTextSearchPromise
+
+            const combinedResults = [...filteredRedirects, ...result]
+
+            setRedirectList(combinedResults)
 
             if (term.length) {
               setFiltered(true)
