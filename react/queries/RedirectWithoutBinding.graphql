@@ -1,0 +1,11 @@
+query RedirectWithoutBinding($path: String!) {
+  redirect @context(provider: "vtex.rewriter") {
+    get(path: $path) {
+      binding
+      endDate
+      from
+      to
+      type
+    }
+  }
+}
