@@ -20,6 +20,10 @@
   padding-top: 0;
 }
 
+.vtex-admin-pages-4-x-accordion-item-settings .form-group .field {
+  margin: 2rem 0;
+}
+
 .vtex-admin-pages-4-x .field-description {
   font-size: 12px;
   color: #979899;

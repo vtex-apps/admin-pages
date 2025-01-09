@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Spacing in custom header elements for better visualization
+
 ## [4.57.0] - 2025-01-06
 
 ### Added
