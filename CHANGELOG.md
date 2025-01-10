@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Fixed
+
+- Allows redirect search by exact term only
+
 ## [4.57.0] - 2025-01-06
 
 ### Added
@@ -22,16 +26,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [4.56.4] - 2024-10-03
 
 ### Fixed
+
 - Modal style in cms/store and not affecting site editor
 
 ## [4.56.3] - 2024-09-23
 
 ### Fixed
+
 - Modal in admin/cms/store pages
 
 ## [4.56.2] - 2024-09-18
 
 ### Added
+
 - Empty message in pages condition template
 
 ## [4.56.1] - 2024-09-12
