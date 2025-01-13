@@ -7,9 +7,13 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-### Fixed
+### Added
 
-- Allows redirect search by exact term only
+- Find redirect by exact match
+
+### Removed
+
+- Infinite refetch data to find existing redirect
 
 ## [4.57.0] - 2025-01-06
 
