@@ -241,22 +241,21 @@ const RedirectList: React.FC<Props> = ({
               })
             }
 
-            let result: Redirect[] = []
-            if (term.length) {
+            const searchExactMatchRedirect = async (term: string) => {
+              if (!term) return []
               const { data } = await client.query({
                 query: RedirectWithoutBinding,
                 variables: {
                   path: term,
                 },
               })
-              if (data?.redirect?.get) {
-                result = [data.redirect.get]
-              }
+
+              const { get: redirectFound } = data?.redirect ?? {}
+              return redirectFound ? [redirectFound] : []
             }
+            const exactMatchRedirect = await searchExactMatchRedirect(term)
 
-            const combinedResults = [...filteredRedirects, ...result]
-
-            setRedirectList(combinedResults)
+            setRedirectList([...filteredRedirects, ...exactMatchRedirect])
 
             if (term.length) {
               setFiltered(true)
