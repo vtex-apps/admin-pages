@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Infinite refetch data to find existing redirect
 
+## [4.57.1] - 2025-01-09
+
+### Added
+
+- Spacing in custom header elements for better visualization
+
 ## [4.57.0] - 2025-01-06
 
 ### Added
