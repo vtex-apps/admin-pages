@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.57.2] - 2025-01-14
+
 ### Added
 
 - Find redirect by exact match
