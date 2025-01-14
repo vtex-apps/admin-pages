@@ -24,6 +24,7 @@ import {
   withTargetPath,
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
+import RedirectWithoutBinding from './queries/RedirectWithoutBinding.graphql'
 
 interface CustomProps {
   hasMultipleBindings: boolean
@@ -240,15 +241,21 @@ const RedirectList: React.FC<Props> = ({
               })
             }
 
-            const innerNext = innerData?.redirect?.listRedirects.next
-            const next = innerNext ?? data?.redirect?.listRedirects.next
+            const searchExactMatchRedirect = async (term: string) => {
+              if (!term) return []
+              const { data } = await client.query({
+                query: RedirectWithoutBinding,
+                variables: {
+                  path: term,
+                },
+              })
 
-            if (!filteredRedirects.length && next) {
-              const { data } = await refetch({ limit: REDIRECTS_LIMIT, next })
-              handleInputSearchChange(e, data)
-            } else {
-              setRedirectList(filteredRedirects)
+              const { get: redirectFound } = data?.redirect ?? {}
+              return redirectFound ? [redirectFound] : []
             }
+            const exactMatchRedirect = await searchExactMatchRedirect(term)
+
+            setRedirectList([...filteredRedirects, ...exactMatchRedirect])
 
             if (term.length) {
               setFiltered(true)
