@@ -96,10 +96,6 @@ const RedirectList: React.FC<Props> = ({
   const [filtered, setFiltered] = useState<boolean>(false)
   const [allRedirects, setAllRedirects] = useState<Redirect[]>([])
 
-  useEffect(() => {
-    ;(window as any).allRedirects = allRedirects
-  }, [allRedirects])
-
   const openModal = useCallback(() => {
     setIsModalOpen(true)
   }, [setIsModalOpen])
