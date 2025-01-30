@@ -4,7 +4,7 @@ import { defineMessages, useIntl } from 'react-intl'
 import streamSaver from 'streamsaver'
 import { TextEncoder } from 'text-encoding'
 import { Helmet } from 'vtex.render-runtime'
-import { Alert, Box, Button, Pagination, ToastConsumer } from 'vtex.styleguide'
+import { Alert, Box, Pagination, ToastConsumer } from 'vtex.styleguide'
 import * as WebStreamsPolyfill from 'web-streams-polyfill/ponyfill'
 
 import {
@@ -12,20 +12,19 @@ import {
   getCSVTemplate,
   PAGINATION_START,
   PAGINATION_STEP,
-  REDIRECTS_LIMIT,
   WRAPPER_PATH,
+  REDIRECTS_LIMIT,
 } from './components/admin/redirects/consts'
 import ImportErrorModal from './components/admin/redirects/ImportErrorModal'
 import List from './components/admin/redirects/List'
-import { AlertState } from './components/admin/redirects/typings'
 import UploadModal from './components/admin/redirects/UploadModal'
+import { AlertState } from './components/admin/redirects/typings'
 import {
   TargetPathContextProps,
   withTargetPath,
 } from './components/admin/TargetPathContext'
 import Redirects from './queries/Redirects.graphql'
 import RedirectWithoutBinding from './queries/RedirectWithoutBinding.graphql'
-import DeleteManyRedirects from './components/admin/redirects/mutations/DeleteManyRedirectsFromFile.graphql'
 
 interface CustomProps {
   hasMultipleBindings: boolean
@@ -94,7 +93,6 @@ const RedirectList: React.FC<Props> = ({
 
   const [redirectList, setRedirectList] = useState<Redirect[]>([])
   const [filtered, setFiltered] = useState<boolean>(false)
-  const [allRedirects, setAllRedirects] = useState<Redirect[]>([])
 
   const openModal = useCallback(() => {
     setIsModalOpen(true)
@@ -153,47 +151,6 @@ const RedirectList: React.FC<Props> = ({
     } while (next !== null)
     writer.close()
   }, [client, hasMultipleBindings])
-
-  const fetchAllRedirects = useCallback(async () => {
-    let allRedirects: Redirect[] = []
-    let next: string | undefined
-
-    do {
-      const response = await client.query<
-        RedirectListQueryResult,
-        RedirectListVariables
-      >({
-        query: Redirects,
-        variables: {
-          limit: REDIRECTS_LIMIT,
-          next,
-        },
-      })
-      const redirects = response.data.redirect.listRedirects.routes
-      next = response.data.redirect.listRedirects.next
-      allRedirects = allRedirects.concat(redirects)
-    } while (next !== null)
-
-    setAllRedirects(allRedirects)
-  }, [client])
-
-  const deleteAllRedirects = useCallback(async () => {
-    const paths = allRedirects.map(redirect => redirect.from)
-    const locators = allRedirects.map(redirect => ({
-      from: redirect.from,
-      binding: redirect.binding,
-    }))
-
-    await client.mutate({
-      mutation: DeleteManyRedirects,
-      variables: {
-        paths,
-        locators,
-      },
-    })
-
-    setAllRedirects([])
-  }, [allRedirects, client])
 
   const getNextPageNavigationHandler = (
     dataLength: number,
@@ -361,12 +318,6 @@ const RedirectList: React.FC<Props> = ({
                     />
                   )}
                   <Box>
-                    <Button onClick={fetchAllRedirects}>
-                      Fetch All Redirects
-                    </Button>
-                    <Button onClick={deleteAllRedirects}>
-                      Delete All Redirects
-                    </Button>
                     <List
                       loading={loading}
                       from={paginationFrom}
