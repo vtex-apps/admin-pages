@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.57.3] - 2025-02-04
+
 ### Changed
 
 - Fixed redirect import progress bar
