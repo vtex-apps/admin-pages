@@ -21,6 +21,7 @@ export default async function bulkUploadRedirects({
   },
 }: BulkUploadRedirectsArgs): Promise<{ failedRedirects: Redirect[] }> {
   let failedRedirects: Redirect[] = []
+  let processedCount = 0
 
   const redirectBatches = splitEvery(MAX_REDIRECTS_PER_REQUEST, data)
 
@@ -32,18 +33,18 @@ export default async function bulkUploadRedirects({
     for (let i = 1; i <= NUMBER_OF_RETRIES; i++) {
       try {
         await mutation(payload)
+        processedCount += payload.length
+        updateProgress(processedCount)
         break
       } catch (e) {
         await new Promise(res => {
           setTimeout(() => res(), i * 750)
         })
         if (i === NUMBER_OF_RETRIES) {
-          failedRedirects = failedRedirects.concat(data)
+          failedRedirects = failedRedirects.concat(payload)
         }
       }
     }
-
-    updateProgress(data.length)
 
     await new Promise(res => {
       setTimeout(() => res(), 750)

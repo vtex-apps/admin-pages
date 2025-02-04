@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Fixed redirect import progress bar
+
+### Removed
+
+- Duplication of search redirects
+
 ## [4.57.2] - 2025-01-14
 
 ### Added

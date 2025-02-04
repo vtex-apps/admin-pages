@@ -253,9 +253,14 @@ const RedirectList: React.FC<Props> = ({
               const { get: redirectFound } = data?.redirect ?? {}
               return redirectFound ? [redirectFound] : []
             }
+
             const exactMatchRedirect = await searchExactMatchRedirect(term)
 
-            setRedirectList([...filteredRedirects, ...exactMatchRedirect])
+            if (exactMatchRedirect.length > 0) {
+              setRedirectList(exactMatchRedirect)
+            } else {
+              setRedirectList(filteredRedirects)
+            }
 
             if (term.length) {
               setFiltered(true)
