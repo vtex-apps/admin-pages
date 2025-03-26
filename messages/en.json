@@ -605,5 +605,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Header key",
   "admin/store.advancedSettings.customHeader.key.description": "Enter the key for your header, following HTTP patterns. Example: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "Header value",
-  "admin/store.advancedSettings.customHeader.value.description": "Enter the value for your key, following HTTP patterns. Example: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Enter the value for your key, following HTTP patterns. Example: max-age=<expire-time>",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "Enable default browser navigation",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Use native browser navigation instead of Render Runtime"
 }
