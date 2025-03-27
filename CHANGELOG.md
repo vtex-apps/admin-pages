@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- Portuguese and English messages for useDefaultBrowserNavigation setting
+
 ## [4.57.3] - 2025-02-04
 
 ### Changed
