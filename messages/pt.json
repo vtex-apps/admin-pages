@@ -604,5 +604,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Chave do cabeçalho",
   "admin/store.advancedSettings.customHeader.key.description": "Insira a chave do seu cabeçalho, seguindo os padrões HTTP. Exemplo: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "Valor do cabeçalho",
-  "admin/store.advancedSettings.customHeader.value.description": "Insira o valor de sua chave, seguindo os padrões HTTP. Exemplo: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Insira o valor de sua chave, seguindo os padrões HTTP. Exemplo: max-age=<expire-time>",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "Habilitar navegação nativa do navegador",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Usar a navegação nativa do navegador ao invés do Render Runtime. Use somente em contas Fast Store"
 }

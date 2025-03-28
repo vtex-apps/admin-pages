@@ -601,6 +601,8 @@
   "admin/store.advancedSettings.customHeader.key.title": "admin/store.advancedSettings.customHeader.key.title",
   "admin/store.advancedSettings.customHeader.key.description": "admin/store.advancedSettings.customHeader.key.description",
   "admin/store.advancedSettings.customHeader.value.title": "admin/store.advancedSettings.customHeader.value.title",
-  "admin/store.advancedSettings.customHeader.value.description": "admin/store.advancedSettings.customHeader.value.description"
+  "admin/store.advancedSettings.customHeader.value.description": "admin/store.advancedSettings.customHeader.value.description",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "admin/store.advancedSettings.useDefaultBrowserNavigation.title",
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "admin/store.advancedSettings.useDefaultBrowserNavigation.description"
 }
 
