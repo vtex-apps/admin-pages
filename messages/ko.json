@@ -61,6 +61,7 @@
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-and": "및",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-any": "일부",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-or": "혹은",
+  "admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options": "옵션을 찾을 수 없음",
   "admin/pages.admin.pages.form.templates.title": "템플릿",
   "admin/pages.admin.pages.form.title.new": "새 페이지",
   "admin/pages.admin.pages.list.button.create": "새로 만들기",
