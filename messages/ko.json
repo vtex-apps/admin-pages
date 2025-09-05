@@ -155,7 +155,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "업로드",
   "admin/pages.admin.rich-text-editor.upload-image-label": "업로드할 이미지 선택",
   "admin/pages.admin.tabs.pages": "페이지",
-  "admin/pages.admin.tabs.redirects": "리디렉션",
+  "admin/pages.admin.tabs.redirects": "URL 리디렉션",
   "admin/pages.editor.component-list.action-menu.delete": "삭제",
   "admin/pages.editor.component-list.action-menu.activate": "활성화",
   "admin/pages.editor.component-list.action-menu.reset": "재설정",

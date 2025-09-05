@@ -157,7 +157,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Fazer upload",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Selecione uma imagem para upload",
   "admin/pages.admin.tabs.pages": "Páginas",
-  "admin/pages.admin.tabs.redirects": "Redirecionamentos",
+  "admin/pages.admin.tabs.redirects": "Redirecionamentos de URL",
   "admin/pages.editor.component-list.action-menu.delete": "Excluir",
   "admin/pages.editor.component-list.action-menu.activate": "Ativar",
   "admin/pages.editor.component-list.action-menu.reset": "Restaurar",

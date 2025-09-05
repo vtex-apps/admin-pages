@@ -155,7 +155,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Качване",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Изберете изображение за качване",
   "admin/pages.admin.tabs.pages": "Страници",
-  "admin/pages.admin.tabs.redirects": "Пренасочвания",
+  "admin/pages.admin.tabs.redirects": "Пренасочвания на URL адреси",
   "admin/pages.editor.component-list.action-menu.delete": "Изтриване",
   "admin/pages.editor.component-list.action-menu.activate": "Активиране",
   "admin/pages.editor.component-list.action-menu.reset": "Нулиране",

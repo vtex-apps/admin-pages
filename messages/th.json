@@ -155,7 +155,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "อัปโหลด",
   "admin/pages.admin.rich-text-editor.upload-image-label": "เลือกรูปเพื่ออัปโหลด",
   "admin/pages.admin.tabs.pages": "หน้า",
-  "admin/pages.admin.tabs.redirects": "การเปลี่ยนเส้นทาง",
+  "admin/pages.admin.tabs.redirects": "การเปลี่ยนเส้นทาง URL",
   "admin/pages.editor.component-list.action-menu.delete": "ลบ",
   "admin/pages.editor.component-list.action-menu.activate": "เปิดใช้",
   "admin/pages.editor.component-list.action-menu.reset": "รีเซ็ต",
