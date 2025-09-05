@@ -156,7 +156,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Hochladen",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Bild zum Hochladen auswählen",
   "admin/pages.admin.tabs.pages": "Seiten",
-  "admin/pages.admin.tabs.redirects": "Weiterleitungen",
+  "admin/pages.admin.tabs.redirects": "URL-Weiterleitungen",
   "admin/pages.editor.component-list.action-menu.delete": "Löschen",
   "admin/pages.editor.component-list.action-menu.activate": "Aktivieren",
   "admin/pages.editor.component-list.action-menu.reset": "Zurücksetzen",

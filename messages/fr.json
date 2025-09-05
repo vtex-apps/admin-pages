@@ -156,7 +156,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Télécharger",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Choisir une image à télécharger",
   "admin/pages.admin.tabs.pages": "Pages",
-  "admin/pages.admin.tabs.redirects": "Redirections",
+  "admin/pages.admin.tabs.redirects": "Redirections d'URL",
   "admin/pages.editor.component-list.action-menu.delete": "Supprimer",
   "admin/pages.editor.component-list.action-menu.activate": "Activer",
   "admin/pages.editor.component-list.action-menu.reset": "Réinitialiser",

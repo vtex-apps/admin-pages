@@ -158,7 +158,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Prześlij",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Wybierz obraz do przesłania",
   "admin/pages.admin.tabs.pages": "Strony",
-  "admin/pages.admin.tabs.redirects": "Przekierowania",
+  "admin/pages.admin.tabs.redirects": "Przekierowania URL",
   "admin/pages.editor.component-list.action-menu.delete": "Usuń",
   "admin/pages.editor.component-list.action-menu.activate": "Aktywuj",
   "admin/pages.editor.component-list.action-menu.reset": "Resetuj",

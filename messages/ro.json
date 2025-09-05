@@ -155,7 +155,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Încarcă",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Alege o imagine pentru a o încărca",
   "admin/pages.admin.tabs.pages": "Pagini",
-  "admin/pages.admin.tabs.redirects": "Redirecționări",
+  "admin/pages.admin.tabs.redirects": "Redirecționări URL",
   "admin/pages.editor.component-list.action-menu.delete": "Ștergere",
   "admin/pages.editor.component-list.action-menu.activate": "Activează",
   "admin/pages.editor.component-list.action-menu.reset": "Resetează",

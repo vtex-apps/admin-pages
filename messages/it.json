@@ -156,7 +156,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "Carica",
   "admin/pages.admin.rich-text-editor.upload-image-label": "Scegli un'immagine da caricare",
   "admin/pages.admin.tabs.pages": "Pagine",
-  "admin/pages.admin.tabs.redirects": "Reindirizzamenti",
+  "admin/pages.admin.tabs.redirects": "Reindirizzamento dell'URL",
   "admin/pages.editor.component-list.action-menu.delete": "Elimina",
   "admin/pages.editor.component-list.action-menu.activate": "Attiva",
   "admin/pages.editor.component-list.action-menu.reset": "Ripristina",

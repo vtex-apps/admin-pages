@@ -155,7 +155,7 @@
   "admin/pages.admin.rich-text-editor.upload-button": "アップロードする",
   "admin/pages.admin.rich-text-editor.upload-image-label": "アップロードする画像を選ぶ",
   "admin/pages.admin.tabs.pages": "ページ",
-  "admin/pages.admin.tabs.redirects": "リダイレクト",
+  "admin/pages.admin.tabs.redirects": "URLリダイレクト",
   "admin/pages.editor.component-list.action-menu.delete": "削除",
   "admin/pages.editor.component-list.action-menu.activate": "アクティブ化",
   "admin/pages.editor.component-list.action-menu.reset": "リセットする",
