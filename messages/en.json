@@ -505,8 +505,8 @@
   "admin/pages.editor.topbar.context.binding.tooltip": "The binding cannot be changed while editing a block.",
   "admin/pages.editor.topbar.context.locale.tooltip": "The locale cannot be changed while editing a block.",
   "admin/appframe.navigation.contentManagement": "Content Management",
-  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "Binding information missing from redirect {route}",
-  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "Unnecessary binding information from redirect {route}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.missing-binding-data": "[Line {line}] Binding information missing from redirect {route}",
+  "admin/pages.admin.redirects.upload-modal.prompt.alert.extra-binding-data": "[Line {line}] Unnecessary binding information from redirect {route}",
   "admin/store.b2benabled.title": "B2B behavior enabled",
   "admin/store.title": "VTEX Store",
   "admin/store.storeName.title": "Store name",
@@ -607,5 +607,7 @@
   "admin/store.advancedSettings.customHeader.value.title": "Header value",
   "admin/store.advancedSettings.customHeader.value.description": "Enter the value for your key, following HTTP patterns. Example: max-age=<expire-time>",
   "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "Enable default browser navigation",
-  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Use native browser navigation instead of Render Runtime. Enable only in Fast Store accounts"
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Use native browser navigation instead of Render Runtime. Enable only in Fast Store accounts",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Enable accessibility semantic HTML migration",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Enables semantic HTML elements for better accessibility compliance with European Accessibility Act (EAA) and WCAG 2.1. May cause breaking changes in custom styles that rely on specific HTML elements."
 }
