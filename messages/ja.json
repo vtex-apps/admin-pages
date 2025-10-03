@@ -595,5 +595,7 @@
   "admin/actions.enable-binding": "Enable configuration by binding",
   "admin/actions.binding-configurations": "Binding Configurations",
   "admin/actions.binding-id": "Binding ID",
-  "admin/actions.binding-description": "Enter the binding ID"
+  "admin/actions.binding-description": "Enter the binding ID",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "アクセシビリティのためのセマンティック HTML 移行をアクティブ化する",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "より良いアクセシビリティのため、また欧州アクセシビリティ法（EAA）および WCAG 2.1 を遵守するために、セマンティック HTML 要素をアクティブ化します。この場合、特定の HTML 要素に依存するカスタムスタイルが大きく変更される可能性があります。"
 }

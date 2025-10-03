@@ -596,5 +596,7 @@
   "admin/actions.enable-binding": "Abilita configurazione per associazione",
   "admin/actions.binding-configurations": "Configurazioni di associazione",
   "admin/actions.binding-id": "ID collegamento",
-  "admin/actions.binding-description": "Inserisci l'ID collegamento"
+  "admin/actions.binding-description": "Inserisci l'ID collegamento",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Attiva la migrazione HTML semantica per l'accessibilità",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Attiva gli elementi HTML semantici per migliorare l'accessibilità e la conformità con l'Atto Europeo sull'Accessibilità (EAA) e le linee guida WCAG 2.1. Questo potrebbe causare modifiche incompatibili con gli stili personalizzati che si basano su elementi HTML specifici."
 }

@@ -602,5 +602,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Headersleutel",
   "admin/store.advancedSettings.customHeader.key.description": "Voer de sleutel in voor uw header, volgens HTTP-patronen. Voorbeeld: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "Headerwaarde",
-  "admin/store.advancedSettings.customHeader.value.description": "Voer de waarde in voor uw sleutel, volgens HTTP-patronen. Voorbeeld: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Voer de waarde in voor uw sleutel, volgens HTTP-patronen. Voorbeeld: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Activeer semantische HTML-migratie voor toegankelijkheid",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Activeert semantische HTML-elementen voor betere toegankelijkheid en naleving van de Europese Toegankelijkheidswet (EAA) en WCAG 2.1. Dit kan leiden tot ingrijpende veranderingen in aangepaste stijlen die afhankelijk zijn van specifieke HTML-elementen."
 }

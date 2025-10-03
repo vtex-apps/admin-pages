@@ -602,5 +602,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Cheie antet",
   "admin/store.advancedSettings.customHeader.key.description": "Introdu cheia pentru antetul tău, urmând modelele HTTP. Exemplu: Strict-Transport-Securitate",
   "admin/store.advancedSettings.customHeader.value.title": "Valoare antet",
-  "admin/store.advancedSettings.customHeader.value.description": "Introdu valoarea pentru cheia ta, urmând modelele HTTP. Exemplu: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Introdu valoarea pentru cheia ta, urmând modelele HTTP. Exemplu: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Activează migrarea către HTML semantic pentru accesibilitate",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Activează elemente HTML semantice pentru o accesibilitate mai bună și pentru conformitatea cu Legea Europeană privind accesibilitatea (EAA) și WCAG 2.1. Acest lucru poate cauza modificări majore în stilurile personalizate care se bazează pe elemente HTML specifice."
 }

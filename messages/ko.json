@@ -602,5 +602,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "헤더 키",
   "admin/store.advancedSettings.customHeader.key.description": "HTTP 패턴에 따라 헤더의 키를 입력합니다. 예시: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "헤더 값",
-  "admin/store.advancedSettings.customHeader.value.description": "HTTP 패턴에 따라 키의 값을 입력합니다. 예시: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "HTTP 패턴에 따라 키의 값을 입력합니다. 예시: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "접근성을 위해 시맨틱 HTML 마이그레이션 활성화",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "시맨틱 HTML 요소를 활성화하여 접근성을 개선하고, 유럽 접근성법(EAA) 및 WCAG 2.1 규정을 준수합니다. 단, 특정 HTML 요소에 의존하는 사용자 정의 스타일이 있을 경우 호환성 문제가 발생할 수 있습니다."
 }

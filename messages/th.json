@@ -602,5 +602,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "คีย์ Header",
   "admin/store.advancedSettings.customHeader.key.description": "ป้อนคีย์สำหรับ Header ของคุณ ทำตามรูปแบบ HTTP ตัวอย่าง: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "ค่า Header",
-  "admin/store.advancedSettings.customHeader.value.description": "ใส่ค่าคีย์ของคุณ ทำตามรูปแบบ HTTP ตัวอย่าง: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "ใส่ค่าคีย์ของคุณ ทำตามรูปแบบ HTTP ตัวอย่าง: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "เปิดใช้งานการย้ายข้อมูล HTML เชิงความหมายเพื่อให้เข้าถึงได้",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "เปิดใช้องค์ประกอบ HTML เชิงความหมายเพื่อให้เข้าถึงได้สะดวกขึ้น โดยสอดคล้องกับกฎหมายการเข้าถึงของยุโรป (EAA) และ WCAG 2.1 ทั้งนี้อาจทำให้เกิดการเปลี่ยนแปลงที่ส่งผลต่อรูปแบบที่กำหนดเองซึ่งขึ้นกับองค์ประกอบ HTML นั้น ๆ"
 }
