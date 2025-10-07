@@ -603,5 +603,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Clé de l'en-tête",
   "admin/store.advancedSettings.customHeader.key.description": "Saisissez la clé de votre en-tête, en suivant les modèles HTTP. Exemple : Strict-Transport-Sécurité",
   "admin/store.advancedSettings.customHeader.value.title": "Valeur de l'en-tête",
-  "admin/store.advancedSettings.customHeader.value.description": "Saisissez la valeur de votre clé, en suivant les modèles HTTP. Exemple : max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Saisissez la valeur de votre clé, en suivant les modèles HTTP. Exemple : max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Activer la migration vers un HTML sémantique pour l’accessibilité",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Active les éléments HTML sémantiques pour une meilleure accessibilité et une conformité avec la loi européenne sur l'accessibilité (EAA) et WCAG 2.1. Cela peut entraîner des changements dans les styles personnalisés qui s'appuient sur des éléments HTML spécifiques."
 }

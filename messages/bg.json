@@ -602,5 +602,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Ключ на заглавка",
   "admin/store.advancedSettings.customHeader.key.description": "Въведете ключа за вашата заглавка, като следвате принципите на HTTP. Пример: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "Стойност на заглавка",
-  "admin/store.advancedSettings.customHeader.value.description": "Въведете стойността на вашия ключ, като следвате принципите на HTTP. Пример: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Въведете стойността на вашия ключ, като следвате принципите на HTTP. Пример: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Активиране на семантичната миграция на HTML за достъпност",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Активира семантични HTML елементи за по-добра достъпност и спазване на нормативните изисквания на Европейския акт за достъпност (EAA) и WCAG 2.1. Това може да доведе до промени в персонализираните стилове, които разчитат на специфични HTML елементи."
 }

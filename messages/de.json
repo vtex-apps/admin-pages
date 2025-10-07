@@ -603,5 +603,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Kopfzeilen-Schlüssel",
   "admin/store.advancedSettings.customHeader.key.description": "Geben Sie den Schlüssel für Ihre Kopfzeile ein und folgen Sie dabei den HTTP-Mustern. Beispiel: Strenge-Transport-Sicherheit",
   "admin/store.advancedSettings.customHeader.value.title": "Kopfzeilen-Wert",
-  "admin/store.advancedSettings.customHeader.value.description": "Geben Sie den Wert für Ihren Schlüssel ein und folgen Sie dabei den HTTP-Mustern. Beispiel: Maximal-Alter=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Geben Sie den Wert für Ihren Schlüssel ein und folgen Sie dabei den HTTP-Mustern. Beispiel: Maximal-Alter=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Semantische HTML-Migration für Barrierefreiheit aktivieren",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Aktiviert semantische HTML-Elemente für bessere Barrierefreiheit und die Einhaltung des European Accessibility Act (EAA) sowie der WCAG 2.1. Dies kann zu inkompatiblen Änderungen bei benutzerdefinierten Stilen führen, die auf bestimmte HTML-Elemente angewiesen sind."
 }

@@ -603,6 +603,8 @@
   "admin/store.advancedSettings.customHeader.value.title": "admin/store.advancedSettings.customHeader.value.title",
   "admin/store.advancedSettings.customHeader.value.description": "admin/store.advancedSettings.customHeader.value.description",
   "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "admin/store.advancedSettings.useDefaultBrowserNavigation.title",
-  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "admin/store.advancedSettings.useDefaultBrowserNavigation.description"
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "admin/store.advancedSettings.useDefaultBrowserNavigation.description",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "admin/store.advancedSettings.a11ySemanticHtmlMigration.title",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "admin/store.advancedSettings.a11ySemanticHtmlMigration.description"
 }
 

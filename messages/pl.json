@@ -605,5 +605,7 @@
   "admin/store.advancedSettings.customHeader.key.title": "Klucz nagłówka",
   "admin/store.advancedSettings.customHeader.key.description": "Wprowadź klucz dla nagłówka, zgodnie z wzorcami HTTP. Przykład: Strict-Transport-Security",
   "admin/store.advancedSettings.customHeader.value.title": "Wartość nagłówka",
-  "admin/store.advancedSettings.customHeader.value.description": "Wprowadź wartość klucza, zgodnie z wzorcami HTTP. Przykład: max-age=<expire-time>"
+  "admin/store.advancedSettings.customHeader.value.description": "Wprowadź wartość klucza, zgodnie z wzorcami HTTP. Przykład: max-age=<expire-time>",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Aktywuj migrację semantycznego HTML dla dostępności",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Aktywuje semantyczne elementy HTML dla lepszej dostępności i zgodności z Europejską Ustawą o Dostępności (EAA) oraz WCAG 2.1. Może to spowodować niezgodności w niestandardowych stylach opierających się na konkretnych elementach HTML."
 }

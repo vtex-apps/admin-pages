@@ -607,5 +607,7 @@
   "admin/store.advancedSettings.customHeader.value.title": "Header value",
   "admin/store.advancedSettings.customHeader.value.description": "Enter the value for your key, following HTTP patterns. Example: max-age=<expire-time>",
   "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "Enable default browser navigation",
-  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Use native browser navigation instead of Render Runtime. Enable only in Fast Store accounts"
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Use native browser navigation instead of Render Runtime. Enable only in Fast Store accounts",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Activate semantic HTML migration for accessibility",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Activates semantic HTML elements for better accessibility and compliance with the European Accessibility Act (EAA) and WCAG 2.1. This may cause breaking changes in custom styles that rely on specific HTML elements."
 }

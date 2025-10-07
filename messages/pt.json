@@ -606,5 +606,7 @@
   "admin/store.advancedSettings.customHeader.value.title": "Valor do cabeçalho",
   "admin/store.advancedSettings.customHeader.value.description": "Insira o valor de sua chave, seguindo os padrões HTTP. Exemplo: max-age=<expire-time>",
   "admin/store.advancedSettings.useDefaultBrowserNavigation.title": "Habilitar navegação nativa do navegador",
-  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Usar a navegação nativa do navegador ao invés do Render Runtime. Use somente em contas Fast Store"
+  "admin/store.advancedSettings.useDefaultBrowserNavigation.description": "Usar a navegação nativa do navegador ao invés do Render Runtime. Use somente em contas Fast Store",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.title": "Ativar migração de HTML semântico para acessibilidade",
+  "admin/store.advancedSettings.a11ySemanticHtmlMigration.description": "Ativa elementos HTML semânticos para melhorar a acessibilidade e garantir conformidade com a Lei Europeia de Acessibilidade (EAA) e WCAG 2.1. Isso pode causar alterações que impactem estilos personalizados que dependem de elementos HTML específicos."
 }
