@@ -1,0 +1,23 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: admin-pages
+  description: The Pages Admin is a platform to dynamically edit a VTEX Store,
+    making it possible to select editable components and change its
+    configurations adding or removing content in a straightforward way.
+  tags:
+    - typescript
+    - react
+  annotations:
+    vtex.com/janus-acronym: ""
+    vtex.com/o11y-os-index: ""
+    grafana/dashboard-selector: ""
+    github.com/project-slug: vtex-apps/admin-pages
+    vtex.com/platform-flow-id: ""
+    backstage.io/techdocs-ref: dir:../
+    vtex.com/application-id: 60JU5OHJ
+spec:
+  lifecycle: stable
+  owner: te-0013
+  type: frontend-ui
+  dependsOn: []
