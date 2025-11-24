@@ -1,0 +1,15 @@
+- name: admin-pages
+  referenceId: 60JU5OHJ
+  pipelines:
+    - name: techdocs-v1
+      parameters:
+        entityReference: default/component/admin-pages
+        indexFile: README.md
+      when:
+        - event: push
+          source: branch
+          regex: master
+          path:
+            - "docs/**"
+            - ".vtex/deployment.yaml"
+            - ".vtex/deployment.json"
