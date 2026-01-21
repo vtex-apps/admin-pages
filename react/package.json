@@ -34,7 +34,7 @@
     "exenv": "^1.2.2",
     "json-schema-traverse": "^0.4.1",
     "keydown-from-click": "^1.1.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "query-string": "^6.13.8",
     "ramda": "^0.25.0",
     "react-dropzone": "^10.1.3",
