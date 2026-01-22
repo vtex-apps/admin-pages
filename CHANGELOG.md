@@ -363,6 +363,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [4.43.1] - 2021-06-08
 
+### Fixed
+
+- Update routes listing when a binding user route is created from an app route
+
 ### Changed
 
 - Shortened the message from the temporary warning banner for the `newadmin` workspaces.
