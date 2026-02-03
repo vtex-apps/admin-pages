@@ -11,6 +11,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - German and Polish translations
 
+## [4.59.1] - 2026-02-03
+
+### Fixed
+
+- Update terms from "Trade Policy" to "Sales Channel"
+
 ## [4.59.0] - 2025-10-07
 
 ### Added
