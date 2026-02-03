@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [4.59.1] - 2026-02-03
+
 ### Fixed
 
 - Update terms from "Trade Policy" to "Sales Channel"
