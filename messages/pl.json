@@ -517,7 +517,7 @@
   "admin/store.metaTagRobots.description": "Domyślna wartość: index, follow",
   "admin/store.faviconLinks.title": "Favikony",
   "admin/store.faviconLinks.rel.title": "Relacje faviconu",
-  "admin/store.faviconLinks.rel.description": "Ta relacja faviconu. Przykład: „ikona”, „ikona skrótow”, „ikona-apple-touch”",
+  "admin/store.faviconLinks.rel.description": "Ta relacja faviconu. Przykład: „icon”, „shortcut icon”, „apple-touch-icon”",
   "admin/store.faviconLinks.type.title": "Typ nośnika favikonu",
   "admin/store.faviconLinks.type.description": "(Opcjonalnie) Typ favikonu. Przykład: image/png",
   "admin/store.faviconLinks.sizes.title": "Rozmiar favikonu",
