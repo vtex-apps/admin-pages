@@ -13,7 +13,7 @@ metadata:
     vtex.com/o11y-os-index: ""
     grafana/dashboard-selector: ""
     github.com/project-slug: vtex-apps/admin-pages
-    vtex.com/platform-flow-id: ""
+    vtex.com/platform-flow-id: CommDev#2,Merch#3,Merch#8
     backstage.io/techdocs-ref: dir:../
     vtex.com/application-id: 60JU5OHJ
 spec:
