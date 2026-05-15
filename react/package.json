@@ -6,7 +6,8 @@
     "format": "prettier -l './**/*.+(json|css|md|graphql|ts|tsx)'",
     "lint": "eslint -c .eslintrc ./ --ext ts,tsx --max-warnings=0",
     "lint:locales": "intl-equalizer",
-    "test": "vtex-test-tools test"
+    "test": "vtex-test-tools test",
+    "test:coverage": "vtex-test-tools test --coverage --coverageReporters=lcov --coverageReporters=text-summary"
   },
   "lint-staged": {
     "**/*.+(json|css|md|graphql)": [

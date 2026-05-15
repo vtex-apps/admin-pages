@@ -1,5 +1,20 @@
+# managed-by: golden-path v1
 - name: admin-pages
   referenceId: 60JU5OHJ
+  build:
+    provider: dkcicd
+    pipelines:
+      - name: node-ci-v2
+        parameters:
+          contextPath: "react"
+          nodeCommands:
+            - "run test:coverage"
+        when:
+          - event: pull_request
+            source: branch
+          - event: push
+            source: branch
+            regex: ^(?!kubernetes).*
   pipelines:
     - name: techdocs-v1
       parameters:
