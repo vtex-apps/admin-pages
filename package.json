@@ -2,7 +2,8 @@
   "version": "4.21.2-beta.2",
   "license": "UNLICENSED",
   "scripts": {
-    "test": "cd react && npm run test"
+    "test": "cd react && npm run test",
+    "test:coverage": "yarn --cwd react install --frozen-lockfile && yarn --cwd react test:coverage"
   },
   "devDependencies": {
     "husky": "^3.0.4"
