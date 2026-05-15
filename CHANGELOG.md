@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 - Update DK Catalog platform-flow-id
 
+### Fixed
+
+- Replace invalid `vtex.file-manager:saveFileAsync` policy reference with
+  the current `vtex.file-manager:file-manager-read-write` policy, which
+  fixes the `build.status: fail - Invalid policies in manifest.json:
+  vtex.file-manager:saveFileAsync: not_found` error raised by builder-hub
+  on `vtex link` / `vtex publish`.
+
 ## [4.59.2] - 2026-02-09
 
 ### Fixed

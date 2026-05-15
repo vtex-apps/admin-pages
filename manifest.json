@@ -47,7 +47,7 @@
   },
   "policies": [
     {
-      "name": "vtex.file-manager:saveFileAsync"
+      "name": "vtex.file-manager:file-manager-read-write"
     }
   ],
   "$schema": "https://raw.githubusercontent.com/vtex/node-vtex-api/master/gen/manifest.schema"
