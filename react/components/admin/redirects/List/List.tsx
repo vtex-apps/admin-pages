@@ -11,6 +11,7 @@ import { Binding } from 'vtex.tenant-graphql'
 
 import { getFormattedLocalizedDate } from '../../../../utils/date'
 import { BASE_URL, NEW_REDIRECT_ID } from '../consts'
+import { slugifyRedirectQueryString } from '../utils'
 import CreateButton from './CreateButton'
 import { messages } from './messages'
 
@@ -137,11 +138,17 @@ const List: React.FC<Props> = ({
   const handleItemView = useCallback(
     (event: { rowData: Redirect }) => {
       const selectedItem = event.rowData
-      const bindingQS = selectedItem.from.includes('?')
+      const hasQueryString = selectedItem.from.includes('?')
+      const bindingQueryString = hasQueryString
         ? `&binding=${selectedItem.binding}`
         : `?binding=${selectedItem.binding}`
+      const [itemFrom, itemQueryString] = hasQueryString
+        ? selectedItem.from.split('?')
+        : [selectedItem.from, '']
+      const parsedQueryString =
+        itemQueryString && `?q=${slugifyRedirectQueryString(itemQueryString)}`
       navigate({
-        to: `${BASE_URL}${selectedItem.from}${bindingQS}`,
+        to: `${BASE_URL}${itemFrom}${parsedQueryString}${bindingQueryString}`,
       })
     },
     [navigate]
