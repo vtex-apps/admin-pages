@@ -61,6 +61,7 @@
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-and": "en",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-any": "elke",
   "admin/pages.admin.pages.form.templates.simple.conditions.operator-or": "of",
+  "admin/pages.admin.pages.form.templates.simple.conditions.empty-conditions-options": "Geen opties gevonden",
   "admin/pages.admin.pages.form.templates.title": "Sjablonen",
   "admin/pages.admin.pages.form.title.new": "Nieuwe pagina",
   "admin/pages.admin.pages.list.button.create": "Nieuwe aanmaken",
