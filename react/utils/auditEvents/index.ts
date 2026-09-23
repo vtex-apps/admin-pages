@@ -27,3 +27,17 @@ export const createEventObject = (
 
   return event
 }
+
+type AuditEvent = ReturnType<typeof createEventObject>
+
+type SendEventToAudit = (options: {
+  variables: { input: AuditEvent }
+}) => Promise<unknown>
+
+export const safeSendAuditEvent = (
+  sendEventToAudit: SendEventToAudit,
+  event: AuditEvent
+) =>
+  sendEventToAudit({ variables: { input: event } }).catch(err => {
+    console.error('Failed to send audit event', err)
+  })

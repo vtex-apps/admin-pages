@@ -20,7 +20,10 @@ import {
   omitUndefined,
   throttledUpdateExtensionFromForm,
 } from './utils'
-import { createEventObject } from '../../../../utils/auditEvents'
+import {
+  createEventObject,
+  safeSendAuditEvent,
+} from '../../../../utils/auditEvents'
 
 const messages = defineMessages({
   cancel: {
@@ -212,9 +215,7 @@ export const useFormHandlers: UseFormHandlers = ({
           workspace,
           contentId
         )
-        await sendEventToAudit({
-          variables: { input: event },
-        })
+        safeSendAuditEvent(sendEventToAudit, event)
       }
 
       const event = createEventObject(
@@ -224,9 +225,7 @@ export const useFormHandlers: UseFormHandlers = ({
         workspace,
         contentId
       )
-      await sendEventToAudit({
-        variables: { input: event },
-      })
+      safeSendAuditEvent(sendEventToAudit, event)
 
       handleFormClose()
     } catch (err) {
@@ -347,9 +346,7 @@ export const useFormHandlers: UseFormHandlers = ({
         workspace,
         blockId
       )
-      await sendEventToAudit({
-        variables: { input: event },
-      })
+      safeSendAuditEvent(sendEventToAudit, event)
     } catch (err) {
       console.error(err)
 

@@ -18,6 +18,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
   fixes the `build.status: fail - Invalid policies in manifest.json:
   vtex.file-manager:saveFileAsync: not_found` error raised by builder-hub
   on `vtex link` / `vtex publish`.
+- Stop showing an error toast when only the audit event fails to be sent
+  after a successful action (saving, activating, resetting or deleting
+  content, managing styles and copying binding content). Audit failures are
+  now logged to the console instead.
 
 ## [4.59.2] - 2026-02-09
 
