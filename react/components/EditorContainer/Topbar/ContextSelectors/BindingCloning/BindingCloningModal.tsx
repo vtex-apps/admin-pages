@@ -18,7 +18,10 @@ import {
   useCloneContent,
 } from './CloneContentContext'
 import OverwriteDialog, { useOverwriteDialogState } from './OverwriteDialog'
-import { createEventObject } from '../../../../../utils/auditEvents'
+import {
+  createEventObject,
+  safeSendAuditEvent,
+} from '../../../../../utils/auditEvents'
 import SendEventToAuditMutation, {
   SendEventToAuditMutationFn,
 } from '../../../mutations/SendEventToAudit'
@@ -252,9 +255,7 @@ const BindingCloningModal: FunctionComponent<Props> = ({ isOpen, onClose }) => {
           account,
           workspace
         )
-        await sendEventToAudit({
-          variables: { input: event },
-        })
+        safeSendAuditEvent(sendEventToAudit, event)
 
         setTimeout(() => {
           showToast(intl.formatMessage(toastMessages.success))

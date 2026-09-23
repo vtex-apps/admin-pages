@@ -7,7 +7,10 @@ import { useRuntime } from 'vtex.render-runtime'
 import Operations from './Operations'
 import CreateNewIcon from './icons/CreateNewIcon'
 import StyleCard from './StyleCard'
-import { createEventObject } from '../../../../utils/auditEvents'
+import {
+  createEventObject,
+  safeSendAuditEvent,
+} from '../../../../utils/auditEvents'
 import SendEventToAuditMutation from '../../mutations/SendEventToAudit'
 
 interface Props {
@@ -145,9 +148,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                 account,
                                 workspace
                               )
-                              sendEventToAudit({
-                                variables: { input: event },
-                              })
+                              safeSendAuditEvent(sendEventToAudit, event)
                             })
                             .catch(e => {
                               console.error(e)
@@ -188,9 +189,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     workspace,
                                     id
                                   )
-                                  await sendEventToAudit({
-                                    variables: { input: event },
-                                  })
+                                  safeSendAuditEvent(sendEventToAudit, event)
                                 })
                                 .catch(e => {
                                   console.error(e)
@@ -231,9 +230,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     workspace,
                                     id
                                   )
-                                  await sendEventToAudit({
-                                    variables: { input: event },
-                                  })
+                                  safeSendAuditEvent(sendEventToAudit, event)
                                 })
                                 .catch(e => {
                                   console.error(e)
@@ -270,9 +267,7 @@ const StyleList: React.FunctionComponent<Props> = ({
                                     account,
                                     workspace
                                   )
-                                  await sendEventToAudit({
-                                    variables: { input: event },
-                                  })
+                                  safeSendAuditEvent(sendEventToAudit, event)
                                 })
                                 .catch(e => {
                                   console.error(e)

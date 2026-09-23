@@ -8,7 +8,10 @@ import { getConfigurationType, getIsDefaultContent } from '../utils'
 import { ConfigurationType } from '../typings'
 import { UseListHandlers } from './typings'
 import { getDeleteStoreUpdater } from './utils'
-import { createEventObject } from '../../../../../utils/auditEvents'
+import {
+  createEventObject,
+  safeSendAuditEvent,
+} from '../../../../../utils/auditEvents'
 
 const messages = defineMessages({
   cancel: {
@@ -126,9 +129,7 @@ export const useListHandlers: UseListHandlers = ({
             workspace,
             contentId
           )
-          await sendEventToAudit({
-            variables: { input: event },
-          })
+          safeSendAuditEvent(sendEventToAudit, event)
 
           editor.editExtensionPoint(null)
         } catch (error) {
