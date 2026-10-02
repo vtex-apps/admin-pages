@@ -98,11 +98,20 @@ export const updateStoreAfterSave = (
 
       const savedRouteId = savedRoute && savedRoute.uuid
       const matchedRoute = routes.find(route => route.uuid === savedRouteId)
+      const appRouteIdx = routes.findIndex(
+        route =>
+          route.declarer && !route.binding && route.path === savedRoute.path
+      )
+
       if (matchedRoute) {
         const idx = routes.indexOf(matchedRoute)
         routes[idx] = savedRoute
       } else {
         routes.push(savedRoute)
+      }
+
+      if (appRouteIdx !== -1) {
+        routes.splice(appRouteIdx, 1)
       }
 
       const newData = {
