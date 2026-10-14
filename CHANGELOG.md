@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Changed
+
+- Update German (de) translations following the Admin German grammar review (4 strings, e.g. "Formatvorlagen" → "Style-Vorlagen", "Weiterleitungsinformationen" → "Weiterleitung konfigurieren", "Zufügen" → "Hinzufügen")
+
 ## [4.59.3] - 2026-09-23
 
 ### Changed
